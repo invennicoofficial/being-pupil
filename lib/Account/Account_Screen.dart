@@ -1,4 +1,6 @@
 import 'package:being_pupil/Account/About_Us_Screen.dart';
+import 'package:being_pupil/Account/FAQ_Screen.dart';
+import 'package:being_pupil/Account/Terms_And_Policy_Screen.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Home_Screen.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
@@ -163,7 +165,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             onTap: () {
                               Navigator.of(context).push(PageRouteBuilder(
                                   pageBuilder: (_, __, ____) =>
-                                      HomeScreen()));
+                                      FAQScreen()));
                             },
                             child: ProfileList(
                               txt: "FAQs",
@@ -176,7 +178,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             onTap: () {
                               Navigator.of(context).push(PageRouteBuilder(
                                   pageBuilder: (_, __, ____) =>
-                                      HomeScreen()));
+                                      TermsAndPolicyScreen()));
                             },
                             child: ProfileList(
                               txt: "Terms & Policy",
