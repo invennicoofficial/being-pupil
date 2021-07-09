@@ -1,3 +1,4 @@
+import 'package:being_pupil/Account/About_Us_Screen.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Home_Screen.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
@@ -19,32 +20,13 @@ class _AccountScreenState extends State<AccountScreen> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Constants.bgColor,
-          title: Row(
-            children: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.west_rounded,
-                  color: Colors.white,
-                  size: 35.0,
-                ),
-                onPressed: //null,
-                    () {
-                  //Navigator.of(context).pop();
-                  pushNewScreen(context,
-                      screen: HomeScreen(),
-                      pageTransitionAnimation: PageTransitionAnimation.fade);
-                },
-                padding: EdgeInsets.zero,
-              ),
-              Text(
-                'My Account',
-                style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 12.0.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white),
-              ),
-            ],
+          title: Text(
+            'My Account',
+            style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 12.0.sp,
+                fontWeight: FontWeight.w500,
+                color: Colors.white),
           ),
         ),
         body: Padding(
@@ -168,7 +150,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             onTap: () {
                               Navigator.of(context).push(PageRouteBuilder(
                                   pageBuilder: (_, __, ____) =>
-                                      HomeScreen()));
+                                      AboutUsScreen()));
                             },
                             child: ProfileList(
                               txt: "About",
