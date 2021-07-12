@@ -28,7 +28,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
   void initState() {
     // TODO: implement initState
-    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    //SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     errorController = StreamController<ErrorAnimationType>();
     super.initState();
   }

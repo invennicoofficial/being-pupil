@@ -37,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    // //SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     Timer(
         Duration(seconds: 3),
         () => Navigator.pushReplacement(context,
@@ -48,40 +48,42 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Constants.bgColor,
-      body: Stack(
-        children: [
-          Container(
-            height: 100.0.h,
-            width: 100.0.w,
-            decoration: BoxDecoration(
-              color: Constants.bgColor,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Constants.bgColor,
+        body: Stack(
+          children: [
+            Container(
+              height: 100.0.h,
+              width: 100.0.w,
+              decoration: BoxDecoration(
+                color: Constants.bgColor,
+              ),
+              child:
+                  Image.asset('assets/images/background.png', fit: BoxFit.cover),
             ),
-            child:
-                Image.asset('assets/images/background.png', fit: BoxFit.cover),
-          ),
-          Center(
-            child: Image.asset(
-              'assets/images/beingPupil.png',
-              height: 15.0.h,
-              width: 90.0.w,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 18.0.h),
-            child: Center(
-              child: Text(
-                'Student of Life',
-                style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.white,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w400),
+            Center(
+              child: Image.asset(
+                'assets/images/beingPupil.png',
+                height: 15.0.h,
+                width: 90.0.w,
               ),
             ),
-          )
-        ],
+            Padding(
+              padding: EdgeInsets.only(top: 18.0.h),
+              child: Center(
+                child: Text(
+                  'Student of Life',
+                  style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.white,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w400),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -7,6 +7,7 @@ import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:share/share.dart';
 import 'package:sizer/sizer.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -189,9 +190,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           SizedBox(height: 3.0.h,),
                           InkWell(
                             onTap: () {
-                              Navigator.of(context).push(PageRouteBuilder(
-                                  pageBuilder: (_, __, ____) =>
-                                      HomeScreen()));
+                              Share.share('check out Being Pupil App! https://google.com', subject: 'Download Being Pupil App!');
                             },
                             child: ProfileList(
                               txt: "Share",
