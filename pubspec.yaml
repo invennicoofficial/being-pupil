@@ -31,6 +31,7 @@ dependencies:
   persistent_bottom_nav_bar: ^3.2.0
   webview_flutter: ^1.0.7
   share: ^0.6.5+4
+  dotted_border: ^1.0.7
 #   flutter_native_splash: ^0.3.2
 
 # flutter_native_splash:

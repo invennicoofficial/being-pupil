@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Registration/Basic_Registration.dart';
+import 'package:being_pupil/Registration/Educator_Registration.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -246,10 +247,13 @@ class _OtpScreenState extends State<OtpScreen> {
                             } else {
                               setState(() {
                                 //verifyOTP();
-                                Navigator.of(context).pushAndRemoveUntil(
+                                // Navigator.of(context).pushAndRemoveUntil(
+                                //     MaterialPageRoute(
+                                //         builder: (context) => bottomNavBar(0)),
+                                //     (Route<dynamic> route) => false);
+                                Navigator.of(context).push(
                                     MaterialPageRoute(
-                                        builder: (context) => bottomNavBar(0)),
-                                    (Route<dynamic> route) => false);
+                                        builder: (context) => EducatorRegistration()));
                                 hasError = false;
                                 scaffoldKey.currentState.showSnackBar(SnackBar(
                                   content: Text("Verify!!"),
