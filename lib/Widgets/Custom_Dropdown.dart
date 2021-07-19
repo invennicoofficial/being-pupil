@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:being_pupil/Constants/Const.dart';
 
 class CustomDropdown<T> extends StatefulWidget {
   /// the child widget for the button, this will be ignored if text is supplied
@@ -84,10 +85,11 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
           onPressed: _toggleDropdown,
           child: Row(
             mainAxisAlignment:
-                style.mainAxisAlignment ?? MainAxisAlignment.start,
-            textDirection:
-                widget.leadingIcon ? TextDirection.rtl : TextDirection.ltr,
-            mainAxisSize: MainAxisSize.min,
+                //style.mainAxisAlignment ?? 
+                MainAxisAlignment.spaceBetween,
+            // textDirection:
+            //     widget.leadingIcon ? TextDirection.rtl : TextDirection.ltr,
+            // mainAxisSize: MainAxisSize.min,
             children: [
               if (_currentIndex == -1) ...[
                 widget.child,
@@ -97,7 +99,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
               if (!widget.hideIcon)
                 RotationTransition(
                   turns: _rotateAnimation,
-                  child: widget.icon 
+                  child: Icon(Icons.expand_more, size: 25, color: Constants.bpSkipStyle), 
                 ),
             ],
           ),

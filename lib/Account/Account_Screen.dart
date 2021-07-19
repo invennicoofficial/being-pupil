@@ -1,5 +1,6 @@
 import 'package:being_pupil/Account/About_Us_Screen.dart';
 import 'package:being_pupil/Account/FAQ_Screen.dart';
+import 'package:being_pupil/Account/My_Profile_Educator.dart';
 import 'package:being_pupil/Account/Terms_And_Policy_Screen.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Home_Screen.dart';
@@ -36,7 +37,7 @@ class _AccountScreenState extends State<AccountScreen> {
           padding: EdgeInsets.only(bottom: 3.0.h, left: 5.0.w, right: 5.0.w),
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
-                      child: Container(
+            child: Container(
               height: 90.0.h,
               width: 100.0.w,
               //color: Colors.grey,
@@ -61,7 +62,9 @@ class _AccountScreenState extends State<AccountScreen> {
                               radius: 100.0,
                             ),
                           ),
-                          SizedBox(height: 0.5.h,),
+                          SizedBox(
+                            height: 0.5.h,
+                          ),
                           Text(
                             'Praveen Kumar',
                             style: TextStyle(
@@ -70,7 +73,9 @@ class _AccountScreenState extends State<AccountScreen> {
                                 fontSize: 13.0.sp,
                                 fontWeight: FontWeight.w700),
                           ),
-                          SizedBox(height: 0.5.h,),
+                          SizedBox(
+                            height: 0.5.h,
+                          ),
                           Text(
                             '9865743210',
                             style: TextStyle(
@@ -79,7 +84,9 @@ class _AccountScreenState extends State<AccountScreen> {
                                 fontSize: 10.5.sp,
                                 fontWeight: FontWeight.w400),
                           ),
-                          SizedBox(height: 0.5.h,),
+                          SizedBox(
+                            height: 0.5.h,
+                          ),
                           Text(
                             'B.tech I M.S University',
                             style: TextStyle(
@@ -100,8 +107,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           InkWell(
                             onTap: () {
                               Navigator.of(context).push(PageRouteBuilder(
-                                  pageBuilder: (_, __, ____) =>
-                                      HomeScreen()));
+                                  pageBuilder: (_, __, ____) => EducatorProfile()));
                             },
                             child: ProfileList(
                               txt: "My Profile",
@@ -109,12 +115,13 @@ class _AccountScreenState extends State<AccountScreen> {
                               sizeImage: 20.0,
                             ),
                           ),
-                          SizedBox(height: 3.0.h,),
+                          SizedBox(
+                            height: 3.0.h,
+                          ),
                           InkWell(
                             onTap: () {
                               Navigator.of(context).push(PageRouteBuilder(
-                                  pageBuilder: (_, __, ____) =>
-                                      HomeScreen()));
+                                  pageBuilder: (_, __, ____) => HomeScreen()));
                             },
                             child: ProfileList(
                               txt: "My Courses",
@@ -122,12 +129,13 @@ class _AccountScreenState extends State<AccountScreen> {
                               sizeImage: 20.0,
                             ),
                           ),
-                          SizedBox(height: 3.0.h,),
+                          SizedBox(
+                            height: 3.0.h,
+                          ),
                           InkWell(
                             onTap: () {
                               Navigator.of(context).push(PageRouteBuilder(
-                                  pageBuilder: (_, __, ____) =>
-                                      HomeScreen()));
+                                  pageBuilder: (_, __, ____) => HomeScreen()));
                             },
                             child: ProfileList(
                               txt: "My Bookings",
@@ -135,12 +143,13 @@ class _AccountScreenState extends State<AccountScreen> {
                               sizeImage: 20.0,
                             ),
                           ),
-                          SizedBox(height: 3.0.h,),
+                          SizedBox(
+                            height: 3.0.h,
+                          ),
                           InkWell(
                             onTap: () {
                               Navigator.of(context).push(PageRouteBuilder(
-                                  pageBuilder: (_, __, ____) =>
-                                      HomeScreen()));
+                                  pageBuilder: (_, __, ____) => HomeScreen()));
                             },
                             child: ProfileList(
                               txt: "Saved Posts",
@@ -148,7 +157,9 @@ class _AccountScreenState extends State<AccountScreen> {
                               sizeImage: 20.0,
                             ),
                           ),
-                          SizedBox(height: 3.0.h,),
+                          SizedBox(
+                            height: 3.0.h,
+                          ),
                           InkWell(
                             onTap: () {
                               Navigator.of(context).push(PageRouteBuilder(
@@ -161,12 +172,13 @@ class _AccountScreenState extends State<AccountScreen> {
                               sizeImage: 20.0,
                             ),
                           ),
-                          SizedBox(height: 3.0.h,),
+                          SizedBox(
+                            height: 3.0.h,
+                          ),
                           InkWell(
                             onTap: () {
                               Navigator.of(context).push(PageRouteBuilder(
-                                  pageBuilder: (_, __, ____) =>
-                                      FAQScreen()));
+                                  pageBuilder: (_, __, ____) => FAQScreen()));
                             },
                             child: ProfileList(
                               txt: "FAQs",
@@ -174,7 +186,9 @@ class _AccountScreenState extends State<AccountScreen> {
                               sizeImage: 20.0,
                             ),
                           ),
-                          SizedBox(height: 3.0.h,),
+                          SizedBox(
+                            height: 3.0.h,
+                          ),
                           InkWell(
                             onTap: () {
                               Navigator.of(context).push(PageRouteBuilder(
@@ -187,10 +201,14 @@ class _AccountScreenState extends State<AccountScreen> {
                               sizeImage: 20.0,
                             ),
                           ),
-                          SizedBox(height: 3.0.h,),
+                          SizedBox(
+                            height: 3.0.h,
+                          ),
                           InkWell(
                             onTap: () {
-                              Share.share('check out Being Pupil App! https://google.com', subject: 'Download Being Pupil App!');
+                              Share.share(
+                                  'check out Being Pupil App! https://google.com',
+                                  subject: 'Download Being Pupil App!');
                             },
                             child: ProfileList(
                               txt: "Share",
@@ -198,12 +216,13 @@ class _AccountScreenState extends State<AccountScreen> {
                               sizeImage: 20.0,
                             ),
                           ),
-                          SizedBox(height: 3.0.h,),
+                          SizedBox(
+                            height: 3.0.h,
+                          ),
                           InkWell(
                             onTap: () {
                               Navigator.of(context).push(PageRouteBuilder(
-                                  pageBuilder: (_, __, ____) =>
-                                      HomeScreen()));
+                                  pageBuilder: (_, __, ____) => HomeScreen()));
                             },
                             child: ProfileList(
                               txt: "Logout",
@@ -255,10 +274,10 @@ class ProfileList extends StatelessWidget {
                     Text(
                       txt,
                       style: TextStyle(
-                              color: Constants.bgColor,
-                              fontFamily: 'Montserrat',
-                              fontSize: 10.5.sp,
-                              fontWeight: FontWeight.w400),
+                          color: Constants.bgColor,
+                          fontFamily: 'Montserrat',
+                          fontSize: 10.5.sp,
+                          fontWeight: FontWeight.w400),
                     ),
                   ],
                 ),

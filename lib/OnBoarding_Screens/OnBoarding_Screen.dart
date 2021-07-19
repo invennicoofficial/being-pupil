@@ -154,9 +154,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         padding: EdgeInsets.symmetric(
                             horizontal: 3.0.w, vertical: 0.0),
                         child: Image(
-                          image: AssetImage('assets/images/onBoard1.png'),
-                          height: 35.0.h,
-                          width: 100.0.w,
+                          image: AssetImage('assets/images/onBoard11.png'),
+                          height: 30.0.h,
+                          width: 80.0.w,
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -199,11 +199,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 3.0.w, vertical: 2.0.h),
+                            horizontal: 3.0.w, vertical: 3.0.h),
                         child: Image(
-                          image: AssetImage('assets/images/onBoard2.png'),
-                          height: 35.0.h,
-                          width: 100.0.w,
+                          image: AssetImage('assets/images/onBoard.png'),
+                          height: 30.0.h,
+                          width: 80.0.w,
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -249,9 +249,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         padding: EdgeInsets.symmetric(
                             horizontal: 3.0.w, vertical: 0.0),
                         child: Image(
-                          image: AssetImage('assets/images/onBoard3.png'),
-                          height: 35.0.h,
-                          width: 100.0.w,
+                          image: AssetImage('assets/images/onBoard33.png'),
+                          height: 30.0.h,
+                          width: 80.0.w,
                           fit: BoxFit.contain,
                         ),
                       ),

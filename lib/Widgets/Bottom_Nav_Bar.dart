@@ -101,45 +101,30 @@ class _bottomNavBarState extends State<bottomNavBar> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-          icon: Icon(
-            Icons.home_sharp,
-            size: 30,
-          ), //ImageIcon(AssetImage('assets/icon/home_icon.png'),size: 22,),
+          icon:  ImageIcon(AssetImage('assets/icons/home.png'),size: 50),
           title: ("Home"),
           activeColorPrimary: Constants.selectedIcon,
           inactiveColorPrimary: Constants.bgColor),
       PersistentBottomNavBarItem(
-        icon: Icon(
-          Icons.location_on_sharp,
-          size: 30,
-        ), //ImageIcon(AssetImage('assets/icon/reviewsIcon.png'),size: 30),
+        icon: ImageIcon(AssetImage('assets/icons/stayStudy.png'),size: 30),
         title: ("Stay Study"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(
-          Icons.cast_for_education,
-          size: 30,
-        ), //ImageIcon(AssetImage('assets/icon/qr_code_icon.png'),size: 22),
+        icon: ImageIcon(AssetImage('assets/icons/learner.png'),size: 30),
         title: ("Learner"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(
-          Icons.bookmark_rounded,
-          size: 30,
-        ), //ImageIcon(AssetImage('assets/icon/food_club_new_icon.png'),size: 30),
+        icon: ImageIcon(AssetImage('assets/icons/support.png'),size: 30),
         title: ("Study Buddy"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(
-          Icons.perm_identity,
-          size: 30,
-        ), //ImageIcon(AssetImage('assets/icon/profile_icon.png'),size: 22),
+        icon: ImageIcon(AssetImage('assets/icons/account.png'),size: 30),
         title: ("Account"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,

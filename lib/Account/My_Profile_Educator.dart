@@ -9,17 +9,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tagging/flutter_tagging.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class EducatorRegistration extends StatefulWidget {
-  const EducatorRegistration({Key key}) : super(key: key);
+class EducatorProfile extends StatefulWidget {
+  const EducatorProfile({Key key}) : super(key: key);
 
   @override
-  _EducatorRegistrationState createState() => _EducatorRegistrationState();
+  _EducatorProfileState createState() => _EducatorProfileState();
 }
 
-class _EducatorRegistrationState extends State<EducatorRegistration> {
+class _EducatorProfileState extends State<EducatorProfile> {
   File _image, _certificate;
   String birthDateInString, selectedYearString;
   DateTime birthDate, selectedYear;
@@ -49,10 +50,12 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
 
   List<Hobbies> _selectedHobbies;
   String _selectedHobbiesJson = 'Nothing to show';
+  String registerAs;
 
   @override
   void initState() {
     super.initState();
+    getData();
     _selectedSkills = [];
     _selectedHobbies = [];
   }
@@ -349,17 +352,32 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
         });
   }
 
+  getData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      registerAs = preferences.getString('RegisterAs');
+    });
+    print(registerAs);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Constants.bgColor,
-          title: Container(
-              height: 8.0.h,
-              width: 30.0.w,
-              child: Image.asset('assets/images/beingPupil.png',
-                  fit: BoxFit.contain)),
+          title: Row(
+            children: [
+              Container(
+                  height: 8.0.h,
+                  width: 30.0.w,
+                  child: Image.asset('assets/images/beingPupil.png',
+                      fit: BoxFit.contain)),
+                      registerAs == '1'
+                      ? Text('Educator')
+                      : Text('Learner')
+            ],
+          ),
         ),
         body: Padding(
           padding: EdgeInsets.only(bottom: 3.0.h, left: 5.0.w, right: 5.0.w),
@@ -1257,7 +1275,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               // ),
                               onChange: (int value, int index) {
                                 print(value);
-                                if(value > 0){
+                                if (value > 0) {
                                   setState(() {
                                     qualYear = '1';
                                   });
@@ -1526,7 +1544,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               // ),
                               onChange: (int value, int index) {
                                 print(value);
-                                if(value > 0){
+                                if (value > 0) {
                                   setState(() {
                                     workExp = '1';
                                   });
@@ -1548,7 +1566,24 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 2.0.w, vertical: 1.5.h),
                               ),
-                              items: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '15+']
+                              items: [
+                                '1',
+                                '2',
+                                '3',
+                                '4',
+                                '5',
+                                '6',
+                                '7',
+                                '8',
+                                '9',
+                                '10',
+                                '11',
+                                '12',
+                                '13',
+                                '14',
+                                '15',
+                                '15+'
+                              ]
                                   .asMap()
                                   .entries
                                   .map(
@@ -1615,7 +1650,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               // ),
                               onChange: (int value, int index) {
                                 print(value);
-                                if(value > 0){
+                                if (value > 0) {
                                   setState(() {
                                     teachExp = '1';
                                   });
@@ -1637,7 +1672,24 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 2.0.w, vertical: 1.5.h),
                               ),
-                              items: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '15+']
+                              items: [
+                                '1',
+                                '2',
+                                '3',
+                                '4',
+                                '5',
+                                '6',
+                                '7',
+                                '8',
+                                '9',
+                                '10',
+                                '11',
+                                '12',
+                                '13',
+                                '14',
+                                '15',
+                                '15+'
+                              ]
                                   .asMap()
                                   .entries
                                   .map(
@@ -1701,7 +1753,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 maxLength: 100,
                                 decoration: InputDecoration(
                                     //labelText: "Please mention your achivements...",
-                                    //counterText: '',
+                                    counterText: '',
                                     fillColor: Colors.white,
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -2353,7 +2405,8 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                              } else if (_certiName == null || _certiName == '') {
+                              } else if (_certiName == null ||
+                                  _certiName == '') {
                                 Fluttertoast.showToast(
                                     msg: "Please Pick Certificate",
                                     toastLength: Toast.LENGTH_SHORT,
@@ -2362,8 +2415,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                              }
-                               else {
+                              } else {
                                 Navigator.of(context).push
                                     //pushAndRemoveUntil
                                     (MaterialPageRoute(

@@ -3,7 +3,9 @@ import 'package:being_pupil/Login/Login_Screen.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -14,6 +16,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  String reisterAs = 'notSelected';
   @override
   void initState() {
     // TODO: implement initState
@@ -177,25 +180,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               bottom: 3.0.h),
                           child: CustomDropdown<int>(
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  'Register As',
-                                  style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 10.0.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Constants.bpSkipStyle),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 3.0.w),
+                                  child: Text(
+                                    'Register As',
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 10.0.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Constants.bpSkipStyle),
+                                  ),
                                 ),
-                                SizedBox(width: 50.0.w)
+                                //SizedBox(width: 50.0.w)
                               ],
                             ),
                             icon: Icon(
                               Icons.expand_more,
                               color: Constants.bpSkipStyle,
                             ),
-                            onChange: (int value, int index) {
+                            onChange: (int value, int index) async{
                               print(value);
+                              if (value > 0) {
+                                setState(() {
+                                  reisterAs = 'selected';
+                                });
+                              }
+                              SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                              sharedPreferences.setString('RegisterAs', value.toString());
                             },
                             dropdownButtonStyle: DropdownButtonStyle(
                               height: 7.0.h,
@@ -246,11 +260,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: GestureDetector(
                           onTap: () {
                             print('Sign Up!!!');
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.fade,
-                                    child: LoginScreen()));
+                            if (reisterAs == 'notSelected') {
+                              Fluttertoast.showToast(
+                                  msg: "Please Select Register As",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Constants.bgColor,
+                                  textColor: Colors.white,
+                                  fontSize: 10.0.sp);
+                            } else {
+                              Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.fade,
+                                      child: LoginScreen()));
+                            }
                           },
                           child: Container(
                             height: 7.0.h,
