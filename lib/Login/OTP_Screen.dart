@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/HomeScreen/Learner_Home_Screen.dart';
 import 'package:being_pupil/Registration/Basic_Registration.dart';
 import 'package:being_pupil/Registration/Educator_Registration.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class OtpScreen extends StatefulWidget {
@@ -26,11 +28,13 @@ class _OtpScreenState extends State<OtpScreen> {
   String currentText = "";
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
+  String registerAs;
 
   void initState() {
     // TODO: implement initState
     //SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     errorController = StreamController<ErrorAnimationType>();
+    getData();
     super.initState();
   }
 
@@ -39,6 +43,14 @@ class _OtpScreenState extends State<OtpScreen> {
     // TODO: implement dispose
     errorController.close();
     super.dispose();
+  }
+
+  getData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      registerAs = preferences.getString('RegisterAs');
+    });
+    print(registerAs);
   }
 
   @override
@@ -251,7 +263,14 @@ class _OtpScreenState extends State<OtpScreen> {
                                 //     MaterialPageRoute(
                                 //         builder: (context) => bottomNavBar(0)),
                                 //     (Route<dynamic> route) => false);
-                                Navigator.of(context).push(
+                                registerAs == '2'
+                                ?   Navigator.of(context).push
+                                    //pushAndRemoveUntil
+                                    (MaterialPageRoute(
+                                        builder: (context) => bottomNavBar(0)))
+                                //(Route<dynamic> route) => false);
+                              //}
+                                : Navigator.of(context).push(
                                     MaterialPageRoute(
                                         builder: (context) => EducatorRegistration()));
                                 hasError = false;

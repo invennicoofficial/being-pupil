@@ -1,11 +1,13 @@
 import 'package:being_pupil/Account/Account_Screen.dart';
 import 'package:being_pupil/Constants/Const.dart';
-import 'package:being_pupil/HomeScreen/Home_Screen.dart';
+import 'package:being_pupil/HomeScreen/Educator_Home_Screen.dart';
+import 'package:being_pupil/HomeScreen/Learner_Home_Screen.dart';
 import 'package:being_pupil/Learner/Learner_Screen.dart';
 import 'package:being_pupil/StayAndStudy/Stay_And_Study_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Study_Buddy_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class bottomNavBar extends StatefulWidget {
   final int index;
@@ -22,11 +24,12 @@ class _bottomNavBarState extends State<bottomNavBar> {
       PersistentTabController(initialIndex: 0);
   bool isSubscribed = false;
   String authToken;
+  String registerAs;
 
   @override
   void initState() {
     setIndex();
-    //getUserData();
+    getData();
     setState(() {});
     super.initState();
   }
@@ -55,19 +58,21 @@ class _bottomNavBarState extends State<bottomNavBar> {
     }
   }
 
-  // getUserData() async {
-  //   SharedPreferences preferences = await SharedPreferences.getInstance();
-  //   authToken = await storage.FlutterSecureStorage().read(key: 'auth_token');
-  //   isSubscribed = preferences.getBool('isSubscribed');
-
-  //   setState(() {});
-  //   print(authToken);
-  // }
+  
+  getData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      registerAs = preferences.getString('RegisterAs');
+    });
+    print(registerAs);
+  }
 
   Widget callPage(int current) {
     switch (current) {
       case 0:
-        return new HomeScreen();
+        return registerAs == '1'
+        ? new EducatorHomeScreen()
+        : new LearnerHomeScreen();
         break;
       case 1:
         return new StayAndStudyScreen();
@@ -83,16 +88,15 @@ class _bottomNavBarState extends State<bottomNavBar> {
         return new AccountScreen();
         break;
       default:
-        return new HomeScreen();
+        return new EducatorHomeScreen();
     }
   }
 
   List<Widget> _buildScreens() {
     return [
-      HomeScreen(),
+      registerAs == '1' ? EducatorHomeScreen() : LearnerHomeScreen(),
       StayAndStudyScreen(),
       LearnerScreen(),
-      //isSubscribed ? PackageScreen() : FoodClubScreen(),
       StudyBuddyScreen(),
       AccountScreen(),
     ];
@@ -113,7 +117,7 @@ class _bottomNavBarState extends State<bottomNavBar> {
       ),
       PersistentBottomNavBarItem(
         icon: ImageIcon(AssetImage('assets/icons/learner.png'),size: 30),
-        title: ("Learner"),
+        title: (registerAs == '1' ? "Learner" : "Educator"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
       ),

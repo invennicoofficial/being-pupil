@@ -1698,7 +1698,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 controller: _achivementController,
                                 maxLines: 5,
                                 keyboardType: TextInputType.multiline,
-                                maxLength: 100,
+                                //maxLength: 100,
                                 decoration: InputDecoration(
                                     //labelText: "Please mention your achivements...",
                                     //counterText: '',
