@@ -12,14 +12,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class EducatorRegistration extends StatefulWidget {
-  const EducatorRegistration({Key key}) : super(key: key);
+class LearnerRegistration extends StatefulWidget {
+  const LearnerRegistration({Key key}) : super(key: key);
 
   @override
-  _EducatorRegistrationState createState() => _EducatorRegistrationState();
+  _LearnerRegistrationState createState() => _LearnerRegistrationState();
 }
 
-class _EducatorRegistrationState extends State<EducatorRegistration> {
+class _LearnerRegistrationState extends State<LearnerRegistration> {
   File _image, _certificate;
   String birthDateInString, selectedYearString;
   DateTime birthDate, selectedYear;
@@ -29,9 +29,9 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
   String docType = 'DocType';
   String qualYear = '0';
   String workExp = '0';
-  String teachExp = '0';
   String fileName;
   String _certiName;
+  bool isCat1 = false;
   TextEditingController _nameController = TextEditingController();
   TextEditingController _mobileController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -50,11 +50,23 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
   List<Hobbies> _selectedHobbies;
   String _selectedHobbiesJson = 'Nothing to show';
 
+  List<String> catList = List();
+
   @override
   void initState() {
     super.initState();
     _selectedSkills = [];
     _selectedHobbies = [];
+    catList = [
+      'Category 1',
+      'Category 2',
+      'Category 3',
+      'Category 4',
+      'Category 5',
+      'Category 6',
+      'Category 7',
+      'Category 8',
+    ];
   }
 
   @override
@@ -744,7 +756,6 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                       border: Border.all(
                                           color: Constants.formBorder),
                                       borderRadius: BorderRadius.circular(5.0),
-                                      color: Color(0xFFA8B4C1).withOpacity(0.5),
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
@@ -764,7 +775,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                             AssetImage(
                                                 'assets/icons/calendar.png'),
                                             size: 25,
-                                            color: Constants.bpSkipStyle),
+                                            color: Constants.formBorder),
                                       ],
                                     ),
                                   ),
@@ -1025,7 +1036,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               padding: EdgeInsets.only(
                                   top: 4.0.h, left: 3.0.w, right: 3.0.w),
                               child: Text(
-                                'Educational Details',
+                                'Interested Categories',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 12.0.sp,
@@ -1036,439 +1047,32 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           ],
                         ),
 
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 3.0.w, right: 3.0.w, top: 3.0.h),
-                            child: Container(
-                              height: 7.0.h,
-                              width: 90.0.w,
-                              child: TextFormField(
-                                controller: _scoolNameController,
-                                decoration: InputDecoration(
-                                  labelText: "Name of School",
-                                  fillColor: Colors.white,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                      //width: 2.0,
-                                    ),
-                                  ),
-                                ),
-                                //keyboardType: TextInputType.emailAddress,
-                                style: new TextStyle(
-                                    fontFamily: "Montserrat",
-                                    fontSize: 10.0.sp),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 3.0.w,
-                                right: 3.0.w,
-                                top: 3.0.h,
-                                //bottom: 3.0.h
-                              ),
-                              child: GestureDetector(
-                                onTap: () async {
-                                  print('Year!!!');
-                                  final pickedYear = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(1960),
-                                    lastDate: DateTime.now(),
-                                    helpText: 'Select Qualification Year',
-                                    initialDatePickerMode: DatePickerMode.year,
-                                  );
-                                  if (pickedYear != null &&
-                                      pickedYear != selectedYear) {
-                                    setState(() {
-                                      selectedYear = pickedYear;
-                                      isYearSelected = true;
-                                      selectedYearString =
-                                          '${selectedYear.year}';
-                                    });
-                                  }
-                                },
-                                child: Container(
-                                  height: 7.0.h,
-                                  width: 90.0.w,
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 3.0.w),
-                                  decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Constants.formBorder),
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    color: Color(0xFFA8B4C1).withOpacity(0.5),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        isYearSelected
-                                            ? selectedYearString
-                                            : 'Year',
-                                        style: TextStyle(
-                                            fontFamily: 'Montserrat',
-                                            fontSize: 10.0.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: Constants.bpSkipStyle),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )),
-                        ),
-                        // Theme(
-                        //   data: new ThemeData(
-                        //     primaryColor: Constants.bpSkipStyle,
-                        //     primaryColorDark: Constants.bpSkipStyle,
-                        //   ),
-                        //   child: Padding(
-                        //     padding: EdgeInsets.only(
-                        //       left: 3.0.w,
-                        //       right: 3.0.w,
-                        //       top: 3.0.h,
-                        //       //bottom: 3.0.h
-                        //     ),
-                        //     child: CustomDropdown<int>(
-                        //       child: Row(
-                        //         mainAxisAlignment:
-                        //             MainAxisAlignment.spaceBetween,
-                        //         children: [
-                        //           Padding(
-                        //             padding:
-                        //                 EdgeInsets.symmetric(horizontal: 3.0.w),
-                        //             child: Text(
-                        //               'Year',
-                        //               style: TextStyle(
-                        //                   fontFamily: 'Montserrat',
-                        //                   fontSize: 10.0.sp,
-                        //                   fontWeight: FontWeight.w400,
-                        //                   color: Constants.bpSkipStyle),
-                        //             ),
-                        //           ),
-                        //           //SizedBox(width: 65.0.w)
-                        //         ],
-                        //       ),
-                        //       // icon: Icon(
-                        //       //   Icons.expand_more,
-                        //       //   color: Constants.bpSkipStyle,
-                        //       // ),
-                        //       onChange: (int value, int index) {
-                        //         print(value);
-                        //       },
-                        //       dropdownButtonStyle: DropdownButtonStyle(
-                        //         height: 7.0.h,
-                        //         width: 90.0.w,
-                        //         //padding: EdgeInsets.only(left: 2.0.w),
-                        //         elevation: 0,
-                        //         backgroundColor:
-                        //             Color(0xFFA8B4C1).withOpacity(0.5),
-                        //         primaryColor: Constants.bpSkipStyle,
-                        //         side: BorderSide(color: Constants.formBorder),
-                        //       ),
-                        //       dropdownStyle: DropdownStyle(
-                        //         borderRadius: BorderRadius.circular(10.0),
-                        //         elevation: 6,
-                        //         padding: EdgeInsets.symmetric(
-                        //             horizontal: 2.0.w, vertical: 1.5.h),
-                        //       ),
-                        //       items: ['2001', '2002', '2003', '2004', '2005']
-                        //           .asMap()
-                        //           .entries
-                        //           .map(
-                        //             (item) => DropdownItem<int>(
-                        //               value: item.key + 1,
-                        //               child: Padding(
-                        //                 padding: const EdgeInsets.all(8.0),
-                        //                 child: Row(
-                        //                   children: [
-                        //                     Text(
-                        //                       item.value,
-                        //                       style: TextStyle(
-                        //                           fontFamily: 'Montserrat',
-                        //                           fontSize: 10.0.sp,
-                        //                           fontWeight: FontWeight.w400,
-                        //                           color: Constants.bpSkipStyle),
-                        //                     ),
-                        //                     SizedBox(width: 61.0.w)
-                        //                   ],
-                        //                 ),
-                        //               ),
-                        //             ),
-                        //           )
-                        //           .toList(),
-                        //     ),
-                        //   ),
-                        // ),
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              left: 3.0.w,
-                              right: 3.0.w,
-                              top: 3.0.h,
-                              //bottom: 3.0.h
-                            ),
-                            child: CustomDropdown<int>(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 3.0.w),
-                                    child: Text(
-                                      'Qualification',
+                        GridView.builder(
+                            shrinkWrap: true,
+                            padding: EdgeInsets.all(0.0),
+                            itemCount: catList.length,
+                            physics: NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2, childAspectRatio: 5),
+                            itemBuilder: (context, index) {
+                              return CheckboxListTile(
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  title: Text(catList[index],
                                       style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontSize: 10.0.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: Constants.bpSkipStyle),
-                                    ),
-                                  ),
-                                  //SizedBox(width: 50.0.w)
-                                ],
-                              ),
-                              // icon: Icon(
-                              //   Icons.expand_more,
-                              //   color: Constants.bpSkipStyle,
-                              // ),
-                              onChange: (int value, int index) {
-                                print(value);
-                                if(value > 0){
-                                  setState(() {
-                                    qualYear = '1';
+                                          color: Color(0xFF6B737C),
+                                          fontWeight: FontWeight.w400)),
+                                  activeColor: Constants.bgColor,
+                                  value: isCat1,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      isCat1 = !isCat1;
+                                    });
                                   });
-                                }
-                              },
-                              dropdownButtonStyle: DropdownButtonStyle(
-                                height: 7.0.h,
-                                width: 90.0.w,
-                                //padding: EdgeInsets.only(left: 2.0.w),
-                                elevation: 0,
-                                //backgroundColor: Colors.white,
-                                primaryColor: Constants.bpSkipStyle,
-                                side: BorderSide(color: Constants.formBorder),
-                              ),
-                              dropdownStyle: DropdownStyle(
-                                borderRadius: BorderRadius.circular(10.0),
-                                elevation: 6,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 2.0.w, vertical: 1.5.h),
-                              ),
-                              items: [
-                                'Graduate',
-                                'Post-graduate',
-                                'Chartered Accountant',
-                                'Others'
-                              ]
-                                  .asMap()
-                                  .entries
-                                  .map(
-                                    (item) => DropdownItem<int>(
-                                      value: item.key + 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              item.value,
-                                              style: TextStyle(
-                                                  fontFamily: 'Montserrat',
-                                                  fontSize: 10.0.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Constants.bpSkipStyle),
-                                            ),
-                                            //SizedBox(width: 60.0.w)
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 3.0.h, right: 3.0.w, left: 3.0.w),
-                          child: DottedBorder(
-                            borderType: BorderType.RRect,
-                            radius: Radius.circular(5),
-                            padding: EdgeInsets.all(12),
-                            color: Constants.formBorder.withOpacity(0.5),
-                            strokeWidth: 1.5,
-                            child: ClipRRect(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5)),
-                              child: GestureDetector(
-                                onTap: () {
-                                  print('Upload!!!');
-                                  _showCertificatePicker(context);
-                                },
-                                child: Container(
-                                  height: 7.0.h,
-                                  width: 90.0.w,
-                                  color: Colors.transparent,
-                                  child: Center(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        ImageIcon(
-                                            AssetImage(
-                                                'assets/icons/upload.png'),
-                                            size: 25,
-                                            color: Constants.bpSkipStyle),
-                                        SizedBox(
-                                          width: 1.0.w,
-                                        ),
-                                        Text(
-                                          _certiName != null
-                                              ? _certiName
-                                              : 'Upload the file',
-                                          style: TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              fontSize: 10.0.sp,
-                                              fontWeight: FontWeight.w400,
-                                              color: Constants.bpSkipStyle),
-                                          overflow: TextOverflow.clip,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        // Theme(
-                        //   data: new ThemeData(
-                        //     primaryColor: Constants.bpSkipStyle,
-                        //     primaryColorDark: Constants.bpSkipStyle,
-                        //   ),
-                        //   child: Padding(
-                        //       padding: EdgeInsets.only(
-                        //         left: 3.0.w,
-                        //         right: 3.0.w,
-                        //         top: 3.0.h,
-                        //         //bottom: 3.0.h
-                        //       ),
-                        //       child: GestureDetector(
-                        //         onTap: () {
-                        //           print('Other!!!');
-                        //         },
-                        //         child: Container(
-                        //           height: 7.0.h,
-                        //           width: 90.0.w,
-                        //           padding:
-                        //               EdgeInsets.symmetric(horizontal: 3.0.w),
-                        //           decoration: BoxDecoration(
-                        //             border:
-                        //                 Border.all(color: Constants.formBorder),
-                        //             borderRadius: BorderRadius.circular(5.0),
-                        //             //color: Color(0xFFA8B4C1).withOpacity(0.5),
-                        //           ),
-                        //           child: Center(
-                        //             child: Row(
-                        //               mainAxisAlignment:
-                        //                   MainAxisAlignment.center,
-                        //               children: [
-                        //                 Icon(
-                        //                   Icons.add,
-                        //                   size: 15,
-                        //                   color: Constants.bpSkipStyle,
-                        //                 ),
-                        //                 Text(
-                        //                   'Other Degree/ Diploma',
-                        //                   style: TextStyle(
-                        //                       fontFamily: 'Montserrat',
-                        //                       fontSize: 10.0.sp,
-                        //                       fontWeight: FontWeight.w400,
-                        //                       color: Constants.bpSkipStyle),
-                        //                 ),
-                        //               ],
-                        //             ),
-                        //           ),
-                        //         ),
-                        //       )),
-                        // ),
-
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 3.0.w,
-                                right: 3.0.w,
-                                top: 3.0.h,
-                                //bottom: 3.0.h
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  print('Add more!!!');
-                                },
-                                child: Container(
-                                  height: 7.0.h,
-                                  width: 90.0.w,
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 3.0.w),
-                                  decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Constants.formBorder),
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    //color: Color(0xFFA8B4C1).withOpacity(0.5),
-                                  ),
-                                  child: Center(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.add,
-                                          size: 15,
-                                          color: Constants.bpSkipStyle,
-                                        ),
-                                        Text(
-                                          'Add more details',
-                                          style: TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              fontSize: 10.0.sp,
-                                              fontWeight: FontWeight.w400,
-                                              color: Constants.bpSkipStyle),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              )),
-                        ),
+                            }),
 
                         //Work Experience
                         Row(
@@ -1526,7 +1130,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               // ),
                               onChange: (int value, int index) {
                                 print(value);
-                                if(value > 0){
+                                if (value > 0) {
                                   setState(() {
                                     workExp = '1';
                                   });
@@ -1548,96 +1152,24 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 2.0.w, vertical: 1.5.h),
                               ),
-                              items: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '15+']
-                                  .asMap()
-                                  .entries
-                                  .map(
-                                    (item) => DropdownItem<int>(
-                                      value: item.key + 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              item.value,
-                                              style: TextStyle(
-                                                  fontFamily: 'Montserrat',
-                                                  fontSize: 10.0.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Constants.bpSkipStyle),
-                                            ),
-                                            //SizedBox(width: 68.0.w)
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
-                          ),
-                        ),
-
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              left: 3.0.w,
-                              right: 3.0.w,
-                              top: 3.0.h,
-                              //bottom: 3.0.h
-                            ),
-                            child: CustomDropdown<int>(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 3.0.w),
-                                    child: Text(
-                                      'Total Teaching Experience',
-                                      style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 10.0.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: Constants.bpSkipStyle),
-                                    ),
-                                  ),
-                                  //SizedBox(width: 23.0.w)
-                                ],
-                              ),
-                              // icon: Icon(
-                              //   Icons.expand_more,
-                              //   color: Constants.bpSkipStyle,
-                              // ),
-                              onChange: (int value, int index) {
-                                print(value);
-                                if(value > 0){
-                                  setState(() {
-                                    teachExp = '1';
-                                  });
-                                }
-                              },
-                              dropdownButtonStyle: DropdownButtonStyle(
-                                height: 7.0.h,
-                                width: 90.0.w,
-                                //padding: EdgeInsets.only(left: 2.0.w),
-                                elevation: 0,
-                                backgroundColor:
-                                    Color(0xFFA8B4C1).withOpacity(0.5),
-                                primaryColor: Constants.bpSkipStyle,
-                                side: BorderSide(color: Constants.formBorder),
-                              ),
-                              dropdownStyle: DropdownStyle(
-                                borderRadius: BorderRadius.circular(10.0),
-                                elevation: 6,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 2.0.w, vertical: 1.5.h),
-                              ),
-                              items: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '15+']
+                              items: [
+                                '1',
+                                '2',
+                                '3',
+                                '4',
+                                '5',
+                                '6',
+                                '7',
+                                '8',
+                                '9',
+                                '10',
+                                '11',
+                                '12',
+                                '13',
+                                '14',
+                                '15',
+                                '15+'
+                              ]
                                   .asMap()
                                   .entries
                                   .map(
@@ -2364,11 +1896,11 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               //       fontSize: 10.0.sp);
                               // }
                               //  else {
-                                Navigator.of(context).push
-                                    //pushAndRemoveUntil
-                                    (MaterialPageRoute(
-                                        builder: (context) => bottomNavBar(0)));
-                                //(Route<dynamic> route) => false);
+                              Navigator.of(context).push
+                                  //pushAndRemoveUntil
+                                  (MaterialPageRoute(
+                                      builder: (context) => bottomNavBar(0)));
+                              //(Route<dynamic> route) => false);
                               //}
                             },
                             child: Container(

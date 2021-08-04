@@ -108,16 +108,23 @@ class _LearnerHomeScreenState extends State<LearnerHomeScreen> {
                               ),
                             ],
                           ),
-                          trailing: IconButton(
-                              icon: Icon(Icons.report_gmailerrorred_outlined),
-                              onPressed: () {
-                                pushNewScreen(context,
-                                    withNavBar: false,
-                                    screen: ReportFeed(),
-                                    pageTransitionAnimation:
-                                        PageTransitionAnimation.cupertino);
-                              }),
-                          //ImageIcon(AssetImage('assets/icons/report.png'),)
+                          trailing: GestureDetector(
+                            onTap: () {
+                              // pushNewScreen(context,
+                              //     withNavBar: false,
+                              //     screen: ReportFeed(),
+                              //     pageTransitionAnimation:
+                              //         PageTransitionAnimation.cupertino);
+                            },
+                            child: Container(
+                              height: 2.5.h,
+                              width: 4.0.w,
+                              child: ImageIcon(
+                                AssetImage('assets/icons/menu.png'),
+                                size: 15,
+                              ),
+                            ),
+                          ),
                         ),
                         //Post descriptionText
                         Text(
@@ -281,20 +288,22 @@ class _LearnerHomeScreenState extends State<LearnerHomeScreen> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    isSaved = !isSaved;
-                                  });
+                                  pushNewScreen(context,
+                                      withNavBar: false,
+                                      screen: ReportFeed(),
+                                      pageTransitionAnimation:
+                                          PageTransitionAnimation.cupertino);
+
+                                  // setState(() {
+                                  //   isSaved = !isSaved;
+                                  // });
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Icon(
-                                      isSaved
-                                          ? Icons.bookmark_sharp
-                                          : Icons.bookmark_outline_outlined,
-                                      color: isSaved
-                                          ? Constants.selectedIcon
-                                          : Constants.bpOnBoardSubtitleStyle,
+                                      Icons.report_gmailerrorred_outlined,
+                                      color: Constants.bpOnBoardSubtitleStyle,
                                       size: 30.0,
                                     ),
                                     SizedBox(
@@ -303,7 +312,7 @@ class _LearnerHomeScreenState extends State<LearnerHomeScreen> {
                                     Container(
                                       padding: EdgeInsets.only(top: 1.0.h),
                                       child: Text(
-                                        "Save",
+                                        "Report",
                                         style: TextStyle(
                                             fontSize: 6.5.sp,
                                             color: Constants

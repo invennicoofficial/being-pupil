@@ -2,6 +2,7 @@ import 'package:being_pupil/Account/Account_Screen.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Educator_Home_Screen.dart';
 import 'package:being_pupil/HomeScreen/Learner_Home_Screen.dart';
+import 'package:being_pupil/Learner/Educator_Screen.dart';
 import 'package:being_pupil/Learner/Learner_Screen.dart';
 import 'package:being_pupil/StayAndStudy/Stay_And_Study_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Study_Buddy_Screen.dart';
@@ -96,7 +97,7 @@ class _bottomNavBarState extends State<bottomNavBar> {
     return [
       registerAs == '1' ? EducatorHomeScreen() : LearnerHomeScreen(),
       StayAndStudyScreen(),
-      LearnerScreen(),
+      registerAs == '1' ? EducatorScreen() : LearnerScreen(),
       StudyBuddyScreen(),
       AccountScreen(),
     ];

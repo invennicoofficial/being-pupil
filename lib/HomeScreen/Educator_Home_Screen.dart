@@ -1,4 +1,5 @@
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/HomeScreen/Create_Post_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:sizer/sizer.dart';
@@ -27,7 +28,13 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                   Icons.add_box_outlined,
                   color: Colors.white,
                 ),
-                onPressed: null)
+                onPressed: () {
+                  pushNewScreen(context,
+                      screen: CreatePostScreen(),
+                      withNavBar: false,
+                      pageTransitionAnimation:
+                          PageTransitionAnimation.cupertino);
+                })
           ],
           title: Container(
               height: 8.0.h,

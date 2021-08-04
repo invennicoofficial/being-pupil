@@ -1,15 +1,16 @@
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-class LearnerScreen extends StatefulWidget {
-  LearnerScreen({Key key}) : super(key: key);
+class EducatorScreen extends StatefulWidget {
+  EducatorScreen({Key key}) : super(key: key);
 
   @override
-  _LearnerScreenState createState() => _LearnerScreenState();
+  _EducatorScreenState createState() => _EducatorScreenState();
 }
 
-class _LearnerScreenState extends State<LearnerScreen> {
+class _EducatorScreenState extends State<EducatorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +25,11 @@ class _LearnerScreenState extends State<LearnerScreen> {
           ),
           onPressed: //null,
               () {
-            Navigator.of(context).pop();
+                //  Navigator.of(context).push
+                //                     //pushAndRemoveUntil
+                //                     (MaterialPageRoute(
+                //                         builder: (context) => bottomNavBar(0)));
+             Navigator.of(context).pop();
           },
           padding: EdgeInsets.zero,
         ),
@@ -37,7 +42,7 @@ class _LearnerScreenState extends State<LearnerScreen> {
               onPressed: null)
         ],
         title: Text(
-          'Educators',
+          'Learners',
           style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 12.0.sp,
@@ -65,7 +70,7 @@ class _LearnerScreenState extends State<LearnerScreen> {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(50),
                             child: Image.asset(
-                              'assets/images/educatorDP.png',
+                              'assets/images/dp2.png',
                               width: 8.5.w,
                               height: 5.0.h,
                               fit: BoxFit.cover,
@@ -78,7 +83,7 @@ class _LearnerScreenState extends State<LearnerScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Marilyn Brewer",
+                                "Rebecca Wells",
                                 style: TextStyle(
                                     fontSize: 9.0.sp,
                                     color: Constants.bgColor,

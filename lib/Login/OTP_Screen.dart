@@ -5,6 +5,7 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Learner_Home_Screen.dart';
 import 'package:being_pupil/Registration/Basic_Registration.dart';
 import 'package:being_pupil/Registration/Educator_Registration.dart';
+import 'package:being_pupil/Registration/Learner_Registration.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -264,10 +265,9 @@ class _OtpScreenState extends State<OtpScreen> {
                                 //         builder: (context) => bottomNavBar(0)),
                                 //     (Route<dynamic> route) => false);
                                 registerAs == '2'
-                                ?   Navigator.of(context).push
-                                    //pushAndRemoveUntil
-                                    (MaterialPageRoute(
-                                        builder: (context) => bottomNavBar(0)))
+                                ?   Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (context) => LearnerRegistration()))
                                 //(Route<dynamic> route) => false);
                               //}
                                 : Navigator.of(context).push(
