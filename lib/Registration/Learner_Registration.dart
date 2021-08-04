@@ -27,16 +27,13 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
   bool isYearSelected = false;
   String gender = 'Gender';
   String docType = 'DocType';
-  String qualYear = '0';
   String workExp = '0';
   String fileName;
-  String _certiName;
   bool isCat1 = false;
   TextEditingController _nameController = TextEditingController();
   TextEditingController _mobileController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _idNumController = TextEditingController();
-  TextEditingController _scoolNameController = TextEditingController();
   TextEditingController _achivementController = TextEditingController();
   TextEditingController _fbLinkController = TextEditingController();
   TextEditingController _instagramLinkController = TextEditingController();
@@ -296,69 +293,6 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
       print(file.extension);
       print(file.path);
     } else {}
-  }
-
-  _certificateFromCamera() async {
-    File doc = (await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 50));
-
-    setState(() {
-      _certificate = doc;
-      _certiName = doc.path.split('/scaled_').last.substring(35);
-    });
-  }
-
-  _certificateFromGallery() async {
-    File doc = (await ImagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50));
-
-    setState(() {
-      _certificate = doc;
-      _certiName = doc.path.split('/scaled_image_picker').last;
-      print(_certiName);
-    });
-  }
-
-  void _showCertificatePicker(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return SafeArea(
-            child: Container(
-              child: new Wrap(
-                children: <Widget>[
-                  new ListTile(
-                      leading: new Icon(Icons.photo_library,
-                          color: Constants.formBorder),
-                      title: new Text('Gallery',
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 12.0.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Constants.bpSkipStyle)),
-                      onTap: () {
-                        _certificateFromGallery();
-                        Navigator.of(context).pop();
-                      }),
-                  new ListTile(
-                    leading: new Icon(Icons.photo_camera,
-                        color: Constants.formBorder),
-                    title: new Text('Camera',
-                        style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 12.0.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Constants.bpSkipStyle)),
-                    onTap: () {
-                      _certificateFromCamera();
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
   }
 
   @override
@@ -1772,136 +1706,100 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                               bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9."
                                       r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                   .hasMatch(_emailController.text.trim());
-                              // if (_nameController.text.trim().isEmpty) {
-                              //   Fluttertoast.showToast(
-                              //       msg: "Please Enter Name",
-                              //       toastLength: Toast.LENGTH_SHORT,
-                              //       gravity: ToastGravity.BOTTOM,
-                              //       timeInSecForIosWeb: 1,
-                              //       backgroundColor: Constants.bgColor,
-                              //       textColor: Colors.white,
-                              //       fontSize: 10.0.sp);
-                              // } else if (_mobileController.text
-                              //         .trim()
-                              //         .isEmpty ||
-                              //     _mobileController.text.length < 10) {
-                              //   Fluttertoast.showToast(
-                              //       msg: "Please Enter Valid Mobile Number",
-                              //       toastLength: Toast.LENGTH_SHORT,
-                              //       gravity: ToastGravity.BOTTOM,
-                              //       timeInSecForIosWeb: 1,
-                              //       backgroundColor: Constants.bgColor,
-                              //       textColor: Colors.white,
-                              //       fontSize: 10.0.sp);
-                              // } else if (_emailController.text.trim().isEmpty ||
-                              //     (emailValid == false)) {
-                              //   Fluttertoast.showToast(
-                              //       msg: "Please Enter Valid Email Id",
-                              //       toastLength: Toast.LENGTH_SHORT,
-                              //       gravity: ToastGravity.BOTTOM,
-                              //       timeInSecForIosWeb: 1,
-                              //       backgroundColor: Constants.bgColor,
-                              //       textColor: Colors.white,
-                              //       fontSize: 10.0.sp);
-                              // } else if (gender == 'Gender') {
-                              //   Fluttertoast.showToast(
-                              //       msg: "Please Select Gender",
-                              //       toastLength: Toast.LENGTH_SHORT,
-                              //       gravity: ToastGravity.BOTTOM,
-                              //       timeInSecForIosWeb: 1,
-                              //       backgroundColor: Constants.bgColor,
-                              //       textColor: Colors.white,
-                              //       fontSize: 10.0.sp);
-                              // } else if (birthDateInString == null ||
-                              //     birthDateInString == '') {
-                              //   Fluttertoast.showToast(
-                              //       msg: "Please Select DOB",
-                              //       toastLength: Toast.LENGTH_SHORT,
-                              //       gravity: ToastGravity.BOTTOM,
-                              //       timeInSecForIosWeb: 1,
-                              //       backgroundColor: Constants.bgColor,
-                              //       textColor: Colors.white,
-                              //       fontSize: 10.0.sp);
-                              // } else if (docType == 'DocType') {
-                              //   Fluttertoast.showToast(
-                              //       msg: "Please Select Document Type",
-                              //       toastLength: Toast.LENGTH_SHORT,
-                              //       gravity: ToastGravity.BOTTOM,
-                              //       timeInSecForIosWeb: 1,
-                              //       backgroundColor: Constants.bgColor,
-                              //       textColor: Colors.white,
-                              //       fontSize: 10.0.sp);
-                              // } else if (_scoolNameController.text.isEmpty) {
-                              //   Fluttertoast.showToast(
-                              //       msg: "Please Enter School Name",
-                              //       toastLength: Toast.LENGTH_SHORT,
-                              //       gravity: ToastGravity.BOTTOM,
-                              //       timeInSecForIosWeb: 1,
-                              //       backgroundColor: Constants.bgColor,
-                              //       textColor: Colors.white,
-                              //       fontSize: 10.0.sp);
-                              // } else if (_idNumController.text.isEmpty) {
-                              //   Fluttertoast.showToast(
-                              //       msg: "Please Enter Valid ID Number",
-                              //       toastLength: Toast.LENGTH_SHORT,
-                              //       gravity: ToastGravity.BOTTOM,
-                              //       timeInSecForIosWeb: 1,
-                              //       backgroundColor: Constants.bgColor,
-                              //       textColor: Colors.white,
-                              //       fontSize: 10.0.sp);
-                              // } else if (qualYear == '0') {
-                              //   Fluttertoast.showToast(
-                              //       msg: "Please Select Qualification",
-                              //       toastLength: Toast.LENGTH_SHORT,
-                              //       gravity: ToastGravity.BOTTOM,
-                              //       timeInSecForIosWeb: 1,
-                              //       backgroundColor: Constants.bgColor,
-                              //       textColor: Colors.white,
-                              //       fontSize: 10.0.sp);
-                              // } else if (workExp == '0') {
-                              //   Fluttertoast.showToast(
-                              //       msg: "Please Select Work Experience",
-                              //       toastLength: Toast.LENGTH_SHORT,
-                              //       gravity: ToastGravity.BOTTOM,
-                              //       timeInSecForIosWeb: 1,
-                              //       backgroundColor: Constants.bgColor,
-                              //       textColor: Colors.white,
-                              //       fontSize: 10.0.sp);
-                              // } else if (teachExp == '0') {
-                              //   Fluttertoast.showToast(
-                              //       msg: "Please Select Teaching Experience",
-                              //       toastLength: Toast.LENGTH_SHORT,
-                              //       gravity: ToastGravity.BOTTOM,
-                              //       timeInSecForIosWeb: 1,
-                              //       backgroundColor: Constants.bgColor,
-                              //       textColor: Colors.white,
-                              //       fontSize: 10.0.sp);
-                              // } else if (fileName == null || fileName == '') {
-                              //   Fluttertoast.showToast(
-                              //       msg: "Please Pick Selected Document",
-                              //       toastLength: Toast.LENGTH_SHORT,
-                              //       gravity: ToastGravity.BOTTOM,
-                              //       timeInSecForIosWeb: 1,
-                              //       backgroundColor: Constants.bgColor,
-                              //       textColor: Colors.white,
-                              //       fontSize: 10.0.sp);
-                              // } else if (_certiName == null || _certiName == '') {
-                              //   Fluttertoast.showToast(
-                              //       msg: "Please Pick Certificate",
-                              //       toastLength: Toast.LENGTH_SHORT,
-                              //       gravity: ToastGravity.BOTTOM,
-                              //       timeInSecForIosWeb: 1,
-                              //       backgroundColor: Constants.bgColor,
-                              //       textColor: Colors.white,
-                              //       fontSize: 10.0.sp);
-                              // }
-                              //  else {
+                              if (_nameController.text.trim().isEmpty) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter Name",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp);
+                              } else if (_mobileController.text
+                                      .trim()
+                                      .isEmpty ||
+                                  _mobileController.text.length < 10) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter Valid Mobile Number",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp);
+                              } else if (_emailController.text.trim().isEmpty ||
+                                  (emailValid == false)) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter Valid Email Id",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp);
+                              } else if (gender == 'Gender') {
+                                Fluttertoast.showToast(
+                                    msg: "Please Select Gender",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp);
+                              } else if (birthDateInString == null ||
+                                  birthDateInString == '') {
+                                Fluttertoast.showToast(
+                                    msg: "Please Select DOB",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp);
+                              } else if (docType == 'DocType') {
+                                Fluttertoast.showToast(
+                                    msg: "Please Select Document Type",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp);
+                              }  else if (_idNumController.text.isEmpty) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter Valid ID Number",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp);
+                              }  else if (workExp == '0') {
+                                Fluttertoast.showToast(
+                                    msg: "Please Select Work Experience",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp);
+                              } else if (fileName == null || fileName == '') {
+                                Fluttertoast.showToast(
+                                    msg: "Please Pick Selected Document",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp);
+                              }
+                               else {
                               Navigator.of(context).push
                                   //pushAndRemoveUntil
                                   (MaterialPageRoute(
                                       builder: (context) => bottomNavBar(0)));
                               //(Route<dynamic> route) => false);
-                              //}
+                              }
                             },
                             child: Container(
                               height: 7.0.h,
