@@ -109,6 +109,7 @@ class _ReportFeedState extends State<ReportFeed> {
             ListView.builder(
                 itemCount: 9,
                 shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return ListTile(
                       contentPadding: EdgeInsets.symmetric(horizontal: 4.0.w),

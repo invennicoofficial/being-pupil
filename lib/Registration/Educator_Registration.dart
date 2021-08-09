@@ -71,7 +71,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
 
   createControllers() {
     myControllers = [];
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < 5; i++) {
       myControllers.add(TextEditingController());
     }
   }
@@ -1053,8 +1053,10 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 borderType: BorderType.RRect,
                                 radius: Radius.circular(5),
                                 padding: EdgeInsets.all(12),
-                                color: Constants.formBorder.withOpacity(0.5),
+                                color: Constants.formBorder.withOpacity(0.7),
                                 strokeWidth: 1.8,
+                                strokeCap: StrokeCap.butt,
+                                dashPattern: [4,3],
                                 child: Column(
                                   children: <Widget>[
                                     Theme(
@@ -1488,11 +1490,11 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               child: GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    if (itemCount < 3) {
+                                    if (itemCount < 5) {
                                       itemCount = itemCount + 1;
                                     } else {
                                       Fluttertoast.showToast(
-                                          msg: "You can add only 3 degree",
+                                          msg: "You can add only 5 degree",
                                           toastLength: Toast.LENGTH_SHORT,
                                           gravity: ToastGravity.BOTTOM,
                                           timeInSecForIosWeb: 1,
