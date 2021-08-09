@@ -54,7 +54,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 4.0.w),
                   //Container for one post
                   child: Container(
-                    height: 58.0.h,
+                    height: index == 0 ? 28.0.h : 58.0.h,
                     width: 100.0.w,
                     //color: Colors.grey[300],
                     //column for post content
@@ -140,7 +140,9 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                           height: 1.0.h,
                         ),
                         // Container for image or video
-                        Container(
+                        index == 0
+                        ? Container()
+                        : Container(
                           height: 30.0.h,
                           width: 100.0.w,
                           padding: EdgeInsets.zero,

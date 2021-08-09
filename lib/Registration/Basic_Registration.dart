@@ -197,10 +197,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 //SizedBox(width: 50.0.w)
                               ],
                             ),
-                            icon: Icon(
-                              Icons.expand_more,
-                              color: Constants.bpSkipStyle,
-                            ),
+                            // icon: Icon(
+                            //   Icons.expand_more,
+                            //   color: Constants.bpSkipStyle,
+                            // ),
                             onChange: (int value, int index) async{
                               print(value);
                               if (value > 0) {

@@ -422,7 +422,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                   : CircleAvatar(
                                       backgroundImage: AssetImage(
                                           'assets/icons/circle_upload.png'),
-                                      //backgroundColor: Colors.grey,
+                                      //backgroundColor: Colors.white,
                                       radius: 100.0,
                                       child: Align(
                                         alignment: Alignment.center,
@@ -662,8 +662,9 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                       width: 90.0.w,
                                       //padding: EdgeInsets.only(left: 2.0.w),
                                       elevation: 0,
-                                      backgroundColor:
-                                          Color(0xFFA8B4C1).withOpacity(0.5),
+                                      // backgroundColor:
+                                      //     //Color(0xFFA8B4C1).withOpacity(0.5),
+                                      //     Colors.white,
                                       primaryColor: Constants.bpSkipStyle,
                                       side: BorderSide(
                                           color: Constants.formBorder),
@@ -744,7 +745,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                       border: Border.all(
                                           color: Constants.formBorder),
                                       borderRadius: BorderRadius.circular(5.0),
-                                      color: Color(0xFFA8B4C1).withOpacity(0.5),
+                                      //color: Colors.transparent,//Color(0xFFA8B4C1).withOpacity(0.5),
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
@@ -764,7 +765,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                             AssetImage(
                                                 'assets/icons/calendar.png'),
                                             size: 25,
-                                            color: Constants.bpSkipStyle),
+                                            color: Constants.formBorder),
                                       ],
                                     ),
                                   ),
@@ -826,8 +827,8 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 width: 90.0.w,
                                 //padding: EdgeInsets.only(left: 2.0.w),
                                 elevation: 0,
-                                backgroundColor:
-                                    Color(0xFFA8B4C1).withOpacity(0.5),
+                                //backgroundColor: Colors.transparent,
+                                //Color(0xFFA8B4C1).withOpacity(0.5),
                                 primaryColor: Constants.bpSkipStyle,
                                 side: BorderSide(color: Constants.formBorder),
                               ),
@@ -890,7 +891,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                   _uploadDocument();
                                 },
                                 child: Container(
-                                  height: 7.0.h,
+                                  height: 6.0.h,
                                   width: 90.0.w,
                                   color: Colors.transparent,
                                   child: Center(
@@ -902,7 +903,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                             AssetImage(
                                                 'assets/icons/upload.png'),
                                             size: 25,
-                                            color: Constants.bpSkipStyle),
+                                            color: Constants.formBorder),
                                         SizedBox(
                                           width: 1.0.w,
                                         ),
@@ -990,7 +991,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     border:
                                         Border.all(color: Constants.formBorder),
                                     borderRadius: BorderRadius.circular(5.0),
-                                    color: Color(0xFFA8B4C1).withOpacity(0.5),
+                                    //color: Color(0xFFA8B4C1).withOpacity(0.5),
                                   ),
                                   child: Row(
                                     mainAxisAlignment:
@@ -1007,7 +1008,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                       Icon(
                                         Icons.gps_fixed,
                                         size: 25,
-                                        color: Constants.bpSkipStyle,
+                                        color: Constants.formBorder,
                                       )
                                     ],
                                   ),
@@ -1036,332 +1037,358 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           ],
                         ),
 
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 3.0.w, right: 3.0.w, top: 3.0.h),
-                            child: Container(
-                              height: 7.0.h,
-                              width: 90.0.w,
-                              child: TextFormField(
-                                controller: _scoolNameController,
-                                decoration: InputDecoration(
-                                  labelText: "Name of School",
-                                  fillColor: Colors.white,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 3.0.w, right: 3.0.w, top: 3.0.h),
+                          child: DottedBorder(
+                            borderType: BorderType.RRect,
+                            radius: Radius.circular(5),
+                            padding: EdgeInsets.all(12),
+                            color: Constants.formBorder.withOpacity(0.5),
+                            strokeWidth: 1.8,
+                            child: Column(
+                              children: <Widget>[
+                                Theme(
+                                  data: new ThemeData(
+                                    primaryColor: Constants.bpSkipStyle,
+                                    primaryColorDark: Constants.bpSkipStyle,
                                   ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                      //width: 2.0,
-                                    ),
-                                  ),
-                                ),
-                                //keyboardType: TextInputType.emailAddress,
-                                style: new TextStyle(
-                                    fontFamily: "Montserrat",
-                                    fontSize: 10.0.sp),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 3.0.w,
-                                right: 3.0.w,
-                                top: 3.0.h,
-                                //bottom: 3.0.h
-                              ),
-                              child: GestureDetector(
-                                onTap: () async {
-                                  print('Year!!!');
-                                  final pickedYear = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(1960),
-                                    lastDate: DateTime.now(),
-                                    helpText: 'Select Qualification Year',
-                                    initialDatePickerMode: DatePickerMode.year,
-                                  );
-                                  if (pickedYear != null &&
-                                      pickedYear != selectedYear) {
-                                    setState(() {
-                                      selectedYear = pickedYear;
-                                      isYearSelected = true;
-                                      selectedYearString =
-                                          '${selectedYear.year}';
-                                    });
-                                  }
-                                },
-                                child: Container(
-                                  height: 7.0.h,
-                                  width: 90.0.w,
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 3.0.w),
-                                  decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Constants.formBorder),
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    color: Color(0xFFA8B4C1).withOpacity(0.5),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        isYearSelected
-                                            ? selectedYearString
-                                            : 'Year',
-                                        style: TextStyle(
-                                            fontFamily: 'Montserrat',
-                                            fontSize: 10.0.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: Constants.bpSkipStyle),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 1.0.w, right: 1.0.w, top: 1.0.h),
+                                    child: Container(
+                                      height: 7.0.h,
+                                      width: 90.0.w,
+                                      child: TextFormField(
+                                        controller: _scoolNameController,
+                                        decoration: InputDecoration(
+                                          labelText: "Name of School",
+                                          fillColor: Colors.white,
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            borderSide: BorderSide(
+                                              color: Constants.formBorder,
+                                            ),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            borderSide: BorderSide(
+                                              color: Constants.formBorder,
+                                              //width: 2.0,
+                                            ),
+                                          ),
+                                        ),
+                                        //keyboardType: TextInputType.emailAddress,
+                                        style: new TextStyle(
+                                            fontFamily: "Montserrat",
+                                            fontSize: 10.0.sp),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              )),
-                        ),
-                        // Theme(
-                        //   data: new ThemeData(
-                        //     primaryColor: Constants.bpSkipStyle,
-                        //     primaryColorDark: Constants.bpSkipStyle,
-                        //   ),
-                        //   child: Padding(
-                        //     padding: EdgeInsets.only(
-                        //       left: 3.0.w,
-                        //       right: 3.0.w,
-                        //       top: 3.0.h,
-                        //       //bottom: 3.0.h
-                        //     ),
-                        //     child: CustomDropdown<int>(
-                        //       child: Row(
-                        //         mainAxisAlignment:
-                        //             MainAxisAlignment.spaceBetween,
-                        //         children: [
-                        //           Padding(
-                        //             padding:
-                        //                 EdgeInsets.symmetric(horizontal: 3.0.w),
-                        //             child: Text(
-                        //               'Year',
-                        //               style: TextStyle(
-                        //                   fontFamily: 'Montserrat',
-                        //                   fontSize: 10.0.sp,
-                        //                   fontWeight: FontWeight.w400,
-                        //                   color: Constants.bpSkipStyle),
-                        //             ),
-                        //           ),
-                        //           //SizedBox(width: 65.0.w)
-                        //         ],
-                        //       ),
-                        //       // icon: Icon(
-                        //       //   Icons.expand_more,
-                        //       //   color: Constants.bpSkipStyle,
-                        //       // ),
-                        //       onChange: (int value, int index) {
-                        //         print(value);
-                        //       },
-                        //       dropdownButtonStyle: DropdownButtonStyle(
-                        //         height: 7.0.h,
-                        //         width: 90.0.w,
-                        //         //padding: EdgeInsets.only(left: 2.0.w),
-                        //         elevation: 0,
-                        //         backgroundColor:
-                        //             Color(0xFFA8B4C1).withOpacity(0.5),
-                        //         primaryColor: Constants.bpSkipStyle,
-                        //         side: BorderSide(color: Constants.formBorder),
-                        //       ),
-                        //       dropdownStyle: DropdownStyle(
-                        //         borderRadius: BorderRadius.circular(10.0),
-                        //         elevation: 6,
-                        //         padding: EdgeInsets.symmetric(
-                        //             horizontal: 2.0.w, vertical: 1.5.h),
-                        //       ),
-                        //       items: ['2001', '2002', '2003', '2004', '2005']
-                        //           .asMap()
-                        //           .entries
-                        //           .map(
-                        //             (item) => DropdownItem<int>(
-                        //               value: item.key + 1,
-                        //               child: Padding(
-                        //                 padding: const EdgeInsets.all(8.0),
-                        //                 child: Row(
-                        //                   children: [
-                        //                     Text(
-                        //                       item.value,
-                        //                       style: TextStyle(
-                        //                           fontFamily: 'Montserrat',
-                        //                           fontSize: 10.0.sp,
-                        //                           fontWeight: FontWeight.w400,
-                        //                           color: Constants.bpSkipStyle),
-                        //                     ),
-                        //                     SizedBox(width: 61.0.w)
-                        //                   ],
-                        //                 ),
-                        //               ),
-                        //             ),
-                        //           )
-                        //           .toList(),
-                        //     ),
-                        //   ),
-                        // ),
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              left: 3.0.w,
-                              right: 3.0.w,
-                              top: 3.0.h,
-                              //bottom: 3.0.h
-                            ),
-                            child: CustomDropdown<int>(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 3.0.w),
-                                    child: Text(
-                                      'Qualification',
-                                      style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 10.0.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: Constants.bpSkipStyle),
                                     ),
                                   ),
-                                  //SizedBox(width: 50.0.w)
-                                ],
-                              ),
-                              // icon: Icon(
-                              //   Icons.expand_more,
-                              //   color: Constants.bpSkipStyle,
-                              // ),
-                              onChange: (int value, int index) {
-                                print(value);
-                                if(value > 0){
-                                  setState(() {
-                                    qualYear = '1';
-                                  });
-                                }
-                              },
-                              dropdownButtonStyle: DropdownButtonStyle(
-                                height: 7.0.h,
-                                width: 90.0.w,
-                                //padding: EdgeInsets.only(left: 2.0.w),
-                                elevation: 0,
-                                //backgroundColor: Colors.white,
-                                primaryColor: Constants.bpSkipStyle,
-                                side: BorderSide(color: Constants.formBorder),
-                              ),
-                              dropdownStyle: DropdownStyle(
-                                borderRadius: BorderRadius.circular(10.0),
-                                elevation: 6,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 2.0.w, vertical: 1.5.h),
-                              ),
-                              items: [
-                                'Graduate',
-                                'Post-graduate',
-                                'Chartered Accountant',
-                                'Others'
-                              ]
-                                  .asMap()
-                                  .entries
-                                  .map(
-                                    (item) => DropdownItem<int>(
-                                      value: item.key + 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              item.value,
+                                ),
+
+                                Theme(
+                                  data: new ThemeData(
+                                    primaryColor: Constants.bpSkipStyle,
+                                    primaryColorDark: Constants.bpSkipStyle,
+                                  ),
+                                  child: Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 1.0.w,
+                                          right: 1.0.w,
+                                          top: 3.0.h),
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          print('Year!!!');
+                                          final pickedYear =
+                                              await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime(1960),
+                                            lastDate: DateTime.now(),
+                                            helpText:
+                                                'Select Qualification Year',
+                                            initialDatePickerMode:
+                                                DatePickerMode.year,
+                                          );
+                                          if (pickedYear != null &&
+                                              pickedYear != selectedYear) {
+                                            setState(() {
+                                              selectedYear = pickedYear;
+                                              isYearSelected = true;
+                                              selectedYearString =
+                                                  '${selectedYear.year}';
+                                            });
+                                          }
+                                        },
+                                        child: Container(
+                                          height: 7.0.h,
+                                          width: 90.0.w,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 3.0.w),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Constants.formBorder),
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            //color: Color(0xFFA8B4C1).withOpacity(0.5),
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                isYearSelected
+                                                    ? selectedYearString
+                                                    : 'Year',
+                                                style: TextStyle(
+                                                    fontFamily: 'Montserrat',
+                                                    fontSize: 10.0.sp,
+                                                    fontWeight: FontWeight.w400,
+                                                    color:
+                                                        Constants.bpSkipStyle),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )),
+                                ),
+                                // Theme(
+                                //   data: new ThemeData(
+                                //     primaryColor: Constants.bpSkipStyle,
+                                //     primaryColorDark: Constants.bpSkipStyle,
+                                //   ),
+                                //   child: Padding(
+                                //     padding: EdgeInsets.only(
+                                //       left: 3.0.w,
+                                //       right: 3.0.w,
+                                //       top: 3.0.h,
+                                //       //bottom: 3.0.h
+                                //     ),
+                                //     child: CustomDropdown<int>(
+                                //       child: Row(
+                                //         mainAxisAlignment:
+                                //             MainAxisAlignment.spaceBetween,
+                                //         children: [
+                                //           Padding(
+                                //             padding:
+                                //                 EdgeInsets.symmetric(horizontal: 3.0.w),
+                                //             child: Text(
+                                //               'Year',
+                                //               style: TextStyle(
+                                //                   fontFamily: 'Montserrat',
+                                //                   fontSize: 10.0.sp,
+                                //                   fontWeight: FontWeight.w400,
+                                //                   color: Constants.bpSkipStyle),
+                                //             ),
+                                //           ),
+                                //           //SizedBox(width: 65.0.w)
+                                //         ],
+                                //       ),
+                                //       // icon: Icon(
+                                //       //   Icons.expand_more,
+                                //       //   color: Constants.bpSkipStyle,
+                                //       // ),
+                                //       onChange: (int value, int index) {
+                                //         print(value);
+                                //       },
+                                //       dropdownButtonStyle: DropdownButtonStyle(
+                                //         height: 7.0.h,
+                                //         width: 90.0.w,
+                                //         //padding: EdgeInsets.only(left: 2.0.w),
+                                //         elevation: 0,
+                                //         backgroundColor:
+                                //             Color(0xFFA8B4C1).withOpacity(0.5),
+                                //         primaryColor: Constants.bpSkipStyle,
+                                //         side: BorderSide(color: Constants.formBorder),
+                                //       ),
+                                //       dropdownStyle: DropdownStyle(
+                                //         borderRadius: BorderRadius.circular(10.0),
+                                //         elevation: 6,
+                                //         padding: EdgeInsets.symmetric(
+                                //             horizontal: 2.0.w, vertical: 1.5.h),
+                                //       ),
+                                //       items: ['2001', '2002', '2003', '2004', '2005']
+                                //           .asMap()
+                                //           .entries
+                                //           .map(
+                                //             (item) => DropdownItem<int>(
+                                //               value: item.key + 1,
+                                //               child: Padding(
+                                //                 padding: const EdgeInsets.all(8.0),
+                                //                 child: Row(
+                                //                   children: [
+                                //                     Text(
+                                //                       item.value,
+                                //                       style: TextStyle(
+                                //                           fontFamily: 'Montserrat',
+                                //                           fontSize: 10.0.sp,
+                                //                           fontWeight: FontWeight.w400,
+                                //                           color: Constants.bpSkipStyle),
+                                //                     ),
+                                //                     SizedBox(width: 61.0.w)
+                                //                   ],
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //           )
+                                //           .toList(),
+                                //     ),
+                                //   ),
+                                // ),
+                                Theme(
+                                  data: new ThemeData(
+                                    primaryColor: Constants.bpSkipStyle,
+                                    primaryColorDark: Constants.bpSkipStyle,
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 1.0.w, right: 1.0.w, top: 3.0.h),
+                                    child: CustomDropdown<int>(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 3.0.w),
+                                            child: Text(
+                                              'Qualification',
                                               style: TextStyle(
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 10.0.sp,
                                                   fontWeight: FontWeight.w400,
                                                   color: Constants.bpSkipStyle),
                                             ),
-                                            //SizedBox(width: 60.0.w)
-                                          ],
-                                        ),
+                                          ),
+                                          //SizedBox(width: 50.0.w)
+                                        ],
                                       ),
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 3.0.h, right: 3.0.w, left: 3.0.w),
-                          child: DottedBorder(
-                            borderType: BorderType.RRect,
-                            radius: Radius.circular(5),
-                            padding: EdgeInsets.all(12),
-                            color: Constants.formBorder.withOpacity(0.5),
-                            strokeWidth: 1.5,
-                            child: ClipRRect(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5)),
-                              child: GestureDetector(
-                                onTap: () {
-                                  print('Upload!!!');
-                                  _showCertificatePicker(context);
-                                },
-                                child: Container(
-                                  height: 7.0.h,
-                                  width: 90.0.w,
-                                  color: Colors.transparent,
-                                  child: Center(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        ImageIcon(
-                                            AssetImage(
-                                                'assets/icons/upload.png'),
-                                            size: 25,
-                                            color: Constants.bpSkipStyle),
-                                        SizedBox(
-                                          width: 1.0.w,
-                                        ),
-                                        Text(
-                                          _certiName != null
-                                              ? _certiName
-                                              : 'Upload the file',
-                                          style: TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              fontSize: 10.0.sp,
-                                              fontWeight: FontWeight.w400,
-                                              color: Constants.bpSkipStyle),
-                                          overflow: TextOverflow.clip,
-                                        )
-                                      ],
+                                      // icon: Icon(
+                                      //   Icons.expand_more,
+                                      //   color: Constants.bpSkipStyle,
+                                      // ),
+                                      onChange: (int value, int index) {
+                                        print(value);
+                                        if (value > 0) {
+                                          setState(() {
+                                            qualYear = '1';
+                                          });
+                                        }
+                                      },
+                                      dropdownButtonStyle: DropdownButtonStyle(
+                                        height: 7.0.h,
+                                        width: 90.0.w,
+                                        //padding: EdgeInsets.only(left: 2.0.w),
+                                        elevation: 0,
+                                        //backgroundColor: Colors.white,
+                                        primaryColor: Constants.bpSkipStyle,
+                                        side: BorderSide(
+                                            color: Constants.formBorder),
+                                      ),
+                                      dropdownStyle: DropdownStyle(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        elevation: 6,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 2.0.w, vertical: 1.5.h),
+                                      ),
+                                      items: [
+                                        'Graduate',
+                                        'Post-graduate',
+                                        'Chartered Accountant',
+                                        'Others'
+                                      ]
+                                          .asMap()
+                                          .entries
+                                          .map(
+                                            (item) => DropdownItem<int>(
+                                              value: item.key + 1,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      item.value,
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              'Montserrat',
+                                                          fontSize: 10.0.sp,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          color: Constants
+                                                              .bpSkipStyle),
+                                                    ),
+                                                    //SizedBox(width: 60.0.w)
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                          .toList(),
                                     ),
                                   ),
                                 ),
-                              ),
+
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 1.0.w, right: 1.0.w, top: 3.0.h),
+                                  child: DottedBorder(
+                                    borderType: BorderType.RRect,
+                                    radius: Radius.circular(5),
+                                    padding: EdgeInsets.all(12),
+                                    color:
+                                        Constants.formBorder.withOpacity(0.5),
+                                    strokeWidth: 1.5,
+                                    child: ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5)),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          print('Upload!!!');
+                                          _showCertificatePicker(context);
+                                        },
+                                        child: Container(
+                                          height: 6.0.h,
+                                          width: 90.0.w,
+                                          color: Colors.transparent,
+                                          child: Center(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                ImageIcon(
+                                                    AssetImage(
+                                                        'assets/icons/upload.png'),
+                                                    size: 25,
+                                                    color:
+                                                        Constants.formBorder),
+                                                SizedBox(
+                                                  width: 1.0.w,
+                                                ),
+                                                Text(
+                                                  _certiName != null
+                                                      ? _certiName
+                                                      : 'Upload Certificate/Degree',
+                                                  style: TextStyle(
+                                                      fontFamily: 'Montserrat',
+                                                      fontSize: 10.0.sp,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: Constants
+                                                          .bpSkipStyle),
+                                                  overflow: TextOverflow.clip,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -1453,15 +1480,15 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                         Icon(
                                           Icons.add,
                                           size: 15,
-                                          color: Constants.bpSkipStyle,
+                                          color: Constants.bgColor,
                                         ),
                                         Text(
-                                          'Add more details',
+                                          ' Add more details',
                                           style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               fontSize: 10.0.sp,
                                               fontWeight: FontWeight.w400,
-                                              color: Constants.bpSkipStyle),
+                                              color: Constants.bgColor),
                                         ),
                                       ],
                                     ),
@@ -1526,7 +1553,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               // ),
                               onChange: (int value, int index) {
                                 print(value);
-                                if(value > 0){
+                                if (value > 0) {
                                   setState(() {
                                     workExp = '1';
                                   });
@@ -1537,8 +1564,8 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 width: 90.0.w,
                                 //padding: EdgeInsets.only(left: 2.0.w),
                                 elevation: 0,
-                                backgroundColor:
-                                    Color(0xFFA8B4C1).withOpacity(0.5),
+                                // backgroundColor:
+                                //     Color(0xFFA8B4C1).withOpacity(0.5),
                                 primaryColor: Constants.bpSkipStyle,
                                 side: BorderSide(color: Constants.formBorder),
                               ),
@@ -1548,7 +1575,24 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 2.0.w, vertical: 1.5.h),
                               ),
-                              items: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '15+']
+                              items: [
+                                '1',
+                                '2',
+                                '3',
+                                '4',
+                                '5',
+                                '6',
+                                '7',
+                                '8',
+                                '9',
+                                '10',
+                                '11',
+                                '12',
+                                '13',
+                                '14',
+                                '15',
+                                '15+'
+                              ]
                                   .asMap()
                                   .entries
                                   .map(
@@ -1615,7 +1659,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               // ),
                               onChange: (int value, int index) {
                                 print(value);
-                                if(value > 0){
+                                if (value > 0) {
                                   setState(() {
                                     teachExp = '1';
                                   });
@@ -1626,8 +1670,8 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 width: 90.0.w,
                                 //padding: EdgeInsets.only(left: 2.0.w),
                                 elevation: 0,
-                                backgroundColor:
-                                    Color(0xFFA8B4C1).withOpacity(0.5),
+                                // backgroundColor:
+                                //     Color(0xFFA8B4C1).withOpacity(0.5),
                                 primaryColor: Constants.bpSkipStyle,
                                 side: BorderSide(color: Constants.formBorder),
                               ),
@@ -1637,7 +1681,24 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 2.0.w, vertical: 1.5.h),
                               ),
-                              items: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '15+']
+                              items: [
+                                '1',
+                                '2',
+                                '3',
+                                '4',
+                                '5',
+                                '6',
+                                '7',
+                                '8',
+                                '9',
+                                '10',
+                                '11',
+                                '12',
+                                '13',
+                                '14',
+                                '15',
+                                '15+'
+                              ]
                                   .asMap()
                                   .entries
                                   .map(
@@ -2353,7 +2414,8 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                              } else if (_certiName == null || _certiName == '') {
+                              } else if (_certiName == null ||
+                                  _certiName == '') {
                                 Fluttertoast.showToast(
                                     msg: "Please Pick Certificate",
                                     toastLength: Toast.LENGTH_SHORT,
@@ -2362,8 +2424,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                              }
-                               else {
+                              } else {
                                 Navigator.of(context).push
                                     //pushAndRemoveUntil
                                     (MaterialPageRoute(

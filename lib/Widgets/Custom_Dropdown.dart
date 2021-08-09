@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:sizer/sizer.dart';
 
 class CustomDropdown<T> extends StatefulWidget {
   /// the child widget for the button, this will be ignored if text is supplied
@@ -75,7 +76,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
         height: style.height,
         child: OutlinedButton(
           style: OutlinedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+            padding: EdgeInsets.symmetric(horizontal: 2.0.w, vertical: 0.0),
             backgroundColor: style.backgroundColor,
             elevation: style.elevation,
             primary: style.primaryColor,
@@ -99,7 +100,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
               if (!widget.hideIcon)
                 RotationTransition(
                   turns: _rotateAnimation,
-                  child: Icon(Icons.expand_more, size: 25, color: Constants.bpSkipStyle), 
+                  child: Icon(Icons.expand_more, size: 25, color: Constants.formBorder), 
                 ),
             ],
           ),

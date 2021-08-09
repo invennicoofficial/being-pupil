@@ -36,9 +36,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   Widget _indicator(bool isActive) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 150),
-      margin: EdgeInsets.symmetric(horizontal: 2.0.w),
-      height: isActive ? 1.5.h : 1.0.h,
-      width: isActive ? 2.5.w : 2.0.w,
+      margin: EdgeInsets.symmetric(horizontal: 1.5.w),
+      height: isActive ? 1.0.h : 1.0.h,
+      width: isActive ? 2.0.w : 2.0.w,
       decoration: BoxDecoration(
         color: isActive ? Colors.black : Colors.grey,
         borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -66,15 +66,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize:
-            Size.fromHeight(13.0.h),
+        preferredSize: Size.fromHeight(13.0.h),
         child: Container(
           color: Colors.white,
           child: SafeArea(
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 3.0.w, vertical: 3.0.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 3.0.w, vertical: 3.0.h),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -82,9 +82,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           onTap: () {
                             //_currentPage = _numPages - 1;
                           },
-                          child: Icon(Icons.arrow_back_ios,
-                              color: Constants.bpSkipStyle)),
-                      _currentPage != _numPages - 1
+                          child: _currentPage != 0
+                              ? Icon(Icons.arrow_back_ios,
+                                  color: Constants.bpSkipStyle)
+                              : Container()),
+                      _currentPage != 2
                           ? Container(
                               alignment: Alignment.topRight,
                               child: FlatButton(
@@ -100,27 +102,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                 ),
                               ),
                             )
-                          : Container(
-                              alignment: Alignment.topRight,
-                              child: FlatButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      PageTransition(
-                                          type: PageTransitionType.fade,
-                                          child: SignUpScreen()));
-                                }, //_pageController.jumpToPage(2),
-                                child: Text(
-                                  'Finish',
-                                  style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w400,
-                                    color: Constants.bpSkipStyle,
-                                    fontSize: 11.0.sp,
-                                  ),
-                                ),
-                              ),
-                            ),
+                          : Container(),
                     ],
                   ),
                 )
@@ -195,7 +177,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   ),
 
                   // Screen 2
-                   Column(
+                  Column(
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.symmetric(
@@ -241,9 +223,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     ],
                   ),
 
-
                   // Screen 3
-                   Column(
+                  Column(
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.symmetric(
@@ -288,19 +269,43 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       ),
                     ],
                   ),
-
                 ],
               ),
             ),
             Align(
               alignment: FractionalOffset.center,
               child: Padding(
-                padding: EdgeInsets.only(top: 60.0.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: _buildPageIndicator(),
-                ),
-              ),
+                  padding: EdgeInsets.only(top: 60.0.h),
+                  child: _currentPage != 2
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: _buildPageIndicator(),
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.fade,
+                                    child: SignUpScreen()));
+                          },
+                          child: Container(
+                            height: 8.0.h,
+                            width: 80.0.w,
+                            decoration: BoxDecoration(
+                                color: Constants.bgColor,
+                                borderRadius: BorderRadius.circular(8.0)),
+                            child: Center(
+                              child: Text('GET STARTED',
+                                  style: TextStyle(
+                                    fontFamily: "Montserrat",
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12.0.sp,
+                                    color: Colors.white,
+                                  )),
+                            ),
+                          ),
+                        )),
             ),
           ],
         ),

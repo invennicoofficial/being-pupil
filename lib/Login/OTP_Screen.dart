@@ -126,13 +126,13 @@ class _OtpScreenState extends State<OtpScreen> {
                         key: formKey,
                         child: Padding(
                           padding: EdgeInsets.only(
-                              left: 5.0.w, right: 5.0.w, top: 4.0.h),
+                              left: 20.0.w, right: 20.0.w, top: 4.0.h),
                           child: Container(
                               height: 7.0.h,
                               width: 90.0.w,
                               child: PinCodeTextField(
                                 appContext: context,
-                                length: 6,
+                                length: 4,
                                 obscureText: false,
                                 animationType: AnimationType.fade,
                                 keyboardType: TextInputType.number,
@@ -215,10 +215,10 @@ class _OtpScreenState extends State<OtpScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "00:$timeLeft | ",
+                                    "00:$timeLeft   |   ",
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
-                                        fontSize: 9.0.sp,
+                                        fontSize: 10.0.sp,
                                         fontWeight: FontWeight.w400,
                                         color: Constants.bpOnBoardTitleStyle),
                                   ),
@@ -226,7 +226,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                     'Resend OTP',
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
-                                        fontSize: 9.0.sp,
+                                        fontSize: 10.0.sp,
                                         fontWeight: FontWeight.w400,
                                         color: Constants.otpText),
                                   ),
@@ -251,7 +251,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         child: GestureDetector(
                           onTap: () {
                             print('Verify!!!');
-                            if (currentText.length != 6) {
+                            if (currentText.length != 4) {
                               errorController.add(ErrorAnimationType
                                   .shake); // Triggering error shake animation
                               setState(() {

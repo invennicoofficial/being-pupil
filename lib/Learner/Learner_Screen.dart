@@ -97,25 +97,28 @@ class _LearnerScreenState extends State<LearnerScreen> {
                           ),
                         ],
                       ),
-                      trailing: GestureDetector(
-                        onTap: () {
-                          print('$index is Connected');
-                        },
-                        child: Container(
-                          height: 3.0.h,
-                          width: 16.0.w,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Constants.bgColor),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8.0))),
-                          child: Center(
-                            child: Text(
-                              'Connect',
-                              style: TextStyle(
-                                  fontSize: 8.0.sp,
-                                  color: Constants.bgColor,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w400),
+                      trailing: Padding(
+                        padding: EdgeInsets.only(right: 2.0.w),
+                        child: GestureDetector(
+                          onTap: () {
+                            print('$index is Connected');
+                          },
+                          child: Container(
+                            height: 3.0.h,
+                            width: 16.0.w,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Constants.bgColor),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0))),
+                            child: Center(
+                              child: Text(
+                                'Connect',
+                                style: TextStyle(
+                                    fontSize: 8.0.sp,
+                                    color: Constants.bgColor,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w400),
+                              ),
                             ),
                           ),
                         ),

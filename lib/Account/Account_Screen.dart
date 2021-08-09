@@ -33,13 +33,24 @@ class _AccountScreenState extends State<AccountScreen> {
                 fontWeight: FontWeight.w500,
                 color: Colors.white),
           ),
+          leading: IconButton(
+          icon: Icon(
+            Icons.west_rounded,
+            color: Colors.white,
+            size: 35.0,
+          ),
+          onPressed: (){
+            // Navigator.of(context).pop();
+          },
+          padding: EdgeInsets.zero,
+        ),
         ),
         body: Padding(
           padding: EdgeInsets.only(bottom: 3.0.h, left: 5.0.w, right: 5.0.w),
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Container(
-              height: 90.0.h,
+              //height: 90.0.h,
               width: 100.0.w,
               //color: Colors.grey,
               child: Padding(
@@ -169,7 +180,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 3.0.h,
+                            height: 6.0.h,
                           ),
                           InkWell(
                             onTap: () {
@@ -228,7 +239,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 3.0.h,
+                            height: 6.0.h,
                           ),
                           InkWell(
                             onTap: () {

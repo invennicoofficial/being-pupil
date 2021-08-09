@@ -608,8 +608,8 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                       width: 90.0.w,
                                       //padding: EdgeInsets.only(left: 2.0.w),
                                       elevation: 0,
-                                      backgroundColor:
-                                          Color(0xFFA8B4C1).withOpacity(0.5),
+                                      // backgroundColor:
+                                      //     Color(0xFFA8B4C1).withOpacity(0.5),
                                       primaryColor: Constants.bpSkipStyle,
                                       side: BorderSide(
                                           color: Constants.formBorder),
@@ -771,8 +771,8 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 width: 90.0.w,
                                 //padding: EdgeInsets.only(left: 2.0.w),
                                 elevation: 0,
-                                backgroundColor:
-                                    Color(0xFFA8B4C1).withOpacity(0.5),
+                                // backgroundColor:
+                                //     Color(0xFFA8B4C1).withOpacity(0.5),
                                 primaryColor: Constants.bpSkipStyle,
                                 side: BorderSide(color: Constants.formBorder),
                               ),
@@ -835,7 +835,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                   _uploadDocument();
                                 },
                                 child: Container(
-                                  height: 7.0.h,
+                                  height: 6.0.h,
                                   width: 90.0.w,
                                   color: Colors.transparent,
                                   child: Center(
@@ -847,7 +847,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                             AssetImage(
                                                 'assets/icons/upload.png'),
                                             size: 25,
-                                            color: Constants.bpSkipStyle),
+                                            color: Constants.formBorder),
                                         SizedBox(
                                           width: 1.0.w,
                                         ),
@@ -935,7 +935,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                     border:
                                         Border.all(color: Constants.formBorder),
                                     borderRadius: BorderRadius.circular(5.0),
-                                    color: Color(0xFFA8B4C1).withOpacity(0.5),
+                                    //color: Color(0xFFA8B4C1).withOpacity(0.5),
                                   ),
                                   child: Row(
                                     mainAxisAlignment:
@@ -952,7 +952,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                       Icon(
                                         Icons.gps_fixed,
                                         size: 25,
-                                        color: Constants.bpSkipStyle,
+                                        color: Constants.formBorder,
                                       )
                                     ],
                                   ),
@@ -1075,8 +1075,8 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 width: 90.0.w,
                                 //padding: EdgeInsets.only(left: 2.0.w),
                                 elevation: 0,
-                                backgroundColor:
-                                    Color(0xFFA8B4C1).withOpacity(0.5),
+                                // backgroundColor:
+                                //     Color(0xFFA8B4C1).withOpacity(0.5),
                                 primaryColor: Constants.bpSkipStyle,
                                 side: BorderSide(color: Constants.formBorder),
                               ),
