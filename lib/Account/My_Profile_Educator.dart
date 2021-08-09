@@ -7,11 +7,12 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_tagging/flutter_tagging.dart';
+//import 'package:flutter_tagging/flutter_tagging.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:textfield_tags/textfield_tags.dart';
 
 class EducatorProfile extends StatefulWidget {
   const EducatorProfile({Key key}) : super(key: key);
@@ -45,27 +46,15 @@ class _EducatorProfileState extends State<EducatorProfile> {
   TextEditingController _otherLinkLinkController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
 
-  List<Skills> _selectedSkills;
-  String _selectedSkillsJson = 'Nothing to show';
 
-  List<Hobbies> _selectedHobbies;
-  String _selectedHobbiesJson = 'Nothing to show';
   String registerAs;
 
   @override
   void initState() {
     super.initState();
     getData();
-    _selectedSkills = [];
-    _selectedHobbies = [];
   }
 
-  @override
-  void dispose() {
-    _selectedSkills.clear();
-    _selectedHobbies.clear();
-    super.dispose();
-  }
 
   _imageFromCamera() async {
     File image = (await ImagePicker.pickImage(
@@ -1821,91 +1810,84 @@ class _EducatorProfileState extends State<EducatorProfile> {
                             padding: EdgeInsets.only(
                                 left: 3.0.w, right: 3.0.w, top: 3.0.h),
                             child: Container(
-                              // height: 13.0.h,
-                              // width: 90.0.w,
-                              child: FlutterTagging<Skills>(
-                                initialItems: _selectedSkills,
-                                textFieldConfiguration: TextFieldConfiguration(
-                                  decoration: InputDecoration(
-                                      //labelText: "Please mention your achivements...",
-                                      counterText: '',
-                                      fillColor: Colors.white,
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0),
-                                        borderSide: BorderSide(
-                                          color: Constants.formBorder,
-                                        ),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0),
-                                        borderSide: BorderSide(
-                                          color: Constants.formBorder,
-                                          //width: 2.0,
-                                        ),
-                                      ),
-                                      hintText:
-                                          "Please mention your skills example #skill1 #skill2..."),
-                                  //keyboardType: TextInputType.emailAddress,
-                                  style: new TextStyle(
-                                      fontFamily: "Montserrat",
-                                      fontSize: 10.0.sp),
+                                // height: 13.0.h,
+                                // width: 90.0.w,
+                                child: TextFieldTags(
+                              //initialTags: ["college"],
+                              tagsStyler: TagsStyler(
+                                showHashtag: true,
+                                tagMargin: const EdgeInsets.only(right: 4.0),
+                                tagCancelIcon: Icon(Icons.cancel,
+                                    size: 15.0, color: Colors.black),
+                                tagCancelIconPadding:
+                                    EdgeInsets.only(left: 4.0, top: 2.0),
+                                tagPadding: EdgeInsets.only(
+                                    top: 2.0,
+                                    bottom: 4.0,
+                                    left: 8.0,
+                                    right: 4.0),
+                                tagDecoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    color: Constants.formBorder,
+                                  ),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(20.0),
+                                  ),
                                 ),
-                                findSuggestions: SkillService.getLanguages,
-                                additionCallback: (value) {
-                                  return Skills(
-                                    name: value,
-                                    position: 0,
-                                  );
-                                },
-                                onAdded: (language) {
-                                  // api calls here, triggered when add to tag button is pressed
-                                  return Skills(
-                                    name: language.name,
-                                    position: 0,
-                                  );
-                                },
-                                configureSuggestion: (lang) {
-                                  return SuggestionConfiguration(
-                                    title: Text(lang.name),
-                                    //subtitle: Text(lang.position.toString()),
-                                    additionWidget: Chip(
-                                      avatar: Icon(
-                                        Icons.add_circle,
-                                        color: Colors.white,
-                                      ),
-                                      label: Text('Add New Tag'),
-                                      labelStyle: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 10.0.sp,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w300,
-                                      ),
-                                      backgroundColor: Constants.bgColor,
-                                    ),
-                                  );
-                                },
-                                configureChip: (lang) {
-                                  return ChipConfiguration(
-                                    label: Text(lang.name),
-                                    backgroundColor: Constants.bgColor,
-                                    labelStyle: TextStyle(color: Colors.white),
-                                    deleteIconColor: Colors.white,
-                                  );
-                                },
-                                onChanged: () {
-                                  setState(() {
-                                    _selectedSkillsJson = _selectedSkills
-                                        .map<String>(
-                                            (lang) => '\n${lang.toJson()}')
-                                        .toList()
-                                        .toString();
-                                    _selectedSkillsJson = _selectedSkillsJson
-                                        .replaceFirst('}]', '}\n]');
-                                  });
-                                },
+                                tagTextStyle: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    color: Constants.bgColor,
+                                    fontFamily: "Montserrat"
+                                ),
                               ),
+                              textFieldStyler: TextFieldStyler(
+                              helperText: '',
+                                hintText: "Please mention your skills example #skills1 #skills2...",
+                                hintStyle: TextStyle(
+                                        fontFamily: "Montserrat",
+                                        fontSize: 10.0.sp),
+                                isDense: false,
+                                textFieldFocusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                    color: Constants.formBorder,
+                                  ),
+                                ),
+                                textFieldBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                    color: Constants.formBorder,
+                                  ),
+                                ),
+                                textFieldEnabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                    color: Constants.formBorder,
+                                  ),
+                                ),
+                                textFieldDisabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                    color: Constants.formBorder,
+                                  ),
+                                ),
+
+                              ),
+                              onDelete: (tag) {
+                                print('onDelete: $tag');
+                              },
+                              onTag: (tag) {
+                                print('onTag: $tag');
+                              },
+                              // validator: (String tag) {
+                              //   print('validator: $tag');
+                              //   if (tag.length > 10) {
+                              //     return "hey that is too much";
+                              //   }
+                              //   return null;
+                              // },
+                            )
 
                               // TextFormField(
                               //   maxLines: 5,
@@ -1965,91 +1947,84 @@ class _EducatorProfileState extends State<EducatorProfile> {
                             padding: EdgeInsets.only(
                                 left: 3.0.w, right: 3.0.w, top: 3.0.h),
                             child: Container(
-                              // height: 13.0.h,
-                              // width: 90.0.w,
-                              child: FlutterTagging<Hobbies>(
-                                initialItems: _selectedHobbies,
-                                textFieldConfiguration: TextFieldConfiguration(
-                                  decoration: InputDecoration(
-                                      //labelText: "Please mention your achivements...",
-                                      counterText: '',
-                                      fillColor: Colors.white,
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0),
-                                        borderSide: BorderSide(
-                                          color: Constants.formBorder,
-                                        ),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0),
-                                        borderSide: BorderSide(
-                                          color: Constants.formBorder,
-                                          //width: 2.0,
-                                        ),
-                                      ),
-                                      hintText:
-                                          "Please mention your hobbies example #hobbies1 #hobbies2..."),
-                                  //keyboardType: TextInputType.emailAddress,
-                                  style: new TextStyle(
-                                      fontFamily: "Montserrat",
-                                      fontSize: 10.0.sp),
+                                // height: 13.0.h,
+                                // width: 90.0.w,
+                                child: TextFieldTags(
+                              //initialTags: ["college"],
+                              tagsStyler: TagsStyler(
+                                showHashtag: true,
+                                tagMargin: const EdgeInsets.only(right: 4.0),
+                                tagCancelIcon: Icon(Icons.cancel,
+                                    size: 15.0, color: Colors.black),
+                                tagCancelIconPadding:
+                                    EdgeInsets.only(left: 4.0, top: 2.0),
+                                tagPadding: EdgeInsets.only(
+                                    top: 2.0,
+                                    bottom: 4.0,
+                                    left: 8.0,
+                                    right: 4.0),
+                                tagDecoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    color: Constants.formBorder,
+                                  ),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(20.0),
+                                  ),
                                 ),
-                                findSuggestions: HobbieService.getLanguages,
-                                additionCallback: (value) {
-                                  return Hobbies(
-                                    name: value,
-                                    position: 0,
-                                  );
-                                },
-                                onAdded: (language) {
-                                  // api calls here, triggered when add to tag button is pressed
-                                  return Hobbies(
-                                    name: language.name,
-                                    position: 0,
-                                  );
-                                },
-                                configureSuggestion: (lang) {
-                                  return SuggestionConfiguration(
-                                    title: Text(lang.name),
-                                    //subtitle: Text(lang.position.toString()),
-                                    additionWidget: Chip(
-                                      avatar: Icon(
-                                        Icons.add_circle,
-                                        color: Colors.white,
-                                      ),
-                                      label: Text('Add New Tag'),
-                                      labelStyle: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 10.0.sp,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w300,
-                                      ),
-                                      backgroundColor: Constants.bgColor,
-                                    ),
-                                  );
-                                },
-                                configureChip: (lang) {
-                                  return ChipConfiguration(
-                                    label: Text(lang.name),
-                                    backgroundColor: Constants.bgColor,
-                                    labelStyle: TextStyle(color: Colors.white),
-                                    deleteIconColor: Colors.white,
-                                  );
-                                },
-                                onChanged: () {
-                                  setState(() {
-                                    _selectedHobbiesJson = _selectedHobbies
-                                        .map<String>(
-                                            (lang) => '\n${lang.toJson()}')
-                                        .toList()
-                                        .toString();
-                                    _selectedHobbiesJson = _selectedHobbiesJson
-                                        .replaceFirst('}]', '}\n]');
-                                  });
-                                },
+                                tagTextStyle: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    color: Constants.bgColor,
+                                    fontFamily: "Montserrat"
+                                ),
                               ),
+                              textFieldStyler: TextFieldStyler(
+                              helperText: '',
+                                hintText: "Please mention your hobbies example #hobbies1 #hobbies2...",
+                                hintStyle: TextStyle(
+                                        fontFamily: "Montserrat",
+                                        fontSize: 10.0.sp),
+                                isDense: false,
+                                textFieldFocusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                    color: Constants.formBorder,
+                                  ),
+                                ),
+                                textFieldBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                    color: Constants.formBorder,
+                                  ),
+                                ),
+                                textFieldEnabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                    color: Constants.formBorder,
+                                  ),
+                                ),
+                                textFieldDisabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                    color: Constants.formBorder,
+                                  ),
+                                ),
+
+                              ),
+                              onDelete: (tag) {
+                                print('onDelete: $tag');
+                              },
+                              onTag: (tag) {
+                                print('onTag: $tag');
+                              },
+                              // validator: (String tag) {
+                              //   print('validator: $tag');
+                              //   if (tag.length > 10) {
+                              //     return "hey that is too much";
+                              //   }
+                              //   return null;
+                              // },
+                            )
                             ),
                           ),
                         ),
@@ -2454,85 +2429,4 @@ class _EducatorProfileState extends State<EducatorProfile> {
           ),
         ));
   }
-}
-
-/// LanguageService
-class SkillService {
-  /// Mocks fetching language from network API with delay of 500ms.
-  static Future<List<Skills>> getLanguages(String query) async {
-    await Future.delayed(Duration(milliseconds: 500), null);
-    return <Skills>[
-      Skills(name: 'JavaScript', position: 1),
-      Skills(name: 'Python', position: 2),
-      Skills(name: 'Java', position: 3),
-      Skills(name: 'PHP', position: 4),
-      Skills(name: 'C#', position: 5),
-      Skills(name: 'C++', position: 6),
-    ]
-        .where((lang) => lang.name.toLowerCase().contains(query.toLowerCase()))
-        .toList();
-  }
-}
-
-class Skills extends Taggable {
-  ///
-  final String name;
-
-  ///
-  final int position;
-
-  /// Creates Language
-  Skills({
-    this.name,
-    this.position,
-  });
-
-  @override
-  List<Object> get props => [name];
-
-  /// Converts the class to json string.
-  String toJson() => '''  {
-    "name": $name,\n
-    "position": $position\n
-  }''';
-}
-
-class HobbieService {
-  /// Mocks fetching language from network API with delay of 500ms.
-  static Future<List<Hobbies>> getLanguages(String query) async {
-    await Future.delayed(Duration(milliseconds: 500), null);
-    return <Hobbies>[
-      Hobbies(name: 'Dance', position: 1),
-      Hobbies(name: 'Music', position: 2),
-      Hobbies(name: 'Teach', position: 3),
-      Hobbies(name: 'Play', position: 4),
-      Hobbies(name: 'Swim', position: 5),
-      Hobbies(name: 'Read', position: 6),
-    ]
-        .where((lang) => lang.name.toLowerCase().contains(query.toLowerCase()))
-        .toList();
-  }
-}
-
-class Hobbies extends Taggable {
-  ///
-  final String name;
-
-  ///
-  final int position;
-
-  /// Creates Language
-  Hobbies({
-    this.name,
-    this.position,
-  });
-
-  @override
-  List<Object> get props => [name];
-
-  /// Converts the class to json string.
-  String toJson() => '''  {
-    "name": $name,\n
-    "position": $position\n
-  }''';
 }

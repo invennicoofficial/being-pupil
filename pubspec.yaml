@@ -35,8 +35,9 @@ dependencies:
   sizer: ^1.1.8
   webview_flutter: ^1.0.7
   file_picker: ^2.1.7
-  flutter_tagging: ^2.2.0+3
+  #flutter_tagging: ^2.2.0+3
   shared_preferences: ^0.5.12+4
+  textfield_tags: ^1.1.1
 
 dev_dependencies:
   flutter_test:

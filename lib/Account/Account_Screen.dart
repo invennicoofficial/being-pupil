@@ -5,11 +5,14 @@ import 'package:being_pupil/Account/Saved_Post.dart';
 import 'package:being_pupil/Account/Terms_And_Policy_Screen.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Educator_Home_Screen.dart';
+import 'package:being_pupil/Registration/Educator_Registration.dart';
+import 'package:being_pupil/Registration/Learner_Registration.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:share/share.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -20,6 +23,21 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
+  String registerAs;
+
+@override
+void initState() { 
+  getData();
+  super.initState();
+}
+ getData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      registerAs = preferences.getString('RegisterAs');
+    });
+    print(registerAs);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,9 +136,13 @@ class _AccountScreenState extends State<AccountScreen> {
                         children: <Widget>[
                           InkWell(
                             onTap: () {
-                              Navigator.of(context).push(PageRouteBuilder(
+                              registerAs == '1'
+                              ? Navigator.of(context).push(PageRouteBuilder(
                                   pageBuilder: (_, __, ____) =>
-                                      EducatorProfile()));
+                                      EducatorRegistration()))
+                              : Navigator.of(context).push(PageRouteBuilder(
+                                  pageBuilder: (_, __, ____) =>
+                                      LearnerRegistration()));
                             },
                             child: ProfileList(
                               txt: "My Profile",
@@ -133,9 +155,9 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.of(context).push(PageRouteBuilder(
-                                  pageBuilder: (_, __, ____) =>
-                                      EducatorHomeScreen()));
+                              // Navigator.of(context).push(PageRouteBuilder(
+                              //     pageBuilder: (_, __, ____) =>
+                              //         EducatorHomeScreen()));
                               // pushNewScreen(context, screen: EducatorHomeScreen(),
                               // pageTransitionAnimation: PageTransitionAnimation.cupertino);
                             },
@@ -150,9 +172,9 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.of(context).push(PageRouteBuilder(
-                                  pageBuilder: (_, __, ____) =>
-                                      EducatorHomeScreen()));
+                              // Navigator.of(context).push(PageRouteBuilder(
+                              //     pageBuilder: (_, __, ____) =>
+                              //         EducatorHomeScreen()));
                             },
                             child: ProfileList(
                               txt: "My Bookings",
