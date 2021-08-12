@@ -51,17 +51,17 @@ void initState() {
                 fontWeight: FontWeight.w500,
                 color: Colors.white),
           ),
-          leading: IconButton(
-          icon: Icon(
-            Icons.west_rounded,
-            color: Colors.white,
-            size: 35.0,
-          ),
-          onPressed: (){
-            // Navigator.of(context).pop();
-          },
-          padding: EdgeInsets.zero,
-        ),
+        //   leading: IconButton(
+        //   icon: Icon(
+        //     Icons.west_rounded,
+        //     color: Colors.white,
+        //     size: 35.0,
+        //   ),
+        //   onPressed: (){
+        //     // Navigator.of(context).pop();
+        //   },
+        //   padding: EdgeInsets.zero,
+        // ),
         ),
         body: Padding(
           padding: EdgeInsets.only(bottom: 3.0.h, left: 5.0.w, right: 5.0.w),

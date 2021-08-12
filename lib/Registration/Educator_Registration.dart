@@ -1056,7 +1056,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 color: Constants.formBorder.withOpacity(0.7),
                                 strokeWidth: 1.8,
                                 strokeCap: StrokeCap.butt,
-                                dashPattern: [4,3],
+                                dashPattern: [4, 3],
                                 child: Column(
                                   children: <Widget>[
                                     Theme(
@@ -1115,26 +1115,77 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                           child: GestureDetector(
                                             onTap: () async {
                                               print('Year!!!');
-                                              final pickedYear =
-                                                  await showDatePicker(
+                                              showDialog(
                                                 context: context,
-                                                initialDate: DateTime.now(),
-                                                firstDate: DateTime(1960),
-                                                lastDate: DateTime.now(),
-                                                helpText:
-                                                    'Select Qualification Year',
-                                                initialDatePickerMode:
-                                                    DatePickerMode.year,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text(
+                                                        "Select Qualification Year"),
+                                                    content: Container(
+                                                      // Need to use container to add size constraint.
+                                                      width: 75.0.w,
+                                                      height: 50.0.h,
+                                                      child: YearPicker(
+                                                        firstDate: DateTime(
+                                                            DateTime(1960).year,
+                                                            1),
+                                                        lastDate: DateTime(
+                                                            DateTime.now().year,
+                                                            1),
+                                                        //initialDate: DateTime.now(),
+                                                        // save the selected date to _selectedDate DateTime variable.
+                                                        // It's used to set the previous selected date when
+                                                        // re-showing the dialog.
+                                                        selectedDate: isYearSelected ? selectedYear : DateTime(DateTime.now().year),
+                                                        onChanged: (DateTime
+                                                            dateTime) {
+                                                          // close the dialog when year is selected.
+                                                          setState(() {
+                                                            isYearSelected = true;
+                                                            selectedYear =  dateTime;
+                                                          });
+
+                                                          print(selectedYear
+                                                              .year);
+                                                          Navigator.pop(
+                                                              context);
+                                                          // Do something with the dateTime selected.
+                                                          // Remember that you need to use dateTime.year to get the year
+                                                        },
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
                                               );
-                                              if (pickedYear != null &&
-                                                  pickedYear != selectedYear) {
-                                                setState(() {
-                                                  selectedYear = pickedYear;
-                                                  isYearSelected = true;
-                                                  selectedYearString =
-                                                      '${selectedYear.year}';
-                                                });
-                                              }
+                                              // final pickedYear =
+                                              //     await showDatePicker(
+                                              //   context: context,
+                                              //   initialDate: DateTime.now(),
+                                              //   firstDate: DateTime(1960, 1, 1),
+                                              //   lastDate: DateTime.now(),
+                                              //   helpText:
+                                              //       'Select Qualification Year',
+                                              //   initialDatePickerMode:
+                                              //       DatePickerMode.year,
+                                              // );
+                                              // final pickedYear = await YearPicker(
+                                              //  selectedDate: DateTime.now(),
+                                              //  firstDate: DateTime(1960),
+                                              //  lastDate: DateTime.now(),
+                                              //  onChanged: (value) {
+                                              //    selectedYear = value;
+                                              //    },
+                                              // );
+                                              // if (pickedYear != null &&
+                                              //     pickedYear != selectedYear) {
+                                              //   setState(() {
+                                              //     selectedYear = pickedYear;
+                                              //     isYearSelected = true;
+                                              //     selectedYearString =
+                                              //         '${selectedYear.year}';
+                                              //   });
+                                              // }
                                             },
                                             child: Container(
                                               height: 7.0.h,
@@ -1153,7 +1204,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                                 children: [
                                                   Text(
                                                     isYearSelected
-                                                        ? selectedYearString
+                                                        ? selectedYear.year.toString()
                                                         : 'Year',
                                                     style: TextStyle(
                                                         fontFamily:
@@ -1883,7 +1934,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                   showHashtag: true,
                                   tagMargin: const EdgeInsets.only(right: 4.0),
                                   tagCancelIcon: Icon(Icons.cancel,
-                                      size: 15.0, color: Constants.bgColor),
+                                      size: 20.0, color: Constants.bgColor),
                                   tagCancelIconPadding:
                                       EdgeInsets.only(left: 4.0, top: 2.0),
                                   tagPadding: EdgeInsets.only(
@@ -2102,7 +2153,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 showHashtag: true,
                                 tagMargin: const EdgeInsets.only(right: 4.0),
                                 tagCancelIcon: Icon(Icons.cancel,
-                                    size: 15.0, color: Colors.black),
+                                    size: 20.0, color: Constants.bgColor),
                                 tagCancelIconPadding:
                                     EdgeInsets.only(left: 4.0, top: 2.0),
                                 tagPadding: EdgeInsets.only(

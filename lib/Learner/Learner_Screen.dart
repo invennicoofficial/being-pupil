@@ -107,7 +107,7 @@ class _LearnerScreenState extends State<LearnerScreen> {
                             height: 3.0.h,
                             width: 16.0.w,
                             decoration: BoxDecoration(
-                                border: Border.all(color: Constants.bgColor),
+                                border: Border.all(color: Constants.bgColor, width: 0.5),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(8.0))),
                             child: Center(

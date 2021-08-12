@@ -1236,7 +1236,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                   showHashtag: true,
                                   tagMargin: const EdgeInsets.only(right: 4.0),
                                   tagCancelIcon: Icon(Icons.cancel,
-                                      size: 15.0, color: Constants.bgColor),
+                                      size: 20.0, color: Constants.bgColor),
                                   tagCancelIconPadding:
                                       EdgeInsets.only(left: 4.0, top: 2.0),
                                   tagPadding: EdgeInsets.only(
@@ -1371,7 +1371,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 showHashtag: true,
                                 tagMargin: const EdgeInsets.only(right: 4.0),
                                 tagCancelIcon: Icon(Icons.cancel,
-                                    size: 15.0, color: Colors.black),
+                                    size: 20.0, color: Colors.black),
                                 tagCancelIconPadding:
                                     EdgeInsets.only(left: 4.0, top: 2.0),
                                 tagPadding: EdgeInsets.only(

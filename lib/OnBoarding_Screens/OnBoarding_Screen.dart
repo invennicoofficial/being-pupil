@@ -83,8 +83,17 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             //_currentPage = _numPages - 1;
                           },
                           child: _currentPage != 0
-                              ? Icon(Icons.arrow_back_ios,
-                                  color: Constants.bpSkipStyle)
+                              ? GestureDetector(
+                                  onTap: _currentPage == 2 
+                                  ? () {
+                                    _pageController.jumpToPage(1);
+                                  }
+                                  : () {
+                                    _pageController.jumpToPage(0);
+                                  },
+                                  child: Icon(Icons.arrow_back_ios,
+                                      color: Constants.bpSkipStyle),
+                                )
                               : Container()),
                       _currentPage != 2
                           ? Container(

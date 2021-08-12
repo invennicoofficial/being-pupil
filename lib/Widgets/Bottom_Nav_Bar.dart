@@ -9,6 +9,7 @@ import 'package:being_pupil/StudyBuddy/Study_Buddy_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sizer/sizer.dart';
 
 class bottomNavBar extends StatefulWidget {
   final int index;
@@ -106,30 +107,31 @@ class _bottomNavBarState extends State<bottomNavBar> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-          icon:  ImageIcon(AssetImage('assets/icons/home.png'),size: 50),
+          icon:  ImageIcon(AssetImage('assets/icons/home.png'),size: 25),
           title: ("Home"),
           activeColorPrimary: Constants.selectedIcon,
-          inactiveColorPrimary: Constants.bgColor),
+          inactiveColorPrimary: Constants.bgColor,),
       PersistentBottomNavBarItem(
-        icon: ImageIcon(AssetImage('assets/icons/stayStudy.png'),size: 30),
+        icon: ImageIcon(AssetImage('assets/icons/stayStudy.png'),size: 25),
         title: ("Stay Study"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
       ),
       PersistentBottomNavBarItem(
-        icon: ImageIcon(AssetImage('assets/icons/learner.png'),size: 30),
+        icon: ImageIcon(AssetImage('assets/icons/educator.png'),size: 25),
         title: (registerAs == '1' ? "Learner" : "Educator"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
       ),
       PersistentBottomNavBarItem(
-        icon: ImageIcon(AssetImage('assets/icons/support.png'),size: 30),
+        icon: ImageIcon(AssetImage('assets/icons/support.png'),size: 25),
         title: ("Study Buddy"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
       ),
       PersistentBottomNavBarItem(
-        icon: ImageIcon(AssetImage('assets/icons/account.png'),size: 30),
+        //icon: ImageIcon(AssetImage('assets/icons/account.png'),size: 25),
+        icon: Icon(Icons.account_circle_rounded),
         title: ("Account"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
@@ -165,8 +167,10 @@ class _bottomNavBarState extends State<bottomNavBar> {
         curve: Curves.ease,
         duration: Duration(milliseconds: 200),
       ),
-      //navBarHeight: MediaQuery.of(context).size.height * 0.10,
+      navBarHeight: 8.0.h,
       navBarStyle: NavBarStyle.style3,
+      padding: NavBarPadding.symmetric(vertical: 0.0, horizontal: 1.0.w),
+      //margin: EdgeInsets.symmetric(vertical: 0.0),
     );
   }
 }

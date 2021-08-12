@@ -181,34 +181,17 @@ class _LearnerHomeScreenState extends State<LearnerHomeScreen> {
                                   ),
                                 ],
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.only(top: 1.0.h),
-                                    child: Text(
-                                      "9 Comments  . ",
-                                      style: TextStyle(
-                                          fontSize: 6.5.sp,
-                                          color:
-                                              Constants.bpOnBoardSubtitleStyle,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.only(top: 1.0.h),
-                                    child: Text(
-                                      "1 Share",
-                                      style: TextStyle(
-                                          fontSize: 6.5.sp,
-                                          color:
-                                              Constants.bpOnBoardSubtitleStyle,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ),
-                                ],
+                              Container(
+                                padding: EdgeInsets.only(top: 1.0.h),
+                                child: Text(
+                                  "9 Comments",
+                                  style: TextStyle(
+                                      fontSize: 6.5.sp,
+                                      color:
+                                          Constants.bpOnBoardSubtitleStyle,
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.w400),
+                                ),
                               )
                             ],
                           ),
@@ -216,8 +199,8 @@ class _LearnerHomeScreenState extends State<LearnerHomeScreen> {
                         //divider
                         Divider(
                           height: 1.0.h,
-                          color: Color(0xFF7F7F7F).withOpacity(0.6),
-                          thickness: 2.0,
+                          color: Constants.bpOnBoardSubtitleStyle.withOpacity(0.5),
+                          thickness: 1.0,
                         ),
                         //Row for Like comment and Share
                         Padding(
