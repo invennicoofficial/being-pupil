@@ -167,9 +167,9 @@ class _bottomNavBarState extends State<bottomNavBar> {
         curve: Curves.ease,
         duration: Duration(milliseconds: 200),
       ),
-      navBarHeight: 8.0.h,
+      navBarHeight: 7.0.h,
       navBarStyle: NavBarStyle.style3,
-      padding: NavBarPadding.symmetric(vertical: 0.0, horizontal: 1.0.w),
+      // padding: NavBarPadding.symmetric(vertical: 0.0, horizontal: 1.0.w),
       //margin: EdgeInsets.symmetric(vertical: 0.0),
     );
   }
