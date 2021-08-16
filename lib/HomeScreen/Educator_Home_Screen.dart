@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:sizer/sizer.dart';
 
+import 'Comment_Screen.dart';
 import 'Report_Feed.dart';
 
 class EducatorHomeScreen extends StatefulWidget {
@@ -141,20 +142,20 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                         ),
                         // Container for image or video
                         index == 0
-                        ? Container()
-                        : Container(
-                          height: 30.0.h,
-                          width: 100.0.w,
-                          padding: EdgeInsets.zero,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)),
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                    'assets/images/postImage.jpg',
-                                  ),
-                                  fit: BoxFit.cover)),
-                        ),
+                            ? Container()
+                            : Container(
+                                  height: 30.0.h,
+                                  width: 100.0.w,
+                                  padding: EdgeInsets.zero,
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10.0)),
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                            'assets/images/postImage.jpg',
+                                          ),
+                                          fit: BoxFit.cover)),
+                                ),
                         //Row for Liked, commented, shared
                         Padding(
                           padding: EdgeInsets.only(top: 1.0.h),
@@ -190,8 +191,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                   "9 Comments",
                                   style: TextStyle(
                                       fontSize: 6.5.sp,
-                                      color:
-                                          Constants.bpOnBoardSubtitleStyle,
+                                      color: Constants.bpOnBoardSubtitleStyle,
                                       fontFamily: 'Montserrat',
                                       fontWeight: FontWeight.w400),
                                 ),
@@ -202,7 +202,8 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                         //divider
                         Divider(
                           height: 1.0.h,
-                          color: Constants.bpOnBoardSubtitleStyle.withOpacity(0.5),
+                          color:
+                              Constants.bpOnBoardSubtitleStyle.withOpacity(0.5),
                           thickness: 1.0,
                         ),
                         //Row for Like comment and Share
@@ -247,30 +248,39 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                   ],
                                 ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.comment_outlined,
-                                    color: Constants.bpOnBoardSubtitleStyle,
-                                    size: 30.0,
-                                  ),
-                                  SizedBox(
-                                    width: 1.0.w,
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.only(top: 1.0.h),
-                                    child: Text(
-                                      "Comment",
-                                      style: TextStyle(
-                                          fontSize: 6.5.sp,
-                                          color:
-                                              Constants.bpOnBoardSubtitleStyle,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w400),
+                              GestureDetector(
+                                onTap: () {
+                                  pushNewScreen(context,
+                                    withNavBar: false,
+                                    screen: CommentScreen(),
+                                    pageTransitionAnimation:
+                                        PageTransitionAnimation.cupertino);
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.comment_outlined,
+                                      color: Constants.bpOnBoardSubtitleStyle,
+                                      size: 30.0,
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(
+                                      width: 1.0.w,
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(top: 1.0.h),
+                                      child: Text(
+                                        "Comment",
+                                        style: TextStyle(
+                                            fontSize: 6.5.sp,
+                                            color: Constants
+                                                .bpOnBoardSubtitleStyle,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                               GestureDetector(
                                 onTap: () {
