@@ -17,22 +17,22 @@ class _EducatorScreenState extends State<EducatorScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Constants.bgColor,
-        leading: IconButton(
-          icon: Icon(
-            Icons.west_rounded,
-            color: Colors.white,
-            size: 35.0,
-          ),
-          onPressed: //null,
-              () {
-                //  Navigator.of(context).push
-                //                     //pushAndRemoveUntil
-                //                     (MaterialPageRoute(
-                //                         builder: (context) => bottomNavBar(0)));
-             Navigator.of(context).pop();
-          },
-          padding: EdgeInsets.zero,
-        ),
+        // leading: IconButton(
+        //   icon: Icon(
+        //     Icons.west_rounded,
+        //     color: Colors.white,
+        //     size: 35.0,
+        //   ),
+        //   onPressed: //null,
+        //       () {
+        //         //  Navigator.of(context).push
+        //         //                     //pushAndRemoveUntil
+        //         //                     (MaterialPageRoute(
+        //         //                         builder: (context) => bottomNavBar(0)));
+        //      Navigator.of(context).pop();
+        //   },
+        //   padding: EdgeInsets.zero,
+        // ),
         actions: <Widget>[
           IconButton(
               icon: Icon(

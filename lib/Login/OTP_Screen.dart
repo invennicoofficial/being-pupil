@@ -3,12 +3,18 @@ import 'dart:async';
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Learner_Home_Screen.dart';
+import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/Otp_Model.dart';
 import 'package:being_pupil/Registration/Basic_Registration.dart';
 import 'package:being_pupil/Registration/Educator_Registration.dart';
 import 'package:being_pupil/Registration/Learner_Registration.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
+import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,18 +30,22 @@ class OtpScreen extends StatefulWidget {
 class _OtpScreenState extends State<OtpScreen> {
   TextEditingController otpPinController = TextEditingController();
   StreamController<ErrorAnimationType> errorController;
+  final storage = new FlutterSecureStorage();
 
   bool hasError = false;
   String currentText = "";
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
   String registerAs;
+  String role;
+  int userId;
 
   void initState() {
     // TODO: implement initState
     //SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     errorController = StreamController<ErrorAnimationType>();
     getData();
+    otpPinController.text = '1234';
     super.initState();
   }
 
@@ -51,6 +61,8 @@ class _OtpScreenState extends State<OtpScreen> {
     setState(() {
       registerAs = preferences.getString('RegisterAs');
     });
+    userId = preferences.getInt('userId');
+    print(userId);
     print(registerAs);
   }
 
@@ -258,27 +270,30 @@ class _OtpScreenState extends State<OtpScreen> {
                                 hasError = true;
                               });
                             } else {
-                              setState(() {
-                                //verifyOTP();
-                                // Navigator.of(context).pushAndRemoveUntil(
-                                //     MaterialPageRoute(
-                                //         builder: (context) => bottomNavBar(0)),
-                                //     (Route<dynamic> route) => false);
-                                registerAs == '2'
-                                ?   Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (context) => LearnerRegistration()))
-                                //(Route<dynamic> route) => false);
-                              //}
-                                : Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (context) => EducatorRegistration()));
-                                hasError = false;
-                                scaffoldKey.currentState.showSnackBar(SnackBar(
-                                  content: Text("Verify!!"),
-                                  duration: Duration(seconds: 2),
-                                ));
-                              });
+                              otpVerification(userId, otpPinController.text);
+                              // setState(() {
+                              //   //verifyOTP();
+                              //   // Navigator.of(context).pushAndRemoveUntil(
+                              //   //     MaterialPageRoute(
+                              //   //         builder: (context) => bottomNavBar(0)),
+                              //   //     (Route<dynamic> route) => false);
+                              // role == 'L'
+                              //     ? Navigator.of(context).push(
+                              //         MaterialPageRoute(
+                              //             builder: (context) =>
+                              //                 LearnerHomeScreen()))
+                              //     //(Route<dynamic> route) => false);
+                              //     //}
+                              //     : Navigator.of(context).push(
+                              //         MaterialPageRoute(
+                              //             builder: (context) =>
+                              //                 EducatorRegistration()));
+                              hasError = false;
+                              // scaffoldKey.currentState.showSnackBar(SnackBar(
+                              //   content: Text("Verify!!"),
+                              //   duration: Duration(seconds: 2),
+                              // ));
+                              //});
                             }
                           },
                           child: Container(
@@ -316,5 +331,94 @@ class _OtpScreenState extends State<OtpScreen> {
         ),
       ),
     );
+  }
+
+  //OTP verification API
+  Future<OtpResponse> otpVerification(int userId, String otp) async {
+    displayProgressDialog(context);
+    var result = OtpResponse();
+    try {
+      Dio dio = Dio();
+      FormData formData = FormData.fromMap({'user_id': userId, 'otp': otp});
+      var response = await dio.post(Config.otpUrl, data: formData);
+      if (response.statusCode == 200) {
+        print(response.data);
+        closeProgressDialog(context);
+        result = OtpResponse.fromJson(response.data);
+        if (result.status == true) {
+          //print('TOKEN ::' + result.data.token);
+          saveToken(result.data.token);
+          role = result.data.userObject.role;
+          print('Role ::' + role);
+          role == 'L'
+              ? Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+                  (Route<dynamic> route) => false)
+              : Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => EducatorRegistration()));
+          Fluttertoast.showToast(
+            msg: result.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        } else {
+          Fluttertoast.showToast(
+            msg: result.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        }
+        print(result);
+      }
+    } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+      closeProgressDialog(context);
+      if (e.response != null) {
+        print("This is the error message::::" +
+            e.response.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.request);
+        print(e.message);
+      }
+    }
+    return result;
+  }
+
+      void saveToken(String token) async {
+    // Write value
+    await storage.write(key: 'access_token', value: token);
+    print('TOKEN ::: ' + token);
+    //closeProgressDialog(context);
+  }
+
+  displayProgressDialog(BuildContext context) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new ProgressDialog();
+        }));
+  }
+
+  closeProgressDialog(BuildContext context) {
+    Navigator.of(context).pop();
   }
 }

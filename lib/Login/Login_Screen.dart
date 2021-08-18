@@ -1,7 +1,13 @@
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/Login_Model.dart';
 import 'package:being_pupil/Registration/Basic_Registration.dart';
+import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 
@@ -15,6 +21,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController mobileController = TextEditingController();
+  final storage = new FlutterSecureStorage();
+
   void initState() {
     // TODO: implement initState
     // //SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
@@ -100,6 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 7.0.h,
                             width: 90.0.w,
                             child: TextFormField(
+                              controller: mobileController,
                               keyboardType: TextInputType.phone,
                               inputFormatters: [
                                 LengthLimitingTextInputFormatter(10),
@@ -134,11 +144,24 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: GestureDetector(
                           onTap: () {
                             print('Logged In!!!');
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.fade,
-                                    child: OtpScreen()));
+                            if (mobileController.text.isEmpty) {
+                              Fluttertoast.showToast(
+                                msg: 'Please Enter Mobile Number',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Constants.bgColor,
+                                textColor: Colors.white,
+                                fontSize: 10.0.sp,
+                              );
+                            } else {
+                              login(mobileController.text);
+                            }
+                            // Navigator.push(
+                            //     context,
+                            //     PageTransition(
+                            //         type: PageTransitionType.fade,
+                            //         child: OtpScreen()));
                           },
                           child: Container(
                             height: 7.0.h,
@@ -202,7 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 print('Apple Login!!!');
                               },
                               child: Container(
@@ -214,7 +237,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   )),
                             ),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 print('Google Login!!!');
                               },
                               child: Container(
@@ -226,7 +249,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   )),
                             ),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 print('Facebook Login!!!');
                               },
                               child: Container(
@@ -269,10 +292,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.fade,
-                                    child: SignUpScreen()));
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.fade,
+                                      child: SignUpScreen()));
                               print('Register!!!');
                             },
                             child: Container(
@@ -300,5 +323,90 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+//Login API
+  Future<Login> login(String mobileNumber) async {
+    displayProgressDialog(context);
+    var result = Login();
+    try {
+      Dio dio = Dio();
+      FormData formData = FormData.fromMap({
+        'mobile_number': mobileNumber,
+        'country_code': '+91',
+        'deviceType': 'A',
+        'deviceId': '1234567',
+      });
+      var response = await dio.post(Config.loginUrl, data: formData);
+      if (response.statusCode == 200) {
+        print(response.data);
+        closeProgressDialog(context);
+        result = Login.fromJson(response.data);
+        if (result.status == true) {
+          //saveUserData(result.data.userId);
+          Navigator.push(
+              context,
+              PageTransition(
+                  type: PageTransitionType.fade, child: OtpScreen()));
+          Fluttertoast.showToast(
+            msg: result.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        } else {
+          Fluttertoast.showToast(
+            msg: result.errorMsg,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        }
+        print(result);
+      }
+    } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+      closeProgressDialog(context);
+      if (e.response != null) {
+        print("This is the error message::::" +
+            e.response.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.request);
+        print(e.message);
+      }
+    }
+    return result;
+  }
+
+ 
+
+
+  displayProgressDialog(BuildContext context) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new ProgressDialog();
+        }));
+  }
+
+  closeProgressDialog(BuildContext context) {
+    Navigator.of(context).pop();
   }
 }

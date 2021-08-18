@@ -1137,13 +1137,20 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                                         // save the selected date to _selectedDate DateTime variable.
                                                         // It's used to set the previous selected date when
                                                         // re-showing the dialog.
-                                                        selectedDate: isYearSelected ? selectedYear : DateTime(DateTime.now().year),
+                                                        selectedDate:
+                                                            isYearSelected
+                                                                ? selectedYear
+                                                                : DateTime(
+                                                                    DateTime.now()
+                                                                        .year),
                                                         onChanged: (DateTime
                                                             dateTime) {
                                                           // close the dialog when year is selected.
                                                           setState(() {
-                                                            isYearSelected = true;
-                                                            selectedYear =  dateTime;
+                                                            isYearSelected =
+                                                                true;
+                                                            selectedYear =
+                                                                dateTime;
                                                           });
 
                                                           print(selectedYear
@@ -1204,7 +1211,8 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                                 children: [
                                                   Text(
                                                     isYearSelected
-                                                        ? selectedYear.year.toString()
+                                                        ? selectedYear.year
+                                                            .toString()
                                                         : 'Year',
                                                     style: TextStyle(
                                                         fontFamily:
@@ -2671,11 +2679,10 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
                               } else {
-                                Navigator.of(context).push
-                                    //pushAndRemoveUntil
-                                    (MaterialPageRoute(
-                                        builder: (context) => bottomNavBar(0)));
-                                //(Route<dynamic> route) => false);
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => bottomNavBar(0)),
+                                    (Route<dynamic> route) => false);
                               }
                             },
                             child: Container(

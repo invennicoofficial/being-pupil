@@ -5,6 +5,7 @@ import 'package:being_pupil/Account/Saved_Post.dart';
 import 'package:being_pupil/Account/Terms_And_Policy_Screen.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Educator_Home_Screen.dart';
+import 'package:being_pupil/Login/Login_Screen.dart';
 import 'package:being_pupil/Registration/Educator_Registration.dart';
 import 'package:being_pupil/Registration/Learner_Registration.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
@@ -14,6 +15,8 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+
+import 'My_Profile_Learner.dart';
 
 class AccountScreen extends StatefulWidget {
   AccountScreen({Key key}) : super(key: key);
@@ -25,12 +28,13 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   String registerAs;
 
-@override
-void initState() { 
-  getData();
-  super.initState();
-}
- getData() async {
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       registerAs = preferences.getString('RegisterAs');
@@ -51,17 +55,17 @@ void initState() {
                 fontWeight: FontWeight.w500,
                 color: Colors.white),
           ),
-        //   leading: IconButton(
-        //   icon: Icon(
-        //     Icons.west_rounded,
-        //     color: Colors.white,
-        //     size: 35.0,
-        //   ),
-        //   onPressed: (){
-        //     // Navigator.of(context).pop();
-        //   },
-        //   padding: EdgeInsets.zero,
-        // ),
+          //   leading: IconButton(
+          //   icon: Icon(
+          //     Icons.west_rounded,
+          //     color: Colors.white,
+          //     size: 35.0,
+          //   ),
+          //   onPressed: (){
+          //     // Navigator.of(context).pop();
+          //   },
+          //   padding: EdgeInsets.zero,
+          // ),
         ),
         body: Padding(
           padding: EdgeInsets.only(bottom: 3.0.h, left: 5.0.w, right: 5.0.w),
@@ -136,13 +140,13 @@ void initState() {
                         children: <Widget>[
                           InkWell(
                             onTap: () {
-                              registerAs == '1'
-                              ? Navigator.of(context).push(PageRouteBuilder(
-                                  pageBuilder: (_, __, ____) =>
-                                      EducatorRegistration()))
-                              : Navigator.of(context).push(PageRouteBuilder(
-                                  pageBuilder: (_, __, ____) =>
-                                      LearnerRegistration()));
+                              registerAs == 'E'
+                                  ? Navigator.of(context).push(PageRouteBuilder(
+                                      pageBuilder: (_, __, ____) =>
+                                          EducatorProfile()))
+                                  : Navigator.of(context).push(PageRouteBuilder(
+                                      pageBuilder: (_, __, ____) =>
+                                          LearnerProfile()));
                             },
                             child: ProfileList(
                               txt: "My Profile",
@@ -190,7 +194,7 @@ void initState() {
                               // Navigator.of(context).push(PageRouteBuilder(
                               //     pageBuilder: (_, __, ____) => EducatorHomeScreen()));
                               pushNewScreen(context,
-                              withNavBar: false,
+                                  withNavBar: false,
                                   screen: SavedPostScreen(),
                                   pageTransitionAnimation:
                                       PageTransitionAnimation.cupertino);
@@ -265,9 +269,14 @@ void initState() {
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.of(context).push(PageRouteBuilder(
-                                  pageBuilder: (_, __, ____) =>
-                                      EducatorHomeScreen()));
+                              logout();
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginScreen()),
+                                  (Route<dynamic> route) => false);
+                              // Navigator.of(context).push(PageRouteBuilder(
+                              //     pageBuilder: (_, __, ____) =>
+                              //         EducatorHomeScreen()));
                             },
                             child: ProfileList(
                               txt: "Logout",
@@ -275,6 +284,9 @@ void initState() {
                               sizeImage: 20.0,
                             ),
                           ),
+                          //  SizedBox(
+                          //   height: 6.0.h,
+                          // ),
                         ],
                       ),
                     )
@@ -285,6 +297,10 @@ void initState() {
           ),
         ));
   }
+   void logout() async{
+   SharedPreferences preferences = await SharedPreferences.getInstance();
+   preferences.clear();
+ }
 }
 
 //Profile Component

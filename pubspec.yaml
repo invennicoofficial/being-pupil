@@ -25,19 +25,20 @@ dependencies:
     sdk: flutter
   argon_buttons_flutter: ^1.0.6
   cupertino_icons: ^1.0.0
+  dio: ^3.0.10
   dotted_border: ^1.0.7
+  file_picker: ^2.1.7
+  flutter_secure_storage: ^3.3.5
   fluttertoast: ^7.0.4
   image_picker: ^0.6.6+5
   page_transition: ^1.1.7+6
   persistent_bottom_nav_bar: ^3.2.0
   pin_code_fields: ^6.1.0
   share: ^0.6.5+4
-  sizer: ^1.1.8
-  webview_flutter: ^1.0.7
-  file_picker: ^2.1.7
-  #flutter_tagging: ^2.2.0+3
   shared_preferences: ^0.5.12+4
+  sizer: ^1.1.8
   textfield_tags: ^1.1.1
+  webview_flutter: ^1.0.7
 
 dev_dependencies:
   flutter_test:

@@ -72,7 +72,7 @@ class _bottomNavBarState extends State<bottomNavBar> {
   Widget callPage(int current) {
     switch (current) {
       case 0:
-        return registerAs == '1'
+        return registerAs == 'E'
         ? new EducatorHomeScreen()
         : new LearnerHomeScreen();
         break;
@@ -96,9 +96,9 @@ class _bottomNavBarState extends State<bottomNavBar> {
 
   List<Widget> _buildScreens() {
     return [
-      registerAs == '1' ? EducatorHomeScreen() : LearnerHomeScreen(),
+      registerAs == 'E' ? EducatorHomeScreen() : LearnerHomeScreen(),
       StayAndStudyScreen(),
-      registerAs == '1' ? EducatorScreen() : LearnerScreen(),
+      registerAs == 'E' ? EducatorScreen() : LearnerScreen(),
       StudyBuddyScreen(),
       AccountScreen(),
     ];
@@ -119,7 +119,7 @@ class _bottomNavBarState extends State<bottomNavBar> {
       ),
       PersistentBottomNavBarItem(
         icon: ImageIcon(AssetImage('assets/icons/educator.png'),size: 25),
-        title: (registerAs == '1' ? "Learner" : "Educator"),
+        title: (registerAs == 'E' ? "Learner" : "Educator"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
       ),

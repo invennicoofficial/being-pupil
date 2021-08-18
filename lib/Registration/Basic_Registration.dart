@@ -1,12 +1,19 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Login/Login_Screen.dart';
+import 'package:being_pupil/Login/OTP_Screen.dart';
+import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/Model_Class.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
+import 'package:being_pupil/Widgets/Preference.dart';
+import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key key}) : super(key: key);
@@ -16,7 +23,10 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  String reisterAs = 'notSelected';
+  String registerAs = 'notSelected';
+  TextEditingController nameController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
+  
   @override
   void initState() {
     // TODO: implement initState
@@ -103,6 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             height: 7.0.h,
                             width: 90.0.w,
                             child: TextFormField(
+                              controller: nameController,
                               decoration: InputDecoration(
                                 labelText: "Name",
                                 fillColor: Colors.white,
@@ -139,6 +150,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             height: 7.0.h,
                             width: 90.0.w,
                             child: TextFormField(
+                              controller: mobileController,
                               keyboardType: TextInputType.phone,
                               inputFormatters: [
                                 LengthLimitingTextInputFormatter(10),
@@ -201,15 +213,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             //   Icons.expand_more,
                             //   color: Constants.bpSkipStyle,
                             // ),
-                            onChange: (int value, int index) async{
+                            onChange: (int value, int index) async {
                               print(value);
-                              if (value > 0) {
+                              if (value == 1) {
                                 setState(() {
-                                  reisterAs = 'selected';
+                                  registerAs = 'E';
+                                });
+                              } else {
+                                setState(() {
+                                  registerAs = 'L';
                                 });
                               }
-                              SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                              sharedPreferences.setString('RegisterAs', value.toString());
+                              SharedPreferences sharedPreferences =
+                                  await SharedPreferences.getInstance();
+                              sharedPreferences.setString(
+                                  'RegisterAs', registerAs);
+                              print('Preffff ::: ' +
+                                  sharedPreferences.getString('RegisterAs'));
                             },
                             dropdownButtonStyle: DropdownButtonStyle(
                               height: 7.0.h,
@@ -260,7 +280,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: GestureDetector(
                           onTap: () {
                             print('Sign Up!!!');
-                            if (reisterAs == 'notSelected') {
+                            //signUp(nameController.text.trim(), mobileController.text.trim(), registerAs, deviceType, deviceId)
+                            if (nameController.text.isEmpty){
+                              Fluttertoast.showToast(
+                                  msg: "Please Enter Name",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Constants.bgColor,
+                                  textColor: Colors.white,
+                                  fontSize: 10.0.sp);
+                            } else if (mobileController.text.isEmpty) {
+                              Fluttertoast.showToast(
+                                  msg: "Please Enter Mobile Number",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Constants.bgColor,
+                                  textColor: Colors.white,
+                                  fontSize: 10.0.sp);
+                            }
+                            else if (registerAs == 'notSelected') {
                               Fluttertoast.showToast(
                                   msg: "Please Select Register As",
                                   toastLength: Toast.LENGTH_SHORT,
@@ -270,11 +310,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   textColor: Colors.white,
                                   fontSize: 10.0.sp);
                             } else {
-                              Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      type: PageTransitionType.fade,
-                                      child: LoginScreen()));
+                              signUp(
+                                  nameController.text.trim(),
+                                  mobileController.text.trim(),
+                                  registerAs,
+                                  'A',
+                                  '1234567');
                             }
                           },
                           child: Container(
@@ -304,7 +345,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 20.0.h,
+                        height: 20.0.h,//20.0.h
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -352,4 +393,182 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
+
+  Future<SignUp> signUp(String name, String mobileNumber, String registerAs,
+      String deviceType, String deviceId) async {
+    displayProgressDialog(context);
+    var result = SignUp();
+    try {
+      Dio dio = Dio();
+      FormData formData = FormData.fromMap({
+        'name': name,
+        'mobile_number': mobileNumber,
+        'register_as': registerAs,
+        'deviceType': deviceType,
+        'deviceId': deviceId,
+      });
+      var response = await dio.post(Config.signupUrl, data: formData);
+      if (response.statusCode == 200) {
+        print(response.data);
+        closeProgressDialog(context);
+        result = SignUp.fromJson(response.data);
+        //print(result.data.name);
+        if(result.status == true){
+        print('ID ::: ' + result.data.userId.toString());
+        saveUserData(result.data.userId);
+        Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.fade, child: OtpScreen()));
+        Fluttertoast.showToast(
+          msg: result.message,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+        }else {
+          Fluttertoast.showToast(
+          msg: result.message,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+        }
+        print(result);
+        
+      }
+    } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+       closeProgressDialog(context);
+      if (e.response != null) {
+        print("This is the error message::::" +
+            e.response.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.request);
+        print(e.message);
+      }
+    }
+    return result;
+  }
+
+    void saveUserData(int userId) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setInt('userId', userId);
+    print(userId);
+  }
+
+  displayProgressDialog(BuildContext context) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new ProgressDialog();
+        }));
+  }
+
+  closeProgressDialog(BuildContext context) {
+    Navigator.of(context).pop();
+  }
 }
+
+//  Future<void> signUp() async {
+//     displayProgressDialog(context);
+//     var formData = FormData.fromMap({
+//       'name': nameController.text.trim(),
+//       'email': emailController.text.trim(),
+//       'contact_number': mobileNumberController.text.trim(),
+//       'password': passwordController.text.trim(),
+//     });
+//     try {
+//       Response response = await dio.post(Config.registerUrl, data: formData);
+//       Map<String, dynamic> map;
+//       map = json.decode(response.toString());
+//       print(map);
+//       print(map['data']['profile']);
+//       saveUserData(
+//           map['data']['name'],
+//           map['data']['email'],
+//           map['data']['contact_number'],
+//           map['data']['profile'] == null ? '' : map['data']['profile'],
+//         map['data']['user_id']);
+//       saveToken(map['meta']['auth_token']);
+//     } on DioError catch (e) {
+//       closeProgressDialog(context);
+//       if (e.response != null) {
+//         print(e.response.data);
+//         print(e.response.headers);
+//         print(e.response.request);
+//         print("This is the error message::::" +
+//             e.response.data['meta']['message']);
+//         Fluttertoast.showToast(
+//           msg: e.response.data['meta']['message'],
+//           toastLength: Toast.LENGTH_SHORT,
+//           gravity: ToastGravity.BOTTOM,
+//           timeInSecForIosWeb: 1,
+//           backgroundColor: Color(0xFF1E2026),
+//           textColor: Constants.mfaRed,
+//           fontSize: 15,
+//         );
+//       } else {
+//         // Something happened in setting up or sending the request that triggered an Error
+//         print(e.request);
+//         print(e.message);
+//       }
+//     }
+//   }
+
+//   void saveUserData(String name, email, mobile, profileUrl, userId) async {
+//     SharedPreferences preferences = await SharedPreferences.getInstance();
+//     print(name);
+//     preferences.setString(Preferences.userName, name);
+//     preferences.setString(Preferences.userEmail, email);
+//     preferences.setString(Preferences.userNumber, mobile);
+//     preferences.setString(Preferences.userProfilePicUrl, profileUrl);
+//     preferences.setString(Preferences.checkLoggedIn, "LoggedIn");
+//     preferences.setString(Preferences.checkGuest, "notGuest");
+//     preferences.setInt('userId', userId);
+//     preferences.setString(Preferences.userTrialEndDate, '');
+//     preferences.setString(Preferences.userSubscriptionEndDate, '');
+//     preferences.setString('trialDate', '');
+//     preferences.setString('subscriptionDate', '');
+//     preferences.setBool('isSubscribed', false);
+//   }
+
+//   void saveToken(String token) async {
+//     // Write value
+//     await storage.write(key: 'auth_token', value: token);
+//     closeProgressDialog(context);
+
+//     //go to otp page
+//     Navigator.of(context).pushAndRemoveUntil(
+//         MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+//         (Route<dynamic> route) => false);
+//   }
+
+//   displayProgressDialog(BuildContext context) {
+//     Navigator.of(context).push(new PageRouteBuilder(
+//         opaque: false,
+//         pageBuilder: (BuildContext context, _, __) {
+//           return new ProgressDialog();
+//         }));
+//   }
+
+//   closeProgressDialog(BuildContext context) {
+//     Navigator.of(context).pop();
+//   }

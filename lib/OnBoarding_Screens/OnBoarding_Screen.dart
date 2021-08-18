@@ -1,4 +1,5 @@
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Login/Login_Screen.dart';
 import 'package:being_pupil/Registration/Basic_Registration.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -296,7 +297,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                 context,
                                 PageTransition(
                                     type: PageTransitionType.fade,
-                                    child: SignUpScreen()));
+                                    child: LoginScreen()));
                           },
                           child: Container(
                             height: 8.0.h,
