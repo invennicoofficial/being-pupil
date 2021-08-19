@@ -43,7 +43,7 @@ class _CommentScreenState extends State<CommentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Constants.bgColor,
@@ -407,20 +407,21 @@ class _CommentScreenState extends State<CommentScreen> {
                   ],
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    //scrollDirection: Axis.horizontal,
-                    itemCount: 2,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 2.0.h, top: 1.0.h),
-                        child: ListTile(
-                          title: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                ClipRRect(
+              ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  //scrollDirection: Axis.horizontal,
+                  itemCount: 2,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 2.0.h, top: 1.0.h),
+                      child: ListTile(
+                        title: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 28.0),
+                                child: ClipRRect(
                                   child: Image.asset(
                                     dpImages[index],
                                     height: 4.5.h,
@@ -428,64 +429,64 @@ class _CommentScreenState extends State<CommentScreen> {
                                     fit: BoxFit.contain,
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 2.0.w,
-                                ),
-                                Container(
-                                  //height: 7.0.h,
-                                  width: 82.0.w,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 2.0.w, vertical: 1.0.h),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Constants.formBorder
-                                            .withOpacity(0.6),
-                                        width: 0.6,
-                                      ),
-                                      borderRadius: BorderRadius.circular(5.0)),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            names[index],
-                                            style: TextStyle(
-                                                fontFamily: 'Montserrat',
-                                                fontSize: 11.0.sp,
-                                                fontWeight: FontWeight.w700,
-                                                color: Constants.bgColor),
-                                          ),
-                                          Image.asset(
-                                            'assets/icons/menu.png',
-                                            height: 2.0.h,
-                                            width: 2.0.w,
-                                            fit: BoxFit.contain,
-                                          )
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 0.5.h),
-                                        child: Text(
-                                          comments[index],
+                              ),
+                              SizedBox(
+                                width: 2.0.w,
+                              ),
+                              Container(
+                                //height: 7.0.h,
+                                width: 82.0.w,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 2.0.w, vertical: 1.0.h),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Constants.formBorder
+                                          .withOpacity(0.6),
+                                      width: 0.6,
+                                    ),
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          names[index],
                                           style: TextStyle(
                                               fontFamily: 'Montserrat',
-                                              fontSize: 10.0.sp,
-                                              fontWeight: FontWeight.w400,
-                                              color: Constants.bpOnBoardSubtitleStyle),
+                                              fontSize: 11.0.sp,
+                                              fontWeight: FontWeight.w700,
+                                              color: Constants.bgColor),
                                         ),
+                                        Image.asset(
+                                          'assets/icons/menu.png',
+                                          height: 2.0.h,
+                                          width: 2.0.w,
+                                          fit: BoxFit.contain,
+                                        )
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 0.5.h),
+                                      child: Text(
+                                        comments[index],
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            fontSize: 10.0.sp,
+                                            fontWeight: FontWeight.w400,
+                                            color: Constants.bpOnBoardSubtitleStyle),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              ]),
-                        ),
-                      );
-                    }),
-              ),
+                              ),
+                            ]),
+                      ),
+                    );
+                  }),
               //   ],
               // ),
               //),
@@ -499,7 +500,7 @@ class _CommentScreenState extends State<CommentScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                height: 82.0.h,
+                height: 4.0.h,
               ),
               Row(
                 //mainAxisAlignment: MainAxisAlignment.end,
@@ -521,7 +522,7 @@ class _CommentScreenState extends State<CommentScreen> {
                         child: TextFormField(
                           controller: commentController,
                             keyboardType: TextInputType.multiline,
-                            maxLength: 500,
+                            maxLength: 140,
                             cursorColor: Constants.bgColor,
                             cursorHeight: 25.0,
                             decoration: InputDecoration(

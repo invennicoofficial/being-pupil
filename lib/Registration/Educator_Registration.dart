@@ -38,6 +38,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
   TextEditingController _mobileController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _idNumController = TextEditingController();
+  TextEditingController _scoolNameController = TextEditingController();
   TextEditingController _achivementController = TextEditingController();
   TextEditingController _fbLinkController = TextEditingController();
   TextEditingController _instagramLinkController = TextEditingController();
