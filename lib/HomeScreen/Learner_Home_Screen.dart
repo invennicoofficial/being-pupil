@@ -21,12 +21,28 @@ class _LearnerHomeScreenState extends State<LearnerHomeScreen> {
           automaticallyImplyLeading: false,
           backgroundColor: Constants.bgColor,
           actions: <Widget>[
-            IconButton(
-                icon: Icon(
-                  Icons.search,
-                  color: Colors.white,
+            Padding(
+              padding: EdgeInsets.only(right: 5.0.w),
+              child: GestureDetector(
+                onTap: () {
+                  print('Search!!!');
+                  // pushNewScreen(context,
+                  //     screen: CreatePostScreen(),
+                  //     withNavBar: false,
+                  //     pageTransitionAnimation:
+                  //         PageTransitionAnimation.cupertino);
+                },
+                child: Container(
+                  // height: 2.0.h,
+                  // width: 6.0.h,
+                  //color: Colors.grey,
+                  child: Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
                 ),
-                onPressed: null)
+              ),
+            ),
           ],
           title: Container(
               height: 8.0.h,
@@ -43,10 +59,10 @@ class _LearnerHomeScreenState extends State<LearnerHomeScreen> {
               children: <Widget>[
                 //main horizontal padding
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4.0.w),
+                  padding: EdgeInsets.symmetric(horizontal: 5.0.w),
                   //Container for one post
                   child: Container(
-                    height: 58.0.h,
+                    height: 57.5.h,
                     width: 100.0.w,
                     //color: Colors.grey[300],
                     //column for post content
@@ -116,25 +132,33 @@ class _LearnerHomeScreenState extends State<LearnerHomeScreen> {
                               //     pageTransitionAnimation:
                               //         PageTransitionAnimation.cupertino);
                             },
-                            child: Container(
-                              height: 2.5.h,
-                              width: 4.0.w,
-                              child: ImageIcon(
-                                AssetImage('assets/icons/menu.png'),
-                                size: 15,
+                            child: GestureDetector(
+                              onTap: (){
+                                print('Menu!!!');
+                              },
+                              child: Container(
+                                height: 2.5.h,
+                                width: 4.0.w,
+                                child: ImageIcon(
+                                  AssetImage('assets/icons/menu.png'),
+                                  size: 15,
+                                ),
                               ),
                             ),
                           ),
                         ),
                         //Post descriptionText
-                        Text(
-                            'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam...',
-                            style: TextStyle(
-                                fontSize: 9.0.sp,
-                                color: Constants.bpOnBoardSubtitleStyle,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w400),
-                            textAlign: TextAlign.justify),
+                        Container(
+                          width: 88.0.w,
+                          child: Text(
+                              'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam...',
+                              style: TextStyle(
+                                  fontSize: 9.0.sp,
+                                  color: Constants.bpOnBoardSubtitleStyle,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w400),
+                              textAlign: TextAlign.justify),
+                        ),
                         SizedBox(
                           height: 1.0.h,
                         ),
@@ -187,8 +211,7 @@ class _LearnerHomeScreenState extends State<LearnerHomeScreen> {
                                   "9 Comments",
                                   style: TextStyle(
                                       fontSize: 6.5.sp,
-                                      color:
-                                          Constants.bpOnBoardSubtitleStyle,
+                                      color: Constants.bpOnBoardSubtitleStyle,
                                       fontFamily: 'Montserrat',
                                       fontWeight: FontWeight.w400),
                                 ),
@@ -199,7 +222,8 @@ class _LearnerHomeScreenState extends State<LearnerHomeScreen> {
                         //divider
                         Divider(
                           height: 1.0.h,
-                          color: Constants.bpOnBoardSubtitleStyle.withOpacity(0.5),
+                          color:
+                              Constants.bpOnBoardSubtitleStyle.withOpacity(0.5),
                           thickness: 1.0,
                         ),
                         //Row for Like comment and Share

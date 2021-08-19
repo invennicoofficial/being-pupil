@@ -270,6 +270,13 @@ class _AccountScreenState extends State<AccountScreen> {
                           InkWell(
                             onTap: () {
                               logout();
+                              pushNewScreen(
+                                context,
+                                screen: LoginScreen(),
+                                withNavBar: false,
+                                pageTransitionAnimation:
+                                    PageTransitionAnimation.cupertino,
+                              );
                               Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
                                       builder: (context) => LoginScreen()),
@@ -284,9 +291,9 @@ class _AccountScreenState extends State<AccountScreen> {
                               sizeImage: 20.0,
                             ),
                           ),
-                          //  SizedBox(
-                          //   height: 6.0.h,
-                          // ),
+                          SizedBox(
+                            height: 6.0.h,
+                          ),
                         ],
                       ),
                     )
@@ -297,10 +304,11 @@ class _AccountScreenState extends State<AccountScreen> {
           ),
         ));
   }
-   void logout() async{
-   SharedPreferences preferences = await SharedPreferences.getInstance();
-   preferences.clear();
- }
+
+  void logout() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.clear();
+  }
 }
 
 //Profile Component

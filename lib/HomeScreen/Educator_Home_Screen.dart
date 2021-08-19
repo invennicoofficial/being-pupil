@@ -24,18 +24,27 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
           automaticallyImplyLeading: false,
           backgroundColor: Constants.bgColor,
           actions: <Widget>[
-            IconButton(
-                icon: Icon(
-                  Icons.add_box_outlined,
-                  color: Colors.white,
-                ),
-                onPressed: () {
+            Padding(
+              padding: EdgeInsets.only(right: 5.0.w),
+              child: GestureDetector(
+                onTap: () {
                   pushNewScreen(context,
                       screen: CreatePostScreen(),
                       withNavBar: false,
                       pageTransitionAnimation:
                           PageTransitionAnimation.cupertino);
-                })
+                },
+                child: Container(
+                  // height: 2.0.h,
+                  // width: 6.0.h,
+                  //color: Colors.grey,
+                  child: Icon(
+                    Icons.add_box_outlined,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
           ],
           title: Container(
               height: 8.0.h,
@@ -52,10 +61,10 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
               children: <Widget>[
                 //main horizontal padding
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4.0.w),
+                  padding: EdgeInsets.symmetric(horizontal: 5.0.w),
                   //Container for one post
                   child: Container(
-                    height: index == 0 ? 28.0.h : 58.0.h,
+                    height: index == 0 ? 27.5.h : 57.5.h,
                     width: 100.0.w,
                     //color: Colors.grey[300],
                     //column for post content
@@ -117,26 +126,34 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                               ),
                             ],
                           ),
-                          trailing: IconButton(
-                              icon: Icon(Icons.report_gmailerrorred_outlined),
-                              onPressed: () {
-                                pushNewScreen(context,
-                                    withNavBar: false,
-                                    screen: ReportFeed(),
-                                    pageTransitionAnimation:
-                                        PageTransitionAnimation.cupertino);
-                              }),
-                          //ImageIcon(AssetImage('assets/icons/report.png'),)
+                          trailing: GestureDetector(
+                            onTap: () {
+                              pushNewScreen(context,
+                                  withNavBar: false,
+                                  screen: ReportFeed(),
+                                  pageTransitionAnimation:
+                                      PageTransitionAnimation.cupertino);
+                            },
+                            child: Container(
+                                height: 4.0.h,
+                                width: 6.0.w,
+                                //color: Colors.grey,
+                                child:
+                                    Icon(Icons.report_gmailerrorred_outlined)),
+                          ),
                         ),
                         //Post descriptionText
-                        Text(
-                            'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam...',
-                            style: TextStyle(
-                                fontSize: 9.0.sp,
-                                color: Constants.bpOnBoardSubtitleStyle,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w400),
-                            textAlign: TextAlign.justify),
+                        Container(
+                          width: 88.0.w,
+                          child: Text(
+                              'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam...',
+                              style: TextStyle(
+                                  fontSize: 9.0.sp,
+                                  color: Constants.bpOnBoardSubtitleStyle,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w400),
+                              textAlign: TextAlign.justify),
+                        ),
                         SizedBox(
                           height: 1.0.h,
                         ),
@@ -144,18 +161,18 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                         index == 0
                             ? Container()
                             : Container(
-                                  height: 30.0.h,
-                                  width: 100.0.w,
-                                  padding: EdgeInsets.zero,
-                                  decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10.0)),
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                            'assets/images/postImage.jpg',
-                                          ),
-                                          fit: BoxFit.cover)),
-                                ),
+                                height: 30.0.h,
+                                width: 100.0.w,
+                                padding: EdgeInsets.zero,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                          'assets/images/postImage.jpg',
+                                        ),
+                                        fit: BoxFit.cover)),
+                              ),
                         //Row for Liked, commented, shared
                         Padding(
                           padding: EdgeInsets.only(top: 1.0.h),
@@ -251,10 +268,10 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                               GestureDetector(
                                 onTap: () {
                                   pushNewScreen(context,
-                                    withNavBar: false,
-                                    screen: CommentScreen(),
-                                    pageTransitionAnimation:
-                                        PageTransitionAnimation.cupertino);
+                                      withNavBar: false,
+                                      screen: CommentScreen(),
+                                      pageTransitionAnimation:
+                                          PageTransitionAnimation.cupertino);
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,

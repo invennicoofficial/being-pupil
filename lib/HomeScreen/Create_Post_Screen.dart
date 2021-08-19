@@ -48,7 +48,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Constants.bgColor,
-        leading: IconButton(
+        leading: 
+        IconButton(
           icon: Icon(
             Icons.west_rounded,
             color: Colors.white,

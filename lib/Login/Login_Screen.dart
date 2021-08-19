@@ -12,6 +12,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 
 import 'OTP_Screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -343,7 +344,8 @@ class _LoginScreenState extends State<LoginScreen> {
         closeProgressDialog(context);
         result = Login.fromJson(response.data);
         if (result.status == true) {
-          //saveUserData(result.data.userId);
+        print('ID ::: ' + result.data.userId.toString());
+        saveUserData(result.data.userId);
           Navigator.push(
               context,
               PageTransition(
@@ -358,6 +360,7 @@ class _LoginScreenState extends State<LoginScreen> {
             fontSize: 10.0.sp,
           );
         } else {
+          if(result.message == null){
           Fluttertoast.showToast(
             msg: result.errorMsg,
             toastLength: Toast.LENGTH_SHORT,
@@ -367,6 +370,17 @@ class _LoginScreenState extends State<LoginScreen> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
+          } else {
+            Fluttertoast.showToast(
+            msg: result.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+          }
         }
         print(result);
       }
@@ -395,6 +409,11 @@ class _LoginScreenState extends State<LoginScreen> {
     return result;
   }
 
+ void saveUserData(int userId) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setInt('userId', userId);
+    print(userId);
+  }
  
 
 

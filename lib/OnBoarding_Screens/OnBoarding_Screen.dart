@@ -66,20 +66,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         color: Constants.bpOnBoardSubtitleStyle);
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(13.0.h),
-        child: Container(
-          color: Colors.white,
-          child: SafeArea(
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 3.0.w, vertical: 3.0.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+        leading: GestureDetector(
                           onTap: () {
                             //_currentPage = _numPages - 1;
                           },
@@ -93,10 +83,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                     _pageController.jumpToPage(0);
                                   },
                                   child: Icon(Icons.arrow_back_ios,
-                                      color: Constants.bpSkipStyle),
+                                      color: Constants.bgColor.withOpacity(0.8)),
                                 )
                               : Container()),
-                      _currentPage != 2
+                              actions: [
+                                 _currentPage != 2
                           ? Container(
                               alignment: Alignment.topRight,
                               child: FlatButton(
@@ -113,14 +104,64 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                               ),
                             )
                           : Container(),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
+                              ],
       ),
+      
+      // PreferredSize(
+      //   preferredSize: Size.fromHeight(13.0.h),
+      //   child: Container(
+      //     color: Colors.grey,
+      //     child: SafeArea(
+      //       child: Column(
+      //         children: <Widget>[
+      //           Padding(
+      //             padding:
+      //                 EdgeInsets.symmetric(horizontal: 3.0.w, vertical: 3.0.h),
+      //             child: Row(
+      //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //               children: [
+      //                 GestureDetector(
+      //                     onTap: () {
+      //                       //_currentPage = _numPages - 1;
+      //                     },
+      //                     child: _currentPage != 0
+      //                         ? GestureDetector(
+      //                             onTap: _currentPage == 2 
+      //                             ? () {
+      //                               _pageController.jumpToPage(1);
+      //                             }
+      //                             : () {
+      //                               _pageController.jumpToPage(0);
+      //                             },
+      //                             child: Icon(Icons.arrow_back_ios,
+      //                                 color: Constants.bgColor),
+      //                           )
+      //                         : Container()),
+      //                 _currentPage != 2
+      //                     ? Container(
+      //                         alignment: Alignment.topRight,
+      //                         child: FlatButton(
+      //                           onPressed: () => _pageController.jumpToPage(2),
+      //                           child: Text(
+      //                             'Skip',
+      //                             style: TextStyle(
+      //                               fontFamily: 'Montserrat',
+      //                               fontWeight: FontWeight.w400,
+      //                               color: Constants.bpSkipStyle,
+      //                               fontSize: 11.0.sp,
+      //                             ),
+      //                           ),
+      //                         ),
+      //                       )
+      //                     : Container(),
+      //               ],
+      //             ),
+      //           )
+      //         ],
+      //       ),
+      //     ),
+      //   ),
+      // ),
       body: Container(
         //padding: EdgeInsets.only(top: 5),
         decoration: BoxDecoration(
@@ -128,158 +169,161 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         ),
         child: Stack(
           children: <Widget>[
-            Container(
-              height: MediaQuery.of(context).size.height,
-              child: PageView(
-                physics: ClampingScrollPhysics(),
-                controller: _pageController,
-                onPageChanged: (int page) {
-                  setState(() {
-                    _currentPage = page;
-                  });
-                },
-                children: <Widget>[
-                  // Screen 1
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 3.0.w, vertical: 0.0),
-                        child: Image(
-                          image: AssetImage('assets/images/onBoard11.png'),
-                          height: 30.0.h,
-                          width: 80.0.w,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      Align(
-                        alignment: FractionalOffset.center,
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 4.0.h),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                'Lorem ipsum dolor sit amet,',
-                                style: _textH1,
-                              ),
-                              SizedBox(height: 1.5.h),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 1.5.w, vertical: 2.0.h),
-                                child: Container(
-                                  height: 15.0.h,
-                                  width: 82.0.w,
-                                  child: Text(
-                                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore',
-                                    textAlign: TextAlign.center,
-                                    style: _textH2,
-                                    softWrap: true,
-                                  ),
-                                ),
-                              ),
-                            ],
+            Padding(
+              padding: EdgeInsets.only(top: 3.0.h),
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                child: PageView(
+                  physics: ClampingScrollPhysics(),
+                  controller: _pageController,
+                  onPageChanged: (int page) {
+                    setState(() {
+                      _currentPage = page;
+                    });
+                  },
+                  children: <Widget>[
+                    // Screen 1
+                    Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 3.0.w, vertical: 0.0.h),
+                          child: Image(
+                            image: AssetImage('assets/images/onBoard11.png'),
+                            height: 30.0.h,
+                            width: 80.0.w,
+                            fit: BoxFit.contain,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                        Align(
+                          alignment: FractionalOffset.center,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 4.0.h),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Lorem ipsum dolor sit amet,',
+                                  style: _textH1,
+                                ),
+                                SizedBox(height: 1.5.h),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 1.5.w, vertical: 2.0.h),
+                                  child: Container(
+                                    height: 15.0.h,
+                                    width: 82.0.w,
+                                    child: Text(
+                                      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore',
+                                      textAlign: TextAlign.center,
+                                      style: _textH2,
+                                      softWrap: true,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
 
-                  // Screen 2
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 3.0.w, vertical: 3.0.h),
-                        child: Image(
-                          image: AssetImage('assets/images/onBoard.png'),
-                          height: 30.0.h,
-                          width: 80.0.w,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      Align(
-                        alignment: FractionalOffset.center,
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 0.0.h),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                'Lorem ipsum dolor sit amet,',
-                                style: _textH1,
-                              ),
-                              SizedBox(height: 1.5.h),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 1.5.w, vertical: 2.0.h),
-                                child: Container(
-                                  height: 15.0.h,
-                                  width: 82.0.w,
-                                  child: Text(
-                                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore',
-                                    textAlign: TextAlign.center,
-                                    style: _textH2,
-                                    softWrap: true,
-                                  ),
-                                ),
-                              ),
-                            ],
+                    // Screen 2
+                    Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 3.0.w, right: 3.0.w, bottom: 3.0.h),
+                          child: Image(
+                            image: AssetImage('assets/images/onBoard.png'),
+                            height: 30.0.h,
+                            width: 80.0.w,
+                            fit: BoxFit.contain,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                        Align(
+                          alignment: FractionalOffset.center,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 0.0.h),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Lorem ipsum dolor sit amet,',
+                                  style: _textH1,
+                                ),
+                                SizedBox(height: 1.5.h),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 1.5.w, vertical: 2.0.h),
+                                  child: Container(
+                                    height: 15.0.h,
+                                    width: 82.0.w,
+                                    child: Text(
+                                      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore',
+                                      textAlign: TextAlign.center,
+                                      style: _textH2,
+                                      softWrap: true,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
 
-                  // Screen 3
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 3.0.w, vertical: 0.0),
-                        child: Image(
-                          image: AssetImage('assets/images/onBoard33.png'),
-                          height: 30.0.h,
-                          width: 80.0.w,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      Align(
-                        alignment: FractionalOffset.center,
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 4.0.h),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                'Lorem ipsum dolor sit amet,',
-                                style: _textH1,
-                              ),
-                              SizedBox(height: 1.5.h),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 1.5.w, vertical: 2.0.h),
-                                child: Container(
-                                  height: 15.0.h,
-                                  width: 82.0.w,
-                                  child: Text(
-                                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore',
-                                    textAlign: TextAlign.center,
-                                    style: _textH2,
-                                    softWrap: true,
-                                  ),
-                                ),
-                              ),
-                            ],
+                    // Screen 3
+                    Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 3.0.w, vertical: 3.0),
+                          child: Image(
+                            image: AssetImage('assets/images/onBoard33.png'),
+                            height: 30.0.h,
+                            width: 80.0.w,
+                            fit: BoxFit.contain,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        Align(
+                          alignment: FractionalOffset.center,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 4.0.h),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Lorem ipsum dolor sit amet,',
+                                  style: _textH1,
+                                ),
+                                SizedBox(height: 1.5.h),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 1.5.w, vertical: 2.0.h),
+                                  child: Container(
+                                    height: 15.0.h,
+                                    width: 82.0.w,
+                                    child: Text(
+                                      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore',
+                                      textAlign: TextAlign.center,
+                                      style: _textH2,
+                                      softWrap: true,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
             Align(
