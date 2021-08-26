@@ -6,19 +6,17 @@ class Login {
   String message;
   Data data;
 
-  Login(
-      {this.status,
-      this.errorCode,
-      this.errorMsg,
-      this.message,
-      this.data});
+  Login({this.status, this.errorCode, this.errorMsg, this.message, this.data});
 
-  Login.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    errorCode = json['error_code'];
-    errorMsg = json['error_msg'];
-    message = json['message'];
-    data = json['status'] == true ? new Data.fromJson(json['data']) : new Data.toEmpty(json['data']);
+  factory Login.fromJson(Map<String, dynamic> json) {
+    return Login(
+        status: json['status'],
+        errorCode: json['error_code'],
+        errorMsg: json['error_msg'],
+        message: json['message'],
+        data: json['status'] == true
+            ? new Data.fromJson(json['data'])
+            : new Data.toEmpty(json['data']));
   }
 
   Map<String, dynamic> toJson() {
@@ -42,11 +40,13 @@ class Data {
 
   Data({this.userId, this.name, this.mobileNumber, this.isNew});
 
-  Data.fromJson(Map<String, dynamic> json) {
-    userId = json['user_id'];
-    name = json['name'];
-    mobileNumber = json['mobile_number'];
-    isNew = json['isNew'];
+  factory Data.fromJson(Map<String, dynamic> json) {
+    return Data(
+      userId: json['user_id'],
+      name: json['name'],
+      mobileNumber: json['mobile_number'],
+      isNew: json['isNew'],
+    );
   }
 
   Map<String, dynamic> toJson() {

@@ -30,8 +30,10 @@ dependencies:
   file_picker: ^2.1.7
   flutter_secure_storage: ^3.3.5
   fluttertoast: ^7.0.4
+  flutter_image_compress: ^0.7.0
   image_picker: ^0.6.6+5
   page_transition: ^1.1.7+6
+  path_provider: ^1.6.28
   persistent_bottom_nav_bar: ^3.2.0
   pin_code_fields: ^6.1.0
   share: ^0.6.5+4

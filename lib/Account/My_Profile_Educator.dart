@@ -13,10 +13,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'package:flutter_tagging/flutter_tagging.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
+import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+
+
 
 class EducatorProfile extends StatefulWidget {
   const EducatorProfile({Key key}) : super(key: key);
@@ -26,7 +31,7 @@ class EducatorProfile extends StatefulWidget {
 }
 
 class _EducatorProfileState extends State<EducatorProfile> {
-  File _image, _certificate;
+  File _image, _certificate, _document;
   String birthDateInString, selectedYearString;
   DateTime birthDate, selectedYear;
   bool isDateSelected = false;
@@ -50,7 +55,13 @@ class _EducatorProfileState extends State<EducatorProfile> {
   TextEditingController _otherLinkLinkController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
   var myControllers = [];
+  var certificate = [];
+  String registerAs;
+  int userId;
   String authToken;
+  List<String> education_details = [];
+  List<String> skillList = [];
+  List<String> hobbieList = [];
   //List<String> _schoolNameList
 
   // List<Skills> _selectedSkills;
@@ -63,6 +74,9 @@ class _EducatorProfileState extends State<EducatorProfile> {
   void initState() {
     itemCount = 1;
     createControllers();
+    getData();
+    getToken();
+    //_document  = File('assets/images/postImage.png');
     super.initState();
     // _selectedSkills = [];
     // _selectedHobbies = [];
@@ -75,10 +89,21 @@ class _EducatorProfileState extends State<EducatorProfile> {
   //   super.dispose();
   // }
 
+  getData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      registerAs = preferences.getString('RegisterAs');
+      userId = preferences.getInt('userId');
+    });
+    print(registerAs);
+  }
+
   createControllers() {
     myControllers = [];
+    certificate = [];
     for (var i = 0; i < 5; i++) {
       myControllers.add(TextEditingController());
+      //certificate.add(_certiName);
     }
   }
 
@@ -294,6 +319,7 @@ class _EducatorProfileState extends State<EducatorProfile> {
       PlatformFile file = result.files.first;
       setState(() {
         fileName = file.name;
+        _document = File(file.path);
       });
 
       print(file.name);
@@ -1127,7 +1153,16 @@ class _EducatorProfileState extends State<EducatorProfile> {
                                                     (BuildContext context) {
                                                   return AlertDialog(
                                                     title: Text(
-                                                        "Select Qualification Year"),
+                                                      "Select Qualification Year",
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              'Montserrat',
+                                                          fontSize: 14.0.sp,
+                                                          color:
+                                                              Constants.bgColor,
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    ),
                                                     content: Container(
                                                       // Need to use container to add size constraint.
                                                       width: 75.0.w,
@@ -1143,13 +1178,20 @@ class _EducatorProfileState extends State<EducatorProfile> {
                                                         // save the selected date to _selectedDate DateTime variable.
                                                         // It's used to set the previous selected date when
                                                         // re-showing the dialog.
-                                                        selectedDate: isYearSelected ? selectedYear : DateTime(DateTime.now().year),
+                                                        selectedDate:
+                                                            isYearSelected
+                                                                ? selectedYear
+                                                                : DateTime(
+                                                                    DateTime.now()
+                                                                        .year),
                                                         onChanged: (DateTime
                                                             dateTime) {
                                                           // close the dialog when year is selected.
                                                           setState(() {
-                                                            isYearSelected = true;
-                                                            selectedYear =  dateTime;
+                                                            isYearSelected =
+                                                                true;
+                                                            selectedYear =
+                                                                dateTime;
                                                           });
 
                                                           print(selectedYear
@@ -1210,7 +1252,8 @@ class _EducatorProfileState extends State<EducatorProfile> {
                                                 children: [
                                                   Text(
                                                     isYearSelected
-                                                        ? selectedYear.year.toString()
+                                                        ? selectedYear.year
+                                                            .toString()
                                                         : 'Year',
                                                     style: TextStyle(
                                                         fontFamily:
@@ -2000,6 +2043,7 @@ class _EducatorProfileState extends State<EducatorProfile> {
                                 },
                                 onTag: (tag) {
                                   print('onTag: $tag');
+                                  skillList.add(tag);
                                 },
                                 // validator: (String tag) {
                                 //   print('validator: $tag');
@@ -2548,141 +2592,180 @@ class _EducatorProfileState extends State<EducatorProfile> {
                               top: 6.0.h,
                               bottom: 3.0.h),
                           child: GestureDetector(
-                            onTap: () {
+                            onTap: () async {
                               print('Submit!!!');
                               bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9."
                                       r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                   .hasMatch(_emailController.text.trim());
-                              if (_nameController.text.trim().isEmpty) {
-                                Fluttertoast.showToast(
-                                    msg: "Please Enter Name",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Constants.bgColor,
-                                    textColor: Colors.white,
-                                    fontSize: 10.0.sp);
-                              } else if (_mobileController.text
-                                      .trim()
-                                      .isEmpty ||
-                                  _mobileController.text.length < 10) {
-                                Fluttertoast.showToast(
-                                    msg: "Please Enter Valid Mobile Number",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Constants.bgColor,
-                                    textColor: Colors.white,
-                                    fontSize: 10.0.sp);
-                              } else if (_emailController.text.trim().isEmpty ||
-                                  (emailValid == false)) {
-                                Fluttertoast.showToast(
-                                    msg: "Please Enter Valid Email Id",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Constants.bgColor,
-                                    textColor: Colors.white,
-                                    fontSize: 10.0.sp);
-                              } else if (gender == 'Gender') {
-                                Fluttertoast.showToast(
-                                    msg: "Please Select Gender",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Constants.bgColor,
-                                    textColor: Colors.white,
-                                    fontSize: 10.0.sp);
-                              } else if (birthDateInString == null ||
-                                  birthDateInString == '') {
-                                Fluttertoast.showToast(
-                                    msg: "Please Select DOB",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Constants.bgColor,
-                                    textColor: Colors.white,
-                                    fontSize: 10.0.sp);
-                              } else if (docType == 'DocType') {
-                                Fluttertoast.showToast(
-                                    msg: "Please Select Document Type",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Constants.bgColor,
-                                    textColor: Colors.white,
-                                    fontSize: 10.0.sp);
-                              } else if (myControllers[0].text.isEmpty) {
-                                Fluttertoast.showToast(
-                                    msg: "Please Enter School Name",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Constants.bgColor,
-                                    textColor: Colors.white,
-                                    fontSize: 10.0.sp);
-                              } else if (_idNumController.text.isEmpty) {
-                                Fluttertoast.showToast(
-                                    msg: "Please Enter Valid ID Number",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Constants.bgColor,
-                                    textColor: Colors.white,
-                                    fontSize: 10.0.sp);
-                              } else if (qualYear == '0') {
-                                Fluttertoast.showToast(
-                                    msg: "Please Select Qualification",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Constants.bgColor,
-                                    textColor: Colors.white,
-                                    fontSize: 10.0.sp);
-                              } else if (workExp == '0') {
-                                Fluttertoast.showToast(
-                                    msg: "Please Select Work Experience",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Constants.bgColor,
-                                    textColor: Colors.white,
-                                    fontSize: 10.0.sp);
-                              } else if (teachExp == '0') {
-                                Fluttertoast.showToast(
-                                    msg: "Please Select Teaching Experience",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Constants.bgColor,
-                                    textColor: Colors.white,
-                                    fontSize: 10.0.sp);
-                              } else if (fileName == null || fileName == '') {
-                                Fluttertoast.showToast(
-                                    msg: "Please Pick Selected Document",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Constants.bgColor,
-                                    textColor: Colors.white,
-                                    fontSize: 10.0.sp);
-                              } else if (_certiName == null ||
-                                  _certiName == '') {
-                                Fluttertoast.showToast(
-                                    msg: "Please Pick Certificate",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Constants.bgColor,
-                                    textColor: Colors.white,
-                                    fontSize: 10.0.sp);
-                              } else {
-                                Navigator.of(context).push
-                                    //pushAndRemoveUntil
-                                    (MaterialPageRoute(
-                                        builder: (context) => bottomNavBar(0)));
-                                //(Route<dynamic> route) => false);
-                              }
+                              // if (_nameController.text.trim().isEmpty) {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Please Enter Name",
+                              //       toastLength: Toast.LENGTH_SHORT,
+                              //       gravity: ToastGravity.BOTTOM,
+                              //       timeInSecForIosWeb: 1,
+                              //       backgroundColor: Constants.bgColor,
+                              //       textColor: Colors.white,
+                              //       fontSize: 10.0.sp);
+                              // } else if (_mobileController.text
+                              //         .trim()
+                              //         .isEmpty ||
+                              //     _mobileController.text.length < 10) {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Please Enter Valid Mobile Number",
+                              //       toastLength: Toast.LENGTH_SHORT,
+                              //       gravity: ToastGravity.BOTTOM,
+                              //       timeInSecForIosWeb: 1,
+                              //       backgroundColor: Constants.bgColor,
+                              //       textColor: Colors.white,
+                              //       fontSize: 10.0.sp);
+                              // } else if (_emailController.text.trim().isEmpty ||
+                              //     (emailValid == false)) {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Please Enter Valid Email Id",
+                              //       toastLength: Toast.LENGTH_SHORT,
+                              //       gravity: ToastGravity.BOTTOM,
+                              //       timeInSecForIosWeb: 1,
+                              //       backgroundColor: Constants.bgColor,
+                              //       textColor: Colors.white,
+                              //       fontSize: 10.0.sp);
+                              // } else if (gender == 'Gender') {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Please Select Gender",
+                              //       toastLength: Toast.LENGTH_SHORT,
+                              //       gravity: ToastGravity.BOTTOM,
+                              //       timeInSecForIosWeb: 1,
+                              //       backgroundColor: Constants.bgColor,
+                              //       textColor: Colors.white,
+                              //       fontSize: 10.0.sp);
+                              // } else if (birthDateInString == null ||
+                              //     birthDateInString == '') {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Please Select DOB",
+                              //       toastLength: Toast.LENGTH_SHORT,
+                              //       gravity: ToastGravity.BOTTOM,
+                              //       timeInSecForIosWeb: 1,
+                              //       backgroundColor: Constants.bgColor,
+                              //       textColor: Colors.white,
+                              //       fontSize: 10.0.sp);
+                              // } else if (docType == 'DocType') {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Please Select Document Type",
+                              //       toastLength: Toast.LENGTH_SHORT,
+                              //       gravity: ToastGravity.BOTTOM,
+                              //       timeInSecForIosWeb: 1,
+                              //       backgroundColor: Constants.bgColor,
+                              //       textColor: Colors.white,
+                              //       fontSize: 10.0.sp);
+                              // } else if (myControllers[0].text.isEmpty) {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Please Enter School Name",
+                              //       toastLength: Toast.LENGTH_SHORT,
+                              //       gravity: ToastGravity.BOTTOM,
+                              //       timeInSecForIosWeb: 1,
+                              //       backgroundColor: Constants.bgColor,
+                              //       textColor: Colors.white,
+                              //       fontSize: 10.0.sp);
+                              // } else if (_idNumController.text.isEmpty) {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Please Enter Valid ID Number",
+                              //       toastLength: Toast.LENGTH_SHORT,
+                              //       gravity: ToastGravity.BOTTOM,
+                              //       timeInSecForIosWeb: 1,
+                              //       backgroundColor: Constants.bgColor,
+                              //       textColor: Colors.white,
+                              //       fontSize: 10.0.sp);
+                              // } else if (qualYear == '0') {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Please Select Qualification",
+                              //       toastLength: Toast.LENGTH_SHORT,
+                              //       gravity: ToastGravity.BOTTOM,
+                              //       timeInSecForIosWeb: 1,
+                              //       backgroundColor: Constants.bgColor,
+                              //       textColor: Colors.white,
+                              //       fontSize: 10.0.sp);
+                              // } else if (workExp == '0') {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Please Select Work Experience",
+                              //       toastLength: Toast.LENGTH_SHORT,
+                              //       gravity: ToastGravity.BOTTOM,
+                              //       timeInSecForIosWeb: 1,
+                              //       backgroundColor: Constants.bgColor,
+                              //       textColor: Colors.white,
+                              //       fontSize: 10.0.sp);
+                              // } else if (teachExp == '0') {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Please Select Teaching Experience",
+                              //       toastLength: Toast.LENGTH_SHORT,
+                              //       gravity: ToastGravity.BOTTOM,
+                              //       timeInSecForIosWeb: 1,
+                              //       backgroundColor: Constants.bgColor,
+                              //       textColor: Colors.white,
+                              //       fontSize: 10.0.sp);
+                              // } else if (fileName == null || fileName == '') {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Please Pick Selected Document",
+                              //       toastLength: Toast.LENGTH_SHORT,
+                              //       gravity: ToastGravity.BOTTOM,
+                              //       timeInSecForIosWeb: 1,
+                              //       backgroundColor: Constants.bgColor,
+                              //       textColor: Colors.white,
+                              //       fontSize: 10.0.sp);
+                              // } else if (_certiName == null ||
+                              //     _certiName == '') {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Please Pick Certificate",
+                              //       toastLength: Toast.LENGTH_SHORT,
+                              //       gravity: ToastGravity.BOTTOM,
+                              //       timeInSecForIosWeb: 1,
+                              //       backgroundColor: Constants.bgColor,
+                              //       textColor: Colors.white,
+                              //       fontSize: 10.0.sp);
+                              // } else {
+                                if (_document != null) {
+                      final dir = await path_provider
+                          .getTemporaryDirectory();
+                      final targetPath =
+                          dir.absolute.path + "/temp.jpg";
+                      final imgFile =
+                      await compressAndGetFile(
+                          _document, targetPath);
+
+                      if (imgFile == null) {
+                        return;
+                      }
+                      setState(() {});
+                      print(imgFile.path);
+                      // saveProfileWithImage(imgFile);
+                      //updateProfilewithImage(imgFile);
+                       updateProfile(
+                                  userId,
+                                  registerAs,
+                                  //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                                  'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                                  _nameController.text,
+                                  _mobileController.text,
+                                  _emailController.text,
+                                  'M',
+                                  '10/10/2010', //birthDateInString,
+                                  "A",
+                                  imgFile,
+                                  'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                                  _idNumController.text,
+                                  _achivementController.text,
+                                  skillList.toString(),
+                                  hobbieList.toString(),
+                                  '5',
+                                  '5');
+                    } else {
+                      //updateProfile();
+                    }
+                             
+                              // Navigator.of(context).push
+                              //     //pushAndRemoveUntil
+                              //     (MaterialPageRoute(
+                              //         builder: (context) => bottomNavBar(0)));
+                              // //(Route<dynamic> route) => false);
+                              // }
                             },
                             child: Container(
                               height: 7.0.h,
@@ -2715,32 +2798,104 @@ class _EducatorProfileState extends State<EducatorProfile> {
           ),
         ));
   }
+
   //Update Profile API
-  Future<ProfileUpdate>updateProfile(String name, String mobileNumber, String registerAs,
-      String deviceType, String deviceId) async {
+  Future<ProfileUpdate> updateProfile(
+    // int userId,
+    // String name,
+    // String mobileNumber,
+    // String registerAs,
+    // String email,
+    // String gender,
+    // String dob,
+    // String imageUrl,
+    // String documentType,
+    // String documentFile,
+    // String idNumber,
+    // String achievements,
+    // String skills,
+    // String hobbies,
+    // String totalWorkExp,
+    // String totalTeachExp,
+    int userId,
+    String registerAs,
+    //String imageFile,
+    String imageUrl,
+    String name,
+    String mobileNumber,
+    String email,
+    String gender,
+    String dob,
+    String documentType,
+    File documentFile,
+    String documentUrl,
+    String idNumber,
+    //List<Location> location,
+    String achievements,
+    String skills,
+    String hobbies,
+    // Null facbookUrl,
+    // Null instaUrl,
+    // Null linkedinUrl,
+    //Null otherUrl,
+    //List<EducationalDetails> educationalDetails,
+    String totalWorkExp,
+    String totalTeachExp,
+    //List<InterestedCategory> interestedCategory,
+  ) async {
     displayProgressDialog(context);
+    String filename = documentFile.path.split('/').last;
+    Map<String, dynamic> educationDetailMap;
     var result = ProfileUpdate();
+    // for (int i = 0; i <= myControllers.length; i++) {
+    //   //education_details.add()
+    //   educationDetailMap = {
+    //     "id": 5,
+    //     "school_name": "",
+    //     "year": "",
+    //     "qualification": "",
+    //     "certificate_file": ""
+    //   };
+    // }
     try {
       Dio dio = Dio();
       FormData formData = FormData.fromMap({
+        'user_id': userId,
+        'register_as': registerAs,
+        //'image_file': imageFile,
+        'image_url': imageUrl,
         'name': name,
         'mobile_number': mobileNumber,
-        'register_as': registerAs,
-        'deviceType': deviceType,
-        'deviceId': deviceId,
+        'email': email,
+        'gender': gender,
+        'dob': dob,
+        'document_type': documentType,
+        'document_file': await MultipartFile.fromFile(documentFile.path,
+            filename: filename,
+            //contentType: new MediaType("jpg", "jpeg", "png", "pdf"),
+            ),
+        'dicument_url': documentUrl,
+        'identification_document_number': idNumber,
+        'achievements': achievements,
+        'skills': skills,
+        'hobbies': hobbies,
+        'total_work_experience': totalWorkExp,
+        'total_teaching_experience': totalTeachExp,
       });
-      var response = await dio.post(Config.updateProfileUrl, data: formData);
+      var response = await dio.post(Config.updateProfileUrl,
+          data: formData,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
       if (response.statusCode == 200) {
         print(response.data);
         closeProgressDialog(context);
-        //result = SignUp.fromJson(response.data);
-        //print(result.data.name);
+        result = ProfileUpdate.fromJson(response.data);
+        print(result.data.name);
         //if(result.status == true){
         // print('ID ::: ' + result.data.userId.toString());
         // saveUserData(result.data.userId);
 
         Fluttertoast.showToast(
-          msg: 'result.message',
+          msg: result.message,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -2748,9 +2903,9 @@ class _EducatorProfileState extends State<EducatorProfile> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-        }else {
-          Fluttertoast.showToast(
-          msg: 'result.message',
+      } else {
+        Fluttertoast.showToast(
+          msg: result.message,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -2758,13 +2913,12 @@ class _EducatorProfileState extends State<EducatorProfile> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-        }
-        print(result);
-        
+      }
+      print(result);
     } on DioError catch (e, stack) {
       print(e.response);
       print(stack);
-       closeProgressDialog(context);
+      closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
             e.response.data['meta']['message']);
@@ -2786,9 +2940,23 @@ class _EducatorProfileState extends State<EducatorProfile> {
     return result;
   }
 
-    void getToken() async {
-      authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-      print(authToken);
+  // compress image
+  Future<File> compressAndGetFile(File file, String targetPath) async {
+    var result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      targetPath,
+      quality: 75,
+    );
+
+    print(file.lengthSync());
+    print(result.lengthSync());
+
+    return result;
+  }
+
+  void getToken() async {
+    authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+    print(authToken);
   }
 
   displayProgressDialog(BuildContext context) {

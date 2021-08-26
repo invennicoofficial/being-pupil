@@ -141,12 +141,22 @@ class _AccountScreenState extends State<AccountScreen> {
                           InkWell(
                             onTap: () {
                               registerAs == 'E'
-                                  ? Navigator.of(context).push(PageRouteBuilder(
-                                      pageBuilder: (_, __, ____) =>
-                                          EducatorProfile()))
-                                  : Navigator.of(context).push(PageRouteBuilder(
-                                      pageBuilder: (_, __, ____) =>
-                                          LearnerProfile()));
+                                  ? pushNewScreen(context,
+                                      screen: EducatorProfile(),
+                                      withNavBar: false,
+                                      pageTransitionAnimation:
+                                          PageTransitionAnimation.cupertino)
+                                  // Navigator.of(context).push(PageRouteBuilder(
+                                  //     pageBuilder: (_, __, ____) =>
+                                  //         EducatorProfile()))
+                                  : pushNewScreen(context,
+                                      screen: LearnerProfile(),
+                                      withNavBar: false,
+                                      pageTransitionAnimation:
+                                          PageTransitionAnimation.cupertino);
+                                  // Navigator.of(context).push(PageRouteBuilder(
+                                  //     pageBuilder: (_, __, ____) =>
+                                  //         LearnerProfile()));
                             },
                             child: ProfileList(
                               txt: "My Profile",
@@ -155,7 +165,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 3.0.h,
+                            height: 1.0.h,
                           ),
                           InkWell(
                             onTap: () {
@@ -172,7 +182,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 3.0.h,
+                            height: 1.0.h,
                           ),
                           InkWell(
                             onTap: () {
@@ -187,7 +197,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 3.0.h,
+                            height: 1.0.h,
                           ),
                           InkWell(
                             onTap: () {
@@ -206,7 +216,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 6.0.h,
+                            height: 3.0.h,
                           ),
                           InkWell(
                             onTap: () {
@@ -221,7 +231,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 3.0.h,
+                            height: 1.0.h,
                           ),
                           InkWell(
                             onTap: () {
@@ -235,7 +245,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 3.0.h,
+                            height: 1.0.h,
                           ),
                           InkWell(
                             onTap: () {
@@ -250,7 +260,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 3.0.h,
+                            height: 1.0.h,
                           ),
                           InkWell(
                             onTap: () {
@@ -265,7 +275,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 6.0.h,
+                            height: 3.0.h,
                           ),
                           InkWell(
                             onTap: () {
@@ -323,11 +333,11 @@ class ProfileList extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: tap,
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 2.0),
-            child: Row(
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 1.0.h),
+        child: Column(
+          children: <Widget>[
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Row(
@@ -360,8 +370,8 @@ class ProfileList extends StatelessWidget {
                 )
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

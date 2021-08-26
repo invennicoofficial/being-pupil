@@ -343,9 +343,9 @@ class _LoginScreenState extends State<LoginScreen> {
         print(response.data);
         closeProgressDialog(context);
         result = Login.fromJson(response.data);
-        if (result.status == true) {
-        print('ID ::: ' + result.data.userId.toString());
         saveUserData(result.data.userId);
+        print('ID ::: ' + result.data.userId.toString());
+        if (result.status == true) {
           Navigator.push(
               context,
               PageTransition(

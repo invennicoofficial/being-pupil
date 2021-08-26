@@ -107,7 +107,8 @@ class _bottomNavBarState extends State<bottomNavBar> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-          icon:  ImageIcon(AssetImage('assets/icons/home.png'),size: 25),
+      icon: Icon(Icons.home_filled,),
+          //icon:  ImageIcon(AssetImage('assets/icons/home.png'),size: 25),
           title: ("Home"),
           activeColorPrimary: Constants.selectedIcon,
           inactiveColorPrimary: Constants.bgColor,),
@@ -130,7 +131,7 @@ class _bottomNavBarState extends State<bottomNavBar> {
         inactiveColorPrimary: Constants.bgColor,
       ),
       PersistentBottomNavBarItem(
-        //icon: ImageIcon(AssetImage('assets/icons/account.png'),size: 25),
+        //icon: ImageIcon(AssetImage('assets/icons/Account@2x.png'),size: 25),
         icon: Icon(Icons.account_circle_rounded),
         title: ("Account"),
         activeColorPrimary: Constants.selectedIcon,
@@ -167,7 +168,7 @@ class _bottomNavBarState extends State<bottomNavBar> {
         curve: Curves.ease,
         duration: Duration(milliseconds: 200),
       ),
-      navBarHeight: 7.0.h,
+     // navBarHeight: 7.0.h,
       navBarStyle: NavBarStyle.style3,
       // padding: NavBarPadding.symmetric(vertical: 0.0, horizontal: 1.0.w),
       //margin: EdgeInsets.symmetric(vertical: 0.0),
