@@ -58,9 +58,9 @@ class _OtpScreenState extends State<OtpScreen> {
 
   getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    setState(() {
-      registerAs = preferences.getString('RegisterAs');
-    });
+    // setState(() {
+    //   registerAs = preferences.getString('RegisterAs');
+    // });
     userId = preferences.getInt('userId');
     print(userId);
     print(registerAs);
@@ -336,6 +336,7 @@ class _OtpScreenState extends State<OtpScreen> {
   //OTP verification API
   Future<OtpResponse> otpVerification(int userId, String otp) async {
     displayProgressDialog(context);
+     SharedPreferences preferences = await SharedPreferences.getInstance();
     var result = OtpResponse();
     try {
       Dio dio = Dio();
@@ -349,7 +350,8 @@ class _OtpScreenState extends State<OtpScreen> {
           //print('TOKEN ::' + result.data.token);
           saveToken(result.data.token);
           role = result.data.userObject.role;
-          print('Role ::' + role);
+          preferences.setString('RegisterAs', role);
+          print('ROLE ::' + preferences.getString('RegisterAs'));
           role == 'L'
               ? Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => bottomNavBar(0)),

@@ -13,29 +13,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'package:flutter_tagging/flutter_tagging.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
+import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
-class LearnerProfile extends StatefulWidget {
-  const LearnerProfile({Key key}) : super(key: key);
+
+
+class EditEducatorProfile extends StatefulWidget {
+  const EditEducatorProfile({Key key}) : super(key: key);
 
   @override
-  _LearnerProfileState createState() => _LearnerProfileState();
+  _EditEducatorProfileState createState() => _EditEducatorProfileState();
 }
 
-class _LearnerProfileState extends State<LearnerProfile> {
-  File _image, _certificate;
+class _EditEducatorProfileState extends State<EditEducatorProfile> {
+  File _image, _certificate, _document;
   String birthDateInString, selectedYearString;
   DateTime birthDate, selectedYear;
   bool isDateSelected = false;
   bool isYearSelected = false;
   String gender = 'Gender';
   String docType = 'DocType';
+  String qualification = '0';
   String workExp = '0';
+  String teachExp = '0';
   String fileName;
-  bool isCat1 = false;
+  String _certiName;
+  int itemCount = 0;
   TextEditingController _nameController = TextEditingController();
   TextEditingController _mobileController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -46,6 +54,16 @@ class _LearnerProfileState extends State<LearnerProfile> {
   TextEditingController _linkedInLinkLinkController = TextEditingController();
   TextEditingController _otherLinkLinkController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
+  var myControllers = [];
+  var certificate = [];
+  String registerAs;
+  int userId;
+  String authToken;
+  List<String> education_details = [];
+  List<String> skillList = [];
+  List<String> hobbieList = [];
+  int totalWorkExp, totalTeachExp;
+  //List<String> _schoolNameList
 
   // List<Skills> _selectedSkills;
   // String _selectedSkillsJson = 'Nothing to show';
@@ -53,25 +71,16 @@ class _LearnerProfileState extends State<LearnerProfile> {
   // List<Hobbies> _selectedHobbies;
   // String _selectedHobbiesJson = 'Nothing to show';
 
-  List<String> catList = List();
-  String authToken;
-
   @override
   void initState() {
+    itemCount = 1;
+    createControllers();
+    getData();
+    getToken();
+    //_document  = File('assets/images/postImage.png');
     super.initState();
     // _selectedSkills = [];
     // _selectedHobbies = [];
-    getToken();
-    catList = [
-      'Category 1',
-      'Category 2',
-      'Category 3',
-      'Category 4',
-      'Category 5',
-      'Category 6',
-      'Category 7',
-      'Category 8',
-    ];
   }
 
   // @override
@@ -81,9 +90,27 @@ class _LearnerProfileState extends State<LearnerProfile> {
   //   super.dispose();
   // }
 
+  getData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      registerAs = preferences.getString('RegisterAs');
+      userId = preferences.getInt('userId');
+    });
+    print(registerAs);
+  }
+
+  createControllers() {
+    myControllers = [];
+    certificate = [];
+    for (var i = 0; i < 5; i++) {
+      myControllers.add(TextEditingController());
+      //certificate.add(_certiName);
+    }
+  }
+
   _imageFromCamera() async {
-    File image = await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 50);
+    File image = (await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50));
 
     setState(() {
       _image = image;
@@ -91,8 +118,8 @@ class _LearnerProfileState extends State<LearnerProfile> {
   }
 
   _imageFromGallery() async {
-    File image = await ImagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50);
+    File image = (await ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50));
 
     setState(() {
       _image = image;
@@ -293,6 +320,7 @@ class _LearnerProfileState extends State<LearnerProfile> {
       PlatformFile file = result.files.first;
       setState(() {
         fileName = file.name;
+        _document = File(file.path);
       });
 
       print(file.name);
@@ -301,6 +329,69 @@ class _LearnerProfileState extends State<LearnerProfile> {
       print(file.extension);
       print(file.path);
     } else {}
+  }
+
+  _certificateFromCamera() async {
+    File doc = (await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50));
+
+    setState(() {
+      _certificate = doc;
+      _certiName = doc.path.split('/scaled_').last.substring(35);
+    });
+  }
+
+  _certificateFromGallery() async {
+    File doc = (await ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50));
+
+    setState(() {
+      _certificate = doc;
+      _certiName = doc.path.split('/scaled_image_picker').last;
+      print(_certiName);
+    });
+  }
+
+  void _showCertificatePicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library,
+                          color: Constants.formBorder),
+                      title: new Text('Gallery',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 12.0.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Constants.bpSkipStyle)),
+                      onTap: () {
+                        _certificateFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera,
+                        color: Constants.formBorder),
+                    title: new Text('Camera',
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 12.0.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Constants.bpSkipStyle)),
+                    onTap: () {
+                      _certificateFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -371,7 +462,7 @@ class _LearnerProfileState extends State<LearnerProfile> {
                                 : CircleAvatar(
                                     backgroundImage: AssetImage(
                                         'assets/icons/circle_upload.png'),
-                                    //backgroundColor: Colors.grey,
+                                    //backgroundColor: Colors.white,
                                     radius: 65.0,
                                     child: Align(
                                       alignment: Alignment.center,
@@ -602,6 +693,13 @@ class _LearnerProfileState extends State<LearnerProfile> {
                                           gender = 'GenderSelected';
                                         });
                                       }
+                                      if(value == 1){
+                                        gender = 'M';
+                                      } else if(value == 2){
+                                        gender = 'F';
+                                      } else {
+                                        gender = 'O';
+                                      }
                                     },
                                     dropdownButtonStyle: DropdownButtonStyle(
                                       height: 7.0.h,
@@ -609,7 +707,8 @@ class _LearnerProfileState extends State<LearnerProfile> {
                                       //padding: EdgeInsets.only(left: 2.0.w),
                                       elevation: 0,
                                       // backgroundColor:
-                                      //     Color(0xFFA8B4C1).withOpacity(0.5),
+                                      //     //Color(0xFFA8B4C1).withOpacity(0.5),
+                                      //     Colors.white,
                                       primaryColor: Constants.bpSkipStyle,
                                       side: BorderSide(
                                           color: Constants.formBorder),
@@ -675,9 +774,24 @@ class _LearnerProfileState extends State<LearnerProfile> {
                                       setState(() {
                                         birthDate = datePick;
                                         isDateSelected = true;
+                                        if(birthDate.day.toString().length == 1 && birthDate.month.toString().length == 1){
+                                          setState(() {
+                                            birthDateInString = "0${birthDate.day.toString()}/0${birthDate.month}/${birthDate.year}";
+                                          });
+                                          print('11111');
+                                        } else if(birthDate.day.toString().length == 1){
+                                          setState(() {
+                                           birthDateInString = "0${birthDate.day}/${birthDate.month}/${birthDate.year}";
 
-                                        birthDateInString =
-                                            "${birthDate.day}/${birthDate.month}/${birthDate.year}"; // 08/14/2019
+                                          });
+                                          print('22222');
+                                        }else if(birthDate.month.toString().length == 1){
+                                          birthDateInString = "${birthDate.day}/0${birthDate.month}/${birthDate.year}"; 
+                                        }
+                                        else{
+                                          birthDateInString = "${birthDate.day}/${birthDate.month}/${birthDate.year}";
+                                        }
+                                        // 08/14/2019
                                       });
                                     }
                                   },
@@ -690,6 +804,7 @@ class _LearnerProfileState extends State<LearnerProfile> {
                                       border: Border.all(
                                           color: Constants.formBorder),
                                       borderRadius: BorderRadius.circular(5.0),
+                                      //color: Colors.transparent,//Color(0xFFA8B4C1).withOpacity(0.5),
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
@@ -765,14 +880,31 @@ class _LearnerProfileState extends State<LearnerProfile> {
                                     docType = 'DocSelected';
                                   });
                                 }
+                                 if(value == 1){
+                                  docType = 'Aadhaar';
+                                  print(docType);
+                                }else if(value == 2){
+                                  docType = 'PAN';
+                                  print(docType);
+                                }else if(value == 3){
+                                  docType = 'Passport';
+                                  print(docType);
+                                }else if(value == 4){
+                                  docType = 'Voter ID';
+                                  print(docType);
+                                }else {
+                                  docType = 'Driving License';
+                                  print(docType);
+                                }
+
                               },
                               dropdownButtonStyle: DropdownButtonStyle(
                                 height: 7.0.h,
                                 width: 90.0.w,
                                 //padding: EdgeInsets.only(left: 2.0.w),
                                 elevation: 0,
-                                // backgroundColor:
-                                //     Color(0xFFA8B4C1).withOpacity(0.5),
+                                //backgroundColor: Colors.transparent,
+                                //Color(0xFFA8B4C1).withOpacity(0.5),
                                 primaryColor: Constants.bpSkipStyle,
                                 side: BorderSide(color: Constants.formBorder),
                               ),
@@ -783,10 +915,10 @@ class _LearnerProfileState extends State<LearnerProfile> {
                                     horizontal: 2.0.w, vertical: 1.5.h),
                               ),
                               items: [
-                                'Aadhaar        ',
-                                'PAN            ',
-                                'Passport       ',
-                                'Voter ID       ',
+                                'Aadhaar',
+                                'PAN',
+                                'Passport',
+                                'Voter ID',
                                 'Driving License'
                               ]
                                   .asMap()
@@ -806,7 +938,7 @@ class _LearnerProfileState extends State<LearnerProfile> {
                                                   fontWeight: FontWeight.w400,
                                                   color: Constants.bpSkipStyle),
                                             ),
-                                            SizedBox(width: 45.0.w)
+                                           // SizedBox(width: 45.0.w)
                                           ],
                                         ),
                                       ),
@@ -837,7 +969,7 @@ class _LearnerProfileState extends State<LearnerProfile> {
                                 child: Container(
                                   height: 6.0.h,
                                   width: 90.0.w,
-                                  color: Colors.transparent,
+                                  //color: Colors.grey,
                                   child: Center(
                                     child: Row(
                                       mainAxisAlignment:
@@ -851,15 +983,18 @@ class _LearnerProfileState extends State<LearnerProfile> {
                                         SizedBox(
                                           width: 1.0.w,
                                         ),
-                                        Text(
-                                          (fileName == null || fileName == '')
-                                              ? 'Upload the file'
-                                              : fileName,
-                                          style: TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              fontSize: 10.0.sp,
-                                              fontWeight: FontWeight.w400,
-                                              color: Constants.bpSkipStyle),
+                                        Flexible(
+                                                                                  child: Text(
+                                            (fileName == null || fileName == '')
+                                                ? 'Upload the file'
+                                                : fileName,
+                                            style: TextStyle(
+                                                fontFamily: 'Montserrat',
+                                                fontSize: 10.0.sp,
+                                                fontWeight: FontWeight.w400,
+                                                color: Constants.bpSkipStyle),
+                                                overflow: TextOverflow.fade,
+                                          ),
                                         )
                                       ],
                                     ),
@@ -970,7 +1105,7 @@ class _LearnerProfileState extends State<LearnerProfile> {
                               padding: EdgeInsets.only(
                                   top: 4.0.h, left: 3.0.w, right: 3.0.w),
                               child: Text(
-                                'Interested Categories',
+                                'Educational Details',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 12.0.sp,
@@ -981,32 +1116,587 @@ class _LearnerProfileState extends State<LearnerProfile> {
                           ],
                         ),
 
-                        GridView.builder(
-                            shrinkWrap: true,
-                            padding: EdgeInsets.all(0.0),
-                            itemCount: catList.length,
-                            physics: NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2, childAspectRatio: 5),
-                            itemBuilder: (context, index) {
-                              return CheckboxListTile(
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  title: Text(catList[index],
-                                      style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 10.0.sp,
-                                          color: Color(0xFF6B737C),
-                                          fontWeight: FontWeight.w400)),
-                                  activeColor: Constants.bgColor,
-                                  value: isCat1,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      isCat1 = !isCat1;
-                                    });
+                        ListView.builder(
+                          itemCount: itemCount,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                  left: 3.0.w, right: 3.0.w, top: 3.0.h),
+                              child: DottedBorder(
+                                borderType: BorderType.RRect,
+                                radius: Radius.circular(5),
+                                padding: EdgeInsets.all(12),
+                                color: Constants.formBorder.withOpacity(0.7),
+                                strokeWidth: 1.8,
+                                strokeCap: StrokeCap.butt,
+                                dashPattern: [4, 3],
+                                child: Column(
+                                  children: <Widget>[
+                                    Theme(
+                                      data: new ThemeData(
+                                        primaryColor: Constants.bpSkipStyle,
+                                        primaryColorDark: Constants.bpSkipStyle,
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 1.0.w,
+                                            right: 1.0.w,
+                                            top: 1.0.h),
+                                        child: Container(
+                                          height: 7.0.h,
+                                          width: 90.0.w,
+                                          child: TextFormField(
+                                            controller: myControllers[index],
+                                            decoration: InputDecoration(
+                                              labelText: "Name of School",
+                                              fillColor: Colors.white,
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
+                                                borderSide: BorderSide(
+                                                  color: Constants.formBorder,
+                                                ),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
+                                                borderSide: BorderSide(
+                                                  color: Constants.formBorder,
+                                                  //width: 2.0,
+                                                ),
+                                              ),
+                                            ),
+                                            //keyboardType: TextInputType.emailAddress,
+                                            style: new TextStyle(
+                                                fontFamily: "Montserrat",
+                                                fontSize: 10.0.sp),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    Theme(
+                                      data: new ThemeData(
+                                        primaryColor: Constants.bpSkipStyle,
+                                        primaryColorDark: Constants.bpSkipStyle,
+                                      ),
+                                      child: Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 1.0.w,
+                                              right: 1.0.w,
+                                              top: 3.0.h),
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              print('Year!!!');
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text(
+                                                      "Select Qualification Year",
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              'Montserrat',
+                                                          fontSize: 14.0.sp,
+                                                          color:
+                                                              Constants.bgColor,
+                                                          fontWeight:
+                                                              FontWeight.w700),
+                                                    ),
+                                                    content: Container(
+                                                      // Need to use container to add size constraint.
+                                                      width: 75.0.w,
+                                                      height: 50.0.h,
+                                                      child: YearPicker(
+                                                        firstDate: DateTime(
+                                                            DateTime(1960).year,
+                                                            1),
+                                                        lastDate: DateTime(
+                                                            DateTime.now().year,
+                                                            1),
+                                                        //initialDate: DateTime.now(),
+                                                        // save the selected date to _selectedDate DateTime variable.
+                                                        // It's used to set the previous selected date when
+                                                        // re-showing the dialog.
+                                                        selectedDate:
+                                                            isYearSelected
+                                                                ? selectedYear
+                                                                : DateTime(
+                                                                    DateTime.now()
+                                                                        .year),
+                                                        onChanged: (DateTime
+                                                            dateTime) {
+                                                          // close the dialog when year is selected.
+                                                          setState(() {
+                                                            isYearSelected =
+                                                                true;
+                                                            selectedYear =
+                                                                dateTime;
+                                                          });
+
+                                                          print(selectedYear
+                                                              .year);
+                                                          Navigator.pop(
+                                                              context);
+                                                          // Do something with the dateTime selected.
+                                                          // Remember that you need to use dateTime.year to get the year
+                                                        },
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                              // final pickedYear =
+                                              //     await showDatePicker(
+                                              //   context: context,
+                                              //   initialDate: DateTime.now(),
+                                              //   firstDate: DateTime(1960, 1, 1),
+                                              //   lastDate: DateTime.now(),
+                                              //   helpText:
+                                              //       'Select Qualification Year',
+                                              //   initialDatePickerMode:
+                                              //       DatePickerMode.year,
+                                              // );
+                                              // final pickedYear = await YearPicker(
+                                              //  selectedDate: DateTime.now(),
+                                              //  firstDate: DateTime(1960),
+                                              //  lastDate: DateTime.now(),
+                                              //  onChanged: (value) {
+                                              //    selectedYear = value;
+                                              //    },
+                                              // );
+                                              // if (pickedYear != null &&
+                                              //     pickedYear != selectedYear) {
+                                              //   setState(() {
+                                              //     selectedYear = pickedYear;
+                                              //     isYearSelected = true;
+                                              //     selectedYearString =
+                                              //         '${selectedYear.year}';
+                                              //   });
+                                              // }
+                                            },
+                                            child: Container(
+                                              height: 7.0.h,
+                                              width: 90.0.w,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 3.0.w),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color:
+                                                        Constants.formBorder),
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
+                                                //color: Color(0xFFA8B4C1).withOpacity(0.5),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    isYearSelected
+                                                        ? selectedYear.year
+                                                            .toString()
+                                                        : 'Year',
+                                                    style: TextStyle(
+                                                        fontFamily:
+                                                            'Montserrat',
+                                                        fontSize: 10.0.sp,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Constants
+                                                            .bpSkipStyle),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          )),
+                                    ),
+                                    // Theme(
+                                    //   data: new ThemeData(
+                                    //     primaryColor: Constants.bpSkipStyle,
+                                    //     primaryColorDark: Constants.bpSkipStyle,
+                                    //   ),
+                                    //   child: Padding(
+                                    //     padding: EdgeInsets.only(
+                                    //       left: 3.0.w,
+                                    //       right: 3.0.w,
+                                    //       top: 3.0.h,
+                                    //       //bottom: 3.0.h
+                                    //     ),
+                                    //     child: CustomDropdown<int>(
+                                    //       child: Row(
+                                    //         mainAxisAlignment:
+                                    //             MainAxisAlignment.spaceBetween,
+                                    //         children: [
+                                    //           Padding(
+                                    //             padding:
+                                    //                 EdgeInsets.symmetric(horizontal: 3.0.w),
+                                    //             child: Text(
+                                    //               'Year',
+                                    //               style: TextStyle(
+                                    //                   fontFamily: 'Montserrat',
+                                    //                   fontSize: 10.0.sp,
+                                    //                   fontWeight: FontWeight.w400,
+                                    //                   color: Constants.bpSkipStyle),
+                                    //             ),
+                                    //           ),
+                                    //           //SizedBox(width: 65.0.w)
+                                    //         ],
+                                    //       ),
+                                    //       // icon: Icon(
+                                    //       //   Icons.expand_more,
+                                    //       //   color: Constants.bpSkipStyle,
+                                    //       // ),
+                                    //       onChange: (int value, int index) {
+                                    //         print(value);
+                                    //       },
+                                    //       dropdownButtonStyle: DropdownButtonStyle(
+                                    //         height: 7.0.h,
+                                    //         width: 90.0.w,
+                                    //         //padding: EdgeInsets.only(left: 2.0.w),
+                                    //         elevation: 0,
+                                    //         backgroundColor:
+                                    //             Color(0xFFA8B4C1).withOpacity(0.5),
+                                    //         primaryColor: Constants.bpSkipStyle,
+                                    //         side: BorderSide(color: Constants.formBorder),
+                                    //       ),
+                                    //       dropdownStyle: DropdownStyle(
+                                    //         borderRadius: BorderRadius.circular(10.0),
+                                    //         elevation: 6,
+                                    //         padding: EdgeInsets.symmetric(
+                                    //             horizontal: 2.0.w, vertical: 1.5.h),
+                                    //       ),
+                                    //       items: ['2001', '2002', '2003', '2004', '2005']
+                                    //           .asMap()
+                                    //           .entries
+                                    //           .map(
+                                    //             (item) => DropdownItem<int>(
+                                    //               value: item.key + 1,
+                                    //               child: Padding(
+                                    //                 padding: const EdgeInsets.all(8.0),
+                                    //                 child: Row(
+                                    //                   children: [
+                                    //                     Text(
+                                    //                       item.value,
+                                    //                       style: TextStyle(
+                                    //                           fontFamily: 'Montserrat',
+                                    //                           fontSize: 10.0.sp,
+                                    //                           fontWeight: FontWeight.w400,
+                                    //                           color: Constants.bpSkipStyle),
+                                    //                     ),
+                                    //                     SizedBox(width: 61.0.w)
+                                    //                   ],
+                                    //                 ),
+                                    //               ),
+                                    //             ),
+                                    //           )
+                                    //           .toList(),
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                    Theme(
+                                      data: new ThemeData(
+                                        primaryColor: Constants.bpSkipStyle,
+                                        primaryColorDark: Constants.bpSkipStyle,
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 1.0.w,
+                                            right: 1.0.w,
+                                            top: 3.0.h),
+                                        child: CustomDropdown<int>(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 3.0.w),
+                                                child: Text(
+                                                  'Qualification',
+                                                  style: TextStyle(
+                                                      fontFamily: 'Montserrat',
+                                                      fontSize: 10.0.sp,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: Constants
+                                                          .bpSkipStyle),
+                                                ),
+                                              ),
+                                              //SizedBox(width: 50.0.w)
+                                            ],
+                                          ),
+                                          // icon: Icon(
+                                          //   Icons.expand_more,
+                                          //   color: Constants.bpSkipStyle,
+                                          // ),
+                                          onChange: (int value, int index) {
+                                            print(value);
+                                            if (value > 0) {
+                                              setState(() {
+                                                qualification = '1';
+                                              });
+                                            }
+                                            if(value == 1){
+                                              qualification = 'Graduate';
+                                              print(qualification);
+                                            }else if(value == 2){
+                                              qualification = 'Post-graduate';
+                                              print(qualification);
+                                            }else if(value == 3){
+                                              qualification = 'Chartered Accountant';
+                                              print(qualification);
+                                            }else{
+                                              qualification = 'Others';
+                                              print(qualification);
+                                            } 
+                                          },
+                                          dropdownButtonStyle:
+                                              DropdownButtonStyle(
+                                            height: 7.0.h,
+                                            width: 90.0.w,
+                                            //padding: EdgeInsets.only(left: 2.0.w),
+                                            elevation: 0,
+                                            //backgroundColor: Colors.white,
+                                            primaryColor: Constants.bpSkipStyle,
+                                            side: BorderSide(
+                                                color: Constants.formBorder),
+                                          ),
+                                          dropdownStyle: DropdownStyle(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                            elevation: 6,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 2.0.w,
+                                                vertical: 1.5.h),
+                                          ),
+                                          items: [
+                                            'Graduate',
+                                            'Post-graduate',
+                                            'Chartered Accountant',
+                                            'Others'
+                                          ]
+                                              .asMap()
+                                              .entries
+                                              .map(
+                                                (item) => DropdownItem<int>(
+                                                  value: item.key + 1,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          item.value,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'Montserrat',
+                                                              fontSize: 10.0.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              color: Constants
+                                                                  .bpSkipStyle),
+                                                        ),
+                                                        //SizedBox(width: 60.0.w)
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                              .toList(),
+                                        ),
+                                      ),
+                                    ),
+
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 1.0.w,
+                                          right: 1.0.w,
+                                          top: 3.0.h),
+                                      child: DottedBorder(
+                                        borderType: BorderType.RRect,
+                                        radius: Radius.circular(5),
+                                        padding: EdgeInsets.all(12),
+                                        color: Constants.formBorder
+                                            .withOpacity(0.5),
+                                        strokeWidth: 1.5,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(5)),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              print('Upload!!!');
+                                              _showCertificatePicker(context);
+                                            },
+                                            child: Container(
+                                              height: 6.0.h,
+                                              width: 90.0.w,
+                                              color: Colors.transparent,
+                                              child: Center(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    ImageIcon(
+                                                        AssetImage(
+                                                            'assets/icons/upload.png'),
+                                                        size: 25,
+                                                        color: Constants
+                                                            .formBorder),
+                                                    SizedBox(
+                                                      width: 1.0.w,
+                                                    ),
+                                                    Text(
+                                                      _certiName != null
+                                                          ? _certiName
+                                                          : 'Upload Certificate/Degree',
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              'Montserrat',
+                                                          fontSize: 10.0.sp,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          color: Constants
+                                                              .bpSkipStyle),
+                                                      overflow:
+                                                          TextOverflow.clip,
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+
+                        // Theme(
+                        //   data: new ThemeData(
+                        //     primaryColor: Constants.bpSkipStyle,
+                        //     primaryColorDark: Constants.bpSkipStyle,
+                        //   ),
+                        //   child: Padding(
+                        //       padding: EdgeInsets.only(
+                        //         left: 3.0.w,
+                        //         right: 3.0.w,
+                        //         top: 3.0.h,
+                        //         //bottom: 3.0.h
+                        //       ),
+                        //       child: GestureDetector(
+                        //         onTap: () {
+                        //           print('Other!!!');
+                        //         },
+                        //         child: Container(
+                        //           height: 7.0.h,
+                        //           width: 90.0.w,
+                        //           padding:
+                        //               EdgeInsets.symmetric(horizontal: 3.0.w),
+                        //           decoration: BoxDecoration(
+                        //             border:
+                        //                 Border.all(color: Constants.formBorder),
+                        //             borderRadius: BorderRadius.circular(5.0),
+                        //             //color: Color(0xFFA8B4C1).withOpacity(0.5),
+                        //           ),
+                        //           child: Center(
+                        //             child: Row(
+                        //               mainAxisAlignment:
+                        //                   MainAxisAlignment.center,
+                        //               children: [
+                        //                 Icon(
+                        //                   Icons.add,
+                        //                   size: 15,
+                        //                   color: Constants.bpSkipStyle,
+                        //                 ),
+                        //                 Text(
+                        //                   'Other Degree/ Diploma',
+                        //                   style: TextStyle(
+                        //                       fontFamily: 'Montserrat',
+                        //                       fontSize: 10.0.sp,
+                        //                       fontWeight: FontWeight.w400,
+                        //                       color: Constants.bpSkipStyle),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       )),
+                        // ),
+
+                        Theme(
+                          data: new ThemeData(
+                            primaryColor: Constants.bpSkipStyle,
+                            primaryColorDark: Constants.bpSkipStyle,
+                          ),
+                          child: Padding(
+                              padding: EdgeInsets.only(
+                                left: 3.0.w,
+                                right: 3.0.w,
+                                top: 3.0.h,
+                                //bottom: 3.0.h
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    if (itemCount < 5) {
+                                      itemCount = itemCount + 1;
+                                    } else {
+                                      Fluttertoast.showToast(
+                                          msg: "You can add only 5 degree",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor: Constants.bgColor,
+                                          textColor: Colors.white,
+                                          fontSize: 10.0.sp);
+                                    }
                                   });
-                            }),
+                                  print(myControllers[1].text.toString());
+                                  print('Add more!!!');
+                                },
+                                child: Container(
+                                  height: 7.0.h,
+                                  width: 90.0.w,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 3.0.w),
+                                  decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: Constants.formBorder),
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    //color: Color(0xFFA8B4C1).withOpacity(0.5),
+                                  ),
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.add,
+                                          size: 15,
+                                          color: Constants.bgColor,
+                                        ),
+                                        Text(
+                                          ' Add more details',
+                                          style: TextStyle(
+                                              fontFamily: 'Montserrat',
+                                              fontSize: 10.0.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: Constants.bgColor),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )),
+                        ),
 
                         //Work Experience
                         Row(
@@ -1063,10 +1753,118 @@ class _LearnerProfileState extends State<LearnerProfile> {
                               //   color: Constants.bpSkipStyle,
                               // ),
                               onChange: (int value, int index) {
-                                print(value);
+                                totalWorkExp = value;
+                                print(totalWorkExp);
                                 if (value > 0) {
                                   setState(() {
                                     workExp = '1';
+                                  });
+                                }
+                              },
+                              dropdownButtonStyle: DropdownButtonStyle(
+                                height: 7.0.h,
+                                width: 90.0.w,
+                                //padding: EdgeInsets.only(left: 2.0.w),
+                                elevation: 0,
+                                // backgroundColor:
+                                //     Color(0xFFA8B4C1).withOpacity(0.5),
+                                primaryColor: Constants.bpSkipStyle,
+                                side: BorderSide(color: Constants.formBorder),
+                              ),
+                              dropdownStyle: DropdownStyle(
+                                borderRadius: BorderRadius.circular(10.0),
+                                elevation: 6,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 2.0.w, vertical: 1.5.h),
+                              ),
+                              items: [
+                                '1',
+                                '2',
+                                '3',
+                                '4',
+                                '5',
+                                '6',
+                                '7',
+                                '8',
+                                '9',
+                                '10',
+                                '11',
+                                '12',
+                                '13',
+                                '14',
+                                '15',
+                                '15+'
+                              ]
+                                  .asMap()
+                                  .entries
+                                  .map(
+                                    (item) => DropdownItem<int>(
+                                      value: item.key + 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              item.value,
+                                              style: TextStyle(
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 10.0.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Constants.bpSkipStyle),
+                                            ),
+                                            //SizedBox(width: 68.0.w)
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          ),
+                        ),
+
+                        Theme(
+                          data: new ThemeData(
+                            primaryColor: Constants.bpSkipStyle,
+                            primaryColorDark: Constants.bpSkipStyle,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              left: 3.0.w,
+                              right: 3.0.w,
+                              top: 3.0.h,
+                              //bottom: 3.0.h
+                            ),
+                            child: CustomDropdown<int>(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 3.0.w),
+                                    child: Text(
+                                      'Total Teaching Experience',
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 10.0.sp,
+                                          fontWeight: FontWeight.w400,
+                                          color: Constants.bpSkipStyle),
+                                    ),
+                                  ),
+                                  //SizedBox(width: 23.0.w)
+                                ],
+                              ),
+                              // icon: Icon(
+                              //   Icons.expand_more,
+                              //   color: Constants.bpSkipStyle,
+                              // ),
+                              onChange: (int value, int index) {
+                                 totalTeachExp = value;
+                                print(totalTeachExp);
+                                if (value > 0) {
+                                  setState(() {
+                                    teachExp = '1';
                                   });
                                 }
                               },
@@ -1303,6 +2101,7 @@ class _LearnerProfileState extends State<LearnerProfile> {
                                 },
                                 onTag: (tag) {
                                   print('onTag: $tag');
+                                  skillList.add(tag);
                                 },
                                 // validator: (String tag) {
                                 //   print('validator: $tag');
@@ -1312,6 +2111,90 @@ class _LearnerProfileState extends State<LearnerProfile> {
                                 //   return null;
                                 // },
                               ),
+                              // FlutterTagging<Skills>(
+                              //   initialItems: _selectedSkills,
+                              //   textFieldConfiguration: TextFieldConfiguration(
+                              //     decoration: InputDecoration(
+                              //         //labelText: "Please mention your achivements...",
+                              //         counterText: '',
+                              //         fillColor: Colors.white,
+                              //         focusedBorder: OutlineInputBorder(
+                              //           borderRadius:
+                              //               BorderRadius.circular(5.0),
+                              //           borderSide: BorderSide(
+                              //             color: Constants.formBorder,
+                              //           ),
+                              //         ),
+                              //         enabledBorder: OutlineInputBorder(
+                              //           borderRadius:
+                              //               BorderRadius.circular(5.0),
+                              //           borderSide: BorderSide(
+                              //             color: Constants.formBorder,
+                              //             //width: 2.0,
+                              //           ),
+                              //         ),
+                              //         hintText:
+                              //             "Please mention your skills example #skill1 #skill2..."),
+                              //     //keyboardType: TextInputType.emailAddress,
+                              //     style: new TextStyle(
+                              //         fontFamily: "Montserrat",
+                              //         fontSize: 10.0.sp),
+                              //   ),
+                              //   findSuggestions: SkillService.getLanguages,
+                              //   additionCallback: (value) {
+                              //     return Skills(
+                              //       name: value,
+                              //       position: 0,
+                              //     );
+                              //   },
+                              //   onAdded: (language) {
+                              //     // api calls here, triggered when add to tag button is pressed
+                              //     return Skills(
+                              //       name: language.name,
+                              //       position: 0,
+                              //     );
+                              //   },
+                              //   configureSuggestion: (lang) {
+                              //     return SuggestionConfiguration(
+                              //       title: Text(lang.name),
+                              //       //subtitle: Text(lang.position.toString()),
+                              //       additionWidget: Chip(
+                              //         avatar: Icon(
+                              //           Icons.add_circle,
+                              //           color: Colors.white,
+                              //         ),
+                              //         label: Text('Add New Tag'),
+                              //         labelStyle: TextStyle(
+                              //           fontFamily: 'Montserrat',
+                              //           fontSize: 10.0.sp,
+                              //           color: Colors.white,
+                              //           fontWeight: FontWeight.w300,
+                              //         ),
+                              //         backgroundColor: Constants.bgColor,
+                              //       ),
+                              //     );
+                              //   },
+                              //   configureChip: (lang) {
+                              //     return ChipConfiguration(
+                              //       label: Text(lang.name),
+                              //       backgroundColor: Constants.bgColor,
+                              //       labelStyle: TextStyle(color: Colors.white),
+                              //       deleteIconColor: Colors.white,
+                              //     );
+                              //   },
+                              //   onChanged: () {
+                              //     setState(() {
+                              //       _selectedSkillsJson = _selectedSkills
+                              //           .map<String>(
+                              //               (lang) => '\n${lang.toJson()}')
+                              //           .toList()
+                              //           .toString();
+                              //       _selectedSkillsJson = _selectedSkillsJson
+                              //           .replaceFirst('}]', '}\n]');
+                              //     });
+                              //   },
+                              // ),
+
                               // TextFormField(
                               //   maxLines: 5,
                               //   keyboardType: TextInputType.multiline,
@@ -1378,7 +2261,7 @@ class _LearnerProfileState extends State<LearnerProfile> {
                                 showHashtag: true,
                                 tagMargin: const EdgeInsets.only(right: 4.0),
                                 tagCancelIcon: Icon(Icons.cancel,
-                                    size: 20.0, color: Colors.black),
+                                    size: 20.0, color: Constants.bgColor),
                                 tagCancelIconPadding:
                                     EdgeInsets.only(left: 4.0, top: 2.0),
                                 tagPadding: EdgeInsets.only(
@@ -1438,6 +2321,7 @@ class _LearnerProfileState extends State<LearnerProfile> {
                               },
                               onTag: (tag) {
                                 print('onTag: $tag');
+                                hobbieList.add(tag);
                               },
                               // validator: (String tag) {
                               //   print('validator: $tag');
@@ -1446,7 +2330,91 @@ class _LearnerProfileState extends State<LearnerProfile> {
                               //   }
                               //   return null;
                               // },
-                            )),
+                            )
+                                // FlutterTagging<Hobbies>(
+                                //   initialItems: _selectedHobbies,
+                                //   textFieldConfiguration: TextFieldConfiguration(
+                                //     decoration: InputDecoration(
+                                //         //labelText: "Please mention your achivements...",
+                                //         counterText: '',
+                                //         fillColor: Colors.white,
+                                //         focusedBorder: OutlineInputBorder(
+                                //           borderRadius:
+                                //               BorderRadius.circular(5.0),
+                                //           borderSide: BorderSide(
+                                //             color: Constants.formBorder,
+                                //           ),
+                                //         ),
+                                //         enabledBorder: OutlineInputBorder(
+                                //           borderRadius:
+                                //               BorderRadius.circular(5.0),
+                                //           borderSide: BorderSide(
+                                //             color: Constants.formBorder,
+                                //             //width: 2.0,
+                                //           ),
+                                //         ),
+                                //         hintText:
+                                //             "Please mention your hobbies example #hobbies1 #hobbies2..."),
+                                //     //keyboardType: TextInputType.emailAddress,
+                                //     style: new TextStyle(
+                                //         fontFamily: "Montserrat",
+                                //         fontSize: 10.0.sp),
+                                //   ),
+                                //   findSuggestions: HobbieService.getLanguages,
+                                //   additionCallback: (value) {
+                                //     return Hobbies(
+                                //       name: value,
+                                //       position: 0,
+                                //     );
+                                //   },
+                                //   onAdded: (language) {
+                                //     // api calls here, triggered when add to tag button is pressed
+                                //     return Hobbies(
+                                //       name: language.name,
+                                //       position: 0,
+                                //     );
+                                //   },
+                                //   configureSuggestion: (lang) {
+                                //     return SuggestionConfiguration(
+                                //       title: Text(lang.name),
+                                //       //subtitle: Text(lang.position.toString()),
+                                //       additionWidget: Chip(
+                                //         avatar: Icon(
+                                //           Icons.add_circle,
+                                //           color: Colors.white,
+                                //         ),
+                                //         label: Text('Add New Tag'),
+                                //         labelStyle: TextStyle(
+                                //           fontFamily: 'Montserrat',
+                                //           fontSize: 10.0.sp,
+                                //           color: Colors.white,
+                                //           fontWeight: FontWeight.w300,
+                                //         ),
+                                //         backgroundColor: Constants.bgColor,
+                                //       ),
+                                //     );
+                                //   },
+                                //   configureChip: (lang) {
+                                //     return ChipConfiguration(
+                                //       label: Text(lang.name),
+                                //       backgroundColor: Constants.bgColor,
+                                //       labelStyle: TextStyle(color: Colors.white),
+                                //       deleteIconColor: Colors.white,
+                                //     );
+                                //   },
+                                //   onChanged: () {
+                                //     setState(() {
+                                //       _selectedHobbiesJson = _selectedHobbies
+                                //           .map<String>(
+                                //               (lang) => '\n${lang.toJson()}')
+                                //           .toList()
+                                //           .toString();
+                                //       _selectedHobbiesJson = _selectedHobbiesJson
+                                //           .replaceFirst('}]', '}\n]');
+                                //     });
+                                //   },
+                                // ),
+                                ),
                           ),
                         ),
                         // Theme(
@@ -1683,7 +2651,7 @@ class _LearnerProfileState extends State<LearnerProfile> {
                               top: 6.0.h,
                               bottom: 3.0.h),
                           child: GestureDetector(
-                            onTap: () {
+                            onTap: () async {
                               print('Submit!!!');
                               bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9."
                                       r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -1747,9 +2715,27 @@ class _LearnerProfileState extends State<LearnerProfile> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
+                              } else if (myControllers[0].text.isEmpty) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter School Name",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp);
                               } else if (_idNumController.text.isEmpty) {
                                 Fluttertoast.showToast(
                                     msg: "Please Enter Valid ID Number",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp);
+                              } else if (qualification == '0') {
+                                Fluttertoast.showToast(
+                                    msg: "Please Select Qualification",
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.BOTTOM,
                                     timeInSecForIosWeb: 1,
@@ -1765,6 +2751,15 @@ class _LearnerProfileState extends State<LearnerProfile> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
+                              } else if (teachExp == '0') {
+                                Fluttertoast.showToast(
+                                    msg: "Please Select Teaching Experience",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp);
                               } else if (fileName == null || fileName == '') {
                                 Fluttertoast.showToast(
                                     msg: "Please Pick Selected Document",
@@ -1774,12 +2769,90 @@ class _LearnerProfileState extends State<LearnerProfile> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
+                              } else if (_certiName == null ||
+                                  _certiName == '') {
+                                Fluttertoast.showToast(
+                                    msg: "Please Pick Certificate",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp);
                               } else {
-                                Navigator.of(context).push
-                                    //pushAndRemoveUntil
-                                    (MaterialPageRoute(
-                                        builder: (context) => bottomNavBar(0)));
-                                //(Route<dynamic> route) => false);
+                                if (_document != null && _image != null && _certificate != null) {
+                      final dir = await path_provider
+                          .getTemporaryDirectory();
+                      final targetPath =
+                          dir.absolute.path + "/temp.jpg";
+                      final docFile =
+                      await compressAndGetFile(
+                          _document, targetPath);
+                      final imgFile =
+                      await compressAndGetFile(
+                          _document, targetPath);
+                      final certiFile =
+                      await compressAndGetFile(
+                          _certificate, targetPath);
+                      if (imgFile == null && docFile == null) {
+                        return;
+                      }
+                      setState(() {});
+                      print(imgFile.path);
+                      // saveProfileWithImage(imgFile);
+                      //updateProfilewithImage(imgFile);
+                       updateProfile(
+                                  userId,
+                                  registerAs,
+                                  //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                                  //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                                  _nameController.text,
+                                  _mobileController.text,
+                                  _emailController.text,
+                                  gender,
+                                  birthDateInString,
+                                  docType,
+                                  imgFile,
+                                  docFile,
+                                  certiFile,
+                                  //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                                  _idNumController.text,
+                                  _achivementController.text,
+                                  skillList.toString(),
+                                  hobbieList.toString(),
+                                  _fbLinkController.text,
+                                  _instagramLinkController.text,
+                                  _linkedInLinkLinkController.text,
+                                  _otherLinkLinkController.text,
+                                  totalWorkExp,
+                                  totalTeachExp);
+                    } else {
+                      // updateProfileWithoutMedia(
+                      //             userId,
+                      //             registerAs,
+                      //             //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                      //             //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                      //             _nameController.text,
+                      //             _mobileController.text,
+                      //             _emailController.text,
+                      //             'M',
+                      //             '10/10/2010', //birthDateInString,
+                      //             "A",
+                      //             //imgFile,
+                      //             //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                      //             _idNumController.text,
+                      //             _achivementController.text,
+                      //             skillList.toString(),
+                      //             hobbieList.toString(),
+                      //             '5',
+                      //             '5');
+                    }
+                             
+                              // Navigator.of(context).push
+                              //     //pushAndRemoveUntil
+                              //     (MaterialPageRoute(
+                              //         builder: (context) => bottomNavBar(0)));
+                              // //(Route<dynamic> route) => false);
                               }
                             },
                             child: Container(
@@ -1814,32 +2887,114 @@ class _LearnerProfileState extends State<LearnerProfile> {
         ));
   }
 
-//Update Profile API
-  Future<ProfileUpdate>updateProfile(String name, String mobileNumber, String registerAs,
-      String deviceType, String deviceId) async {
+  //Update Profile API
+  Future<ProfileUpdate> updateProfile(
+    int userId,
+    String registerAs,
+    //String imageFile,
+    //String imageUrl,
+    String name,
+    String mobileNumber,
+    String email,
+    String gender,
+    String dob,
+    String documentType,
+    File documentFile,
+    File imageFile,
+    File certificateFile,
+    //String documentUrl,
+    String idNumber,
+    //List<Location> location,
+    String achievements,
+    String skills,
+    String hobbies,
+    String facbookUrl,
+    String instaUrl,
+    String linkedinUrl,
+    String otherUrl,
+    //List<EducationalDetails> educationalDetails,
+    int totalWorkExp,
+    int totalTeachExp,
+    //List<InterestedCategory> interestedCategory,
+  ) async {
     displayProgressDialog(context);
+    String docname = documentFile.path.split('/').last;
+    String imgname = imageFile.path.split('/').last;
+    String certiname = certificateFile.path.split('/').last;
+    Map<String, dynamic> educationDetailMap;
     var result = ProfileUpdate();
+    // for (int i = 0; i <= myControllers.length; i++) {
+    //   //education_details.add()
+    //   educationDetailMap = {
+    //     "id": 5,
+    //     "school_name": "",
+    //     "year": "",
+    //     "qualification": "",
+    //     "certificate_file": ""
+    //   };
+    // }
     try {
       Dio dio = Dio();
       FormData formData = FormData.fromMap({
+        'user_id': userId,
+        'register_as': registerAs,
         'name': name,
         'mobile_number': mobileNumber,
-        'register_as': registerAs,
-        'deviceType': deviceType,
-        'deviceId': deviceId,
+        'email': email,
+        'gender': gender,
+        'dob': dob,
+        'document_type': documentType,
+        'document_file': await MultipartFile.fromFile(documentFile.path,
+            filename: docname,),
+        'image_file': await MultipartFile.fromFile(imageFile.path,
+            filename: imgname,),
+        //'document_url': documentUrl,
+        'identification_document_number': idNumber,
+        'location[0][id]': 54,
+        'location[0][address_line_1]': 'abc',
+        'location[0][address_line_2]': 'def',
+        'location[0][city]': 'Gujarat',
+        'location[0][country]': 'India',
+        'location[0][pincode]': 390006,
+        'location[0][latitude]': 123.00,
+        'location[0][longitude]': 456.00,
+        'location[0][location_type]': 'work',
+        'achievements': achievements,
+        'skills': skills,
+        'hobbies': hobbies,
+        'educational_details[0][id]': 25,
+        'educational_details[0][school_name]': myControllers[0].text.toString(),
+        'educational_details[0][year]': selectedYear.year,
+        'educational_details[0][qualification]': qualification.toString(),
+        'educational_details[0][certificate_file]': await MultipartFile.fromFile(certificateFile.path,
+            filename: certiname,
+            //contentType: new MediaType("jpg", "jpeg", "png", "pdf"),
+            ),
+        'facbook_link': facbookUrl,
+        'insta_url': instaUrl,
+        'linkedin_url': linkedinUrl,
+        'other_url': otherUrl,
+        'total_work_experience': totalWorkExp,
+        'total_teaching_experience': totalTeachExp,
       });
-      var response = await dio.post(Config.updateProfileUrl, data: formData);
+      var response = await dio.post(Config.updateProfileUrl,
+          data: formData,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}),
+          // onSendProgress: (int sent, int total){
+          //   print('SENT $sent + TOTAL $total');
+          // }
+          );
       if (response.statusCode == 200) {
         print(response.data);
         closeProgressDialog(context);
-        //result = SignUp.fromJson(response.data);
-        //print(result.data.name);
+        result = ProfileUpdate.fromJson(response.data);
+        print(result.data.name);
         //if(result.status == true){
         // print('ID ::: ' + result.data.userId.toString());
         // saveUserData(result.data.userId);
 
         Fluttertoast.showToast(
-          msg: 'result.message',
+          msg: result.message,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -1847,9 +3002,9 @@ class _LearnerProfileState extends State<LearnerProfile> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-        }else {
-          Fluttertoast.showToast(
-          msg: 'result.message',
+      } else {
+        Fluttertoast.showToast(
+          msg: result.message,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -1857,13 +3012,12 @@ class _LearnerProfileState extends State<LearnerProfile> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-        }
-        print(result);
-        
+      }
+      print(result);
     } on DioError catch (e, stack) {
       print(e.response);
       print(stack);
-       closeProgressDialog(context);
+      closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
             e.response.data['meta']['message']);
@@ -1885,9 +3039,148 @@ class _LearnerProfileState extends State<LearnerProfile> {
     return result;
   }
 
-    void getToken() async {
-      authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-      print(authToken);
+  //Update Profile API without Media
+  // Future<ProfileUpdate> updateProfileWithoutMedia(
+  //   int userId,
+  //   String registerAs,
+  //   //String imageFile,
+  //   //String imageUrl,
+  //   String name,
+  //   String mobileNumber,
+  //   String email,
+  //   String gender,
+  //   String dob,
+  //   String documentType,
+  //   //File documentFile,
+  //   //String documentUrl,
+  //   String idNumber,
+  //   //List<Location> location,
+  //   String achievements,
+  //   String skills,
+  //   String hobbies,
+  //   // Null facbookUrl,
+  //   // Null instaUrl,
+  //   // Null linkedinUrl,
+  //   //Null otherUrl,
+  //   //List<EducationalDetails> educationalDetails,
+  //   String totalWorkExp,
+  //   String totalTeachExp,
+  //   //List<InterestedCategory> interestedCategory,
+  // ) async {
+  //   displayProgressDialog(context);
+  //   //String filename = documentFile.path.split('/').last;
+  //   Map<String, dynamic> educationDetailMap;
+  //   var result = ProfileUpdate();
+  //   // for (int i = 0; i <= myControllers.length; i++) {
+  //   //   //education_details.add()
+  //   //   educationDetailMap = {
+  //   //     "id": 5,
+  //   //     "school_name": "",
+  //   //     "year": "",
+  //   //     "qualification": "",
+  //   //     "certificate_file": ""
+  //   //   };
+  //   // }
+  //   try {
+  //     Dio dio = Dio();
+  //     FormData formData = FormData.fromMap({
+  //       'user_id': userId,
+  //       'register_as': registerAs,
+  //       //'image_file': imageFile,
+  //       //'image_url': imageUrl,
+  //       'name': name,
+  //       'mobile_number': mobileNumber,
+  //       'email': email,
+  //       'gender': gender,
+  //       'dob': dob,
+  //       'document_type': documentType,
+  //       // 'document_file': await MultipartFile.fromFile(documentFile.path,
+  //       //     filename: filename,
+  //       //     //contentType: new MediaType("jpg", "jpeg", "png", "pdf"),
+  //       //     ),
+  //       //'dicument_url': documentUrl,
+  //       'identification_document_number': idNumber,
+  //       'achievements': achievements,
+  //       'skills': skills,
+  //       'hobbies': hobbies,
+  //       'total_work_experience': totalWorkExp,
+  //       'total_teaching_experience': totalTeachExp,
+  //     });
+  //     var response = await dio.post(Config.updateProfileUrl,
+  //         data: formData,
+  //         options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+  //     if (response.statusCode == 200) {
+  //       print(response.data);
+  //       closeProgressDialog(context);
+  //       result = ProfileUpdate.fromJson(response.data);
+  //       print(result.data.name);
+  //       //if(result.status == true){
+  //       // print('ID ::: ' + result.data.userId.toString());
+  //       // saveUserData(result.data.userId);
+
+  //       Fluttertoast.showToast(
+  //         msg: result.message,
+  //         toastLength: Toast.LENGTH_SHORT,
+  //         gravity: ToastGravity.BOTTOM,
+  //         timeInSecForIosWeb: 1,
+  //         backgroundColor: Constants.bgColor,
+  //         textColor: Colors.white,
+  //         fontSize: 10.0.sp,
+  //       );
+  //     } else {
+  //       Fluttertoast.showToast(
+  //         msg: result.message,
+  //         toastLength: Toast.LENGTH_SHORT,
+  //         gravity: ToastGravity.BOTTOM,
+  //         timeInSecForIosWeb: 1,
+  //         backgroundColor: Constants.bgColor,
+  //         textColor: Colors.white,
+  //         fontSize: 10.0.sp,
+  //       );
+  //     }
+  //     print(result);
+  //   } on DioError catch (e, stack) {
+  //     print(e.response);
+  //     print(stack);
+  //     closeProgressDialog(context);
+  //     if (e.response != null) {
+  //       print("This is the error message::::" +
+  //           e.response.data['meta']['message']);
+  //       Fluttertoast.showToast(
+  //         msg: e.response.data['meta']['message'],
+  //         toastLength: Toast.LENGTH_SHORT,
+  //         gravity: ToastGravity.BOTTOM,
+  //         timeInSecForIosWeb: 1,
+  //         backgroundColor: Constants.bgColor,
+  //         textColor: Colors.white,
+  //         fontSize: 10.0.sp,
+  //       );
+  //     } else {
+  //       // Something happened in setting up or sending the request that triggered an Error
+  //       print(e.request);
+  //       print(e.message);
+  //     }
+  //   }
+  //   return result;
+  // }
+
+  // compress image
+  Future<File> compressAndGetFile(File file, String targetPath) async {
+    var result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      targetPath,
+      quality: 75,
+    );
+
+    // print(file.lengthSync());
+    // print(result.lengthSync());
+
+    return result;
+  }
+
+  void getToken() async {
+    authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+    print(authToken);
   }
 
   displayProgressDialog(BuildContext context) {
@@ -1902,7 +3195,6 @@ class _LearnerProfileState extends State<LearnerProfile> {
     Navigator.of(context).pop();
   }
 }
-
 
 /// LanguageService
 // class SkillService {
@@ -1920,7 +3212,7 @@ class _LearnerProfileState extends State<LearnerProfile> {
 //         .where((lang) => lang.name.toLowerCase().contains(query.toLowerCase()))
 //         .toList();
 //   }
-//}
+// }
 
 // class Skills extends Taggable {
 //   ///
@@ -1962,12 +3254,12 @@ class _LearnerProfileState extends State<LearnerProfile> {
 //   }
 // }
 
-// // class Hobbies extends Taggable {
-// //   ///
-// //   final String name;
+// class Hobbies extends Taggable {
+//   ///
+//   final String name;
 
-// //   ///
-// //   final int position;
+//   ///
+//   final int position;
 
 //   /// Creates Language
 //   Hobbies({

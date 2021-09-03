@@ -15,14 +15,16 @@ class ProfileUpdate {
       //this.metaParams
       });
 
-  ProfileUpdate.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
+  factory ProfileUpdate.fromJson(Map<String, dynamic> json) => ProfileUpdate(
+    status: json['status'],
     // errorCode = json['error_code'];
     // errorMsg = json['error_msg'];
-    message = json['message'];
-    data = json['status'] == true ? new Data.fromJson(json['data']) : new Data.toEmpty(json['data']);
+    message: json['message'],
+    data: json['status'] == true ? new Data.fromJson(json['data']) : new Data.toEmpty(json['data']),
     //metaParams = json['meta_params'];
-  }
+  );
+    
+  
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -56,10 +58,10 @@ class Data {
   String achievements;
   String skills;
   String hobbies;
-  Null facbookUrl;
-  Null instaUrl;
-  Null linkedinUrl;
-  Null otherUrl;
+  String facbookUrl;
+  String instaUrl;
+  String linkedinUrl;
+  String otherUrl;
   List<EducationalDetails> educationalDetails;
   String totalWorkExperience;
   String totalTeachingExperience;
@@ -92,48 +94,50 @@ class Data {
       this.totalTeachingExperience,
       this.interestedCategory});
 
-  Data.fromJson(Map<String, dynamic> json) {
-    userId = json['user_id'];
-    registerAs = json['register_as'];
-    imageFile = json['image_file'];
-    imageUrl = json['image_url'];
-    name = json['name'];
-    mobileNumber = json['mobile_number'];
-    email = json['email'];
-    gender = json['gender'];
-    dob = json['dob'];
-    documentType = json['document_type'];
-    documentFile = json['document_file'];
-    documentUrl = json['document_url'];
-    identificationDocumentNumber = json['identification_document_number'];
-    if (json['location'] != null) {
-      location = new List<Location>();
-      json['location'].forEach((v) {
-        location.add(new Location.fromJson(v));
-      });
-    }
-    achievements = json['achievements'];
-    skills = json['skills'];
-    hobbies = json['hobbies'];
-    facbookUrl = json['facbook_url'];
-    instaUrl = json['insta_url'];
-    linkedinUrl = json['linkedin_url'];
-    otherUrl = json['other_url'];
-    if (json['educational_details'] != null) {
-      educationalDetails = new List<EducationalDetails>();
-      json['educational_details'].forEach((v) {
-        educationalDetails.add(new EducationalDetails.fromJson(v));
-      });
-    }
-    totalWorkExperience = json['total_work_experience'];
-    totalTeachingExperience = json['total_teaching_experience'];
-    if (json['interested_category'] != null) {
-      interestedCategory = new List<InterestedCategory>();
-      json['interested_category'].forEach((v) {
-        interestedCategory.add(new InterestedCategory.fromJson(v));
-      });
-    }
-  }
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+     userId: json['user_id'],
+    registerAs: json['register_as'],
+    imageFile: json['image_file'],
+    imageUrl: json['image_url'],
+    name: json['name'],
+    mobileNumber: json['mobile_number'],
+    email: json['email'],
+    gender: json['gender'],
+    dob: json['dob'],
+    documentType: json['document_type'],
+    documentFile: json['document_file'],
+    documentUrl: json['document_url'],
+    identificationDocumentNumber: json['identification_document_number'],
+    // if (json['location'] != null) {
+    //   location = new List<Location>();
+    //   json['location'].forEach((v) {
+    //     location.add(new Location.fromJson(v));
+    //   });
+    // }
+    achievements: json['achievements'],
+    skills: json['skills'],
+    hobbies: json['hobbies'],
+    facbookUrl: json['facbook_url'],
+    instaUrl: json['insta_url'],
+    linkedinUrl: json['linkedin_url'],
+    otherUrl: json['other_url'],
+    // if (json['educational_details'] != null) {
+    //   educationalDetails: new List<EducationalDetails>();
+    //   json['educational_details'].forEach((v) {
+    //     educationalDetails.add(new EducationalDetails.fromJson(v));
+    //   });
+    // }
+    totalWorkExperience: json['total_work_experience'],
+    totalTeachingExperience: json['total_teaching_experience'],
+    // if (json['interested_category'] != null) {
+    //   interestedCategory: new List<InterestedCategory>();
+    //   json['interested_category'].forEach((v) {
+    //     interestedCategory.add(new InterestedCategory.fromJson(v));
+    //   });
+    // }
+  );
+   
+  
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -200,17 +204,19 @@ class Location {
       this.logitude,
       this.locationType});
 
-  Location.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    addressLine1 = json['address_line1'];
-    addressLine2 = json['address_line2'];
-    city = json['city'];
-    country = json['country'];
-    pincode = json['pincode'];
-    latitude = json['latitude'];
-    logitude = json['logitude'];
-    locationType = json['location_type'];
-  }
+  factory Location.fromJson(Map<String, dynamic> json) => Location(
+     id: json['id'],
+    addressLine1: json['address_line1'],
+    addressLine2: json['address_line2'],
+    city: json['city'],
+    country: json['country'],
+    pincode: json['pincode'],
+    latitude: json['latitude'],
+    logitude: json['logitude'],
+    locationType: json['location_type'],
+  );
+   
+  
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -241,13 +247,14 @@ class EducationalDetails {
       this.qualification,
       this.certificateFile});
 
-  EducationalDetails.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    schoolName = json['school_name'];
-    year = json['year'];
-    qualification = json['qualification'];
-    certificateFile = json['certificate_file'];
-  }
+  factory EducationalDetails.fromJson(Map<String, dynamic> json) => EducationalDetails(
+    id: json['id'],
+    schoolName: json['school_name'],
+    year: json['year'],
+    qualification: json['qualification'],
+    certificateFile: json['certificate_file'],
+  );
+    
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -267,11 +274,13 @@ class InterestedCategory {
 
   InterestedCategory({this.key, this.value, this.selected});
 
-  InterestedCategory.fromJson(Map<String, dynamic> json) {
-    key = json['key'];
-    value = json['value'];
-    selected = json['selected'];
-  }
+  factory InterestedCategory.fromJson(Map<String, dynamic> json) => InterestedCategory(
+    key: json['key'],
+    value: json['value'],
+    selected: json['selected'],
+  );
+    
+  
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

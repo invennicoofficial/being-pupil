@@ -33,14 +33,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     });
   }
 
-  _videoFile() async {
-    File image = (await ImagePicker.pickVideo(
-        source: ImageSource.gallery));
+  // _videoFile() async {
+  //   File image = (await ImagePicker.pickVideo(
+  //       source: ImageSource.gallery));
 
-    setState(() {
-      _image = image;
-    });
-  }
+  //   setState(() {
+  //     _image = image;
+  //   });
+  // }
   
   @override
   Widget build(BuildContext context) {
@@ -162,20 +162,20 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       color: Constants.formBorder,
                     ),
                   ),
-                  SizedBox(
-                    width: 2.5.w,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      print('Video');
-                      _videoFile();
-                    },
-                    child: ImageIcon(
-                      AssetImage('assets/icons/videoCam.png'),
-                      size: 25.0,
-                      color: Constants.formBorder,
-                    ),
-                  ),
+                  // SizedBox(
+                  //   width: 2.5.w,
+                  // ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     print('Video');
+                  //     _videoFile();
+                  //   },
+                  //   child: ImageIcon(
+                  //     AssetImage('assets/icons/videoCam.png'),
+                  //     size: 25.0,
+                  //     color: Constants.formBorder,
+                  //   ),
+                  // ),
                   SizedBox(
                     width: 2.5.w,
                   ),

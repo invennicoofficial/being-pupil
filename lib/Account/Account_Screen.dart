@@ -1,6 +1,8 @@
 import 'package:being_pupil/Account/About_Us_Screen.dart';
+import 'package:being_pupil/Account/Educator_MyProfile.dart';
 import 'package:being_pupil/Account/FAQ_Screen.dart';
-import 'package:being_pupil/Account/My_Profile_Educator.dart';
+import 'package:being_pupil/Account/Edit_Profile_Educator.dart';
+import 'package:being_pupil/Account/Learner_MyProfile.dart';
 import 'package:being_pupil/Account/Saved_Post.dart';
 import 'package:being_pupil/Account/Terms_And_Policy_Screen.dart';
 import 'package:being_pupil/Constants/Const.dart';
@@ -16,7 +18,7 @@ import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
-import 'My_Profile_Learner.dart';
+import 'Edit_Profile_Learner.dart';
 
 class AccountScreen extends StatefulWidget {
   AccountScreen({Key key}) : super(key: key);
@@ -142,7 +144,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             onTap: () {
                               registerAs == 'E'
                                   ? pushNewScreen(context,
-                                      screen: EducatorProfile(),
+                                      screen: EducatorMyProfileScreen(),
                                       withNavBar: false,
                                       pageTransitionAnimation:
                                           PageTransitionAnimation.cupertino)
@@ -150,7 +152,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   //     pageBuilder: (_, __, ____) =>
                                   //         EducatorProfile()))
                                   : pushNewScreen(context,
-                                      screen: LearnerProfile(),
+                                      screen: LearnerMyProfileScreen(),
                                       withNavBar: false,
                                       pageTransitionAnimation:
                                           PageTransitionAnimation.cupertino);

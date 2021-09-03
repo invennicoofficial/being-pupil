@@ -28,14 +28,15 @@ dependencies:
   dio: ^3.0.10
   dotted_border: ^1.0.7
   file_picker: ^2.1.7
+  flutter_image_compress: ^0.7.0
   flutter_secure_storage: ^3.3.5
   fluttertoast: ^7.0.4
-  flutter_image_compress: ^0.7.0
   image_picker: ^0.6.6+5
   page_transition: ^1.1.7+6
   path_provider: ^1.6.28
   persistent_bottom_nav_bar: ^3.2.0
   pin_code_fields: ^6.1.0
+  place_picker: ^0.9.15
   share: ^0.6.5+4
   shared_preferences: ^0.5.12+4
   sizer: ^1.1.8

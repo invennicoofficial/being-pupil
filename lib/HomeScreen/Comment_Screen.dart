@@ -1,6 +1,7 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Report_Feed.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:sizer/sizer.dart';
 
@@ -342,7 +343,11 @@ class _CommentScreenState extends State<CommentScreen> {
               ),
               //Reaction dp
               Padding(
-                padding: EdgeInsets.only(top: 3.0.h, right: 4.0.w, left: 4.0.w,),
+                padding: EdgeInsets.only(
+                  top: 3.0.h,
+                  right: 4.0.w,
+                  left: 4.0.w,
+                ),
                 child:
                     //Column(
                     //children: <Widget>[
@@ -377,6 +382,9 @@ class _CommentScreenState extends State<CommentScreen> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(65),
                                   child: Image.asset(
+                                    // index == 8
+                                    // ? 'assets/icons/menu.png'
+                                    // : 
                                     dpImages[index],
                                     height: 4.5.h,
                                     width: 7.5.w,
@@ -440,44 +448,110 @@ class _CommentScreenState extends State<CommentScreen> {
                                     horizontal: 2.0.w, vertical: 1.0.h),
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                      color: Constants.formBorder
-                                          .withOpacity(0.6),
+                                      color:
+                                          Constants.formBorder.withOpacity(0.6),
                                       width: 0.6,
                                     ),
                                     borderRadius: BorderRadius.circular(5.0)),
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,  
                                   children: [
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          names[index],
-                                          style: TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              fontSize: 11.0.sp,
-                                              fontWeight: FontWeight.w700,
-                                              color: Constants.bgColor),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              names[index],
+                                              style: TextStyle(
+                                                fontFamily: 'Montserrat',
+                                                fontSize: 10.0.sp,
+                                                fontWeight: FontWeight.w700,
+                                                color: Constants.bgColor),
+                                            ),
+                                            Text(
+                                              '28 Jun 2021',
+                                              style: TextStyle(
+                                                fontFamily: 'Montserrat',
+                                                fontSize: 7.0.sp,
+                                                fontWeight: FontWeight.w400,
+                                                color: Constants.bgColor),
+                                            ),
+                                          ],
                                         ),
-                                        Image.asset(
-                                          'assets/icons/menu.png',
-                                          height: 2.0.h,
-                                          width: 2.0.w,
-                                          fit: BoxFit.contain,
-                                        )
+                                        // Image.asset(
+                                        //   'assets/icons/menu.png',
+                                        //   height: 2.0.h,
+                                        //   width: 2.0.w,
+                                        //   fit: BoxFit.contain,
+                                        // )
+                                        PopupMenuButton(
+                                            color: Color(0xFFF0F2F4),
+                                            elevation: 2.0,
+                                            padding:
+                                                EdgeInsets.only(left: 8.0.w),
+                                            icon: Icon(
+                                              Icons.more_vert,
+                                              color: Constants.bpSkipStyle,
+                                            ),
+                                            onSelected: (value) {
+                                              Fluttertoast.showToast(
+                                                  msg: value == 1
+                                                      ? 'Edit Post'
+                                                      : 'Delete Post',
+                                                  backgroundColor:
+                                                      Constants.bgColor,
+                                                  gravity: ToastGravity.BOTTOM,
+                                                  fontSize: 10.0.sp,
+                                                  toastLength:
+                                                      Toast.LENGTH_SHORT,
+                                                  textColor: Colors.white);
+                                            },
+                                            itemBuilder: (context) => [
+                                                  PopupMenuItem(
+                                                    child: Text(
+                                                      "Edit",
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              'Montserrat',
+                                                          fontSize: 10.0.sp,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          color: Constants
+                                                              .bgColor),
+                                                    ),
+                                                    value: 1,
+                                                  ),
+                                                  PopupMenuItem(
+                                                    child: Text(
+                                                      "Delete",
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              'Montserrat',
+                                                          fontSize: 10.0.sp,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          color: Constants
+                                                              .formBorder),
+                                                    ),
+                                                    value: 2,
+                                                  )
+                                                ]),
                                       ],
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 0.5.h),
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 0.5.h),
                                       child: Text(
                                         comments[index],
                                         style: TextStyle(
                                             fontFamily: 'Montserrat',
                                             fontSize: 10.0.sp,
                                             fontWeight: FontWeight.w400,
-                                            color: Constants.bpOnBoardSubtitleStyle),
+                                            color: Constants
+                                                .bpOnBoardSubtitleStyle),
                                       ),
                                     ),
                                   ],
@@ -490,7 +564,9 @@ class _CommentScreenState extends State<CommentScreen> {
               //   ],
               // ),
               //),
-              SizedBox(height: 5.0.h,)
+              SizedBox(
+                height: 5.0.h,
+              )
             ],
           ),
           //}),
@@ -520,7 +596,7 @@ class _CommentScreenState extends State<CommentScreen> {
                           horizontal: 4.0.w,
                         ),
                         child: TextFormField(
-                          controller: commentController,
+                            controller: commentController,
                             keyboardType: TextInputType.multiline,
                             maxLength: 140,
                             cursorColor: Constants.bgColor,
