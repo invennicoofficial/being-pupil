@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -9,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'package:flutter_tagging/flutter_tagging.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:place_picker/entities/location_result.dart';
+import 'package:place_picker/widgets/place_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:textfield_tags/textfield_tags.dart';
@@ -33,6 +36,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
   String teachExp = '0';
   String fileName;
   String _certiName;
+  String address, city;
   int itemCount = 0;
   TextEditingController _nameController = TextEditingController();
   TextEditingController _mobileController = TextEditingController();
@@ -985,7 +989,8 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               child: GestureDetector(
                                 onTap: () {
                                   print('Location!!!');
-                                  _showLocation(context);
+                                  //_showLocation(context);
+                                  showPlacePicker();
                                 },
                                 child: Container(
                                   height: 7.0.h,
@@ -1002,18 +1007,32 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        'Location',
-                                        style: TextStyle(
-                                            fontFamily: 'Montserrat',
-                                            fontSize: 10.0.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: Constants.bpSkipStyle),
+                                     Expanded(
+                                        child: SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Container(
+                                            height: 2.5.h,
+                                            //width: 70.0.w,
+                                            child: Text(
+                                              address == null
+                                                  ? 'Location'
+                                                  : address,
+                                              style: TextStyle(
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 10.0.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Constants.bpSkipStyle),
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                      Icon(
-                                        Icons.gps_fixed,
-                                        size: 25,
-                                        color: Constants.formBorder,
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 2.0.w),
+                                        child: Icon(
+                                          Icons.gps_fixed,
+                                          size: 25,
+                                          color: Constants.formBorder,
+                                        ),
                                       )
                                     ],
                                   ),
@@ -2717,7 +2736,26 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
           ),
         ));
   }
+
+ //Location Picker
+  void showPlacePicker() async {
+    LocationResult result = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => PlacePicker(
+              Config.locationKey,
+              // displayLocation: customLocation,
+            )));
+
+    setState(() {
+      address = result.formattedAddress;
+      city = result.locality;
+    });
+
+    print('CITY::: $city');
+    print('LATLNG::: ${result.latLng}');
+    print('ADDRESS::: $address');
+  }
 }
+
 
 /// LanguageService
 // class SkillService {

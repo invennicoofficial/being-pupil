@@ -13,7 +13,7 @@
         android:label="being_pupil"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
-                   android:value="YOUR KEY HERE"/>
+                   android:value="AIzaSyBdxRyXCjoupZOKXtv6_mjTOkpnqcSPstI"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

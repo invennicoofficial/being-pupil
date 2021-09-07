@@ -1,9 +1,36 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
-class LearnerMyProfileScreen extends StatelessWidget {
+import 'Edit_Profile_Educator.dart';
+import 'Edit_Profile_Learner.dart';
+
+
+
+class LearnerMyProfileScreen extends StatefulWidget {
   const LearnerMyProfileScreen({Key key}) : super(key: key);
+
+  @override
+  _LearnerMyProfileScreenState createState() => _LearnerMyProfileScreenState();
+}
+
+class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
+  String registerAs;
+
+  @override
+  void initState() { 
+    getData();
+    super.initState();
+  }
+  getData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    //setState(() {
+      registerAs = preferences.getString('RegisterAs');
+    //});
+    print(registerAs);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +50,39 @@ class LearnerMyProfileScreen extends StatelessWidget {
           },
           padding: EdgeInsets.zero,
         ),
+        actions: <Widget>[
+          GestureDetector(
+            onTap: () {
+              registerAs == 'E'
+                  ? pushNewScreen(context,
+                      screen: EditEducatorProfile(),
+                      withNavBar: false,
+                      pageTransitionAnimation:
+                          PageTransitionAnimation.cupertino)
+                  : pushNewScreen(context,
+                      screen: EditLearnerProfile(),
+                      withNavBar: false,
+                      pageTransitionAnimation:
+                          PageTransitionAnimation.cupertino);
+            },
+            child: Container(
+              //color: Colors.grey,
+              padding: EdgeInsets.symmetric(horizontal: 2.0.w),
+              child: Center(
+                child: Text(
+                  'Edit',
+                  style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 12.0.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white.withOpacity(0.6)),
+                ),
+              ),
+            ),
+          ),
+        ],
         title: Text(
-          'Study Buddy',
+          'My Profile',
           style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 12.0.sp,

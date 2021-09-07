@@ -87,7 +87,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
           ),
         ],
         title: Text(
-          'Study Buddy',
+          'My Profile',
           style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 12.0.sp,

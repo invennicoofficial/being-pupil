@@ -1,7 +1,10 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/EducationListItemModel.dart';
 import 'package:being_pupil/Model/UpdateProfile_Model.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
@@ -11,8 +14,11 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http_parser/http_parser.dart';
 //import 'package:flutter_tagging/flutter_tagging.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:place_picker/entities/location_result.dart';
+import 'package:place_picker/widgets/place_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -20,8 +26,7 @@ import 'package:textfield_tags/textfield_tags.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-
-
+import 'package:http/http.dart' as http;
 
 class EditEducatorProfile extends StatefulWidget {
   const EditEducatorProfile({Key key}) : super(key: key);
@@ -43,6 +48,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   String teachExp = '0';
   String fileName;
   String _certiName;
+  String address, city;
   int itemCount = 0;
   TextEditingController _nameController = TextEditingController();
   TextEditingController _mobileController = TextEditingController();
@@ -63,6 +69,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   List<String> skillList = [];
   List<String> hobbieList = [];
   int totalWorkExp, totalTeachExp;
+
+  List<EducationListItemModel> educationList = [];
   //List<String> _schoolNameList
 
   // List<Skills> _selectedSkills;
@@ -693,9 +701,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                           gender = 'GenderSelected';
                                         });
                                       }
-                                      if(value == 1){
+                                      if (value == 1) {
                                         gender = 'M';
-                                      } else if(value == 2){
+                                      } else if (value == 2) {
                                         gender = 'F';
                                       } else {
                                         gender = 'O';
@@ -774,22 +782,33 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                       setState(() {
                                         birthDate = datePick;
                                         isDateSelected = true;
-                                        if(birthDate.day.toString().length == 1 && birthDate.month.toString().length == 1){
+                                        if (birthDate.day.toString().length ==
+                                                1 &&
+                                            birthDate.month.toString().length ==
+                                                1) {
                                           setState(() {
-                                            birthDateInString = "0${birthDate.day.toString()}/0${birthDate.month}/${birthDate.year}";
+                                            birthDateInString =
+                                                "0${birthDate.day.toString()}/0${birthDate.month}/${birthDate.year}";
                                           });
                                           print('11111');
-                                        } else if(birthDate.day.toString().length == 1){
+                                        } else if (birthDate.day
+                                                .toString()
+                                                .length ==
+                                            1) {
                                           setState(() {
-                                           birthDateInString = "0${birthDate.day}/${birthDate.month}/${birthDate.year}";
-
+                                            birthDateInString =
+                                                "0${birthDate.day}/${birthDate.month}/${birthDate.year}";
                                           });
                                           print('22222');
-                                        }else if(birthDate.month.toString().length == 1){
-                                          birthDateInString = "${birthDate.day}/0${birthDate.month}/${birthDate.year}"; 
-                                        }
-                                        else{
-                                          birthDateInString = "${birthDate.day}/${birthDate.month}/${birthDate.year}";
+                                        } else if (birthDate.month
+                                                .toString()
+                                                .length ==
+                                            1) {
+                                          birthDateInString =
+                                              "${birthDate.day}/0${birthDate.month}/${birthDate.year}";
+                                        } else {
+                                          birthDateInString =
+                                              "${birthDate.day}/${birthDate.month}/${birthDate.year}";
                                         }
                                         // 08/14/2019
                                       });
@@ -880,23 +899,22 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     docType = 'DocSelected';
                                   });
                                 }
-                                 if(value == 1){
+                                if (value == 1) {
                                   docType = 'Aadhaar';
                                   print(docType);
-                                }else if(value == 2){
+                                } else if (value == 2) {
                                   docType = 'PAN';
                                   print(docType);
-                                }else if(value == 3){
+                                } else if (value == 3) {
                                   docType = 'Passport';
                                   print(docType);
-                                }else if(value == 4){
+                                } else if (value == 4) {
                                   docType = 'Voter ID';
                                   print(docType);
-                                }else {
+                                } else {
                                   docType = 'Driving License';
                                   print(docType);
                                 }
-
                               },
                               dropdownButtonStyle: DropdownButtonStyle(
                                 height: 7.0.h,
@@ -938,7 +956,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                   fontWeight: FontWeight.w400,
                                                   color: Constants.bpSkipStyle),
                                             ),
-                                           // SizedBox(width: 45.0.w)
+                                            // SizedBox(width: 45.0.w)
                                           ],
                                         ),
                                       ),
@@ -984,7 +1002,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                           width: 1.0.w,
                                         ),
                                         Flexible(
-                                                                                  child: Text(
+                                          child: Text(
                                             (fileName == null || fileName == '')
                                                 ? 'Upload the file'
                                                 : fileName,
@@ -993,7 +1011,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                 fontSize: 10.0.sp,
                                                 fontWeight: FontWeight.w400,
                                                 color: Constants.bpSkipStyle),
-                                                overflow: TextOverflow.fade,
+                                            overflow: TextOverflow.fade,
                                           ),
                                         )
                                       ],
@@ -1059,7 +1077,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                               child: GestureDetector(
                                 onTap: () {
                                   print('Location!!!');
-                                  _showLocation(context);
+                                  //_showLocation(context);
+                                  showPlacePicker();
                                 },
                                 child: Container(
                                   height: 7.0.h,
@@ -1076,18 +1095,32 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        'Location',
-                                        style: TextStyle(
-                                            fontFamily: 'Montserrat',
-                                            fontSize: 10.0.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: Constants.bpSkipStyle),
+                                      Expanded(
+                                        child: SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Container(
+                                            height: 2.5.h,
+                                            //width: 70.0.w,
+                                            child: Text(
+                                              address == null
+                                                  ? 'Location'
+                                                  : address,
+                                              style: TextStyle(
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 10.0.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Constants.bpSkipStyle),
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                      Icon(
-                                        Icons.gps_fixed,
-                                        size: 25,
-                                        color: Constants.formBorder,
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 2.0.w),
+                                        child: Icon(
+                                          Icons.gps_fixed,
+                                          size: 25,
+                                          color: Constants.formBorder,
+                                        ),
                                       )
                                     ],
                                   ),
@@ -1438,19 +1471,20 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                 qualification = '1';
                                               });
                                             }
-                                            if(value == 1){
+                                            if (value == 1) {
                                               qualification = 'Graduate';
                                               print(qualification);
-                                            }else if(value == 2){
+                                            } else if (value == 2) {
                                               qualification = 'Post-graduate';
                                               print(qualification);
-                                            }else if(value == 3){
-                                              qualification = 'Chartered Accountant';
+                                            } else if (value == 3) {
+                                              qualification =
+                                                  'Chartered Accountant';
                                               print(qualification);
-                                            }else{
+                                            } else {
                                               qualification = 'Others';
                                               print(qualification);
-                                            } 
+                                            }
                                           },
                                           dropdownButtonStyle:
                                               DropdownButtonStyle(
@@ -1860,7 +1894,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                               //   color: Constants.bpSkipStyle,
                               // ),
                               onChange: (int value, int index) {
-                                 totalTeachExp = value;
+                                totalTeachExp = value;
                                 print(totalTeachExp);
                                 if (value > 0) {
                                   setState(() {
@@ -2780,79 +2814,100 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
                               } else {
-                                if (_document != null && _image != null && _certificate != null) {
-                      final dir = await path_provider
-                          .getTemporaryDirectory();
-                      final targetPath =
-                          dir.absolute.path + "/temp.jpg";
-                      final docFile =
-                      await compressAndGetFile(
-                          _document, targetPath);
-                      final imgFile =
-                      await compressAndGetFile(
-                          _document, targetPath);
-                      final certiFile =
-                      await compressAndGetFile(
-                          _certificate, targetPath);
-                      if (imgFile == null && docFile == null) {
-                        return;
-                      }
-                      setState(() {});
-                      print(imgFile.path);
-                      // saveProfileWithImage(imgFile);
-                      //updateProfilewithImage(imgFile);
-                       updateProfile(
-                                  userId,
-                                  registerAs,
-                                  //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
-                                  //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
-                                  _nameController.text,
-                                  _mobileController.text,
-                                  _emailController.text,
-                                  gender,
-                                  birthDateInString,
-                                  docType,
-                                  imgFile,
-                                  docFile,
-                                  certiFile,
-                                  //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
-                                  _idNumController.text,
-                                  _achivementController.text,
-                                  skillList.toString(),
-                                  hobbieList.toString(),
-                                  _fbLinkController.text,
-                                  _instagramLinkController.text,
-                                  _linkedInLinkLinkController.text,
-                                  _otherLinkLinkController.text,
-                                  totalWorkExp,
-                                  totalTeachExp);
-                    } else {
-                      // updateProfileWithoutMedia(
-                      //             userId,
-                      //             registerAs,
-                      //             //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
-                      //             //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
-                      //             _nameController.text,
-                      //             _mobileController.text,
-                      //             _emailController.text,
-                      //             'M',
-                      //             '10/10/2010', //birthDateInString,
-                      //             "A",
-                      //             //imgFile,
-                      //             //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
-                      //             _idNumController.text,
-                      //             _achivementController.text,
-                      //             skillList.toString(),
-                      //             hobbieList.toString(),
-                      //             '5',
-                      //             '5');
-                    }
-                             
-                              // Navigator.of(context).push
-                              //     //pushAndRemoveUntil
-                              //     (MaterialPageRoute(
-                              //         builder: (context) => bottomNavBar(0)));
-                              // //(Route<dynamic> route) => false);
+                                if (_document != null &&
+                                    _image != null &&
+                                    _certificate != null) {
+                                  final dir = await path_provider
+                                      .getTemporaryDirectory();
+                                  final targetPath =
+                                      dir.absolute.path + "/temp.jpg";
+                                  final docFile = await compressAndGetFile(
+                                      _document, targetPath);
+                                  final imgFile = await compressAndGetFile(
+                                      _document, targetPath);
+                                  final certiFile = await compressAndGetFile(
+                                      _certificate, targetPath);
+                                  if (imgFile == null && docFile == null) {
+                                    return;
+                                  }
+                                  setState(() {});
+                                  print(imgFile.path);
+                                  // saveProfileWithImage(imgFile);
+                                  //updateProfilewithImage(imgFile);
+                                  apiCall(
+                                      userId,
+                                      registerAs,
+                                      _nameController.text,
+                                      _mobileController.text,
+                                      _emailController.text,
+                                      gender,
+                                      birthDateInString,
+                                      docType,
+                                      imgFile,
+                                      docFile,
+                                      certiFile,
+                                      _idNumController.text,
+                                      _achivementController.text,
+                                      skillList.toString(),
+                                      hobbieList.toString(),
+                                      _fbLinkController.text,
+                                      _instagramLinkController.text,
+                                      _linkedInLinkLinkController.text,
+                                      _otherLinkLinkController.text,
+                                      totalWorkExp,
+                                      totalTeachExp);
+                                  // updateProfile(
+                                  //     userId,
+                                  //     registerAs,
+                                  //     //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                                  //     //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                                  //     _nameController.text,
+                                  //     _mobileController.text,
+                                  //     _emailController.text,
+                                  //     gender,
+                                  //     birthDateInString,
+                                  //     docType,
+                                  //     imgFile,
+                                  //     docFile,
+                                  //     certiFile,
+                                  //     //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                                  //     _idNumController.text,
+                                  //     _achivementController.text,
+                                  //     skillList.toString(),
+                                  //     hobbieList.toString(),
+                                  //     _fbLinkController.text,
+                                  //     _instagramLinkController.text,
+                                  //     _linkedInLinkLinkController.text,
+                                  //     _otherLinkLinkController.text,
+                                  //     totalWorkExp,
+                                  //     totalTeachExp);
+                                } else {
+                                  // updateProfileWithoutMedia(
+                                  //             userId,
+                                  //             registerAs,
+                                  //             //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                                  //             //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                                  //             _nameController.text,
+                                  //             _mobileController.text,
+                                  //             _emailController.text,
+                                  //             'M',
+                                  //             '10/10/2010', //birthDateInString,
+                                  //             "A",
+                                  //             //imgFile,
+                                  //             //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                                  //             _idNumController.text,
+                                  //             _achivementController.text,
+                                  //             skillList.toString(),
+                                  //             hobbieList.toString(),
+                                  //             '5',
+                                  //             '5');
+                                }
+
+                                // Navigator.of(context).push
+                                //     //pushAndRemoveUntil
+                                //     (MaterialPageRoute(
+                                //         builder: (context) => bottomNavBar(0)));
+                                // //(Route<dynamic> route) => false);
                               }
                             },
                             child: Container(
@@ -2885,6 +2940,35 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
             ),
           ),
         ));
+  }
+
+  //Location Picker
+  void showPlacePicker() async {
+    LocationResult result = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => PlacePicker(
+              Config.locationKey,
+              // displayLocation: customLocation,
+            )));
+
+    setState(() {
+      address = result.formattedAddress;
+      city = result.locality;
+    });
+
+    print('CITY::: $city');
+    print('LATLNG::: ${result.latLng}');
+    print('ADDRESS::: $address');
+  }
+
+  //Save Education Details
+  saveEducationDetails() async {
+    final newList = EducationListItemModel(
+      file: _certificate,
+      school_name: myControllers[0].text.toString(),
+      year: selectedYear.year.toString(),
+      qualification: qualification.toString(),
+    );
+    educationList.add(newList);
   }
 
   //Update Profile API
@@ -2944,10 +3028,14 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         'gender': gender,
         'dob': dob,
         'document_type': documentType,
-        'document_file': await MultipartFile.fromFile(documentFile.path,
-            filename: docname,),
-        'image_file': await MultipartFile.fromFile(imageFile.path,
-            filename: imgname,),
+        'document_file': await MultipartFile.fromFile(
+          documentFile.path,
+          filename: docname,
+        ),
+        'image_file': await MultipartFile.fromFile(
+          imageFile.path,
+          filename: imgname,
+        ),
         //'document_url': documentUrl,
         'identification_document_number': idNumber,
         'location[0][id]': 54,
@@ -2966,10 +3054,12 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         'educational_details[0][school_name]': myControllers[0].text.toString(),
         'educational_details[0][year]': selectedYear.year,
         'educational_details[0][qualification]': qualification.toString(),
-        'educational_details[0][certificate_file]': await MultipartFile.fromFile(certificateFile.path,
-            filename: certiname,
-            //contentType: new MediaType("jpg", "jpeg", "png", "pdf"),
-            ),
+        'educational_details[0][certificate_file]':
+            await MultipartFile.fromFile(
+          certificateFile.path,
+          filename: certiname,
+          //contentType: new MediaType("jpg", "jpeg", "png", "pdf"),
+        ),
         'facbook_link': facbookUrl,
         'insta_url': instaUrl,
         'linkedin_url': linkedinUrl,
@@ -2977,13 +3067,14 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         'total_work_experience': totalWorkExp,
         'total_teaching_experience': totalTeachExp,
       });
-      var response = await dio.post(Config.updateProfileUrl,
-          data: formData,
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}),
-          // onSendProgress: (int sent, int total){
-          //   print('SENT $sent + TOTAL $total');
-          // }
-          );
+      var response = await dio.post(
+        Config.updateProfileUrl,
+        data: formData,
+        options: Options(headers: {"Authorization": 'Bearer ' + authToken}),
+        // onSendProgress: (int sent, int total){
+        //   print('SENT $sent + TOTAL $total');
+        // }
+      );
       if (response.statusCode == 200) {
         print(response.data);
         closeProgressDialog(context);
@@ -3037,6 +3128,157 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
       }
     }
     return result;
+  }
+
+  Future<ProfileUpdate> apiCall(
+    int userId,
+    String registerAs,
+    //String imageFile,
+    //String imageUrl,
+    String name,
+    String mobileNumber,
+    String email,
+    String gender,
+    String dob,
+    String documentType,
+    File documentFile,
+    File imageFile,
+    File certificateFile,
+    //String documentUrl,
+    String idNumber,
+    //List<Location> location,
+    String achievements,
+    String skills,
+    String hobbies,
+    String facbookUrl,
+    String instaUrl,
+    String linkedinUrl,
+    String otherUrl,
+    //List<EducationalDetails> educationalDetails,
+    int totalWorkExp,
+    int totalTeachExp,
+    //List<InterestedCategory> interestedCategory,
+  ) async {
+    displayProgressDialog(context);
+    //String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMy4yMzMuNTcuMTU2XC9iZWluZy1wdXBpbC1iYWNrZW5kXC9wdWJsaWNcL2FwaVwvdXNlclwvdmVyaWZ5X290cCIsImlhdCI6MTYzMDMxMTU3OSwiZXhwIjoxNjMwMzE1MTc5LCJuYmYiOjE2MzAzMTE1NzksImp0aSI6IkcxRkJUVG5OWDYyVFhWajUiLCJzdWIiOjQ1LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.ukcztXx2Kq-fsD3hWotr2GNZdIHxICNFT3h_Scjwq1s";
+    //String url = "http://13.233.57.156/being-pupil-backend/public/api/user/profile/update";
+    String docname = documentFile.path.split('/').last;
+    String imgname = imageFile.path.split('/').last;
+    String certiname = certificateFile.path.split('/').last;
+    var result = ProfileUpdate();
+    final headers = {
+      'Content-Type': 'multipart/form-data',
+      'Authorization': 'Bearer $authToken'
+    };
+
+    var request =
+        http.MultipartRequest('POST', Uri.parse(Config.updateProfileUrl));
+    request.headers.addAll(headers);
+
+    Map<String, String> params = new Map<String, String>();
+
+    if (educationList.length != 0) {
+      print('educationList if');
+
+      for (int i = 0; i < educationList.length; i++) {
+        params['educational_details[$i][school_name]'] =
+            educationList[i].school_name.toString();
+        params['educational_details[$i][year]'] =
+            educationList[i].year.toString();
+        params['educational_details[$i][qualification]'] =
+            educationList[i].qualification.toString();
+        String fileStringPath = educationList[i].file.path;
+        if (fileStringPath.contains('.pdf')) {
+          var files = await http.MultipartFile.fromPath(
+              "educational_details[$i][certificate_file]",
+              educationList[i].file.path,
+              contentType: MediaType('image', 'png'));
+          request.files.add(files);
+        } else {
+          var files = await http.MultipartFile.fromPath(
+              "educational_details[$i][certificate_file]",
+              educationList[i].file.path,
+              contentType: MediaType('application', 'pdf'));
+          request.files.add(files);
+        }
+      }
+    } else {
+      print('educational else');
+      params['educational_details[]'] = '';
+    }
+
+    params['user_id'] = userId.toString();
+    params['register_as'] = registerAs;
+    params['name'] = name;
+    params['mobile_number'] = mobileNumber;
+    params['email'] = email;
+    params['gender'] = gender;
+    params['dob'] = dob;
+    params['document_type'] = documentType;
+    // var document = await http.MultipartFile.fromPath(
+    //   "params['document_file']",
+    //   documentFile.path,
+    //   filename: docname,
+    //   contentType: MediaType('image', 'png')
+    // );
+    // request.files.add(document);
+    // var image = await http.MultipartFile.fromPath(
+    //   "params['image_file']",
+    //   imageFile.path,
+    //   filename: imgname,
+    //   contentType: MediaType('image', 'png')
+    // );
+    // request.files.add(image);
+    //params['image_file'] = await MultipartFile.fromFile(imageFile.path)
+    params['location[0][id]'] = '54';
+    params['location[0][address_line_1]'] = 'abc';
+    params['location[0][address_line_2]'] = 'def';
+    params['location[0][city]'] = 'Gujarat';
+    params['location[0][country]'] = 'India';
+    params['location[0][pincode]'] = '390006';
+    params['location[0][latitude]'] = '123.00';
+    params['location[0][longitude]'] = '456.00';
+    params['location[0][location_type]'] = 'work';
+    params['identification_document_number'] = idNumber;
+    params['achievements'] = achievements;
+    params['skills'] = skills;
+    params['hobbies'] = hobbies;
+    saveEducationDetails();
+    params['facbook_link'] = facbookUrl;
+    params['insta_url'] = instaUrl;
+    params['linkedin_url'] = linkedinUrl;
+    params['other_url'] = otherUrl;
+    params['total_work_experience'] = totalWorkExp.toString();
+    params['total_teaching_experience'] = totalTeachExp.toString();
+    // params['name'] = nameController.text.toString();
+    // params['mobile_number'] = phonenumberController.text.toString();
+
+    request.fields.addAll(params);
+    log(jsonEncode(params));
+    print('apiresponse param ${jsonEncode(params)}');
+    http.StreamedResponse response = await request.send();
+    //  debugger();
+    if (response.statusCode == 200) {
+      closeProgressDialog(context);
+      print('apiresponse 200 ');
+      var responseData = await response.stream.bytesToString();
+      log('LOG:::' + responseData);
+      var responseObject = jsonDecode(responseData);
+      return result;
+    } else {
+      closeProgressDialog(context);
+      Fluttertoast.showToast(
+        msg: result.message.toString(),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Constants.bgColor,
+        textColor: Colors.white,
+        fontSize: 10.0.sp,
+      );
+      print('apiresponse error ${response.reasonPhrase.toString()}');
+      //return 'Failed';
+    }
   }
 
   //Update Profile API without Media
