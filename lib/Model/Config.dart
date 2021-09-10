@@ -7,4 +7,5 @@ class Config{
   static const String otpUrl = baseUrl + "user/verify_otp";
   static const String loginUrl = baseUrl + "user/login";
   static const String updateProfileUrl = baseUrl + "user/profile/update";
+  static const String createPostUrl = baseUrl + "user/post/create";
 }

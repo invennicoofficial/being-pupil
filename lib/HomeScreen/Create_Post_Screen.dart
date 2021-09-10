@@ -1,9 +1,13 @@
 import 'dart:io';
 
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Model/Post_Model/Create_Post_Model.dart';
+import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class CreatePostScreen extends StatefulWidget {
   CreatePostScreen({Key key}) : super(key: key);
@@ -14,6 +18,12 @@ class CreatePostScreen extends StatefulWidget {
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
    File _image;
+  String authToken;
+
+  void getToken() async {
+    authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+    print(authToken);
+  }
 
    _imageFromCamera() async {
     File image = (await ImagePicker.pickImage(
@@ -197,5 +207,33 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         ),
       ),
     );
+  }
+
+  //Create Post API
+  Future<CreatePost> createPost(String description, File postMedia) async{
+    try{
+      Dio dio = Dio();
+      // FormData formData = FormData.fromMap({
+      //   'description': description,
+      //   'post_media[]': await MultipartFile.fromFile(
+      //     post
+      //   ),
+      // });
+    } on DioError catch(e, stack) {
+      print(e.response);
+      print(stack);
+    }
+  }
+
+  displayProgressDialog(BuildContext context) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new ProgressDialog();
+        }));
+  }
+
+  closeProgressDialog(BuildContext context) {
+    Navigator.of(context).pop();
   }
 }
