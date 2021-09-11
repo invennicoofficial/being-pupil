@@ -26,7 +26,7 @@ class CreatePost {
         errorCode: json["error_code"],
         errorMsg: json["error_msg"],
         message: json["message"],
-        data: Data.fromJson(json["data"]),
+        data: json["status"] == true ? Data.fromJson(json["data"]) : null,
         metaParams: json["meta_params"],
     );
 
