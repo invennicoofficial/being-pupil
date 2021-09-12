@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   argon_buttons_flutter: ^1.0.6
+  carousel_slider: ^3.0.0
   cupertino_icons: ^1.0.0
   dio: ^3.0.10
   dotted_border: ^1.0.7
@@ -35,6 +36,7 @@ dependencies:
   page_transition: ^1.1.7+6
   path_provider: ^1.6.28
   persistent_bottom_nav_bar: ^3.2.0
+  photo_view: ^0.10.3
   pin_code_fields: ^6.1.0
   place_picker: ^0.9.15
   share: ^0.6.5+4

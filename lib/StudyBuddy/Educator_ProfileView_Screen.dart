@@ -1,9 +1,18 @@
+import 'dart:convert';
+
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Comment_Screen.dart';
 import 'package:being_pupil/HomeScreen/Report_Feed.dart';
+import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/Post_Model/Educator_Post_Model.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
+import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import 'package:sizer/sizer.dart';
 
 class EducatorProfileViewScreen extends StatefulWidget {
@@ -17,6 +26,18 @@ class EducatorProfileViewScreen extends StatefulWidget {
 class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
   bool isLiked = false;
   bool isSaved = true;
+  var result = EducatorPost();
+  Map<String, dynamic> map;
+  List<dynamic> mapData;
+  List<String> postFileList = List<String>();
+  Map<String, dynamic> postMap = Map<String, dynamic>();
+
+  @override
+  void initState() {
+    getEducatorPostApi();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,9 +117,11 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        ImageIcon(AssetImage('assets/icons/locationPin.png'),
-                        color: Constants.bgColor,
-                        size: 15.0,),
+                        ImageIcon(
+                          AssetImage('assets/icons/locationPin.png'),
+                          color: Constants.bgColor,
+                          size: 15.0,
+                        ),
                         SizedBox(
                           width: 0.5.w,
                         ),
@@ -207,7 +230,6 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                             ),
                           ),
                         ),
-                        
                         GestureDetector(
                           onTap: () {
                             print('COURSES!!!');
@@ -249,7 +271,9 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                   fontWeight: FontWeight.w700,
                                   fontFamily: 'Montserrat'),
                             ),
-                            SizedBox(height: 1.0.h,),
+                            SizedBox(
+                              height: 1.0.h,
+                            ),
                             Text(
                               'Experience',
                               style: TextStyle(
@@ -270,7 +294,9 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                   fontWeight: FontWeight.w700,
                                   fontFamily: 'Montserrat'),
                             ),
-                            SizedBox(height: 1.0.h,),
+                            SizedBox(
+                              height: 1.0.h,
+                            ),
                             Text(
                               'Posts',
                               style: TextStyle(
@@ -291,7 +317,9 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                   fontWeight: FontWeight.w700,
                                   fontFamily: 'Montserrat'),
                             ),
-                            SizedBox(height: 1.0.h,),
+                            SizedBox(
+                              height: 1.0.h,
+                            ),
                             Text(
                               'Connections',
                               style: TextStyle(
@@ -323,8 +351,13 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                 padding:
                     EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 2.0.w),
                 shrinkWrap: true,
-                itemCount: 5,
+                itemCount: mapData.length,
                 itemBuilder: (context, index) {
+                  for(int i = 0; i < mapData[0]['post_media'].length; i++)
+                  {
+                    postFileList.add(mapData[0]['post_media'][i]['file']);
+                  }
+                  print(postFileList);
                   return Column(
                     children: <Widget>[
                       //main horizontal padding
@@ -350,8 +383,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                   children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(50),
-                                      child: Image.asset(
-                                        'assets/images/educatorDP.png',
+                                      child: Image.network(
+                                        mapData[index]['profile_image'],
                                         width: 8.5.w,
                                         height: 5.0.h,
                                         fit: BoxFit.cover,
@@ -367,7 +400,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Marilyn Brewer",
+                                            mapData[index]['name'],
                                             style: TextStyle(
                                                 fontSize: 9.0.sp,
                                                 color: Constants.bgColor,
@@ -375,7 +408,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                                 fontWeight: FontWeight.w700),
                                           ),
                                           Text(
-                                            "B.tech I M.S University",
+                                            '${mapData[index]['last_degree']} | ${mapData[index]['school_name']}',
                                             style: TextStyle(
                                                 fontSize: 6.5.sp,
                                                 color: Constants.bgColor,
@@ -383,7 +416,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                                 fontWeight: FontWeight.w400),
                                           ),
                                           Text(
-                                            "28 Jun 2021",
+                                            mapData[index]['date'],
                                             style: TextStyle(
                                                 fontSize: 6.5.sp,
                                                 color: Constants.bgColor,
@@ -414,8 +447,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                               //Post descriptionText
                               Container(
                                 width: 88.0.w,
-                                child: Text(
-                                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam...',
+                                child: Text(mapData[index]['description'],
                                     style: TextStyle(
                                         fontSize: 9.0.sp,
                                         color: Constants.bpOnBoardSubtitleStyle,
@@ -427,19 +459,87 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                 height: 1.0.h,
                               ),
                               // Container for image or video
-                              Container(
-                                height: 30.0.h,
-                                width: 100.0.w,
-                                padding: EdgeInsets.zero,
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10.0)),
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                          'assets/images/postImage.jpg',
-                                        ),
-                                        fit: BoxFit.cover)),
+
+                              CarouselSlider(
+                                options: CarouselOptions(
+                                  height: 400,
+                                  aspectRatio: 16 / 9,
+                                  viewportFraction: 0.8,
+                                  initialPage: 0,
+                                  enableInfiniteScroll: true,
+                                  reverse: false,
+                                  enlargeCenterPage: true,
+                                  //onPageChanged: callbackFunction,
+                                  scrollDirection: Axis.horizontal,
+                                ),
+                                items: mapData[index]['post_media'].map((i){
+                                  return Builder(builder: (BuildContext context){
+                                    return InkWell(
+                                      onTap: (){
+                                        print(mapData[index]['post_media'][i]['id']);
+                                      },
+                                      child: Container(
+                                        height: 2.0.h,
+                                        width: 2.0.w,
+                                      )
+                                    );
+                                  });
+                                }),
                               ),
+                              // Container(
+                              //   height: 30.0.h,
+                              //   width: 100.0.w,
+                              //   padding: EdgeInsets.zero,
+                              //   decoration: BoxDecoration(
+                              //       borderRadius:
+                              //           BorderRadius.all(Radius.circular(10.0)),
+                              //       image: DecorationImage(
+                              //           image: AssetImage(
+                              //             'assets/images/postImage.jpg',
+                              //           ),
+                              //           fit: BoxFit.cover)),
+                              //   // child:
+                              //   //     CarouselSlider.builder(
+                              //   //       itemCount: 15,
+                              //   //       itemBuilder: (BuildContext context, int itemIndex) {
+                              //   //         return Container(
+                              //   //           child: Text(itemIndex.toString()),
+
+                              //   //       );
+                              //   //       }
+                              //   // PhotoViewGallery.builder(
+                              //   //   //scrollPhysics: BouncingScrollPhysics(),
+                              //   //   itemCount:
+                              //   //       mapData[index]['post_media'].length,
+                              //   //   builder: (context, pIndex) {
+                              //   //     return PhotoViewGalleryPageOptions(
+                              //   //         imageProvider: NetworkImage(
+                              //   //             mapData[index]['post_media'][pIndex]
+                              //   //                 ['file']),
+                              //   //         initialScale:
+                              //   //             PhotoViewComputedScale.contained *
+                              //   //                 0.8,
+                              //   //         heroAttributes: PhotoViewHeroAttributes(
+                              //   //             tag: mapData[index]['post_media']
+                              //   //                 [pIndex]['id']));
+                              //   //   },
+                              //   //   loadingBuilder: (context, event) => Center(
+                              //   //     child: Container(
+                              //   //       width: 20.0,
+                              //   //       height: 20.0,
+                              //   //       child: CircularProgressIndicator(
+                              //   //         value: event == null
+                              //   //             ? 0
+                              //   //             : event.cumulativeBytesLoaded /
+                              //   //                 event.expectedTotalBytes,
+                              //   //       ),
+                              //   //     ),
+                              //   //   ),
+                              //   //   // backgroundDecoration: widget.backgroundDecoration,
+                              //   //   // pageController: widget.pageController,
+                              //   //   // onPageChanged: onPageChanged,
+                              //   // ),
+                              // ),
                               //Row for Liked, commented, shared
                               Padding(
                                 padding: EdgeInsets.only(top: 1.0.h),
@@ -459,7 +559,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                         Container(
                                           padding: EdgeInsets.only(top: 1.0.h),
                                           child: Text(
-                                            "20 Likes",
+                                            "${mapData[index]['total_likes']} Likes",
                                             style: TextStyle(
                                                 fontSize: 6.5.sp,
                                                 color: Constants
@@ -473,7 +573,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                     Container(
                                       padding: EdgeInsets.only(top: 1.0.h),
                                       child: Text(
-                                        "9 Comments",
+                                        "${mapData[index]['total_comments']} Comments",
                                         style: TextStyle(
                                             fontSize: 6.5.sp,
                                             color: Constants
@@ -639,5 +739,61 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
         ],
       ),
     );
+  }
+
+//Get Educator's all Post
+  Future<void> getEducatorPostApi() async {
+    displayProgressDialog(context);
+
+    try {
+      Dio dio = Dio();
+
+      var response = await dio.get(Config.getEducatorPostUrl);
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        closeProgressDialog(context);
+        //return EducatorPost.fromJson(json)
+        //result = EducatorPost.fromJson(response.data);
+        map = response.data;
+        mapData = map['data'];
+
+        print(map);
+        print(mapData);
+        print(mapData[0]['name']);
+        //print(result.data);
+        //return result;
+        if(mapData != null){
+          postMap = {};
+          for(int i = 0; i < mapData.length; i++){
+            for(int j = 0; j <= mapData[i]['post_media'].length; j++){
+              postMap.putIfAbsent(i.toString(), () => mapData[i]['post_media'][j]['file']);
+            }
+          }
+          print(postMap);
+        }
+      } else {
+        print('${response.statusCode} : ${response.data.toString()}');
+        throw response.statusCode;
+      }
+    } on DioError catch (e, stack) {
+      closeProgressDialog(context);
+      print(e.response);
+      print(stack);
+    }
+  }
+
+  displayProgressDialog(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.of(context).push(new PageRouteBuilder(
+          opaque: false,
+          pageBuilder: (BuildContext context, _, __) {
+            return new ProgressDialog();
+          }));
+    });
+  }
+
+  closeProgressDialog(BuildContext context) {
+    Navigator.of(context).pop();
   }
 }

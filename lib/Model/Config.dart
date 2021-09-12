@@ -8,4 +8,5 @@ class Config{
   static const String loginUrl = baseUrl + "user/login";
   static const String updateProfileUrl = baseUrl + "user/profile/update";
   static const String createPostUrl = baseUrl + "user/post/create";
+  static const String getEducatorPostUrl = baseUrl + "user/post/get/3";
 }

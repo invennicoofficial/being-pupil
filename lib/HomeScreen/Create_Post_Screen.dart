@@ -27,6 +27,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   TextEditingController descriptionController = TextEditingController();
   List<String> filePathList = [];
   List<File> fileList = [];
+  List<AssetEntity> assets = <AssetEntity>[];
 
   @override
   void initState() {
@@ -58,8 +59,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   getMultipleImage() async {
-    List<AssetEntity> assets = <AssetEntity>[];
-
     final List<AssetEntity> result = await AssetPicker.pickAssets(
       context,
       maxAssets: 10,
@@ -80,7 +79,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     setState(() {
       // _image = result.length.
     });
-
+  print('ASSETS::: $assets');
     for (int i = 0; i < result.length; i++) {
       print('$i : ' + result[i].title);
       filePathList.add(result[i].relativePath + '/' + result[i].title);
@@ -109,6 +108,61 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var imageView = Container(
+      height: 25.0.h,
+      //width: 100.0.w,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      ),
+      child: ListView.builder(
+          physics: BouncingScrollPhysics(),
+          itemCount: fileList.length,
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            return Stack(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2.0.w),
+                  child: Center(
+                    child: Container(
+                      height: 8.0.h,
+                      width: 15.0.w,
+                      padding: EdgeInsets.zero,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: FileImage(fileList[index]),
+                              //AssetEntityImageProvider(assets[index], isOriginal: false),
+                              fit: BoxFit.fill)),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 14.0.w, top: 7.0.h),
+                  child: GestureDetector(
+                    onTap: () {
+                      print('Icon Pressssss.....');
+                      //fileList[index].delete();
+                      fileList.removeAt(index);
+                      setState(() {});
+                      print(fileList);
+                    },
+                    child: CircleAvatar(
+                      radius: 10.0,
+                      backgroundColor: Constants.bgColor,
+                      child: Icon(
+                        Icons.close_rounded,
+                        color: Colors.white,
+                        size: 10.0,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }),
+    );
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -239,8 +293,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               // ),
             ),
             SizedBox(
-              height: 52.0.h,
+              height: 25.0.h,
             ),
+            imageView,
+            //SizedBox(height: 7.0.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 4.0.w),
               child: Row(
@@ -307,19 +363,19 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       //       filename: filePathList[i].split('/').last);
       // }
 
-    // List<MultipartFile> imageList = new List<MultipartFile>();
+      // List<MultipartFile> imageList = new List<MultipartFile>();
 
-    //   for(File file in images) {
-    //     Uint8List byteData = await file.readAsBytes();
-    //     //AssetEntity imageEntity = await PhotoManager.editor.saveImage(byteData);
-    //     List<int> imageData = byteData.buffer.asUint8List();
-    //     MultipartFile multipartFile = new MultipartFile.fromBytes(
-    //       imageData,
-    //       filename: 'load_image',
-    //       contentType: MediaType("image", "jpg"),
-    //     );
-    //     imageList.add(multipartFile);
-    //   }
+      //   for(File file in images) {
+      //     Uint8List byteData = await file.readAsBytes();
+      //     //AssetEntity imageEntity = await PhotoManager.editor.saveImage(byteData);
+      //     List<int> imageData = byteData.buffer.asUint8List();
+      //     MultipartFile multipartFile = new MultipartFile.fromBytes(
+      //       imageData,
+      //       filename: 'load_image',
+      //       contentType: MediaType("image", "jpg"),
+      //     );
+      //     imageList.add(multipartFile);
+      //   }
 
       //print(imageList[0].filename);
 
