@@ -24,7 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   argon_buttons_flutter: ^1.0.6
-  carousel_slider: ^3.0.0
+  carousel_slider: ^2.0.0
   cupertino_icons: ^1.0.0
   dio: ^3.0.10
   dotted_border: ^1.0.7
