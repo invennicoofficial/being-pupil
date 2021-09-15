@@ -37,7 +37,8 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
   String docType = 'DocType';
   String workExp = '0';
   String fileName;
-  String address, city;
+  String address1, address2, city, country, pinCode;
+  double lat, lng;
   bool isCat1 = false;
   TextEditingController _nameController = TextEditingController();
   TextEditingController _mobileController = TextEditingController();
@@ -952,9 +953,9 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                             height: 2.5.h,
                                             //width: 70.0.w,
                                             child: Text(
-                                              address == null
+                                              address1 == null
                                                   ? 'Location'
-                                                  : address,
+                                                  : address1,
                                               style: TextStyle(
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 10.0.sp,
@@ -1840,14 +1841,20 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
               // displayLocation: customLocation,
             )));
 
-    setState(() {
-      address = result.formattedAddress;
+   setState(() {
+      address1 = result.formattedAddress;
+      address2 = result.subLocalityLevel1.name;
       city = result.locality;
+      country = result.country.name;
+      lat = result.latLng.latitude;
+      lng = result.latLng.longitude;
+      pinCode = result.postalCode;
     });
 
     print('CITY::: $city');
     print('LATLNG::: ${result.latLng}');
-    print('ADDRESS::: $address');
+    print('Country::: $pinCode');
+    print('ADDRESS::: $address1');
   }
 
 //Update Profile API

@@ -30,7 +30,6 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-
 class EditEducatorProfile extends StatefulWidget {
   const EditEducatorProfile({Key key}) : super(key: key);
 
@@ -66,6 +65,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   int educationId = 0;
   var myControllers = [];
   var certificate = [];
+  List<File> certiList = List<File>();
   String registerAs;
   int userId;
   String authToken;
@@ -74,14 +74,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   List<String> hobbieList = [];
   int totalWorkExp, totalTeachExp;
   Map<String, dynamic> responseMap;
-  String address,
-      address_line_1,
-      address_line_2,
-      city,
-      country,
-      pincode,
-      lat,
-      lng;
+  String address1, address2, city, country, pinCode;
+  double lat, lng;
   List<EducationListItemModel> educationList = [];
   File dummyCertificate;
   //List<String> _schoolNameList
@@ -1126,9 +1120,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                             height: 2.5.h,
                                             //width: 70.0.w,
                                             child: Text(
-                                              address == null
+                                              address1 == null
                                                   ? 'Location'
-                                                  : address,
+                                                  : address1,
                                               style: TextStyle(
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 10.0.sp,
@@ -1216,8 +1210,10 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                             decoration: InputDecoration(
                                               labelText: "Name of School",
                                               fillColor: Colors.white,
-                                              hintText: educationDetailMap[index]
-                                                      ['school_name'].toString(),
+                                              hintText:
+                                                  educationDetailMap[index]
+                                                          ['school_name']
+                                                      .toString(),
                                               focusedBorder: OutlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(5.0),
@@ -1291,9 +1287,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                             // isYearSelected
                                                             //     ? DateFormat('YYYY').parse(educationDetailMap[index]['year'])
                                                             //     :
-                                                                 DateTime(
-                                                                    DateTime.now()
-                                                                        .year),
+                                                            DateTime(
+                                                                DateTime.now()
+                                                                    .year),
                                                         onChanged: (DateTime
                                                             dateTime) {
                                                           // close the dialog when year is selected.
@@ -1303,14 +1299,13 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                             selectedYear =
                                                                 dateTime;
                                                           });
-                                                          
 
-                                                          educationDetailMap[
-                                                                      index]
-                                                                  ['year'] =
-                                                              selectedYear.year.toString();
-                                                                  
-                                                          print(educationDetailMap);
+                                                          educationDetailMap[index]['year'] =
+                                                              selectedYear.year
+                                                                  .toString();
+
+                                                          print(
+                                                              educationDetailMap);
                                                           print(selectedYear);
                                                           print(selectedYear
                                                               .year);
@@ -1370,7 +1365,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                 children: [
                                                   Text(
                                                     isYearSelected
-                                                        ? educationDetailMap[index]['year']
+                                                        ? educationDetailMap[
+                                                                index]['year']
                                                             .toString()
                                                         : 'Year',
                                                     style: TextStyle(
@@ -1637,24 +1633,31 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                       width: 1.0.w,
                                                     ),
                                                     Expanded(
-                                                       child: SingleChildScrollView(
-                                                        scrollDirection: Axis.horizontal,
-                                                          child: Container(
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        child: Container(
                                                           height: 3.0.h,
                                                           child: Text(
                                                             _certiName != null
-                                                                ? educationDetailMap[index]['certificate']//_certiName
+                                                                ? educationDetailMap[
+                                                                        index][
+                                                                    'certificate'] //_certiName
                                                                 : 'Upload Certificate/Degree',
                                                             style: TextStyle(
                                                                 fontFamily:
                                                                     'Montserrat',
-                                                                fontSize: 10.0.sp,
+                                                                fontSize:
+                                                                    10.0.sp,
                                                                 fontWeight:
-                                                                    FontWeight.w400,
+                                                                    FontWeight
+                                                                        .w400,
                                                                 color: Constants
                                                                     .bpSkipStyle),
                                                             overflow:
-                                                                TextOverflow.clip,
+                                                                TextOverflow
+                                                                    .clip,
                                                           ),
                                                         ),
                                                       ),
@@ -1754,7 +1757,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                           fontSize: 10.0.sp);
                                     }
                                   });
-                                  print(myControllers[1].text.toString());
+                                  //print(myControllers[1].text.toString());
                                   print('Add more!!!');
                                   setState(() {
                                     educationId = educationId + 1;
@@ -2824,7 +2827,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                              } 
+                              }
                               // else if (myControllers[0].text.isEmpty) {
                               //   Fluttertoast.showToast(
                               //       msg: "Please Enter School Name",
@@ -2835,7 +2838,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                               //       textColor: Colors.white,
                               //       fontSize: 10.0.sp);
                               //}
-                               else if (_idNumController.text.isEmpty) {
+                              else if (_idNumController.text.isEmpty) {
                                 Fluttertoast.showToast(
                                     msg: "Please Enter Valid ID Number",
                                     toastLength: Toast.LENGTH_SHORT,
@@ -2913,43 +2916,18 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 // saveProfileWithImage(imgFile);
                                 //updateProfilewithImage(imgFile);
                                 saveEducationDetails();
-                                apiCall(
-                                    userId,
-                                    registerAs,
-                                    _nameController.text,
-                                    _mobileController.text,
-                                    _emailController.text,
-                                    gender,
-                                    birthDateInString,
-                                    docType,
-                                    _image,
-                                    _document,
-                                    //_certificate,
-                                    _idNumController.text,
-                                    _achivementController.text,
-                                    skillList.toString(),
-                                    hobbieList.toString(),
-                                    _fbLinkController.text,
-                                    _instagramLinkController.text,
-                                    _linkedInLinkLinkController.text,
-                                    _otherLinkLinkController.text,
-                                    totalWorkExp,
-                                    totalTeachExp);
-                                // updateProfile(
+                                // apiCall(
                                 //     userId,
                                 //     registerAs,
-                                //     //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
-                                //     //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
                                 //     _nameController.text,
                                 //     _mobileController.text,
                                 //     _emailController.text,
                                 //     gender,
                                 //     birthDateInString,
                                 //     docType,
-                                //     imgFile,
-                                //     docFile,
-                                //     certiFile,
-                                //     //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                                //     _image,
+                                //     _document,
+                                //     //_certificate,
                                 //     _idNumController.text,
                                 //     _achivementController.text,
                                 //     skillList.toString(),
@@ -2960,6 +2938,38 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 //     _otherLinkLinkController.text,
                                 //     totalWorkExp,
                                 //     totalTeachExp);
+                                updateProfile(
+                                    userId,
+                                    registerAs,
+                                    //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                                    //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                                    _nameController.text,
+                                    _mobileController.text,
+                                    _emailController.text,
+                                    gender,
+                                    birthDateInString,
+                                    docType,
+                                    _image,
+                                    _document,
+                                    //certiFile,
+                                    //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
+                                    _idNumController.text,
+                                    address1,
+                                    address2,
+                                    city,
+                                    country,
+                                    pinCode,
+                                    lat,
+                                    lng,
+                                    _achivementController.text,
+                                    skillList.toString(),
+                                    hobbieList.toString(),
+                                    _fbLinkController.text,
+                                    _instagramLinkController.text,
+                                    _linkedInLinkLinkController.text,
+                                    _otherLinkLinkController.text,
+                                    totalWorkExp,
+                                    totalTeachExp);
                                 //}
                                 // else {
                                 // updateProfileWithoutMedia(
@@ -3032,16 +3042,19 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
             )));
 
     setState(() {
-      address = result.formattedAddress;
-      addressLine = result.administrativeAreaLevel1;
+      address1 = result.formattedAddress;
+      address2 = result.subLocalityLevel1.name;
       city = result.locality;
-      lat = result.latLng.latitude.toString();
-      lng = result.latLng.longitude.toString();
+      country = result.country.name;
+      lat = result.latLng.latitude;
+      lng = result.latLng.longitude;
+      pinCode = result.postalCode;
     });
 
-    print('CITY::: ${addressLine.shortName}');
+    print('CITY::: $city');
     print('LATLNG::: ${result.latLng}');
-    print('ADDRESS::: $address');
+    print('Country::: $pinCode');
+    print('ADDRESS::: $address1');
   }
 
   //Save Education Details
@@ -3069,10 +3082,16 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
     String documentType,
     File documentFile,
     File imageFile,
-    File certificateFile,
+    //File certificateFile,
     //String documentUrl,
     String idNumber,
-    //List<Location> location,
+     String addressLine1,
+    String addressLine2,
+    String city,
+    String country,
+    String pinCode,
+    double latitude,
+    double longitude,
     String achievements,
     String skills,
     String hobbies,
@@ -3088,7 +3107,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
     displayProgressDialog(context);
     String docname = documentFile.path.split('/').last;
     String imgname = imageFile.path.split('/').last;
-    String certiname = certificateFile.path.split('/').last;
+    //String certiname = certificateFile.path.split('/').last;
 
     var result = ProfileUpdate();
     // for (int i = 0; i <= myControllers.length; i++) {
@@ -3102,7 +3121,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
     // };
     // }
 
-    try {
+      try {
       Dio dio = Dio();
       FormData formData = FormData.fromMap({
         'user_id': userId,
@@ -3124,27 +3143,27 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         //'document_url': documentUrl,
         'identification_document_number': idNumber,
         'location[0][id]': 54,
-        'location[0][address_line_1]': 'abc',
-        'location[0][address_line_2]': 'def',
-        'location[0][city]': 'Gujarat',
-        'location[0][country]': 'India',
-        'location[0][pincode]': 390006,
-        'location[0][latitude]': 123.00,
-        'location[0][longitude]': 456.00,
+         'location[0][address_line_1]': addressLine1,
+        'location[0][address_line_2]': addressLine2,
+        'location[0][city]': city,
+        'location[0][country]': country,
+        'location[0][pincode]': pinCode,
+        'location[0][latitude]': latitude,
+        'location[0][longitude]': longitude,
         'location[0][location_type]': 'work',
         'achievements': achievements,
         'skills': skills,
         'hobbies': hobbies,
         'educational_details[0][id]': 25,
-        'educational_details[0][school_name]': myControllers[0].text.toString(),
-        'educational_details[0][year]': selectedYear.year,
-        'educational_details[0][qualification]': qualification.toString(),
-        'educational_details[0][certificate_file]':
-            await MultipartFile.fromFile(
-          certificateFile.path,
-          filename: certiname,
-          //contentType: new MediaType("jpg", "jpeg", "png", "pdf"),
-        ),
+        // 'educational_details[0][school_name]': myControllers[0].text.toString(),
+        // 'educational_details[0][year]': selectedYear.year,
+        // 'educational_details[0][qualification]': qualification.toString(),
+        // 'educational_details[0][certificate_file]':
+        //     await MultipartFile.fromFile(
+        //   certificateFile.path,
+        //   filename: certiname,
+        //   //contentType: new MediaType("jpg", "jpeg", "png", "pdf"),
+        // ),
         'facbook_link': facbookUrl,
         'insta_url': instaUrl,
         'linkedin_url': linkedinUrl,
@@ -3152,6 +3171,27 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         'total_work_experience': totalWorkExp,
         'total_teaching_experience': totalTeachExp,
       });
+
+      for (int i = 0; i < educationList.length; i++) {
+        //formData.fields.addAll(params.entries);
+        formData.fields.addAll([
+          MapEntry('educational_details[$i][school_name]',
+              educationDetailMap[i]['school_name'].toString()),
+          MapEntry('educational_details[$i][year]',
+              educationDetailMap[i]['year'].toString()),
+          MapEntry('educational_details[$i][qualification]',
+              educationDetailMap[i]['qualification'].toString()),
+        ]);
+        formData.files.addAll([
+          MapEntry(
+              'educational_details[0][certificate_file]',
+              await MultipartFile.fromFile(_certificate.path,
+                  filename: _certificate.path.split('/').last)),
+        ]);
+      }
+
+      print(educationList);
+
       var response = await dio.post(
         Config.updateProfileUrl,
         data: formData,
@@ -3255,7 +3295,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
       'Content-Type': 'multipart/form-data',
       'Authorization': 'Bearer $authToken'
     };
-  
+
     var request =
         http.MultipartRequest('POST', Uri.parse(Config.updateProfileUrl));
     request.headers.addAll(headers);
@@ -3266,12 +3306,15 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
       print('educationList if');
 
       for (int i = 0; i < educationList.length; i++) {
-        params['educational_details[$i][school_name]'] = educationDetailMap[i]['school_name'].toString();
-            //educationList[i].school_name.toString();
-        params['educational_details[$i][year]'] = educationDetailMap[i]['year'].toString();
-            //educationList[i].year.toString();
-        params['educational_details[$i][qualification]'] = educationDetailMap[i]['qualification'].toString();
-            //educationList[i].qualification.toString();
+        params['educational_details[$i][school_name]'] =
+            educationDetailMap[i]['school_name'].toString();
+        //educationList[i].school_name.toString();
+        params['educational_details[$i][year]'] =
+            educationDetailMap[i]['year'].toString();
+        //educationList[i].year.toString();
+        params['educational_details[$i][qualification]'] =
+            educationDetailMap[i]['qualification'].toString();
+        //educationList[i].qualification.toString();
         String fileStringPath = educationList[i].file.path;
         if (!fileStringPath.contains('.pdf')) {
           var files = await http.MultipartFile.fromPath(
@@ -3293,7 +3336,6 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
       print('educational else');
       params['educational_details[]'] = '';
     }
-    
 
     params['user_id'] = userId.toString();
     params['register_as'] = registerAs;
@@ -3306,25 +3348,19 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
     var document = await http.MultipartFile.fromPath(
         params['document_file'], documentFile.path,
         filename: documentFile.path, contentType: MediaType('image', 'png'));
-        var docstream = http.ByteStream(documentFile.openRead());
-        final doclength = await documentFile.length();
+    var docstream = http.ByteStream(documentFile.openRead());
+    final doclength = await documentFile.length();
     request.files.add(http.MultipartFile(
-      params['document_file'].toString(),
-      docstream,
-      doclength,
-      filename: docname
-    ));
+        params['document_file'].toString(), docstream, doclength,
+        filename: docname));
     var imgstream = http.ByteStream(imageFile.openRead());
-        final imglength = await documentFile.length();
+    final imglength = await documentFile.length();
     var image = await http.MultipartFile.fromPath(
         params['image_file'], imageFile.path,
         filename: imageFile.path, contentType: MediaType('image', 'png'));
-   request.files.add(http.MultipartFile(
-      params['image_file'].toString(),
-      imgstream,
-      imglength,
-      filename: imgname
-    ));
+    request.files.add(http.MultipartFile(
+        params['image_file'].toString(), imgstream, imglength,
+        filename: imgname));
     // params['image_file'] = await MultipartFile.fromFile(
     //       imageFile.path,
     //       filename: imgname,
@@ -3367,13 +3403,13 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
 
     response.stream.transform(utf8.decoder).listen((event) {
       print(event);
-      });
+    });
     //  debugger();
     if (response.statusCode == 200) {
       //responseMap = json.decode(response.toString());
       closeProgressDialog(context);
       print('apiresponse 200 ');
-      var responseData =  response.stream.bytesToString();
+      var responseData = response.stream.bytesToString();
       print('CONTENT LENGTH:::: ${response.contentLength}');
       log('LOG:::' + responseData.toString());
       responseMap = jsonDecode(responseData.toString());
