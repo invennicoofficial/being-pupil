@@ -1,5 +1,11 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
+import 'package:dotted_border/dotted_border.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/EducationListItemModel.dart';
@@ -7,11 +13,6 @@ import 'package:being_pupil/Model/UpdateProfile_Model.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
-import 'package:dio/dio.dart';
-import 'package:dotted_border/dotted_border.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 //import 'package:flutter_tagging/flutter_tagging.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:place_picker/entities/location_result.dart';
@@ -23,7 +24,12 @@ import 'package:textfield_tags/textfield_tags.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class EducatorRegistration extends StatefulWidget {
-  const EducatorRegistration({Key key}) : super(key: key);
+  String name, mobileNumber;
+  EducatorRegistration({
+    Key key,
+    @required this.name,
+    @required this.mobileNumber,
+  }) : super(key: key);
 
   @override
   _EducatorRegistrationState createState() => _EducatorRegistrationState();
@@ -77,6 +83,8 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
   @override
   void initState() {
     itemCount = 1;
+    _nameController.text = widget.name;
+    _mobileController.text = widget.mobileNumber;
     createControllers();
     getToken();
     getData();
@@ -934,10 +942,10 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     horizontal: 2.0.w, vertical: 1.5.h),
                               ),
                               items: [
-                                'Aadhaar        ',
-                                'PAN            ',
-                                'Passport       ',
-                                'Voter ID       ',
+                                'Aadhaar',
+                                'PAN',
+                                'Passport',
+                                'Voter ID',
                                 'Driving License'
                               ]
                                   .asMap()
@@ -957,7 +965,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                                   fontWeight: FontWeight.w400,
                                                   color: Constants.bpSkipStyle),
                                             ),
-                                            SizedBox(width: 45.0.w)
+                                            //SizedBox(width: 45.0.w)
                                           ],
                                         ),
                                       ),
@@ -3014,7 +3022,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
     String docname = documentFile.path.split('/').last;
     String imgname = imageFile.path.split('/').last;
     //String certiname = certificateFile.path.split('/').last;
-
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     var result = ProfileUpdate();
     // for (int i = 0; i <= myControllers.length; i++) {
     //   //education_details.add()
@@ -3071,7 +3079,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
         //   //contentType: new MediaType("jpg", "jpeg", "png", "pdf"),
         // ),
         'facbook_link': facbookUrl,
-        'insta_link': instaUrl,
+        'insta_url': instaUrl,
         'linkedin_url': linkedinUrl,
         'other_url': otherUrl,
         'total_work_experience': totalWorkExp,
@@ -3122,6 +3130,19 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
         print(result.data.name);
         if (result.status == true) {
           print('TRUE::');
+           preferences.setString("name", result.data.name);
+            preferences.setString("imageUrl", result.data.imageUrl);
+            preferences.setString("qualification", result.data.educationalDetails.toString());
+            preferences.setString("schoolName", result.data.educationalDetails.toString());
+            preferences.setString("address1", result.data.location.toString());
+            preferences.setString("address2", result.data.location.toString());
+            preferences.setString("facebookUrl", result.data.facbookUrl);
+            preferences.setString("instaUrl", result.data.instaUrl);
+            preferences.setString("linkedInUrl", result.data.linkedinUrl);
+            preferences.setString("otherUrl", result.data.otherUrl);
+            print('QUALIFICATION:::: ' + result.data.educationalDetails.last.qualification);
+            print('LOCATION:::: ' + result.data.location[0].addressLine2);
+            print('IMAGE:::: ' + result.data.imageUrl);
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => bottomNavBar(0)),
               (Route<dynamic> route) => false);

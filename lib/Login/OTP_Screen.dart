@@ -39,6 +39,7 @@ class _OtpScreenState extends State<OtpScreen> {
   String registerAs;
   String role;
   int userId;
+  String name, mobileNumber;
 
   void initState() {
     // TODO: implement initState
@@ -350,16 +351,39 @@ class _OtpScreenState extends State<OtpScreen> {
           //print('TOKEN ::' + result.data.token);
           saveToken(result.data.token);
           role = result.data.userObject.role;
+          name = result.data.userObject.name;
+          mobileNumber = result.data.userObject.mobileNumber;
           preferences.setString('RegisterAs', role);
           print('ROLE ::' + preferences.getString('RegisterAs'));
+          //print('ROLE ::' + result.data.userObject.location.toString());
+         
+          //print('LOCATION ::' + result.data.userObject.location.addressLine2);
+         // print('EDUCATION ::' + result.data.userObject.educationalDetail.qualification);
+          print('MOBILE ::' + mobileNumber);
           if(result.data.userObject.isNew == "true") {
             role == 'L'
                 ? Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => bottomNavBar(0)),
                     (Route<dynamic> route) => false)
                 : Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => EducatorRegistration()));
+                builder: (context) => EducatorRegistration(
+                  name: name,
+                  mobileNumber: mobileNumber,
+                )));
           } else {
+              preferences.setString("name", result.data.userObject.name);
+              preferences.setString("imageUrl", result.data.userObject.imageUrl);
+              preferences.setString("qualification", result.data.userObject.educationalDetail.qualification);
+              preferences.setString("schoolName", result.data.userObject.educationalDetail.schoolName);
+              preferences.setString("address1", result.data.userObject.location.addressLine2);
+              preferences.setString("address2", result.data.userObject.location.city);
+              preferences.setString("facebookUrl", result.data.userObject.fbUrl);
+              preferences.setString("instaUrl", result.data.userObject.instaUrl);
+              preferences.setString("linkedInUrl", result.data.userObject.liUrl);
+              preferences.setString("otherUrl", result.data.userObject.otherUrl);
+
+          print('CITY::: ${result.data.userObject.imageUrl}');
+
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => bottomNavBar(0)),
                     (Route<dynamic> route) => false);

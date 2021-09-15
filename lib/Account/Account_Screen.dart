@@ -28,7 +28,7 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
-  String registerAs;
+  String registerAs, imageUrl;
 
   @override
   void initState() {
@@ -40,8 +40,10 @@ class _AccountScreenState extends State<AccountScreen> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       registerAs = preferences.getString('RegisterAs');
+      imageUrl = preferences.getString('imageUrl');
     });
     print(registerAs);
+    print(imageUrl);
   }
 
   @override
