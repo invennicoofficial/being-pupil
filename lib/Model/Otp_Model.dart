@@ -56,17 +56,19 @@ class OtpData {
 
 class UserObject {
   String role;
+  String isNew;
 
-  UserObject({this.role});
+  UserObject({this.role, this.isNew});
 
   factory UserObject.fromJson(Map<String, dynamic> json){
-    return UserObject(role: json['register_as']);
+    return UserObject(role: json['register_as'], isNew: json['isNew']);
   }
 
   Map<String, dynamic> toJson(){
     final Map<String, dynamic> data = new Map<String, dynamic>();
 
     data['role'] = this.role;
+    data['isNew'] = this.isNew;
     return data;
   }
 }

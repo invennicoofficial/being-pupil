@@ -352,12 +352,19 @@ class _OtpScreenState extends State<OtpScreen> {
           role = result.data.userObject.role;
           preferences.setString('RegisterAs', role);
           print('ROLE ::' + preferences.getString('RegisterAs'));
-          role == 'L'
-              ? Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => bottomNavBar(0)),
-                  (Route<dynamic> route) => false)
-              : Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => EducatorRegistration()));
+          if(result.data.userObject.isNew == "True") {
+            role == 'L'
+                ? Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+                    (Route<dynamic> route) => false)
+                : Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => EducatorRegistration()));
+          } else {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+                    (Route<dynamic> route) => false);
+          }
+
           Fluttertoast.showToast(
             msg: result.message,
             toastLength: Toast.LENGTH_SHORT,
@@ -385,17 +392,6 @@ class _OtpScreenState extends State<OtpScreen> {
       print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response.data['meta']['message']);
-        Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Constants.bgColor,
-          textColor: Colors.white,
-          fontSize: 10.0.sp,
-        );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         print(e.request);
