@@ -416,7 +416,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         } else {
           closeProgressDialog(context);
           Fluttertoast.showToast(
-            msg: result.message,
+            msg: result.message == null ? result.errorMsg : result.message,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,

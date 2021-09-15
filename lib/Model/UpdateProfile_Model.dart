@@ -50,7 +50,7 @@ class Data {
   String email;
   String gender;
   String dob;
-  Null documentType;
+  String documentType;
   String documentFile;
   String documentUrl;
   String identificationDocumentNumber;

@@ -918,19 +918,19 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                   });
                                 }
                                 if (value == 1) {
-                                  docType = 'Aadhaar';
+                                  docType = 'A';
                                   print(docType);
                                 } else if (value == 2) {
-                                  docType = 'PAN';
+                                  docType = 'P';
                                   print(docType);
                                 } else if (value == 3) {
-                                  docType = 'Passport';
+                                  docType = 'p';
                                   print(docType);
                                 } else if (value == 4) {
-                                  docType = 'Voter ID';
+                                  docType = 'V';
                                   print(docType);
                                 } else {
-                                  docType = 'Driving License';
+                                  docType = 'D';
                                   print(docType);
                                 }
                               },
@@ -1168,7 +1168,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                         ),
 
                         ListView.builder(
-                          itemCount: itemCount,
+                          itemCount: educationDetailMap.length,//itemCount,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
@@ -1185,6 +1185,36 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 dashPattern: [4, 3],
                                 child: Column(
                                   children: <Widget>[
+                                     index == 0
+                                        ? Container()
+                                        : Align(
+                                            alignment: Alignment.topRight,
+                                            child: Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 4.0.w),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print(
+                                                      'Remove Education ${index + 1} Block');
+                                                  setState(() {
+                                                    //itemCount = itemCount - 1;
+                                                    educationDetailMap.removeWhere((key, value) => key == index);
+                                                  });
+                                                  print(educationDetailMap);
+                                                },
+                                                child: CircleAvatar(
+                                                  radius: 12.0,
+                                                  backgroundColor:
+                                                      Constants.bgColor,
+                                                  child: Icon(
+                                                    Icons.close_rounded,
+                                                    color: Colors.white,
+                                                    size: 12.0,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
                                     Theme(
                                       data: new ThemeData(
                                         primaryColor: Constants.bpSkipStyle,
@@ -1511,26 +1541,26 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                             }
                                             if (value == 1) {
                                               qualification = 'Graduate';
-                                              educationDetailMap[index]
+                                              educationDetailMap[educationId]
                                                       ['qualification'] =
                                                   'Graduate';
                                               print(qualification);
                                             } else if (value == 2) {
                                               qualification = 'Post-graduate';
-                                              educationDetailMap[index]
+                                              educationDetailMap[educationId]
                                                       ['qualification'] =
                                                   'Post-graduate';
                                               print(qualification);
                                             } else if (value == 3) {
                                               qualification =
                                                   'Chartered Accountant';
-                                              educationDetailMap[index]
+                                              educationDetailMap[educationId]
                                                       ['qualification'] =
                                                   'Chartered Accountant';
                                               print(qualification);
                                             } else {
                                               qualification = 'Others';
-                                              educationDetailMap[index]
+                                              educationDetailMap[educationId]
                                                   ['qualification'] = 'Others';
                                               print(qualification);
                                             }
@@ -2915,7 +2945,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 //   print(imgFile.path);
                                 // saveProfileWithImage(imgFile);
                                 //updateProfilewithImage(imgFile);
-                                saveEducationDetails();
+                                //saveEducationDetails();
                                 // apiCall(
                                 //     userId,
                                 //     registerAs,
@@ -2938,21 +2968,21 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 //     _otherLinkLinkController.text,
                                 //     totalWorkExp,
                                 //     totalTeachExp);
+                    
                                 updateProfile(
-                                    userId,
+                                    //userId,
                                     registerAs,
-                                    //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
-                                    //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
                                     _nameController.text,
                                     _mobileController.text,
                                     _emailController.text,
                                     gender,
                                     birthDateInString,
                                     docType,
-                                    _image,
                                     _document,
+                                    //_document.uri.path,
+                                    _image,
+                                    //_image.uri.path,
                                     //certiFile,
-                                    //'https://static4.depositphotos.com/1006994/298/v/950/depositphotos_2983099-stock-illustration-grunge-design.jpg',
                                     _idNumController.text,
                                     address1,
                                     address2,
@@ -3070,7 +3100,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
 
   //Update Profile API
   Future<ProfileUpdate> updateProfile(
-    int userId,
+    //int userId,
     String registerAs,
     //String imageFile,
     //String imageUrl,
@@ -3081,11 +3111,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
     String dob,
     String documentType,
     File documentFile,
-    File imageFile,
-    //File certificateFile,
     //String documentUrl,
+    File imageFile,
+    //String imageUrl,
     String idNumber,
-     String addressLine1,
+    String addressLine1,
     String addressLine2,
     String city,
     String country,
@@ -3105,8 +3135,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
     //List<InterestedCategory> interestedCategory,
   ) async {
     displayProgressDialog(context);
-    String docname = documentFile.path.split('/').last;
-    String imgname = imageFile.path.split('/').last;
+    // String docname = documentFile.path.split('/').last;
+    // String imgname = imageFile.path.split('/').last;
     //String certiname = certificateFile.path.split('/').last;
 
     var result = ProfileUpdate();
@@ -3124,7 +3154,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
       try {
       Dio dio = Dio();
       FormData formData = FormData.fromMap({
-        'user_id': userId,
+        //'user_id': userId,
         'register_as': registerAs,
         'name': name,
         'mobile_number': mobileNumber,
@@ -3134,16 +3164,17 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         'document_type': documentType,
         'document_file': await MultipartFile.fromFile(
           documentFile.path,
-          filename: docname,
-        ),
-        'image_file': await MultipartFile.fromFile(
-          imageFile.path,
-          filename: imgname,
+          filename: documentFile.path,
         ),
         //'document_url': documentUrl,
+        'image_file': await MultipartFile.fromFile(
+          imageFile.path,
+          filename: imageFile.path,
+        ),
+        //'image_url': imageUrl,
         'identification_document_number': idNumber,
         'location[0][id]': 54,
-         'location[0][address_line_1]': addressLine1,
+        'location[0][address_line_1]': addressLine1,
         'location[0][address_line_2]': addressLine2,
         'location[0][city]': city,
         'location[0][country]': country,
@@ -3172,7 +3203,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         'total_teaching_experience': totalTeachExp,
       });
 
-      for (int i = 0; i < educationList.length; i++) {
+      print('MAPO:::' + educationDetailMap.length.toString());
+
+      for (int i = 0; i < educationDetailMap.length - 1; i++) {
         //formData.fields.addAll(params.entries);
         formData.fields.addAll([
           MapEntry('educational_details[$i][school_name]',
@@ -3184,11 +3217,13 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         ]);
         formData.files.addAll([
           MapEntry(
-              'educational_details[0][certificate_file]',
-              await MultipartFile.fromFile(_certificate.path,
-                  filename: _certificate.path.split('/').last)),
+              'educational_details[$i][certificate_file]',
+              await MultipartFile.fromFile(educationDetailMap[i]['certificate'],
+                  filename: educationDetailMap[i]['certificate'])),
         ]);
       }
+
+      print('MAP:::' + educationDetailMap.toString());
 
       print(educationList);
 
