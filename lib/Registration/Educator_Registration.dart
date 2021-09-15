@@ -405,16 +405,16 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                             child: _image != null
                                 ? Stack(children: [
                                     CircleAvatar(
-                                      radius: 65,
+                                      radius: 70,
                                       backgroundImage: AssetImage(
                                           'assets/icons/circle_upload.png'),
                                       backgroundColor: Colors.transparent,
                                       child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(65),
+                                        borderRadius: BorderRadius.circular(70),
                                         child: Image.file(
                                           _image,
-                                          height: 13.5.h,
-                                          width: 28.0.w,
+                                          height: 14.0.h,
+                                          width: 30.0.w,
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -435,7 +435,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     backgroundImage: AssetImage(
                                         'assets/icons/circle_upload.png'),
                                     //backgroundColor: Colors.white,
-                                    radius: 65.0,
+                                    radius: 70.0,
                                     child: Align(
                                       alignment: Alignment.center,
                                       child: Column(

@@ -29,12 +29,48 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
   var result = EducatorPost();
   Map<String, dynamic> map;
   List<dynamic> mapData;
-  List<String> postFileList = List<String>();
-  Map<String, dynamic> postMap = Map<String, dynamic>();
+
+  String name = '';
+  String profileImageUrl = '';
+  String degreeName = '';
+  String schoolName = '';
+
+  int page = 1;
+
+  bool isLoading = true;
+  bool isPostLoading = true;
+
+  ScrollController _scrollController = ScrollController();
+  int k = 0;
+
+  List<int> postIdList = [];
+  List<String> dateList = [];
+  List<String> descriptionList = [];
+  Map<int, dynamic> imageListMap = {};
+  List<int> likesList = [];
+  List<int> totalCommentsList = [];
+
 
   @override
   void initState() {
-    getEducatorPostApi();
+    getEducatorPostApi(page);
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        if(page > 1) {
+          if(map['data'].length > 0) {
+            page++;
+            getEducatorPostApi(page);
+            print(page);
+          }
+        } else {
+          page++;
+          getEducatorPostApi(page);
+          print(page);
+        }
+
+      }
+    });
     super.initState();
   }
 
@@ -65,7 +101,12 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
               color: Colors.white),
         ),
       ),
-      body: Column(
+      body: isLoading ? Center(
+        child: CircularProgressIndicator(
+          valueColor:
+          new AlwaysStoppedAnimation<Color>(Constants.bgColor),
+        ),
+      ) : Column(
         //shrinkWrap: true,
         //physics: AlwaysScrollableScrollPhysics(),
         children: <Widget>[
@@ -82,8 +123,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                     borderRadius: BorderRadius.circular(50),
                     child: Image.asset(
                       'assets/images/edProfile.png',
-                      width: 20.5.w,
-                      height: 12.0.h,
+                      width: 32.5.w,
+                      height: 15.0.h,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -344,222 +385,221 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
           ),
           //Educator Post
           Expanded(
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: ListView.separated(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SingleChildScrollView(
+                controller: _scrollController,
                 physics: BouncingScrollPhysics(),
-                padding:
-                    EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 2.0.w),
-                shrinkWrap: true,
-                itemCount: mapData.length,
-                itemBuilder: (context, index) {
-                  for(int i = 0; i < mapData[0]['post_media'].length; i++)
-                  {
-                    postFileList.add(mapData[0]['post_media'][i]['file']);
-                  }
-                  print(postFileList);
-                  return Column(
-                    children: <Widget>[
-                      //main horizontal padding
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0.w),
-                        //Container for one post
-                        child: Container(
-                          height: 57.5.h,
-                          width: 100.0.w,
-                          //color: Colors.grey[300],
-                          //column for post content
-                          child: Column(
-                            children: <Widget>[
-                              SizedBox(
-                                height: 1.0.h,
+                child: ListView.separated(
+                  physics: BouncingScrollPhysics(),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 2.0.w),
+                  shrinkWrap: true,
+                  itemCount: postIdList != null ? postIdList.length : 0,
+                  // controller: _scrollController,
+                  itemBuilder: (context, index) {
+                    return ListView(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      children: <Widget>[
+                        //main horizontal padding
+                        ListView(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          children: <Widget>[
+                            SizedBox(
+                              height: 1.0.h,
+                            ),
+                            //ListTile for educator details
+                            ListTile(
+                              contentPadding: EdgeInsets.all(0.0),
+                              //leading:
+                              title: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: Image.network(
+                                      profileImageUrl,
+                                      width: 8.5.w,
+                                      height: 5.0.h,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 2.0.w,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 1.0.h),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          name,
+                                          style: TextStyle(
+                                              fontSize: 9.0.sp,
+                                              color: Constants.bgColor,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                        Text(
+                                          '$degreeName | $schoolName',
+                                          style: TextStyle(
+                                              fontSize: 6.5.sp,
+                                              color: Constants.bgColor,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        Text(
+                                          dateList[index],
+                                          style: TextStyle(
+                                              fontSize: 6.5.sp,
+                                              color: Constants.bgColor,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                              //ListTile for educator details
-                              ListTile(
-                                contentPadding: EdgeInsets.all(0.0),
-                                //leading:
-                                title: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: Image.network(
-                                        mapData[index]['profile_image'],
-                                        width: 8.5.w,
-                                        height: 5.0.h,
-                                        fit: BoxFit.cover,
+                              trailing: GestureDetector(
+                                onTap: () {
+                                  pushNewScreen(context,
+                                      withNavBar: false,
+                                      screen: ReportFeed(),
+                                      pageTransitionAnimation:
+                                          PageTransitionAnimation.cupertino);
+                                },
+                                child: Container(
+                                    height: 4.0.h,
+                                    width: 6.0.w,
+                                    //color: Colors.grey,
+                                    child: Icon(
+                                        Icons.report_gmailerrorred_outlined)),
+                              ),
+                            ),
+                            //Post descriptionText
+                            Container(
+                              width: 88.0.w,
+                              child: Text(descriptionList[index],
+                                  style: TextStyle(
+                                      fontSize: 9.0.sp,
+                                      color: Constants.bpOnBoardSubtitleStyle,
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.w400),
+                                  textAlign: TextAlign.justify),
+                            ),
+                            SizedBox(
+                              height: 1.0.h,
+                            ),
+                            // Container for image or video
+                            imageListMap[index].length == 0 ? Container() :
+                            Container(
+                              height: 25.0.h,
+                              width: 15.0.w,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: BouncingScrollPhysics(),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: imageListMap[index].length,
+                                itemBuilder: (context, imageIndex) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.network(imageListMap[index][imageIndex]['file'],
+                                  height: 100,
+                                  width: 250,
+                                  fit: BoxFit.cover,),
+                                );
+                              },),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 1.0.h),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.thumb_up_alt_rounded,
+                                        color: Constants.bgColor,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 2.0.w,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 1.0.h),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            mapData[index]['name'],
-                                            style: TextStyle(
-                                                fontSize: 9.0.sp,
-                                                color: Constants.bgColor,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                          Text(
-                                            '${mapData[index]['last_degree']} | ${mapData[index]['school_name']}',
-                                            style: TextStyle(
-                                                fontSize: 6.5.sp,
-                                                color: Constants.bgColor,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                          Text(
-                                            mapData[index]['date'],
-                                            style: TextStyle(
-                                                fontSize: 6.5.sp,
-                                                color: Constants.bgColor,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ],
+                                      SizedBox(
+                                        width: 1.0.w,
                                       ),
+                                      Container(
+                                        padding: EdgeInsets.only(top: 1.0.h),
+                                        child: Text(
+                                          "${likesList[index]} Likes",
+                                          style: TextStyle(
+                                              fontSize: 6.5.sp,
+                                              color: Constants
+                                                  .bpOnBoardSubtitleStyle,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(top: 1.0.h),
+                                    child: Text(
+                                      "${totalCommentsList[index]} Comments",
+                                      style: TextStyle(
+                                          fontSize: 6.5.sp,
+                                          color: Constants
+                                              .bpOnBoardSubtitleStyle,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w400),
                                     ),
-                                  ],
-                                ),
-                                trailing: GestureDetector(
-                                  onTap: () {
-                                    pushNewScreen(context,
-                                        withNavBar: false,
-                                        screen: ReportFeed(),
-                                        pageTransitionAnimation:
-                                            PageTransitionAnimation.cupertino);
-                                  },
-                                  child: Container(
-                                      height: 4.0.h,
-                                      width: 6.0.w,
-                                      //color: Colors.grey,
-                                      child: Icon(
-                                          Icons.report_gmailerrorred_outlined)),
-                                ),
+                                  )
+                                ],
                               ),
-                              //Post descriptionText
-                              Container(
-                                width: 88.0.w,
-                                child: Text(mapData[index]['description'],
-                                    style: TextStyle(
-                                        fontSize: 9.0.sp,
-                                        color: Constants.bpOnBoardSubtitleStyle,
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w400),
-                                    textAlign: TextAlign.justify),
-                              ),
-                              SizedBox(
-                                height: 1.0.h,
-                              ),
-                              // Container for image or video
-
-                              CarouselSlider(
-                                options: CarouselOptions(
-                                  height: 400,
-                                  aspectRatio: 16 / 9,
-                                  viewportFraction: 0.8,
-                                  initialPage: 0,
-                                  enableInfiniteScroll: true,
-                                  reverse: false,
-                                  enlargeCenterPage: true,
-                                  //onPageChanged: callbackFunction,
-                                  scrollDirection: Axis.horizontal,
-                                ),
-                                items: mapData[index]['post_media'].map((i){
-                                  return Builder(builder: (BuildContext context){
-                                    return InkWell(
-                                      onTap: (){
-                                        print(mapData[index]['post_media'][i]['id']);
-                                      },
-                                      child: Container(
-                                        height: 2.0.h,
-                                        width: 2.0.w,
-                                      )
-                                    );
-                                  });
-                                }),
-                              ),
-                              // Container(
-                              //   height: 30.0.h,
-                              //   width: 100.0.w,
-                              //   padding: EdgeInsets.zero,
-                              //   decoration: BoxDecoration(
-                              //       borderRadius:
-                              //           BorderRadius.all(Radius.circular(10.0)),
-                              //       image: DecorationImage(
-                              //           image: AssetImage(
-                              //             'assets/images/postImage.jpg',
-                              //           ),
-                              //           fit: BoxFit.cover)),
-                              //   // child:
-                              //   //     CarouselSlider.builder(
-                              //   //       itemCount: 15,
-                              //   //       itemBuilder: (BuildContext context, int itemIndex) {
-                              //   //         return Container(
-                              //   //           child: Text(itemIndex.toString()),
-
-                              //   //       );
-                              //   //       }
-                              //   // PhotoViewGallery.builder(
-                              //   //   //scrollPhysics: BouncingScrollPhysics(),
-                              //   //   itemCount:
-                              //   //       mapData[index]['post_media'].length,
-                              //   //   builder: (context, pIndex) {
-                              //   //     return PhotoViewGalleryPageOptions(
-                              //   //         imageProvider: NetworkImage(
-                              //   //             mapData[index]['post_media'][pIndex]
-                              //   //                 ['file']),
-                              //   //         initialScale:
-                              //   //             PhotoViewComputedScale.contained *
-                              //   //                 0.8,
-                              //   //         heroAttributes: PhotoViewHeroAttributes(
-                              //   //             tag: mapData[index]['post_media']
-                              //   //                 [pIndex]['id']));
-                              //   //   },
-                              //   //   loadingBuilder: (context, event) => Center(
-                              //   //     child: Container(
-                              //   //       width: 20.0,
-                              //   //       height: 20.0,
-                              //   //       child: CircularProgressIndicator(
-                              //   //         value: event == null
-                              //   //             ? 0
-                              //   //             : event.cumulativeBytesLoaded /
-                              //   //                 event.expectedTotalBytes,
-                              //   //       ),
-                              //   //     ),
-                              //   //   ),
-                              //   //   // backgroundDecoration: widget.backgroundDecoration,
-                              //   //   // pageController: widget.pageController,
-                              //   //   // onPageChanged: onPageChanged,
-                              //   // ),
-                              // ),
-                              //Row for Liked, commented, shared
-                              Padding(
-                                padding: EdgeInsets.only(top: 1.0.h),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Row(
+                            ),
+                            //divider
+                            Divider(
+                              height: 1.0.h,
+                              color: Constants.bpOnBoardSubtitleStyle
+                                  .withOpacity(0.5),
+                              thickness: 1.0,
+                            ),
+                            //Row for Like comment and Share
+                            Padding(
+                              padding: EdgeInsets.only(top: 1.0.h),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        isLiked = !isLiked;
+                                      });
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         Icon(
-                                          Icons.thumb_up_alt_rounded,
-                                          color: Constants.bgColor,
+                                          isLiked
+                                              ? Icons.thumb_up_sharp
+                                              : Icons.thumb_up_outlined,
+                                          color: isLiked
+                                              ? Constants.selectedIcon
+                                              : Constants
+                                                  .bpOnBoardSubtitleStyle,
+                                          size: 30.0,
                                         ),
                                         SizedBox(
                                           width: 1.0.w,
                                         ),
                                         Container(
-                                          padding: EdgeInsets.only(top: 1.0.h),
+                                          padding:
+                                              EdgeInsets.only(top: 1.0.h),
                                           child: Text(
-                                            "${mapData[index]['total_likes']} Likes",
+                                            "Like",
                                             style: TextStyle(
                                                 fontSize: 6.5.sp,
                                                 color: Constants
@@ -570,169 +610,101 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                         ),
                                       ],
                                     ),
-                                    Container(
-                                      padding: EdgeInsets.only(top: 1.0.h),
-                                      child: Text(
-                                        "${mapData[index]['total_comments']} Comments",
-                                        style: TextStyle(
-                                            fontSize: 6.5.sp,
-                                            color: Constants
-                                                .bpOnBoardSubtitleStyle,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              //divider
-                              Divider(
-                                height: 1.0.h,
-                                color: Constants.bpOnBoardSubtitleStyle
-                                    .withOpacity(0.5),
-                                thickness: 1.0,
-                              ),
-                              //Row for Like comment and Share
-                              Padding(
-                                padding: EdgeInsets.only(top: 1.0.h),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          isLiked = !isLiked;
-                                        });
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                            isLiked
-                                                ? Icons.thumb_up_sharp
-                                                : Icons.thumb_up_outlined,
-                                            color: isLiked
-                                                ? Constants.selectedIcon
-                                                : Constants
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      pushNewScreen(context,
+                                          withNavBar: false,
+                                          screen: CommentScreen(),
+                                          pageTransitionAnimation:
+                                              PageTransitionAnimation
+                                                  .cupertino);
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Icon(
+                                          Icons.comment_outlined,
+                                          color: Constants
+                                              .bpOnBoardSubtitleStyle,
+                                          size: 30.0,
+                                        ),
+                                        SizedBox(
+                                          width: 1.0.w,
+                                        ),
+                                        Container(
+                                          padding:
+                                              EdgeInsets.only(top: 1.0.h),
+                                          child: Text(
+                                            "Comment",
+                                            style: TextStyle(
+                                                fontSize: 6.5.sp,
+                                                color: Constants
                                                     .bpOnBoardSubtitleStyle,
-                                            size: 30.0,
+                                                fontFamily: 'Montserrat',
+                                                fontWeight: FontWeight.w400),
                                           ),
-                                          SizedBox(
-                                            width: 1.0.w,
-                                          ),
-                                          Container(
-                                            padding:
-                                                EdgeInsets.only(top: 1.0.h),
-                                            child: Text(
-                                              "Like",
-                                              style: TextStyle(
-                                                  fontSize: 6.5.sp,
-                                                  color: Constants
-                                                      .bpOnBoardSubtitleStyle,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        pushNewScreen(context,
-                                            withNavBar: false,
-                                            screen: CommentScreen(),
-                                            pageTransitionAnimation:
-                                                PageTransitionAnimation
-                                                    .cupertino);
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                            Icons.comment_outlined,
-                                            color: Constants
-                                                .bpOnBoardSubtitleStyle,
-                                            size: 30.0,
-                                          ),
-                                          SizedBox(
-                                            width: 1.0.w,
-                                          ),
-                                          Container(
-                                            padding:
-                                                EdgeInsets.only(top: 1.0.h),
-                                            child: Text(
-                                              "Comment",
-                                              style: TextStyle(
-                                                  fontSize: 6.5.sp,
-                                                  color: Constants
-                                                      .bpOnBoardSubtitleStyle,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          isSaved = !isSaved;
-                                        });
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                            isSaved
-                                                ? Icons.bookmark_sharp
-                                                : Icons
-                                                    .bookmark_outline_outlined,
-                                            color: isSaved
-                                                ? Constants.selectedIcon
-                                                : Constants
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        isSaved = !isSaved;
+                                      });
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Icon(
+                                          isSaved
+                                              ? Icons.bookmark_sharp
+                                              : Icons
+                                                  .bookmark_outline_outlined,
+                                          color: isSaved
+                                              ? Constants.selectedIcon
+                                              : Constants
+                                                  .bpOnBoardSubtitleStyle,
+                                          size: 30.0,
+                                        ),
+                                        SizedBox(
+                                          width: 1.0.w,
+                                        ),
+                                        Container(
+                                          padding:
+                                              EdgeInsets.only(top: 1.0.h),
+                                          child: Text(
+                                            "Save",
+                                            style: TextStyle(
+                                                fontSize: 6.5.sp,
+                                                color: Constants
                                                     .bpOnBoardSubtitleStyle,
-                                            size: 30.0,
+                                                fontFamily: 'Montserrat',
+                                                fontWeight: FontWeight.w400),
                                           ),
-                                          SizedBox(
-                                            width: 1.0.w,
-                                          ),
-                                          Container(
-                                            padding:
-                                                EdgeInsets.only(top: 1.0.h),
-                                            child: Text(
-                                              "Save",
-                                              style: TextStyle(
-                                                  fontSize: 6.5.sp,
-                                                  color: Constants
-                                                      .bpOnBoardSubtitleStyle,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return Divider(
-                    //height: 2.0.h,
-                    thickness: 5.0,
-                    color: Color(0xFFD3D9E0),
-                  );
-                },
+                            ),
+                          ],
+                        )
+                      ],
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider(
+                      //height: 2.0.h,
+                      thickness: 5.0,
+                      color: Color(0xFFD3D9E0),
+                    );
+                  },
+                ),
               ),
             ),
           ),
@@ -742,17 +714,17 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
   }
 
 //Get Educator's all Post
-  Future<void> getEducatorPostApi() async {
-    displayProgressDialog(context);
+  Future<void> getEducatorPostApi(int page) async {
+    // displayProgressDialog(context);
 
     try {
       Dio dio = Dio();
 
-      var response = await dio.get(Config.getEducatorPostUrl);
+      var response = await dio.get('${Config.getEducatorPostUrl}13?page=$page');
       print(response.statusCode);
 
       if (response.statusCode == 200) {
-        closeProgressDialog(context);
+        // closeProgressDialog(context);
         //return EducatorPost.fromJson(json)
         //result = EducatorPost.fromJson(response.data);
         map = response.data;
@@ -760,24 +732,50 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
 
         print(map);
         print(mapData);
-        print(mapData[0]['name']);
+        if(map['data'].length > 0) {
+          if(name == '') {
+            name = map['data'][0]['name'];
+            profileImageUrl = map['data'][0]['profile_image'];
+            degreeName = map['data'][0]['last_degree'];
+            schoolName = map['data'][0]['school_name'];
+          }
+          print("HELLO");
+
+          for (int i = 0; i < map['data'].length; i++) {
+            postIdList.add(map['data'][i]['post_id']);
+            dateList.add(map['data'][i]['date']);
+            descriptionList.add(map['data'][i]['description']);
+            likesList.add(map['data'][i]['total_likes']);
+            totalCommentsList.add(map['data'][i]['total_comments']);
+            for (int j = 0; j < map['data'].length; j++) {
+              imageListMap.putIfAbsent(k, () => map['data'][i]['post_media']);
+
+            }
+            k++;
+            print(k);
+          }
+          print(imageListMap);
+          isLoading = false;
+          isPostLoading = false;
+          setState(() {});
+        } else {
+          isLoading = false;
+          isPostLoading = false;
+          setState(() {});
+        }
         //print(result.data);
         //return result;
-        if(mapData != null){
-          postMap = {};
-          for(int i = 0; i < mapData.length; i++){
-            for(int j = 0; j <= mapData[i]['post_media'].length; j++){
-              postMap.putIfAbsent(i.toString(), () => mapData[i]['post_media'][j]['file']);
-            }
-          }
-          print(postMap);
-        }
+        setState(() {
+          isLoading = false;
+          isPostLoading = false;
+
+        });
       } else {
         print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode;
       }
     } on DioError catch (e, stack) {
-      closeProgressDialog(context);
+      // closeProgressDialog(context);
       print(e.response);
       print(stack);
     }

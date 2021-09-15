@@ -82,9 +82,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   print('ASSETS::: $assets');
     for (int i = 0; i < result.length; i++) {
       print('$i : ' + result[i].title);
-      filePathList.add(result[i].relativePath + '/' + result[i].title);
+      filePathList.add(result[i].relativePath + result[i].title);
       fileList.add(
-          new File('${result[i].relativePath}' + '/' + '${result[i].title}'));
+          new File('${result[i].relativePath}' + '${result[i].title}'));
     }
     print(filePathList);
     print(fileList);
