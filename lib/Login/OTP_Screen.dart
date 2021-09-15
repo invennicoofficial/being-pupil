@@ -352,7 +352,7 @@ class _OtpScreenState extends State<OtpScreen> {
           role = result.data.userObject.role;
           preferences.setString('RegisterAs', role);
           print('ROLE ::' + preferences.getString('RegisterAs'));
-          if(result.data.userObject.isNew == "True") {
+          if(result.data.userObject.isNew == "true") {
             role == 'L'
                 ? Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => bottomNavBar(0)),
