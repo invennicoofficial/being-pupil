@@ -325,7 +325,7 @@ class ProfileUpdate {
         errorCode: json["error_code"],
         errorMsg: json["error_msg"],
         message: json["message"],
-        data: Data.fromJson(json["data"]),
+        data: json['status'] == true ? new Data.fromJson(json['data']) : new Data.toEmpty(json['data']),//Data.fromJson(json["data"]),
         metaParams: json["meta_params"],
     );
 
@@ -449,6 +449,10 @@ class Data {
         "total_teaching_experience": totalTeachingExperience,
         "interested_category": List<dynamic>.from(interestedCategory.map((x) => x)),
     };
+
+    Data.toEmpty(List<dynamic> json) {
+    return;
+  }
 }
 
 class EducationalDetail {

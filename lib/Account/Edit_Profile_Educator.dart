@@ -77,7 +77,6 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   String address1, address2, city, country, pinCode;
   double lat, lng;
   List<EducationListItemModel> educationList = [];
-  File dummyCertificate;
   //List<String> _schoolNameList
 
   // List<Skills> _selectedSkills;
@@ -90,7 +89,6 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   void initState() {
     itemCount = 1;
     //educationId = 1;
-    dummyCertificate = File('assets/images/postImage.png');
     createControllers();
     getData();
     getToken();
@@ -98,7 +96,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
       'school_name': 'MSU',
       'year': '2015',
       'qualification': 'BCA',
-      'certificate': dummyCertificate.path
+      'certificate': 'path'
     };
     print(educationDetailMap);
     //_document  = File('assets/images/postImage.png');
@@ -917,20 +915,20 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     docType = 'DocSelected';
                                   });
                                 }
-                                if (value == 1) {
+                               if (value == 1) {
                                   docType = 'A';
                                   print(docType);
                                 } else if (value == 2) {
-                                  docType = 'P';
+                                  docType = 'PN';
                                   print(docType);
                                 } else if (value == 3) {
-                                  docType = 'p';
+                                  docType = 'PAS';
                                   print(docType);
                                 } else if (value == 4) {
-                                  docType = 'V';
+                                  docType = 'VI';
                                   print(docType);
                                 } else {
-                                  docType = 'D';
+                                  docType = 'DL';
                                   print(docType);
                                 }
                               },
@@ -3173,7 +3171,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         ),
         //'image_url': imageUrl,
         'identification_document_number': idNumber,
-        'location[0][id]': 54,
+        //?TODO: Used dynamic ID at location[0][id]
+        'location[0][id]': 7,
         'location[0][address_line_1]': addressLine1,
         'location[0][address_line_2]': addressLine2,
         'location[0][city]': city,
@@ -3185,14 +3184,15 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         'achievements': achievements,
         'skills': skills,
         'hobbies': hobbies,
-        'educational_details[0][id]': 25,
+        
+        // 'educational_details[0][id]': 13,
         // 'educational_details[0][school_name]': myControllers[0].text.toString(),
         // 'educational_details[0][year]': selectedYear.year,
         // 'educational_details[0][qualification]': qualification.toString(),
         // 'educational_details[0][certificate_file]':
-        //     await MultipartFile.fromFile(
-        //   certificateFile.path,
-        //   filename: certiname,
+        //   await MultipartFile.fromFile(
+        //   _certificate.path,
+        //   filename: _certificate.path.split('/').last,
         //   //contentType: new MediaType("jpg", "jpeg", "png", "pdf"),
         // ),
         'facbook_link': facbookUrl,
@@ -3205,27 +3205,29 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
 
       print('MAPO:::' + educationDetailMap.length.toString());
 
-      for (int i = 0; i < educationDetailMap.length - 1; i++) {
+      for (int i = 0; i < educationDetailMap.length; i++) {
         //formData.fields.addAll(params.entries);
         formData.fields.addAll([
-          MapEntry('educational_details[$i][school_name]',
-              educationDetailMap[i]['school_name'].toString()),
-          MapEntry('educational_details[$i][year]',
-              educationDetailMap[i]['year'].toString()),
-          MapEntry('educational_details[$i][qualification]',
-              educationDetailMap[i]['qualification'].toString()),
+          //?TODO: Used dynamic ID at educational_details[0][id]
+          MapEntry('educational_details[0][id]', 16.toString()),
+          MapEntry('educational_details[0][school_name]',
+              educationDetailMap[0]['school_name'].toString()),
+          MapEntry('educational_details[0][year]',
+              educationDetailMap[0]['year'].toString()),
+          MapEntry('educational_details[0][qualification]',
+              educationDetailMap[0]['qualification'].toString()),
         ]);
         formData.files.addAll([
           MapEntry(
-              'educational_details[$i][certificate_file]',
-              await MultipartFile.fromFile(educationDetailMap[i]['certificate'],
+              'educational_details[0][certificate_file]',
+              await MultipartFile.fromFile(educationDetailMap[0]['certificate'],
                   filename: educationDetailMap[i]['certificate'])),
         ]);
       }
 
       print('MAP:::' + educationDetailMap.toString());
 
-      print(educationList);
+      //print(educationList);
 
       var response = await dio.post(
         Config.updateProfileUrl,
@@ -3244,7 +3246,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         // print('ID ::: ' + result.data.userId.toString());
         // saveUserData(result.data.userId);
 
-        Fluttertoast.showToast(
+        if (result.status == true) {
+          print('TRUE::');
+           Fluttertoast.showToast(
           msg: result.message,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
@@ -3253,6 +3257,20 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
+        // Close current screen after profile update
+        //Navigator.of(context).pop();
+        } else {
+          print('FALSE::');
+          Fluttertoast.showToast(
+          msg: result.message,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+        }
       } else {
         Fluttertoast.showToast(
           msg: result.message,
