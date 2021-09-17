@@ -1,4 +1,5 @@
 import 'package:being_pupil/Account/About_Us_Screen.dart';
+import 'package:being_pupil/Account/Educator_MyCourse_Screen.dart';
 import 'package:being_pupil/Account/Educator_MyProfile.dart';
 import 'package:being_pupil/Account/FAQ_Screen.dart';
 import 'package:being_pupil/Account/Edit_Profile_Educator.dart';
@@ -6,19 +7,14 @@ import 'package:being_pupil/Account/Learner_MyProfile.dart';
 import 'package:being_pupil/Account/Saved_Post.dart';
 import 'package:being_pupil/Account/Terms_And_Policy_Screen.dart';
 import 'package:being_pupil/Constants/Const.dart';
-import 'package:being_pupil/HomeScreen/Educator_Home_Screen.dart';
 import 'package:being_pupil/Login/Login_Screen.dart';
-import 'package:being_pupil/Registration/Educator_Registration.dart';
-import 'package:being_pupil/Registration/Learner_Registration.dart';
-import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
-import 'Edit_Profile_Learner.dart';
+import 'Learner_MyCourse_Screen.dart';
 
 class AccountScreen extends StatefulWidget {
   AccountScreen({Key key}) : super(key: key);
@@ -173,11 +169,13 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              // Navigator.of(context).push(PageRouteBuilder(
-                              //     pageBuilder: (_, __, ____) =>
-                              //         EducatorHomeScreen()));
-                              // pushNewScreen(context, screen: EducatorHomeScreen(),
-                              // pageTransitionAnimation: PageTransitionAnimation.cupertino);
+                              registerAs == 'E'
+                              ? pushNewScreen(context, screen: EducatorMyCourseScreen(),
+                                withNavBar: false,
+                                pageTransitionAnimation: PageTransitionAnimation.cupertino)
+                              : pushNewScreen(context, screen: LearnerMyCourseScreen(),
+                                withNavBar: false,
+                                pageTransitionAnimation: PageTransitionAnimation.cupertino);
                             },
                             child: ProfileList(
                               txt: "My Courses",

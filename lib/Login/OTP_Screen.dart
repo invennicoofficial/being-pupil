@@ -372,17 +372,17 @@ class _OtpScreenState extends State<OtpScreen> {
                 )));
           } else {
               preferences.setString("name", result.data.userObject.name);
-              preferences.setString("imageUrl", result.data.userObject.imageUrl);
-              preferences.setString("qualification", result.data.userObject.educationalDetail.qualification);
-              preferences.setString("schoolName", result.data.userObject.educationalDetail.schoolName);
-              preferences.setString("address1", result.data.userObject.location.addressLine2);
-              preferences.setString("address2", result.data.userObject.location.city);
-              preferences.setString("facebookUrl", result.data.userObject.fbUrl);
-              preferences.setString("instaUrl", result.data.userObject.instaUrl);
-              preferences.setString("linkedInUrl", result.data.userObject.liUrl);
-              preferences.setString("otherUrl", result.data.userObject.otherUrl);
+              registerAs == 'E' ? preferences.setString("imageUrl", result.data.userObject.imageUrl) : preferences.setString("imageUrl", '');
+              registerAs == 'E' ? preferences.setString("qualification", result.data.userObject.educationalDetail.qualification) : preferences.setString("qualification", '');
+              registerAs == 'E' ? preferences.setString("schoolName", result.data.userObject.educationalDetail.schoolName) : preferences.setString("schoolName",'');
+              registerAs == 'E' ? preferences.setString("address1", result.data.userObject.location.addressLine2): preferences.setString("address1", '');
+              registerAs == 'E' ? preferences.setString("address2", result.data.userObject.location.city): preferences.setString("address2", '');
+              registerAs == 'E' ? preferences.setString("facebookUrl", result.data.userObject.fbUrl) : preferences.setString("facebookUrl",'');
+              registerAs == 'E' ? preferences.setString("instaUrl", result.data.userObject.instaUrl) : preferences.setString("instaUrl",'');
+              registerAs == 'E' ? preferences.setString("linkedInUrl", result.data.userObject.liUrl) : preferences.setString("linkedInUrl", '');
+              registerAs == 'E' ? preferences.setString("otherUrl", result.data.userObject.otherUrl) : preferences.setString("otherUrl", '');
 
-          print('CITY::: ${result.data.userObject.imageUrl}');
+          //print('CITY::: ${result.data.userObject.imageUrl}');
 
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => bottomNavBar(0)),
