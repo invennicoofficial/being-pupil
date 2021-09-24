@@ -3,8 +3,12 @@ import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+
+import 'Booking_Review_Screen.dart';
+import 'package:intl/intl.dart';
 
 class BookPropertyScreen extends StatefulWidget {
   BookPropertyScreen({Key key}) : super(key: key);
@@ -22,13 +26,14 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
 
   List<String> mealList = ['Breakfast', 'Lunch', 'Dinner'];
   List<int> mealPriceList = [1000, 2000, 2000];
-  //List<String> mealPriceList = ['₹1000/mth', '₹2000/mth', '₹2000/mth'];
+  List<String> selectedMeal = [];
   List<bool> isMeal = [false, false, false];
 
   String userName, userGender, userNumber;
   int roomCharge = 0, mealCharge = 0, taxCharge = 500, total = 500;
 
   int selectedMonth = 0;
+  bool isRoomSelected = false;
 
   // List<String> sharingList = ['Single Sharing', 'Double Sharing'];
   // List<String> sharingPriceList = ['₹4000/mth', '₹6000/mth'];
@@ -117,12 +122,14 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                       print(value);
                       if (value == 1) {
                         setState(() {
+                          isRoomSelected = true;
                           roomType = 'Single Sharing';
                           roomCharge = 4000;
                           total = roomCharge + mealCharge + taxCharge;
                         });
                       } else {
                         setState(() {
+                          isRoomSelected = true;
                           roomType = 'Double Sharing';
                           roomCharge = 6000;
                           total = roomCharge + mealCharge + taxCharge;
@@ -235,12 +242,14 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                     mealCharge =
                                         mealCharge + mealPriceList[index];
                                     total = mealCharge + taxCharge + roomCharge;
+                                    selectedMeal.add(mealList[index]);
                                   });
                                 } else {
                                   setState(() {
                                     mealCharge =
                                         mealCharge - mealPriceList[index];
                                     total = total - mealCharge;
+                                    selectedMeal.remove(mealList[index]);
                                   });
                                 }
                               });
@@ -893,10 +902,59 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                 padding: EdgeInsets.symmetric(vertical: 3.0.h),
                 child: GestureDetector(
                   onTap: () {
-                    // pushNewScreen(context,
-                    //     screen: BookPropertyScreen(),
-                    //     withNavBar: false,
-                    //     pageTransitionAnimation: PageTransitionAnimation.cupertino);
+                    if (isRoomSelected == false) {
+                      Fluttertoast.showToast(
+                          msg: "Please Select Room Type",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Constants.bgColor,
+                          textColor: Colors.white,
+                          fontSize: 10.0.sp);
+                    } else if (selectedMonth == 0) {
+                      Fluttertoast.showToast(
+                          msg: "Please Select Number of Months",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Constants.bgColor,
+                          textColor: Colors.white,
+                          fontSize: 10.0.sp);
+                    } else if (checkInDate == null) {
+                      Fluttertoast.showToast(
+                          msg: "Please Select Check In Date",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Constants.bgColor,
+                          textColor: Colors.white,
+                          fontSize: 10.0.sp);
+                    } else if (checkOutDate == null) {
+                      Fluttertoast.showToast(
+                          msg: "Please Select Check Out Date",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Constants.bgColor,
+                          textColor: Colors.white,
+                          fontSize: 10.0.sp);
+                    } else {
+                      pushNewScreen(context,
+                          screen: BookingReviewScreen(
+                            name: userName,
+                            mobileNumber: userNumber,
+                            checkIn: DateFormat('EEE,dd MMM yyyy').format(checkInDate).toString(),
+                            checkOut: DateFormat('EEE,dd MMM yyyy').format(checkOutDate).toString(),
+                            roomType: roomType,
+                            meal: selectedMeal.toString(),
+                            roomCharge: roomCharge,
+                            mealCharge: mealCharge,
+                            taxCharge: taxCharge,
+                            total: total,
+                          ),
+                          withNavBar: false,
+                          pageTransitionAnimation: PageTransitionAnimation.cupertino);
+                    }
                   },
                   child: Container(
                     height: 7.0.h,
