@@ -242,7 +242,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             },
                             child: ProfileList(
                               txt: "FAQs",
-                              image: "assets/icons/faqs.png",
+                              image: "assets/icons/faq.png",
                               sizeImage: 20.0,
                             ),
                           ),
@@ -257,7 +257,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             },
                             child: ProfileList(
                               txt: "Terms & Policy",
-                              image: "assets/icons/termPolicy.png",
+                              image: "assets/icons/termPolicy2.png",
                               sizeImage: 20.0,
                             ),
                           ),

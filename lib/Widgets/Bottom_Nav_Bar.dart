@@ -8,6 +8,7 @@ import 'package:being_pupil/StayAndStudy/Stay_And_Study_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Educator_Study_Buddy_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Learner_Study_Buddy_Screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
@@ -111,10 +112,10 @@ class _bottomNavBarState extends State<bottomNavBar> {
     return [
       PersistentBottomNavBarItem(
       icon: Icon(Icons.home_filled,),
-          //icon:  ImageIcon(AssetImage('assets/icons/home.png'),size: 25),
-          title: ("Home"),
-          activeColorPrimary: Constants.selectedIcon,
-          inactiveColorPrimary: Constants.bgColor,),
+        //icon:  ImageIcon(AssetImage('assets/icons/home.png'),size: 25),
+        title: ("Home"),
+        activeColorPrimary: Constants.selectedIcon,
+        inactiveColorPrimary: Constants.bgColor,),
       PersistentBottomNavBarItem(
         icon: ImageIcon(AssetImage('assets/icons/stayStudy.png'),size: 25),
         title: ("Stay Study"),
@@ -128,17 +129,21 @@ class _bottomNavBarState extends State<bottomNavBar> {
         inactiveColorPrimary: Constants.bgColor,
       ),
       PersistentBottomNavBarItem(
-        icon: ImageIcon(AssetImage('assets/icons/support.png'),size: 25),
+        //icon: ImageIcon(AssetImage('assets/icons/support2.png'),size: 25),
+        icon: Icon(Icons.people_alt_rounded),
         title: ("Study Buddy"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
       ),
       PersistentBottomNavBarItem(
+        //icon: SvgPicture.asset('assets/icons/ff.svg'),
         //icon: ImageIcon(AssetImage('assets/icons/Account@2x.png'),size: 25),
         icon: Icon(Icons.account_circle_rounded),
+        iconSize: 25.0,
         title: ("Account"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
+        //inactiveIcon: ImageIcon(AssetImage('assets/icons/Account@2x.png'),size: 25)
       ),
     ];
   }
@@ -160,6 +165,7 @@ class _bottomNavBarState extends State<bottomNavBar> {
       //   borderRadius: BorderRadius.circular(10.0),
       //   colorBehindNavBar: Colors.white,
       // ),
+      padding: NavBarPadding.all(0.0),
       popAllScreensOnTapOfSelectedTab: true,
       popActionScreens: PopActionScreensType.all,
       itemAnimationProperties: ItemAnimationProperties(
@@ -171,7 +177,7 @@ class _bottomNavBarState extends State<bottomNavBar> {
         curve: Curves.ease,
         duration: Duration(milliseconds: 200),
       ),
-     // navBarHeight: 7.0.h,
+      navBarHeight: 8.0.h,
       navBarStyle: NavBarStyle.style3,
       // padding: NavBarPadding.symmetric(vertical: 0.0, horizontal: 1.0.w),
       //margin: EdgeInsets.symmetric(vertical: 0.0),

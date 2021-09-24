@@ -39,15 +39,17 @@ dependencies:
   photo_view: ^0.10.3
   pin_code_fields: ^6.1.0
   place_picker: ^0.9.15
+  readmore: ^1.0.0
   share: ^0.6.5+4
   shared_preferences: ^0.5.12+4
   sizer: ^1.1.8
+  syncfusion_flutter_datepicker: ^18.4.49-beta
   textfield_tags: ^1.1.1
   webview_flutter: ^1.0.7
   #api_hit_app
   http: ^0.12.2
   google_fonts: ^1.1.2 
-  flutter_svg: ^0.18.0
+  flutter_svg: ^0.19.1
   #image_picker: ^0.6.7
   #dio: ^3.0.10 
   mime: ^0.9.7

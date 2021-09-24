@@ -342,11 +342,13 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                                     //width: 2.0,
                                   ),
                                 ),
-                                suffixIcon: Icon(
+                                suffixIcon: //Image.asset('assets/icons/IconLink.png', fit: BoxFit.contain,),
+                                Icon(
                                   Icons.link,
                                   size: 25,
                                   color: Constants.formBorder,
-                                )), //keyboardType: TextInputType.emailAddress,
+                                )
+                                ), //keyboardType: TextInputType.emailAddress,
                             style: new TextStyle(
                                 fontFamily: "Montserrat", fontSize: 10.0.sp),
                           ),

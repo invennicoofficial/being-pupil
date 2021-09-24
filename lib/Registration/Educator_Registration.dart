@@ -3132,6 +3132,8 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
           print('TRUE::');
            preferences.setString("name", result.data.name);
             preferences.setString("imageUrl", result.data.imageUrl);
+            preferences.setString("mobileNumber", result.data.mobileNumber);
+              preferences.setString("gender", result.data.gender);
             preferences.setString("qualification", result.data.educationalDetails.toString());
             preferences.setString("schoolName", result.data.educationalDetails.toString());
             preferences.setString("address1", result.data.location.toString());

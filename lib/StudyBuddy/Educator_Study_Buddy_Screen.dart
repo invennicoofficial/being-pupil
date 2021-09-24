@@ -37,17 +37,17 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Constants.bgColor,
-          leading: IconButton(
-            icon: Icon(
-              Icons.west_rounded,
-              color: Colors.white,
-              size: 35.0,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            padding: EdgeInsets.zero,
-          ),
+          // leading: IconButton(
+          //   icon: Icon(
+          //     Icons.west_rounded,
+          //     color: Colors.white,
+          //     size: 35.0,
+          //   ),
+          //   onPressed: () {
+          //     Navigator.of(context).pop();
+          //   },
+          //   padding: EdgeInsets.zero,
+          // ),
           title: Text('Study Buddy',
               style: TextStyle(
                   fontFamily: 'Montserrat',

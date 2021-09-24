@@ -419,7 +419,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         Navigator.push(
             context,
             PageTransition(
-                type: PageTransitionType.fade, child: OtpScreen()));
+                type: PageTransitionType.fade, child: OtpScreen(
+                  mobileNumber: mobileController.text,
+                )));
         Fluttertoast.showToast(
           msg: result.message,
           toastLength: Toast.LENGTH_SHORT,

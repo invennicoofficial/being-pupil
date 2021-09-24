@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
@@ -8,7 +7,6 @@ import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
@@ -22,7 +20,7 @@ class CreatePostScreen extends StatefulWidget {
 }
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
-  File _image;
+  File _image, _camImage;
   String authToken;
   TextEditingController descriptionController = TextEditingController();
   List<String> filePathList = [];
@@ -45,8 +43,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         source: ImageSource.camera, imageQuality: 50));
 
     setState(() {
-      _image = image;
+      _camImage = image;
+      fileList.add(new File(_camImage.path));
     });
+    print('LENGTH::: ${fileList.length}');
   }
 
   _imageFromGallery() async {
@@ -84,7 +84,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       print('$i : ' + result[i].title);
       filePathList.add(result[i].relativePath + result[i].title);
       fileList.add(
-          new File('${result[i].relativePath}' + '${result[i].title}'));
+          new File('${result[i].relativePath}' + '/' + '${result[i].title}'));
     }
     print(filePathList);
     print(fileList);

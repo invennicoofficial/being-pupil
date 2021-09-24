@@ -1,27 +1,28 @@
 import 'dart:async';
 
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
-import 'package:being_pupil/Constants/Const.dart';
-import 'package:being_pupil/HomeScreen/Learner_Home_Screen.dart';
-import 'package:being_pupil/Model/Config.dart';
-import 'package:being_pupil/Model/Otp_Model.dart';
-import 'package:being_pupil/Registration/Basic_Registration.dart';
-import 'package:being_pupil/Registration/Educator_Registration.dart';
-import 'package:being_pupil/Registration/Learner_Registration.dart';
-import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
-import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
+import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/Otp_Model.dart';
+import 'package:being_pupil/Registration/Educator_Registration.dart';
+import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
+import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+
 class OtpScreen extends StatefulWidget {
-  OtpScreen({Key key}) : super(key: key);
+  String mobileNumber;
+  OtpScreen({
+    Key key,
+    this.mobileNumber,
+  }) : super(key: key);
 
   @override
   _OtpScreenState createState() => _OtpScreenState();
@@ -31,6 +32,7 @@ class _OtpScreenState extends State<OtpScreen> {
   TextEditingController otpPinController = TextEditingController();
   StreamController<ErrorAnimationType> errorController;
   final storage = new FlutterSecureStorage();
+  String newMobNumber;
 
   bool hasError = false;
   String currentText = "";
@@ -47,8 +49,14 @@ class _OtpScreenState extends State<OtpScreen> {
     errorController = StreamController<ErrorAnimationType>();
     getData();
     otpPinController.text = '1234';
+    newMobNumber = widget.mobileNumber;
     super.initState();
   }
+
+  String replaceCharAt(String oldString, int index, String newString){
+    return oldString.substring(0, index) + newString + oldString.substring(index + 1);
+  }
+  
 
   @override
   void dispose() {
@@ -69,6 +77,9 @@ class _OtpScreenState extends State<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    for(int i = 0; i < widget.mobileNumber.length - 3; i++){
+      newMobNumber = replaceCharAt(newMobNumber, i, '*');
+    }
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -110,7 +121,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     padding:
                         EdgeInsets.only(top: 2.0.h, left: 5.0.w, right: 15.0.w),
                     child: Text(
-                      'We sent code on your registered mobile number *******999',
+                      'We sent code on your registered mobile number $newMobNumber',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 9.0.sp,
@@ -372,6 +383,8 @@ class _OtpScreenState extends State<OtpScreen> {
                 )));
           } else {
               preferences.setString("name", result.data.userObject.name);
+              preferences.setString("mobileNumber", result.data.userObject.mobileNumber);
+              preferences.setString("gender", result.data.userObject.gender);
               registerAs == 'E' ? preferences.setString("imageUrl", result.data.userObject.imageUrl) : preferences.setString("imageUrl", '');
               registerAs == 'E' ? preferences.setString("qualification", result.data.userObject.educationalDetail.qualification) : preferences.setString("qualification", '');
               registerAs == 'E' ? preferences.setString("schoolName", result.data.userObject.educationalDetail.schoolName) : preferences.setString("schoolName",'');
@@ -382,7 +395,7 @@ class _OtpScreenState extends State<OtpScreen> {
               registerAs == 'E' ? preferences.setString("linkedInUrl", result.data.userObject.liUrl) : preferences.setString("linkedInUrl", '');
               registerAs == 'E' ? preferences.setString("otherUrl", result.data.userObject.otherUrl) : preferences.setString("otherUrl", '');
 
-          //print('CITY::: ${result.data.userObject.imageUrl}');
+          print('Gender::: ${result.data.userObject.gender}');
 
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => bottomNavBar(0)),
