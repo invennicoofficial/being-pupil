@@ -1,24 +1,25 @@
+import 'package:being_pupil/Account/My_Bookings/Cancel_Reason_Screen.dart';
 import 'package:being_pupil/Constants/Const.dart';
-import 'package:being_pupil/StayAndStudy/Payment_Confirm_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:sizer/sizer.dart';
 
-class BookingReviewScreen extends StatelessWidget {
-  final String name, mobileNumber, checkIn, checkOut, roomType, meal;
-  final int roomCharge, mealCharge, taxCharge, total;
-  BookingReviewScreen(
+class CancelBookingScreen extends StatelessWidget {
+  // final String name, mobileNumber, checkIn, checkOut, roomType, meal;
+  // final int roomCharge, mealCharge, taxCharge, total;
+  CancelBookingScreen(
       {Key key,
-      this.name,
-      this.mobileNumber,
-      this.checkIn,
-      this.checkOut,
-      this.roomType,
-      this.meal,
-      this.roomCharge,
-      this.mealCharge,
-      this.taxCharge,
-      this.total})
+      // this.name,
+      // this.mobileNumber,
+      // this.checkIn,
+      // this.checkOut,
+      // this.roomType,
+      // this.meal,
+      // this.roomCharge,
+      // this.mealCharge,
+      // this.taxCharge,
+      // this.total
+      })
       : super(key: key);
 
   @override
@@ -38,7 +39,7 @@ class BookingReviewScreen extends StatelessWidget {
           padding: EdgeInsets.zero,
         ),
         title: Text(
-          'Booking Review',
+          'My Booking',
           style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 12.0.sp,
@@ -97,7 +98,7 @@ class BookingReviewScreen extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(top: 1.0.h),
+                      padding: EdgeInsets.only(top: 2.0.h),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -109,8 +110,7 @@ class BookingReviewScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(
-                            name,
+                          Text('Divyang Dantani',//name,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -121,7 +121,7 @@ class BookingReviewScreen extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 1.0.h),
+                      padding: EdgeInsets.only(top: 2.0.h),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -133,8 +133,7 @@ class BookingReviewScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(
-                            mobileNumber,
+                          Text('9737857570',//mobileNumber,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -145,7 +144,7 @@ class BookingReviewScreen extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 1.0.h),
+                      padding: EdgeInsets.only(top: 2.0.h),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -157,8 +156,7 @@ class BookingReviewScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(
-                            checkIn,
+                          Text('Fri,21 Jan 2021',//checkIn,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -169,7 +167,7 @@ class BookingReviewScreen extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 1.0.h),
+                      padding: EdgeInsets.only(top: 2.0.h),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -181,8 +179,7 @@ class BookingReviewScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(
-                            checkOut,
+                          Text('Fri,21 Jan 2021',//checkOut,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -193,7 +190,7 @@ class BookingReviewScreen extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 1.0.h),
+                      padding: EdgeInsets.only(top: 2.0.h),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -205,8 +202,7 @@ class BookingReviewScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(
-                            roomType,
+                          Text('Double Sharing',//roomType,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -217,7 +213,7 @@ class BookingReviewScreen extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 1.0.h),
+                      padding: EdgeInsets.only(top: 2.0.h),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -229,8 +225,7 @@ class BookingReviewScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(
-                            meal.substring(1, meal.length - 1),
+                          Text('Breakfast, Lunch',//meal.substring(1, meal.length - 1),
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -284,14 +279,14 @@ class BookingReviewScreen extends StatelessWidget {
                                     fontWeight: FontWeight.w400,
                                     color: Constants.bgColor)),
                             TextSpan(
-                                text: '($roomType)',
+                                text: '(Double Sharing)',//'($roomType)',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 8.0.sp,
                                     fontWeight: FontWeight.w400,
                                     color: Constants.blueTitle)),
                           ])),
-                          Text('₹$roomCharge',
+                          Text('₹6000',//'₹$roomCharge',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -315,14 +310,14 @@ class BookingReviewScreen extends StatelessWidget {
                                     fontWeight: FontWeight.w400,
                                     color: Constants.bgColor)),
                             TextSpan(
-                                text: '(${meal.substring(1, meal.length - 1)})',
+                                text: '(Breakfast, Lunch)',//'(${meal.substring(1, meal.length - 1)})',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 8.0.sp,
                                     fontWeight: FontWeight.w400,
                                     color: Constants.blueTitle)),
                           ])),
-                          Text('₹$mealCharge',
+                          Text('₹3000',//'₹$mealCharge',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -345,7 +340,7 @@ class BookingReviewScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text('₹$taxCharge',
+                          Text('₹500',//'₹$taxCharge',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -379,7 +374,7 @@ class BookingReviewScreen extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                           color: Constants.bgColor),
                     ),
-                    Text('₹$total',
+                    Text('₹9500',//'₹$total',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 14.0.sp,
@@ -393,7 +388,7 @@ class BookingReviewScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 3.0.h),
                 child: GestureDetector(
                   onTap: () {
-                    pushNewScreen(context, screen: PaymentConfirmScreen(),
+                    pushNewScreen(context, screen: ReasonForCancelBooking(),
                     withNavBar: false, pageTransitionAnimation: PageTransitionAnimation.cupertino);
                   },
                   child: Container(
@@ -410,7 +405,7 @@ class BookingReviewScreen extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        'Pay now'.toUpperCase(),
+                        'CANCEL BOOKING',
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Montserrat',

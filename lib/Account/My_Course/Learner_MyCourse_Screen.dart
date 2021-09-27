@@ -1,4 +1,4 @@
-import 'package:being_pupil/Account/Course_Details.dart';
+import 'package:being_pupil/Account/My_Course/Course_Details.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';

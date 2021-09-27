@@ -1,4 +1,4 @@
-import 'package:being_pupil/Account/Edit_Profile_Educator.dart';
+import 'package:being_pupil/Account/My_Profile/Edit_Profile_Educator.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Comment_Screen.dart';
 import 'package:being_pupil/HomeScreen/Report_Feed.dart';

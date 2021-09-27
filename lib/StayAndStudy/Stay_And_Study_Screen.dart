@@ -28,10 +28,20 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
       ),
       body: Padding(
         padding: EdgeInsets.only(top: 1.0.h, left: 4.0.w, right: 4.0.w),
-        child: ListView.builder(
+        child: ListView.separated(
             physics: BouncingScrollPhysics(),
             itemCount: 5,
             shrinkWrap: true,
+            separatorBuilder: (context, index){
+              return Padding(
+                padding: EdgeInsets.only(top: 1.0.h),
+                child: Divider(
+                  height: 1.0,
+                  color: Constants.formBorder,
+                  thickness: 0.8,
+                ),
+              );
+            },
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
@@ -145,10 +155,6 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                         ),
                       ],
                     ),
-                    Divider(
-                      height: 2.0.h,
-                      color: Constants.formBorder,
-                    )
                   ],
                 ),
               );

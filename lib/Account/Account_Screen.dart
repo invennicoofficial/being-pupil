@@ -1,9 +1,10 @@
 import 'package:being_pupil/Account/About_Us_Screen.dart';
-import 'package:being_pupil/Account/Educator_MyCourse_Screen.dart';
-import 'package:being_pupil/Account/Educator_MyProfile.dart';
+import 'package:being_pupil/Account/My_Bookings/My_Booking_Screen.dart';
+import 'package:being_pupil/Account/My_Course/Educator_MyCourse_Screen.dart';
+import 'package:being_pupil/Account/My_Profile/Educator_MyProfile.dart';
 import 'package:being_pupil/Account/FAQ_Screen.dart';
-import 'package:being_pupil/Account/Edit_Profile_Educator.dart';
-import 'package:being_pupil/Account/Learner_MyProfile.dart';
+import 'package:being_pupil/Account/My_Profile/Edit_Profile_Educator.dart';
+import 'package:being_pupil/Account/My_Profile/Learner_MyProfile.dart';
 import 'package:being_pupil/Account/Saved_Post.dart';
 import 'package:being_pupil/Account/Terms_And_Policy_Screen.dart';
 import 'package:being_pupil/Constants/Const.dart';
@@ -14,7 +15,8 @@ import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
-import 'Learner_MyCourse_Screen.dart';
+import 'My_Course/Educator_MyCourse_Screen.dart';
+import 'My_Course/Learner_MyCourse_Screen.dart';
 
 class AccountScreen extends StatefulWidget {
   AccountScreen({Key key}) : super(key: key);
@@ -188,9 +190,11 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              // Navigator.of(context).push(PageRouteBuilder(
-                              //     pageBuilder: (_, __, ____) =>
-                              //         EducatorHomeScreen()));
+                              pushNewScreen(context,
+                                  withNavBar: false,
+                                  screen: MyBookingScreen(),
+                                  pageTransitionAnimation:
+                                      PageTransitionAnimation.cupertino);
                             },
                             child: ProfileList(
                               txt: "My Bookings",
