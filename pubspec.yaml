@@ -29,6 +29,7 @@ dependencies:
   dio: ^3.0.10
   dotted_border: ^1.0.7
   file_picker: ^2.1.7
+  flutter_animation_progress_bar: ^1.0.6
   flutter_image_compress: ^0.7.0
   flutter_secure_storage: ^3.3.5
   flutter_rating_bar: ^3.2.0

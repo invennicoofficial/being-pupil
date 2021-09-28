@@ -6,6 +6,7 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:readmore/readmore.dart';
 import 'package:share/share.dart';
 import 'package:sizer/sizer.dart';
+import 'Rating_Review_Screen.dart';
 
 class PropertyDetailScreen extends StatefulWidget {
   const PropertyDetailScreen({Key key}) : super(key: key);
@@ -181,23 +182,32 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
             //Review and rating for Property
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 4.0.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  ImageIcon(AssetImage('assets/icons/greenStar.png'),
-                      size: 18.0, color: Constants.selectedIcon),
-                  SizedBox(
-                    width: 1.0.w,
-                  ),
-                  Text(
-                    '4.5 Rating | 5 Review',
-                    style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 10.0.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Constants.blueTitle),
-                  )
-                ],
+              child: GestureDetector(
+                onTap: () {
+                  pushNewScreen(context,
+                      screen: RatingReviewScreen(),
+                      withNavBar: false,
+                      pageTransitionAnimation:
+                          PageTransitionAnimation.cupertino);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    ImageIcon(AssetImage('assets/icons/greenStar.png'),
+                        size: 18.0, color: Constants.selectedIcon),
+                    SizedBox(
+                      width: 1.0.w,
+                    ),
+                    Text(
+                      '4.5 Rating | 5 Review',
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 10.0.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Constants.blueTitle),
+                    )
+                  ],
+                ),
               ),
             ),
             //About Property
