@@ -55,7 +55,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    height: 20.0.h,
+                    height: 18.0.h,
                     width: 30.0.w,
                     padding: EdgeInsets.symmetric(
                         horizontal: 5.0.w, vertical: 2.0.h),
@@ -223,8 +223,8 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                               BorderRadius.circular(50),
                                           child: Image.asset(
                                             'assets/images/educatorDP.png',
-                                            width: 8.5.w,
-                                            height: 5.0.h,
+                                            width: 9.0.w,
+                                            height: 4.5.h,
                                             fit: BoxFit.cover,
                                           ),
                                         ),

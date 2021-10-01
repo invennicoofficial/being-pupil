@@ -29,6 +29,7 @@ dependencies:
   dio: ^3.0.10
   dotted_border: ^1.0.7
   file_picker: ^2.1.7
+  filter_list: ^0.0.8
   flutter_animation_progress_bar: ^1.0.6
   flutter_image_compress: ^0.7.0
   flutter_secure_storage: ^3.3.5
@@ -45,8 +46,8 @@ dependencies:
   share: ^0.6.5+4
   shared_preferences: ^0.5.12+4
   sizer: ^1.1.8
-  syncfusion_flutter_datepicker: ^18.4.49-beta
-  textfield_tags: ^1.1.1
+  #syncfusion_flutter_datepicker: ^18.4.49-beta
+  #textfield_tags: ^1.1.1
   webview_flutter: ^1.0.7
   #api_hit_app
   http: ^0.12.2

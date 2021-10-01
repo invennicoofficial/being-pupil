@@ -5,6 +5,7 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:sizer/sizer.dart';
 
 import 'View_Booking_Details.dart';
+import 'View_Review_Screen.dart';
 
 class CompletedList extends StatefulWidget {
   CompletedList({Key key}) : super(key: key);
@@ -117,7 +118,13 @@ class _CompletedListState extends State<CompletedList> {
                                   pageTransitionAnimation:
                                       PageTransitionAnimation.cupertino);
                             }
-                          : null,
+                          : () {
+                              pushNewScreen(context,
+                                  screen: ViewReviewScreen(),
+                                  withNavBar: false,
+                                  pageTransitionAnimation:
+                                      PageTransitionAnimation.cupertino);
+                            },
                       child: Text(
                         index == 0 ? 'Write Review' : 'View Review',
                         style: TextStyle(

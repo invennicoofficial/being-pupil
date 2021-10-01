@@ -14,7 +14,6 @@ import 'package:place_picker/entities/location_result.dart';
 import 'package:place_picker/widgets/place_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:textfield_tags/textfield_tags.dart';
 
 class LearnerRegistration extends StatefulWidget {
   const LearnerRegistration({Key key}) : super(key: key);
@@ -1250,81 +1249,81 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                             child: Container(
                               // height: 13.0.h,
                               // width: 90.0.w,
-                              child: TextFieldTags(
-                                //initialTags: ["college"],
-                                tagsStyler: TagsStyler(
-                                  showHashtag: true,
-                                  tagMargin: const EdgeInsets.only(right: 4.0),
-                                  tagCancelIcon: Icon(Icons.cancel,
-                                      size: 20.0, color: Constants.bgColor),
-                                  tagCancelIconPadding:
-                                      EdgeInsets.only(left: 4.0, top: 2.0),
-                                  tagPadding: EdgeInsets.only(
-                                      top: 2.0,
-                                      bottom: 4.0,
-                                      left: 8.0,
-                                      right: 4.0),
-                                  tagDecoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                      color: Constants.formBorder,
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(20.0),
-                                    ),
-                                  ),
-                                  tagTextStyle: TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      color: Constants.bgColor,
-                                      fontFamily: "Montserrat"),
-                                ),
-                                textFieldStyler: TextFieldStyler(
-                                  helperText: '',
-                                  hintText:
-                                      "Please mention your skills example #skills1 #skills2...",
-                                  hintStyle: TextStyle(
-                                      fontFamily: "Montserrat",
-                                      fontSize: 10.0.sp),
-                                  isDense: false,
-                                  textFieldFocusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
-                                  ),
-                                  textFieldBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
-                                  ),
-                                  textFieldEnabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
-                                  ),
-                                  textFieldDisabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
-                                  ),
-                                ),
-                                onDelete: (tag) {
-                                  print('onDelete: $tag');
-                                },
-                                onTag: (tag) {
-                                  print('onTag: $tag');
-                                },
-                                // validator: (String tag) {
-                                //   print('validator: $tag');
-                                //   if (tag.length > 10) {
-                                //     return "hey that is too much";
-                                //   }
-                                //   return null;
-                                // },
-                              ),
+                              // child: TextFieldTags(
+                              //   //initialTags: ["college"],
+                              //   tagsStyler: TagsStyler(
+                              //     showHashtag: true,
+                              //     tagMargin: const EdgeInsets.only(right: 4.0),
+                              //     tagCancelIcon: Icon(Icons.cancel,
+                              //         size: 20.0, color: Constants.bgColor),
+                              //     tagCancelIconPadding:
+                              //         EdgeInsets.only(left: 4.0, top: 2.0),
+                              //     tagPadding: EdgeInsets.only(
+                              //         top: 2.0,
+                              //         bottom: 4.0,
+                              //         left: 8.0,
+                              //         right: 4.0),
+                              //     tagDecoration: BoxDecoration(
+                              //       color: Colors.white,
+                              //       border: Border.all(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //       borderRadius: const BorderRadius.all(
+                              //         Radius.circular(20.0),
+                              //       ),
+                              //     ),
+                              //     tagTextStyle: TextStyle(
+                              //         fontWeight: FontWeight.normal,
+                              //         color: Constants.bgColor,
+                              //         fontFamily: "Montserrat"),
+                              //   ),
+                              //   textFieldStyler: TextFieldStyler(
+                              //     helperText: '',
+                              //     hintText:
+                              //         "Please mention your skills example #skills1 #skills2...",
+                              //     hintStyle: TextStyle(
+                              //         fontFamily: "Montserrat",
+                              //         fontSize: 10.0.sp),
+                              //     isDense: false,
+                              //     textFieldFocusedBorder: OutlineInputBorder(
+                              //       borderRadius: BorderRadius.circular(5.0),
+                              //       borderSide: BorderSide(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //     ),
+                              //     textFieldBorder: OutlineInputBorder(
+                              //       borderRadius: BorderRadius.circular(5.0),
+                              //       borderSide: BorderSide(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //     ),
+                              //     textFieldEnabledBorder: OutlineInputBorder(
+                              //       borderRadius: BorderRadius.circular(5.0),
+                              //       borderSide: BorderSide(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //     ),
+                              //     textFieldDisabledBorder: OutlineInputBorder(
+                              //       borderRadius: BorderRadius.circular(5.0),
+                              //       borderSide: BorderSide(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //     ),
+                              //   ),
+                              //   onDelete: (tag) {
+                              //     print('onDelete: $tag');
+                              //   },
+                              //   onTag: (tag) {
+                              //     print('onTag: $tag');
+                              //   },
+                              //   // validator: (String tag) {
+                              //   //   print('validator: $tag');
+                              //   //   if (tag.length > 10) {
+                              //   //     return "hey that is too much";
+                              //   //   }
+                              //   //   return null;
+                              //   // },
+                              // ),
                               // TextFormField(
                               //   maxLines: 5,
                               //   keyboardType: TextInputType.multiline,
@@ -1385,81 +1384,82 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                             child: Container(
                                 // height: 13.0.h,
                                 // width: 90.0.w,
-                                child: TextFieldTags(
-                              //initialTags: ["college"],
-                              tagsStyler: TagsStyler(
-                                showHashtag: true,
-                                tagMargin: const EdgeInsets.only(right: 4.0),
-                                tagCancelIcon: Icon(Icons.cancel,
-                                    size: 20.0, color: Colors.black),
-                                tagCancelIconPadding:
-                                    EdgeInsets.only(left: 4.0, top: 2.0),
-                                tagPadding: EdgeInsets.only(
-                                    top: 2.0,
-                                    bottom: 4.0,
-                                    left: 8.0,
-                                    right: 4.0),
-                                tagDecoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(
-                                    color: Constants.formBorder,
-                                  ),
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(20.0),
-                                  ),
-                                ),
-                                tagTextStyle: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    color: Constants.bgColor,
-                                    fontFamily: "Montserrat"),
-                              ),
-                              textFieldStyler: TextFieldStyler(
-                                helperText: '',
-                                hintText:
-                                    "Please mention your hobbies example #hobbies1 #hobbies2...",
-                                hintStyle: TextStyle(
-                                    fontFamily: "Montserrat",
-                                    fontSize: 10.0.sp),
-                                isDense: false,
-                                textFieldFocusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                  ),
-                                ),
-                                textFieldBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                  ),
-                                ),
-                                textFieldEnabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                  ),
-                                ),
-                                textFieldDisabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                  ),
-                                ),
-                              ),
-                              onDelete: (tag) {
-                                print('onDelete: $tag');
-                              },
-                              onTag: (tag) {
-                                print('onTag: $tag');
-                              },
-                              // validator: (String tag) {
-                              //   print('validator: $tag');
-                              //   if (tag.length > 10) {
-                              //     return "hey that is too much";
-                              //   }
-                              //   return null;
-                              // },
-                            )),
+                            //     child: TextFieldTags(
+                            //   //initialTags: ["college"],
+                            //   tagsStyler: TagsStyler(
+                            //     showHashtag: true,
+                            //     tagMargin: const EdgeInsets.only(right: 4.0),
+                            //     tagCancelIcon: Icon(Icons.cancel,
+                            //         size: 20.0, color: Colors.black),
+                            //     tagCancelIconPadding:
+                            //         EdgeInsets.only(left: 4.0, top: 2.0),
+                            //     tagPadding: EdgeInsets.only(
+                            //         top: 2.0,
+                            //         bottom: 4.0,
+                            //         left: 8.0,
+                            //         right: 4.0),
+                            //     tagDecoration: BoxDecoration(
+                            //       color: Colors.white,
+                            //       border: Border.all(
+                            //         color: Constants.formBorder,
+                            //       ),
+                            //       borderRadius: const BorderRadius.all(
+                            //         Radius.circular(20.0),
+                            //       ),
+                            //     ),
+                            //     tagTextStyle: TextStyle(
+                            //         fontWeight: FontWeight.normal,
+                            //         color: Constants.bgColor,
+                            //         fontFamily: "Montserrat"),
+                            //   ),
+                            //   textFieldStyler: TextFieldStyler(
+                            //     helperText: '',
+                            //     hintText:
+                            //         "Please mention your hobbies example #hobbies1 #hobbies2...",
+                            //     hintStyle: TextStyle(
+                            //         fontFamily: "Montserrat",
+                            //         fontSize: 10.0.sp),
+                            //     isDense: false,
+                            //     textFieldFocusedBorder: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(5.0),
+                            //       borderSide: BorderSide(
+                            //         color: Constants.formBorder,
+                            //       ),
+                            //     ),
+                            //     textFieldBorder: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(5.0),
+                            //       borderSide: BorderSide(
+                            //         color: Constants.formBorder,
+                            //       ),
+                            //     ),
+                            //     textFieldEnabledBorder: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(5.0),
+                            //       borderSide: BorderSide(
+                            //         color: Constants.formBorder,
+                            //       ),
+                            //     ),
+                            //     textFieldDisabledBorder: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(5.0),
+                            //       borderSide: BorderSide(
+                            //         color: Constants.formBorder,
+                            //       ),
+                            //     ),
+                            //   ),
+                            //   onDelete: (tag) {
+                            //     print('onDelete: $tag');
+                            //   },
+                            //   onTag: (tag) {
+                            //     print('onTag: $tag');
+                            //   },
+                            //   // validator: (String tag) {
+                            //   //   print('validator: $tag');
+                            //   //   if (tag.length > 10) {
+                            //   //     return "hey that is too much";
+                            //   //   }
+                            //   //   return null;
+                            //   // },
+                            // )
+                            ),
                           ),
                         ),
                         // Theme(

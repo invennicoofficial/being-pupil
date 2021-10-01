@@ -123,7 +123,7 @@ class PaymentConfirmScreen extends StatelessWidget {
                         color: Constants.bgColor),
                   ),
                   Text(
-                    'Fri,21 Jan 2021',
+                    'Fri, 21 Jan 2021',
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10.0.sp,
@@ -147,7 +147,7 @@ class PaymentConfirmScreen extends StatelessWidget {
                         color: Constants.bgColor),
                   ),
                   Text(
-                    'Fri,21 Mar 2021',
+                    'Fri, 21 Mar 2021',
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10.0.sp,

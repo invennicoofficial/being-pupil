@@ -337,6 +337,7 @@ class _LoginScreenState extends State<LoginScreen> {
         'country_code': '+91',
         'deviceType': 'A',
         'deviceId': '1234567',
+        'registration_type': 'M',
       });
       var response = await dio.post(Config.loginUrl, data: formData);
       if (response.statusCode == 200) {

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/EducationListItemModel.dart';
+import 'package:being_pupil/Model/Profile_Details_Model.dart';
 import 'package:being_pupil/Model/UpdateProfile_Model.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
@@ -12,6 +13,7 @@ import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:filter_list/filter_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http_parser/http_parser.dart';
@@ -23,7 +25,6 @@ import 'package:place_picker/widgets/place_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:textfield_tags/textfield_tags.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -77,6 +78,22 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   String address1, address2, city, country, pinCode;
   double lat, lng;
   List<EducationListItemModel> educationList = [];
+
+  List<String> selectedSkillList = [];
+  List<String> selectedHobbiesList = [];
+
+  Map<String, dynamic> skillMap = Map<String, dynamic>();
+  List<dynamic> skillMapData = List();
+
+  Map<String, dynamic> hobbieMap = Map<String, dynamic>();
+  List<dynamic> hobbieMapData = List();
+
+  Map<String, dynamic> profileMap;
+  List<dynamic> profileMapData = List();
+
+  var result = ProfileDetails();
+
+  bool isLoading = true;
   //List<String> _schoolNameList
 
   // List<Skills> _selectedSkills;
@@ -111,6 +128,12 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   //   _selectedHobbies.clear();
   //   super.dispose();
   // }
+
+  void getToken() async {
+    authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+    print(authToken);
+    getCatSkillHobbieList();
+  }
 
   getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -430,7 +453,14 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
               child: Image.asset('assets/images/beingPupil.png',
                   fit: BoxFit.contain)),
         ),
-        body: Padding(
+        body: isLoading
+        ? Center(
+          child: CircularProgressIndicator(
+            //backgroundColor: Constants.bgColor,
+            valueColor: AlwaysStoppedAnimation<Color>(Constants.bgColor)
+          ),
+        )
+        : Padding(
           padding: EdgeInsets.only(bottom: 3.0.h, left: 5.0.w, right: 5.0.w),
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
@@ -495,40 +525,50 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 5.0.h),
-                                            child: Column(
-                                              children: [
+                                          // Padding(
+                                          //   padding: EdgeInsets.symmetric(
+                                          //       vertical: 5.0.h),
+                                            //child: 
+                                            // Column(
+                                            //   children: [
                                                 GestureDetector(
-                                                  onTap: () {
-                                                    print('Upload Pic!!!');
-                                                    _showPicker(context);
-                                                  },
-                                                  child: ImageIcon(
-                                                    AssetImage(
-                                                        'assets/icons/camera.png'),
-                                                    size: 25,
-                                                    color: Constants.formBorder,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'Upload',
-                                                  style: TextStyle(
-                                                      fontFamily: 'Montserrat',
-                                                      fontSize: 8.0.sp,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      color:
-                                                          Constants.formBorder),
-                                                )
+                                                    onTap: () {
+                                                      print('Upload Pic!!!');
+                                                      _showPicker(context);
+                                                    },
+                                                    child: ClipRRect(
+                                                      borderRadius: BorderRadius.circular(65),
+                                                      child: Image.network(
+                                                        result.data.imageUrl,
+                                                        height: 13.5.h,
+                                                        width: 28.0.w,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    )
+                                                    // ImageIcon(
+                                                    //   AssetImage(
+                                                    //       'assets/icons/camera.png'),
+                                                    //   size: 25,
+                                                    //   color: Constants.formBorder,
+                                                    // ),
+                                                    ),
+                                                // Text(
+                                                //   'Upload',
+                                                //   style: TextStyle(
+                                                //       fontFamily: 'Montserrat',
+                                                //       fontSize: 8.0.sp,
+                                                //       fontWeight:
+                                                //           FontWeight.w400,
+                                                //       color:
+                                                //           Constants.formBorder),
+                                                // )
                                               ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 0.5.h,
-                                          ),
-                                        ],
+                                          //   ),
+                                          // ),
+                                          // SizedBox(
+                                          //   height: 0.5.h,
+                                          // ),
+                                        //],
                                       ),
                                     ),
                                   ),
@@ -693,7 +733,12 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 3.0.w),
                                           child: Text(
-                                            'Gender',
+                                            result.data.gender == 'M'
+                                                ? 'Male'
+                                                : result.data.gender == 'F'
+                                                    ? 'Female'
+                                                    : 'Other',
+                                            //'Gender',
                                             style: TextStyle(
                                                 fontFamily: 'Montserrat',
                                                 fontSize: 10.0.sp,
@@ -847,8 +892,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                       children: [
                                         Text(
                                           isDateSelected
+                                              //result.data.dob != null
                                               ? birthDateInString
-                                              : 'DOB',
+                                              : result.data.dob, //'DOB',
                                           style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               fontSize: 10.0.sp,
@@ -889,7 +935,18 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 3.0.w),
                                     child: Text(
-                                      'Select Document Type',
+                                      result.data.documentType == 'A'
+                                          ? 'Aadhaar'
+                                          : result.data.documentType == 'PN'
+                                              ? 'PAN'
+                                              : result.data.documentType ==
+                                                      'PAS'
+                                                  ? 'Passport'
+                                                  : result.data.documentType ==
+                                                          'VI'
+                                                      ? 'Voter ID'
+                                                      : 'Driving Licence',
+                                      //'Select Document Type',
                                       style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontSize: 10.0.sp,
@@ -915,7 +972,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     docType = 'DocSelected';
                                   });
                                 }
-                               if (value == 1) {
+                                if (value == 1) {
                                   docType = 'A';
                                   print(docType);
                                 } else if (value == 2) {
@@ -1005,34 +1062,71 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                   width: 90.0.w,
                                   //color: Colors.grey,
                                   child: Center(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        ImageIcon(
-                                            AssetImage(
-                                                'assets/icons/upload.png'),
-                                            size: 25,
-                                            color: Constants.formBorder),
-                                        SizedBox(
-                                          width: 1.0.w,
-                                        ),
-                                        Flexible(
-                                          child: Text(
-                                            (fileName == null || fileName == '')
-                                                ? 'Upload the file'
-                                                : fileName,
-                                            style: TextStyle(
-                                                fontFamily: 'Montserrat',
-                                                fontSize: 10.0.sp,
-                                                fontWeight: FontWeight.w400,
-                                                color: Constants.bpSkipStyle),
-                                            overflow: TextOverflow.fade,
+                                      child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Container(
+                                        //height: 5.0.h,
+                                        width: 15.0.w,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: NetworkImage(
+                                                    result.data.documentUrl),
+                                                fit: BoxFit.fill)),
+                                      ),
+                                      SizedBox(width: 2.0.w),
+                                      Expanded(
+                                        child: SingleChildScrollView(
+                                          physics: BouncingScrollPhysics(),
+                                          scrollDirection: Axis.horizontal,
+                                          child: Container(
+                                            height: 3.0.h,
+                                            //width: 50.0.w,
+                                            child: Text(
+                                              result.data.documentFile
+                                                  .split('/')
+                                                  .last,
+                                              style: TextStyle(
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 10.0.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Constants.bpSkipStyle),
+                                              //overflow: TextOverflow.fade,
+                                            ),
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                      //  Row(
+                                      //   mainAxisAlignment:
+                                      //       MainAxisAlignment.center,
+                                      //   children: [
+                                      //     ImageIcon(
+                                      //         AssetImage(
+                                      //             'assets/icons/upload.png'),
+                                      //         size: 25,
+                                      //         color: Constants.formBorder),
+                                      //     SizedBox(
+                                      //       width: 1.0.w,
+                                      //     ),
+                                      //     Flexible(
+                                      //       child: Text(
+                                      //         (fileName == null || fileName == '')
+                                      //             ? 'Upload the file'
+                                      //             : fileName,
+                                      //         style: TextStyle(
+                                      //             fontFamily: 'Montserrat',
+                                      //             fontSize: 10.0.sp,
+                                      //             fontWeight: FontWeight.w400,
+                                      //             color: Constants.bpSkipStyle),
+                                      //         overflow: TextOverflow.fade,
+                                      //       ),
+                                      //     )
+                                      //   ],
+                                      // ),
+                                      ),
                                 ),
                               ),
                             ),
@@ -1118,9 +1212,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                             height: 2.5.h,
                                             //width: 70.0.w,
                                             child: Text(
-                                              address1 == null
-                                                  ? 'Location'
-                                                  : address1,
+                                              address1 != null
+                                                  ? address1
+                                                  : result.data.location[0]
+                                                      .addressLine1,
+                                              //result.data.location[0].city,
                                               style: TextStyle(
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 10.0.sp,
@@ -1166,7 +1262,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                         ),
 
                         ListView.builder(
-                          itemCount: educationDetailMap.length,//itemCount,
+                          itemCount: result.data.educationalDetails
+                              .length, //educationDetailMap.length, //itemCount,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
@@ -1183,7 +1280,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 dashPattern: [4, 3],
                                 child: Column(
                                   children: <Widget>[
-                                     index == 0
+                                    index == 0
                                         ? Container()
                                         : Align(
                                             alignment: Alignment.topRight,
@@ -1196,7 +1293,10 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                       'Remove Education ${index + 1} Block');
                                                   setState(() {
                                                     //itemCount = itemCount - 1;
-                                                    educationDetailMap.removeWhere((key, value) => key == index);
+                                                    educationDetailMap
+                                                        .removeWhere(
+                                                            (key, value) =>
+                                                                key == index);
                                                   });
                                                   print(educationDetailMap);
                                                 },
@@ -1227,6 +1327,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                           height: 7.0.h,
                                           width: 90.0.w,
                                           child: TextFormField(
+                                            //readOnly: true,
                                             //controller: myControllers[index],
                                             onChanged: (value) {
                                               educationDetailMap[index]
@@ -1236,12 +1337,18 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                   'SCHOOL### ${value.toString()}');
                                             },
                                             decoration: InputDecoration(
-                                              labelText: "Name of School",
+                                              labelText: result
+                                                  .data
+                                                  .educationalDetails[index]
+                                                  .schoolName, //"Name of School",
                                               fillColor: Colors.white,
-                                              hintText:
-                                                  educationDetailMap[index]
-                                                          ['school_name']
-                                                      .toString(),
+                                              hintText: result
+                                                  .data
+                                                  .educationalDetails[index]
+                                                  .schoolName,
+                                              // educationDetailMap[index]
+                                              //         ['school_name']
+                                              //     .toString(),
                                               focusedBorder: OutlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(5.0),
@@ -1328,7 +1435,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                                 dateTime;
                                                           });
 
-                                                          educationDetailMap[index]['year'] =
+                                                          educationDetailMap[
+                                                                      index]
+                                                                  ['year'] =
                                                               selectedYear.year
                                                                   .toString();
 
@@ -1396,7 +1505,12 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                         ? educationDetailMap[
                                                                 index]['year']
                                                             .toString()
-                                                        : 'Year',
+                                                        : result
+                                                            .data
+                                                            .educationalDetails[
+                                                                index]
+                                                            .year,
+                                                    //'Year',
                                                     style: TextStyle(
                                                         fontFamily:
                                                             'Montserrat',
@@ -1513,7 +1627,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 3.0.w),
                                                 child: Text(
-                                                  'Qualification',
+                                                  result
+                                                      .data
+                                                      .educationalDetails[index]
+                                                      .qualification,
+                                                  //'Qualification',
                                                   style: TextStyle(
                                                       fontFamily: 'Montserrat',
                                                       fontSize: 10.0.sp,
@@ -1647,52 +1765,104 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                               width: 90.0.w,
                                               color: Colors.transparent,
                                               child: Center(
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    ImageIcon(
-                                                        AssetImage(
-                                                            'assets/icons/upload.png'),
-                                                        size: 25,
-                                                        color: Constants
-                                                            .formBorder),
-                                                    SizedBox(
-                                                      width: 1.0.w,
-                                                    ),
-                                                    Expanded(
-                                                      child:
-                                                          SingleChildScrollView(
-                                                        scrollDirection:
-                                                            Axis.horizontal,
-                                                        child: Container(
-                                                          height: 3.0.h,
-                                                          child: Text(
-                                                            _certiName != null
-                                                                ? educationDetailMap[
-                                                                        index][
-                                                                    'certificate'] //_certiName
-                                                                : 'Upload Certificate/Degree',
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    'Montserrat',
-                                                                fontSize:
-                                                                    10.0.sp,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                color: Constants
-                                                                    .bpSkipStyle),
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .clip,
-                                                          ),
+                                                  child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: <Widget>[
+                                                  Container(
+                                                    //height: 5.0.h,
+                                                    width: 15.0.w,
+                                                    decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                            image: NetworkImage(result
+                                                                .data
+                                                                .educationalDetails[
+                                                                    index]
+                                                                .certificateFile),
+                                                            fit: BoxFit.fill)),
+                                                  ),
+                                                  SizedBox(width: 2.0.w),
+                                                  Expanded(
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      physics:
+                                                          BouncingScrollPhysics(),
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      child: Container(
+                                                        height: 3.0.h,
+                                                        //width: 50.0.w,
+                                                        child: Text(
+                                                          result
+                                                              .data
+                                                              .educationalDetails[
+                                                                  index]
+                                                              .certificateFile
+                                                              .split('/')
+                                                              .last,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'Montserrat',
+                                                              fontSize: 10.0.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              color: Constants
+                                                                  .bpSkipStyle),
+                                                          //overflow: TextOverflow.fade,
                                                         ),
                                                       ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                                  // Row(
+                                                  //   mainAxisAlignment:
+                                                  //       MainAxisAlignment.center,
+                                                  //   children: [
+                                                  //     ImageIcon(
+                                                  //         AssetImage(
+                                                  //             'assets/icons/upload.png'),
+                                                  //         size: 25,
+                                                  //         color: Constants
+                                                  //             .formBorder),
+                                                  //     SizedBox(
+                                                  //       width: 1.0.w,
+                                                  //     ),
+                                                  //     Expanded(
+                                                  //       child:
+                                                  //           SingleChildScrollView(
+                                                  //         scrollDirection:
+                                                  //             Axis.horizontal,
+                                                  //         child: Container(
+                                                  //           height: 3.0.h,
+                                                  //           child: Text(
+                                                  //             _certiName != null
+                                                  //                 ? educationDetailMap[
+                                                  //                         index][
+                                                  //                     'certificate'] //_certiName
+                                                  //                 : 'Upload Certificate/Degree',
+                                                  //             style: TextStyle(
+                                                  //                 fontFamily:
+                                                  //                     'Montserrat',
+                                                  //                 fontSize:
+                                                  //                     10.0.sp,
+                                                  //                 fontWeight:
+                                                  //                     FontWeight
+                                                  //                         .w400,
+                                                  //                 color: Constants
+                                                  //                     .bpSkipStyle),
+                                                  //             overflow:
+                                                  //                 TextOverflow
+                                                  //                     .clip,
+                                                  //           ),
+                                                  //         ),
+                                                  //       ),
+                                                  //     )
+                                                  //   ],
+                                                  // ),
+                                                  ),
                                             ),
                                           ),
                                         ),
@@ -1789,6 +1959,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                   print('Add more!!!');
                                   setState(() {
                                     educationId = educationId + 1;
+                                    //result.data.educationalDetails.length = result.data.educationalDetails.length + 1;
                                   });
                                   educationDetailMap[educationId] = {
                                     'school_name': 'MSU',
@@ -1877,7 +2048,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 3.0.w),
                                     child: Text(
-                                      'Total Work Experience',
+                                      result.data.totalWorkExperience,
+                                      //'Total Work Experience',
                                       style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontSize: 10.0.sp,
@@ -1984,7 +2156,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 3.0.w),
                                     child: Text(
-                                      'Total Teaching Experience',
+                                      result.data.totalTeachingExperience,
+                                      //'Total Teaching Experience',
                                       style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontSize: 10.0.sp,
@@ -2172,87 +2345,357 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                           child: Padding(
                             padding: EdgeInsets.only(
                                 left: 3.0.w, right: 3.0.w, top: 3.0.h),
-                            child: Container(
-                              // height: 13.0.h,
-                              // width: 90.0.w,
-                              child: TextFieldTags(
-                                //initialTags: ["college"],
-                                tagsStyler: TagsStyler(
-                                  showHashtag: true,
-                                  tagMargin: const EdgeInsets.only(right: 4.0),
-                                  tagCancelIcon: Icon(Icons.cancel,
-                                      size: 20.0, color: Constants.bgColor),
-                                  tagCancelIconPadding:
-                                      EdgeInsets.only(left: 4.0, top: 2.0),
-                                  tagPadding: EdgeInsets.only(
-                                      top: 2.0,
-                                      bottom: 4.0,
-                                      left: 8.0,
-                                      right: 4.0),
-                                  tagDecoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                      color: Constants.formBorder,
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(20.0),
-                                    ),
-                                  ),
-                                  tagTextStyle: TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      color: Constants.bgColor,
-                                      fontFamily: "Montserrat"),
-                                ),
-                                textFieldStyler: TextFieldStyler(
-                                  helperText: '',
-                                  hintText:
-                                      "Please mention your skills example #skills1 #skills2...",
-                                  hintStyle: TextStyle(
-                                      fontFamily: "Montserrat",
-                                      fontSize: 10.0.sp),
-                                  isDense: false,
-                                  textFieldFocusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
-                                  ),
-                                  textFieldBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
-                                  ),
-                                  textFieldEnabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
-                                  ),
-                                  textFieldDisabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
+                            child: GestureDetector(
+                              onTap: () {
+                                _openFilterSkillsDialog();
+                              },
+                              child: Container(
+                                height: 13.0.h,
+                                width: 90.0.w,
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 2.0.w),
+                                decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: Constants.formBorder),
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                child: Center(
+                                  child: Text(
+                                    selectedSkillList == null ||
+                                            selectedSkillList.length == 0
+                                        ? result.data
+                                            .skills //"Please mention your skills example #skills1 #skills2..."
+                                        : selectedSkillList
+                                            .toString(), //.replaceAll(new RegExp(r', '), '# '),
+                                    style: TextStyle(
+                                        fontFamily: "Montserrat",
+                                        fontSize: 10.0.sp,
+                                        color: Constants.bpSkipStyle),
                                   ),
                                 ),
-                                onDelete: (tag) {
-                                  print('onDelete: $tag');
-                                },
-                                onTag: (tag) {
-                                  print('onTag: $tag');
-                                  skillList.add(tag);
-                                },
-                                // validator: (String tag) {
-                                //   print('validator: $tag');
-                                //   if (tag.length > 10) {
-                                //     return "hey that is too much";
-                                //   }
-                                //   return null;
-                                // },
                               ),
-                              // FlutterTagging<Skills>(
-                              //   initialItems: _selectedSkills,
+                            ),
+                            // TextFieldTags(
+                            //   //initialTags: ["college"],
+                            //   tagsStyler: TagsStyler(
+                            //     showHashtag: true,
+                            //     tagMargin: const EdgeInsets.only(right: 4.0),
+                            //     tagCancelIcon: Icon(Icons.cancel,
+                            //         size: 20.0, color: Constants.bgColor),
+                            //     tagCancelIconPadding:
+                            //         EdgeInsets.only(left: 4.0, top: 2.0),
+                            //     tagPadding: EdgeInsets.only(
+                            //         top: 2.0,
+                            //         bottom: 4.0,
+                            //         left: 8.0,
+                            //         right: 4.0),
+                            //     tagDecoration: BoxDecoration(
+                            //       color: Colors.white,
+                            //       border: Border.all(
+                            //         color: Constants.formBorder,
+                            //       ),
+                            //       borderRadius: const BorderRadius.all(
+                            //         Radius.circular(20.0),
+                            //       ),
+                            //     ),
+                            //     tagTextStyle: TextStyle(
+                            //         fontWeight: FontWeight.normal,
+                            //         color: Constants.bgColor,
+                            //         fontFamily: "Montserrat"),
+                            //   ),
+                            //   textFieldStyler: TextFieldStyler(
+                            //     helperText: '',
+                            //     hintText:
+                            //         "Please mention your skills example #skills1 #skills2...",
+                            //     hintStyle: TextStyle(
+                            //         fontFamily: "Montserrat",
+                            //         fontSize: 10.0.sp),
+                            //     isDense: false,
+                            //     textFieldFocusedBorder: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(5.0),
+                            //       borderSide: BorderSide(
+                            //         color: Constants.formBorder,
+                            //       ),
+                            //     ),
+                            //     textFieldBorder: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(5.0),
+                            //       borderSide: BorderSide(
+                            //         color: Constants.formBorder,
+                            //       ),
+                            //     ),
+                            //     textFieldEnabledBorder: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(5.0),
+                            //       borderSide: BorderSide(
+                            //         color: Constants.formBorder,
+                            //       ),
+                            //     ),
+                            //     textFieldDisabledBorder: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(5.0),
+                            //       borderSide: BorderSide(
+                            //         color: Constants.formBorder,
+                            //       ),
+                            //     ),
+                            //   ),
+                            //   onDelete: (tag) {
+                            //     print('onDelete: $tag');
+                            //   },
+                            //   onTag: (tag) {
+                            //     print('onTag: $tag');
+                            //     skillList.add(tag);
+                            //   },
+                            //   // validator: (String tag) {
+                            //   //   print('validator: $tag');
+                            //   //   if (tag.length > 10) {
+                            //   //     return "hey that is too much";
+                            //   //   }
+                            //   //   return null;
+                            //   // },
+                            // ),
+                            // FlutterTagging<Skills>(
+                            //   initialItems: _selectedSkills,
+                            //   textFieldConfiguration: TextFieldConfiguration(
+                            //     decoration: InputDecoration(
+                            //         //labelText: "Please mention your achivements...",
+                            //         counterText: '',
+                            //         fillColor: Colors.white,
+                            //         focusedBorder: OutlineInputBorder(
+                            //           borderRadius:
+                            //               BorderRadius.circular(5.0),
+                            //           borderSide: BorderSide(
+                            //             color: Constants.formBorder,
+                            //           ),
+                            //         ),
+                            //         enabledBorder: OutlineInputBorder(
+                            //           borderRadius:
+                            //               BorderRadius.circular(5.0),
+                            //           borderSide: BorderSide(
+                            //             color: Constants.formBorder,
+                            //             //width: 2.0,
+                            //           ),
+                            //         ),
+                            //         hintText:
+                            //             "Please mention your skills example #skill1 #skill2..."),
+                            //     //keyboardType: TextInputType.emailAddress,
+                            //     style: new TextStyle(
+                            //         fontFamily: "Montserrat",
+                            //         fontSize: 10.0.sp),
+                            //   ),
+                            //   findSuggestions: SkillService.getLanguages,
+                            //   additionCallback: (value) {
+                            //     return Skills(
+                            //       name: value,
+                            //       position: 0,
+                            //     );
+                            //   },
+                            //   onAdded: (language) {
+                            //     // api calls here, triggered when add to tag button is pressed
+                            //     return Skills(
+                            //       name: language.name,
+                            //       position: 0,
+                            //     );
+                            //   },
+                            //   configureSuggestion: (lang) {
+                            //     return SuggestionConfiguration(
+                            //       title: Text(lang.name),
+                            //       //subtitle: Text(lang.position.toString()),
+                            //       additionWidget: Chip(
+                            //         avatar: Icon(
+                            //           Icons.add_circle,
+                            //           color: Colors.white,
+                            //         ),
+                            //         label: Text('Add New Tag'),
+                            //         labelStyle: TextStyle(
+                            //           fontFamily: 'Montserrat',
+                            //           fontSize: 10.0.sp,
+                            //           color: Colors.white,
+                            //           fontWeight: FontWeight.w300,
+                            //         ),
+                            //         backgroundColor: Constants.bgColor,
+                            //       ),
+                            //     );
+                            //   },
+                            //   configureChip: (lang) {
+                            //     return ChipConfiguration(
+                            //       label: Text(lang.name),
+                            //       backgroundColor: Constants.bgColor,
+                            //       labelStyle: TextStyle(color: Colors.white),
+                            //       deleteIconColor: Colors.white,
+                            //     );
+                            //   },
+                            //   onChanged: () {
+                            //     setState(() {
+                            //       _selectedSkillsJson = _selectedSkills
+                            //           .map<String>(
+                            //               (lang) => '\n${lang.toJson()}')
+                            //           .toList()
+                            //           .toString();
+                            //       _selectedSkillsJson = _selectedSkillsJson
+                            //           .replaceFirst('}]', '}\n]');
+                            //     });
+                            //   },
+                            // ),
+
+                            // TextFormField(
+                            //   maxLines: 5,
+                            //   keyboardType: TextInputType.multiline,
+                            //   maxLength: 100,
+                            //   decoration: InputDecoration(
+                            //       //labelText: "Please mention your achivements...",
+                            //       counterText: '',
+                            //       fillColor: Colors.white,
+                            //       focusedBorder: OutlineInputBorder(
+                            //         borderRadius: BorderRadius.circular(5.0),
+                            //         borderSide: BorderSide(
+                            //           color: Constants.formBorder,
+                            //         ),
+                            //       ),
+                            //       enabledBorder: OutlineInputBorder(
+                            //         borderRadius: BorderRadius.circular(5.0),
+                            //         borderSide: BorderSide(
+                            //           color: Constants.formBorder,
+                            //           //width: 2.0,
+                            //         ),
+                            //       ),
+                            //       hintText:
+                            //           "Please mention your skills example #skill1 #skill2..."),
+                            //   //keyboardType: TextInputType.emailAddress,
+                            //   style: new TextStyle(
+                            //       fontFamily: "Montserrat",
+                            //       fontSize: 10.0.sp),
+                            // ),
+                          ),
+                        ),
+
+                        Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 2.0.h, left: 3.0.w, right: 3.0.w),
+                              child: Text(
+                                'Hobbies',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 12.0.sp,
+                                    color: Constants.bgColor,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Theme(
+                          data: new ThemeData(
+                            primaryColor: Constants.bpSkipStyle,
+                            primaryColorDark: Constants.bpSkipStyle,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: 3.0.w, right: 3.0.w, top: 3.0.h),
+                            child: GestureDetector(
+                              onTap: () {
+                                _openFilterHobbiesDialog();
+                              },
+                              child: Container(
+                                height: 13.0.h,
+                                width: 90.0.w,
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 2.0.w),
+                                decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: Constants.formBorder),
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                child: Center(
+                                  child: Text(
+                                    selectedHobbiesList == null ||
+                                            selectedHobbiesList.length == 0
+                                        ? result.data
+                                            .hobbies //"Please mention your hobbies example #hobbie1 #hobbie2..."
+                                        : selectedHobbiesList
+                                            .toString(), //.replaceAll(new RegExp(r', '), '# '),
+                                    style: TextStyle(
+                                        fontFamily: "Montserrat",
+                                        fontSize: 10.0.sp,
+                                        color: Constants.bpSkipStyle),
+                                  ),
+                                ),
+                              ),
+                              //     TextFieldTags(
+                              //   //initialTags: ["college"],
+                              //   tagsStyler: TagsStyler(
+                              //     showHashtag: true,
+                              //     tagMargin: const EdgeInsets.only(right: 4.0),
+                              //     tagCancelIcon: Icon(Icons.cancel,
+                              //         size: 20.0, color: Constants.bgColor),
+                              //     tagCancelIconPadding:
+                              //         EdgeInsets.only(left: 4.0, top: 2.0),
+                              //     tagPadding: EdgeInsets.only(
+                              //         top: 2.0,
+                              //         bottom: 4.0,
+                              //         left: 8.0,
+                              //         right: 4.0),
+                              //     tagDecoration: BoxDecoration(
+                              //       color: Colors.white,
+                              //       border: Border.all(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //       borderRadius: const BorderRadius.all(
+                              //         Radius.circular(20.0),
+                              //       ),
+                              //     ),
+                              //     tagTextStyle: TextStyle(
+                              //         fontWeight: FontWeight.normal,
+                              //         color: Constants.bgColor,
+                              //         fontFamily: "Montserrat"),
+                              //   ),
+                              //   textFieldStyler: TextFieldStyler(
+                              //     helperText: '',
+                              //     hintText:
+                              //         "Please mention your hobbies example #hobbies1 #hobbies2...",
+                              //     hintStyle: TextStyle(
+                              //         fontFamily: "Montserrat",
+                              //         fontSize: 10.0.sp),
+                              //     isDense: false,
+                              //     textFieldFocusedBorder: OutlineInputBorder(
+                              //       borderRadius: BorderRadius.circular(5.0),
+                              //       borderSide: BorderSide(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //     ),
+                              //     textFieldBorder: OutlineInputBorder(
+                              //       borderRadius: BorderRadius.circular(5.0),
+                              //       borderSide: BorderSide(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //     ),
+                              //     textFieldEnabledBorder: OutlineInputBorder(
+                              //       borderRadius: BorderRadius.circular(5.0),
+                              //       borderSide: BorderSide(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //     ),
+                              //     textFieldDisabledBorder: OutlineInputBorder(
+                              //       borderRadius: BorderRadius.circular(5.0),
+                              //       borderSide: BorderSide(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //     ),
+                              //   ),
+                              //   onDelete: (tag) {
+                              //     print('onDelete: $tag');
+                              //   },
+                              //   onTag: (tag) {
+                              //     print('onTag: $tag');
+                              //     hobbieList.add(tag);
+                              //   },
+                              //   // validator: (String tag) {
+                              //   //   print('validator: $tag');
+                              //   //   if (tag.length > 10) {
+                              //   //     return "hey that is too much";
+                              //   //   }
+                              //   //   return null;
+                              //   // },
+                              // )
+                              // FlutterTagging<Hobbies>(
+                              //   initialItems: _selectedHobbies,
                               //   textFieldConfiguration: TextFieldConfiguration(
                               //     decoration: InputDecoration(
                               //         //labelText: "Please mention your achivements...",
@@ -2274,22 +2717,22 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                               //           ),
                               //         ),
                               //         hintText:
-                              //             "Please mention your skills example #skill1 #skill2..."),
+                              //             "Please mention your hobbies example #hobbies1 #hobbies2..."),
                               //     //keyboardType: TextInputType.emailAddress,
                               //     style: new TextStyle(
                               //         fontFamily: "Montserrat",
                               //         fontSize: 10.0.sp),
                               //   ),
-                              //   findSuggestions: SkillService.getLanguages,
+                              //   findSuggestions: HobbieService.getLanguages,
                               //   additionCallback: (value) {
-                              //     return Skills(
+                              //     return Hobbies(
                               //       name: value,
                               //       position: 0,
                               //     );
                               //   },
                               //   onAdded: (language) {
                               //     // api calls here, triggered when add to tag button is pressed
-                              //     return Skills(
+                              //     return Hobbies(
                               //       name: language.name,
                               //       position: 0,
                               //     );
@@ -2324,237 +2767,17 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                               //   },
                               //   onChanged: () {
                               //     setState(() {
-                              //       _selectedSkillsJson = _selectedSkills
+                              //       _selectedHobbiesJson = _selectedHobbies
                               //           .map<String>(
                               //               (lang) => '\n${lang.toJson()}')
                               //           .toList()
                               //           .toString();
-                              //       _selectedSkillsJson = _selectedSkillsJson
+                              //       _selectedHobbiesJson = _selectedHobbiesJson
                               //           .replaceFirst('}]', '}\n]');
                               //     });
                               //   },
                               // ),
-
-                              // TextFormField(
-                              //   maxLines: 5,
-                              //   keyboardType: TextInputType.multiline,
-                              //   maxLength: 100,
-                              //   decoration: InputDecoration(
-                              //       //labelText: "Please mention your achivements...",
-                              //       counterText: '',
-                              //       fillColor: Colors.white,
-                              //       focusedBorder: OutlineInputBorder(
-                              //         borderRadius: BorderRadius.circular(5.0),
-                              //         borderSide: BorderSide(
-                              //           color: Constants.formBorder,
-                              //         ),
-                              //       ),
-                              //       enabledBorder: OutlineInputBorder(
-                              //         borderRadius: BorderRadius.circular(5.0),
-                              //         borderSide: BorderSide(
-                              //           color: Constants.formBorder,
-                              //           //width: 2.0,
-                              //         ),
-                              //       ),
-                              //       hintText:
-                              //           "Please mention your skills example #skill1 #skill2..."),
-                              //   //keyboardType: TextInputType.emailAddress,
-                              //   style: new TextStyle(
-                              //       fontFamily: "Montserrat",
-                              //       fontSize: 10.0.sp),
-                              // ),
                             ),
-                          ),
-                        ),
-
-                        Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  top: 2.0.h, left: 3.0.w, right: 3.0.w),
-                              child: Text(
-                                'Hobbies',
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 12.0.sp,
-                                    color: Constants.bgColor,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 3.0.w, right: 3.0.w, top: 3.0.h),
-                            child: Container(
-                                // height: 13.0.h,
-                                // width: 90.0.w,
-                                child: TextFieldTags(
-                              //initialTags: ["college"],
-                              tagsStyler: TagsStyler(
-                                showHashtag: true,
-                                tagMargin: const EdgeInsets.only(right: 4.0),
-                                tagCancelIcon: Icon(Icons.cancel,
-                                    size: 20.0, color: Constants.bgColor),
-                                tagCancelIconPadding:
-                                    EdgeInsets.only(left: 4.0, top: 2.0),
-                                tagPadding: EdgeInsets.only(
-                                    top: 2.0,
-                                    bottom: 4.0,
-                                    left: 8.0,
-                                    right: 4.0),
-                                tagDecoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(
-                                    color: Constants.formBorder,
-                                  ),
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(20.0),
-                                  ),
-                                ),
-                                tagTextStyle: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    color: Constants.bgColor,
-                                    fontFamily: "Montserrat"),
-                              ),
-                              textFieldStyler: TextFieldStyler(
-                                helperText: '',
-                                hintText:
-                                    "Please mention your hobbies example #hobbies1 #hobbies2...",
-                                hintStyle: TextStyle(
-                                    fontFamily: "Montserrat",
-                                    fontSize: 10.0.sp),
-                                isDense: false,
-                                textFieldFocusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                  ),
-                                ),
-                                textFieldBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                  ),
-                                ),
-                                textFieldEnabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                  ),
-                                ),
-                                textFieldDisabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                  ),
-                                ),
-                              ),
-                              onDelete: (tag) {
-                                print('onDelete: $tag');
-                              },
-                              onTag: (tag) {
-                                print('onTag: $tag');
-                                hobbieList.add(tag);
-                              },
-                              // validator: (String tag) {
-                              //   print('validator: $tag');
-                              //   if (tag.length > 10) {
-                              //     return "hey that is too much";
-                              //   }
-                              //   return null;
-                              // },
-                            )
-                                // FlutterTagging<Hobbies>(
-                                //   initialItems: _selectedHobbies,
-                                //   textFieldConfiguration: TextFieldConfiguration(
-                                //     decoration: InputDecoration(
-                                //         //labelText: "Please mention your achivements...",
-                                //         counterText: '',
-                                //         fillColor: Colors.white,
-                                //         focusedBorder: OutlineInputBorder(
-                                //           borderRadius:
-                                //               BorderRadius.circular(5.0),
-                                //           borderSide: BorderSide(
-                                //             color: Constants.formBorder,
-                                //           ),
-                                //         ),
-                                //         enabledBorder: OutlineInputBorder(
-                                //           borderRadius:
-                                //               BorderRadius.circular(5.0),
-                                //           borderSide: BorderSide(
-                                //             color: Constants.formBorder,
-                                //             //width: 2.0,
-                                //           ),
-                                //         ),
-                                //         hintText:
-                                //             "Please mention your hobbies example #hobbies1 #hobbies2..."),
-                                //     //keyboardType: TextInputType.emailAddress,
-                                //     style: new TextStyle(
-                                //         fontFamily: "Montserrat",
-                                //         fontSize: 10.0.sp),
-                                //   ),
-                                //   findSuggestions: HobbieService.getLanguages,
-                                //   additionCallback: (value) {
-                                //     return Hobbies(
-                                //       name: value,
-                                //       position: 0,
-                                //     );
-                                //   },
-                                //   onAdded: (language) {
-                                //     // api calls here, triggered when add to tag button is pressed
-                                //     return Hobbies(
-                                //       name: language.name,
-                                //       position: 0,
-                                //     );
-                                //   },
-                                //   configureSuggestion: (lang) {
-                                //     return SuggestionConfiguration(
-                                //       title: Text(lang.name),
-                                //       //subtitle: Text(lang.position.toString()),
-                                //       additionWidget: Chip(
-                                //         avatar: Icon(
-                                //           Icons.add_circle,
-                                //           color: Colors.white,
-                                //         ),
-                                //         label: Text('Add New Tag'),
-                                //         labelStyle: TextStyle(
-                                //           fontFamily: 'Montserrat',
-                                //           fontSize: 10.0.sp,
-                                //           color: Colors.white,
-                                //           fontWeight: FontWeight.w300,
-                                //         ),
-                                //         backgroundColor: Constants.bgColor,
-                                //       ),
-                                //     );
-                                //   },
-                                //   configureChip: (lang) {
-                                //     return ChipConfiguration(
-                                //       label: Text(lang.name),
-                                //       backgroundColor: Constants.bgColor,
-                                //       labelStyle: TextStyle(color: Colors.white),
-                                //       deleteIconColor: Colors.white,
-                                //     );
-                                //   },
-                                //   onChanged: () {
-                                //     setState(() {
-                                //       _selectedHobbiesJson = _selectedHobbies
-                                //           .map<String>(
-                                //               (lang) => '\n${lang.toJson()}')
-                                //           .toList()
-                                //           .toString();
-                                //       _selectedHobbiesJson = _selectedHobbiesJson
-                                //           .replaceFirst('}]', '}\n]');
-                                //     });
-                                //   },
-                                // ),
-                                ),
                           ),
                         ),
                         // Theme(
@@ -2966,7 +3189,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 //     _otherLinkLinkController.text,
                                 //     totalWorkExp,
                                 //     totalTeachExp);
-                    
+
                                 updateProfile(
                                     //userId,
                                     registerAs,
@@ -3096,6 +3319,250 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
     educationList.add(newList);
   }
 
+  //Tag for Skills
+  void _openFilterSkillsDialog() async {
+    await FilterListDialog.display(context,
+        listData: skillMapData,
+        selectedListData: selectedSkillList,
+        height: 480,
+        headlineText: "Select or Search Skill",
+        searchFieldHintText: "Search Skill Here",
+        searchFieldTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 10.0.sp,
+            color: Constants.bgColor),
+        headerTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 12.0.sp,
+            color: Constants.bgColor),
+        label: (item) {
+          return item;
+        },
+        validateSelectedItem: (list, val) {
+          return list.contains(val);
+        },
+        applyButonTextBackgroundColor: Constants.bgColor,
+        applyButtonTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 12.0.sp,
+            color: Colors.white),
+        selectedChipTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w400,
+            fontSize: 10.0.sp,
+            color: Colors.white),
+        controlButtonTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 11.0.sp,
+            color: Constants.bgColor),
+        unselectedChipTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w400,
+            fontSize: 10.0.sp,
+            color: Constants.bgColor),
+        //useSafeArea: true,
+        onItemSearch: (list, text) {
+          if (list.any((element) =>
+              element.toLowerCase().contains(text.toLowerCase()))) {
+            return list
+                .where((element) =>
+                    element.toLowerCase().contains(text.toLowerCase()))
+                .toList();
+          }
+        },
+        onApplyButtonClick: (list) {
+          if (list != null) {
+            setState(() {
+              selectedSkillList = List.from(list);
+            });
+          }
+          Navigator.pop(context);
+        });
+  }
+
+  //Tag for Hobbies
+  void _openFilterHobbiesDialog() async {
+    await FilterListDialog.display(context,
+        listData: hobbieMapData,
+        selectedListData: selectedHobbiesList,
+        height: 480,
+        headlineText: "Select or Search Hobbie",
+        searchFieldHintText: "Search Hobbie Here",
+        searchFieldTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 10.0.sp,
+            color: Constants.bgColor),
+        headerTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 12.0.sp,
+            color: Constants.bgColor),
+        label: (item) {
+          return item;
+        },
+        validateSelectedItem: (list, val) {
+          return list.contains(val);
+        },
+        applyButonTextBackgroundColor: Constants.bgColor,
+        applyButtonTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 12.0.sp,
+            color: Colors.white),
+        selectedChipTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w400,
+            fontSize: 10.0.sp,
+            color: Colors.white),
+        controlButtonTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 11.0.sp,
+            color: Constants.bgColor),
+        unselectedChipTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w400,
+            fontSize: 10.0.sp,
+            color: Constants.bgColor),
+        //useSafeArea: true,
+        onItemSearch: (list, text) {
+          if (list.any((element) =>
+              element.toLowerCase().contains(text.toLowerCase()))) {
+            return list
+                .where((element) =>
+                    element.toLowerCase().contains(text.toLowerCase()))
+                .toList();
+          }
+        },
+        onApplyButtonClick: (list) {
+          if (list != null) {
+            setState(() {
+              selectedHobbiesList = List.from(list);
+            });
+          }
+          Navigator.pop(context);
+        });
+  }
+
+  //Get Category, Skills, and Hobbies List
+  getCatSkillHobbieList() async {
+    //displayProgressDialog(context);
+    try {
+      Dio dio = Dio();
+      var response = await Future.wait([
+        dio.get(Config.profileDetailsUrl,
+            options: Options(headers: {
+              "Authorization": 'Bearer $authToken',
+            })),
+        dio.get(Config.skillListUrl),
+        dio.get(Config.hobbieListUrl)
+      ]);
+
+      if (response[0].statusCode == 200 &&
+          response[1].statusCode == 200 &&
+          response[2].statusCode == 200) {
+        //closeProgressDialog(context);
+        result = ProfileDetails.fromJson(response[0].data);
+        //profileMap = json.decode(response[0].data.toString());//new Map<String, dynamic>.from(json.decode(response[0].data.toString()));
+        skillMap = response[1].data;
+        hobbieMap = response[2].data;
+        setState(() {
+          //profileMapData = profileMap['data'];
+          skillMapData = skillMap['data'];
+          hobbieMapData = hobbieMap['data'];
+          _nameController.text = result.data.name;
+          _mobileController.text = result.data.mobileNumber;
+          _emailController.text = result.data.email;
+          //result.data.gender == 'M' ? gender = 'Male' : result.data.gender == 'F' ? gender = 'Female' : gender = 'Other';
+          //birthDateInString = result.data.dob;
+          // result.data.documentType == 'A'
+          //     ? documentTypeList[0].toString()
+          //     : result.data.documentType == 'PN'
+          //         ? documentTypeList[1].toString()
+          //         : result.data.documentType == 'PAS'
+          //             ? documentTypeList[2].toString()
+          //             : result.data.documentType == 'VI'
+          //                 ? documentTypeList[3].toString()
+          //                 : documentTypeList[4].toString();
+          _idNumController.text = result.data.identificationDocumentNumber;
+          _achivementController.text = result.data.achievements;
+          _fbLinkController.text = result.data.facebookUrl;
+          _instagramLinkController.text = result.data.instaUrl;
+          _linkedInLinkLinkController.text = result.data.linkedinUrl;
+          _otherLinkLinkController.text = result.data.otherUrl;
+        });
+        if(result != null){
+          isLoading = false;
+        }
+        print(result.data.name);
+        print(skillMap);
+        print(hobbieMap);
+        //closeProgressDialog(context);
+      } else {
+        //closeProgressDialog(context);
+        if (skillMap['error_msg'] != null) {
+          Fluttertoast.showToast(
+            msg: skillMap['error_msg'],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        } else if (hobbieMap['error_msg'] != null) {
+          Fluttertoast.showToast(
+            msg: hobbieMap['error_msg'],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        }
+      }
+    } on DioError catch (e, stack) {
+      //closeProgressDialog(context);
+      if (e.response != null) {
+        print("This is the error message::::" +
+            e.response.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.request);
+        print(e.message);
+      }
+    }
+    //return result;
+  }
+
+// Get Profile Details
+  // Future<ProfileDetails> getProfileDetails() async{
+  //   displayProgressDialog(context);
+  //   var result = ProfileDetails();
+  //   try{
+  //     Dio dio
+  //   } on DioError catch(e, stack){
+  //     print(e);
+  //     print(stack);
+
+  //   }
+  // }
+
   //Update Profile API
   Future<ProfileUpdate> updateProfile(
     //int userId,
@@ -3149,7 +3616,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
     // };
     // }
 
-      try {
+    try {
       Dio dio = Dio();
       FormData formData = FormData.fromMap({
         //'user_id': userId,
@@ -3184,7 +3651,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         'achievements': achievements,
         'skills': skills,
         'hobbies': hobbies,
-        
+
         // 'educational_details[0][id]': 13,
         // 'educational_details[0][school_name]': myControllers[0].text.toString(),
         // 'educational_details[0][year]': selectedYear.year,
@@ -3248,28 +3715,28 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
 
         if (result.status == true) {
           print('TRUE::');
-           Fluttertoast.showToast(
-          msg: result.message,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Constants.bgColor,
-          textColor: Colors.white,
-          fontSize: 10.0.sp,
-        );
-        // Close current screen after profile update
-        //Navigator.of(context).pop();
+          Fluttertoast.showToast(
+            msg: result.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+          // Close current screen after profile update
+          //Navigator.of(context).pop();
         } else {
           print('FALSE::');
           Fluttertoast.showToast(
-          msg: result.message,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Constants.bgColor,
-          textColor: Colors.white,
-          fontSize: 10.0.sp,
-        );
+            msg: result.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
         }
       } else {
         Fluttertoast.showToast(
@@ -3628,11 +4095,6 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
     // print(result.lengthSync());
 
     return result;
-  }
-
-  void getToken() async {
-    authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
   }
 
   displayProgressDialog(BuildContext context) {

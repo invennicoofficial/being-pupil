@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:filter_list/filter_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -20,7 +21,6 @@ import 'package:place_picker/widgets/place_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:textfield_tags/textfield_tags.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class EducatorRegistration extends StatefulWidget {
@@ -72,6 +72,15 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
   List<String> skillList = [];
   List<String> hobbieList = [];
   int totalWorkExp, totalTeachExp;
+
+  List<String> selectedSkillList = [];
+  List<String> selectedHobbiesList = [];
+
+  Map<String, dynamic> skillMap = Map<String, dynamic>();
+  List<dynamic> skillMapData = List();
+
+  Map<String, dynamic> hobbieMap = Map<String, dynamic>();
+  List<dynamic> hobbieMapData = List();
   //List<String> _schoolNameList
 
   // List<Skills> _selectedSkills;
@@ -106,6 +115,12 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
   //   _selectedHobbies.clear();
   //   super.dispose();
   // }
+
+  void getToken() async {
+    authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+    print(authToken);
+    getCatSkillHobbieList();
+  }
 
   getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -2146,85 +2161,109 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           child: Padding(
                             padding: EdgeInsets.only(
                                 left: 3.0.w, right: 3.0.w, top: 3.0.h),
-                            child: Container(
-                              // height: 13.0.h,
-                              // width: 90.0.w,
-                              child: TextFieldTags(
-                                //initialTags: ["college"],
-                                tagsStyler: TagsStyler(
-                                  showHashtag: true,
-                                  tagMargin: const EdgeInsets.only(right: 4.0),
-                                  tagCancelIcon: Icon(Icons.cancel,
-                                      size: 20.0, color: Constants.bgColor),
-                                  tagCancelIconPadding:
-                                      EdgeInsets.only(left: 4.0, top: 2.0),
-                                  tagPadding: EdgeInsets.only(
-                                      top: 2.0,
-                                      bottom: 4.0,
-                                      left: 8.0,
-                                      right: 4.0),
-                                  tagDecoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                      color: Constants.formBorder,
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(20.0),
-                                    ),
-                                  ),
-                                  tagTextStyle: TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      color: Constants.bgColor,
-                                      fontFamily: "Montserrat"),
-                                ),
-                                textFieldStyler: TextFieldStyler(
-                                  helperText: '',
-                                  hintText:
-                                      "Please mention your skills example #skills1 #skills2...",
-                                  hintStyle: TextStyle(
-                                      fontFamily: "Montserrat",
-                                      fontSize: 10.0.sp),
-                                  isDense: false,
-                                  textFieldFocusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
-                                  ),
-                                  textFieldBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
-                                  ),
-                                  textFieldEnabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
-                                  ),
-                                  textFieldDisabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
+                            child: GestureDetector(
+                              onTap: () {
+                                _openFilterSkillsDialog();
+                              },
+                              child: Container(
+                                height: 13.0.h,
+                                width: 90.0.w,
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 2.0.w),
+                                decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: Constants.formBorder),
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                child: Center(
+                                  child: Text(
+                                    selectedSkillList == null ||
+                                            selectedSkillList.length == 0
+                                        ? "Please mention your skills example #skills1 #skills2..."
+                                        : selectedSkillList
+                                            .toString(), //.replaceAll(new RegExp(r', '), '# '),
+                                    style: TextStyle(
+                                        fontFamily: "Montserrat",
+                                        fontSize: 10.0.sp,
+                                        color: Constants.bpSkipStyle),
                                   ),
                                 ),
-                                onDelete: (tag) {
-                                  print('onDelete: $tag');
-                                },
-                                onTag: (tag) {
-                                  print('onTag: $tag');
-                                  skillList.add(tag);
-                                },
-                                // validator: (String tag) {
-                                //   print('validator: $tag');
-                                //   if (tag.length > 10) {
-                                //     return "hey that is too much";
-                                //   }
-                                //   return null;
-                                // },
                               ),
+                              // TextFieldTags(
+                              //   //initialTags: ["college"],
+                              //   tagsStyler: TagsStyler(
+                              //     showHashtag: true,
+                              //     tagMargin: const EdgeInsets.only(right: 4.0),
+                              //     tagCancelIcon: Icon(Icons.cancel,
+                              //         size: 20.0, color: Constants.bgColor),
+                              //     tagCancelIconPadding:
+                              //         EdgeInsets.only(left: 4.0, top: 2.0),
+                              //     tagPadding: EdgeInsets.only(
+                              //         top: 2.0,
+                              //         bottom: 4.0,
+                              //         left: 8.0,
+                              //         right: 4.0),
+                              //     tagDecoration: BoxDecoration(
+                              //       color: Colors.white,
+                              //       border: Border.all(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //       borderRadius: const BorderRadius.all(
+                              //         Radius.circular(20.0),
+                              //       ),
+                              //     ),
+                              //     tagTextStyle: TextStyle(
+                              //         fontWeight: FontWeight.normal,
+                              //         color: Constants.bgColor,
+                              //         fontFamily: "Montserrat"),
+                              //   ),
+                              //   textFieldStyler: TextFieldStyler(
+                              //     helperText: '',
+                              //     hintText:
+                              //         "Please mention your skills example #skills1 #skills2...",
+                              //     hintStyle: TextStyle(
+                              //         fontFamily: "Montserrat",
+                              //         fontSize: 10.0.sp),
+                              //     isDense: false,
+                              //     textFieldFocusedBorder: OutlineInputBorder(
+                              //       borderRadius: BorderRadius.circular(5.0),
+                              //       borderSide: BorderSide(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //     ),
+                              //     textFieldBorder: OutlineInputBorder(
+                              //       borderRadius: BorderRadius.circular(5.0),
+                              //       borderSide: BorderSide(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //     ),
+                              //     textFieldEnabledBorder: OutlineInputBorder(
+                              //       borderRadius: BorderRadius.circular(5.0),
+                              //       borderSide: BorderSide(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //     ),
+                              //     textFieldDisabledBorder: OutlineInputBorder(
+                              //       borderRadius: BorderRadius.circular(5.0),
+                              //       borderSide: BorderSide(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //     ),
+                              //   ),
+                              //   onDelete: (tag) {
+                              //     print('onDelete: $tag');
+                              //   },
+                              //   onTag: (tag) {
+                              //     print('onTag: $tag');
+                              //     skillList.add(tag);
+                              //   },
+                              //   // validator: (String tag) {
+                              //   //   print('validator: $tag');
+                              //   //   if (tag.length > 10) {
+                              //   //     return "hey that is too much";
+                              //   //   }
+                              //   //   return null;
+                              //   // },
+                              // ),
                               // FlutterTagging<Skills>(
                               //   initialItems: _selectedSkills,
                               //   textFieldConfiguration: TextFieldConfiguration(
@@ -2366,169 +2405,193 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           child: Padding(
                             padding: EdgeInsets.only(
                                 left: 3.0.w, right: 3.0.w, top: 3.0.h),
-                            child: Container(
-                                // height: 13.0.h,
-                                // width: 90.0.w,
-                                child: TextFieldTags(
-                              //initialTags: ["college"],
-                              tagsStyler: TagsStyler(
-                                showHashtag: true,
-                                tagMargin: const EdgeInsets.only(right: 4.0),
-                                tagCancelIcon: Icon(Icons.cancel,
-                                    size: 20.0, color: Constants.bgColor),
-                                tagCancelIconPadding:
-                                    EdgeInsets.only(left: 4.0, top: 2.0),
-                                tagPadding: EdgeInsets.only(
-                                    top: 2.0,
-                                    bottom: 4.0,
-                                    left: 8.0,
-                                    right: 4.0),
-                                tagDecoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(
-                                    color: Constants.formBorder,
-                                  ),
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(20.0),
-                                  ),
-                                ),
-                                tagTextStyle: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    color: Constants.bgColor,
-                                    fontFamily: "Montserrat"),
-                              ),
-                              textFieldStyler: TextFieldStyler(
-                                helperText: '',
-                                hintText:
-                                    "Please mention your hobbies example #hobbies1 #hobbies2...",
-                                hintStyle: TextStyle(
-                                    fontFamily: "Montserrat",
-                                    fontSize: 10.0.sp),
-                                isDense: false,
-                                textFieldFocusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                  ),
-                                ),
-                                textFieldBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                  ),
-                                ),
-                                textFieldEnabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                  ),
-                                ),
-                                textFieldDisabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
+                            child: GestureDetector(
+                              onTap: () {
+                                _openFilterHobbiesDialog();
+                              },
+                              child: Container(
+                                height: 13.0.h,
+                                width: 90.0.w,
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 2.0.w),
+                                decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: Constants.formBorder),
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                child: Center(
+                                  child: Text(
+                                    selectedHobbiesList == null ||
+                                            selectedHobbiesList.length == 0
+                                        ? "Please mention your hobbies example #hobbie1 #hobbie2..."
+                                        : selectedHobbiesList
+                                            .toString(), //.replaceAll(new RegExp(r', '), '# '),
+                                    style: TextStyle(
+                                        fontFamily: "Montserrat",
+                                        fontSize: 10.0.sp,
+                                        color: Constants.bpSkipStyle),
                                   ),
                                 ),
                               ),
-                              onDelete: (tag) {
-                                print('onDelete: $tag');
-                              },
-                              onTag: (tag) {
-                                print('onTag: $tag');
-                                hobbieList.add(tag);
-                              },
-                              // validator: (String tag) {
-                              //   print('validator: $tag');
-                              //   if (tag.length > 10) {
-                              //     return "hey that is too much";
-                              //   }
-                              //   return null;
-                              // },
-                            )
-                                // FlutterTagging<Hobbies>(
-                                //   initialItems: _selectedHobbies,
-                                //   textFieldConfiguration: TextFieldConfiguration(
-                                //     decoration: InputDecoration(
-                                //         //labelText: "Please mention your achivements...",
-                                //         counterText: '',
-                                //         fillColor: Colors.white,
-                                //         focusedBorder: OutlineInputBorder(
-                                //           borderRadius:
-                                //               BorderRadius.circular(5.0),
-                                //           borderSide: BorderSide(
-                                //             color: Constants.formBorder,
-                                //           ),
-                                //         ),
-                                //         enabledBorder: OutlineInputBorder(
-                                //           borderRadius:
-                                //               BorderRadius.circular(5.0),
-                                //           borderSide: BorderSide(
-                                //             color: Constants.formBorder,
-                                //             //width: 2.0,
-                                //           ),
-                                //         ),
-                                //         hintText:
-                                //             "Please mention your hobbies example #hobbies1 #hobbies2..."),
-                                //     //keyboardType: TextInputType.emailAddress,
-                                //     style: new TextStyle(
-                                //         fontFamily: "Montserrat",
-                                //         fontSize: 10.0.sp),
-                                //   ),
-                                //   findSuggestions: HobbieService.getLanguages,
-                                //   additionCallback: (value) {
-                                //     return Hobbies(
-                                //       name: value,
-                                //       position: 0,
-                                //     );
-                                //   },
-                                //   onAdded: (language) {
-                                //     // api calls here, triggered when add to tag button is pressed
-                                //     return Hobbies(
-                                //       name: language.name,
-                                //       position: 0,
-                                //     );
-                                //   },
-                                //   configureSuggestion: (lang) {
-                                //     return SuggestionConfiguration(
-                                //       title: Text(lang.name),
-                                //       //subtitle: Text(lang.position.toString()),
-                                //       additionWidget: Chip(
-                                //         avatar: Icon(
-                                //           Icons.add_circle,
-                                //           color: Colors.white,
-                                //         ),
-                                //         label: Text('Add New Tag'),
-                                //         labelStyle: TextStyle(
-                                //           fontFamily: 'Montserrat',
-                                //           fontSize: 10.0.sp,
-                                //           color: Colors.white,
-                                //           fontWeight: FontWeight.w300,
-                                //         ),
-                                //         backgroundColor: Constants.bgColor,
-                                //       ),
-                                //     );
-                                //   },
-                                //   configureChip: (lang) {
-                                //     return ChipConfiguration(
-                                //       label: Text(lang.name),
-                                //       backgroundColor: Constants.bgColor,
-                                //       labelStyle: TextStyle(color: Colors.white),
-                                //       deleteIconColor: Colors.white,
-                                //     );
-                                //   },
-                                //   onChanged: () {
-                                //     setState(() {
-                                //       _selectedHobbiesJson = _selectedHobbies
-                                //           .map<String>(
-                                //               (lang) => '\n${lang.toJson()}')
-                                //           .toList()
-                                //           .toString();
-                                //       _selectedHobbiesJson = _selectedHobbiesJson
-                                //           .replaceFirst('}]', '}\n]');
-                                //     });
-                                //   },
-                                // ),
-                                ),
+                              //     TextFieldTags(
+                              //   //initialTags: ["college"],
+                              //   tagsStyler: TagsStyler(
+                              //     showHashtag: true,
+                              //     tagMargin: const EdgeInsets.only(right: 4.0),
+                              //     tagCancelIcon: Icon(Icons.cancel,
+                              //         size: 20.0, color: Constants.bgColor),
+                              //     tagCancelIconPadding:
+                              //         EdgeInsets.only(left: 4.0, top: 2.0),
+                              //     tagPadding: EdgeInsets.only(
+                              //         top: 2.0,
+                              //         bottom: 4.0,
+                              //         left: 8.0,
+                              //         right: 4.0),
+                              //     tagDecoration: BoxDecoration(
+                              //       color: Colors.white,
+                              //       border: Border.all(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //       borderRadius: const BorderRadius.all(
+                              //         Radius.circular(20.0),
+                              //       ),
+                              //     ),
+                              //     tagTextStyle: TextStyle(
+                              //         fontWeight: FontWeight.normal,
+                              //         color: Constants.bgColor,
+                              //         fontFamily: "Montserrat"),
+                              //   ),
+                              //   textFieldStyler: TextFieldStyler(
+                              //     helperText: '',
+                              //     hintText:
+                              //         "Please mention your hobbies example #hobbies1 #hobbies2...",
+                              //     hintStyle: TextStyle(
+                              //         fontFamily: "Montserrat",
+                              //         fontSize: 10.0.sp),
+                              //     isDense: false,
+                              //     textFieldFocusedBorder: OutlineInputBorder(
+                              //       borderRadius: BorderRadius.circular(5.0),
+                              //       borderSide: BorderSide(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //     ),
+                              //     textFieldBorder: OutlineInputBorder(
+                              //       borderRadius: BorderRadius.circular(5.0),
+                              //       borderSide: BorderSide(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //     ),
+                              //     textFieldEnabledBorder: OutlineInputBorder(
+                              //       borderRadius: BorderRadius.circular(5.0),
+                              //       borderSide: BorderSide(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //     ),
+                              //     textFieldDisabledBorder: OutlineInputBorder(
+                              //       borderRadius: BorderRadius.circular(5.0),
+                              //       borderSide: BorderSide(
+                              //         color: Constants.formBorder,
+                              //       ),
+                              //     ),
+                              //   ),
+                              //   onDelete: (tag) {
+                              //     print('onDelete: $tag');
+                              //   },
+                              //   onTag: (tag) {
+                              //     print('onTag: $tag');
+                              //     hobbieList.add(tag);
+                              //   },
+                              //   // validator: (String tag) {
+                              //   //   print('validator: $tag');
+                              //   //   if (tag.length > 10) {
+                              //   //     return "hey that is too much";
+                              //   //   }
+                              //   //   return null;
+                              //   // },
+                              // )
+                              // FlutterTagging<Hobbies>(
+                              //   initialItems: _selectedHobbies,
+                              //   textFieldConfiguration: TextFieldConfiguration(
+                              //     decoration: InputDecoration(
+                              //         //labelText: "Please mention your achivements...",
+                              //         counterText: '',
+                              //         fillColor: Colors.white,
+                              //         focusedBorder: OutlineInputBorder(
+                              //           borderRadius:
+                              //               BorderRadius.circular(5.0),
+                              //           borderSide: BorderSide(
+                              //             color: Constants.formBorder,
+                              //           ),
+                              //         ),
+                              //         enabledBorder: OutlineInputBorder(
+                              //           borderRadius:
+                              //               BorderRadius.circular(5.0),
+                              //           borderSide: BorderSide(
+                              //             color: Constants.formBorder,
+                              //             //width: 2.0,
+                              //           ),
+                              //         ),
+                              //         hintText:
+                              //             "Please mention your hobbies example #hobbies1 #hobbies2..."),
+                              //     //keyboardType: TextInputType.emailAddress,
+                              //     style: new TextStyle(
+                              //         fontFamily: "Montserrat",
+                              //         fontSize: 10.0.sp),
+                              //   ),
+                              //   findSuggestions: HobbieService.getLanguages,
+                              //   additionCallback: (value) {
+                              //     return Hobbies(
+                              //       name: value,
+                              //       position: 0,
+                              //     );
+                              //   },
+                              //   onAdded: (language) {
+                              //     // api calls here, triggered when add to tag button is pressed
+                              //     return Hobbies(
+                              //       name: language.name,
+                              //       position: 0,
+                              //     );
+                              //   },
+                              //   configureSuggestion: (lang) {
+                              //     return SuggestionConfiguration(
+                              //       title: Text(lang.name),
+                              //       //subtitle: Text(lang.position.toString()),
+                              //       additionWidget: Chip(
+                              //         avatar: Icon(
+                              //           Icons.add_circle,
+                              //           color: Colors.white,
+                              //         ),
+                              //         label: Text('Add New Tag'),
+                              //         labelStyle: TextStyle(
+                              //           fontFamily: 'Montserrat',
+                              //           fontSize: 10.0.sp,
+                              //           color: Colors.white,
+                              //           fontWeight: FontWeight.w300,
+                              //         ),
+                              //         backgroundColor: Constants.bgColor,
+                              //       ),
+                              //     );
+                              //   },
+                              //   configureChip: (lang) {
+                              //     return ChipConfiguration(
+                              //       label: Text(lang.name),
+                              //       backgroundColor: Constants.bgColor,
+                              //       labelStyle: TextStyle(color: Colors.white),
+                              //       deleteIconColor: Colors.white,
+                              //     );
+                              //   },
+                              //   onChanged: () {
+                              //     setState(() {
+                              //       _selectedHobbiesJson = _selectedHobbies
+                              //           .map<String>(
+                              //               (lang) => '\n${lang.toJson()}')
+                              //           .toList()
+                              //           .toString();
+                              //       _selectedHobbiesJson = _selectedHobbiesJson
+                              //           .replaceFirst('}]', '}\n]');
+                              //     });
+                              //   },
+                              // ),
+                            ),
                           ),
                         ),
                         // Theme(
@@ -2829,7 +2892,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                                } else if (_idNumController.text.isEmpty) {
+                              } else if (_idNumController.text.isEmpty) {
                                 Fluttertoast.showToast(
                                     msg: "Please Enter Valid ID Number",
                                     toastLength: Toast.LENGTH_SHORT,
@@ -2886,33 +2949,33 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     fontSize: 10.0.sp);
                               } else {
                                 addEducatorProfile(
-                                  //userId,
-                                  registerAs,
-                                  _nameController.text,
-                                  _mobileController.text,
-                                  _emailController.text,
-                                  gender,
-                                  birthDateInString,
-                                  docType,
-                                  _document,
-                                  _image,
-                                  _idNumController.text,
-                                  address1,
-                                  address2,
-                                  city,
-                                  country,
-                                  pinCode,
-                                  lat,
-                                  lng,
-                                  _achivementController.text,
-                                  skillList.toString(),
-                                  hobbieList.toString(),
-                                  _fbLinkController.text,
-                                  _instagramLinkController.text,
-                                  _linkedInLinkLinkController.text,
-                                  _otherLinkLinkController.text,
-                                  totalWorkExp,
-                                  totalTeachExp);
+                                    //userId,
+                                    registerAs,
+                                    _nameController.text,
+                                    _mobileController.text,
+                                    _emailController.text,
+                                    gender,
+                                    birthDateInString,
+                                    docType,
+                                    _document,
+                                    _image,
+                                    _idNumController.text,
+                                    address1,
+                                    address2,
+                                    city,
+                                    country,
+                                    pinCode,
+                                    lat,
+                                    lng,
+                                    _achivementController.text,
+                                    selectedSkillList.toString(),
+                                    selectedHobbiesList.toString(),
+                                    _fbLinkController.text,
+                                    _instagramLinkController.text,
+                                    _linkedInLinkLinkController.text,
+                                    _otherLinkLinkController.text,
+                                    totalWorkExp,
+                                    totalTeachExp);
                               }
                             },
                             child: Container(
@@ -2980,6 +3043,205 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
     print('LATLNG::: ${result.latLng}');
     print('Country::: $pinCode');
     print('ADDRESS::: $address1');
+  }
+
+  //Tag for Skills
+  void _openFilterSkillsDialog() async {
+    await FilterListDialog.display(context,
+        listData: skillMapData,
+        selectedListData: selectedSkillList,
+        height: 480,
+        headlineText: "Select or Search Skill",
+        searchFieldHintText: "Search Skill Here",
+        searchFieldTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 10.0.sp,
+            color: Constants.bgColor),
+        headerTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 12.0.sp,
+            color: Constants.bgColor),
+        label: (item) {
+          return item;
+        },
+        validateSelectedItem: (list, val) {
+          return list.contains(val);
+        },
+        applyButonTextBackgroundColor: Constants.bgColor,
+        applyButtonTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 12.0.sp,
+            color: Colors.white),
+        selectedChipTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w400,
+            fontSize: 10.0.sp,
+            color: Colors.white),
+        controlButtonTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 11.0.sp,
+            color: Constants.bgColor),
+        unselectedChipTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w400,
+            fontSize: 10.0.sp,
+            color: Constants.bgColor),
+        //useSafeArea: true,
+        onItemSearch: (list, text) {
+          if (list.any((element) =>
+              element.toLowerCase().contains(text.toLowerCase()))) {
+            return list
+                .where((element) =>
+                    element.toLowerCase().contains(text.toLowerCase()))
+                .toList();
+          }
+        },
+        onApplyButtonClick: (list) {
+          if (list != null) {
+            setState(() {
+              selectedSkillList = List.from(list);
+            });
+          }
+          Navigator.pop(context);
+        });
+  }
+
+  //Tag for Hobbies
+  void _openFilterHobbiesDialog() async {
+    await FilterListDialog.display(context,
+        listData: hobbieMapData,
+        selectedListData: selectedHobbiesList,
+        height: 480,
+        headlineText: "Select or Search Hobbie",
+        searchFieldHintText: "Search Hobbie Here",
+        searchFieldTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 10.0.sp,
+            color: Constants.bgColor),
+        headerTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 12.0.sp,
+            color: Constants.bgColor),
+        label: (item) {
+          return item;
+        },
+        validateSelectedItem: (list, val) {
+          return list.contains(val);
+        },
+        applyButonTextBackgroundColor: Constants.bgColor,
+        applyButtonTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 12.0.sp,
+            color: Colors.white),
+        selectedChipTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w400,
+            fontSize: 10.0.sp,
+            color: Colors.white),
+        controlButtonTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 11.0.sp,
+            color: Constants.bgColor),
+        unselectedChipTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w400,
+            fontSize: 10.0.sp,
+            color: Constants.bgColor),
+        //useSafeArea: true,
+        onItemSearch: (list, text) {
+          if (list.any((element) =>
+              element.toLowerCase().contains(text.toLowerCase()))) {
+            return list
+                .where((element) =>
+                    element.toLowerCase().contains(text.toLowerCase()))
+                .toList();
+          }
+        },
+        onApplyButtonClick: (list) {
+          if (list != null) {
+            setState(() {
+              selectedHobbiesList = List.from(list);
+            });
+          }
+          Navigator.pop(context);
+        });
+  }
+
+  //Get Category, Skills, and Hobbies List
+  getCatSkillHobbieList() async {
+    displayProgressDialog(context);
+    //var result = CategoryList();
+
+    try {
+      Dio dio = Dio();
+      var response = await Future.wait(
+          [dio.get(Config.skillListUrl), dio.get(Config.hobbieListUrl)]);
+
+      if (response[0].statusCode == 200 && response[1].statusCode == 200) {
+        closeProgressDialog(context);
+        skillMap = response[0].data;
+        hobbieMap = response[1].data;
+        setState(() {
+          skillMapData = skillMap['data'];
+          hobbieMapData = hobbieMap['data'];
+        });
+
+        print(skillMap);
+        print(hobbieMap);
+        //closeProgressDialog(context);
+      } else {
+        closeProgressDialog(context);
+        if (skillMap['error_msg'] != null) {
+          Fluttertoast.showToast(
+            msg: skillMap['error_msg'],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        } else if (hobbieMap['error_msg'] != null) {
+          Fluttertoast.showToast(
+            msg: hobbieMap['error_msg'],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        }
+      }
+    } on DioError catch (e, stack) {
+      closeProgressDialog(context);
+      if (e.response != null) {
+        print("This is the error message::::" +
+            e.response.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.request);
+        print(e.message);
+      }
+    }
+    //return result;
   }
 
   //Add profile for Educator
@@ -3078,7 +3340,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
         //   filename: certiname,
         //   //contentType: new MediaType("jpg", "jpeg", "png", "pdf"),
         // ),
-        'facbook_link': facbookUrl,
+        'facbook_url': facbookUrl,
         'insta_url': instaUrl,
         'linkedin_url': linkedinUrl,
         'other_url': otherUrl,
@@ -3130,21 +3392,24 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
         print(result.data.name);
         if (result.status == true) {
           print('TRUE::');
-           preferences.setString("name", result.data.name);
-            preferences.setString("imageUrl", result.data.imageUrl);
-            preferences.setString("mobileNumber", result.data.mobileNumber);
-              preferences.setString("gender", result.data.gender);
-            preferences.setString("qualification", result.data.educationalDetails.toString());
-            preferences.setString("schoolName", result.data.educationalDetails.toString());
-            preferences.setString("address1", result.data.location.toString());
-            preferences.setString("address2", result.data.location.toString());
-            preferences.setString("facebookUrl", result.data.facbookUrl);
-            preferences.setString("instaUrl", result.data.instaUrl);
-            preferences.setString("linkedInUrl", result.data.linkedinUrl);
-            preferences.setString("otherUrl", result.data.otherUrl);
-            print('QUALIFICATION:::: ' + result.data.educationalDetails.last.qualification);
-            print('LOCATION:::: ' + result.data.location[0].addressLine2);
-            print('IMAGE:::: ' + result.data.imageUrl);
+          preferences.setString("name", result.data.name);
+          preferences.setString("imageUrl", result.data.imageUrl);
+          preferences.setString("mobileNumber", result.data.mobileNumber);
+          preferences.setString("gender", result.data.gender);
+          preferences.setString(
+              "qualification", result.data.educationalDetails.toString());
+          preferences.setString(
+              "schoolName", result.data.educationalDetails.toString());
+          preferences.setString("address1", result.data.location.toString());
+          preferences.setString("address2", result.data.location.toString());
+          preferences.setString("facebookUrl", result.data.facbookUrl);
+          preferences.setString("instaUrl", result.data.instaUrl);
+          preferences.setString("linkedInUrl", result.data.linkedinUrl);
+          preferences.setString("otherUrl", result.data.otherUrl);
+          print('QUALIFICATION:::: ' +
+              result.data.educationalDetails.last.qualification);
+          print('LOCATION:::: ' + result.data.location[0].addressLine2);
+          print('IMAGE:::: ' + result.data.imageUrl);
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => bottomNavBar(0)),
               (Route<dynamic> route) => false);
@@ -3197,11 +3462,6 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
       }
     }
     return result;
-  }
-
-  void getToken() async {
-    authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
   }
 
   displayProgressDialog(BuildContext context) {

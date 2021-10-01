@@ -156,7 +156,7 @@ class CancelBookingScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text('Fri,21 Jan 2021',//checkIn,
+                          Text('Fri, 21 Jan 2021',//checkIn,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -179,7 +179,7 @@ class CancelBookingScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text('Fri,21 Jan 2021',//checkOut,
+                          Text('Fri, 21 Jan 2021',//checkOut,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,

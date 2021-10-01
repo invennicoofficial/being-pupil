@@ -943,8 +943,8 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                           screen: BookingReviewScreen(
                             name: userName,
                             mobileNumber: userNumber,
-                            checkIn: DateFormat('EEE,dd MMM yyyy').format(checkInDate).toString(),
-                            checkOut: DateFormat('EEE,dd MMM yyyy').format(checkOutDate).toString(),
+                            checkIn: DateFormat('EEE, dd MMM yyyy').format(checkInDate).toString(),
+                            checkOut: DateFormat('EEE, dd MMM yyyy').format(checkOutDate).toString(),
                             roomType: roomType,
                             meal: selectedMeal.toString(),
                             roomCharge: roomCharge,
