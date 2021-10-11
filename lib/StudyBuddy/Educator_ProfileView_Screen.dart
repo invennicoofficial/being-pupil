@@ -118,7 +118,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
         //physics: AlwaysScrollableScrollPhysics(),
         children: <Widget>[
           Container(
-            height: 47.0.h,
+            // height: 80.0.h,
             width: 100.0.w,
             //color: Colors.grey,
             child: Padding(
