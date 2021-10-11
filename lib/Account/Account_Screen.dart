@@ -41,18 +41,20 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   getData() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    setState(() {
-      registerAs = preferences.getString('RegisterAs');
-      imageUrl = preferences.getString('imageUrl');
-      name = preferences.getString('name');
-      mobileNumber = preferences.getString('mobileNumber');
-      profilePicUrl = preferences.getString('imageUrl');
-      degreeName = preferences.getString("qualification");
-      schoolName = preferences.getString("schoolName");
-    });
+    final preferences = await SharedPreferences.getInstance();
+
+    registerAs = preferences.getString('RegisterAs');
+    imageUrl = preferences.getString('imageUrl');
+    name = preferences.getString('name');
+    mobileNumber = preferences.getString('mobileNumber');
+    profilePicUrl = preferences.getString('imageUrl');
+    degreeName = preferences.getString("qualification");
+    schoolName = preferences.getString("schoolName");
+    setState(() {});
     print(registerAs);
-    print(imageUrl);
+    print(degreeName);
+    print(schoolName);
+    print('DP:::' + imageUrl);
   }
 
   @override
@@ -103,7 +105,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             width: 29.5.w,
                             //color: Colors.grey,
                             child: CircleAvatar(
-                              backgroundImage:
+                              backgroundImage: //AssetImage('assets/images/dp2.png'),
                                   NetworkImage(profilePicUrl),
                               //backgroundColor: Colors.grey,
                               radius: 100.0,
@@ -134,13 +136,16 @@ class _AccountScreenState extends State<AccountScreen> {
                           SizedBox(
                             height: 0.5.h,
                           ),
-                          Text(
-                            '$degreeName | $schoolName',
-                            style: TextStyle(
-                                color: Constants.bgColor,
-                                fontFamily: 'Montserrat',
-                                fontSize: 10.5.sp,
-                                fontWeight: FontWeight.w400),
+                          Visibility(
+                            visible: registerAs == 'E' ? true : false,
+                            child: Text(
+                              '$degreeName | $schoolName',
+                              style: TextStyle(
+                                  color: Constants.bgColor,
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 10.5.sp,
+                                  fontWeight: FontWeight.w400),
+                            ),
                           ),
                         ],
                       ),
@@ -167,9 +172,9 @@ class _AccountScreenState extends State<AccountScreen> {
                                       withNavBar: false,
                                       pageTransitionAnimation:
                                           PageTransitionAnimation.cupertino);
-                                  // Navigator.of(context).push(PageRouteBuilder(
-                                  //     pageBuilder: (_, __, ____) =>
-                                  //         LearnerProfile()));
+                              // Navigator.of(context).push(PageRouteBuilder(
+                              //     pageBuilder: (_, __, ____) =>
+                              //         LearnerProfile()));
                             },
                             child: ProfileList(
                               txt: "My Profile",
@@ -183,12 +188,16 @@ class _AccountScreenState extends State<AccountScreen> {
                           InkWell(
                             onTap: () {
                               registerAs == 'E'
-                              ? pushNewScreen(context, screen: EducatorMyCourseScreen(),
-                                withNavBar: false,
-                                pageTransitionAnimation: PageTransitionAnimation.cupertino)
-                              : pushNewScreen(context, screen: LearnerMyCourseScreen(),
-                                withNavBar: false,
-                                pageTransitionAnimation: PageTransitionAnimation.cupertino);
+                                  ? pushNewScreen(context,
+                                      screen: EducatorMyCourseScreen(),
+                                      withNavBar: false,
+                                      pageTransitionAnimation:
+                                          PageTransitionAnimation.cupertino)
+                                  : pushNewScreen(context,
+                                      screen: LearnerMyCourseScreen(),
+                                      withNavBar: false,
+                                      pageTransitionAnimation:
+                                          PageTransitionAnimation.cupertino);
                             },
                             child: ProfileList(
                               txt: "My Courses",

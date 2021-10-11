@@ -385,17 +385,20 @@ class _OtpScreenState extends State<OtpScreen> {
               preferences.setString("name", result.data.userObject.name);
               preferences.setString("mobileNumber", result.data.userObject.mobileNumber);
               preferences.setString("gender", result.data.userObject.gender);
-              registerAs == 'E' ? preferences.setString("imageUrl", result.data.userObject.imageUrl) : preferences.setString("imageUrl", '');
-              registerAs == 'E' ? preferences.setString("qualification", result.data.userObject.educationalDetail.qualification) : preferences.setString("qualification", '');
-              registerAs == 'E' ? preferences.setString("schoolName", result.data.userObject.educationalDetail.schoolName) : preferences.setString("schoolName",'');
-              registerAs == 'E' ? preferences.setString("address1", result.data.userObject.location.addressLine2): preferences.setString("address1", '');
-              registerAs == 'E' ? preferences.setString("address2", result.data.userObject.location.city): preferences.setString("address2", '');
-              registerAs == 'E' ? preferences.setString("facebookUrl", result.data.userObject.fbUrl) : preferences.setString("facebookUrl",'');
-              registerAs == 'E' ? preferences.setString("instaUrl", result.data.userObject.instaUrl) : preferences.setString("instaUrl",'');
-              registerAs == 'E' ? preferences.setString("linkedInUrl", result.data.userObject.liUrl) : preferences.setString("linkedInUrl", '');
-              registerAs == 'E' ? preferences.setString("otherUrl", result.data.userObject.otherUrl) : preferences.setString("otherUrl", '');
+              //result.data.userObject.role == 'E' ? 
+              preferences.setString("imageUrl", result.data.userObject.imageUrl);
+              // : preferences.setString("imageUrl", '');
+              result.data.userObject.role == 'E' ? preferences.setString("qualification", result.data.userObject.educationalDetail.qualification) : preferences.setString("qualification", '');
+              result.data.userObject.role == 'E' ? preferences.setString("schoolName", result.data.userObject.educationalDetail.schoolName) : preferences.setString("schoolName",'');
+              result.data.userObject.role == 'E' ? preferences.setString("address1", result.data.userObject.location.addressLine2): preferences.setString("address1", '');
+              result.data.userObject.role == 'E' ? preferences.setString("address2", result.data.userObject.location.city): preferences.setString("address2", '');
+              result.data.userObject.role == 'E' ? preferences.setString("facebookUrl", result.data.userObject.fbUrl) : preferences.setString("facebookUrl",'');
+              result.data.userObject.role == 'E' ? preferences.setString("instaUrl", result.data.userObject.instaUrl) : preferences.setString("instaUrl",'');
+              result.data.userObject.role == 'E' ? preferences.setString("linkedInUrl", result.data.userObject.liUrl) : preferences.setString("linkedInUrl", '');
+              result.data.userObject.role == 'E' ? preferences.setString("otherUrl", result.data.userObject.otherUrl) : preferences.setString("otherUrl", '');
 
           print('Gender::: ${result.data.userObject.gender}');
+          print('IMAGE:::' + result.data.userObject.imageUrl);
 
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => bottomNavBar(0)),

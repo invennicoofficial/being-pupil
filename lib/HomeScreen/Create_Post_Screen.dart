@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
@@ -26,6 +27,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   List<String> filePathList = [];
   List<File> fileList = [];
   List<AssetEntity> assets = <AssetEntity>[];
+  String profilePic, name;
 
   @override
   void initState() {
@@ -36,6 +38,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     print(authToken);
+    getData();
+  }
+
+  getData()async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      profilePic = preferences.getString('imageUrl');
+      name = preferences.getString('name');
+    });
   }
 
   _imageFromCamera() async {
@@ -217,15 +228,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 contentPadding: EdgeInsets.all(0.0),
                 leading: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
-                  child: Image.asset(
-                    'assets/images/educatorDP.png',
+                  child: Image.network(
+                    profilePic,
                     width: 8.5.w,
                     height: 5.0.h,
                     fit: BoxFit.cover,
                   ),
                 ),
                 title: Text(
-                  "Marilyn Brewer",
+                  name,
                   style: TextStyle(
                       fontSize: 9.0.sp,
                       color: Constants.bgColor,
