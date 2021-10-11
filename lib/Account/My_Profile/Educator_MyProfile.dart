@@ -58,6 +58,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
   int userId;
   MyProfile profileResult;
   SavePostAPI save = SavePostAPI();
+  Map<String, dynamic> myProfileMap;
+  bool isProfileLoading = true;
 
   @override
   void initState() {
@@ -80,6 +82,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
     });
     print(registerAs);
     print('ID::::::' + userId.toString());
+    getMyProfileApi();
     getEducatorPostApi(page);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -157,7 +160,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
               color: Colors.white),
         ),
       ),
-      body: isLoading
+      body: isLoading && isProfileLoading
           ? Center(
               child: CircularProgressIndicator(
                 valueColor:
@@ -180,8 +183,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                         //Profile DP
                         ClipRRect(
                           borderRadius: BorderRadius.circular(50),
-                          child: Image.asset(
-                            'assets/images/profileImage.png',
+                          child: Image.network(
+                            myProfileMap['data']['profile_image'],
                             width: 20.5.w,
                             height: 12.0.h,
                             fit: BoxFit.cover,
@@ -191,7 +194,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                         Padding(
                           padding: EdgeInsets.only(top: 1.0.h),
                           child: Text(
-                            'Praveen Kumar',
+                            myProfileMap['data']['name'],
                             style: TextStyle(
                                 fontSize: 10.0.sp,
                                 fontFamily: 'Montserrat',
@@ -203,7 +206,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                         Padding(
                           padding: EdgeInsets.only(top: 1.0.h),
                           child: Text(
-                            'B.tech | M.S University',
+                            '${myProfileMap['data']['last_degree']} | ${myProfileMap['data']['school_name']}',
                             style: TextStyle(
                                 fontSize: 8.0.sp,
                                 fontFamily: 'Montserrat',
@@ -226,7 +229,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                 width: 0.5.w,
                               ),
                               Text(
-                                'Talwandi, Kota',
+                                myProfileMap['data']['city'],
                                 style: TextStyle(
                                     fontSize: 8.0.sp,
                                     fontFamily: 'Montserrat',
@@ -272,32 +275,47 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                               SizedBox(
                                 width: 1.0.w,
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  print('Facebook!!!');
-                                },
-                                child: Container(
-                                    height: 4.0.h,
-                                    width: 8.0.w,
-                                    child: Image.asset(
-                                      'assets/icons/facebook.png',
-                                      fit: BoxFit.contain,
-                                    )),
+                              Visibility(
+                                visible: myProfileMap['data']['facebook_link'] ==null
+                                    ? false
+                                    : true,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print('Facebook!!!');
+                                  },
+                                  child: Container(
+                                      height: 4.0.h,
+                                      width: 8.0.w,
+                                      child: Image.asset(
+                                        'assets/icons/facebook.png',
+                                        fit: BoxFit.contain,
+                                      )),
+                                ),
                               ),
-                              SizedBox(
-                                width: 1.0.w,
+                              Visibility(
+                                visible: myProfileMap['data']['facebook_link'] == null
+                                    ? false
+                                    : true,
+                                child: SizedBox(
+                                  width: 1.0.w,
+                                ),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  print('LinkedIn!!!');
-                                },
-                                child: Container(
-                                    height: 4.0.h,
-                                    width: 8.0.w,
-                                    child: Image.asset(
-                                      'assets/icons/linkedin.png',
-                                      fit: BoxFit.contain,
-                                    )),
+                             Visibility(
+                                visible: myProfileMap['data']['linkedin_link'] == null
+                                    ? false
+                                    : true,
+                                 child: GestureDetector(
+                                  onTap: () {
+                                    print('LinkedIn!!!');
+                                  },
+                                  child: Container(
+                                      height: 4.0.h,
+                                      width: 8.0.w,
+                                      child: Image.asset(
+                                        'assets/icons/linkedin.png',
+                                        fit: BoxFit.contain,
+                                      )),
+                                ),
                               ),
                             ],
                           ),
@@ -311,7 +329,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                               Column(
                                 children: <Widget>[
                                   Text(
-                                    '10 Yrs',
+                                    '${myProfileMap['data']['total_experience']} Yrs',
                                     style: TextStyle(
                                         fontSize: 10.0.sp,
                                         color: Constants.bgColor,
@@ -334,7 +352,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                               Column(
                                 children: <Widget>[
                                   Text(
-                                    '50',
+                                    myProfileMap['data']['total_post']
+                                        .toString(),
                                     style: TextStyle(
                                         fontSize: 10.0.sp,
                                         color: Constants.bgColor,
@@ -357,7 +376,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                               Column(
                                 children: <Widget>[
                                   Text(
-                                    '200',
+                                    myProfileMap['data']['total_connections']
+                                        .toString(),
                                     style: TextStyle(
                                         fontSize: 10.0.sp,
                                         color: Constants.bgColor,
@@ -495,7 +515,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                         onSelected: (value) {
                                           if (value == 2) {
                                             deletePostApi(
-                                                postIdList[index].toString(), index);
+                                                postIdList[index].toString(),
+                                                index);
 
                                             getEducatorPostApi(page);
                                           }
@@ -554,7 +575,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                     height: 1.0.h,
                                   ),
                                   // Container for image or video
-                                   imageListMap[index].length == 0 
+                                  imageListMap[index].length == 0
                                       ? Container()
                                       : Container(
                                           height: 30.0.h,
@@ -725,7 +746,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                             setState(() {
                                               // isSaved = !isSaved;
                                               //savePostApi(postIdList[index]);
-                                              save.savePostApi(postIdList[index], authToken);
+                                              save.savePostApi(
+                                                  postIdList[index], authToken);
                                             });
                                           },
                                           child: Row(
@@ -785,6 +807,32 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
               ],
             ),
     );
+  }
+
+  //Get Profile Details
+  Future<void> getMyProfileApi() async {
+    try {
+      Dio dio = Dio();
+
+      var response = await dio.get(Config.myProfileUrl,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+
+      if (response.statusCode == 200) {
+        myProfileMap = response.data;
+
+        print('PROFILE:::' + myProfileMap.toString());
+        setState(() {
+          isProfileLoading = false;
+        });
+      } else {
+        setState(() {
+          isProfileLoading = true;
+        });
+      }
+    } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+    }
   }
 
   //Get Educator's all Post

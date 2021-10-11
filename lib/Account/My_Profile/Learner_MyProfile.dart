@@ -1,4 +1,6 @@
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Model/Config.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,6 +8,7 @@ import 'package:sizer/sizer.dart';
 
 import 'Edit_Profile_Educator.dart';
 import 'Edit_Profile_Learner.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 
 
@@ -17,19 +20,29 @@ class LearnerMyProfileScreen extends StatefulWidget {
 }
 
 class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
-  String registerAs;
+  String registerAs, authToken;
+  Map<String, dynamic> myProfileMap;
+  bool isProfileLoading = true;
 
   @override
   void initState() { 
-    getData();
+    getToken();
     super.initState();
   }
+
+   void getToken() async {
+    authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+    print(authToken);
+    getData();
+  }
+
   getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     //setState(() {
       registerAs = preferences.getString('RegisterAs');
     //});
     print(registerAs);
+    getMyProfileApi();
   }
 
   @override
@@ -228,5 +241,31 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
             ),
       ),
     );
+  }
+
+   //Get Profile Details
+  Future<void> getMyProfileApi() async {
+    try {
+      Dio dio = Dio();
+
+      var response = await dio.get(Config.myProfileUrl,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+
+      if (response.statusCode == 200) {
+        myProfileMap = response.data;
+
+        print('PROFILE:::' + myProfileMap.toString());
+        setState(() {
+          isProfileLoading = false;
+        });
+      } else {
+        setState(() {
+          isProfileLoading = true;
+        });
+      }
+    } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+    }
   }
 }
