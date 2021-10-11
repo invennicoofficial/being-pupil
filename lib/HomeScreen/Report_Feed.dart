@@ -10,7 +10,8 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class ReportFeed extends StatefulWidget {
-  const ReportFeed({Key key}) : super(key: key);
+  final int postId;
+  const ReportFeed({Key key, @required this.postId}) : super(key: key);
 
   @override
   _ReportFeedState createState() => _ReportFeedState();
@@ -113,7 +114,7 @@ class _ReportFeedState extends State<ReportFeed> {
               toastLength: Toast.LENGTH_SHORT,
             );
           }else{
-            reportIssueOnPost(50, issueId);
+            reportIssueOnPost(widget.postId, issueId);
           }
         },
         child: Container(

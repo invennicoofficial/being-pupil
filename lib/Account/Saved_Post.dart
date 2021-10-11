@@ -204,7 +204,9 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                 onPressed: () {
                                   pushNewScreen(context,
                                       withNavBar: false,
-                                      screen: ReportFeed(),
+                                      screen: ReportFeed(
+                                        postId: int.parse(postIdList[index]),
+                                      ),
                                       pageTransitionAnimation:
                                           PageTransitionAnimation.cupertino);
                                 }),
@@ -385,8 +387,9 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                     setState(() {
                                       isSaved[index] = !isSaved[index];
                                     });
-                                    //savePostApi(postIdList[index]);
-                                    save.savePostApi(int.parse(postIdList[index]), authToken);
+                                    savePostApi(postIdList[index]);
+                                    //save.savePostApi(int.parse(postIdList[index]), authToken);
+
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,

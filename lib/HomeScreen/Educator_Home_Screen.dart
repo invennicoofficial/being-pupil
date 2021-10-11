@@ -214,7 +214,9 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                     onTap: () {
                                       pushNewScreen(context,
                                           withNavBar: false,
-                                          screen: ReportFeed(),
+                                          screen: ReportFeed(
+                                            postId: postIdList[index],
+                                          ),
                                           pageTransitionAnimation:
                                               PageTransitionAnimation
                                                   .cupertino);

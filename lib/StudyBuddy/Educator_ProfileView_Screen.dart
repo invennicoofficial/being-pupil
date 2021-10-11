@@ -5,15 +5,13 @@ import 'package:being_pupil/HomeScreen/Comment_Screen.dart';
 import 'package:being_pupil/HomeScreen/Report_Feed.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Educator_Post_Model.dart';
-import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:photo_view/photo_view.dart';
-import 'package:photo_view/photo_view_gallery.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class EducatorProfileViewScreen extends StatefulWidget {
   EducatorProfileViewScreen({Key key}) : super(key: key);
@@ -50,9 +48,19 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
   List<int> likesList = [];
   List<int> totalCommentsList = [];
 
+  Map<String, dynamic> saveMap;
+  String authToken;
+
 
   @override
   void initState() {
+    getToken();
+    super.initState();
+  }
+
+  void getToken() async {
+    authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+    print(authToken);
     getEducatorPostApi(page);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -71,7 +79,6 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
 
       }
     });
-    super.initState();
   }
 
   @override
@@ -468,7 +475,9 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                 onTap: () {
                                   pushNewScreen(context,
                                       withNavBar: false,
-                                      screen: ReportFeed(),
+                                      screen: ReportFeed(
+                                        postId: postIdList[index],
+                                      ),
                                       pageTransitionAnimation:
                                           PageTransitionAnimation.cupertino);
                                 },
@@ -654,6 +663,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                       setState(() {
                                         isSaved = !isSaved;
                                       });
+                                       savePostApi(postIdList[index]);
                                     },
                                     child: Row(
                                       mainAxisAlignment:
@@ -776,6 +786,68 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
+      print(e.response);
+      print(stack);
+    }
+  }
+
+// Save post API
+   Future<void> savePostApi(int postID) async {
+    //var delResult = PostDelete();
+
+    try {
+      Dio dio = Dio();
+
+      FormData formData = FormData.fromMap({'post_id': postID});
+      var response = await dio.post(Config.savePostUrl,
+          data: formData,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+
+      if (response.statusCode == 200) {
+        //delResult = postDeleteFromJson(response.data);
+        saveMap = response.data;
+        //saveMapData = map['data']['status'];
+
+        print(saveMap);
+        // setState(() {
+        //   isLoading = false;
+        // });
+        if (saveMap['status'] == true) {
+          print('true');
+          //getEducatorPostApi(page);
+          Fluttertoast.showToast(
+              msg: saveMap['message'],
+              backgroundColor: Constants.bgColor,
+              gravity: ToastGravity.BOTTOM,
+              fontSize: 10.0.sp,
+              toastLength: Toast.LENGTH_SHORT,
+              textColor: Colors.white);
+        } else {
+          print('false');
+          if (saveMap['message'] == null) {
+            Fluttertoast.showToast(
+                msg: saveMap['error_msg'],
+                backgroundColor: Constants.bgColor,
+                gravity: ToastGravity.BOTTOM,
+                fontSize: 10.0.sp,
+                toastLength: Toast.LENGTH_SHORT,
+                textColor: Colors.white);
+          } else {
+            Fluttertoast.showToast(
+                msg: saveMap['message'],
+                backgroundColor: Constants.bgColor,
+                gravity: ToastGravity.BOTTOM,
+                fontSize: 10.0.sp,
+                toastLength: Toast.LENGTH_SHORT,
+                textColor: Colors.white);
+          }
+        }
+        //getEducatorPostApi(page);
+        print(saveMap);
+      } else {
+        print(response.statusCode);
+      }
+    } on DioError catch (e, stack) {
       print(e.response);
       print(stack);
     }
