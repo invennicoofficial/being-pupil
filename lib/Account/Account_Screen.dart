@@ -28,6 +28,12 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   String registerAs, imageUrl;
 
+  String profilePicUrl;
+  String name;
+  String mobileNumber;
+  String degreeName;
+  String schoolName;
+
   @override
   void initState() {
     getData();
@@ -39,6 +45,11 @@ class _AccountScreenState extends State<AccountScreen> {
     setState(() {
       registerAs = preferences.getString('RegisterAs');
       imageUrl = preferences.getString('imageUrl');
+      name = preferences.getString('name');
+      mobileNumber = preferences.getString('mobileNumber');
+      profilePicUrl = preferences.getString('imageUrl');
+      degreeName = preferences.getString("qualification");
+      schoolName = preferences.getString("schoolName");
     });
     print(registerAs);
     print(imageUrl);
@@ -93,7 +104,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             //color: Colors.grey,
                             child: CircleAvatar(
                               backgroundImage:
-                                  AssetImage('assets/images/profileImage.png'),
+                                  NetworkImage(profilePicUrl),
                               //backgroundColor: Colors.grey,
                               radius: 100.0,
                             ),
@@ -102,7 +113,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             height: 0.5.h,
                           ),
                           Text(
-                            'Praveen Kumar',
+                            name,
                             style: TextStyle(
                                 color: Constants.profileTitle,
                                 fontFamily: 'Montserrat',
@@ -113,7 +124,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             height: 0.5.h,
                           ),
                           Text(
-                            '9865743210',
+                            mobileNumber,
                             style: TextStyle(
                                 color: Constants.bgColor,
                                 fontFamily: 'Montserrat',
@@ -124,7 +135,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             height: 0.5.h,
                           ),
                           Text(
-                            'B.tech I M.S University',
+                            '$degreeName | $schoolName',
                             style: TextStyle(
                                 color: Constants.bgColor,
                                 fontFamily: 'Montserrat',

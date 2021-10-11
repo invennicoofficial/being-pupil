@@ -121,8 +121,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                   //Profile DP
                   ClipRRect(
                     borderRadius: BorderRadius.circular(50),
-                    child: Image.asset(
-                      'assets/images/edProfile.png',
+                    child:Image.network(
+                      profileImageUrl,
                       width: 32.5.w,
                       height: 15.0.h,
                       fit: BoxFit.cover,
@@ -132,7 +132,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                   Padding(
                     padding: EdgeInsets.only(top: 1.0.h),
                     child: Text(
-                      'Natasha Young',
+                      name,
                       style: TextStyle(
                           fontSize: 10.0.sp,
                           fontFamily: 'Montserrat',
@@ -144,7 +144,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                   Padding(
                     padding: EdgeInsets.only(top: 1.0.h),
                     child: Text(
-                      'B.tech | M.S University',
+                      '$degreeName | $schoolName',
                       style: TextStyle(
                           fontSize: 8.0.sp,
                           fontFamily: 'Montserrat',
