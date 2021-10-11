@@ -99,7 +99,7 @@ class _ConnectionListState extends State<ConnectionList> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 2.0.w),
                       child: Container(
-                        height: 100,
+                        height: 10.0.h,
                         child: ListTile(
                             contentPadding: EdgeInsets.zero,
                             title: Row(
