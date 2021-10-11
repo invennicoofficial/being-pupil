@@ -720,7 +720,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
     try {
       Dio dio = Dio();
 
-      var response = await dio.get('${Config.getEducatorPostUrl}13?page=$page');
+      var response = await dio.get('${Config.getEducatorPostUrl}36?page=$page');
       print(response.statusCode);
 
       if (response.statusCode == 200) {

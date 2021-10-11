@@ -1,15 +1,15 @@
 // To parse this JSON data, do
 //
-//     final profileDetails = profileDetailsFromJson(jsonString);
+//     final learnerProfileDetails = learnerProfileDetailsFromJson(jsonString);
 
 import 'dart:convert';
 
-EducatorProfileDetails profileDetailsFromJson(String str) => EducatorProfileDetails.fromJson(json.decode(str));
+LearnerProfileDetails learnerProfileDetailsFromJson(String str) => LearnerProfileDetails.fromJson(json.decode(str));
 
-String profileDetailsToJson(EducatorProfileDetails data) => json.encode(data.toJson());
+String learnerProfileDetailsToJson(LearnerProfileDetails data) => json.encode(data.toJson());
 
-class EducatorProfileDetails {
-    EducatorProfileDetails({
+class LearnerProfileDetails {
+    LearnerProfileDetails({
         this.status,
         this.errorCode,
         this.errorMsg,
@@ -25,12 +25,12 @@ class EducatorProfileDetails {
     Data data;
     dynamic metaParams;
 
-    factory EducatorProfileDetails.fromJson(Map<String, dynamic> json) => EducatorProfileDetails(
+    factory LearnerProfileDetails.fromJson(Map<String, dynamic> json) => LearnerProfileDetails(
         status: json["status"],
         errorCode: json["error_code"],
         errorMsg: json["error_msg"],
         message: json["message"],
-        data: json['status'] == true ? Data.fromJson(json["data"]) : new Data.toEmpty(json['data']),
+        data: json["status"] == true ? Data.fromJson(json["data"]) : new Data.toEmpty(json['data']),
         metaParams: json["meta_params"],
     );
 
@@ -48,10 +48,10 @@ class Data {
     Data({
         this.userId,
         this.registerAs,
-        this.name,
-        this.mobileNumber,
         this.imageFile,
         this.imageUrl,
+        this.name,
+        this.mobileNumber,
         this.email,
         this.gender,
         this.dob,
@@ -59,9 +59,7 @@ class Data {
         this.documentFile,
         this.documentUrl,
         this.identificationDocumentNumber,
-        this.educationalDetails,
-        this.totalWorkExperience,
-        this.totalTeachingExperience,
+        this.location,
         this.achievements,
         this.skills,
         this.hobbies,
@@ -69,16 +67,18 @@ class Data {
         this.instaUrl,
         this.linkedinUrl,
         this.otherUrl,
-        this.location,
-        this.isNew,
+        this.educationalDetails,
+        this.totalWorkExperience,
+        this.totalTeachingExperience,
+        this.interestedCategory,
     });
 
     int userId;
     String registerAs;
-    String name;
-    String mobileNumber;
     String imageFile;
     String imageUrl;
+    String name;
+    String mobileNumber;
     String email;
     String gender;
     String dob;
@@ -86,26 +86,26 @@ class Data {
     String documentFile;
     String documentUrl;
     String identificationDocumentNumber;
-    List<EducationalDetail> educationalDetails;
-    String totalWorkExperience;
-    String totalTeachingExperience;
+    List<Location> location;
     String achievements;
-    String skills;
+    dynamic skills;
     String hobbies;
     dynamic facebookUrl;
     String instaUrl;
-    String linkedinUrl;
-    String otherUrl;
-    List<Location> location;
-    String isNew;
+    dynamic linkedinUrl;
+    dynamic otherUrl;
+    List<dynamic> educationalDetails;
+    String totalWorkExperience;
+    String totalTeachingExperience;
+    List<InterestedCategory> interestedCategory;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         userId: json["user_id"],
         registerAs: json["register_as"],
-        name: json["name"],
-        mobileNumber: json["mobile_number"],
         imageFile: json["image_file"],
         imageUrl: json["image_url"],
+        name: json["name"],
+        mobileNumber: json["mobile_number"],
         email: json["email"],
         gender: json["gender"],
         dob: json["dob"],
@@ -113,9 +113,7 @@ class Data {
         documentFile: json["document_file"],
         documentUrl: json["document_url"],
         identificationDocumentNumber: json["identification_document_number"],
-        educationalDetails: List<EducationalDetail>.from(json["educational_details"].map((x) => EducationalDetail.fromJson(x))),
-        totalWorkExperience: json["total_work_experience"],
-        totalTeachingExperience: json["total_teaching_experience"],
+        location: List<Location>.from(json["location"].map((x) => Location.fromJson(x))),
         achievements: json["achievements"],
         skills: json["skills"],
         hobbies: json["hobbies"],
@@ -123,17 +121,19 @@ class Data {
         instaUrl: json["insta_url"],
         linkedinUrl: json["linkedin_url"],
         otherUrl: json["other_url"],
-        location: List<Location>.from(json["location"].map((x) => Location.fromJson(x))),
-        isNew: json["isNew"],
+        educationalDetails: List<dynamic>.from(json["educational_details"].map((x) => x)),
+        totalWorkExperience: json["total_work_experience"],
+        totalTeachingExperience: json["total_teaching_experience"],
+        interestedCategory: List<InterestedCategory>.from(json["interested_category"].map((x) => InterestedCategory.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
         "user_id": userId,
         "register_as": registerAs,
-        "name": name,
-        "mobile_number": mobileNumber,
         "image_file": imageFile,
         "image_url": imageUrl,
+        "name": name,
+        "mobile_number": mobileNumber,
         "email": email,
         "gender": gender,
         "dob": dob,
@@ -141,9 +141,7 @@ class Data {
         "document_file": documentFile,
         "document_url": documentUrl,
         "identification_document_number": identificationDocumentNumber,
-        "educational_details": List<dynamic>.from(educationalDetails.map((x) => x.toJson())),
-        "total_work_experience": totalWorkExperience,
-        "total_teaching_experience": totalTeachingExperience,
+        "location": List<dynamic>.from(location.map((x) => x.toJson())),
         "achievements": achievements,
         "skills": skills,
         "hobbies": hobbies,
@@ -151,44 +149,38 @@ class Data {
         "insta_url": instaUrl,
         "linkedin_url": linkedinUrl,
         "other_url": otherUrl,
-        "location": List<dynamic>.from(location.map((x) => x.toJson())),
-        "isNew": isNew,
+        "educational_details": List<dynamic>.from(educationalDetails.map((x) => x)),
+        "total_work_experience": totalWorkExperience,
+        "total_teaching_experience": totalTeachingExperience,
+        "interested_category": List<dynamic>.from(interestedCategory.map((x) => x.toJson())),
     };
 
-    Data.toEmpty(List<dynamic> json) {
+     Data.toEmpty(List<dynamic> json) {
     return;
   }
 }
 
-class EducationalDetail {
-    EducationalDetail({
-        this.id,
-        this.schoolName,
-        this.year,
-        this.qualification,
-        this.certificateFile,
+class InterestedCategory {
+    InterestedCategory({
+        this.key,
+        this.value,
+        this.selected,
     });
 
-    int id;
-    String schoolName;
-    String year;
-    String qualification;
-    String certificateFile;
+    int key;
+    String value;
+    bool selected;
 
-    factory EducationalDetail.fromJson(Map<String, dynamic> json) => EducationalDetail(
-        id: json["id"],
-        schoolName: json["school_name"],
-        year: json["year"],
-        qualification: json["qualification"],
-        certificateFile: json["certificate_file"],
+    factory InterestedCategory.fromJson(Map<String, dynamic> json) => InterestedCategory(
+        key: json["key"],
+        value: json["value"],
+        selected: json["selected"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
-        "school_name": schoolName,
-        "year": year,
-        "qualification": qualification,
-        "certificate_file": certificateFile,
+        "key": key,
+        "value": value,
+        "selected": selected,
     };
 }
 

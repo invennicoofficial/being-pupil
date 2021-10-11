@@ -30,6 +30,8 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart' as pathProvider;
 
 class EditEducatorProfile extends StatefulWidget {
   const EditEducatorProfile({Key key}) : super(key: key);
@@ -91,9 +93,10 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   Map<String, dynamic> profileMap;
   List<dynamic> profileMapData = List();
 
-  var result = ProfileDetails();
+  var result = EducatorProfileDetails();
 
   bool isLoading = true;
+  String imagePath, documentPath;
   //List<String> _schoolNameList
 
   // List<Skills> _selectedSkills;
@@ -159,6 +162,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
 
     setState(() {
       _image = image;
+      imagePath = _image.path;
     });
   }
 
@@ -168,6 +172,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
 
     setState(() {
       _image = image;
+      imagePath = _image.path;
     });
   }
 
@@ -366,6 +371,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
       setState(() {
         fileName = file.name;
         _document = File(file.path);
+        documentPath = _document.path;
       });
 
       print(file.name);
@@ -536,7 +542,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                       print('Upload Pic!!!');
                                                       _showPicker(context);
                                                     },
-                                                    child: ClipRRect(
+                                                    child: result.data.imageUrl != null
+                                                    ? ClipRRect(
                                                       borderRadius: BorderRadius.circular(65),
                                                       child: Image.network(
                                                         result.data.imageUrl,
@@ -545,12 +552,12 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                         fit: BoxFit.cover,
                                                       ),
                                                     )
-                                                    // ImageIcon(
-                                                    //   AssetImage(
-                                                    //       'assets/icons/camera.png'),
-                                                    //   size: 25,
-                                                    //   color: Constants.formBorder,
-                                                    // ),
+                                                    : ImageIcon(
+                                                      AssetImage(
+                                                          'assets/icons/camera.png'),
+                                                      size: 25,
+                                                      color: Constants.formBorder,
+                                                    ),
                                                     ),
                                                 // Text(
                                                 //   'Upload',
@@ -1262,8 +1269,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                         ),
 
                         ListView.builder(
-                          itemCount: result.data.educationalDetails
-                              .length, //educationDetailMap.length, //itemCount,
+                          itemCount: result.data.educationalDetails.length, //educationDetailMap.length, //itemCount,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
@@ -3107,7 +3113,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                              } else if (workExp == '0') {
+                              } else if (totalWorkExp == null) {
                                 Fluttertoast.showToast(
                                     msg: "Please Select Work Experience",
                                     toastLength: Toast.LENGTH_SHORT,
@@ -3116,7 +3122,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                              } else if (teachExp == '0') {
+                              } else if (totalWorkExp == null) {
                                 Fluttertoast.showToast(
                                     msg: "Please Select Teaching Experience",
                                     toastLength: Toast.LENGTH_SHORT,
@@ -3125,7 +3131,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                              } else if (fileName == null || fileName == '') {
+                              } else if (fileName == null  && result.data.imageUrl.split("/").last == 'default.jpg'){//|| fileName == '') {
                                 Fluttertoast.showToast(
                                     msg: "Please Pick Selected Document",
                                     toastLength: Toast.LENGTH_SHORT,
@@ -3134,8 +3140,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                              } else if (_certiName == null ||
-                                  _certiName == '') {
+                              } else if (_certiName == null && result.data.educationalDetails.isEmpty//|| _certiName == ''
+                                  ) {
                                 Fluttertoast.showToast(
                                     msg: "Please Pick Certificate",
                                     toastLength: Toast.LENGTH_SHORT,
@@ -3213,8 +3219,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     lat,
                                     lng,
                                     _achivementController.text,
-                                    skillList.toString(),
-                                    hobbieList.toString(),
+                                    selectedSkillList.toString(),
+                                    selectedHobbiesList.toString(),
                                     _fbLinkController.text,
                                     _instagramLinkController.text,
                                     _linkedInLinkLinkController.text,
@@ -3467,10 +3473,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
           response[1].statusCode == 200 &&
           response[2].statusCode == 200) {
         //closeProgressDialog(context);
-        result = ProfileDetails.fromJson(response[0].data);
+        result = EducatorProfileDetails.fromJson(response[0].data);
         //profileMap = json.decode(response[0].data.toString());//new Map<String, dynamic>.from(json.decode(response[0].data.toString()));
         skillMap = response[1].data;
         hobbieMap = response[2].data;
+        saveImage();
         setState(() {
           //profileMapData = profileMap['data'];
           skillMapData = skillMap['data'];
@@ -3478,6 +3485,15 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
           _nameController.text = result.data.name;
           _mobileController.text = result.data.mobileNumber;
           _emailController.text = result.data.email;
+          gender = result.data.gender;
+          birthDateInString = result.data.dob;
+          docType = result.data.documentType;
+          totalWorkExp = int.parse(result.data.totalWorkExperience);
+          totalTeachExp = int.parse(result.data.totalTeachingExperience);
+          for(int i = 0; i < result.data.educationalDetails.length; i++){
+            qualification = result.data.educationalDetails[i].qualification;
+          }
+          
           //result.data.gender == 'M' ? gender = 'Male' : result.data.gender == 'F' ? gender = 'Female' : gender = 'Other';
           //birthDateInString = result.data.dob;
           // result.data.documentType == 'A'
@@ -3563,6 +3579,39 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   //   }
   // }
 
+
+  Future<void> saveImage() async {
+    final response = await http.get(result.data.imageUrl);
+    final response1 = await http.get(result.data.documentUrl);
+
+    // Get the image name 
+    final imageName = path.basename(result.data.imageUrl);
+    final documentName = path.basename(result.data.documentUrl);
+    // Get the document directory path 
+    final appDir = await pathProvider.getApplicationDocumentsDirectory();
+
+    // This is the saved image path 
+    // You can use it to display the saved image later. 
+    final localPath = path.join(appDir.path, imageName);
+    final localPath1 = path.join(appDir.path, documentName);
+
+    setState(() {
+      imagePath = localPath;
+      documentPath = localPath1;
+       _image = File(imagePath);
+       _document = File(documentPath);
+    });
+    print(imagePath);
+    print(documentPath);
+    // Downloading
+    final imageFile = File(localPath);
+    final documentFile = File(localPath1);
+    await imageFile.writeAsBytes(response.bodyBytes);
+    await documentFile.writeAsBytes(response1.bodyBytes);
+    print('Image Downloaded!');
+    print('Document Downloaded!');
+}
+
   //Update Profile API
   Future<ProfileUpdate> updateProfile(
     //int userId,
@@ -3628,13 +3677,13 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         'dob': dob,
         'document_type': documentType,
         'document_file': await MultipartFile.fromFile(
-          documentFile.path,
-          filename: documentFile.path,
+          _document.path, //documentFile.path,
+          filename: _document.path.split("/").last,
         ),
         //'document_url': documentUrl,
         'image_file': await MultipartFile.fromFile(
-          imageFile.path,
-          filename: imageFile.path,
+          _image.path,//imageFile.path,
+          filename: _image.path.split("/").last,
         ),
         //'image_url': imageUrl,
         'identification_document_number': idNumber,
@@ -3755,7 +3804,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
       print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
+        print("This is the error message::::"  +
             e.response.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response.data['meta']['message'],

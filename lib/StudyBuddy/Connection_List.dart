@@ -1,4 +1,7 @@
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/Connection_Model.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,6 +9,7 @@ import 'package:sizer/sizer.dart';
 
 import 'Educator_ProfileView_Screen.dart';
 import 'Learner_ProfileView_Screen.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class ConnectionList extends StatefulWidget {
   ConnectionList({Key key}) : super(key: key);
@@ -15,12 +19,31 @@ class ConnectionList extends StatefulWidget {
 }
 
 class _ConnectionListState extends State<ConnectionList> {
-  
-  String registerAs;
-  
+  String registerAs, authToken;
+  int userId;
+  ScrollController _scrollController = ScrollController();
+  int page = 1;
+  int k = 0;
+
+  bool isLoading = true;
+  Connection connection = Connection();
+
+  List<int> _userId = [];
+  List<String> _profileImage = [];
+  List<String> _name = [];
+  List<String> _lastDegree = [];
+  List<String> _schoolName = [];
+  List<String> _status = [];
+
   @override
   void initState() {
     super.initState();
+    getToken();
+  }
+
+  void getToken() async {
+    authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+    print(authToken);
     getData();
   }
 
@@ -28,129 +51,227 @@ class _ConnectionListState extends State<ConnectionList> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       registerAs = preferences.getString('RegisterAs');
+      userId = preferences.getInt('userId');
     });
-    print(registerAs);
+    print('ID::::::' + userId.toString());
+    getConnectionApi(page);
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        if (page > 1) {
+          if (connection.data.length > 0) {
+            page++;
+            getConnectionApi(page);
+            print(_name);
+            print(page);
+          }
+        } else {
+          page++;
+          getConnectionApi(page);
+          print(_name);
+          print(page);
+        }
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
-      child: ListView.builder(
-          padding: EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
-          physics: BouncingScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: 15,
-          itemBuilder: (context, index) {
-            return Card(
-              elevation: 2.0,
-              child: Padding(
-                padding: EdgeInsets.only(left: 2.0.w),
-                child: ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            registerAs == 'E'
-                                ? pushNewScreen(context,
-                                    screen: EducatorProfileViewScreen(),
-                                    withNavBar: false,
-                                    pageTransitionAnimation:
-                                        PageTransitionAnimation.cupertino)
-                                : pushNewScreen(context,
-                                    screen: LearnerProfileViewScreen(),
-                                    withNavBar: false,
-                                    pageTransitionAnimation:
-                                        PageTransitionAnimation.cupertino);
-                          },
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: Image.asset(
-                              'assets/images/dp2.png',
-                              width: 8.5.w,
-                              height: 5.0.h,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 2.0.w,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Rebecca Wells",
-                              style: TextStyle(
-                                  fontSize: 9.0.sp,
-                                  color: Constants.bgColor,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            Text(
-                              "B.tech I M.S University",
-                              style: TextStyle(
-                                  fontSize: 6.5.sp,
-                                  color: Constants.bgColor,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    trailing: Padding(
-                      padding: EdgeInsets.only(right: 2.0.w),
-                      child: GestureDetector(
-                        onTap: () {
-                          print('$index is Connected');
-                        },
-                        child: index == 0
-                            ? Container(
-                                height: 3.5.h,
-                                width: 25.0.w,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Constants.bgColor, width: 0.5),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0))),
-                                child: Center(
-                                  child: Text(
-                                    'Request Sent',
-                                    style: TextStyle(
-                                        fontSize: 8.0.sp,
-                                        color: Constants.bgColor,
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              )
-                            : Container(
-                                height: 3.5.h,
-                                width: 16.0.w,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Constants.bgColor, width: 0.5),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0))),
-                                child: Center(
-                                  child: Text(
-                                    'Chat',
-                                    style: TextStyle(
-                                        fontSize: 8.0.sp,
-                                        color: Constants.bgColor,
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w500),
+    return isLoading
+        ? Center(
+            child: CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
+            ),
+          )
+        : SingleChildScrollView(
+            controller: _scrollController,
+            physics: BouncingScrollPhysics(),
+            child: ListView.builder(
+                padding:
+                    EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
+                physics: BouncingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount:
+                    connection.data.length == 0 ? 0 : connection.data.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    elevation: 2.0,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 2.0.w),
+                      child: ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  registerAs == 'E'
+                                      ? pushNewScreen(context,
+                                          screen: EducatorProfileViewScreen(),
+                                          withNavBar: false,
+                                          pageTransitionAnimation:
+                                              PageTransitionAnimation.cupertino)
+                                      : pushNewScreen(context,
+                                          screen: LearnerProfileViewScreen(),
+                                          withNavBar: false,
+                                          pageTransitionAnimation:
+                                              PageTransitionAnimation
+                                                  .cupertino);
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.network(
+                                    _profileImage[index],
+                                    //connection.data[index].profileImage,
+                                    width: 8.5.w,
+                                    height: 5.0.h,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
-                      ),
-                    )),
-              ),
-            );
-          }),
-    );
+                              SizedBox(
+                                width: 2.0.w,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    _name[index],
+                                    //connection.data[index].name,
+                                    style: TextStyle(
+                                        fontSize: 9.0.sp,
+                                        color: Constants.bgColor,
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  Text(
+                                    _lastDegree[index] != null &&
+                                            _schoolName[index] != null
+                                        ? '${_lastDegree[index]} | ${_schoolName[index]}'
+                                        : '',
+                                    // connection.data[index].lastDegree != null && connection.data[index].schoolName != null
+                                    // ? "${connection.data[index].lastDegree} | ${connection.data[index].schoolName}" : '',
+                                    style: TextStyle(
+                                        fontSize: 6.5.sp,
+                                        color: Constants.bgColor,
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          trailing: Padding(
+                            padding: EdgeInsets.only(right: 2.0.w),
+                            child: GestureDetector(
+                              onTap: () {
+                                print('$index is Connected');
+                              },
+                              child: _status[index] == '0'
+                                  //connection.data[index].status == '0'
+                                  ? Container(
+                                      height: 3.5.h,
+                                      width: 25.0.w,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Constants.bgColor,
+                                              width: 0.5),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0))),
+                                      child: Center(
+                                        child: Text(
+                                          'Request Sent',
+                                          style: TextStyle(
+                                              fontSize: 8.0.sp,
+                                              color: Constants.bgColor,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    )
+                                  : Container(
+                                      height: 3.5.h,
+                                      width: 16.0.w,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Constants.bgColor,
+                                              width: 0.5),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0))),
+                                      child: Center(
+                                        child: Text(
+                                          'Chat',
+                                          style: TextStyle(
+                                              fontSize: 8.0.sp,
+                                              color: Constants.bgColor,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    ),
+                            ),
+                          )),
+                    ),
+                  );
+                }),
+          );
+  }
+
+  //Get Connection List API
+  Future<void> getConnectionApi(int page) async {
+    // displayProgressDialog(context);
+
+    try {
+      Dio dio = Dio();
+
+      var response =
+          await dio.get('${Config.getConnectionUrl}$userId?page=$page');
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        // closeProgressDialog(context);
+        //return EducatorPost.fromJson(json)
+        //result = EducatorPost.fromJson(response.data);
+        connection = Connection.fromJson(response.data);
+
+        if (connection.data.length > 0) {
+          for (int i = 0; i < connection.data.length; i++) {
+            _userId.add(connection.data[i].userId);
+            _profileImage.add(connection.data[i].profileImage);
+            _name.add(connection.data[i].name);
+            _lastDegree.add(connection.data[i].lastDegree);
+            _schoolName.add(connection.data[i].schoolName);
+            _status.add(connection.data[i].status);
+            // isSaved.add(true);
+            // for (int j = 0; j < map['data'].length; j++) {
+            //   imageListMap.putIfAbsent(k, () => map['data'][i]['post_media']);
+          //   k++;
+          // print(k);
+          }
+          // k++;
+          // print(k);
+          print(_profileImage);
+          print(_lastDegree);
+          print(_schoolName);
+
+          isLoading = false;
+          setState(() {});
+        } else {
+          isLoading = false;
+          setState(() {});
+        }
+
+        setState(() {
+          isLoading = false;
+        });
+      } else {
+        print('${response.statusCode} : ${response.data.toString()}');
+        throw response.statusCode;
+      }
+    } on DioError catch (e, stack) {
+      // closeProgressDialog(context);
+      print(e.response);
+      print(stack);
+    }
   }
 }

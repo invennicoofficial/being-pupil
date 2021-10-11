@@ -100,7 +100,8 @@ class _bottomNavBarState extends State<bottomNavBar> {
 
   List<Widget> _buildScreens() {
     return [
-      registerAs == 'E' ? EducatorHomeScreen() : LearnerHomeScreen(),
+      //registerAs == 'E' ? EducatorHomeScreen() : LearnerHomeScreen(),
+      EducatorHomeScreen() ,
       StayAndStudyScreen(),
       registerAs == 'E' ? EducatorScreen() : LearnerScreen(),
       registerAs == 'E' ? new EducatorStudyBuddyScreen() : new LearnerStudyBuddyScreen(),

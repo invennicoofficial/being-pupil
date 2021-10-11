@@ -16,4 +16,19 @@ class Config{
   static const String skillListUrl = baseUrl + "user/skills/get";
   static const String hobbieListUrl = baseUrl + "user/hobbies/get";
   static const String profileDetailsUrl = baseUrl + "user/get-profile-details";
+  static const String postDeleteUrl = baseUrl + "user/post/delete";
+  static const String myProfileUrl = baseUrl + "user/profile";
+  static const String savePostUrl = baseUrl + "user/post/save";
+  static const String getSavePostUrl = baseUrl + "post/saved/get/";
+  static const String getAllPostUrl = baseUrl + "post/get";
+  static const String getConnectionUrl = baseUrl + "user/connection/";
 }
+
+
+
+
+
+
+//? Shered Preffrence 
+//RegisterAs = user role
+//userId = user id for both user
