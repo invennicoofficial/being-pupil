@@ -160,7 +160,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
               color: Colors.white),
         ),
       ),
-      body: isLoading && isProfileLoading
+      body: isProfileLoading
           ? Center(
               child: CircularProgressIndicator(
                 valueColor:
@@ -514,6 +514,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                         padding: EdgeInsets.only(left: 8.0.w),
                                         onSelected: (value) {
                                           if (value == 2) {
+                                            isProfileLoading = true;
                                             deletePostApi(
                                                 postIdList[index].toString(),
                                                 index);
@@ -934,6 +935,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
           isLoading = false;
         });
         if (delMap['status'] == true) {
+          isProfileLoading = false;
           print('true');
           map = {};
           mapData = [];
@@ -944,7 +946,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
           likesList = [];
           totalCommentsList = [];
           print('A MAPPPPPPP:::' + map.toString());
-          //getEducatorPostApi(page);
+          getEducatorPostApi(1);
           //print('B MAPPPPPPP:::' + map.toString());
           //getData();
           Fluttertoast.showToast(
@@ -954,6 +956,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
               fontSize: 10.0.sp,
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
+          setState(() {});
         } else {
           print('false');
           if (delMap['message'] == null) {
