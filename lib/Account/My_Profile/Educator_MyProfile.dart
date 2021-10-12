@@ -5,7 +5,7 @@ import 'package:being_pupil/HomeScreen/Report_Feed.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/MyProfile_Model.dart';
 import 'package:being_pupil/Model/Post_Model/Educator_Post_Model.dart';
-import 'package:being_pupil/Model/Post_Model/Save_Post_API_Class.dart';
+import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';

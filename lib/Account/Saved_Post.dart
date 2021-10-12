@@ -1,7 +1,7 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Report_Feed.dart';
 import 'package:being_pupil/Model/Config.dart';
-import 'package:being_pupil/Model/Post_Model/Save_Post_API_Class.dart';
+import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -19,7 +19,7 @@ class SavedPostScreen extends StatefulWidget {
 }
 
 class _SavedPostScreenState extends State<SavedPostScreen> {
-  bool isLiked = false;
+  List<bool> isLiked = [];
   List<bool> isSaved = [];
 
   Map<String, dynamic> map;
@@ -38,7 +38,11 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
   ScrollController _scrollController = ScrollController();
   int k = 0;
 
-  List<String> postIdList = [];
+  List<String> nameList = [];
+  List<String> profileImageList = [];
+  List<String> degreeList = [];
+  List<String> schoolList = [];
+  List<int> postIdList = [];
   List<String> dateList = [];
   List<String> descriptionList = [];
   Map<int, dynamic> imageListMap = {};
@@ -49,6 +53,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
   String authToken;
   Map<String, dynamic> saveMap;
   SavePostAPI save = SavePostAPI();
+  LikePostAPI like = LikePostAPI();
 
   @override
   void initState() {
@@ -155,7 +160,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
                                   child: Image.network(
-                                    profileImageUrl,
+                                    profileImageList[index],
                                     width: 8.5.w,
                                     height: 5.0.h,
                                     fit: BoxFit.cover,
@@ -171,7 +176,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        name,
+                                        nameList[index],
                                         style: TextStyle(
                                             fontSize: 9.0.sp,
                                             color: Constants.bgColor,
@@ -179,7 +184,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                             fontWeight: FontWeight.w700),
                                       ),
                                       Text(
-                                        '$degreeName | $schoolName',
+                                        '${degreeList[index]} | ${schoolList[index]}',
                                         style: TextStyle(
                                             fontSize: 6.5.sp,
                                             color: Constants.bgColor,
@@ -205,7 +210,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                   pushNewScreen(context,
                                       withNavBar: false,
                                       screen: ReportFeed(
-                                        postId: int.parse(postIdList[index]),
+                                        postId: postIdList[index],
                                       ),
                                       pageTransitionAnimation:
                                           PageTransitionAnimation.cupertino);
@@ -213,13 +218,17 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                             //ImageIcon(AssetImage('assets/icons/report.png'),)
                           ),
                           //Post descriptionText
-                          Text(descriptionList[index],
-                              style: TextStyle(
-                                  fontSize: 9.0.sp,
-                                  color: Constants.bpOnBoardSubtitleStyle,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w400),
-                              textAlign: TextAlign.justify),
+                          Container(
+                                  width: 88.0.w,
+                                  child: Text(descriptionList[index],
+                                      style: TextStyle(
+                                          fontSize: 9.0.sp,
+                                          color:
+                                              Constants.bpOnBoardSubtitleStyle,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w400),
+                                      textAlign: TextAlign.justify),
+                                ),
                           SizedBox(
                             height: 1.0.h,
                           ),
@@ -324,17 +333,23 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      isLiked = !isLiked;
+                                      isLiked[index] = !isLiked[index];
                                     });
+                                     like.likePostApi(postIdList[index], authToken);
+                                          setState(() {
+                                            isLiked[index] == true
+                                          ? likesList[index]++
+                                          : likesList[index]--;
+                                          });
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Icon(
-                                        isLiked
+                                        isLiked[index]
                                             ? Icons.thumb_up_sharp
                                             : Icons.thumb_up_outlined,
-                                        color: isLiked
+                                        color: isLiked[index]
                                             ? Constants.selectedIcon
                                             : Constants.bpOnBoardSubtitleStyle,
                                         size: 30.0,
@@ -387,7 +402,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                     setState(() {
                                       isSaved[index] = !isSaved[index];
                                     });
-                                    savePostApi(postIdList[index]);
+                                    savePostApi(postIdList[index].toString());
                                     //save.savePostApi(int.parse(postIdList[index]), authToken);
 
                                   },
@@ -449,7 +464,9 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
     try {
       Dio dio = Dio();
 
-      var response = await dio.get('${Config.getSavePostUrl}$userId?page=$page');
+      //var response = await dio.get('${Config.getSavePostUrl}$userId?page=$page');
+       var response = await dio.get('${Config.getSavePostUrl}?page=$page',
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
       print(response.statusCode);
 
       if (response.statusCode == 200) {
@@ -472,8 +489,14 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
 
           for (int i = 0; i < map['data'].length; i++) {
             postIdList.add(map['data'][i]['post_id']);
+            nameList.add(map['data'][i]['name']);
+            profileImageList.add(map['data'][i]['profile_image']);
+            degreeList.add(map['data'][i]['last_degree']);
+            schoolList.add(map['data'][i]['school_name']);
             dateList.add(map['data'][i]['date']);
             descriptionList.add(map['data'][i]['description']);
+            isSaved.add(map['data'][i]['isSaved']);
+            isLiked.add(map['data'][i]['isLiked']);
             likesList.add(map['data'][i]['total_likes']);
             totalCommentsList.add(map['data'][i]['total_comments']);
             //for save unsave
@@ -484,7 +507,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
             k++;
             print(k);
           }
-          print(imageListMap);
+          print(nameList);
           isLoading = false;
           isPostLoading = false;
           setState(() {});
@@ -533,8 +556,22 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
         // });
         if (saveMap['status'] == true) {
           print('true');
-          map.clear();
-          getSavedPostApi(page);
+          //map.clear();
+          map = {};
+          mapData = [];
+          postIdList = [];
+          dateList = [];
+          descriptionList = [];
+          imageListMap = {};
+          likesList = [];
+          totalCommentsList = [];
+          nameList = [];
+          profileImageList = [];
+          degreeList = [];
+          schoolList = [];
+          isSaved = [];
+          isLiked = [];
+          getSavedPostApi(1);
           Fluttertoast.showToast(
               msg: saveMap['message'],
               backgroundColor: Constants.bgColor,

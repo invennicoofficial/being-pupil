@@ -1,6 +1,7 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Create_Post_Screen.dart';
 import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -20,8 +21,8 @@ class EducatorHomeScreen extends StatefulWidget {
 }
 
 class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
-  bool isLiked = false;
-  bool isSaved = true;
+  List<bool> isLiked = [];
+  List<bool> isSaved = [];
 
   Map<String, dynamic> map;
   List<dynamic> mapData;
@@ -52,6 +53,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
 
   String authToken, registerAs;
   Map<String, dynamic> saveMap;
+  LikePostAPI like = LikePostAPI();
 
   @override
   void initState() {
@@ -331,9 +333,15 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       GestureDetector(
-                                        onTap: () {
+                                        onTap: (){
                                           setState(() {
-                                            isLiked = !isLiked;
+                                            isLiked[index] = !isLiked[index];
+                                          });
+                                          like.likePostApi(postIdList[index], authToken);
+                                          setState(() {
+                                            isLiked[index] == true
+                                          ? likesList[index]++
+                                          : likesList[index]--;
                                           });
                                         },
                                         child: Row(
@@ -341,10 +349,10 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                               MainAxisAlignment.start,
                                           children: [
                                             Icon(
-                                              isLiked
+                                              isLiked[index]
                                                   ? Icons.thumb_up_sharp
                                                   : Icons.thumb_up_outlined,
-                                              color: isLiked
+                                              color: isLiked[index]
                                                   ? Constants.selectedIcon
                                                   : Constants
                                                       .bpOnBoardSubtitleStyle,
@@ -412,7 +420,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                       GestureDetector(
                                         onTap: () {
                                           setState(() {
-                                            isSaved = !isSaved;
+                                            isSaved[index] = !isSaved[index];
                                           });
                                           savePostApi(postIdList[index]);
                                         },
@@ -421,11 +429,11 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                               MainAxisAlignment.start,
                                           children: [
                                             Icon(
-                                              isSaved
+                                              isSaved[index]
                                                   ? Icons.bookmark_sharp
                                                   : Icons
                                                       .bookmark_outline_outlined,
-                                              color: isSaved
+                                              color: isSaved[index]
                                                   ? Constants.selectedIcon
                                                   : Constants
                                                       .bpOnBoardSubtitleStyle,
@@ -509,6 +517,8 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
             postIdList.add(map['data'][i]['post_id']);
             dateList.add(map['data'][i]['date']);
             descriptionList.add(map['data'][i]['description']);
+            isLiked.add(map['data'][i]['isLiked']);
+            isSaved.add(map['data'][i]['isSaved']);
             likesList.add(map['data'][i]['total_likes']);
             totalCommentsList.add(map['data'][i]['total_comments']);
             for (int j = 0; j < map['data'].length; j++) {

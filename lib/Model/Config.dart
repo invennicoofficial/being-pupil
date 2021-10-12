@@ -19,9 +19,10 @@ class Config{
   static const String postDeleteUrl = baseUrl + "user/post/delete";
   static const String myProfileUrl = baseUrl + "user/profile";
   static const String savePostUrl = baseUrl + "user/post/save";
-  static const String getSavePostUrl = baseUrl + "post/saved/get/";
+  static const String getSavePostUrl = baseUrl + "post/saved/get";
   static const String getAllPostUrl = baseUrl + "post/get";
   static const String getConnectionUrl = baseUrl + "user/connection/";
+  static const String postLikeUrl = baseUrl + "user/post/like";
 }
 
 
