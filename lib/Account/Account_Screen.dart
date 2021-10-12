@@ -83,7 +83,7 @@ class _AccountScreenState extends State<AccountScreen> {
           // ),
         ),
         body: Padding(
-          padding: EdgeInsets.only(bottom: 3.0.h, left: 5.0.w, right: 5.0.w),
+          padding: EdgeInsets.only(left: 5.0.w, right: 5.0.w),
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Container(

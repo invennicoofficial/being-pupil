@@ -118,7 +118,7 @@ class _bottomNavBarState extends State<bottomNavBar> {
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,),
       PersistentBottomNavBarItem(
-        icon: ImageIcon(AssetImage('assets/icons/stayStudy.png'),size: 25),
+        icon: ImageIcon(AssetImage('assets/icons/stayStudy.png'),size: 15),
         title: ("Stay Study"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
