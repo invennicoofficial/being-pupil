@@ -9,7 +9,7 @@ class Config{
   static const String loginUrl = baseUrl + "user/login";
   static const String updateProfileUrl = baseUrl + "user/profile/update";
   static const String createPostUrl = baseUrl + "user/post/create";
-  static const String getEducatorPostUrl = baseUrl + "user/post/get/";
+  static const String getEducatorPostUrl = baseUrl + "user/post/get";
   static const String getReportIssueListUrl = baseUrl + "user/report/getIssues";
   static const String reportIssueUrl = baseUrl + "user/report/post";
   static const String categoryListUrl = baseUrl + "user/category/get";
@@ -23,6 +23,13 @@ class Config{
   static const String getAllPostUrl = baseUrl + "post/get";
   static const String getConnectionUrl = baseUrl + "user/connection/";
   static const String postLikeUrl = baseUrl + "user/post/like";
+  static const String addCommentUrl = baseUrl + "user/post/addComment";
+  static const String getRequestUrl = baseUrl + "user/request/";
+  static const String getLearnerListUrl = baseUrl + "user/getLearners";
+  static const String getEducatorListUrl = baseUrl + "user/getEducators";
+  static const String requestActionUrl = baseUrl + "user/request/action";
+  static const String connectionUrl = baseUrl + "user/connectUser";
+  static const String searchUserUrl = baseUrl + "user/serach";
 }
 
 
@@ -31,5 +38,7 @@ class Config{
 
 
 //? Shered Preffrence 
-//RegisterAs = user role
-//userId = user id for both user
+//RegisterAs(String) = user role
+//userId(int) = user id for both user
+//isNew(String) = check for ew user
+//isLoggedIn(bool) = check for login user

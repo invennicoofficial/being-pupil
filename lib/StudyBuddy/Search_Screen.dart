@@ -1,46 +1,43 @@
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Learner/Connection_API.dart';
 import 'package:being_pupil/Model/Config.dart';
-import 'package:being_pupil/Model/Connection_Model.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
-
-import 'Educator_ProfileView_Screen.dart';
-import 'Learner_ProfileView_Screen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
-class ConnectionList extends StatefulWidget {
-  ConnectionList({Key key}) : super(key: key);
+class SearchScreen extends StatefulWidget {
+  String searchIn;
+  SearchScreen({Key key, this.searchIn}) : super(key: key);
 
   @override
-  _ConnectionListState createState() => _ConnectionListState();
+  _SearchScreenState createState() => _SearchScreenState();
 }
 
-class _ConnectionListState extends State<ConnectionList> {
-  String registerAs, authToken;
-  int userId;
+class _SearchScreenState extends State<SearchScreen> {
+  TextEditingController searchController = TextEditingController();
+  Map<String, dynamic> map;
+  List<dynamic> mapData;
   ScrollController _scrollController = ScrollController();
+  ConnectionAPI connect = ConnectionAPI();
   int page = 1;
   int k = 0;
-
-  bool isLoading = true;
-  Connection connection = Connection();
+  bool isLoading = false;
+  String authToken;
 
   List<int> _userId = [];
   List<String> _profileImage = [];
   List<String> _name = [];
   List<String> _lastDegree = [];
   List<String> _schoolName = [];
+  List<String> _date = [];
+  List<String> _distance = [];
   List<String> _status = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-
-  @override
+   @override
   void initState() {
     super.initState();
     getToken();
@@ -49,62 +46,97 @@ class _ConnectionListState extends State<ConnectionList> {
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     print(authToken);
-    getData();
+    // getLearnerListApi(page);
+    // _scrollController.addListener(() {
+    //   if (_scrollController.position.pixels ==
+    //       _scrollController.position.maxScrollExtent) {
+    //     if (page > 1) {
+    //       if (learner.data.length > 0) {
+    //         page++;
+    //         getLearnerListApi(page);
+    //         //print(_name);
+    //         print(page);
+    //       }
+    //     } else {
+    //       page++;
+    //       getLearnerListApi(page);
+    //       print(_name);
+    //       print(page);
+    //     }
+    //   }
+    // });
   }
 
-  getData() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    setState(() {
-      registerAs = preferences.getString('RegisterAs');
-      userId = preferences.getInt('userId');
-    });
-    print('ID::::::' + userId.toString());
-    getConnectionApi(page);
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        if (page > 1) {
-          if (connection.data.length > 0) {
-            page++;
-            getConnectionApi(page);
-            print(_name);
-            print(page);
-          }
-        } else {
-          page++;
-          getConnectionApi(page);
-          print(_name);
-          print(page);
-        }
-      }
-    });
-  }
-
-  void _onLoading() async {
+ void _onLoading() async {
     //if (mounted) setState(() {});
     // if (request.data.length > 0) {
     //   //_refreshController.loadComplete();
     //   _refreshController.requestLoading();
     // } else {
-      _refreshController.loadComplete();
-      _refreshController.loadNoData();
+    _refreshController.loadComplete();
+    _refreshController.loadNoData();
     //}
   }
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
+    return Scaffold(
+      appBar: AppBar(
+        title: Container(
+        width: double.infinity,
+        height: 40,
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(20.0)),
+        child: Center(
+          child: TextField(
+            controller: searchController,
+            decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search),
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    searchController.text = '';
+                    FocusScope.of(context).unfocus();
+                  },
+                ),
+                hintText: 'Search...',
+                border: InputBorder.none),
+                onChanged: (value){
+                  Future.delayed(Duration(seconds: 2));
+                  // if(widget.searchIn == 'C' || widget.searchIn == 'R'){
+                    searchApi(value);
+                  // } else if(widget.searchIn == 'E' || widget.searchIn == 'L'){
+                  //   searchApiTwo(value);
+                  // }
+                  setState((){});
+                },
+          ),
+        ),
+      ),
+      leading:IconButton(
+          icon: Icon(
+            Icons.west_rounded,
+            color: Colors.white,
+            size: 35.0,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          padding: EdgeInsets.zero,
+        ),
+      ),
+      body: isLoading
         ? Center(
             child: CircularProgressIndicator(
               valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
             ),
           )
-        : 
+        :
         // SingleChildScrollView(
         //     controller: _scrollController,
         //     physics: BouncingScrollPhysics(),
-        //     child: 
-            SmartRefresher(
+        //     child:
+        SmartRefresher(
             controller: _refreshController,
             enablePullDown: false,
             enablePullUp: true,
@@ -135,18 +167,18 @@ class _ConnectionListState extends State<ConnectionList> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    registerAs == 'E'
-                                        ? pushNewScreen(context,
-                                            screen: EducatorProfileViewScreen(),
-                                            withNavBar: false,
-                                            pageTransitionAnimation:
-                                                PageTransitionAnimation.cupertino)
-                                        : pushNewScreen(context,
-                                            screen: LearnerProfileViewScreen(),
-                                            withNavBar: false,
-                                            pageTransitionAnimation:
-                                                PageTransitionAnimation
-                                                    .cupertino);
+                                    // registerAs == 'E'
+                                    //     ? pushNewScreen(context,
+                                    //         screen: EducatorProfileViewScreen(),
+                                    //         withNavBar: false,
+                                    //         pageTransitionAnimation:
+                                    //             PageTransitionAnimation.cupertino)
+                                    //     : pushNewScreen(context,
+                                    //         screen: LearnerProfileViewScreen(),
+                                    //         withNavBar: false,
+                                    //         pageTransitionAnimation:
+                                    //             PageTransitionAnimation
+                                    //                 .cupertino);
                                   },
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(50),
@@ -251,39 +283,59 @@ class _ConnectionListState extends State<ConnectionList> {
                     ),
                   );
                 }),
-          );
+          )
+    );
   }
-
-  //Get Connection List API
-  Future<void> getConnectionApi(int page) async {
-    // displayProgressDialog(context);
-
+ 
+ //Search API for connection and Request Tab
+ Future<void> searchApi(String search) async {
+    //var delResult = PostDelete();
+  
+  setState(() {
+    isLoading =true;
+  });
     try {
       Dio dio = Dio();
 
-      var response =
-          await dio.get('${Config.getConnectionUrl}$userId?page=$page');
-      print(response.statusCode);
+      //FormData formData = FormData.fromMap({'search_in': widget.searchIn, 'search': searchController.text});
+      var response = await dio.get('${Config.searchUserUrl}?search_in=${widget.searchIn}&search=$search',
+          //data: formData,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
 
       if (response.statusCode == 200) {
-        // closeProgressDialog(context);
-        //return EducatorPost.fromJson(json)
-        //result = EducatorPost.fromJson(response.data);
-        connection = Connection.fromJson(response.data);
+        map = response.data;
+        mapData = map['data'];
+        //saveMapData = map['data']['status'];
 
-        if (connection.data.length > 0) {
-          for (int i = 0; i < connection.data.length; i++) {
-            _userId.add(connection.data[i].userId);
-            _profileImage.add(connection.data[i].profileImage);
-            _name.add(connection.data[i].name);
-            _lastDegree.add(connection.data[i].lastDegree);
-            _schoolName.add(connection.data[i].schoolName);
-            _status.add(connection.data[i].status);
-            // isSaved.add(true);
-            // for (int j = 0; j < map['data'].length; j++) {
-            //   imageListMap.putIfAbsent(k, () => map['data'][i]['post_media']);
-          //   k++;
-          // print(k);
+        print(mapData);
+        // setState(() {
+        //   isLoading = false;
+        // });
+        print('LENGTH: ' + mapData.length.toString());
+        _userId = [];
+        _profileImage = [];
+        _name = [];
+        _lastDegree = [];
+        _schoolName = [];
+        _status = [];
+        _date = [];
+        _distance = [];
+        setState((){});
+        if (mapData.length > 0) {
+          for (int i = 0; i < mapData.length; i++) {
+            _userId.add(mapData[i]['userId']);
+            _profileImage.add(mapData[i]['profile_image']);
+            _name.add(mapData[i]['name']);
+            _lastDegree.add(mapData[i]['lastDegree']);
+            _schoolName.add(mapData[i]['schoolName']);
+            _date.add(mapData[i]['date']);
+            if(widget.searchIn == 'C' || widget.searchIn == 'R'){
+               _status.add(mapData[i]['status']);
+            } else if(widget.searchIn == 'E' || widget.searchIn == 'L'){
+              _distance.add(mapData[i]['distance']);
+            }
+           
+            
           }
           // k++;
           // print(k);
@@ -311,4 +363,76 @@ class _ConnectionListState extends State<ConnectionList> {
       print(stack);
     }
   }
+
+  //Search API for Educator List and Learner Tab
+ Future<void> searchApiTwo(String search) async {
+    //var delResult = PostDelete();
+  
+  setState(() {
+    isLoading =true;
+  });
+    try {
+      Dio dio = Dio();
+
+      //FormData formData = FormData.fromMap({'search_in': widget.searchIn, 'search': searchController.text});
+      var response = await dio.get('${Config.searchUserUrl}?search_in=${widget.searchIn}&search=$search',
+          //data: formData,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+
+      if (response.statusCode == 200) {
+        map = response.data;
+        mapData = map['data'];
+        //saveMapData = map['data']['status'];
+
+        print(mapData);
+        // setState(() {
+        //   isLoading = false;
+        // });
+        print('LENGTH: ' + mapData.length.toString());
+        _userId = [];
+        _profileImage = [];
+        _name = [];
+        _lastDegree = [];
+        _schoolName = [];
+        _date = [];
+        _distance = [];
+        setState((){});
+        if (mapData.length > 0) {
+          for (int i = 0; i < mapData.length; i++) {
+            _userId.add(mapData[i]['userId']);
+            _profileImage.add(mapData[i]['profile_image']);
+            _name.add(mapData[i]['name']);
+            _lastDegree.add(mapData[i]['lastDegree']);
+            _schoolName.add(mapData[i]['schoolName']);
+            _date.add(mapData[i]['date']);
+            _distance.add(mapData[i]['distance']);
+            //_distance.add(mapData[i].distance);
+          }
+          // k++;
+          // print(k);
+          print(_profileImage);
+          print(_lastDegree);
+          print(_schoolName);
+
+          isLoading = false;
+          setState(() {});
+        } else {
+          isLoading = false;
+          setState(() {});
+        }
+
+        setState(() {
+          isLoading = false;
+        });
+      } else {
+        print('${response.statusCode} : ${response.data.toString()}');
+        throw response.statusCode;
+      }
+    } on DioError catch (e, stack) {
+      // closeProgressDialog(context);
+      print(e.response);
+      print(stack);
+    }
+  }
+
 }

@@ -1,24 +1,45 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Report_Feed.dart';
+import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class CommentScreen extends StatefulWidget {
-  const CommentScreen({Key key}) : super(key: key);
+  String name, profileImage, degree, schoolName, date, description;
+  int postId, like, comment, index;
+  bool isLiked, isSaved;
+  Map<int, dynamic> imageListMap;
+  CommentScreen(
+      {Key key,
+      this.postId,
+      this.name,
+      this.profileImage,
+      this.degree,
+      this.schoolName,
+      this.date,
+      this.description,
+      this.like,
+      this.comment,
+      this.isLiked,
+      this.isSaved,
+      this.imageListMap,
+      this.index})
+      : super(key: key);
 
   @override
   _CommentScreenState createState() => _CommentScreenState();
 }
 
 class _CommentScreenState extends State<CommentScreen> {
-  bool isLiked = false;
-  bool isSaved = true;
   List<String> dpImages = [];
   List<String> names = [];
   List<String> comments = [];
   TextEditingController commentController = TextEditingController();
+  AddCommentAPI comment = AddCommentAPI();
+  String authToken;
   @override
   void initState() {
     dpImages = [
@@ -38,7 +59,12 @@ class _CommentScreenState extends State<CommentScreen> {
       'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod',
       'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod'
     ];
+    getToken();
     super.initState();
+  }
+  void getToken() async {
+    authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+    print(authToken);
   }
 
   @override
@@ -102,8 +128,8 @@ class _CommentScreenState extends State<CommentScreen> {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(50),
-                              child: Image.asset(
-                                'assets/images/educatorDP.png',
+                              child: Image.network(
+                                widget.profileImage,
                                 width: 8.5.w,
                                 height: 5.0.h,
                                 fit: BoxFit.cover,
@@ -118,7 +144,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Marilyn Brewer",
+                                    widget.name,
                                     style: TextStyle(
                                         fontSize: 9.0.sp,
                                         color: Constants.bgColor,
@@ -126,7 +152,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                         fontWeight: FontWeight.w700),
                                   ),
                                   Text(
-                                    "B.tech I M.S University",
+                                    '${widget.degree} | ${widget.schoolName}',
                                     style: TextStyle(
                                         fontSize: 6.5.sp,
                                         color: Constants.bgColor,
@@ -134,7 +160,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                         fontWeight: FontWeight.w400),
                                   ),
                                   Text(
-                                    "28 Jun 2021",
+                                    widget.date,
                                     style: TextStyle(
                                         fontSize: 6.5.sp,
                                         color: Constants.bgColor,
@@ -151,38 +177,54 @@ class _CommentScreenState extends State<CommentScreen> {
                             onPressed: () {
                               pushNewScreen(context,
                                   withNavBar: false,
-                                  screen: ReportFeed(),
+                                  screen: ReportFeed(
+                                    postId: widget.postId,
+                                  ),
                                   pageTransitionAnimation:
                                       PageTransitionAnimation.cupertino);
                             }),
                         //ImageIcon(AssetImage('assets/icons/report.png'),)
                       ),
                       //Post descriptionText
-                      Text(
-                          'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam...',
-                          style: TextStyle(
-                              fontSize: 9.0.sp,
-                              color: Constants.bpOnBoardSubtitleStyle,
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.w400),
-                          textAlign: TextAlign.justify),
+                      Container(
+                        width: 88.0.w,
+                        child: Text(widget.description,
+                            style: TextStyle(
+                                fontSize: 9.0.sp,
+                                color: Constants.bpOnBoardSubtitleStyle,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w400),
+                            textAlign: TextAlign.justify),
+                      ),
                       SizedBox(
                         height: 1.0.h,
                       ),
                       // Container for image or video
-                      Container(
-                        height: 30.0.h,
-                        width: 100.0.w,
-                        padding: EdgeInsets.zero,
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                            image: DecorationImage(
-                                image: AssetImage(
-                                  'assets/images/postImage.jpg',
-                                ),
-                                fit: BoxFit.cover)),
-                      ),
+                      widget.imageListMap[widget.index].length == 0
+                          ? Container()
+                          : Container(
+                              height: 25.0.h,
+                              width: 100.0.w,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: BouncingScrollPhysics(),
+                                scrollDirection: Axis.horizontal,
+                                itemCount:
+                                    widget.imageListMap[widget.index].length,
+                                itemBuilder: (context, imageIndex) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.network(
+                                      widget.imageListMap[widget.index]
+                                          [imageIndex]['file'],
+                                      height: 100,
+                                      width: 250,
+                                      fit: BoxFit.contain,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                       //Row for Liked, commented, shared
                       Padding(
                         padding: EdgeInsets.only(top: 1.0.h),
@@ -201,7 +243,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                 Container(
                                   padding: EdgeInsets.only(top: 1.0.h),
                                   child: Text(
-                                    "20 Likes",
+                                    "${widget.like} Likes",
                                     style: TextStyle(
                                         fontSize: 6.5.sp,
                                         color: Constants.bpOnBoardSubtitleStyle,
@@ -214,7 +256,7 @@ class _CommentScreenState extends State<CommentScreen> {
                             Container(
                               padding: EdgeInsets.only(top: 1.0.h),
                               child: Text(
-                                "9 Comments",
+                                "${widget.comment} Comments",
                                 style: TextStyle(
                                     fontSize: 6.5.sp,
                                     color: Constants.bpOnBoardSubtitleStyle,
@@ -241,17 +283,17 @@ class _CommentScreenState extends State<CommentScreen> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  isLiked = !isLiked;
+                                  widget.isLiked = !widget.isLiked;
                                 });
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Icon(
-                                    isLiked
+                                    widget.isLiked
                                         ? Icons.thumb_up_sharp
                                         : Icons.thumb_up_outlined,
-                                    color: isLiked
+                                    color: widget.isLiked
                                         ? Constants.selectedIcon
                                         : Constants.bpOnBoardSubtitleStyle,
                                     size: 30.0,
@@ -301,17 +343,17 @@ class _CommentScreenState extends State<CommentScreen> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  isSaved = !isSaved;
+                                  widget.isSaved = !widget.isSaved;
                                 });
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Icon(
-                                    isSaved
+                                    widget.isSaved
                                         ? Icons.bookmark_sharp
                                         : Icons.bookmark_outline_outlined,
-                                    color: isSaved
+                                    color: widget.isSaved
                                         ? Constants.selectedIcon
                                         : Constants.bpOnBoardSubtitleStyle,
                                     size: 30.0,
@@ -384,7 +426,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                   child: Image.asset(
                                     // index == 8
                                     // ? 'assets/icons/menu.png'
-                                    // : 
+                                    // :
                                     dpImages[index],
                                     height: 4.5.h,
                                     width: 7.5.w,
@@ -454,30 +496,31 @@ class _CommentScreenState extends State<CommentScreen> {
                                     ),
                                     borderRadius: BorderRadius.circular(5.0)),
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,  
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
                                               names[index],
                                               style: TextStyle(
-                                                fontFamily: 'Montserrat',
-                                                fontSize: 10.0.sp,
-                                                fontWeight: FontWeight.w700,
-                                                color: Constants.bgColor),
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 10.0.sp,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Constants.bgColor),
                                             ),
                                             Text(
                                               '28 Jun 2021',
                                               style: TextStyle(
-                                                fontFamily: 'Montserrat',
-                                                fontSize: 7.0.sp,
-                                                fontWeight: FontWeight.w400,
-                                                color: Constants.bgColor),
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 7.0.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Constants.bgColor),
                                             ),
                                           ],
                                         ),
@@ -615,8 +658,15 @@ class _CommentScreenState extends State<CommentScreen> {
                                 ),
                                 suffixIcon: Padding(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 2.0.w, vertical: 1.0.h),
-                                  child: Container(
+                                      horizontal: 1.0.w),
+                                  child: TextButton(
+                                    onPressed: (){
+                                      comment.addCommentApi(widget.postId, commentController.text, authToken);
+                                      setState(() {
+                                        FocusScope.of(context).unfocus();
+                                        commentController.text = '';
+                                      });
+                                    },
                                     child: Text('Post',
                                         style: TextStyle(
                                             fontFamily: 'Montserrat',

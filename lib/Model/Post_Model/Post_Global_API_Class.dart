@@ -152,3 +152,67 @@ class LikePostAPI{
     }
   }
 }
+
+
+//API for Add Comment on Post
+class AddCommentAPI{
+   Map<String, dynamic> commentMap;
+
+  Future<void> addCommentApi(int postID, String comment, String authToken) async {
+    //var delResult = PostDelete();
+
+    try {
+      Dio dio = Dio();
+
+      FormData formData = FormData.fromMap({'post_id': postID , 'comment': comment});
+      var response = await dio.post(Config.addCommentUrl,
+          data: formData,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+
+      if (response.statusCode == 200) {
+
+        commentMap = response.data;
+ 
+        if (commentMap['status'] == true) {
+          print('true');
+          print(commentMap);
+         
+         
+          Fluttertoast.showToast(
+              msg: commentMap['message'],
+              backgroundColor: Constants.bgColor,
+              gravity: ToastGravity.BOTTOM,
+              fontSize: 10.0.sp,
+              toastLength: Toast.LENGTH_SHORT,
+              textColor: Colors.white);
+              
+        } else {
+          print('false');
+          if (commentMap['message'] == null) {
+            Fluttertoast.showToast(
+                msg: commentMap['error_msg'],
+                backgroundColor: Constants.bgColor,
+                gravity: ToastGravity.BOTTOM,
+                fontSize: 10.0.sp,
+                toastLength: Toast.LENGTH_SHORT,
+                textColor: Colors.white);
+          } else {
+            Fluttertoast.showToast(
+                msg: commentMap['message'],
+                backgroundColor: Constants.bgColor,
+                gravity: ToastGravity.BOTTOM,
+                fontSize: 10.0.sp,
+                toastLength: Toast.LENGTH_SHORT,
+                textColor: Colors.white);
+          }
+        }
+        //getEducatorPostApi(page);
+      } else {
+        print(response.statusCode);
+      }
+    } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+    }
+  }
+}

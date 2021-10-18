@@ -1,25 +1,35 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/StudyBuddy/Connection_List.dart';
 import 'package:being_pupil/StudyBuddy/Educator_List.dart';
+import 'package:being_pupil/StudyBuddy/Learner_List.dart';
 import 'package:being_pupil/StudyBuddy/Request_List.dart';
+import 'package:being_pupil/StudyBuddy/Search_Screen.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
-class LearnerStudyBuddyScreen extends StatefulWidget {
-  LearnerStudyBuddyScreen({Key key}) : super(key: key);
+class EducatorStudyBuddyScreen extends StatefulWidget {
+  EducatorStudyBuddyScreen({Key key}) : super(key: key);
 
   @override
-  _LearnerStudyBuddyScreenState createState() => _LearnerStudyBuddyScreenState();
+  _EducatorStudyBuddyScreenState createState() =>
+      _EducatorStudyBuddyScreenState();
 }
 
-class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen> {
+class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
+//with SingleTickerProviderStateMixin
+{
   String registerAs;
+  //TabController _tabController;
+  //int selectedIndex = 0;
+  String searchIn = 'C';
 
   @override
   void initState() {
     super.initState();
     getData();
+    print('INIT::: ' + searchIn);
   }
 
   getData() async {
@@ -28,6 +38,13 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen> {
       registerAs = preferences.getString('RegisterAs');
     });
     print(registerAs);
+    // _tabController = TabController(length: 3, vsync: this);
+    // _tabController.addListener(() {
+    //   setState(() {
+    //     selectedIndex = _tabController.index;
+    //   });
+    //   print('Selected Index::: ' +selectedIndex.toString());
+    // });
   }
 
   @override
@@ -60,7 +77,13 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen> {
                 child: IconButton(
                     icon: Icon(Icons.search, color: Colors.white),
                     onPressed: () {
-                      print('Search!!!');
+                      pushNewScreen(context,
+                          screen: SearchScreen(
+                            searchIn: searchIn,
+                          ),
+                          withNavBar: false,
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.cupertino);
                     })),
           ],
           bottom: PreferredSize(
@@ -68,6 +91,7 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen> {
             child: ColoredBox(
               color: Colors.white,
               child: TabBar(
+                  //controller: _tabController,
                   //indicatorPadding: EdgeInsets.symmetric(horizontal: 3.0.w),
                   //indicatorSize: TabBarIndicatorSize.label,
                   labelPadding: EdgeInsets.symmetric(horizontal: 5.0.w),
@@ -85,6 +109,29 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen> {
                       color: Constants.bpSkipStyle),
                   indicatorColor: Colors.black,
                   indicatorWeight: 2.0,
+                  isScrollable: false,
+                  onTap: (index) {
+                    if (index == 0) {
+                      setState(() {
+                        searchIn = 'C';
+                      });
+                    } else if (index == 1) {
+                      setState(() {
+                        searchIn = 'R';
+                      });
+                    } else {
+                      if (registerAs == 'E') {
+                        setState(() {
+                          searchIn = 'E';
+                        });
+                      } else {
+                        setState(() {
+                          searchIn = 'L';
+                        });
+                      }
+                    }
+                    print('Selected Index::: ' + searchIn);
+                  },
                   tabs: [
                     Tab(
                       text: 'Connection',
@@ -93,7 +140,7 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen> {
                       text: 'Request',
                     ),
                     Tab(
-                      text: 'Learner',
+                      text: registerAs == 'E' ? 'Educator' : 'Learner',
                     )
                   ]),
             ),
@@ -101,7 +148,7 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen> {
         ),
         body: Stack(
           children: <Widget>[
-             Container(
+            Container(
               height: 100.0.h,
               width: 100.0.w,
               decoration: BoxDecoration(
@@ -110,10 +157,11 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen> {
                       fit: BoxFit.cover)),
             ),
             TabBarView(
+              physics: NeverScrollableScrollPhysics(),
               children: <Widget>[
                 ConnectionList(),
                 RequestList(),
-                EducatorList()
+                registerAs == 'E' ? EducatorList() : LearnerList()
               ],
             ),
           ],

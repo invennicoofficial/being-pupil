@@ -396,6 +396,8 @@ class _OtpScreenState extends State<OtpScreen> {
               result.data.userObject.role == 'E' ? preferences.setString("instaUrl", result.data.userObject.instaUrl) : preferences.setString("instaUrl",'');
               result.data.userObject.role == 'E' ? preferences.setString("linkedInUrl", result.data.userObject.liUrl) : preferences.setString("linkedInUrl", '');
               result.data.userObject.role == 'E' ? preferences.setString("otherUrl", result.data.userObject.otherUrl) : preferences.setString("otherUrl", '');
+              result.data.userObject.role == 'E' ? preferences.setString("isNew", result.data.userObject.isNew) : preferences.setString("isNew", '');
+              preferences.setBool('isLoggedIn', true);
 
           print('Gender::: ${result.data.userObject.gender}');
           print('IMAGE:::' + result.data.userObject.imageUrl);

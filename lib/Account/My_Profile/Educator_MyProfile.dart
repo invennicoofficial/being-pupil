@@ -25,8 +25,8 @@ class EducatorMyProfileScreen extends StatefulWidget {
 }
 
 class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
-  bool isLiked = false;
-  bool isSaved = true;
+  List<bool> isLiked = [];
+  List<bool> isSaved = [];
   String registerAs;
   var result = EducatorPost();
   Map<String, dynamic> map;
@@ -60,6 +60,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
   SavePostAPI save = SavePostAPI();
   Map<String, dynamic> myProfileMap;
   bool isProfileLoading = true;
+  LikePostAPI like = LikePostAPI();
 
   @override
   void initState() {
@@ -83,19 +84,19 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
     print(registerAs);
     print('ID::::::' + userId.toString());
     getMyProfileApi();
-    getEducatorPostApi(page);
+    getMyPostApi(page);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if (page > 1) {
           if (map['data'].length > 0) {
             page++;
-            getEducatorPostApi(page);
+            getMyPostApi(page);
             print(page);
           }
         } else {
           page++;
-          getEducatorPostApi(page);
+          getMyPostApi(page);
           print(page);
         }
       }
@@ -276,7 +277,9 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                 width: 1.0.w,
                               ),
                               Visibility(
-                                visible: myProfileMap['data']['facebook_link'] ==null
+                                visible: myProfileMap['data']
+                                            ['facebook_link'] ==
+                                        null
                                     ? false
                                     : true,
                                 child: GestureDetector(
@@ -293,18 +296,22 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                 ),
                               ),
                               Visibility(
-                                visible: myProfileMap['data']['facebook_link'] == null
+                                visible: myProfileMap['data']
+                                            ['facebook_link'] ==
+                                        null
                                     ? false
                                     : true,
                                 child: SizedBox(
                                   width: 1.0.w,
                                 ),
                               ),
-                             Visibility(
-                                visible: myProfileMap['data']['linkedin_link'] == null
+                              Visibility(
+                                visible: myProfileMap['data']
+                                            ['linkedin_link'] ==
+                                        null
                                     ? false
                                     : true,
-                                 child: GestureDetector(
+                                child: GestureDetector(
                                   onTap: () {
                                     print('LinkedIn!!!');
                                   },
@@ -519,7 +526,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                 postIdList[index].toString(),
                                                 index);
 
-                                            getEducatorPostApi(page);
+                                            getMyPostApi(page);
                                           }
                                           //  Fluttertoast.showToast(
                                           //    msg: value == 1
@@ -666,7 +673,14 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                         GestureDetector(
                                           onTap: () {
                                             setState(() {
-                                              isLiked = !isLiked;
+                                              isLiked[index] = !isLiked[index];
+                                            });
+                                            like.likePostApi(
+                                                postIdList[index], authToken);
+                                            setState(() {
+                                              isLiked[index] == true
+                                                  ? likesList[index]++
+                                                  : likesList[index]--;
                                             });
                                           },
                                           child: Row(
@@ -674,10 +688,10 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                 MainAxisAlignment.start,
                                             children: [
                                               Icon(
-                                                isLiked
+                                                isLiked[index]
                                                     ? Icons.thumb_up_sharp
                                                     : Icons.thumb_up_outlined,
-                                                color: isLiked
+                                                color: isLiked[index]
                                                     ? Constants.selectedIcon
                                                     : Constants
                                                         .bpOnBoardSubtitleStyle,
@@ -707,7 +721,23 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                           onTap: () {
                                             pushNewScreen(context,
                                                 withNavBar: false,
-                                                screen: CommentScreen(),
+                                                screen: CommentScreen(
+                                                  postId: postIdList[index],
+                                                  name: name,
+                                                  profileImage: profileImageUrl,
+                                                  degree: degreeName,
+                                                  schoolName: schoolName,
+                                                  date: dateList[index],
+                                                  description:
+                                                      descriptionList[index],
+                                                  like: likesList[index],
+                                                  comment:
+                                                      totalCommentsList[index],
+                                                  isLiked: isLiked[index],
+                                                  isSaved: isSaved[index],
+                                                  imageListMap: imageListMap,
+                                                  index: index,
+                                                ),
                                                 pageTransitionAnimation:
                                                     PageTransitionAnimation
                                                         .cupertino);
@@ -745,22 +775,22 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                         GestureDetector(
                                           onTap: () {
                                             setState(() {
-                                              // isSaved = !isSaved;
+                                              isSaved[index] = !isSaved[index];
                                               //savePostApi(postIdList[index]);
-                                              save.savePostApi(
-                                                  postIdList[index], authToken);
                                             });
+                                            save.savePostApi(
+                                                postIdList[index], authToken);
                                           },
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: [
                                               Icon(
-                                                isSaved
+                                                isSaved[index]
                                                     ? Icons.bookmark_sharp
                                                     : Icons
                                                         .bookmark_outline_outlined,
-                                                color: isSaved
+                                                color: isSaved[index]
                                                     ? Constants.selectedIcon
                                                     : Constants
                                                         .bpOnBoardSubtitleStyle,
@@ -837,15 +867,17 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
   }
 
   //Get Educator's all Post
-  Future<void> getEducatorPostApi(int page) async {
+  Future<void> getMyPostApi(int page) async {
     // displayProgressDialog(context);
 
     try {
       Dio dio = Dio();
 
-      var response =
-          await dio.get('${Config.getEducatorPostUrl}$userId?page=$page');
+      // var response =
+      //     await dio.get('${Config.getEducatorPostUrl}$userId?page=$page');
       //var response = await dio.get(Config.myProfileUrl,options: Options(headers: {"Authorization": 'Bearer $authToken'}));
+      var response = await dio.get('${Config.getEducatorPostUrl}?page=$page',
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
       print(response.statusCode);
 
       if (response.statusCode == 200) {
@@ -874,6 +906,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
             descriptionList.add(map['data'][i]['description']);
             likesList.add(map['data'][i]['total_likes']);
             totalCommentsList.add(map['data'][i]['total_comments']);
+            isLiked.add(map['data'][i]['isLiked']);
+            isSaved.add(map['data'][i]['isSaved']);
             for (int j = 0; j < map['data'].length; j++) {
               imageListMap.putIfAbsent(k, () => map['data'][i]['post_media']);
             }
@@ -946,7 +980,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
           likesList = [];
           totalCommentsList = [];
           print('A MAPPPPPPP:::' + map.toString());
-          getEducatorPostApi(1);
+          getMyPostApi(1);
           //print('B MAPPPPPPP:::' + map.toString());
           //getData();
           Fluttertoast.showToast(
