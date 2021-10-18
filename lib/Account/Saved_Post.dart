@@ -54,7 +54,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
   Map<String, dynamic> saveMap;
   SavePostAPI save = SavePostAPI();
   LikePostAPI like = LikePostAPI();
-  AddCommentAPI comment = AddCommentAPI();
+  CommentAPI comment = CommentAPI();
 
   @override
   void initState() {

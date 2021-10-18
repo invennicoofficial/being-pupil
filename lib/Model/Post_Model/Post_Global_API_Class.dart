@@ -1,5 +1,6 @@
 
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Model/Post_Model/Get_CommentList_Model.dart';
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sizer/sizer.dart';
@@ -155,8 +156,10 @@ class LikePostAPI{
 
 
 //API for Add Comment on Post
-class AddCommentAPI{
+class CommentAPI{
    Map<String, dynamic> commentMap;
+   GetCommentList commentList = GetCommentList();
+   bool isLoading = true;
 
   Future<void> addCommentApi(int postID, String comment, String authToken) async {
     //var delResult = PostDelete();
@@ -211,6 +214,17 @@ class AddCommentAPI{
         print(response.statusCode);
       }
     } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+    }
+  }
+
+  //Get Comment LIst API
+  Future<GetCommentList> getCommentListApi()async{
+
+    try{
+
+    }on DioError catch (e, stack) {
       print(e.response);
       print(stack);
     }

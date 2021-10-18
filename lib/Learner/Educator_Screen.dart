@@ -3,8 +3,10 @@ import 'package:being_pupil/Learner/Connection_API.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Educator_List_Model.dart';
 import 'package:being_pupil/Model/Learner_List_Model.dart';
+import 'package:being_pupil/StudyBuddy/Search_Screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
@@ -18,8 +20,7 @@ class EducatorScreen extends StatefulWidget {
 }
 
 class _EducatorScreenState extends State<EducatorScreen> {
-
-   String registerAs, authToken;
+  String registerAs, authToken;
   ScrollController _scrollController = ScrollController();
   int page = 1;
   int k = 0;
@@ -112,7 +113,14 @@ class _EducatorScreenState extends State<EducatorScreen> {
                 Icons.search,
                 color: Colors.white,
               ),
-              onPressed: null)
+              onPressed: () {
+                pushNewScreen(context,
+                    screen: SearchScreen(
+                      searchIn: 'E',
+                    ),
+                    withNavBar: false,
+                    pageTransitionAnimation: PageTransitionAnimation.cupertino);
+              })
         ],
         title: Text(
           'Educators',
@@ -124,135 +132,142 @@ class _EducatorScreenState extends State<EducatorScreen> {
         ),
       ),
       body: isLoading
-        ? Center(
-            child: CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
-            ),
-          )
-        :
-        // SingleChildScrollView(
-        //     controller: _scrollController,
-        //     physics: BouncingScrollPhysics(),
-        //     child:
-        SmartRefresher(
-            controller: _refreshController,
-            enablePullDown: false,
-            enablePullUp: true,
-            footer: ClassicFooter(
-              loadStyle: LoadStyle.ShowWhenLoading,
-              noDataText: 'No More Learners',
-              //noMoreIcon: Icon(Icons.refresh_outlined),
-            ),
-            onLoading: _onLoading,
-        child: ListView.builder(
-          controller: _scrollController,
-            padding: EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
-            //physics: BouncingScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: _userId.length == 0 ? 0 : _userId.length,
-            itemBuilder: (context, index) {
-              return Card(
-                elevation: 2.0,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 2.0.w),
-                  child: Container(
-                    height: 10.0.h,
-                    child: ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: Image.network(
-                                _profileImage[index],
-                                width: 8.5.w,
-                                height: 5.0.h,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 2.0.w,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  _name[index],
-                                  style: TextStyle(
-                                      fontSize: 9.0.sp,
-                                      color: Constants.bgColor,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w700),
-                                ),
-                                Container(
-                                  width: 55.0.w,
-                                  child: Text(
-                                    _lastDegree[index] != null &&
+          ? Center(
+              child: CircularProgressIndicator(
+                valueColor:
+                    new AlwaysStoppedAnimation<Color>(Constants.bgColor),
+              ),
+            )
+          :
+          // SingleChildScrollView(
+          //     controller: _scrollController,
+          //     physics: BouncingScrollPhysics(),
+          //     child:
+          SmartRefresher(
+              controller: _refreshController,
+              enablePullDown: false,
+              enablePullUp: true,
+              footer: ClassicFooter(
+                loadStyle: LoadStyle.ShowWhenLoading,
+                noDataText: 'No More Learners',
+                //noMoreIcon: Icon(Icons.refresh_outlined),
+              ),
+              onLoading: _onLoading,
+              child: ListView.builder(
+                  controller: _scrollController,
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
+                  //physics: BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: _userId.length == 0 ? 0 : _userId.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      elevation: 2.0,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 2.0.w),
+                        child: Container(
+                          height: 10.0.h,
+                          child: ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              title: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: Image.network(
+                                      _profileImage[index],
+                                      width: 8.5.w,
+                                      height: 5.0.h,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 2.0.w,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        _name[index],
+                                        style: TextStyle(
+                                            fontSize: 9.0.sp,
+                                            color: Constants.bgColor,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      Container(
+                                        width: 55.0.w,
+                                        child: Text(
+                                          _lastDegree[index] != null &&
                                                   _schoolName[index] != null
                                               ? '${_lastDegree[index]} | ${_schoolName[index]}'
                                               : '',
-                                    style: TextStyle(
-                                        fontSize: 6.5.sp,
-                                        color: Constants.bgColor,
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w400),
-                                        overflow: TextOverflow.clip,
+                                          style: TextStyle(
+                                              fontSize: 6.5.sp,
+                                              color: Constants.bgColor,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w400),
+                                          overflow: TextOverflow.clip,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              trailing: Padding(
+                                padding:
+                                    EdgeInsets.only(right: 2.0.w, top: 2.0.h),
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    print('$index is Connected');
+                                    await connect.connectionApi(
+                                        _userId[index], authToken);
+                                    setState(() {
+                                      isLoading = true;
+                                      page = 1;
+                                      _userId = [];
+                                      _profileImage = [];
+                                      _name = [];
+                                      _lastDegree = [];
+                                      _schoolName = [];
+                                      _date = [];
+                                      _distance = [];
+                                    });
+                                    getEducatorListApi(page);
+                                  },
+                                  child: Container(
+                                    height: 3.0.h,
+                                    width: 16.0.w,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Constants.bgColor,
+                                            width: 0.5),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0))),
+                                    child: Center(
+                                      child: Text(
+                                        'Connect',
+                                        style: TextStyle(
+                                            fontSize: 8.0.sp,
+                                            color: Constants.bgColor,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ],
+                              )),
                         ),
-                        trailing: Padding(
-                          padding: EdgeInsets.only(right: 2.0.w, top: 2.0.h),
-                          child: GestureDetector(
-                            onTap: () async{
-                                  print('$index is Connected');
-                                  await connect.connectionApi(_userId[index], authToken);
-                                  setState(() {
-                                    isLoading = true;
-                                    page = 1;
-                                    _userId = [];
-                                    _profileImage = [];
-                                    _name = [];
-                                    _lastDegree = [];
-                                    _schoolName = [];
-                                    _date = [];
-                                    _distance = [];
-                                  });         
-                                  getEducatorListApi(page);
-                                },
-                            child: Container(
-                              height: 3.0.h,
-                              width: 16.0.w,
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Constants.bgColor, width: 0.5),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8.0))),
-                              child: Center(
-                                child: Text(
-                                  'Connect',
-                                  style: TextStyle(
-                                      fontSize: 8.0.sp,
-                                      color: Constants.bgColor,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )),
-                  ),
-                ),
-              );
-            }),
-      ),
+                      ),
+                    );
+                  }),
+            ),
     );
   }
 
- //Get Educator List API
+  //Get Educator List API
   Future<void> getEducatorListApi(int page) async {
     // displayProgressDialog(context);
 

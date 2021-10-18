@@ -38,7 +38,7 @@ class _CommentScreenState extends State<CommentScreen> {
   List<String> names = [];
   List<String> comments = [];
   TextEditingController commentController = TextEditingController();
-  AddCommentAPI comment = AddCommentAPI();
+  CommentAPI comment = CommentAPI();
   String authToken;
   @override
   void initState() {
