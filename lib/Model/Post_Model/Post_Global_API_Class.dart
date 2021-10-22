@@ -219,14 +219,5 @@ class CommentAPI{
     }
   }
 
-  //Get Comment LIst API
-  Future<GetCommentList> getCommentListApi()async{
-
-    try{
-
-    }on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
-    }
-  }
+  
 }

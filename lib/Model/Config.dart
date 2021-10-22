@@ -30,6 +30,10 @@ class Config{
   static const String requestActionUrl = baseUrl + "user/request/action";
   static const String connectionUrl = baseUrl + "user/connectUser";
   static const String searchUserUrl = baseUrl + "user/serach";
+  static const String getCommentListUrl = baseUrl + "post/getComments/";
+  static const String deleteCommentUrl = baseUrl + "user/post/comment/delete";
+  static const String editCommentUrl = baseUrl + "user/post/comment/edit";
+  static const String mobileCheckUrl = baseUrl + "user/check-mobile-number";
 }
 
 

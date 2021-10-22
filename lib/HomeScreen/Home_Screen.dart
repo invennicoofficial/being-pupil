@@ -2,6 +2,7 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Create_Post_Screen.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -339,9 +340,22 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                         itemBuilder: (context, imageIndex) {
                                           return Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: Image.network(
-                                              imageListMap[index][imageIndex]
-                                                  ['file'],
+                                            child: 
+                                            // CachedNetworkImage(
+                                            //   imageUrl: imageListMap[index][imageIndex]['file'],
+                                            //   imageBuilder: (context, imageProvider) => Container(
+                                            //   decoration: BoxDecoration(
+                                            //   image: DecorationImage(
+                                            //   image: imageProvider,
+                                            //   fit: BoxFit.contain,
+                                            //   colorFilter: ColorFilter.mode(Colors.red, BlendMode.colorBurn))),),
+                                            //   // progressIndicatorBuilder: (context, url, downloadProgress) => 
+                                            //   // CircularProgressIndicator(value: downloadProgress.progress),
+                                            //   placeholder: (context, url) => CircularProgressIndicator(),
+                                            //   errorWidget: (context, url, error) => Icon(Icons.error),
+                                            // )
+                                            Image.network(
+                                              imageListMap[index][imageIndex]['file'],
                                               height: 100,
                                               width: 250,
                                               fit: BoxFit.contain,

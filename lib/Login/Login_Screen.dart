@@ -13,6 +13,7 @@ import 'package:sizer/sizer.dart';
 
 import 'OTP_Screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'Login_Mobile_Check.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -228,6 +229,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             GestureDetector(
                               onTap: () {
                                 print('Apple Login!!!');
+                                 Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.fade,
+                                      child: LoginMobileCheckScreen()));
                               },
                               child: Container(
                                   height: 4.0.h,
@@ -240,6 +246,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             GestureDetector(
                               onTap: () {
                                 print('Google Login!!!');
+                                Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.fade,
+                                      child: LoginMobileCheckScreen()));
                               },
                               child: Container(
                                   height: 4.0.h,
@@ -252,6 +263,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             GestureDetector(
                               onTap: () {
                                 print('Facebook Login!!!');
+                                Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.fade,
+                                      child: LoginMobileCheckScreen()));
                               },
                               child: Container(
                                   height: 4.0.h,
