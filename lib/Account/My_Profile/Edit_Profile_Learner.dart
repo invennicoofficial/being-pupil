@@ -5,7 +5,6 @@ import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Learner_ProfileDetails_Model.dart';
 import 'package:being_pupil/Model/UpdateProfile_Model.dart';
 import 'package:being_pupil/Model/Update_Learner_Profile_Model.dart';
-import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
@@ -14,10 +13,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:filter_list/filter_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http_parser/http_parser.dart';
 //import 'package:flutter_tagging/flutter_tagging.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:place_picker/entities/location_result.dart';
 import 'package:place_picker/widgets/place_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,6 +24,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as pathProvider;
+import 'package:being_pupil/Registration/Learner_Registration.dart';
 
 
 class EditLearnerProfile extends StatefulWidget {
@@ -106,6 +104,13 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
     //   'Category 7',
     //   'Category 8',
     // ];
+  }
+  
+  @override
+  void setState(fn){
+    if(mounted){
+      super.setState(fn);
+    }
   }
 
   // @override
@@ -1571,7 +1576,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                               ? result.data.skills
                                               : selectedSkillList.length > 0
                                                   ? selectedSkillList.toString()
-                                                  : "Please mention your hobbies example #hobbie1 #hobbie2....",
+                                                  : "Please mention your hobbies example #skill1 #skill2....",
                                           //: '',
                                           //.replaceAll(new RegExp(r', '), '# '),
                                           style: TextStyle(
@@ -2448,13 +2453,34 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
         skillMap = response[2].data;
         hobbieMap = response[3].data;
         saveImage();
-        setState(() {
+        
           categoryMapData = categoryMap['data'];
           skillMapData = skillMap['data'];
           hobbieMapData = hobbieMap['data'];
           // _image = File(imagePath);
           // _document = File(documentPath);
-          _nameController.text = result.data.name;
+          // _nameController.text = result.data.name;
+          // _mobileController.text = result.data.mobileNumber;
+          // _emailController.text =
+          //     //result.data.email == null ? '' :
+          //     result.data.email;
+          // gender = result.data.gender;
+          // birthDateInString = result.data.dob;
+          // docType = result.data.documentType;
+          // totalWorkExp = int.parse(result.data.totalWorkExperience);
+          // _idNumController.text =
+          //     //result.data.identificationDocumentNumber == null ? '' :
+          //     result.data.identificationDocumentNumber;
+          // _achivementController.text = result.data.achievements;
+          // _fbLinkController.text = result.data.facebookUrl;
+          // _instagramLinkController.text = result.data.instaUrl;
+          // _linkedInLinkLinkController.text = result.data.linkedinUrl;
+          // _otherLinkLinkController.text = result.data.otherUrl;
+        setState(() {});
+
+        if(result.data.identificationDocumentNumber != null){
+         
+            _nameController.text = result.data.name;
           _mobileController.text = result.data.mobileNumber;
           _emailController.text =
               //result.data.email == null ? '' :
@@ -2471,7 +2497,14 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
           _instagramLinkController.text = result.data.instaUrl;
           _linkedInLinkLinkController.text = result.data.linkedinUrl;
           _otherLinkLinkController.text = result.data.otherUrl;
-        });
+         setState(() {});
+        }else{
+          
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LearnerRegistration(
+            name: result.data.name,
+            mobileNumber: result.data.mobileNumber,
+          )));
+        }
 
         if (result != null) {
           isLoading = false;

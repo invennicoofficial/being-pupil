@@ -3477,7 +3477,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         //profileMap = json.decode(response[0].data.toString());//new Map<String, dynamic>.from(json.decode(response[0].data.toString()));
         skillMap = response[1].data;
         hobbieMap = response[2].data;
-        saveImage();
+        //saveImage();
         setState(() {
           //profileMapData = profileMap['data'];
           skillMapData = skillMap['data'];
@@ -3676,15 +3676,17 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         'gender': gender,
         'dob': dob,
         'document_type': documentType,
-        'document_file': await MultipartFile.fromFile(
+        'document_file': _document != null ? await MultipartFile.fromFile(
           _document.path, //documentFile.path,
           filename: _document.path.split("/").last,
-        ),
+        )
+        : '',
         //'document_url': documentUrl,
-        'image_file': await MultipartFile.fromFile(
+        'image_file': _image != null ? await MultipartFile.fromFile(
           _image.path,//imageFile.path,
           filename: _image.path.split("/").last,
-        ),
+        )
+        : '',
         //'image_url': imageUrl,
         'identification_document_number': idNumber,
         //?TODO: Used dynamic ID at location[0][id]
@@ -3711,7 +3713,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         //   filename: _certificate.path.split('/').last,
         //   //contentType: new MediaType("jpg", "jpeg", "png", "pdf"),
         // ),
-        'facbook_link': facbookUrl,
+        'facbook_url': facbookUrl,
         'insta_url': instaUrl,
         'linkedin_url': linkedinUrl,
         'other_url': otherUrl,
@@ -3725,18 +3727,18 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         //formData.fields.addAll(params.entries);
         formData.fields.addAll([
           //?TODO: Used dynamic ID at educational_details[0][id]
-          MapEntry('educational_details[0][id]', 16.toString()),
-          MapEntry('educational_details[0][school_name]',
-              educationDetailMap[0]['school_name'].toString()),
-          MapEntry('educational_details[0][year]',
-              educationDetailMap[0]['year'].toString()),
-          MapEntry('educational_details[0][qualification]',
-              educationDetailMap[0]['qualification'].toString()),
+          MapEntry('educational_details[$i][id]', result.data.educationalDetails[i].id.toString()),
+          MapEntry('educational_details[$i][school_name]',
+              educationDetailMap[i]['school_name'].toString()),
+          MapEntry('educational_details[$i][year]',
+              educationDetailMap[i]['year'].toString()),
+          MapEntry('educational_details[$i][qualification]',
+              educationDetailMap[i]['qualification'].toString()),
         ]);
         formData.files.addAll([
           MapEntry(
-              'educational_details[0][certificate_file]',
-              await MultipartFile.fromFile(educationDetailMap[0]['certificate'],
+              'educational_details[$i][certificate_file]',
+              await MultipartFile.fromFile(educationDetailMap[i]['certificate'],
                   filename: educationDetailMap[i]['certificate'])),
         ]);
       }

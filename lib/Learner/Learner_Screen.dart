@@ -296,7 +296,7 @@ class _LearnerScreenState extends State<LearnerScreen> {
             _distance.add(learner.data[i].distance);
           }
 
-          print(_name);
+          print(_userId);
 
           isLoading = false;
           setState(() {});
