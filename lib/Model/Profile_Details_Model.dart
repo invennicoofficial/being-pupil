@@ -60,6 +60,7 @@ class Data {
         this.documentUrl,
         this.identificationDocumentNumber,
         this.educationalDetails,
+        this.educationalDetails1,
         this.totalWorkExperience,
         this.totalTeachingExperience,
         this.achievements,
@@ -87,6 +88,7 @@ class Data {
     String documentUrl;
     String identificationDocumentNumber;
     List<EducationalDetail> educationalDetails;
+    List<dynamic> educationalDetails1 = [];
     String totalWorkExperience;
     String totalTeachingExperience;
     String achievements;
@@ -114,6 +116,7 @@ class Data {
         documentUrl: json["document_url"],
         identificationDocumentNumber: json["identification_document_number"],
         educationalDetails: List<EducationalDetail>.from(json["educational_details"].map((x) => EducationalDetail.fromJson(x))),
+        educationalDetails1: json["educational_details"],
         totalWorkExperience: json["total_work_experience"],
         totalTeachingExperience: json["total_teaching_experience"],
         achievements: json["achievements"],
@@ -141,7 +144,7 @@ class Data {
         "document_file": documentFile,
         "document_url": documentUrl,
         "identification_document_number": identificationDocumentNumber,
-        "educational_details": List<dynamic>.from(educationalDetails.map((x) => x.toJson())),
+        "educational_details": List<dynamic>.from(educationalDetails1.map((x) => x.toJson())),
         "total_work_experience": totalWorkExperience,
         "total_teaching_experience": totalTeachingExperience,
         "achievements": achievements,

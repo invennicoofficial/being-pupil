@@ -3340,7 +3340,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
         //   filename: certiname,
         //   //contentType: new MediaType("jpg", "jpeg", "png", "pdf"),
         // ),
-        'facbook_url': facbookUrl,
+        'facebook_url': facbookUrl,
         'insta_url': instaUrl,
         'linkedin_url': linkedinUrl,
         'other_url': otherUrl,
