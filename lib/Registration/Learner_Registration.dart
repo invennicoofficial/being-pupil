@@ -397,7 +397,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                           width: 3.2.w * 2.5,
                                           decoration: BoxDecoration(
                                               border: Border.all(
-                                                color: Constants.bgColor,
+                                                color: Constants.formBorder,
                                               ),
                                               shape: BoxShape.circle,
                                               color: Colors.white),
@@ -407,7 +407,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                             child: Icon(
                                               Icons.edit,
                                               size: 20,
-                                              color: Colors.black,
+                                              color: Constants.formBorder,
                                             ),
                                           ),
                                         ),
@@ -481,7 +481,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                           width: 3.2.w * 2.5,
                                           decoration: BoxDecoration(
                                               border: Border.all(
-                                                color: Constants.bgColor,
+                                                color: Constants.formBorder
                                               ),
                                               shape: BoxShape.circle,
                                               color: Colors.white),
@@ -491,7 +491,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                             child: Icon(
                                               Icons.edit,
                                               size: 20,
-                                              color: Colors.black,
+                                              color: Constants.formBorder,
                                             ),
                                           ),
                                         ),
