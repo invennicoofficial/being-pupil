@@ -230,8 +230,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   borderRadius: BorderRadius.circular(50),
                   child: Image.network(
                     profilePic,
-                    width: 8.5.w,
-                    height: 5.0.h,
+                    width: 40.0,
+                    height: 40.0,
                     fit: BoxFit.cover,
                   ),
                 ),

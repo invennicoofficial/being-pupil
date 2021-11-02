@@ -105,38 +105,43 @@ class _bottomNavBarState extends State<bottomNavBar> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon:  Image.asset('assets/icons/home.png', height: 25, width: 25,),
+        icon:  Image.asset('assets/icons/home.png', height: 25, width: 25, color: Constants.selectedIcon,),
         title: ("Home"),
         activeColorPrimary: Constants.selectedIcon,
-        inactiveColorPrimary: Constants.bgColor,),
+        inactiveColorPrimary: Constants.bgColor,
+        inactiveIcon: Image.asset('assets/icons/home.png', height: 25, width: 25, color: Constants.bgColor,)
+        ),
       PersistentBottomNavBarItem(
-        icon: Image.asset('assets/icons/stayStudy.png', height: 20, width: 20,),
+        icon: Image.asset('assets/icons/stayStudy.png', height: 20, width: 20, color: Constants.selectedIcon,),
         title: ("Stay Study"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
+        inactiveIcon: Image.asset('assets/icons/stayStudy.png', height: 20, width: 20, color: Constants.bgColor,),
       ),
       PersistentBottomNavBarItem(
-        icon: Image.asset('assets/icons/educator.png', height: 25, width: 25,),
+        icon: Image.asset('assets/icons/educator.png', height: 25, width: 25, color: Constants.selectedIcon,),
         title: (registerAs == 'E' ? "Learner" : "Educator"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
+        inactiveIcon: Image.asset('assets/icons/educator.png', height: 25, width: 25, color: Constants.bgColor,),
       ),
       PersistentBottomNavBarItem(
         //icon: ImageIcon(AssetImage('assets/icons/support2.png'),size: 25),
-        icon: Image.asset('assets/icons/support.png', height: 25, width: 25,),
+        icon: Image.asset('assets/icons/supportGreen.png', height: 25, width: 25,),
         title: ("Study Buddy"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
+        inactiveIcon: Image.asset('assets/icons/support.png', height: 25, width: 25, ),
       ),
       PersistentBottomNavBarItem(
         //icon: SvgPicture.asset('assets/icons/ff.svg'),
-        icon: Image.asset('assets/icons/account2.png', height: 25, width: 25,),
+        icon: Image.asset('assets/icons/accountGreen.png', height: 25, width: 25,),
         // icon: Icon(Icons.account_circle_rounded),
         iconSize: 25.0,
         title: ("Account"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
-        //inactiveIcon: ImageIcon(AssetImage('assets/icons/Account@2x.png'),size: 25)
+        inactiveIcon: Image.asset('assets/icons/account2.png', height: 25, width: 25,),
       ),
     ];
   }

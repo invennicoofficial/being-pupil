@@ -305,12 +305,15 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                             PageTransitionAnimation.cupertino);
                                   },
                                   child: Container(
-                                      height: 4.0.h,
-                                      width: 6.0.w,
+                                      height: 20.0,
+                                      width: 20.0,
                                       //color: Colors.grey,
-                                      child: Icon(
-                                          Icons.report_gmailerrorred_outlined)),
-                                ),
+                                      child: Image.asset('assets/icons/issueIcon.png',),
+                                      // size: 25.0,
+                                      // color: Constants.bgColor,
+                                          //Icons.report_gmailerrorred_outlined
+                                          )),
+                                //),
                               ),
                               //Post descriptionText
                               Container(
@@ -336,29 +339,26 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                         shrinkWrap: true,
                                         physics: BouncingScrollPhysics(),
                                         scrollDirection: Axis.horizontal,
+                                        //itemExtent: MediaQuery.of(context).size.width / imageListMap[index].length,
                                         itemCount: imageListMap[index].length,
                                         itemBuilder: (context, imageIndex) {
-                                          return Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: 
-                                            // CachedNetworkImage(
-                                            //   imageUrl: imageListMap[index][imageIndex]['file'],
-                                            //   imageBuilder: (context, imageProvider) => Container(
-                                            //   decoration: BoxDecoration(
-                                            //   image: DecorationImage(
-                                            //   image: imageProvider,
-                                            //   fit: BoxFit.contain,
-                                            //   colorFilter: ColorFilter.mode(Colors.red, BlendMode.colorBurn))),),
-                                            //   // progressIndicatorBuilder: (context, url, downloadProgress) => 
-                                            //   // CircularProgressIndicator(value: downloadProgress.progress),
-                                            //   placeholder: (context, url) => CircularProgressIndicator(),
-                                            //   errorWidget: (context, url, error) => Icon(Icons.error),
-                                            // )
-                                            Image.network(
+                                          return imageListMap[index].length == 1
+                                          ? Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 15.0.w),
+                                            child: Image.network(
                                               imageListMap[index][imageIndex]['file'],
                                               height: 100,
                                               width: 250,
                                               fit: BoxFit.contain,
+                                            ),
+                                          )
+                                          : Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Image.network(
+                                              imageListMap[index][imageIndex]['file'],
+                                              height: 100,
+                                              width: 250,
+                                              fit: BoxFit.fill,
                                             ),
                                           );
                                         },
@@ -373,8 +373,13 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                   children: <Widget>[
                                     Row(
                                       children: [
-                                        Icon(
-                                          Icons.thumb_up_alt_rounded,
+                                        // Icon(
+                                        //   Icons.thumb_up_alt_rounded,
+                                        //   color: Constants.bgColor,
+                                        // ),
+                                        ImageIcon(
+                                          AssetImage('assets/icons/likeNew.png'),
+                                          size: 25.0,
                                           color: Constants.bgColor,
                                         ),
                                         SizedBox(
@@ -441,18 +446,13 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            // ImageIcon(
-                                            //   AssetImage('assets/icons/likeThumb.png'),
-                                            //   size: 25.0,
-                                            // ),
-                                            Icon(
+                                            ImageIcon(
                                               isLiked[index]
-                                                  ? Icons.thumb_up_sharp
-                                                  : Icons.thumb_up_outlined,
+                                                  ? AssetImage('assets/icons/likeThumb.png')
+                                                  : AssetImage('assets/icons/likeThumb.png'),
                                               color: isLiked[index]
                                                   ? Constants.selectedIcon
-                                                  : Constants
-                                                      .bpOnBoardSubtitleStyle,
+                                                  : Constants.bpOnBoardSubtitleStyle,
                                               size: 30.0,
                                             ),
                                             SizedBox(
@@ -503,12 +503,17 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            Icon(
-                                              Icons.comment_outlined,
-                                              color: Constants
-                                                  .bpOnBoardSubtitleStyle,
-                                              size: 30.0,
+                                            ImageIcon(
+                                              AssetImage('assets/icons/commentNew.png'),
+                                              size: 25.0,
+                                              color: Constants.bpOnBoardSubtitleStyle,
                                             ),
+                                            // Icon(
+                                            //   Icons.comment_outlined,
+                                            //   color: Constants
+                                            //       .bpOnBoardSubtitleStyle,
+                                            //   size: 30.0,
+                                            // ),
                                             SizedBox(
                                               width: 1.0.w,
                                             ),
@@ -541,16 +546,14 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            Icon(
+                                            ImageIcon(
                                               isSaved[index]
-                                                  ? Icons.bookmark_sharp
-                                                  : Icons
-                                                      .bookmark_outline_outlined,
+                                                  ? AssetImage('assets/icons/saveGreen.png')
+                                                  : AssetImage('assets/icons/saveNew.png'),
                                               color: isSaved[index]
                                                   ? Constants.selectedIcon
-                                                  : Constants
-                                                      .bpOnBoardSubtitleStyle,
-                                              size: 30.0,
+                                                  : Constants.bpOnBoardSubtitleStyle,
+                                              size: 25.0,
                                             ),
                                             SizedBox(
                                               width: 1.0.w,
