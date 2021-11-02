@@ -105,34 +105,33 @@ class _bottomNavBarState extends State<bottomNavBar> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-      icon: Icon(Icons.home_filled,),
-        //icon:  ImageIcon(AssetImage('assets/icons/home.png'),size: 25),
+        icon:  Image.asset('assets/icons/home.png', height: 25, width: 25,),
         title: ("Home"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,),
       PersistentBottomNavBarItem(
-        icon: ImageIcon(AssetImage('assets/icons/stayStudy.png'),size: 15),
+        icon: Image.asset('assets/icons/stayStudy.png', height: 20, width: 20,),
         title: ("Stay Study"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
       ),
       PersistentBottomNavBarItem(
-        icon: ImageIcon(AssetImage('assets/icons/educator.png'),size: 25),
+        icon: Image.asset('assets/icons/educator.png', height: 25, width: 25,),
         title: (registerAs == 'E' ? "Learner" : "Educator"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
       ),
       PersistentBottomNavBarItem(
         //icon: ImageIcon(AssetImage('assets/icons/support2.png'),size: 25),
-        icon: Icon(Icons.people_alt_rounded),
+        icon: Image.asset('assets/icons/support.png', height: 25, width: 25,),
         title: ("Study Buddy"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
       ),
       PersistentBottomNavBarItem(
         //icon: SvgPicture.asset('assets/icons/ff.svg'),
-        //icon: ImageIcon(AssetImage('assets/icons/Account@2x.png'),size: 25),
-        icon: Icon(Icons.account_circle_rounded),
+        icon: Image.asset('assets/icons/account2.png', height: 25, width: 25,),
+        // icon: Icon(Icons.account_circle_rounded),
         iconSize: 25.0,
         title: ("Account"),
         activeColorPrimary: Constants.selectedIcon,
