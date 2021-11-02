@@ -1403,22 +1403,22 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                           horizontal: 2.0.w, vertical: 1.5.h),
                                     ),
                                     items: [
-                                      '1',
-                                      '2',
-                                      '3',
-                                      '4',
-                                      '5',
-                                      '6',
-                                      '7',
-                                      '8',
-                                      '9',
-                                      '10',
-                                      '11',
-                                      '12',
-                                      '13',
-                                      '14',
-                                      '15',
-                                      '15+'
+                                '1 Year',
+                                '2 Years',
+                                '3 Years',
+                                '4 Years',
+                                '5 Years',
+                                '6 Years',
+                                '7 Years',
+                                '8 Years',
+                                '9 Years',
+                                '10 Years',
+                                '11 Years',
+                                '12 Years',
+                                '13 Years',
+                                '14 Years',
+                                '15 Years',
+                                '15+ Years'
                                     ]
                                         .asMap()
                                         .entries
@@ -1575,7 +1575,8 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                           result.data.skills != null
                                               ? result.data.skills
                                               : selectedSkillList.length > 0
-                                                  ? selectedSkillList.toString()
+                                                  ? selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '').
+                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#')
                                                   : "Please mention your hobbies example #skill1 #skill2....",
                                           //: '',
                                           //.replaceAll(new RegExp(r', '), '# '),
@@ -1738,7 +1739,8 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                               ? result.data.hobbies
                                               : selectedHobbiesList.length > 0
                                                   ? selectedHobbiesList
-                                                      .toString()
+                                                      .toString().replaceAll('[', '').replaceAll(']', '').
+                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#')
                                                   : "Please mention your hobbies example #hobbie1 #hobbie2....",
                                           // selectedHobbiesList == null ||
                                           //         selectedHobbiesList.length == 0

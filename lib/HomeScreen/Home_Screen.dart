@@ -251,10 +251,10 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                       borderRadius: BorderRadius.circular(50),
                                       child: Image.network(
                                         profileImageList[index],
-                                        width: 8.5.w,
-                                        height: 5.0.h,
+                                        width: 40.0,
+                                        height: 40.0,
                                         fit: BoxFit.cover,
-                                      ),
+                                      ),                            
                                     ),
                                     SizedBox(
                                       width: 2.0.w,
@@ -441,6 +441,10 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
+                                            // ImageIcon(
+                                            //   AssetImage('assets/icons/likeThumb.png'),
+                                            //   size: 25.0,
+                                            // ),
                                             Icon(
                                               isLiked[index]
                                                   ? Icons.thumb_up_sharp

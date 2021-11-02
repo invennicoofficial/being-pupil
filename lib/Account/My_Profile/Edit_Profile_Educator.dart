@@ -1922,22 +1922,22 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     horizontal: 2.0.w, vertical: 1.5.h),
                               ),
                               items: [
-                                '1',
-                                '2',
-                                '3',
-                                '4',
-                                '5',
-                                '6',
-                                '7',
-                                '8',
-                                '9',
-                                '10',
-                                '11',
-                                '12',
-                                '13',
-                                '14',
-                                '15',
-                                '15+'
+                               '1 Year',
+                                '2 Years',
+                                '3 Years',
+                                '4 Years',
+                                '5 Years',
+                                '6 Years',
+                                '7 Years',
+                                '8 Years',
+                                '9 Years',
+                                '10 Years',
+                                '11 Years',
+                                '12 Years',
+                                '13 Years',
+                                '14 Years',
+                                '15 Years',
+                                '15+ Years'
                               ]
                                   .asMap()
                                   .entries
@@ -2030,22 +2030,22 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     horizontal: 2.0.w, vertical: 1.5.h),
                               ),
                               items: [
-                                '1',
-                                '2',
-                                '3',
-                                '4',
-                                '5',
-                                '6',
-                                '7',
-                                '8',
-                                '9',
-                                '10',
-                                '11',
-                                '12',
-                                '13',
-                                '14',
-                                '15',
-                                '15+'
+                               '1 Year',
+                                '2 Years',
+                                '3 Years',
+                                '4 Years',
+                                '5 Years',
+                                '6 Years',
+                                '7 Years',
+                                '8 Years',
+                                '9 Years',
+                                '10 Years',
+                                '11 Years',
+                                '12 Years',
+                                '13 Years',
+                                '14 Years',
+                                '15 Years',
+                                '15+ Years'
                               ]
                                   .asMap()
                                   .entries
@@ -2197,7 +2197,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                         ? result.data
                                             .skills //"Please mention your skills example #skills1 #skills2..."
                                         : selectedSkillList
-                                            .toString(), //.replaceAll(new RegExp(r', '), '# '),
+                                            .toString().replaceAll('[', '').replaceAll(']', '').
+                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
                                     style: TextStyle(
                                         fontFamily: "Montserrat",
                                         fontSize: 10.0.sp,
@@ -2442,7 +2443,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                         ? result.data
                                             .hobbies //"Please mention your hobbies example #hobbie1 #hobbie2..."
                                         : selectedHobbiesList
-                                            .toString(), //.replaceAll(new RegExp(r', '), '# '),
+                                            .toString().replaceAll('[', '').replaceAll(']', '').
+                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
                                     style: TextStyle(
                                         fontFamily: "Montserrat",
                                         fontSize: 10.0.sp,

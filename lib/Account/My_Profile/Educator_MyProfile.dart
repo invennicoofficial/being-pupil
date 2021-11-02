@@ -186,8 +186,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                           borderRadius: BorderRadius.circular(50),
                           child: Image.network(
                             myProfileMap['data']['profile_image'],
-                            width: 20.5.w,
-                            height: 12.0.h,
+                            width: 40.0,
+                            height: 40.0,
                             fit: BoxFit.cover,
                           ),
                         ),

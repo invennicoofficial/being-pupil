@@ -175,8 +175,8 @@ class _LearnerScreenState extends State<LearnerScreen> {
                                     borderRadius: BorderRadius.circular(50),
                                     child: Image.network(
                                       _profileImage[index],
-                                      width: 8.5.w,
-                                      height: 5.0.h,
+                                      width: 40.0,
+                                      height: 40.0,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -197,7 +197,7 @@ class _LearnerScreenState extends State<LearnerScreen> {
                                             fontWeight: FontWeight.w700),
                                       ),
                                       Container(
-                                        width: 55.0.w,
+                                        width: 50.0.w,
                                         child: Text(
                                           _lastDegree[index] != null &&
                                                   _schoolName[index] != null

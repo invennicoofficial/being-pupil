@@ -153,8 +153,8 @@ class _ConnectionListState extends State<ConnectionList> {
                                     child: Image.network(
                                       _profileImage[index],
                                       //connection.data[index].profileImage,
-                                      width: 8.5.w,
-                                      height: 5.0.h,
+                                      width: 40.0,
+                                      height: 40.0,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
