@@ -463,83 +463,140 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               _showPicker(context);
                             },
                             child: _image != null
-                                ? Stack(children: [
-                                    CircleAvatar(
-                                      radius: 70,
-                                      backgroundImage: AssetImage(
-                                          'assets/icons/circle_upload.png'),
-                                      backgroundColor: Colors.transparent,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(70),
-                                        child: Image.file(
-                                          _image,
-                                          height: 14.0.h,
-                                          width: 30.0.w,
-                                          fit: BoxFit.cover,
+                                ? Stack(
+                              children: [
+                                Container(
+                                  height: 3.2.w * 10,
+                                  width: 3.2.w * 10,
+                                  child: Stack(
+                                    children: <Widget>[
+                                      CircleAvatar(
+                                        radius: 70,
+                                        backgroundImage: AssetImage(
+                                            'assets/icons/circle_upload.png'),
+                                        backgroundColor: Colors.transparent,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(70),
+                                          child: Image.file(
+                                            _image,
+                                            height: 14.0.h,
+                                            width: 30.0.w,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
-                                      // Container(
-                                      //   decoration: BoxDecoration(
-                                      //       shape: BoxShape.circle,
-                                      //       ),
-                                      //   child: Image.file(
-                                      //     _image,
-                                      //     width: 100,
-                                      //     height: 100,
-                                      //     fit: BoxFit.cover,
-                                      //   ),
-                                      // )
-                                    ),
-                                  ])
-                                : CircleAvatar(
-                                    backgroundImage: AssetImage(
-                                        'assets/icons/circle_upload.png'),
-                                    //backgroundColor: Colors.white,
-                                    radius: 70.0,
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Column(
-                                        // crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 5.0.h),
-                                            child: Column(
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    print('Upload Pic!!!');
-                                                    _showPicker(context);
-                                                  },
-                                                  child: ImageIcon(
-                                                    AssetImage(
-                                                        'assets/icons/camera.png'),
-                                                    size: 25,
-                                                    color: Constants.formBorder,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'Upload',
-                                                  style: TextStyle(
-                                                      fontFamily: 'Montserrat',
-                                                      fontSize: 8.0.sp,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      color:
-                                                          Constants.formBorder),
-                                                )
-                                              ],
+                                      Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: Container(
+                                          height: 3.2.w * 2.5,
+                                          width: 3.2.w * 2.5,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Constants.bgColor,
+                                              ),
+                                              shape: BoxShape.circle,
+                                              color: Colors.white),
+                                          child: Center(
+                                            heightFactor: 5.0.w * 1.5,
+                                            widthFactor: 5.0.w * 1.5,
+                                            child: Icon(
+                                              Icons.edit,
+                                              size: 20,
+                                              color: Colors.black,
                                             ),
                                           ),
-                                          SizedBox(
-                                            height: 0.5.h,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                              ],
+                            )
+                                : Stack(
+                                  children: [
+                                    Container(
+                                      height: 3.2.w * 10,
+                                      width: 3.2.w * 10,
+                                      child: Stack(
+                                        children: <Widget>[
+                                          CircleAvatar(
+                                            backgroundImage: AssetImage(
+                                                'assets/icons/circle_upload.png'),
+                                            //backgroundColor: Colors.white,
+                                            radius: 70.0,
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Column(
+                                                // crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                                children: [
+                                                  Padding(
+                                                    padding: EdgeInsets.symmetric(
+                                                        vertical: 4.85.h),
+                                                    child: Column(
+                                                      children: [
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            print('Upload Pic!!!');
+                                                            _showPicker(context);
+                                                          },
+                                                          child: ImageIcon(
+                                                            AssetImage(
+                                                                'assets/icons/camera.png'),
+                                                            size: 25,
+                                                            color: Constants.formBorder,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          'Upload',
+                                                          style: TextStyle(
+                                                              fontFamily: 'Montserrat',
+                                                              fontSize: 8.0.sp,
+                                                              fontWeight:
+                                                              FontWeight.w400,
+                                                              color:
+                                                              Constants.formBorder),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 0.5.h,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.bottomRight,
+                                            child: Container(
+                                              height: 3.2.w * 2.5,
+                                              width: 3.2.w * 2.5,
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    color: Constants.bgColor,
+                                                  ),
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.white),
+                                              child: Center(
+                                                heightFactor: 5.0.w * 1.5,
+                                                widthFactor: 5.0.w * 1.5,
+                                                child: Icon(
+                                                  Icons.edit,
+                                                  size: 20,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                  ),
+
+                                  ],
+                                ),
                           ),
                         ),
                       ],
