@@ -1,6 +1,7 @@
 import 'package:being_pupil/Account/My_Profile/Edit_Profile_Educator.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Comment_Screen.dart';
+import 'package:being_pupil/HomeScreen/Update_Post_Screen.dart';
 import 'package:being_pupil/HomeScreen/Report_Feed.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/MyProfile_Model.dart';
@@ -186,8 +187,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                           borderRadius: BorderRadius.circular(50),
                           child: Image.network(
                             myProfileMap['data']['profile_image'],
-                            width: 40.0,
-                            height: 40.0,
+                            width: 90.0,
+                            height: 90.0,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -527,6 +528,21 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                 index);
 
                                             getMyPostApi(page);
+                                          }else{
+                                            pushNewScreen(context, screen: imageListMap.length == 0 || imageListMap.length == null
+                                            ? UpdatePostScreen(
+                                              description: descriptionList[index].toString(),
+                                              postId: postIdList[index],
+                                              // images: imageListMap.length == 0 ? 0 : imageListMap,
+                                              // index: index,
+                                            )
+                                            : UpdatePostScreen(
+                                              description: descriptionList[index].toString(),
+                                              images: imageListMap,
+                                              index: index,
+                                              postId: postIdList[index],
+                                            ),
+                                              withNavBar: false, pageTransitionAnimation: PageTransitionAnimation.cupertino);
                                           }
                                           //  Fluttertoast.showToast(
                                           //    msg: value == 1
@@ -595,6 +611,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                             itemCount:
                                                 imageListMap[index].length,
                                             itemBuilder: (context, imageIndex) {
+                                              
                                               return Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
@@ -618,10 +635,11 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                       children: <Widget>[
                                         Row(
                                           children: [
-                                            Icon(
-                                              Icons.thumb_up_alt_rounded,
-                                              color: Constants.bgColor,
-                                            ),
+                                             ImageIcon(
+                                          AssetImage('assets/icons/likeNew.png'),
+                                          size: 25.0,
+                                          color: Constants.bgColor,
+                                        ),
                                             SizedBox(
                                               width: 1.0.w,
                                             ),
@@ -687,16 +705,15 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: [
-                                              Icon(
-                                                isLiked[index]
-                                                    ? Icons.thumb_up_sharp
-                                                    : Icons.thumb_up_outlined,
-                                                color: isLiked[index]
-                                                    ? Constants.selectedIcon
-                                                    : Constants
-                                                        .bpOnBoardSubtitleStyle,
-                                                size: 30.0,
-                                              ),
+                                             ImageIcon(
+                                              isLiked[index]
+                                                  ? AssetImage('assets/icons/likeThumb.png')
+                                                  : AssetImage('assets/icons/likeThumb.png'),
+                                              color: isLiked[index]
+                                                  ? Constants.selectedIcon
+                                                  : Constants.bpOnBoardSubtitleStyle,
+                                              size: 30.0,
+                                            ),
                                               SizedBox(
                                                 width: 1.0.w,
                                               ),
@@ -746,12 +763,11 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: [
-                                              Icon(
-                                                Icons.comment_outlined,
-                                                color: Constants
-                                                    .bpOnBoardSubtitleStyle,
-                                                size: 30.0,
-                                              ),
+                                               ImageIcon(
+                                              AssetImage('assets/icons/commentNew.png'),
+                                              size: 25.0,
+                                              color: Constants.bpOnBoardSubtitleStyle,
+                                            ),
                                               SizedBox(
                                                 width: 1.0.w,
                                               ),
@@ -785,17 +801,15 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: [
-                                              Icon(
-                                                isSaved[index]
-                                                    ? Icons.bookmark_sharp
-                                                    : Icons
-                                                        .bookmark_outline_outlined,
-                                                color: isSaved[index]
-                                                    ? Constants.selectedIcon
-                                                    : Constants
-                                                        .bpOnBoardSubtitleStyle,
-                                                size: 30.0,
-                                              ),
+                                              ImageIcon(
+                                              isSaved[index]
+                                                  ? AssetImage('assets/icons/saveGreen.png')
+                                                  : AssetImage('assets/icons/saveNew.png'),
+                                              color: isSaved[index]
+                                                  ? Constants.selectedIcon
+                                                  : Constants.bpOnBoardSubtitleStyle,
+                                              size: 25.0,
+                                            ),
                                               SizedBox(
                                                 width: 1.0.w,
                                               ),

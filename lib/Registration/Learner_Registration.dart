@@ -1610,10 +1610,13 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                         //width: 2.0,
                                       ),
                                     ),
-                                    suffixIcon: Icon(
-                                      Icons.link,
-                                      size: 25,
-                                      color: Constants.formBorder,
+                                     suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 30.0,
+                                      maxWidth: 30.0,                                   
+                                    ),
+                                    suffixIcon: Padding(
+                                      padding: EdgeInsets.only(right: 2.0.w),
+                                      child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
                                     )), //keyboardType: TextInputType.emailAddress,
                                 style: new TextStyle(
                                     fontFamily: "Montserrat",
@@ -1651,10 +1654,13 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                         //width: 2.0,
                                       ),
                                     ),
-                                    suffixIcon: Icon(
-                                      Icons.link,
-                                      size: 25,
-                                      color: Constants.formBorder,
+                                    suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 30.0,
+                                      maxWidth: 30.0,                                   
+                                    ),
+                                    suffixIcon: Padding(
+                                      padding: EdgeInsets.only(right: 2.0.w),
+                                      child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
                                     )),
                                 //keyboardType: TextInputType.emailAddress,
                                 style: new TextStyle(
@@ -1693,10 +1699,13 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                         //width: 2.0,
                                       ),
                                     ),
-                                    suffixIcon: Icon(
-                                      Icons.link,
-                                      size: 25,
-                                      color: Constants.formBorder,
+                                     suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 30.0,
+                                      maxWidth: 30.0,                                   
+                                    ),
+                                    suffixIcon: Padding(
+                                      padding: EdgeInsets.only(right: 2.0.w),
+                                      child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
                                     )),
                                 //keyboardType: TextInputType.emailAddress,
                                 style: new TextStyle(
@@ -1735,10 +1744,13 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                         //width: 2.0,
                                       ),
                                     ),
-                                    suffixIcon: Icon(
-                                      Icons.link,
-                                      size: 25,
-                                      color: Constants.formBorder,
+                                     suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 30.0,
+                                      maxWidth: 30.0,                                   
+                                    ),
+                                    suffixIcon: Padding(
+                                      padding: EdgeInsets.only(right: 2.0.w),
+                                      child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
                                     )),
                                 //keyboardType: TextInputType.emailAddress,
                                 style: new TextStyle(

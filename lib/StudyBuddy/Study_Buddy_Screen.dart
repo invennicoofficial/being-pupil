@@ -75,7 +75,7 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
             Padding(
                 padding: EdgeInsets.only(right: 2.0.w),
                 child: IconButton(
-                    icon: Icon(Icons.search, color: Colors.white),
+                    icon: Image.asset('assets/icons/searchNew.png', height: 20.0, width: 20.0, color: Colors.white),
                     onPressed: () {
                       pushNewScreen(context,
                           screen: SearchScreen(

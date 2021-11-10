@@ -174,7 +174,7 @@ class _EducatorListState extends State<EducatorList> {
                                           fontWeight: FontWeight.w700),
                                     ),
                                     Container(
-                                      width: 55.0.w,
+                                      width: 52.0.w,
                                       //color: Colors.grey,
                                       child: Text(
                                           '${_lastDegree[index]} | ${_schoolName[index]}',

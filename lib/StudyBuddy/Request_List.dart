@@ -163,7 +163,7 @@ class _RequestListState extends State<RequestList> {
                               //   width: 2.0.w,
                               // ),
                               Padding(
-                                padding: EdgeInsets.only(right: 13.0.w),
+                                padding: EdgeInsets.only(right: 10.0.w),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,

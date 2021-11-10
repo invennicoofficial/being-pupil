@@ -1440,6 +1440,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                                 //color: Color(0xFFA8B4C1).withOpacity(0.5),
                                               ),
                                               child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Text(
                                                     isYearSelected
@@ -1456,6 +1457,14 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                                         color: Constants
                                                             .bpSkipStyle),
                                                   ),
+                                                   Padding(
+                                                  padding: EdgeInsets.only(left: 0.0),
+                                                  child: Icon(
+                                                    Icons.keyboard_arrow_down,
+                                                    size: 25,
+                                                    color: Constants.formBorder,
+                                                  ),
+                                                )
                                                 ],
                                               ),
                                             ),
@@ -2758,10 +2767,13 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                         //width: 2.0,
                                       ),
                                     ),
-                                    suffixIcon: Icon(
-                                      Icons.link,
-                                      size: 25,
-                                      color: Constants.formBorder,
+                                    suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 30.0,
+                                      maxWidth: 30.0,                                   
+                                    ),
+                                    suffixIcon: Padding(
+                                      padding: EdgeInsets.only(right: 2.0.w),
+                                      child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
                                     )), //keyboardType: TextInputType.emailAddress,
                                 style: new TextStyle(
                                     fontFamily: "Montserrat",
@@ -2799,10 +2811,13 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                         //width: 2.0,
                                       ),
                                     ),
-                                    suffixIcon: Icon(
-                                      Icons.link,
-                                      size: 25,
-                                      color: Constants.formBorder,
+                                     suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 30.0,
+                                      maxWidth: 30.0,                                   
+                                    ),
+                                    suffixIcon: Padding(
+                                      padding: EdgeInsets.only(right: 2.0.w),
+                                      child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
                                     )),
                                 //keyboardType: TextInputType.emailAddress,
                                 style: new TextStyle(
@@ -2841,10 +2856,13 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                         //width: 2.0,
                                       ),
                                     ),
-                                    suffixIcon: Icon(
-                                      Icons.link,
-                                      size: 25,
-                                      color: Constants.formBorder,
+                                     suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 30.0,
+                                      maxWidth: 30.0,                                   
+                                    ),
+                                    suffixIcon: Padding(
+                                      padding: EdgeInsets.only(right: 2.0.w),
+                                      child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
                                     )),
                                 //keyboardType: TextInputType.emailAddress,
                                 style: new TextStyle(
@@ -2883,10 +2901,13 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                         //width: 2.0,
                                       ),
                                     ),
-                                    suffixIcon: Icon(
-                                      Icons.link,
-                                      size: 25,
-                                      color: Constants.formBorder,
+                                     suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 30.0,
+                                      maxWidth: 30.0,                                   
+                                    ),
+                                    suffixIcon: Padding(
+                                      padding: EdgeInsets.only(right: 2.0.w),
+                                      child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
                                     )),
                                 //keyboardType: TextInputType.emailAddress,
                                 style: new TextStyle(
@@ -2930,7 +2951,17 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                              } else if (_emailController.text.trim().isEmpty ||
+                              } else if (_image == null) {
+                                Fluttertoast.showToast(
+                                    msg: "Please upload profile image",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp);
+                              }
+                              else if (_emailController.text.trim().isEmpty ||
                                   (emailValid == false)) {
                                 Fluttertoast.showToast(
                                     msg: "Please Enter Valid Email Id",

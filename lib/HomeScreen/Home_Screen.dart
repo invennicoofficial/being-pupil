@@ -157,16 +157,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                             PageTransitionAnimation.cupertino);
                   },
                 )
-              : IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    // pushNewScreen(context,
-                    //     screen: CreatePostScreen(),
-                    //     withNavBar: false,
-                    //     pageTransitionAnimation:
-                    //         PageTransitionAnimation.cupertino);
-                  },
-                )
+              : Container()
         ],
         title: Container(
             height: 8.0.h,
@@ -358,7 +349,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                               imageListMap[index][imageIndex]['file'],
                                               height: 100,
                                               width: 250,
-                                              fit: BoxFit.fill,
+                                              fit: BoxFit.cover,
                                             ),
                                           );
                                         },

@@ -206,8 +206,9 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                     ],
                                   ),
                                   trailing: IconButton(
-                                      icon: Icon(
-                                          Icons.report_gmailerrorred_outlined),
+                                      icon: Image.asset('assets/icons/issueIcon.png',
+                                      height: 20.0,
+                                      width: 20.0,),
                                       onPressed: () {
                                         pushNewScreen(context,
                                             withNavBar: false,
@@ -255,7 +256,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                                     ['file'],
                                                 height: 100,
                                                 width: 250,
-                                                fit: BoxFit.contain,
+                                                fit: BoxFit.cover,
                                               ),
                                             );
                                           },
@@ -270,10 +271,11 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                     children: <Widget>[
                                       Row(
                                         children: [
-                                          Icon(
-                                            Icons.thumb_up_alt_rounded,
-                                            color: Constants.bgColor,
-                                          ),
+                                          ImageIcon(
+                                          AssetImage('assets/icons/likeNew.png'),
+                                          size: 25.0,
+                                          color: Constants.bgColor,
+                                        ),
                                           SizedBox(
                                             width: 1.0.w,
                                           ),
@@ -356,14 +358,13 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            Icon(
+                                           ImageIcon(
                                               isLiked[index]
-                                                  ? Icons.thumb_up_sharp
-                                                  : Icons.thumb_up_outlined,
+                                                  ? AssetImage('assets/icons/likeThumb.png')
+                                                  : AssetImage('assets/icons/likeThumb.png'),
                                               color: isLiked[index]
                                                   ? Constants.selectedIcon
-                                                  : Constants
-                                                      .bpOnBoardSubtitleStyle,
+                                                  : Constants.bpOnBoardSubtitleStyle,
                                               size: 30.0,
                                             ),
                                             SizedBox(
@@ -414,12 +415,11 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: [
-                                              Icon(
-                                                Icons.comment_outlined,
-                                                color: Constants
-                                                    .bpOnBoardSubtitleStyle,
-                                                size: 30.0,
-                                              ),
+                                              ImageIcon(
+                                              AssetImage('assets/icons/commentNew.png'),
+                                              size: 25.0,
+                                              color: Constants.bpOnBoardSubtitleStyle,
+                                            ),
                                               SizedBox(
                                                 width: 1.0.w,
                                               ),
@@ -457,16 +457,14 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            Icon(
+                                            ImageIcon(
                                               isSaved[index]
-                                                  ? Icons.bookmark_sharp
-                                                  : Icons
-                                                      .bookmark_outline_outlined,
+                                                  ? AssetImage('assets/icons/saveGreen.png')
+                                                  : AssetImage('assets/icons/saveNew.png'),
                                               color: isSaved[index]
                                                   ? Constants.selectedIcon
-                                                  : Constants
-                                                      .bpOnBoardSubtitleStyle,
-                                              size: 30.0,
+                                                  : Constants.bpOnBoardSubtitleStyle,
+                                              size: 25.0,
                                             ),
                                             SizedBox(
                                               width: 1.0.w,

@@ -109,10 +109,7 @@ class _EducatorScreenState extends State<EducatorScreen> {
         // ),
         actions: <Widget>[
           IconButton(
-              icon: Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
+               icon: Image.asset('assets/icons/searchNew.png', height: 20.0, width: 20.0, color: Colors.white),
               onPressed: () {
                 pushNewScreen(context,
                     screen: SearchScreen(

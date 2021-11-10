@@ -119,11 +119,13 @@ class _bottomNavBarState extends State<bottomNavBar> {
         inactiveIcon: Image.asset('assets/icons/stayStudy.png', height: 20, width: 20, color: Constants.bgColor,),
       ),
       PersistentBottomNavBarItem(
-        icon: Image.asset('assets/icons/educator.png', height: 25, width: 25, color: Constants.selectedIcon,),
+        icon: registerAs == 'E' ? Image.asset('assets/icons/educator.png', height: 25, width: 25, color: Constants.selectedIcon,)
+        : Image.asset('assets/icons/educatorGreen.png', height: 25, width: 25, color: Constants.selectedIcon,),
         title: (registerAs == 'E' ? "Learner" : "Educator"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
-        inactiveIcon: Image.asset('assets/icons/educator.png', height: 25, width: 25, color: Constants.bgColor,),
+        inactiveIcon: registerAs == 'E' ? Image.asset('assets/icons/educator.png', height: 25, width: 25, color: Constants.bgColor,)
+        : Image.asset('assets/icons/educatorBlack.png', height: 25, width: 25, color: Constants.bgColor,),
       ),
       PersistentBottomNavBarItem(
         //icon: ImageIcon(AssetImage('assets/icons/support2.png'),size: 25),

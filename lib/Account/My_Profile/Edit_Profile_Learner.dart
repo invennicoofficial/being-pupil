@@ -471,49 +471,58 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                                   'assets/icons/circle_upload.png'),
                                               //backgroundColor: Colors.white,
                                               radius: 70.0,
-                                              child: Align(
-                                                alignment: Alignment.center,
-                                                child: Column(
-                                                  // crossAxisAlignment: CrossAxisAlignment.center,
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                                  children: [
-                                                    Padding(
-                                                      padding: EdgeInsets.symmetric(
-                                                          vertical: 4.85.h),
-                                                      child: Column(
-                                                        children: [
-                                                          GestureDetector(
-                                                            onTap: () {
-                                                              print('Upload Pic!!!');
-                                                              _showPicker(context);
-                                                            },
-                                                            child: ImageIcon(
-                                                              AssetImage(
-                                                                  'assets/icons/camera.png'),
-                                                              size: 25,
-                                                              color: Constants.formBorder,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            'Upload',
-                                                            style: TextStyle(
-                                                                fontFamily: 'Montserrat',
-                                                                fontSize: 8.0.sp,
-                                                                fontWeight:
-                                                                FontWeight.w400,
-                                                                color:
-                                                                Constants.formBorder),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 0.5.h,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
+                                              child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(70),
+                                          child: Image.network(
+                                            result.data.imageUrl,
+                                            height: 125.0,//14.0.h,
+                                            width: 125.0,//30.0.w,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                              // Align(
+                                              //   alignment: Alignment.center,
+                                              //   child: Column(
+                                              //     // crossAxisAlignment: CrossAxisAlignment.center,
+                                              //     mainAxisAlignment:
+                                              //     MainAxisAlignment.center,
+                                              //     children: [
+                                              //       Padding(
+                                              //         padding: EdgeInsets.symmetric(
+                                              //             vertical: 4.85.h),
+                                              //         child: Column(
+                                              //           children: [
+                                              //             GestureDetector(
+                                              //               onTap: () {
+                                              //                 print('Upload Pic!!!');
+                                              //                 _showPicker(context);
+                                              //               },
+                                              //               child: ImageIcon(
+                                              //                 AssetImage(
+                                              //                     'assets/icons/camera.png'),
+                                              //                 size: 25,
+                                              //                 color: Constants.formBorder,
+                                              //               ),
+                                              //             ),
+                                              //             Text(
+                                              //               'Upload',
+                                              //               style: TextStyle(
+                                              //                   fontFamily: 'Montserrat',
+                                              //                   fontSize: 8.0.sp,
+                                              //                   fontWeight:
+                                              //                   FontWeight.w400,
+                                              //                   color:
+                                              //                   Constants.formBorder),
+                                              //             )
+                                              //           ],
+                                              //         ),
+                                              //       ),
+                                              //       SizedBox(
+                                              //         height: 0.5.h,
+                                              //       ),
+                                              //     ],
+                                              //   ),
+                                              // ),
                                             ),
                                             Align(
                                               alignment: Alignment.bottomRight,
@@ -1939,11 +1948,14 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                               //width: 2.0,
                                             ),
                                           ),
-                                          suffixIcon: Icon(
-                                            Icons.link,
-                                            size: 25,
-                                            color: Constants.formBorder,
-                                          )), //keyboardType: TextInputType.emailAddress,
+                                           suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 30.0,
+                                      maxWidth: 30.0,                                   
+                                    ),
+                                    suffixIcon: Padding(
+                                      padding: EdgeInsets.only(right: 2.0.w),
+                                      child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
+                                    )), //keyboardType: TextInputType.emailAddress,
                                       style: new TextStyle(
                                           fontFamily: "Montserrat",
                                           fontSize: 10.0.sp),
@@ -1982,11 +1994,14 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                               //width: 2.0,
                                             ),
                                           ),
-                                          suffixIcon: Icon(
-                                            Icons.link,
-                                            size: 25,
-                                            color: Constants.formBorder,
-                                          )),
+                                           suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 30.0,
+                                      maxWidth: 30.0,                                   
+                                    ),
+                                    suffixIcon: Padding(
+                                      padding: EdgeInsets.only(right: 2.0.w),
+                                      child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
+                                    )),
                                       //keyboardType: TextInputType.emailAddress,
                                       style: new TextStyle(
                                           fontFamily: "Montserrat",
@@ -2026,11 +2041,14 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                               //width: 2.0,
                                             ),
                                           ),
-                                          suffixIcon: Icon(
-                                            Icons.link,
-                                            size: 25,
-                                            color: Constants.formBorder,
-                                          )),
+                                           suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 30.0,
+                                      maxWidth: 30.0,                                   
+                                    ),
+                                    suffixIcon: Padding(
+                                      padding: EdgeInsets.only(right: 2.0.w),
+                                      child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
+                                    )),
                                       //keyboardType: TextInputType.emailAddress,
                                       style: new TextStyle(
                                           fontFamily: "Montserrat",
@@ -2070,11 +2088,14 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                               //width: 2.0,
                                             ),
                                           ),
-                                          suffixIcon: Icon(
-                                            Icons.link,
-                                            size: 25,
-                                            color: Constants.formBorder,
-                                          )),
+                                           suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 30.0,
+                                      maxWidth: 30.0,                                   
+                                    ),
+                                    suffixIcon: Padding(
+                                      padding: EdgeInsets.only(right: 2.0.w),
+                                      child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
+                                    )),
                                       //keyboardType: TextInputType.emailAddress,
                                       style: new TextStyle(
                                           fontFamily: "Montserrat",

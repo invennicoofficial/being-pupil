@@ -103,10 +103,13 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   List<String> schoolNameList = [];
   List<String> qualificationList = [];
   List<String> yearList = [];
-  List<String> certificateList = [];
+  Map<int, dynamic> certificateList;
 
   Map<String, dynamic> eduMap;
   List<dynamic> eduMapData;
+
+  List<String> netImage = [];
+  List<File> fileImage = [];
   //List<String> _schoolNameList
 
   // List<Skills> _selectedSkills;
@@ -403,30 +406,34 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
     } else {}
   }
 
-  _certificateFromCamera() async {
+  _certificateFromCamera(int index) async {
     File doc = (await ImagePicker.pickImage(
         source: ImageSource.camera, imageQuality: 50));
 
     setState(() {
       _certificate = doc;
+      fileImage[index] =_certificate;
+      //certificateList.add(doc);
       _certiName = doc.path.split('/scaled_').last.substring(35);
-      educationDetailMap[educationId]['certificate'] = _certificate.path;
+     // educationDetailMap[educationId]['certificate'] = _certificate.path;
+     print(fileImage);
     });
   }
 
-  _certificateFromGallery() async {
+  _certificateFromGallery(int index) async {
     File doc = (await ImagePicker.pickImage(
         source: ImageSource.gallery, imageQuality: 50));
 
     setState(() {
       _certificate = doc;
+      fileImage[index] =_certificate;
       _certiName = doc.path.split('/scaled_image_picker').last;
-      educationDetailMap[educationId]['certificate'] = _certificate.path;
-      print(_certiName);
+      //educationDetailMap[educationId]['certificate'] = _certificate.path;
+      print(fileImage);
     });
   }
 
-  void _showCertificatePicker(context) {
+   void _showCertificatePicker(context, int index) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -444,7 +451,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                               fontWeight: FontWeight.w400,
                               color: Constants.bpSkipStyle)),
                       onTap: () {
-                        _certificateFromGallery();
+                        _certificateFromGallery(index);
                         Navigator.of(context).pop();
                       }),
                   new ListTile(
@@ -457,7 +464,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                             fontWeight: FontWeight.w400,
                             color: Constants.bpSkipStyle)),
                     onTap: () {
-                      _certificateFromCamera();
+                      _certificateFromCamera(index);
                       Navigator.of(context).pop();
                     },
                   ),
@@ -528,8 +535,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                           borderRadius: BorderRadius.circular(70),
                                           child: Image.file(
                                             _image,
-                                            height: 14.0.h,
-                                            width: 30.0.w,
+                                            height: 125.0,//14.0.h,
+                                            width: 125.0,//30.0.w,
                                             fit: BoxFit.cover,
                                           ),
                                         ),
@@ -574,49 +581,58 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                             'assets/icons/circle_upload.png'),
                                         //backgroundColor: Colors.white,
                                         radius: 70.0,
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Column(
-                                            // crossAxisAlignment: CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 4.85.h),
-                                                child: Column(
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        print('Upload Pic!!!');
-                                                        _showPicker(context);
-                                                      },
-                                                      child: ImageIcon(
-                                                        AssetImage(
-                                                            'assets/icons/camera.png'),
-                                                        size: 25,
-                                                        color: Constants.formBorder,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      'Upload',
-                                                      style: TextStyle(
-                                                          fontFamily: 'Montserrat',
-                                                          fontSize: 8.0.sp,
-                                                          fontWeight:
-                                                          FontWeight.w400,
-                                                          color:
-                                                          Constants.formBorder),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 0.5.h,
-                                              ),
-                                            ],
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(70),
+                                          child: Image.network(
+                                            result.data.imageUrl,
+                                            height: 125.0,//14.0.h,
+                                            width: 125.0,//30.0.w,
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
+                                        // Align(
+                                        //   alignment: Alignment.center,
+                                        //   child: Column(
+                                        //     // crossAxisAlignment: CrossAxisAlignment.center,
+                                        //     mainAxisAlignment:
+                                        //     MainAxisAlignment.center,
+                                        //     children: [
+                                        //       Padding(
+                                        //         padding: EdgeInsets.symmetric(
+                                        //             vertical: 4.85.h),
+                                        //         child: Column(
+                                        //           children: [
+                                        //             GestureDetector(
+                                        //               onTap: () {
+                                        //                 print('Upload Pic!!!');
+                                        //                 _showPicker(context);
+                                        //               },
+                                        //               child: ImageIcon(
+                                        //                 AssetImage(
+                                        //                     'assets/icons/camera.png'),
+                                        //                 size: 25,
+                                        //                 color: Constants.formBorder,
+                                        //               ),
+                                        //             ),
+                                        //             Text(
+                                        //               'Upload',
+                                        //               style: TextStyle(
+                                        //                   fontFamily: 'Montserrat',
+                                        //                   fontSize: 8.0.sp,
+                                        //                   fontWeight:
+                                        //                   FontWeight.w400,
+                                        //                   color:
+                                        //                   Constants.formBorder),
+                                        //             )
+                                        //           ],
+                                        //         ),
+                                        //       ),
+                                        //       SizedBox(
+                                        //         height: 0.5.h,
+                                        //       ),
+                                        //     ],
+                                        //   ),
+                                        // ),
                                       ),
                                       Align(
                                         alignment: Alignment.bottomRight,
@@ -1546,6 +1562,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                 //color: Color(0xFFA8B4C1).withOpacity(0.5),
                                               ),
                                               child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Text(
                                                     // isYearSelected
@@ -1562,6 +1579,14 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                         color: Constants
                                                             .bpSkipStyle),
                                                   ),
+                                                  Padding(
+                                                  padding: EdgeInsets.only(left: 0.0),
+                                                  child: Icon(
+                                                    Icons.keyboard_arrow_down,
+                                                    size: 25,
+                                                    color: Constants.formBorder,
+                                                  ),
+                                                )
                                                 ],
                                               ),
                                             ),
@@ -1722,7 +1747,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                           child: GestureDetector(
                                             onTap: () {
                                               print('Upload!!!');
-                                              _showCertificatePicker(context);
+                                              //certificateList.removeAt(index);
+                                              _showCertificatePicker(context, index);
+                                              print(fileImage);
                                             },
                                             child: Container(
                                               height: 6.0.h,
@@ -1739,9 +1766,10 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                     width: 15.0.w,
                                                     decoration: BoxDecoration(
                                                         image: DecorationImage(
-                                                            image: _certificate == null
-                                                            ? NetworkImage(result.data.educationalDetails1[index]['certificate_file'])
-                                                            : FileImage(_certificate),
+                                                            image: fileImage[index] == null
+                                                            ? //NetworkImage(certificateList[index])
+                                                            NetworkImage(result.data.educationalDetails1[index]['certificate_file'])
+                                                            : FileImage(fileImage[index]),
                                                             fit: BoxFit.fill)),
                                                   ),
                                                   SizedBox(width: 2.0.w),
@@ -1755,13 +1783,13 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                       child: Container(
                                                         height: 3.0.h,
                                                         //width: 50.0.w,
-                                                        child: Text(
-                                                          result
-                                                              .data
-                                                              .educationalDetails1[
-                                                                  index]['certificate_file']
-                                                              .split('/')
-                                                              .last,
+                                                        child: Text('Certificate ${index + 1}',
+                                                          // result
+                                                          //     .data
+                                                          //     .educationalDetails1[
+                                                          //         index]['certificate_file']
+                                                          //     .split('/')
+                                                          //     .last,
                                                           style: TextStyle(
                                                               fontFamily:
                                                                   'Montserrat',
@@ -1807,25 +1835,26 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                               child: GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    if (itemCount < 5) {
-                                      itemCount = itemCount + 1;
-                                    } else {
-                                      Fluttertoast.showToast(
-                                          msg: "You can add only 5 degree",
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.BOTTOM,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: Constants.bgColor,
-                                          textColor: Colors.white,
-                                          fontSize: 10.0.sp);
+                                    // if (itemCount < 5) {
+                                    //   itemCount = itemCount + 1;
+                                    // } else {
+                                    //   Fluttertoast.showToast(
+                                    //       msg: "You can add only 5 degree",
+                                    //       toastLength: Toast.LENGTH_SHORT,
+                                    //       gravity: ToastGravity.BOTTOM,
+                                    //       timeInSecForIosWeb: 1,
+                                    //       backgroundColor: Constants.bgColor,
+                                    //       textColor: Colors.white,
+                                    //       fontSize: 10.0.sp);
                                     //}
                                   //});
                                   //print(myControllers[1].text.toString());
                                   print('Add more!!!');
                                   //setState(() {
                                     // educationId = educationId + 1;
-                                    // result.data.educationalDetails.length = result.data.educationalDetails.length + 1;
-                                    //if(result.data.educationalDetails1 != null){
+                                    result.data.educationalDetails.length = result.data.educationalDetails.length + 1;
+                                    fileImage.add(_certificate);
+                                    if(result.data.educationalDetails1 != null){
                                       result.data.educationalDetails1.add({
                                         'id': null,
                                         'school_name': 'Name of School',
@@ -1833,10 +1862,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                         'qualification': 'Select Qualification',
                                         'certificate_file': 'Upload Degree'
                                       });
-                                    //}
-                                    print(result.data.educationalDetails1);
-                                    populateEducationDetails();
                                     }
+                                    print(result.data.educationalDetails1);
+                                    print(fileImage);
+                                    populateEducationDetails();
+                                    //}
                                   });
                                   
                                   // educationDetailMap[educationId] = {
@@ -2748,11 +2778,20 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                         //width: 2.0,
                                       ),
                                     ),
-                                    suffixIcon: Icon(
-                                      Icons.link,
-                                      size: 25,
-                                      color: Constants.formBorder,
-                                    )), //keyboardType: TextInputType.emailAddress,
+                                    suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 30.0,
+                                      maxWidth: 30.0,                                   
+                                    ),
+                                    suffixIcon: Padding(
+                                      padding: EdgeInsets.only(right: 2.0.w),
+                                      child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
+                                    )
+                                    // Icon(
+                                    //   Icons.link,
+                                    //   size: 25,
+                                    //   color: Constants.formBorder,
+                                    // )
+                                    ), //keyboardType: TextInputType.emailAddress,
                                 style: new TextStyle(
                                     fontFamily: "Montserrat",
                                     fontSize: 10.0.sp),
@@ -2789,11 +2828,15 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                         //width: 2.0,
                                       ),
                                     ),
-                                    suffixIcon: Icon(
-                                      Icons.link,
-                                      size: 25,
-                                      color: Constants.formBorder,
-                                    )),
+                                     suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 30.0,
+                                      maxWidth: 30.0,                                   
+                                    ),
+                                    suffixIcon: Padding(
+                                      padding: EdgeInsets.only(right: 2.0.w),
+                                      child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
+                                    )
+                                    ),
                                 //keyboardType: TextInputType.emailAddress,
                                 style: new TextStyle(
                                     fontFamily: "Montserrat",
@@ -2831,10 +2874,13 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                         //width: 2.0,
                                       ),
                                     ),
-                                    suffixIcon: Icon(
-                                      Icons.link,
-                                      size: 25,
-                                      color: Constants.formBorder,
+                                     suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 30.0,
+                                      maxWidth: 30.0,                                   
+                                    ),
+                                    suffixIcon: Padding(
+                                      padding: EdgeInsets.only(right: 2.0.w),
+                                      child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
                                     )),
                                 //keyboardType: TextInputType.emailAddress,
                                 style: new TextStyle(
@@ -2873,10 +2919,13 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                         //width: 2.0,
                                       ),
                                     ),
-                                    suffixIcon: Icon(
-                                      Icons.link,
-                                      size: 25,
-                                      color: Constants.formBorder,
+                                     suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 30.0,
+                                      maxWidth: 30.0,                                   
+                                    ),
+                                    suffixIcon: Padding(
+                                      padding: EdgeInsets.only(right: 2.0.w),
+                                      child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
                                     )),
                                 //keyboardType: TextInputType.emailAddress,
                                 style: new TextStyle(
@@ -3468,14 +3517,23 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
           docType = result.data.documentType;
           totalWorkExp = int.parse(result.data.totalWorkExperience);
           totalTeachExp = int.parse(result.data.totalTeachingExperience);
-          // for(int i = 0; i < result.data.educationalDetails.length; i++){
+           for(int i = 0; i < eduMapData.length; i++){
           //   qualification = result.data.educationalDetails[i].qualification;
           //   educationListId.add(result.data.educationalDetails[i].id);
           //   schoolNameList.add(result.data.educationalDetails[i].schoolName);
-          //   qualificationList.add(result.data.educationalDetails[i].qualification);
+             qualificationList.add(result.data.educationalDetails1[i]['qualification']);
           //   yearList.add(result.data.educationalDetails[i].year);
-          //   certificateList.add(result.data.educationalDetails[i].certificateFile);
-          // }
+             //certificateList.add(result.data.educationalDetails1[i]['certificate_file']);
+             //certificateList.putIfAbsent(i, () => eduMapData[i]['certificate_file']);
+             netImage.add(result.data.educationalDetails1[i]['certificate_file']);
+             fileImage.add(_certificate);
+           }
+
+           //fileImage.length = netImage.length;
+
+            print('Certi Net:::'+netImage.toString());
+            print('Certi File:::'+fileImage.toString());
+            print('Qual File:::'+qualificationList.toString());
           
           //result.data.gender == 'M' ? gender = 'Male' : result.data.gender == 'F' ? gender = 'Female' : gender = 'Other';
           //birthDateInString = result.data.dob;
@@ -3490,6 +3548,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
           //                 : documentTypeList[4].toString();
           _idNumController.text = result.data.identificationDocumentNumber;
           _achivementController.text = result.data.achievements;
+          skillList.add(result.data.skills);
+          hobbieList.add(result.data.hobbies);
           _fbLinkController.text = result.data.facebookUrl;
           _instagramLinkController.text = result.data.instaUrl;
           _linkedInLinkLinkController.text = result.data.linkedinUrl;
@@ -3689,10 +3749,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         'total_teaching_experience': totalTeachExp,
       });
 
-      print('MAPO:::' + educationDetailMap.length.toString());
+      print('MAPO:::' + eduMap.length.toString());
       print('Called:::No');
+      print('RESULT:::'+result.data.educationalDetails1.toString());
 
-      for (int i = 0; i < result.data.educationalDetails.length; i++) {
+      for (int i = 0; i < result.data.educationalDetails1.length; i++) {
         //formData.fields.addAll(params.entries);
         if(result.data.educationalDetails1[i]['id'] != null){
         formData.fields.addAll([
@@ -3703,33 +3764,46 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
           MapEntry('educational_details[$i][year]',
               result.data.educationalDetails1[i]['year'].toString()),
           MapEntry('educational_details[$i][qualification]',
-              result.data.educationalDetails1[i]['qualification'].toString()),
-          MapEntry('educational_details[$i][certificate_file]', ''),
+              result.data.educationalDetails1[i]['qualification']),
+          //MapEntry('educational_details[$i][certificate_file]', ''),
+          
         ]);
+        fileImage[i] != null
+        ? formData.files.addAll([
+          MapEntry(
+              'educational_details[$i][certificate_file]', 
+              //MultipartFile.fromString(result.data.educationalDetails[i].certificateFile)
+              await MultipartFile.fromFile(fileImage[i].path,
+                  filename: fileImage[i].toString().split('/').last)
+                 ),
+        ])
+        : MapEntry('educational_details[$i][certificate_file]', fileImage[i]);
         } else{
           formData.fields.addAll([
-
+           MapEntry('educational_details[$i][id]', result.data.educationalDetails1[i]['id'].toString()),
           MapEntry('educational_details[$i][school_name]',
               controllersList[i].text),
           MapEntry('educational_details[$i][year]',
-              result.data.educationalDetails[i].year.toString()),
+              result.data.educationalDetails1[i]['year'].toString()),
           MapEntry('educational_details[$i][qualification]',
-              result.data.educationalDetails[i].qualification.toString()),
-          MapEntry('educational_details[$i][certificate_file]', ''),
+              result.data.educationalDetails1[i]['qualification']),
+          //MapEntry('educational_details[$i][certificate_file]', ''),
+        ]);
+         formData.files.addAll([
+          MapEntry(
+              'educational_details[$i][certificate_file]', 
+              //MultipartFile.fromString(result.data.educationalDetails[i].certificateFile)
+              await MultipartFile.fromFile(fileImage[i].path,
+                  filename: fileImage[i].toString().split('/').last)
+                 ),
         ]);
         }
-        // formData.files.addAll([
-        //   MapEntry(
-        //       'educational_details[$i][certificate_file]', 
-        //       //MultipartFile.fromString(result.data.educationalDetails[i].certificateFile)
-        //       await MultipartFile.fromFile(result.data.educationalDetails[i].certificateFile,
-        //           filename: result.data.educationalDetails[i].certificateFile)
-        //          ),
-        // ]);
       }
 
-      print('MAP:::' + educationDetailMap.toString());
-
+      debugPrint('REQ:::'+formData.files.toString());
+print('MAP:::' + formData.fields.toString());
+      print('MAP:::' + result.data.educationalDetails1[1].toString());
+      print(fileImage);
       //print(educationList);
 
       var response = await dio.post(

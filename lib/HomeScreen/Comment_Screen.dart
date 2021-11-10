@@ -64,6 +64,8 @@ class _CommentScreenState extends State<CommentScreen> {
   bool isEdit = false;
   FocusNode focusNode = FocusNode();
   int idForEdit;
+  LikePostAPI like = LikePostAPI();
+  Map<String, dynamic> saveMap;
 
   @override
   void initState() {
@@ -251,8 +253,9 @@ class _CommentScreenState extends State<CommentScreen> {
                                   ],
                                 ),
                                 trailing: IconButton(
-                                    icon: Icon(
-                                        Icons.report_gmailerrorred_outlined),
+                                     icon: Image.asset('assets/icons/issueIcon.png',
+                                      height: 20.0,
+                                      width: 20.0,),
                                     onPressed: () {
                                       pushNewScreen(context,
                                           withNavBar: false,
@@ -299,7 +302,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                   [imageIndex]['file'],
                                               height: 100,
                                               width: 250,
-                                              fit: BoxFit.contain,
+                                              fit: BoxFit.cover,
                                             ),
                                           );
                                         },
@@ -314,8 +317,9 @@ class _CommentScreenState extends State<CommentScreen> {
                                   children: <Widget>[
                                     Row(
                                       children: [
-                                        Icon(
-                                          Icons.thumb_up_alt_rounded,
+                                        ImageIcon(
+                                          AssetImage('assets/icons/likeNew.png'),
+                                          size: 25.0,
                                           color: Constants.bgColor,
                                         ),
                                         SizedBox(
@@ -369,21 +373,26 @@ class _CommentScreenState extends State<CommentScreen> {
                                         setState(() {
                                           widget.isLiked = !widget.isLiked;
                                         });
+                                        like.likePostApi(widget.postId, authToken);
+                                        setState(() {
+                                          widget.isLiked == true
+                                              ? widget.like++
+                                              : widget.like--;
+                                        });
                                       },
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          Icon(
-                                            widget.isLiked
-                                                ? Icons.thumb_up_sharp
-                                                : Icons.thumb_up_outlined,
-                                            color: widget.isLiked
-                                                ? Constants.selectedIcon
-                                                : Constants
-                                                    .bpOnBoardSubtitleStyle,
-                                            size: 30.0,
-                                          ),
+                                         ImageIcon(
+                                              widget.isLiked
+                                                  ? AssetImage('assets/icons/likeThumb.png')
+                                                  : AssetImage('assets/icons/likeThumb.png'),
+                                              color: widget.isLiked
+                                                  ? Constants.selectedIcon
+                                                  : Constants.bpOnBoardSubtitleStyle,
+                                              size: 30.0,
+                                            ),
                                           SizedBox(
                                             width: 1.0.w,
                                           ),
@@ -407,12 +416,11 @@ class _CommentScreenState extends State<CommentScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        Icon(
-                                          Icons.comment_outlined,
-                                          color:
-                                              Constants.bpOnBoardSubtitleStyle,
-                                          size: 30.0,
-                                        ),
+                                        ImageIcon(
+                                              AssetImage('assets/icons/commentNew.png'),
+                                              size: 25.0,
+                                              color: Constants.bpOnBoardSubtitleStyle,
+                                            ),
                                         SizedBox(
                                           width: 1.0.w,
                                         ),
@@ -435,22 +443,21 @@ class _CommentScreenState extends State<CommentScreen> {
                                         setState(() {
                                           widget.isSaved = !widget.isSaved;
                                         });
+                                        savePostApi(widget.postId);
                                       },
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          Icon(
-                                            widget.isSaved
-                                                ? Icons.bookmark_sharp
-                                                : Icons
-                                                    .bookmark_outline_outlined,
-                                            color: widget.isSaved
-                                                ? Constants.selectedIcon
-                                                : Constants
-                                                    .bpOnBoardSubtitleStyle,
-                                            size: 30.0,
-                                          ),
+                                          ImageIcon(
+                                              widget.isSaved
+                                                  ? AssetImage('assets/icons/saveGreen.png')
+                                                  : AssetImage('assets/icons/saveNew.png'),
+                                              color: widget.isSaved
+                                                  ? Constants.selectedIcon
+                                                  : Constants.bpOnBoardSubtitleStyle,
+                                              size: 25.0,
+                                            ),
                                           SizedBox(
                                             width: 1.0.w,
                                           ),
@@ -1107,6 +1114,67 @@ class _CommentScreenState extends State<CommentScreen> {
         }
         //getEducatorPostApi(page);
         print(editMap);
+      } else {
+        print(response.statusCode);
+      }
+    } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+    }
+  }
+
+  Future<void> savePostApi(int postID) async {
+    //var delResult = PostDelete();
+
+    try {
+      Dio dio = Dio();
+
+      FormData formData = FormData.fromMap({'post_id': postID});
+      var response = await dio.post(Config.savePostUrl,
+          data: formData,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+
+      if (response.statusCode == 200) {
+        //delResult = postDeleteFromJson(response.data);
+        saveMap = response.data;
+        //saveMapData = map['data']['status'];
+
+        print(saveMap);
+        // setState(() {
+        //   isLoading = false;
+        // });
+        if (saveMap['status'] == true) {
+          print('true');
+          //getEducatorPostApi(page);
+          Fluttertoast.showToast(
+              msg: saveMap['message'],
+              backgroundColor: Constants.bgColor,
+              gravity: ToastGravity.BOTTOM,
+              fontSize: 10.0.sp,
+              toastLength: Toast.LENGTH_SHORT,
+              textColor: Colors.white);
+        } else {
+          print('false');
+          if (saveMap['message'] == null) {
+            Fluttertoast.showToast(
+                msg: saveMap['error_msg'],
+                backgroundColor: Constants.bgColor,
+                gravity: ToastGravity.BOTTOM,
+                fontSize: 10.0.sp,
+                toastLength: Toast.LENGTH_SHORT,
+                textColor: Colors.white);
+          } else {
+            Fluttertoast.showToast(
+                msg: saveMap['message'],
+                backgroundColor: Constants.bgColor,
+                gravity: ToastGravity.BOTTOM,
+                fontSize: 10.0.sp,
+                toastLength: Toast.LENGTH_SHORT,
+                textColor: Colors.white);
+          }
+        }
+        //getEducatorPostApi(page);
+        print(saveMap);
       } else {
         print(response.statusCode);
       }

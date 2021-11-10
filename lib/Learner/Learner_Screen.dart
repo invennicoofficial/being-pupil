@@ -108,10 +108,7 @@ class _LearnerScreenState extends State<LearnerScreen> {
         // ),
         actions: <Widget>[
           IconButton(
-              icon: Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
+               icon: Image.asset('assets/icons/searchNew.png', height: 20.0, width: 20.0, color: Colors.white),
               onPressed: () {
                 pushNewScreen(context,
                     screen: SearchScreen(
@@ -283,7 +280,7 @@ class _LearnerScreenState extends State<LearnerScreen> {
         //result = EducatorPost.fromJson(response.data);
         learner = LearnerListModel.fromJson(response.data);
 
-        print(learner.data[0].name);
+        //print(learner.data[0].name);
 
         if (learner.data.length > 0) {
           for (int i = 0; i < learner.data.length; i++) {

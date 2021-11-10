@@ -34,6 +34,7 @@ class Config{
   static const String deleteCommentUrl = baseUrl + "user/post/comment/delete";
   static const String editCommentUrl = baseUrl + "user/post/comment/edit";
   static const String mobileCheckUrl = baseUrl + "user/check-mobile-number";
+  static const String updatePostUrl = baseUrl + "user/post/update";
 }
 
 
