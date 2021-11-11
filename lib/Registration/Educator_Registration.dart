@@ -65,7 +65,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
   var myControllers = [];
   String authToken;
   List<EducationListItemModel> educationList = [];
-  Map<int, dynamic> educationDetailMap = {};
+  List<dynamic> educationDetailMap = [];
   int educationId = 0;
   int userId;
   String registerAs;
@@ -97,12 +97,12 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
     createControllers();
     getToken();
     getData();
-    educationDetailMap[educationId] = {
-      'school_name': 'MSU',
-      'year': '2015',
-      'qualification': 'BCA',
-      'certificate': 'path'
-    };
+    educationDetailMap.add({
+                                    'school_name': 'MSU',
+                                    'year': 'Year',
+                                    'qualification': 'BCA',
+                                    'certificate': 'Upload Certificate/Degree'
+                                  });
     print(educationDetailMap);
     super.initState();
     // _selectedSkills = [];
@@ -361,30 +361,30 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
     } else {}
   }
 
-  _certificateFromCamera() async {
+  _certificateFromCamera(int index) async {
     File doc = (await ImagePicker.pickImage(
         source: ImageSource.camera, imageQuality: 50));
 
     setState(() {
       _certificate = doc;
       _certiName = doc.path.split('/scaled_').last.substring(35);
-      educationDetailMap[educationId]['certificate'] = _certificate.path;
+      educationDetailMap[index]['certificate'] = _certificate.path;
     });
   }
 
-  _certificateFromGallery() async {
+  _certificateFromGallery(int index) async {
     File doc = (await ImagePicker.pickImage(
         source: ImageSource.gallery, imageQuality: 50));
 
     setState(() {
       _certificate = doc;
       _certiName = doc.path.split('/scaled_image_picker').last;
-      educationDetailMap[educationId]['certificate'] = _certificate.path;
+      educationDetailMap[index]['certificate'] = _certificate.path;
       print(_certiName);
     });
   }
 
-  void _showCertificatePicker(context) {
+  void _showCertificatePicker(context, int index) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -402,7 +402,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               fontWeight: FontWeight.w400,
                               color: Constants.bpSkipStyle)),
                       onTap: () {
-                        _certificateFromGallery();
+                        _certificateFromGallery(index);
                         Navigator.of(context).pop();
                       }),
                   new ListTile(
@@ -415,7 +415,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                             fontWeight: FontWeight.w400,
                             color: Constants.bpSkipStyle)),
                     onTap: () {
-                      _certificateFromCamera();
+                      _certificateFromCamera(index);
                       Navigator.of(context).pop();
                     },
                   ),
@@ -1259,9 +1259,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                                   setState(() {
                                                     //itemCount = itemCount - 1;
                                                     educationDetailMap
-                                                        .removeWhere(
-                                                            (key, value) =>
-                                                                key == index);
+                                                        .removeAt(index);
                                                   });
                                                   print(educationDetailMap);
                                                 },
@@ -1598,26 +1596,26 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                             }
                                             if (value == 1) {
                                               qualification = 'Graduate';
-                                              educationDetailMap[educationId]
+                                              educationDetailMap[index]
                                                       ['qualification'] =
                                                   'Graduate';
                                               print(qualification);
                                             } else if (value == 2) {
                                               qualification = 'Post-graduate';
-                                              educationDetailMap[educationId]
+                                              educationDetailMap[index]
                                                       ['qualification'] =
                                                   'Post-graduate';
                                               print(qualification);
                                             } else if (value == 3) {
                                               qualification =
                                                   'Chartered Accountant';
-                                              educationDetailMap[educationId]
+                                              educationDetailMap[index]
                                                       ['qualification'] =
                                                   'Chartered Accountant';
                                               print(qualification);
                                             } else {
                                               qualification = 'Others';
-                                              educationDetailMap[educationId]
+                                              educationDetailMap[index]
                                                   ['qualification'] = 'Others';
                                               print(qualification);
                                             }
@@ -1699,7 +1697,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                           child: GestureDetector(
                                             onTap: () {
                                               print('Upload!!!');
-                                              _showCertificatePicker(context);
+                                              _showCertificatePicker(context, index);
                                             },
                                             child: Container(
                                               height: 6.0.h,
@@ -1866,12 +1864,12 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                   setState(() {
                                     educationId = educationId + 1;
                                   });
-                                  educationDetailMap[educationId] = {
+                                  educationDetailMap.add({
                                     'school_name': 'MSU',
                                     'year': 'Year',
                                     'qualification': 'BCA',
                                     'certificate': 'Upload Certificate/Degree'
-                                  };
+                                  });
                                   print(educationDetailMap);
                                 },
                                 child: Container(

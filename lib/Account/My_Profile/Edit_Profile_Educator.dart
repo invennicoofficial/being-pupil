@@ -3240,8 +3240,10 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     lat,
                                     lng,
                                     _achivementController.text,
-                                    selectedSkillList == null ? result.data.skills : selectedSkillList.toString(),
-                                    selectedHobbiesList == null ? result.data.hobbies : selectedHobbiesList.toString(),
+                                    selectedSkillList == null ? result.data.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '').
+                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    selectedHobbiesList == null ? result.data.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '').
+                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
                                     _fbLinkController.text,
                                     _instagramLinkController.text,
                                     _linkedInLinkLinkController.text,
@@ -3802,9 +3804,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
 
       debugPrint('REQ:::'+formData.files.toString());
 print('MAP:::' + formData.fields.toString());
-      print('MAP:::' + result.data.educationalDetails1[1].toString());
+      //print('MAP:::' + result.data.educationalDetails1[1].toString());
       print(fileImage);
       //print(educationList);
+
+      print('FORMDATA::: updateProfile()');
 
       var response = await dio.post(
         Config.updateProfileUrl,
@@ -4013,6 +4017,7 @@ print('MAP:::' + formData.fields.toString());
       print('MAP:::' + educationDetailMap.toString());
 
       //print(educationList);
+      print('FORMDATA::: updateProfileWithDocument()');
 
       var response = await dio.post(
         Config.updateProfileUrl,
@@ -4218,7 +4223,7 @@ print('MAP:::' + formData.fields.toString());
       }
 
       print('MAP:::' + educationDetailMap.toString());
-
+      print('FORMDATA::: updateProfileWithImage()');
       //print(educationList);
 
       var response = await dio.post(
@@ -4425,7 +4430,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
       }
 
       print('MAP:::' + educationDetailMap.toString());
-
+      print('FORMDATA::: updateProfileWithBoth()');
       //print(educationList);
 
       var response = await dio.post(
