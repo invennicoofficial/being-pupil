@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "402279772068",
+    "project_id": "beingpupil-853ba",
+    "storage_bucket": "beingpupil-853ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:402279772068:android:8f246f3fde69d348365b31",
+        "android_client_info": {
+          "package_name": "com.example.being_pupil"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "402279772068-r0jn7qok8ngpmfepgoj3b870d0s5qa7t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.being_pupil",
+            "certificate_hash": "d25fa556f9a287b6119ddb8a44a801ace0efcc18"
+          }
+        },
+        {
+          "client_id": "402279772068-6r16o1fjhdjtchq94c0enp2khatemecc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrBtunNVF9D5SeVnzIKLSCVo5_VqrmdHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "402279772068-6r16o1fjhdjtchq94c0enp2khatemecc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

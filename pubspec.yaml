@@ -32,10 +32,13 @@ dependencies:
   file_picker: ^2.1.7
   filter_list: ^0.0.8
   flutter_animation_progress_bar: ^1.0.6
+  firebase_auth: ^0.20.1
+  flutter_facebook_auth: ^2.0.2
   flutter_image_compress: ^0.7.0
   flutter_secure_storage: ^3.3.5
   flutter_rating_bar: ^3.2.0
   fluttertoast: ^7.0.4
+  google_sign_in: ^4.5.9
   image_picker: ^0.6.6+5
   page_transition: ^1.1.7+6
   path_provider: ^1.6.28
@@ -45,6 +48,7 @@ dependencies:
   place_picker: ^0.9.15
   pull_to_refresh: 1.6.3
   readmore: ^1.0.0
+  sign_in_with_apple: ^2.5.4
   share: ^0.6.5+4
   shared_preferences: ^0.5.12+4
   sizer: ^1.1.8
