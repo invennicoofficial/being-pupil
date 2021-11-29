@@ -62,7 +62,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                     child: TextFormField(
                       //controller: _nameController,
                       decoration: InputDecoration(
-                        labelText: "Name",
+                        labelText: "Course Name",
                         fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
@@ -103,6 +103,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                       //maxLength: 100,
                       decoration: InputDecoration(
                         labelText: "Course Description",
+                        alignLabelWithHint: true,
                         //counterText: '',
                         fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(

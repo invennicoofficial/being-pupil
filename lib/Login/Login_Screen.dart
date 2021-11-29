@@ -297,6 +297,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'Don\'t have an account? ',
@@ -316,8 +317,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               print('Register!!!');
                             },
                             child: Container(
-                              height: 2.2.h,
-                              width: 15.0.w,
+                              // height: 2.2.h,
+                              // width: 15.0.w,
                               child: Text(
                                 'Register',
                                 style: TextStyle(

@@ -1080,7 +1080,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                             size: 25,
                                             color: Constants.formBorder),
                                         SizedBox(
-                                          width: 1.0.w,
+                                          width: 2.0.w,
                                         ),
                                         Text(
                                           (fileName == null || fileName == '')
@@ -1263,16 +1263,11 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                                   });
                                                   print(educationDetailMap);
                                                 },
-                                                child: CircleAvatar(
-                                                  radius: 12.0,
-                                                  backgroundColor:
-                                                      Constants.bgColor,
-                                                  child: Icon(
-                                                    Icons.close_rounded,
-                                                    color: Colors.white,
-                                                    size: 12.0,
-                                                  ),
-                                                ),
+                                                child: ImageIcon(
+                                                  AssetImage('assets/icons/close_icon.png'),
+                                                  color: Constants.bpSkipStyle,
+                                                  size: 22.0,
+                                                )
                                               ),
                                             ),
                                           ),
@@ -1703,7 +1698,10 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                               height: 6.0.h,
                                               width: 90.0.w,
                                               color: Colors.transparent,
-                                              child: Center(
+                                              child: Padding(
+                                                padding: educationDetailMap[index]['certificate'] == 'path' || 
+                                                    educationDetailMap[index]['certificate'] == 'Upload Certificate/Degree'
+                                                    ? EdgeInsets.only(left: 20.0) : EdgeInsets.zero,
                                                 child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
@@ -3501,6 +3499,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
           preferences.setString("imageUrl", result.data.imageUrl);
           preferences.setString("mobileNumber", result.data.mobileNumber);
           preferences.setString("gender", result.data.gender);
+          preferences.setString("email", result.data.email);
           preferences.setString("qualification", result.data.educationalDetails[0].qualification.toString());
           preferences.setString("schoolName", result.data.educationalDetails[0].schoolName.toString());
           preferences.setString("address1", result.data.location.toString());

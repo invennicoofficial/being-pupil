@@ -134,13 +134,13 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
                   },
                   tabs: [
                     Tab(
-                      text: 'Connection',
+                      text: 'Connections',
                     ),
                     Tab(
-                      text: 'Request',
+                      text: 'Requests',
                     ),
                     Tab(
-                      text: registerAs == 'E' ? 'Educator' : 'Learner',
+                      text: registerAs == 'E' ? 'Educators' : 'Learners',
                     )
                   ]),
             ),

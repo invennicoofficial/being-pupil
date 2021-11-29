@@ -779,7 +779,7 @@ class _CommentScreenState extends State<CommentScreen> {
                       //crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                            height: 7.0.h,
+                            //height: 7.0.h,
                             width: 100.0.w,
                             decoration: BoxDecoration(
                                 color: Colors.white,

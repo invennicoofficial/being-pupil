@@ -41,7 +41,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     getData();
   }
 
-  getData()async{
+  getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       profilePic = preferences.getString('imageUrl');
@@ -90,7 +90,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     setState(() {
       // _image = result.length.
     });
-  print('ASSETS::: $assets');
+    print('ASSETS::: $assets');
     for (int i = 0; i < result.length; i++) {
       print('$i : ' + result[i].title);
       filePathList.add(result[i].relativePath + result[i].title);
@@ -194,18 +194,23 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             padding: EdgeInsets.only(right: 0.0.w),
             child: Center(
                 child: FlatButton(
-              onPressed: () {
-                createPostApi(descriptionController.text);
-                //print(_image.path);
-              },
-              child: Text(
-                'Post',
-                style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 12.0.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white.withOpacity(0.6)),
-              ),
+              onPressed:
+                  descriptionController.text == '' 
+                  //|| fileList.length == 0
+                      ? null
+                      : () {
+                          createPostApi(descriptionController.text);
+                          //print(_image.path);
+                        },
+              child: Text('Post',
+                  style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 12.0.sp,
+                      fontWeight: FontWeight.w500,
+                      color: descriptionController.text == '' 
+                            // || fileList.length == 0
+                          ? Colors.white.withOpacity(0.6)
+                          : Colors.white)),
             )),
           ),
         ],
@@ -257,6 +262,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   //maxLength: 500,
                   maxLines: 5,
                   controller: descriptionController,
+                  onChanged: (value){
+                    setState(() {
+                      //descriptionController.text = value;
+                    });
+                  },
                   // decoration: InputDecoration(
                   //                   //labelText: "Please mention your achivements...",
                   //                   //counterText: '',

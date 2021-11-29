@@ -147,16 +147,19 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
         backgroundColor: Constants.bgColor,
         actions: <Widget>[
           registerAs == 'E'
-              ? IconButton(
-                  icon: Icon(Icons.add_box_outlined),
-                  onPressed: () {
-                    pushNewScreen(context,
-                        screen: CreatePostScreen(),
-                        withNavBar: false,
-                        pageTransitionAnimation:
-                            PageTransitionAnimation.cupertino);
-                  },
-                )
+              ? Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: IconButton(
+                    icon: Icon(Icons.add_box_outlined),
+                    onPressed: () {
+                      pushNewScreen(context,
+                          screen: CreatePostScreen(),
+                          withNavBar: false,
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.cupertino);
+                    },
+                  ),
+              )
               : Container()
         ],
         title: Container(
@@ -276,7 +279,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                             dateList[index],
                                             style: TextStyle(
                                                 fontSize: 6.5.sp,
-                                                color: Constants.bgColor,
+                                                color: Constants.bpOnBoardSubtitleStyle,
                                                 fontFamily: 'Montserrat',
                                                 fontWeight: FontWeight.w400),
                                           ),
@@ -299,7 +302,8 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                       height: 20.0,
                                       width: 20.0,
                                       //color: Colors.grey,
-                                      child: Image.asset('assets/icons/issueIcon.png',),
+                                      child: Icon(Icons.error_outline_outlined, color: Constants.bpOnBoardSubtitleStyle, size: 20.0,)
+                                      //Image.asset('assets/icons/issueIcon.png',),
                                       // size: 25.0,
                                       // color: Constants.bgColor,
                                           //Icons.report_gmailerrorred_outlined

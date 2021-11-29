@@ -162,7 +162,7 @@ class _LearnerScreenState extends State<LearnerScreen> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 2.0.w),
                         child: Container(
-                          height: 10.0.h,
+                          //height: 10.0.h,
                           child: ListTile(
                               contentPadding: EdgeInsets.zero,
                               title: Row(
@@ -214,7 +214,7 @@ class _LearnerScreenState extends State<LearnerScreen> {
                               ),
                               trailing: Padding(
                                 padding:
-                                    EdgeInsets.only(right: 2.0.w, top: 2.0.h),
+                                    EdgeInsets.only(right: 2.0.w, top: 0.0.h),
                                 child: GestureDetector(
                                   onTap: () async {
                                     print('$index is Connected');

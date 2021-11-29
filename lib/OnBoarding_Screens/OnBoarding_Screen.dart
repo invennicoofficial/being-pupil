@@ -82,13 +82,18 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   : () {
                                     _pageController.jumpToPage(0);
                                   },
-                                  child: Icon(Icons.arrow_back_ios,
-                                      color: Constants.bgColor.withOpacity(0.8)),
+                                  child: Container(
+                                    padding: EdgeInsets.only(top: 10.0),
+                                    child: Icon(Icons.arrow_back_ios,
+                                        color: Constants.bgColor.withOpacity(0.8)),
+                                  ),
                                 )
                               : Container()),
                               actions: [
                                  _currentPage != 2
                           ? Container(
+                            padding: EdgeInsets.only(top: 10.0),
+                            //color: Colors.grey,
                               alignment: Alignment.topRight,
                               child: FlatButton(
                                 onPressed: () => _pageController.jumpToPage(2),
@@ -207,11 +212,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   'Lorem ipsum dolor sit amet,',
                                   style: _textH1,
                                 ),
-                                SizedBox(height: 1.5.h),
+                                SizedBox(height: 2.0),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 1.5.w, vertical: 2.0.h),
+                                      horizontal: 1.5.w, vertical: 1.0.h),
                                   child: Container(
+                                    //color: Colors.grey,
                                     height: 15.0.h,
                                     width: 82.0.w,
                                     child: Text(
@@ -234,7 +240,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.only(
-                              left: 3.0.w, right: 3.0.w, bottom: 3.0.h),
+                              left: 3.0.w, right: 3.0.w, bottom: 3.5.h),
                           child: Image(
                             image: AssetImage('assets/images/onBoard.png'),
                             height: 30.0.h,
@@ -254,10 +260,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   'Lorem ipsum dolor sit amet,',
                                   style: _textH1,
                                 ),
-                                SizedBox(height: 1.5.h),
+                                SizedBox(height: 2.0),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 1.5.w, vertical: 2.0.h),
+                                      horizontal: 1.5.w, vertical: 1.0.h),
                                   child: Container(
                                     height: 15.0.h,
                                     width: 82.0.w,
@@ -281,7 +287,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 3.0.w, vertical: 3.0),
+                              horizontal: 3.0.w, vertical: 0),
                           child: Image(
                             image: AssetImage('assets/images/onBoard33.png'),
                             height: 30.0.h,
@@ -301,10 +307,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   'Lorem ipsum dolor sit amet,',
                                   style: _textH1,
                                 ),
-                                SizedBox(height: 1.5.h),
+                               // SizedBox(height: 2.0),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 1.5.w, vertical: 2.0.h),
+                                      horizontal: 1.5.w, vertical: 1.0.h),
                                   child: Container(
                                     height: 15.0.h,
                                     width: 82.0.w,

@@ -106,9 +106,9 @@ class _CancelledListState extends State<CancelledList> {
                 //Foe cancel and view details
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: <TextButton>[
-                    TextButton(
-                      onPressed: () {
+                  children: [
+                    InkWell(
+                      onTap: () {
                         pushNewScreen(context,
                             screen: ViewBookingScreen(),
                             withNavBar: false,

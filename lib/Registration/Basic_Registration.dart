@@ -368,8 +368,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       child: LoginScreen()));
                             },
                             child: Container(
-                              height: 2.2.h,
-                              width: 13.0.w,
+                              // height: 2.2.h,
+                              // width: 13.0.w,
                               child: Text(
                                 'Sign In',
                                 style: TextStyle(

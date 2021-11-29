@@ -20,6 +20,7 @@ class BookPropertyScreen extends StatefulWidget {
 class _BookPropertyScreenState extends State<BookPropertyScreen> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _mobileController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
   DateTime checkInDate, checkOutDate;
   bool isCheckedIn = false, isCheckedOut = false;
   String checkInString, checkOutString, roomType = '';
@@ -29,7 +30,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
   List<String> selectedMeal = [];
   List<bool> isMeal = [false, false, false];
 
-  String userName, userGender, userNumber;
+  String userName, userGender, userNumber, userEmail;
   int roomCharge = 0, mealCharge = 0, taxCharge = 500, total = 500;
 
   int selectedMonth = 0;
@@ -51,8 +52,10 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
       userName = preferences.getString('name');
       userNumber = preferences.getString('mobileNumber');
       userGender = preferences.getString('gender');
+      userEmail = preferences.getString('email');
       _nameController.text = userName;
       _mobileController.text = '+91$userNumber';
+      _emailController.text = userEmail;
     });
   }
 
@@ -576,6 +579,56 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                       readOnly: true,
                       decoration: InputDecoration(
                         labelText: "Name",
+                        fillColor: Colors.white,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: BorderSide(
+                            color: Constants.formBorder,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: BorderSide(
+                            color: Constants.formBorder,
+                            //width: 2.0,
+                          ),
+                        ),
+                      ),
+                      //keyboardType: TextInputType.emailAddress,
+                      style: new TextStyle(
+                          fontFamily: "Montserrat", fontSize: 10.0.sp),
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     Fluttertoast.showToast(
+                      //         msg: "Please Enter Name",
+                      //         toastLength: Toast.LENGTH_SHORT,
+                      //         gravity: ToastGravity.BOTTOM,
+                      //         timeInSecForIosWeb: 1,
+                      //         backgroundColor: Colors.red,
+                      //         textColor: Colors.white,
+                      //         fontSize: 16.0);
+                      //   }
+                      // },
+                    ),
+                  ),
+                ),
+              ),
+              Theme(
+                data: new ThemeData(
+                  primaryColor: Constants.bpSkipStyle,
+                  primaryColorDark: Constants.bpSkipStyle,
+                ),
+                child: Padding(
+                  padding:
+                      EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 4.0.h),
+                  child: Container(
+                    height: 7.0.h,
+                    //width: 90.0.w,
+                    child: TextFormField(
+                      controller: _emailController,
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        labelText: "Email",
                         fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),

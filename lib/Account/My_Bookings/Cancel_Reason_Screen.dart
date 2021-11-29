@@ -102,51 +102,8 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: InkWell(
-        onTap: () {
-          if (selectedIssue == null) {
-            Fluttertoast.showToast(
-              msg: "Select Issue for Report",
-              fontSize: 10.0.sp,
-              backgroundColor: Constants.bgColor,
-              textColor: Colors.white,
-              toastLength: Toast.LENGTH_SHORT,
-            );
-          }else{
-            Fluttertoast.showToast(
-              msg: "Reason Submitted",
-              fontSize: 10.0.sp,
-              backgroundColor: Constants.bgColor,
-              textColor: Colors.white,
-              toastLength: Toast.LENGTH_SHORT,
-            );
-            pushNewScreen(context, screen: CancelDoneScreen(), withNavBar: false, pageTransitionAnimation: PageTransitionAnimation.cupertino);
-
-            //reportIssueOnPost(50, issueId);
-          }
-        },
-        child: Container(
-          height: 7.0.h,
-          width: 90.0.w,
-          decoration: BoxDecoration(
-              border: Border.all(
-                color: Constants.bgColor,
-              ),
-              color: Constants.bgColor,
-              borderRadius: BorderRadius.circular(5.0)),
-          child: Center(
-            child: Text(
-              'Submit',
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 11.0.sp,
-                  color: Colors.white),
-            ),
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton:
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Constants.bgColor,
@@ -163,7 +120,7 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
           padding: EdgeInsets.zero,
         ),
         title: Text(
-          'Report Issue',
+          'Reason for cancellation',
           style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 12.0.sp,
@@ -187,9 +144,7 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
                           selectedIssue = index;
                           issueId = index + 1;
                           //reportMapData[index]['name'] == 'Others'
-                          index == 7
-                              ? isOther = true
-                              : isOther = false;
+                          index == 7 ? isOther = true : isOther = false;
                         });
                         print(isOther ? 'Other' : 'NotOther');
                         print('ISSUE_ID::: $issueId');
@@ -197,10 +152,9 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
                       tileColor: selectedIssue == index
                           ? Constants.bgColor.withOpacity(0.7)
                           : null,
-                      title: Text(index == 7
-                      ? 'Other'
-                      :  'Report issue $index',
-                       // '${reportMapData[index]['name']}',
+                      title: Text(
+                        index == 7 ? 'Other' : 'Report issue $index',
+                        // '${reportMapData[index]['name']}',
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 12.0.sp,
@@ -211,13 +165,60 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
                       ));
                 }),
             isOther ? detailedBox() : Container(),
-            // SizedBox(
-            //   height: 25.0.h,
-            // ),
+            SizedBox(
+              height: 15.0.h,
+            ),
+            InkWell(
+              onTap: () {
+                if (selectedIssue == null) {
+                  Fluttertoast.showToast(
+                    msg: "Select Issue for Report",
+                    fontSize: 10.0.sp,
+                    backgroundColor: Constants.bgColor,
+                    textColor: Colors.white,
+                    toastLength: Toast.LENGTH_SHORT,
+                  );
+                } else {
+                  Fluttertoast.showToast(
+                    msg: "Reason Submitted",
+                    fontSize: 10.0.sp,
+                    backgroundColor: Constants.bgColor,
+                    textColor: Colors.white,
+                    toastLength: Toast.LENGTH_SHORT,
+                  );
+                  pushNewScreen(context,
+                      screen: CancelDoneScreen(),
+                      withNavBar: false,
+                      pageTransitionAnimation:
+                          PageTransitionAnimation.cupertino);
 
-            // SizedBox(
-            //   height: 3.0.h,
-            // ),
+                  //reportIssueOnPost(50, issueId);
+                }
+              },
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 4.0.h),
+                child: Container(
+                  height: 7.0.h,
+                  width: 90.0.w,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Constants.bgColor,
+                      ),
+                      color: Constants.bgColor,
+                      borderRadius: BorderRadius.circular(5.0)),
+                  child: Center(
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 11.0.sp,
+                          color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

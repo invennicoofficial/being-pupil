@@ -12,27 +12,31 @@ class ReviewDoneScreen extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: GestureDetector(
                   onTap: () {
+                    print('GO TO!!!');
                 //    Navigator.of(context).pushAndRemoveUntil(
                 // MaterialPageRoute(builder: (context) => MyBookingScreen()),
                 //     (Route<dynamic> route) => false);
                   },
-                  child: Container(
-                    height: 7.0.h,
-                    width: 90.0.w,
-                    decoration: BoxDecoration(
-                        border: Border.all(
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 5.0.h),
+                    child: Container(
+                      height: 7.0.h,
+                      width: 90.0.w,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Constants.bgColor,
+                          ),
                           color: Constants.bgColor,
+                          borderRadius: BorderRadius.circular(8.0)),
+                      child: Center(
+                        child: Text(
+                          'GO TO MY BOOKINGS',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 11.0.sp,
+                              color: Colors.white),
                         ),
-                        color: Constants.bgColor,
-                        borderRadius: BorderRadius.circular(8.0)),
-                    child: Center(
-                      child: Text(
-                        'GO TO MY BOOKINGS',
-                        style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 11.0.sp,
-                            color: Colors.white),
                       ),
                     ),
                   ),

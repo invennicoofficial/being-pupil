@@ -174,7 +174,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
               //physics: AlwaysScrollableScrollPhysics(),
               children: <Widget>[
                 Container(
-                  height: 41.0.h,
+                  //height: 41.0.h,
                   width: 100.0.w,
                   //color: Colors.grey,
                   child: Padding(
@@ -249,6 +249,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                             children: <Widget>[
                               GestureDetector(
                                 onTap: () {
+                                  _showDialog();
                                   print('Apple!!!');
                                 },
                                 child: Container(
@@ -528,21 +529,36 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                 index);
 
                                             getMyPostApi(page);
-                                          }else{
-                                            pushNewScreen(context, screen: imageListMap.length == 0 || imageListMap.length == null
-                                            ? UpdatePostScreen(
-                                              description: descriptionList[index].toString(),
-                                              postId: postIdList[index],
-                                              // images: imageListMap.length == 0 ? 0 : imageListMap,
-                                              // index: index,
-                                            )
-                                            : UpdatePostScreen(
-                                              description: descriptionList[index].toString(),
-                                              images: imageListMap,
-                                              index: index,
-                                              postId: postIdList[index],
-                                            ),
-                                              withNavBar: false, pageTransitionAnimation: PageTransitionAnimation.cupertino);
+                                          } else {
+                                            pushNewScreen(context,
+                                                screen: imageListMap.length ==
+                                                            0 ||
+                                                        imageListMap.length ==
+                                                            null
+                                                    ? UpdatePostScreen(
+                                                        description:
+                                                            descriptionList[
+                                                                    index]
+                                                                .toString(),
+                                                        postId:
+                                                            postIdList[index],
+                                                        // images: imageListMap.length == 0 ? 0 : imageListMap,
+                                                        // index: index,
+                                                      )
+                                                    : UpdatePostScreen(
+                                                        description:
+                                                            descriptionList[
+                                                                    index]
+                                                                .toString(),
+                                                        images: imageListMap,
+                                                        index: index,
+                                                        postId:
+                                                            postIdList[index],
+                                                      ),
+                                                withNavBar: false,
+                                                pageTransitionAnimation:
+                                                    PageTransitionAnimation
+                                                        .cupertino);
                                           }
                                           //  Fluttertoast.showToast(
                                           //    msg: value == 1
@@ -611,7 +627,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                             itemCount:
                                                 imageListMap[index].length,
                                             itemBuilder: (context, imageIndex) {
-                                              
                                               return Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
@@ -635,11 +650,12 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                       children: <Widget>[
                                         Row(
                                           children: [
-                                             ImageIcon(
-                                          AssetImage('assets/icons/likeNew.png'),
-                                          size: 25.0,
-                                          color: Constants.bgColor,
-                                        ),
+                                            ImageIcon(
+                                              AssetImage(
+                                                  'assets/icons/likeNew.png'),
+                                              size: 25.0,
+                                              color: Constants.bgColor,
+                                            ),
                                             SizedBox(
                                               width: 1.0.w,
                                             ),
@@ -705,15 +721,18 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: [
-                                             ImageIcon(
-                                              isLiked[index]
-                                                  ? AssetImage('assets/icons/likeThumb.png')
-                                                  : AssetImage('assets/icons/likeThumb.png'),
-                                              color: isLiked[index]
-                                                  ? Constants.selectedIcon
-                                                  : Constants.bpOnBoardSubtitleStyle,
-                                              size: 30.0,
-                                            ),
+                                              ImageIcon(
+                                                isLiked[index]
+                                                    ? AssetImage(
+                                                        'assets/icons/likeThumb.png')
+                                                    : AssetImage(
+                                                        'assets/icons/likeThumb.png'),
+                                                color: isLiked[index]
+                                                    ? Constants.selectedIcon
+                                                    : Constants
+                                                        .bpOnBoardSubtitleStyle,
+                                                size: 30.0,
+                                              ),
                                               SizedBox(
                                                 width: 1.0.w,
                                               ),
@@ -763,11 +782,13 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: [
-                                               ImageIcon(
-                                              AssetImage('assets/icons/commentNew.png'),
-                                              size: 25.0,
-                                              color: Constants.bpOnBoardSubtitleStyle,
-                                            ),
+                                              ImageIcon(
+                                                AssetImage(
+                                                    'assets/icons/commentNew.png'),
+                                                size: 25.0,
+                                                color: Constants
+                                                    .bpOnBoardSubtitleStyle,
+                                              ),
                                               SizedBox(
                                                 width: 1.0.w,
                                               ),
@@ -802,14 +823,17 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                 MainAxisAlignment.start,
                                             children: [
                                               ImageIcon(
-                                              isSaved[index]
-                                                  ? AssetImage('assets/icons/saveGreen.png')
-                                                  : AssetImage('assets/icons/saveNew.png'),
-                                              color: isSaved[index]
-                                                  ? Constants.selectedIcon
-                                                  : Constants.bpOnBoardSubtitleStyle,
-                                              size: 25.0,
-                                            ),
+                                                isSaved[index]
+                                                    ? AssetImage(
+                                                        'assets/icons/saveGreen.png')
+                                                    : AssetImage(
+                                                        'assets/icons/saveNew.png'),
+                                                color: isSaved[index]
+                                                    ? Constants.selectedIcon
+                                                    : Constants
+                                                        .bpOnBoardSubtitleStyle,
+                                                size: 25.0,
+                                              ),
                                               SizedBox(
                                                 width: 1.0.w,
                                               ),
@@ -851,6 +875,63 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                 ),
               ],
             ),
+    );
+  }
+
+  //Alert Dialog for Delete Post
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Delete Post'),
+              Padding(
+                padding: EdgeInsets.only(left: 50.0),
+                child: IconButton(
+                  icon: Icon(Icons.close),
+                  iconSize: 20.0,
+                  color: Constants.bpOnBoardSubtitleStyle,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )
+            ],
+          ),
+          actionsPadding: EdgeInsets.symmetric(vertical: 10),
+          content: Text("Are you sure you want to delete this post."),
+          actions: [
+            // usually buttons at the bottom of the dialog
+
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                    height: 40.0,
+                    width: 30.0.w,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border:
+                            Border.all(color: Constants.bgColor, width: 1.0)),
+                    child: Center(child: Text('NO'))),
+                Container(
+                    height: 40.0,
+                    width: 30.0.w,
+                    decoration: BoxDecoration(
+                        color: Constants.bgColor,
+                        borderRadius: BorderRadius.circular(20),
+                        border:
+                            Border.all(color: Constants.bgColor, width: 1.0)),
+                    child: Center(child: Text('YES'))),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 

@@ -106,9 +106,9 @@ class _UpComingListState extends State<UpComingList> {
                 //Foe cancel and view details
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <TextButton>[
-                    TextButton(
-                      onPressed: () {
+                  children: [
+                    InkWell(
+                      onTap: () {
                         pushNewScreen(context,
                             screen: CancelBookingScreen(),
                             withNavBar: false,
@@ -124,8 +124,8 @@ class _UpComingListState extends State<UpComingList> {
                             color: Color(0xFFEF1616)),
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
+                    InkWell(
+                      onTap: () {
                         pushNewScreen(context,
                             screen: ViewBookingScreen(),
                             withNavBar: false,

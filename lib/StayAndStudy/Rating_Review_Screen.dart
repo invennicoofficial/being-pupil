@@ -276,9 +276,10 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   child: ReadMoreText(
                                     'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna erat, Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,',
                                     trimLines: 3,
+                                    colorClickableText: Constants.blueTitle,
                                     trimMode: TrimMode.Line,
                                     trimCollapsedText: 'Read More',
-                                    trimExpandedText: 'Read Less',
+                                    trimExpandedText: 'See Less',
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 9.0.sp,

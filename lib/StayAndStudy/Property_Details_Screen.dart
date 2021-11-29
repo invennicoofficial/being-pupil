@@ -250,6 +250,7 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                   trimMode: TrimMode.Line,
                   trimCollapsedText: 'Read More',
                   trimExpandedText: 'Read Less',
+                  colorClickableText: Constants.blueTitle,
                   style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 8.0.sp,
@@ -290,19 +291,25 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                                   crossAxisCount: 2, childAspectRatio: 4.5),
                           itemBuilder: (context, index) {
                             return ListTile(
+                              //visualDensity: VisualDensity(horizontal: -4.0, vertical: 0.0),
                               contentPadding: EdgeInsets.zero,
-                              leading: ImageIcon(
-                                AssetImage(ameIcon[index]),
-                                size: 22.0,
-                                color: Constants.bgColor,
-                              ),
-                              title: Text(
-                                ameList[index],
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 9.0.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Constants.bgColor),
+                              title: Row(
+                                children: [
+                                  ImageIcon(
+                                    AssetImage(ameIcon[index]),
+                                    size: 22.0,
+                                    color: Constants.bgColor,
+                                  ),
+                                  SizedBox(width: 5.0,),
+                                  Text(
+                                    ameList[index],
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 9.0.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Constants.bgColor),
+                                  ),
+                                ],
                               ),
                             );
                           }),

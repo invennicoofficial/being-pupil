@@ -108,9 +108,9 @@ class _CompletedListState extends State<CompletedList> {
                 //Foe cancel and view details
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <TextButton>[
-                    TextButton(
-                      onPressed: index == 0
+                  children: [
+                    InkWell(
+                      onTap: index == 0
                           ? () {
                               pushNewScreen(context,
                                   screen: ReviewScreen(),
@@ -134,8 +134,8 @@ class _CompletedListState extends State<CompletedList> {
                             color: Color(0xFF04964D)),
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
+                    InkWell(
+                      onTap: () {
                         pushNewScreen(context,
                             screen: ViewBookingScreen(),
                             withNavBar: false,
