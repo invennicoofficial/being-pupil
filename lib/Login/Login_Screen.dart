@@ -4,10 +4,12 @@ import 'package:being_pupil/Model/Login_Model.dart';
 import 'package:being_pupil/Registration/Basic_Registration.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 
@@ -25,6 +27,9 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController mobileController = TextEditingController();
   final storage = new FlutterSecureStorage();
+
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+  GoogleSignInAccount userData;
 
   void initState() {
     // TODO: implement initState
@@ -229,11 +234,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             GestureDetector(
                               onTap: () {
                                 print('Apple Login!!!');
-                                 Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      type: PageTransitionType.fade,
-                                      child: LoginMobileCheckScreen()));
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        type: PageTransitionType.fade,
+                                        child: LoginMobileCheckScreen()));
                               },
                               child: Container(
                                   height: 4.0.h,
@@ -246,11 +251,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             GestureDetector(
                               onTap: () {
                                 print('Google Login!!!');
-                                Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      type: PageTransitionType.fade,
-                                      child: LoginMobileCheckScreen()));
+                                _handleGoogleSignIn();
+                                // Navigator.push(
+                                //     context,
+                                //     PageTransition(
+                                //         type: PageTransitionType.fade,
+                                //         child: LoginMobileCheckScreen()));
                               },
                               child: Container(
                                   height: 4.0.h,
@@ -264,10 +270,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               onTap: () {
                                 print('Facebook Login!!!');
                                 Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      type: PageTransitionType.fade,
-                                      child: LoginMobileCheckScreen()));
+                                    context,
+                                    PageTransition(
+                                        type: PageTransitionType.fade,
+                                        child: LoginMobileCheckScreen()));
                               },
                               child: Container(
                                   height: 4.0.h,
@@ -367,7 +373,8 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.push(
               context,
               PageTransition(
-                  type: PageTransitionType.fade, child: OtpScreen(
+                  type: PageTransitionType.fade,
+                  child: OtpScreen(
                     mobileNumber: mobileController.text,
                   )));
           Fluttertoast.showToast(
@@ -380,26 +387,26 @@ class _LoginScreenState extends State<LoginScreen> {
             fontSize: 10.0.sp,
           );
         } else {
-          if(result.message == null){
-          Fluttertoast.showToast(
-            msg: result.errorMsg,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Constants.bgColor,
-            textColor: Colors.white,
-            fontSize: 10.0.sp,
-          );
+          if (result.message == null) {
+            Fluttertoast.showToast(
+              msg: result.errorMsg,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Constants.bgColor,
+              textColor: Colors.white,
+              fontSize: 10.0.sp,
+            );
           } else {
             Fluttertoast.showToast(
-            msg: result.message,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Constants.bgColor,
-            textColor: Colors.white,
-            fontSize: 10.0.sp,
-          );
+              msg: result.message,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Constants.bgColor,
+              textColor: Colors.white,
+              fontSize: 10.0.sp,
+            );
           }
         }
         print(result);
@@ -429,13 +436,109 @@ class _LoginScreenState extends State<LoginScreen> {
     return result;
   }
 
- void saveUserData(int userId) async {
+//Check Social Login
+   Future<Login> checkLogin(String socialId) async {
+    displayProgressDialog(context);
+    var result = Login();
+    try {
+      Dio dio = Dio();
+      FormData formData = FormData.fromMap({
+        'social_login_id': socialId,
+      });
+      var response = await dio.post(Config.loginUrl, data: formData);
+      if (response.statusCode == 200) {
+        print(response.data);
+        closeProgressDialog(context);
+        result = Login.fromJson(response.data);
+        saveUserData(result.data.userId);
+        print('ID ::: ' + result.data.userId.toString());
+        if (result.status == true) {
+          Navigator.push(
+              context,
+              PageTransition(
+                  type: PageTransitionType.fade,
+                  child: OtpScreen(
+                    mobileNumber: mobileController.text,
+                  )));
+          Fluttertoast.showToast(
+            msg: result.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        } else {
+          if (result.message == null) {
+            Fluttertoast.showToast(
+              msg: result.errorMsg,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Constants.bgColor,
+              textColor: Colors.white,
+              fontSize: 10.0.sp,
+            );
+          } else {
+            Fluttertoast.showToast(
+              msg: result.message,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Constants.bgColor,
+              textColor: Colors.white,
+              fontSize: 10.0.sp,
+            );
+          }
+        }
+        print(result);
+      }
+    } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+      closeProgressDialog(context);
+      if (e.response != null) {
+        print("This is the error message::::" +
+            e.response.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.request);
+        print(e.message);
+      }
+    }
+    return result;
+  }
+
+  Future<void> _handleGoogleSignIn() async {
+    _googleSignIn.signOut();
+    var login = Login();
+    try {
+      userData = await _googleSignIn.signIn();
+      print('ID:::' + userData.id);
+      print('USERNAME:::' + userData.displayName);
+      print('EMAIL:::' + userData.email);
+      print('PHOTO:::' + userData.photoUrl);
+    } catch (e) {
+      print('Google Error:::$e');
+    }
+  }
+
+
+  void saveUserData(int userId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setInt('userId', userId);
     print(userId);
   }
- 
-
 
   displayProgressDialog(BuildContext context) {
     Navigator.of(context).push(new PageRouteBuilder(
