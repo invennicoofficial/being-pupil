@@ -446,14 +446,29 @@ class _LoginScreenState extends State<LoginScreen> {
       FormData formData = FormData.fromMap({
         'social_login_id': socialId,
       });
-      var response = await dio.post(Config.loginUrl, data: formData);
+      var response = await dio.post(Config.checkSocialLogin, data: formData);
       if (response.statusCode == 200) {
         print(response.data);
         closeProgressDialog(context);
         result = SocialLoginCheck.fromJson(response.data);
         saveUserData(result.data.userId);
         print('ID ::: ' + result.data.userId.toString());
-        if (result.status == true) {
+        if (result.data.userObject == null) {
+          // Fluttertoast.showToast(
+          //   msg: result.message,
+          //   toastLength: Toast.LENGTH_SHORT,
+          //   gravity: ToastGravity.BOTTOM,
+          //   timeInSecForIosWeb: 1,
+          //   backgroundColor: Constants.bgColor,
+          //   textColor: Colors.white,
+          //   fontSize: 10.0.sp,
+          // );
+          Navigator.push(
+              context,
+              PageTransition(
+                  type: PageTransitionType.fade,
+                  child: LoginMobileCheckScreen()));
+        } else {
           Navigator.push(
               context,
               PageTransition(
@@ -470,7 +485,6 @@ class _LoginScreenState extends State<LoginScreen> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-        } else {
           if (result.message == null) {
             Fluttertoast.showToast(
               msg: result.errorMsg,
@@ -529,6 +543,9 @@ class _LoginScreenState extends State<LoginScreen> {
       print('USERNAME:::' + userData.displayName);
       print('EMAIL:::' + userData.email);
       print('PHOTO:::' + userData.photoUrl);
+      if(userData != null) {
+        checkLogin(userData.id);
+      }
     } catch (e) {
       print('Google Error:::$e');
     }

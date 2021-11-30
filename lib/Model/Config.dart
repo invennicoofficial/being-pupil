@@ -35,6 +35,7 @@ class Config{
   static const String editCommentUrl = baseUrl + "user/post/comment/edit";
   static const String mobileCheckUrl = baseUrl + "user/check-mobile-number";
   static const String updatePostUrl = baseUrl + "user/post/update";
+  static const String checkSocialLogin = baseUrl + "user/social-login-check";
 }
 
 
