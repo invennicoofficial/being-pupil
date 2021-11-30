@@ -1,6 +1,7 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Login_Model.dart';
+import 'package:being_pupil/Model/Social_Login_Check_Model.dart';
 import 'package:being_pupil/Registration/Basic_Registration.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
@@ -437,9 +438,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
 //Check Social Login
-   Future<Login> checkLogin(String socialId) async {
+   Future<SocialLoginCheck> checkLogin(String socialId) async {
     displayProgressDialog(context);
-    var result = Login();
+    var result = SocialLoginCheck();
     try {
       Dio dio = Dio();
       FormData formData = FormData.fromMap({
@@ -449,7 +450,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
         print(response.data);
         closeProgressDialog(context);
-        result = Login.fromJson(response.data);
+        result = SocialLoginCheck.fromJson(response.data);
         saveUserData(result.data.userId);
         print('ID ::: ' + result.data.userId.toString());
         if (result.status == true) {
