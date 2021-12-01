@@ -1,15 +1,15 @@
-//Model Class for SocialLoginCheck
-class SocialLoginCheck {
+//Model Class for SocialLogin
+class SocialLogin {
   bool status;
   String errorCode;
   String errorMsg;
   String message;
   Data data;
 
-  SocialLoginCheck({this.status, this.errorCode, this.errorMsg, this.message, this.data});
+  SocialLogin({this.status, this.errorCode, this.errorMsg, this.message, this.data});
 
-  factory SocialLoginCheck.fromJson(Map<String, dynamic> json) {
-    return SocialLoginCheck(
+  factory SocialLogin.fromJson(Map<String, dynamic> json) {
+    return SocialLogin(
         status: json['status'],
         errorCode: json['error_code'],
         errorMsg: json['error_msg'],

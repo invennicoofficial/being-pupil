@@ -14,7 +14,8 @@ import 'Registration_After_Login.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginMobileCheckScreen extends StatefulWidget {
-  LoginMobileCheckScreen({Key key}) : super(key: key);
+  String socialId, registrationType, socialDisplayName, socialEmail, socialPhotoUrl;
+  LoginMobileCheckScreen({Key key, @required this.socialId, @required this.registrationType, @required this.socialDisplayName, @required this.socialEmail, @required this.socialPhotoUrl }) : super(key: key);
 
   @override
   _LoginMobileCheckScreenState createState() => _LoginMobileCheckScreenState();
@@ -227,15 +228,15 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
       Dio dio = Dio();
       FormData formData = FormData.fromMap({
         'mobile_number': mobileNumber,
-        'country_code': '+91',
+        //'country_code': '+91',
         'deviceType': 'A',
         'deviceId': '1234567',
-        'registration_type': 'M',
-        'social_login_details[display_name]': '',
-        'social_login_details[email]': 'rajmaj@gmail.com',
-        'social_login_details[photoURL]': 'https://lh3.googleusercontent.com/a-/AOh14GjDzQNWra6cLy7eV0SaxDO_NTGlWiQ9g1aVPS1IA4I=s96-c-rg-br100',
-        'social_login_details[phoneNumber]': '',
-        'social_login_details[uid]': 'khdbcfioducde99he9hhe'
+        'registration_type': widget.registrationType,
+        'social_login_details[display_name]': widget.socialDisplayName,
+        'social_login_details[email]': widget.socialEmail,
+        'social_login_details[photoURL]': widget.socialPhotoUrl,
+        //'social_login_details[phoneNumber]': '',
+        'social_login_details[uid]': widget.socialId
       });
       var response = await dio.post(Config.mobileCheckUrl, data: formData);
       if (response.statusCode == 200) {
@@ -256,6 +257,12 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
               PageTransition(
                   type: PageTransitionType.fade, child: SignUpAfterLoginScreen(
                     mobileNumber: mobileController.text,
+                    name: widget.socialDisplayName,
+                    registrationType: widget.registrationType,
+                    socialDisplayName: widget.socialDisplayName,
+                    socialEmail: widget.socialEmail,
+                    socialPhotoUrl: widget.socialPhotoUrl,
+                    socialId: widget.socialId,
                   )));          
           }else{
             Fluttertoast.showToast(

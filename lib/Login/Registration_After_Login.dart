@@ -1,15 +1,28 @@
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/Model_Class.dart';
+import 'package:being_pupil/Model/Social_Login_Model.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:dio/dio.dart';
+import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:being_pupil/Registration/Educator_Registration.dart';
+
+
+import 'OTP_Screen.dart';
 
 class SignUpAfterLoginScreen extends StatefulWidget {
- final String mobileNumber;
- SignUpAfterLoginScreen({Key key, this.mobileNumber}) : super(key: key);
+  final String mobileNumber, name, registrationType, socialDisplayName, socialEmail, socialPhotoUrl, socialId;
+  SignUpAfterLoginScreen({Key key, this.mobileNumber, this.name, this.registrationType, this.socialDisplayName, this.socialEmail, this.socialPhotoUrl, this.socialId})
+      : super(key: key);
 
   @override
   _SignUpAfterLoginScreen createState() => _SignUpAfterLoginScreen();
@@ -19,12 +32,14 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
   String registerAs = 'notSelected';
   TextEditingController nameController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
-  
+  final storage = new FlutterSecureStorage();
+
   @override
   void initState() {
     // TODO: implement initState
     // //SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     super.initState();
+    nameController.text = widget.name;
     mobileController.text = widget.mobileNumber;
   }
 
@@ -56,9 +71,10 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
                         child: Row(
                           children: [
                             IconButton(
-                              icon: Icon(Icons.west_outlined, color: Colors.white),
+                              icon: Icon(Icons.west_outlined,
+                                  color: Colors.white),
                               iconSize: 30.0,
-                              onPressed: (){
+                              onPressed: () {
                                 Navigator.of(context).pop();
                               },
                             ),
@@ -286,7 +302,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
                           onTap: () {
                             print('Sign Up!!!');
                             //signUp(nameController.text.trim(), mobileController.text.trim(), registerAs, deviceType, deviceId)
-                            if (nameController.text.isEmpty){
+                            if (nameController.text.isEmpty) {
                               Fluttertoast.showToast(
                                   msg: "Please Enter Name",
                                   toastLength: Toast.LENGTH_SHORT,
@@ -304,8 +320,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
                                   backgroundColor: Constants.bgColor,
                                   textColor: Colors.white,
                                   fontSize: 10.0.sp);
-                            }
-                            else if (registerAs == 'notSelected') {
+                            } else if (registerAs == 'notSelected') {
                               Fluttertoast.showToast(
                                   msg: "Please Select Register As",
                                   toastLength: Toast.LENGTH_SHORT,
@@ -315,12 +330,12 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
                                   textColor: Colors.white,
                                   fontSize: 10.0.sp);
                             } else {
-                              // signUp(
-                              //     nameController.text.trim(),
-                              //     mobileController.text.trim(),
-                              //     registerAs,
-                              //     'A',
-                              //     '1234567');
+                              login(
+                                  nameController.text.trim(),
+                                  widget.mobileNumber,
+                                  registerAs,
+                                  'A',
+                                  '1234567');
                             }
                           },
                           child: Container(
@@ -360,7 +375,135 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
     );
   }
 
-    void saveUserData(int userId) async {
+  Future<SocialLogin> login(String name, String mobileNumber,
+      String registerAs, String deviceType, String deviceId) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    displayProgressDialog(context);
+    var result = SocialLogin();
+    try {
+      Dio dio = Dio();
+      FormData formData = FormData.fromMap({
+        'name': name,
+        'mobile_number': mobileNumber,
+        'register_as': registerAs,
+        'deviceType': deviceType,
+        'deviceId': deviceId,
+        'registration_type': widget.registrationType,
+        'social_login_details[display_name]': widget.socialDisplayName,
+        'social_login_details[email]': widget.socialEmail,
+        'social_login_details[photoURL]': widget.socialPhotoUrl,
+        'social_login_details[uid]': widget.socialId,
+      });
+      var response = await dio.post(Config.loginUrl, data: formData);
+      if (response.statusCode == 200) {
+        print(response.data);
+        closeProgressDialog(context);
+        result = SocialLogin.fromJson(response.data);
+        //print(result.data.name);
+        if (result.status == true) {
+          // print('ID ::: ' + result.data.userObject.userId.toString());
+          // saveUserData(result.data.userObject.userId);
+          print('ROLE ::' + result.data.userObject.role.toString());
+          saveToken(result.data.token);
+          preferences.setString('RegisterAs', result.data.userObject.role);
+          if(result.data.userObject.isNew == "true") {
+            result.data.userObject.role == 'L'
+                ? Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+                    (Route<dynamic> route) => false)
+                : Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => EducatorRegistration(
+                  name: name,
+                  mobileNumber: mobileNumber,
+                )));
+          } 
+          // else {
+          //     preferences.setString("name", result.data.userObject.name);
+          //     preferences.setString("mobileNumber", result.data.userObject.mobileNumber);
+          //     preferences.setString("gender", result.data.userObject.gender);
+          //     //result.data.userObject.role == 'E' ? 
+          //     preferences.setString("imageUrl", result.data.userObject.imageUrl);
+          //     // : preferences.setString("imageUrl", '');
+          //     result.data.userObject.role == 'E' ? preferences.setString("qualification", result.data.userObject.educationalDetail.qualification) : preferences.setString("qualification", '');
+          //     result.data.userObject.role == 'E' ? preferences.setString("schoolName", result.data.userObject.educationalDetail.schoolName) : preferences.setString("schoolName",'');
+          //     result.data.userObject.role == 'E' ? preferences.setString("address1", result.data.userObject.location.addressLine2): preferences.setString("address1", '');
+          //     result.data.userObject.role == 'E' ? preferences.setString("address2", result.data.userObject.location.city): preferences.setString("address2", '');
+          //     result.data.userObject.role == 'E' ? preferences.setString("facebookUrl", result.data.userObject.fbUrl) : preferences.setString("facebookUrl",'');
+          //     result.data.userObject.role == 'E' ? preferences.setString("instaUrl", result.data.userObject.instaUrl) : preferences.setString("instaUrl",'');
+          //     result.data.userObject.role == 'E' ? preferences.setString("linkedInUrl", result.data.userObject.liUrl) : preferences.setString("linkedInUrl", '');
+          //     result.data.userObject.role == 'E' ? preferences.setString("otherUrl", result.data.userObject.otherUrl) : preferences.setString("otherUrl", '');
+          //     result.data.userObject.role == 'E' ? preferences.setString("isNew", result.data.userObject.isNew) : preferences.setString("isNew", '');
+          //     preferences.setBool('isLoggedIn', true);
+
+          // print('Gender::: ${result.data.userObject.gender}');
+          // print('IMAGE:::' + result.data.userObject.imageUrl);
+
+          //   Navigator.of(context).pushAndRemoveUntil(
+          //       MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+          //           (Route<dynamic> route) => false);
+          // }
+          // Navigator.push(
+          //     context,
+          //     PageTransition(
+          //         type: PageTransitionType.fade,
+          //         child: OtpScreen(
+          //           mobileNumber: mobileController.text,
+                 // )));
+          Fluttertoast.showToast(
+            msg: result.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        } else {
+          Fluttertoast.showToast(
+            msg: result.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        }
+        print(result);
+      }
+    } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+      closeProgressDialog(context);
+      if (e.response != null) {
+        print("This is the error message::::" +
+            e.response.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.request);
+        print(e.message);
+      }
+    }
+    return result;
+  }
+
+  void saveToken(String token) async {
+    // Write value
+    await storage.write(key: 'access_token', value: token);
+    print('TOKEN ::: ' + token);
+    //closeProgressDialog(context);
+  }
+
+  void saveUserData(int userId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setInt('userId', userId);
     print(userId);

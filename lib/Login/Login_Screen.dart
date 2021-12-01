@@ -3,9 +3,9 @@ import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Login_Model.dart';
 import 'package:being_pupil/Model/Social_Login_Check_Model.dart';
 import 'package:being_pupil/Registration/Basic_Registration.dart';
+import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -17,6 +17,9 @@ import 'package:sizer/sizer.dart';
 import 'OTP_Screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Login_Mobile_Check.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:being_pupil/Registration/Educator_Registration.dart';
+
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -30,7 +33,17 @@ class _LoginScreenState extends State<LoginScreen> {
   final storage = new FlutterSecureStorage();
 
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
-  GoogleSignInAccount userData;
+  GoogleSignInAccount gUserData;
+  Map<String, dynamic> fbUserData;
+  String registrationType = 'M';
+  String socialName;
+  String socialEmail;
+  String socialPhotoUrl;
+  String socialId;
+  String mobileNumberFromAPi;
+   String registerAs;
+  String role;
+  String name;
 
   void initState() {
     // TODO: implement initState
@@ -235,11 +248,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             GestureDetector(
                               onTap: () {
                                 print('Apple Login!!!');
-                                Navigator.push(
-                                    context,
-                                    PageTransition(
-                                        type: PageTransitionType.fade,
-                                        child: LoginMobileCheckScreen()));
+                                setState(() {
+                                  registrationType = 'A';
+                                });
+                                // Navigator.push(
+                                //     context,
+                                //     PageTransition(
+                                //         type: PageTransitionType.fade,
+                                //         child: LoginMobileCheckScreen()));
                               },
                               child: Container(
                                   height: 4.0.h,
@@ -252,6 +268,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             GestureDetector(
                               onTap: () {
                                 print('Google Login!!!');
+                                setState(() {
+                                  registrationType = 'G';
+                                });
                                 _handleGoogleSignIn();
                                 // Navigator.push(
                                 //     context,
@@ -270,11 +289,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             GestureDetector(
                               onTap: () {
                                 print('Facebook Login!!!');
-                                Navigator.push(
-                                    context,
-                                    PageTransition(
-                                        type: PageTransitionType.fade,
-                                        child: LoginMobileCheckScreen()));
+                                setState(() {
+                                  registrationType = 'F';
+                                });
+                                _handleFacebookSignIn();
+                                // Navigator.push(
+                                //     context,
+                                //     PageTransition(
+                                //         type: PageTransitionType.fade,
+                                //         child: LoginMobileCheckScreen()));
                               },
                               child: Container(
                                   height: 4.0.h,
@@ -361,7 +384,15 @@ class _LoginScreenState extends State<LoginScreen> {
         'country_code': '+91',
         'deviceType': 'A',
         'deviceId': '1234567',
-        'registration_type': 'M',
+        'registration_type': registrationType,
+        'social_login_details[display_name]':
+            registrationType == 'M' ? null : socialName,
+        'name': registrationType == 'M' ? null : socialName,
+        'social_login_details[email]':
+            registrationType == 'M' ? null : socialEmail,
+        'social_login_details[photoURL]':
+            registrationType == 'M' ? null : socialPhotoUrl,
+        'social_login_details[uid]': registrationType == 'M' ? null : socialId,
       });
       var response = await dio.post(Config.loginUrl, data: formData);
       if (response.statusCode == 200) {
@@ -438,7 +469,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
 //Check Social Login
-   Future<SocialLoginCheck> checkLogin(String socialId) async {
+  Future<SocialLoginCheck> checkLogin(String socialId) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     displayProgressDialog(context);
     var result = SocialLoginCheck();
     try {
@@ -451,8 +483,9 @@ class _LoginScreenState extends State<LoginScreen> {
         print(response.data);
         closeProgressDialog(context);
         result = SocialLoginCheck.fromJson(response.data);
-        saveUserData(result.data.userId);
-        print('ID ::: ' + result.data.userId.toString());
+
+        //print('ID ::: ' + result.data.userObject.userId.toString());
+        
         if (result.data.userObject == null) {
           // Fluttertoast.showToast(
           //   msg: result.message,
@@ -467,15 +500,70 @@ class _LoginScreenState extends State<LoginScreen> {
               context,
               PageTransition(
                   type: PageTransitionType.fade,
-                  child: LoginMobileCheckScreen()));
-        } else {
-          Navigator.push(
-              context,
-              PageTransition(
-                  type: PageTransitionType.fade,
-                  child: OtpScreen(
-                    mobileNumber: mobileController.text,
+                  child: LoginMobileCheckScreen(
+                    socialId: socialId,
+                    registrationType: registrationType,
+                    socialDisplayName: socialName,
+                    socialEmail: socialEmail,
+                    socialPhotoUrl: socialPhotoUrl,
                   )));
+        } else {
+          print('API MO::::$mobileNumberFromAPi');
+          // saveUserData(result.data.userObject.userId);
+          // mobileNumberFromAPi = result.data.userObject.mobileNumber;
+          // setState(() {});
+          // login(mobileNumberFromAPi);
+          print('ROLE ::' + result.data.userObject.toString());
+          saveToken(result.data.token);
+          role = result.data.userObject.role;
+          name = result.data.userObject.name;
+          mobileNumberFromAPi = result.data.userObject.mobileNumber;
+          preferences.setString('RegisterAs', role);
+          
+
+         if(result.data.userObject.isNew == "true") {
+            result.data.userObject.role == 'L'
+                ? Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+                    (Route<dynamic> route) => false)
+                : Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => EducatorRegistration(
+                  name: name,
+                  mobileNumber: mobileNumberFromAPi,
+                )));
+          } else {
+              preferences.setString("name", result.data.userObject.name);
+              preferences.setString("mobileNumber", result.data.userObject.mobileNumber);
+              preferences.setString("gender", result.data.userObject.gender);
+              //result.data.userObject.role == 'E' ? 
+              preferences.setString("imageUrl", result.data.userObject.imageUrl);
+              // : preferences.setString("imageUrl", '');
+              result.data.userObject.role == 'E' ? preferences.setString("qualification", result.data.userObject.educationalDetail.qualification) : preferences.setString("qualification", '');
+              result.data.userObject.role == 'E' ? preferences.setString("schoolName", result.data.userObject.educationalDetail.schoolName) : preferences.setString("schoolName",'');
+              result.data.userObject.role == 'E' ? preferences.setString("address1", result.data.userObject.location.addressLine2): preferences.setString("address1", '');
+              result.data.userObject.role == 'E' ? preferences.setString("address2", result.data.userObject.location.city): preferences.setString("address2", '');
+              result.data.userObject.role == 'E' ? preferences.setString("facebookUrl", result.data.userObject.fbUrl) : preferences.setString("facebookUrl",'');
+              result.data.userObject.role == 'E' ? preferences.setString("instaUrl", result.data.userObject.instaUrl) : preferences.setString("instaUrl",'');
+              result.data.userObject.role == 'E' ? preferences.setString("linkedInUrl", result.data.userObject.liUrl) : preferences.setString("linkedInUrl", '');
+              result.data.userObject.role == 'E' ? preferences.setString("otherUrl", result.data.userObject.otherUrl) : preferences.setString("otherUrl", '');
+              result.data.userObject.role == 'E' ? preferences.setString("isNew", result.data.userObject.isNew) : preferences.setString("isNew", '');
+              preferences.setBool('isLoggedIn', true);
+
+          print('Gender::: ${result.data.userObject.gender}');
+          print('IMAGE:::' + result.data.userObject.imageUrl);
+
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+                    (Route<dynamic> route) => false);
+          }
+
+          // Navigator.push(
+          //     context,
+          //     PageTransition(
+          //         type: PageTransitionType.fade,
+          //         child: OtpScreen(
+          //           mobileNumber: mobileController.text,
+          //         )));
           Fluttertoast.showToast(
             msg: result.message,
             toastLength: Toast.LENGTH_SHORT,
@@ -487,7 +575,7 @@ class _LoginScreenState extends State<LoginScreen> {
           );
           if (result.message == null) {
             Fluttertoast.showToast(
-              msg: result.errorMsg,
+              msg: result.message,
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
@@ -536,21 +624,65 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _handleGoogleSignIn() async {
     _googleSignIn.signOut();
-    var login = Login();
+
     try {
-      userData = await _googleSignIn.signIn();
-      print('ID:::' + userData.id);
-      print('USERNAME:::' + userData.displayName);
-      print('EMAIL:::' + userData.email);
-      print('PHOTO:::' + userData.photoUrl);
-      if(userData != null) {
-        checkLogin(userData.id);
+      gUserData = await _googleSignIn.signIn();
+      print('ID:::' + gUserData.id);
+      print('USERNAME:::' + gUserData.displayName);
+      print('EMAIL:::' + gUserData.email);
+      print('PHOTO:::' + gUserData.photoUrl);
+      socialName = gUserData.displayName;
+      socialEmail = gUserData.email;
+      socialPhotoUrl = gUserData.photoUrl;
+      socialId = gUserData.id;
+      setState(() {});
+      if (gUserData != null) {
+        checkLogin(gUserData.id);//'khdbcfioducde99he9hhe'
       }
     } catch (e) {
       print('Google Error:::$e');
     }
   }
 
+  Future<void> _handleFacebookSignIn() async {
+    FacebookAuth.instance.logOut();
+    try {
+      // by default the login method has the next permissions ['email','public_profile']
+      AccessToken accessToken = await FacebookAuth.instance.login();
+      print(accessToken.toJson());
+      // get the user data
+      fbUserData = await FacebookAuth.instance.getUserData();
+      print(fbUserData);
+      socialName = fbUserData['name'];
+      socialEmail = fbUserData['email'];
+      socialPhotoUrl = fbUserData['picture']['data']['url'];
+      socialId = fbUserData['id'].toString();
+      setState(() {});
+      print('FACEBOOK::::$socialPhotoUrl');
+      if (fbUserData != null) {
+        checkLogin(fbUserData['id'].toString());
+      }
+    } on FacebookAuthException catch (e) {
+      switch (e.errorCode) {
+        case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
+          print("You have a previous login operation in progress");
+          break;
+        case FacebookAuthErrorCode.CANCELLED:
+          print("login cancelled");
+          break;
+        case FacebookAuthErrorCode.FAILED:
+          print("login failed");
+          break;
+      }
+    }
+  }
+
+     void saveToken(String token) async {
+    // Write value
+    await storage.write(key: 'access_token', value: token);
+    print('TOKEN ::: ' + token);
+    //closeProgressDialog(context);
+  }
 
   void saveUserData(int userId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
