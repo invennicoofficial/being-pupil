@@ -36,6 +36,9 @@ class Config{
   static const String mobileCheckUrl = baseUrl + "user/check-mobile-number";
   static const String updatePostUrl = baseUrl + "user/post/update";
   static const String checkSocialLogin = baseUrl + "user/social-login-check";
+  static const String createCourseUrl = baseUrl + "user/createCourse";
+  static const String updateCourseUrl = baseUrl + "user/courseUpdate";
+  static const String getMyCourseUrl = baseUrl + "user/getMyCourse";
 }
 
 

@@ -1,16 +1,19 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
-class CourseDetailScrenn extends StatefulWidget {
-  const CourseDetailScrenn({Key key}) : super(key: key);
+import 'Update_Course_Screen.dart';
+
+class CourseDetailScreen extends StatefulWidget {
+  const CourseDetailScreen({Key key}) : super(key: key);
 
   @override
-  _CourseDetailScrennState createState() => _CourseDetailScrennState();
+  _CourseDetailScreenState createState() => _CourseDetailScreenState();
 }
 
-class _CourseDetailScrennState extends State<CourseDetailScrenn> {
+class _CourseDetailScreenState extends State<CourseDetailScreen> {
   String registerAs;
 
   @override
@@ -52,6 +55,8 @@ class _CourseDetailScrennState extends State<CourseDetailScrenn> {
                       child: FlatButton(
                     onPressed: () {
                       print('EDIT!!!');
+                      pushNewScreen(context, screen: UpdateCourseScreen(),
+                      withNavBar: false, pageTransitionAnimation: PageTransitionAnimation.cupertino);
                     },
                     child: Text(
                       'Edit',

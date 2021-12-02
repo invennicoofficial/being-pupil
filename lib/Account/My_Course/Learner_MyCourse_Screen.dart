@@ -1,8 +1,14 @@
 import 'package:being_pupil/Account/My_Course/Course_Details.dart';
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/Course_Model/Get_My_Course_Model.dart';
+import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class LearnerMyCourseScreen extends StatefulWidget {
   LearnerMyCourseScreen({Key key}) : super(key: key);
@@ -12,6 +18,22 @@ class LearnerMyCourseScreen extends StatefulWidget {
 }
 
 class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
+  String authToken;
+  int courseLength = 0;
+  var result = GetMyCourse();
+
+   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getToken();
+  }
+
+  void getToken() async {
+    authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+    getMyCourseAPI();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +60,7 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: ListView.builder(
-            itemCount: 3,
+            itemCount: courseLength,
             shrinkWrap: true,
             itemBuilder: (context, index) {
               return Padding(
@@ -47,7 +69,7 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
                 child: ListTile(
                   onTap: () {
                     pushNewScreen(context,
-                        screen: CourseDetailScrenn(),
+                        screen: CourseDetailScreen(),
                         withNavBar: false,
                         pageTransitionAnimation:
                             PageTransitionAnimation.cupertino);
@@ -73,8 +95,7 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
                         children: <Widget>[
                           Container(
                             width: 65.0.w,
-                            child: Text(
-                              'Lorem ipsum dolor sit amet, consetetur',
+                            child: Text(result.data[index].courseName,
                               style: TextStyle(
                                   fontFamily: 'Montserrat',
                                   fontSize: 11.0.sp,
@@ -86,7 +107,7 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
                           SizedBox(
                             height: 0.5.h,
                           ),
-                          Text('21 Jan 2021 to 21 Mar 2021',
+                          Text('${result.data[index].startDate} to ${result.data[index].endDate}',
                               style: TextStyle(
                                   fontFamily: 'Montserrat',
                                   fontSize: 8.0.sp,
@@ -101,5 +122,68 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
             }),
       ),
     );
+  }
+  //Get My  Course API
+
+  Future<GetMyCourse> getMyCourseAPI() async {
+    displayProgressDialog(context);
+
+    try {
+      var dio = Dio();
+      var response = await dio.get(Config.getMyCourseUrl,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+      if (response.statusCode == 200) {
+        result = GetMyCourse.fromJson(response.data);
+        print(response.data);
+        courseLength = result.data == [] ? 0 : result.data.length;
+        setState((){});
+        closeProgressDialog(context);
+      } else {
+        Fluttertoast.showToast(
+          msg: result.message,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
+    } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+      closeProgressDialog(context);
+      closeProgressDialog(context);
+      if (e.response != null) {
+        print("This is the error message::::" +
+            e.response.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.request);
+        print(e.message);
+      }
+    }
+    return result;
+  }
+
+  displayProgressDialog(BuildContext context) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new ProgressDialog();
+        }));
+  }
+
+  closeProgressDialog(BuildContext context) {
+    Navigator.of(context).pop();
   }
 }

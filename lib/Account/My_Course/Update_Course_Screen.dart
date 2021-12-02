@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Course_Model/Create_Course_Model.dart';
+import 'package:being_pupil/Model/Course_Model/Update_Course_Model.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -10,14 +11,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
-class CreateCourseScreen extends StatefulWidget {
-  const CreateCourseScreen({Key key}) : super(key: key);
+class UpdateCourseScreen extends StatefulWidget {
+  const UpdateCourseScreen({Key key}) : super(key: key);
 
   @override
-  _CreateCourseScreenState createState() => _CreateCourseScreenState();
+  _UpdateCourseScreenState createState() => _UpdateCourseScreenState();
 }
 
-class _CreateCourseScreenState extends State<CreateCourseScreen> {
+class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
   //List<Widget> childeren = [];
   List<TextEditingController> linkControllers = List<TextEditingController>();
   int linkCount = 1;
@@ -501,7 +502,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                       );
                     }
                      else {
-                      createCourseAPI();
+                      updateCourseAPI();
                     }
                   },
                   child: Container(
@@ -534,12 +535,13 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
   }
 
   //Create Course API
-  Future<CreateCourse> createCourseAPI() async {
+  Future<UpdateCourse> updateCourseAPI() async {
     displayProgressDialog(context);
-    var result = CreateCourse();
+    var result = UpdateCourse();
     try {
       Dio dio = Dio();
       FormData formData = FormData.fromMap({
+        'course_id': 16,
         'course_name': courseNameController.text,
         'course_description': courseDescController.text,
         'start_date': startDateInString,
@@ -549,13 +551,13 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
         formData.fields
             .addAll([MapEntry('course_link[$i]', linkControllers[i].text)]);
       }
-      var response = await dio.post(Config.createCourseUrl,
+      var response = await dio.post(Config.updateCourseUrl,
           data: formData,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
 
       if (response.statusCode == 200) {
         closeProgressDialog(context);
-        result = CreateCourse.fromJson(response.data);
+        result = UpdateCourse.fromJson(response.data);
         print(response.data);
         if (result.status == true) {
            Fluttertoast.showToast(
@@ -594,23 +596,6 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
       print(e.response);
       print(stack);
       closeProgressDialog(context);
-      if (e.response != null) {
-        print("This is the error message::::" +
-            e.response.data['meta']['message']);
-        Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Constants.bgColor,
-          textColor: Colors.white,
-          fontSize: 10.0.sp,
-        );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
-        print(e.message);
-      }
     }
     return result;
   }

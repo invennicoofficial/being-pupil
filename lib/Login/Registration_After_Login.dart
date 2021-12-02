@@ -131,7 +131,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
                           child: Container(
                             height: 7.0.h,
                             width: 90.0.w,
-                            color: Color(0xFFF0F2F4),
+                            //color: Color(0xFFF0F2F4),
                             child: TextFormField(
                               controller: mobileController,
                               readOnly: true,
