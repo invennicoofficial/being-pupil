@@ -1,7 +1,7 @@
 import 'package:being_pupil/Account/My_Course/Course_Details.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
-import 'package:being_pupil/Model/Course_Model/Get_My_Course_Model.dart';
+import 'package:being_pupil/Model/Course_Model/Get_Educator_Course_Model.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -9,27 +9,26 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
-
-import 'Create_Course_Screen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
-class EducatorMyCourseScreen extends StatefulWidget {
-  EducatorMyCourseScreen({Key key}) : super(key: key);
+class GetEducatorCourseScreen extends StatefulWidget {
+  final userId;
+  GetEducatorCourseScreen({Key key, @required this.userId}) : super(key: key);
 
   @override
-  _EducatorMyCourseScreenState createState() => _EducatorMyCourseScreenState();
+  _GetEducatorCourseScreenState createState() =>
+      _GetEducatorCourseScreenState();
 }
 
-class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
+class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
   String authToken;
   int courseLength = 0;
-  var result = GetMyCourse();
+  var result = GetEducatorCourse();
   ScrollController _scrollController = ScrollController();
   bool isLoading = true;
   int page = 1;
   List<String> dateList = [];
   List<String> nameList = [];
-  List<int> idList = [];
   List<String> descriptionList = [];
   List<List<dynamic>> linksList = [];
   RefreshController _refreshController =
@@ -44,39 +43,25 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    getMyCourseAPI(page);
+    getEducatorCourseAPI(page);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if (page > 1) {
           if (courseLength > 0) {
             page++;
-            getMyCourseAPI(page);
+            getEducatorCourseAPI(page);
             print(page);
           } else {
             _refreshController.loadComplete();
           }
         } else {
           page++;
-          getMyCourseAPI(page);
+          getEducatorCourseAPI(page);
           print(page);
         }
       }
     });
-  }
-
-  void _onRefresh() async {
-    setState(() {
-      isLoading = true;
-      page = 1;
-      idList = [];
-      nameList = [];
-      descriptionList = [];
-      dateList = [];
-      linksList = [];
-    });
-    getMyCourseAPI(page);
-    _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {
@@ -105,28 +90,12 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
           },
           padding: EdgeInsets.zero,
         ),
-        title: Text('My Course',
+        title: Text('Educator Courses',
             style: TextStyle(
                 fontFamily: 'Montserrat',
                 fontSize: 12.0.sp,
                 fontWeight: FontWeight.w400,
                 color: Colors.white)),
-        actions: <Widget>[
-          Padding(
-              padding: EdgeInsets.only(right: 2.0.w),
-              child: IconButton(
-                  icon: Icon(Icons.add_box_outlined, color: Colors.white),
-                  onPressed: () async {
-                    print('ADD!!!');
-                    var isCreated = await pushNewScreen(context,
-                        screen: CreateCourseScreen(),
-                        withNavBar: false,
-                        pageTransitionAnimation:
-                            PageTransitionAnimation.cupertino);
-                    print(isCreated);
-                    isCreated == 'created' ? _onRefresh() : null;
-                  })),
-        ],
       ),
       body: isLoading
           ? Center(
@@ -137,14 +106,12 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
             )
           : SmartRefresher(
               controller: _refreshController,
-              enablePullDown: true,
+              enablePullDown: false,
               enablePullUp: true,
-              header: WaterDropMaterialHeader(),
               footer: ClassicFooter(
                 loadStyle: LoadStyle.ShowWhenLoading,
               ),
               onLoading: _onLoading,
-              onRefresh: _onRefresh,
               child: ListView.builder(
                   controller: _scrollController,
                   itemCount: nameList.length,
@@ -158,7 +125,6 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
                         onTap: () {
                           pushNewScreen(context,
                               screen: CourseDetailScreen(
-                                courseId: idList[index],
                                 courseName: nameList[index],
                                 coursDate: dateList[index],
                                 courseDescription: descriptionList[index],
@@ -225,23 +191,24 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
 
   //Get My  Course API
 
-  Future<GetMyCourse> getMyCourseAPI(int page) async {
+  Future<GetEducatorCourse> getEducatorCourseAPI(int page) async {
     //displayProgressDialog(context);
 
     try {
       var dio = Dio();
-      var response = await dio.get('${Config.getMyCourseUrl}?page=$page',
+      var response = await dio.get(
+          '${Config.getEducatorCourseUrl}${widget.userId}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
       if (response.statusCode == 200) {
-        result = GetMyCourse.fromJson(response.data);
+        result = GetEducatorCourse.fromJson(response.data);
         print(response.data);
         courseLength = 0;
         courseLength = result.data == [] ? 0 : result.data.length;
+
         setState(() {});
         //closeProgressDialog(context);
         if (courseLength > 0) {
           for (int i = 0; i < courseLength; i++) {
-            idList.add(result.data[i].courseId);
             nameList.add(result.data[i].courseName);
             dateList.add(
                 '${result.data[i].startDate} to ${result.data[i].endDate}');

@@ -1,25 +1,44 @@
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/Course_Model/Enroll_Course_Model.dart';
+import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
-
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'Update_Course_Screen.dart';
 
 class CourseDetailScreen extends StatefulWidget {
-  const CourseDetailScreen({Key key}) : super(key: key);
+  String courseName, coursDate, courseDescription;
+  List<String> courseLinks;
+  int courseId;
+  CourseDetailScreen(
+      {Key key,
+      this.courseId,
+      this.courseName,
+      this.coursDate,
+      this.courseDescription,
+      this.courseLinks})
+      : super(key: key);
 
   @override
   _CourseDetailScreenState createState() => _CourseDetailScreenState();
 }
 
 class _CourseDetailScreenState extends State<CourseDetailScreen> {
-  String registerAs;
+  String registerAs, authToken;
 
   @override
   void initState() {
-    getData();
+    getToken();
     super.initState();
+  }
+
+  getToken() async {
+    authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
   }
 
   getData() async {
@@ -55,8 +74,11 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                       child: FlatButton(
                     onPressed: () {
                       print('EDIT!!!');
-                      pushNewScreen(context, screen: UpdateCourseScreen(),
-                      withNavBar: false, pageTransitionAnimation: PageTransitionAnimation.cupertino);
+                      pushNewScreen(context,
+                          screen: UpdateCourseScreen(),
+                          withNavBar: false,
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.cupertino);
                     },
                     child: Text(
                       'Edit',
@@ -71,7 +93,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               : Container(),
         ],
         title: Text(
-          'Course',
+          'Course Details',
           style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 12.0.sp,
@@ -79,6 +101,38 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               color: Colors.white),
         ),
       ),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 2.0.h),
+        child: GestureDetector(
+          onTap: () {
+            enrollCourseAPI();
+          },
+          child: Container(
+            height: 7.0.h,
+            width: 90.0.w,
+            padding: const EdgeInsets.all(1.0),
+            decoration: BoxDecoration(
+              color: Constants.bpOnBoardTitleStyle,
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              border: Border.all(
+                color: Constants.formBorder,
+                width: 0.15,
+              ),
+            ),
+            child: Center(
+              child: Text(
+                'Enroll'.toUpperCase(),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 11.0.sp),
+              ),
+            ),
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Center(
@@ -89,7 +143,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'Course name come',
+                  widget.courseName,
                   style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 14.0.sp,
@@ -111,7 +165,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     SizedBox(
                       width: 2.0.w,
                     ),
-                    Text('21 Jan 2021 to 21 Mar 2021',
+                    Text(widget.coursDate,
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 10.0.sp,
@@ -124,7 +178,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                 ),
                 Container(
                   child: Text(
-                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd',
+                    widget.courseDescription,
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10.0.sp,
@@ -137,8 +191,8 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                   height: 2.0.h,
                 ),
                 ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                    itemCount: 3,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: widget.courseLinks.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return Padding(
@@ -175,7 +229,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                                     //width: 70.0.w,
                                     child: Center(
                                       child: Text(
-                                        'www.youtube.com/watch?v=5VYb3B1ETlk',
+                                        widget.courseLinks[index],
                                         style: TextStyle(
                                             fontFamily: 'Montserrat',
                                             fontSize: 10.0.sp,
@@ -190,12 +244,63 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                           ),
                         ),
                       );
-                    })
+                    }),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  //Course Enroll API
+  Future<EnrollCourse> enrollCourseAPI() async {
+    displayProgressDialog(context);
+    var result = EnrollCourse();
+    try {
+      var dio = Dio();
+      FormData formData = FormData.fromMap({'course_id': widget.courseId});
+      var response = await dio.post(Config.enrollCourseUrl,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+      if (response.statusCode == 200) {
+        print(response.data);
+        result = EnrollCourse.fromJson(response.data);
+        closeProgressDialog(context);
+      }
+    } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+      closeProgressDialog(context);
+      if (e.response != null) {
+        print("This is the error message::::" +
+            e.response.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.request);
+        print(e.message);
+      }
+    }
+    return result;
+  }
+
+  displayProgressDialog(BuildContext context) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new ProgressDialog();
+        }));
+  }
+
+  closeProgressDialog(BuildContext context) {
+    Navigator.of(context).pop();
   }
 }

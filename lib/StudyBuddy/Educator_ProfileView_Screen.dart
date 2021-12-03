@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:being_pupil/Account/My_Course/Get_Educator_Course_Screen.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Comment_Screen.dart';
 import 'package:being_pupil/HomeScreen/Report_Feed.dart';
@@ -277,6 +278,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                         GestureDetector(
                           onTap: () {
                             print('COURSES!!!');
+                            pushNewScreen(context, screen: GetEducatorCourseScreen(userId: widget.id,),
+                            withNavBar: false, pageTransitionAnimation: PageTransitionAnimation.cupertino);
                           },
                           child: Container(
                             height: 4.5.h,

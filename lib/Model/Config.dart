@@ -39,6 +39,8 @@ class Config{
   static const String createCourseUrl = baseUrl + "user/createCourse";
   static const String updateCourseUrl = baseUrl + "user/courseUpdate";
   static const String getMyCourseUrl = baseUrl + "user/getMyCourse";
+  static const String getEducatorCourseUrl = baseUrl + "user/getCourse/";
+  static const String enrollCourseUrl = baseUrl + "user/courseEnroll";
 }
 
 

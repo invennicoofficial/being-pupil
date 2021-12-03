@@ -567,7 +567,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-          Navigator.of(context).pop();
+          Navigator.of(context).pop('created');
         } else {
           Fluttertoast.showToast(
             msg: result.message,
