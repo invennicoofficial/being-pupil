@@ -1,5 +1,6 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/Course_Model/Discontinue_Course_Model.dart';
 import 'package:being_pupil/Model/Course_Model/Enroll_Course_Model.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
@@ -11,11 +12,11 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'Update_Course_Screen.dart';
 
-class CourseDetailScreen extends StatefulWidget {
+class EnrolledCourseDetailScreen extends StatefulWidget {
   String courseName, coursDate, courseDescription;
   List<String> courseLinks;
   int courseId;
-  CourseDetailScreen(
+  EnrolledCourseDetailScreen(
       {Key key,
       this.courseId,
       this.courseName,
@@ -25,10 +26,10 @@ class CourseDetailScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _CourseDetailScreenState createState() => _CourseDetailScreenState();
+  _EnrolledCourseDetailScreenState createState() => _EnrolledCourseDetailScreenState();
 }
 
-class _CourseDetailScreenState extends State<CourseDetailScreen> {
+class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen> {
   String registerAs, authToken;
 
   @override
@@ -105,7 +106,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
         padding: EdgeInsets.only(bottom: 2.0.h),
         child: GestureDetector(
           onTap: () {
-            enrollCourseAPI();
+            leaveCourseAPI();
           },
           child: Container(
             height: 7.0.h,
@@ -121,7 +122,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
             ),
             child: Center(
               child: Text(
-                'Enroll'.toUpperCase(),
+                'Leave Course'.toUpperCase(),
                 style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Montserrat',
@@ -254,19 +255,22 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
   }
 
   //Course Enroll API
-  Future<EnrollCourse> enrollCourseAPI() async {
+  Future<DiscontinueCourse> leaveCourseAPI() async {
     displayProgressDialog(context);
-    var result = EnrollCourse();
+    var result = DiscontinueCourse();
     try {
       var dio = Dio();
       FormData formData = FormData.fromMap({'course_id': widget.courseId});
-      var response = await dio.post(Config.enrollCourseUrl,
+      var response = await dio.post(Config.discontinueCourseUrl,
           data: formData,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
       if (response.statusCode == 200) {
         print(response.data);
-        result = EnrollCourse.fromJson(response.data);
+        result = DiscontinueCourse.fromJson(response.data);
         closeProgressDialog(context);
+        if(result.status == true){
+          Navigator.of(context).pop('leave');
+        }
         if (result.message == null) {
           Fluttertoast.showToast(
             msg: result.errorMsg,

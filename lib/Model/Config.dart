@@ -41,6 +41,9 @@ class Config{
   static const String getMyCourseUrl = baseUrl + "user/getMyCourse";
   static const String getEducatorCourseUrl = baseUrl + "user/getCourse/";
   static const String enrollCourseUrl = baseUrl + "user/courseEnroll";
+  static const String getEnrollCourseUrl = baseUrl + "user/enrolledCourse";
+  static const String discontinueCourseUrl = baseUrl + "user/discontinueCourse";
+  static const String getAllPropertyUrl = baseUrl + "property/getAll";
 }
 
 

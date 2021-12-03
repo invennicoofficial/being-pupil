@@ -30,7 +30,9 @@ class EnrollCourse {
         errorCode: json["error_code"],
         errorMsg: json["error_msg"],
         message: json["message"],
-        data: Data.fromJson(json["data"]),
+        data: json["data"] != null
+        ? Data.fromJson(json["data"])
+        : null,
         metaParams: json["meta_params"],
     );
 

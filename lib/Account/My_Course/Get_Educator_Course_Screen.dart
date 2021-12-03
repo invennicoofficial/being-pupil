@@ -28,6 +28,7 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
   bool isLoading = true;
   int page = 1;
   List<String> dateList = [];
+  List<int> idList = [];
   List<String> nameList = [];
   List<String> descriptionList = [];
   List<List<dynamic>> linksList = [];
@@ -125,6 +126,7 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
                         onTap: () {
                           pushNewScreen(context,
                               screen: CourseDetailScreen(
+                                courseId: idList[index],
                                 courseName: nameList[index],
                                 coursDate: dateList[index],
                                 courseDescription: descriptionList[index],
@@ -209,6 +211,7 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
         //closeProgressDialog(context);
         if (courseLength > 0) {
           for (int i = 0; i < courseLength; i++) {
+            idList.add(result.data[i].courseId);
             nameList.add(result.data[i].courseName);
             dateList.add(
                 '${result.data[i].startDate} to ${result.data[i].endDate}');

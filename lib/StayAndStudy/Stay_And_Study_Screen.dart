@@ -162,4 +162,6 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
       ),
     );
   }
+
+  //GetAll Property List API
 }

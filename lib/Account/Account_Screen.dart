@@ -183,7 +183,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 1.0.h,
+                            height: registerAs == 'E' ?  1.0.h : 0.0,
                           ),
                           InkWell(
                             onTap: () {
@@ -199,10 +199,13 @@ class _AccountScreenState extends State<AccountScreen> {
                                       pageTransitionAnimation:
                                           PageTransitionAnimation.cupertino);
                             },
-                            child: ProfileList(
-                              txt: "My Courses",
-                              image: "assets/icons/myCourse.png",
-                              sizeImage: 20.0,
+                            child: Visibility(
+                              visible: registerAs == 'E' ? true : false,
+                              child: ProfileList(
+                                txt: "My Courses",
+                                image: "assets/icons/myCourse.png",
+                                sizeImage: 20.0,
+                              ),
                             ),
                           ),
                           SizedBox(
