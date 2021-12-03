@@ -222,7 +222,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                     children: <Widget>[
                       //main horizontal padding
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0.w),
+                        padding: EdgeInsets.symmetric(horizontal: 10),
                         //Container for one post
                         child: Container(
                           // height: index == 0 ? 27.5.h : 57.5.h,
@@ -248,7 +248,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                         width: 40.0,
                                         height: 40.0,
                                         fit: BoxFit.cover,
-                                      ),                            
+                                      ),
                                     ),
                                     SizedBox(
                                       width: 2.0.w,
@@ -311,15 +311,20 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                 //),
                               ),
                               //Post descriptionText
-                              Container(
-                                width: 88.0.w,
-                                child: Text(descriptionList[index],
-                                    style: TextStyle(
-                                        fontSize: 9.0.sp,
-                                        color: Constants.bpOnBoardSubtitleStyle,
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w400),
-                                    textAlign: TextAlign.justify),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Container(
+                                  width: 88.0.w,
+                                  child: Text(descriptionList[index],
+                                      style: TextStyle(
+                                          fontSize: 9.0.sp,
+                                          color: Constants.bpOnBoardSubtitleStyle,
+                                          fontFamily: 'Montserrat',
+                                          height: 1.5,
+                                          fontWeight: FontWeight.w400,),
+                                      // textAlign: TextAlign.justify
+                                  ),
+                                ),
                               ),
                               SizedBox(
                                 height: 1.0.h,
@@ -359,56 +364,58 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                         },
                                       ),
                                     ),
-                              //Row for Liked, commented, shared
-                              Padding(
-                                padding: EdgeInsets.only(top: 1.0.h),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Row(
-                                      children: [
-                                        // Icon(
-                                        //   Icons.thumb_up_alt_rounded,
-                                        //   color: Constants.bgColor,
-                                        // ),
-                                        ImageIcon(
-                                          AssetImage('assets/icons/likeNew.png'),
-                                          size: 25.0,
-                                          color: Constants.bgColor,
-                                        ),
-                                        SizedBox(
-                                          width: 1.0.w,
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.only(top: 1.0.h),
-                                          child: Text(
-                                            "${likesList[index]} Likes",
-                                            style: TextStyle(
-                                                fontSize: 6.5.sp,
-                                                color: Constants
-                                                    .bpOnBoardSubtitleStyle,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.only(top: 1.0.h),
-                                      child: Text(
-                                        "${totalCommentsList[index]} Comments",
-                                        style: TextStyle(
-                                            fontSize: 6.5.sp,
-                                            color: Constants
-                                                .bpOnBoardSubtitleStyle,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
+
+
+                              // //Row for Liked, commented, shared
+                              // Padding(
+                              //   padding: EdgeInsets.only(top: 1.0.h),
+                              //   child: Row(
+                              //     mainAxisAlignment:
+                              //         MainAxisAlignment.spaceBetween,
+                              //     children: <Widget>[
+                              //       Row(
+                              //         children: [
+                              //           // Icon(
+                              //           //   Icons.thumb_up_alt_rounded,
+                              //           //   color: Constants.bgColor,
+                              //           // ),
+                              //           ImageIcon(
+                              //             AssetImage('assets/icons/likeNew.png'),
+                              //             size: 25.0,
+                              //             color: Constants.bgColor,
+                              //           ),
+                              //           SizedBox(
+                              //             width: 1.0.w,
+                              //           ),
+                              //           Container(
+                              //             padding: EdgeInsets.only(top: 1.0.h),
+                              //             child: Text(
+                              //               "${likesList[index]} Likes",
+                              //               style: TextStyle(
+                              //                   fontSize: 6.5.sp,
+                              //                   color: Constants
+                              //                       .bpOnBoardSubtitleStyle,
+                              //                   fontFamily: 'Montserrat',
+                              //                   fontWeight: FontWeight.w400),
+                              //             ),
+                              //           ),
+                              //         ],
+                              //       ),
+                              //       Container(
+                              //         padding: EdgeInsets.only(top: 1.0.h),
+                              //         child: Text(
+                              //           "${totalCommentsList[index]} Comments",
+                              //           style: TextStyle(
+                              //               fontSize: 6.5.sp,
+                              //               color: Constants
+                              //                   .bpOnBoardSubtitleStyle,
+                              //               fontFamily: 'Montserrat',
+                              //               fontWeight: FontWeight.w400),
+                              //         ),
+                              //       )
+                              //     ],
+                              //   ),
+                              // ),
                               //divider
                               Divider(
                                 height: 1.0.h,
@@ -416,9 +423,11 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                     .withOpacity(0.5),
                                 thickness: 1.0,
                               ),
+
+
                               //Row for Like comment and Share
                               Padding(
-                                padding: EdgeInsets.only(top: 1.0.h),
+                                padding: EdgeInsets.only(top: 1.0.h, bottom: 1.0.h),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -443,7 +452,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                           children: [
                                             ImageIcon(
                                               isLiked[index]
-                                                  ? AssetImage('assets/icons/likeThumb.png')
+                                                  ? AssetImage('assets/icons/likeNew.png')
                                                   : AssetImage('assets/icons/likeThumb.png'),
                                               color: isLiked[index]
                                                   ? Constants.selectedIcon
@@ -451,13 +460,12 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                               size: 30.0,
                                             ),
                                             SizedBox(
-                                              width: 1.0.w,
+                                              width: 2.0.w,
                                             ),
                                             Container(
-                                              padding:
-                                                  EdgeInsets.only(top: 1.0.h),
+                                              padding: EdgeInsets.only(top: 1.0.h),
                                               child: Text(
-                                                "Like",
+                                                "${likesList[index]} Likes",
                                                 style: TextStyle(
                                                     fontSize: 6.5.sp,
                                                     color: Constants
@@ -466,6 +474,19 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                                     fontWeight: FontWeight.w400),
                                               ),
                                             ),
+                                            // Container(
+                                            //   padding:
+                                            //       EdgeInsets.only(top: 1.0.h),
+                                            //   child: Text(
+                                            //     "Like",
+                                            //     style: TextStyle(
+                                            //         fontSize: 6.5.sp,
+                                            //         color: Constants
+                                            //             .bpOnBoardSubtitleStyle,
+                                            //         fontFamily: 'Montserrat',
+                                            //         fontWeight: FontWeight.w400),
+                                            //   ),
+                                            // ),
                                           ],
                                         ),
                                       ),
@@ -510,13 +531,12 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                             //   size: 30.0,
                                             // ),
                                             SizedBox(
-                                              width: 1.0.w,
+                                              width: 2.0.w,
                                             ),
                                             Container(
-                                              padding:
-                                                  EdgeInsets.only(top: 1.0.h),
+                                              padding: EdgeInsets.only(top: 1.0.h),
                                               child: Text(
-                                                "Comment",
+                                                "${totalCommentsList[index]} Comments",
                                                 style: TextStyle(
                                                     fontSize: 6.5.sp,
                                                     color: Constants
@@ -524,7 +544,20 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                                     fontFamily: 'Montserrat',
                                                     fontWeight: FontWeight.w400),
                                               ),
-                                            ),
+                                            )
+                                            // Container(
+                                            //   padding:
+                                            //       EdgeInsets.only(top: 1.0.h),
+                                            //   child: Text(
+                                            //     "Comment",
+                                            //     style: TextStyle(
+                                            //         fontSize: 6.5.sp,
+                                            //         color: Constants
+                                            //             .bpOnBoardSubtitleStyle,
+                                            //         fontFamily: 'Montserrat',
+                                            //         fontWeight: FontWeight.w400),
+                                            //   ),
+                                            // ),
                                           ],
                                         ),
                                       ),

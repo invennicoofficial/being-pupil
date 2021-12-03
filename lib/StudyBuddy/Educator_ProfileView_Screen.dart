@@ -5,6 +5,7 @@ import 'package:being_pupil/HomeScreen/Comment_Screen.dart';
 import 'package:being_pupil/HomeScreen/Report_Feed.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Educator_Post_Model.dart';
+import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,8 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class EducatorProfileViewScreen extends StatefulWidget {
-  EducatorProfileViewScreen({Key key}) : super(key: key);
+  final id;
+  EducatorProfileViewScreen({Key key, this.id}) : super(key: key);
 
   @override
   _EducatorProfileViewScreenState createState() =>
@@ -22,8 +24,8 @@ class EducatorProfileViewScreen extends StatefulWidget {
 }
 
 class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
-  bool isLiked = false;
-  bool isSaved = true;
+  List<bool> isLiked = [];
+  List<bool> isSaved = [];
   var result = EducatorPost();
   Map<String, dynamic> map;
   List<dynamic> mapData;
@@ -32,6 +34,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
   String profileImageUrl = '';
   String degreeName = '';
   String schoolName = '';
+  String location = '';
 
   int page = 1;
 
@@ -44,9 +47,15 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
   List<int> postIdList = [];
   List<String> dateList = [];
   List<String> descriptionList = [];
+  List<String> nameList = [];
+  List<String> profileImageList = [];
+  List<String> degreeList = [];
+  List<String> schoolList = [];
   Map<int, dynamic> imageListMap = {};
   List<int> likesList = [];
   List<int> totalCommentsList = [];
+  LikePostAPI like = LikePostAPI();
+  Map<String, dynamic> profileMap = {};
 
   Map<String, dynamic> saveMap;
   String authToken;
@@ -54,6 +63,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
 
   @override
   void initState() {
+    print(widget.id);
     getToken();
     super.initState();
   }
@@ -61,7 +71,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     print(authToken);
-    getEducatorPostApi(page);
+    getUserProfile(widget.id);
+
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
@@ -127,11 +138,11 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                 children: <Widget>[
                   //Profile DP
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(100),
                     child:Image.network(
                       profileImageUrl,
-                      width: 32.5.w,
-                      height: 15.0.h,
+                      width: 150,
+                      height: 150,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -174,7 +185,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                           width: 0.5.w,
                         ),
                         Text(
-                          'Talwandi, Kota',
+                          location,
                           style: TextStyle(
                               fontSize: 8.0.sp,
                               fontFamily: 'Montserrat',
@@ -190,22 +201,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            print('Apple!!!');
-                          },
-                          child: Container(
-                              height: 4.0.h,
-                              width: 8.0.w,
-                              child: Image.asset(
-                                'assets/icons/apple.png',
-                                fit: BoxFit.contain,
-                              )),
-                        ),
-                        SizedBox(
-                          width: 1.0.w,
-                        ),
-                        GestureDetector(
+                        profileMap['data'] == null || profileMap['data'] == {} ? Container() : profileMap['data']['instagram_link'] == null ? Container() : GestureDetector(
                           onTap: () {
                             print('Google!!!');
                           },
@@ -220,7 +216,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                         SizedBox(
                           width: 1.0.w,
                         ),
-                        GestureDetector(
+                        profileMap['data'] == null || profileMap['data'] == {} ? Container() : profileMap['data']['facebook_link'] == null ? Container() : GestureDetector(
                           onTap: () {
                             print('Facebook!!!');
                           },
@@ -235,7 +231,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                         SizedBox(
                           width: 1.0.w,
                         ),
-                        GestureDetector(
+                        profileMap['data'] == null || profileMap['data'] == {} ? Container() : profileMap['data']['linkedin_link'] == null ? Container() : GestureDetector(
                           onTap: () {
                             print('LinkedIn!!!');
                           },
@@ -304,7 +300,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                     ),
                   ),
                   //Other Details
-                  Padding(
+                  profileMap['data'] == null || profileMap['data'] == {} ? Container() : Padding(
                     padding: EdgeInsets.symmetric(vertical: 2.0.h),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -312,7 +308,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                         Column(
                           children: <Widget>[
                             Text(
-                              '10 Yrs',
+                              profileMap['data']['total_experience'].toString(),
                               style: TextStyle(
                                   fontSize: 10.0.sp,
                                   color: Constants.bgColor,
@@ -335,7 +331,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                         Column(
                           children: <Widget>[
                             Text(
-                              '50',
+                              profileMap['data']['total_post'].toString(),
                               style: TextStyle(
                                   fontSize: 10.0.sp,
                                   color: Constants.bgColor,
@@ -358,7 +354,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                         Column(
                           children: <Widget>[
                             Text(
-                              '200',
+                              profileMap['data']['total_connections'].toString(),
                               style: TextStyle(
                                   fontSize: 10.0.sp,
                                   color: Constants.bgColor,
@@ -490,15 +486,20 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                               ),
                             ),
                             //Post descriptionText
-                            Container(
-                              width: 88.0.w,
-                              child: Text(descriptionList[index],
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Container(
+                                width: 88.0.w,
+                                child: Text(descriptionList[index],
                                   style: TextStyle(
-                                      fontSize: 9.0.sp,
-                                      color: Constants.bpOnBoardSubtitleStyle,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w400),
-                                  textAlign: TextAlign.justify),
+                                    fontSize: 9.0.sp,
+                                    color: Constants.bpOnBoardSubtitleStyle,
+                                    fontFamily: 'Montserrat',
+                                    height: 1.5,
+                                    fontWeight: FontWeight.w400,),
+                                  // textAlign: TextAlign.justify
+                                ),
+                              ),
                             ),
                             SizedBox(
                               height: 1.0.h,
@@ -523,50 +524,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                 );
                               },),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 1.0.h),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.thumb_up_alt_rounded,
-                                        color: Constants.bgColor,
-                                      ),
-                                      SizedBox(
-                                        width: 1.0.w,
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.only(top: 1.0.h),
-                                        child: Text(
-                                          "${likesList[index]} Likes",
-                                          style: TextStyle(
-                                              fontSize: 6.5.sp,
-                                              color: Constants
-                                                  .bpOnBoardSubtitleStyle,
-                                              fontFamily: 'Montserrat',
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.only(top: 1.0.h),
-                                    child: Text(
-                                      "${totalCommentsList[index]} Comments",
-                                      style: TextStyle(
-                                          fontSize: 6.5.sp,
-                                          color: Constants
-                                              .bpOnBoardSubtitleStyle,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+
                             //divider
                             Divider(
                               height: 1.0.h,
@@ -576,7 +534,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                             ),
                             //Row for Like comment and Share
                             Padding(
-                              padding: EdgeInsets.only(top: 1.0.h),
+                              padding: EdgeInsets.only(top: 1.0.h, bottom: 1.0.h),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -584,31 +542,36 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                   GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        isLiked = !isLiked;
+                                        isLiked[index] = !isLiked[index];
+                                      });
+                                      like.likePostApi(
+                                          postIdList[index], authToken);
+                                      setState(() {
+                                        isLiked[index] == true
+                                            ? likesList[index]++
+                                            : likesList[index]--;
                                       });
                                     },
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        Icon(
-                                          isLiked
-                                              ? Icons.thumb_up_sharp
-                                              : Icons.thumb_up_outlined,
-                                          color: isLiked
+                                        ImageIcon(
+                                          isLiked[index]
+                                              ? AssetImage('assets/icons/likeNew.png')
+                                              : AssetImage('assets/icons/likeThumb.png'),
+                                          color: isLiked[index]
                                               ? Constants.selectedIcon
-                                              : Constants
-                                                  .bpOnBoardSubtitleStyle,
+                                              : Constants.bpOnBoardSubtitleStyle,
                                           size: 30.0,
                                         ),
                                         SizedBox(
                                           width: 1.0.w,
                                         ),
                                         Container(
-                                          padding:
-                                              EdgeInsets.only(top: 1.0.h),
+                                          padding: EdgeInsets.only(top: 1.0.h),
                                           child: Text(
-                                            "Like",
+                                            "${likesList[index]} Likes",
                                             style: TextStyle(
                                                 fontSize: 6.5.sp,
                                                 color: Constants
@@ -624,79 +587,112 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                     onTap: () {
                                       pushNewScreen(context,
                                           withNavBar: false,
-                                          screen: CommentScreen(),
-                                          pageTransitionAnimation:
-                                              PageTransitionAnimation
-                                                  .cupertino);
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.comment_outlined,
-                                          color: Constants
-                                              .bpOnBoardSubtitleStyle,
-                                          size: 30.0,
-                                        ),
-                                        SizedBox(
-                                          width: 1.0.w,
-                                        ),
-                                        Container(
-                                          padding:
-                                              EdgeInsets.only(top: 1.0.h),
-                                          child: Text(
-                                            "Comment",
-                                            style: TextStyle(
-                                                fontSize: 6.5.sp,
-                                                color: Constants
-                                                    .bpOnBoardSubtitleStyle,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w400),
+                                          screen: CommentScreen(
+                                            postId: postIdList[index],
+                                            name: nameList[index],
+                                            profileImage: profileImageList[index],
+                                            degree: degreeList[index],
+                                            schoolName: schoolList[index],
+                                            date: dateList[index],
+                                            description: descriptionList[index],
+                                            like: likesList[index],
+                                            comment: totalCommentsList[index],
+                                            isLiked: isLiked[index],
+                                            isSaved: isSaved[index],
+                                            imageListMap: imageListMap,
+                                            index: index,
                                           ),
-                                        ),
-                                      ],
+                                          pageTransitionAnimation:
+                                          PageTransitionAnimation
+                                              .cupertino);
+                                    },
+                                    child: Container(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                        children: [
+                                          ImageIcon(
+                                            AssetImage('assets/icons/commentNew.png'),
+                                            size: 25.0,
+                                            color: Constants.bpOnBoardSubtitleStyle,
+                                          ),
+                                          // Icon(
+                                          //   Icons.comment_outlined,
+                                          //   color: Constants
+                                          //       .bpOnBoardSubtitleStyle,
+                                          //   size: 30.0,
+                                          // ),
+                                          SizedBox(
+                                            width: 2.0.w,
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.only(top: 1.0.h),
+                                            child: Text(
+                                              "${totalCommentsList[index]} Comments",
+                                              style: TextStyle(
+                                                  fontSize: 6.5.sp,
+                                                  color: Constants
+                                                      .bpOnBoardSubtitleStyle,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                          )
+                                          // Container(
+                                          //   padding:
+                                          //       EdgeInsets.only(top: 1.0.h),
+                                          //   child: Text(
+                                          //     "Comment",
+                                          //     style: TextStyle(
+                                          //         fontSize: 6.5.sp,
+                                          //         color: Constants
+                                          //             .bpOnBoardSubtitleStyle,
+                                          //         fontFamily: 'Montserrat',
+                                          //         fontWeight: FontWeight.w400),
+                                          //   ),
+                                          // ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        isSaved = !isSaved;
+                                        isSaved[index] = !isSaved[index];
                                       });
-                                       savePostApi(postIdList[index]);
+                                      savePostApi(postIdList[index]);
                                     },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          isSaved
-                                              ? Icons.bookmark_sharp
-                                              : Icons
-                                                  .bookmark_outline_outlined,
-                                          color: isSaved
-                                              ? Constants.selectedIcon
-                                              : Constants
-                                                  .bpOnBoardSubtitleStyle,
-                                          size: 30.0,
-                                        ),
-                                        SizedBox(
-                                          width: 1.0.w,
-                                        ),
-                                        Container(
-                                          padding:
-                                              EdgeInsets.only(top: 1.0.h),
-                                          child: Text(
-                                            "Save",
-                                            style: TextStyle(
-                                                fontSize: 6.5.sp,
-                                                color: Constants
-                                                    .bpOnBoardSubtitleStyle,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w400),
+                                    child: Container(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                        children: [
+                                          ImageIcon(
+                                            isSaved[index]
+                                                ? AssetImage('assets/icons/saveGreen.png')
+                                                : AssetImage('assets/icons/saveNew.png'),
+                                            color: isSaved[index]
+                                                ? Constants.selectedIcon
+                                                : Constants.bpOnBoardSubtitleStyle,
+                                            size: 25.0,
                                           ),
-                                        ),
-                                      ],
+                                          SizedBox(
+                                            width: 1.0.w,
+                                          ),
+                                          Container(
+                                            padding:
+                                            EdgeInsets.only(top: 1.0.h),
+                                            child: Text(
+                                              "Save",
+                                              style: TextStyle(
+                                                  fontSize: 6.5.sp,
+                                                  color: Constants
+                                                      .bpOnBoardSubtitleStyle,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -730,7 +726,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
     try {
       Dio dio = Dio();
 
-      var response = await dio.get('${Config.getEducatorPostUrl}36?page=$page');
+      var response = await dio.get('${Config.getEducatorPostUrl}/${widget.id}?page=$page',
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
       print(response.statusCode);
 
       if (response.statusCode == 200) {
@@ -743,23 +740,20 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
         print(map);
         print(mapData);
         if(map['data'].length > 0) {
-          if(name == '') {
-            name = map['data'][0]['name'];
-            profileImageUrl = map['data'][0]['profile_image'];
-            degreeName = map['data'][0]['last_degree'];
-            schoolName = map['data'][0]['school_name'];
-          }
-          print("HELLO");
-
           for (int i = 0; i < map['data'].length; i++) {
+            nameList.add(map['data'][i]['name']);
+            profileImageList.add(map['data'][i]['profile_image']);
+            degreeList.add(map['data'][i]['last_degree']);
+            schoolList.add(map['data'][i]['school_name']);
             postIdList.add(map['data'][i]['post_id']);
             dateList.add(map['data'][i]['date']);
             descriptionList.add(map['data'][i]['description']);
+            isLiked.add(map['data'][i]['isLiked']);
+            isSaved.add(map['data'][i]['isSaved']);
             likesList.add(map['data'][i]['total_likes']);
             totalCommentsList.add(map['data'][i]['total_comments']);
             for (int j = 0; j < map['data'].length; j++) {
               imageListMap.putIfAbsent(k, () => map['data'][i]['post_media']);
-
             }
             k++;
             print(k);
@@ -779,6 +773,53 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
           isLoading = false;
           isPostLoading = false;
 
+        });
+      } else {
+        print('${response.statusCode} : ${response.data.toString()}');
+        throw response.statusCode;
+      }
+    } on DioError catch (e, stack) {
+      // closeProgressDialog(context);
+      print(e.response);
+      print(stack);
+    }
+  }
+
+
+  Future<void> getUserProfile(id) async {
+    // displayProgressDialog(context);
+
+
+    try {
+      Dio dio = Dio();
+
+      var response = await dio.get('${Config.myProfileUrl}/$id',
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        profileMap = response.data;
+
+        print(profileMap['data']);
+        //print(mapData);
+        if (profileMap['data'] != null) {
+          name = profileMap['data']['name'];
+          profileImageUrl = profileMap['data']['profile_image'];
+          degreeName = profileMap['data']['last_degree'];
+          schoolName = profileMap['data']['school_name'];
+          location = profileMap['data']['city'];
+          getEducatorPostApi(page);
+          setState(() {
+            isLoading = false;
+          });
+        } else {
+          isLoading = false;
+          setState(() {});
+        }
+        //print(result.data);
+        //return result;
+        setState(() {
+          isLoading = false;
         });
       } else {
         print('${response.statusCode} : ${response.data.toString()}');

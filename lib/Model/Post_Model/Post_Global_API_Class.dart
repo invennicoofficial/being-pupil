@@ -114,13 +114,13 @@ class LikePostAPI{
               }else{}
           // map.clear();
           // getSavedPostApi(page);
-          Fluttertoast.showToast(
-              msg: likeMap['message'],
-              backgroundColor: Constants.bgColor,
-              gravity: ToastGravity.BOTTOM,
-              fontSize: 10.0.sp,
-              toastLength: Toast.LENGTH_SHORT,
-              textColor: Colors.white);
+          // Fluttertoast.showToast(
+          //     msg: likeMap['message'],
+          //     backgroundColor: Constants.bgColor,
+          //     gravity: ToastGravity.BOTTOM,
+          //     fontSize: 10.0.sp,
+          //     toastLength: Toast.LENGTH_SHORT,
+          //     textColor: Colors.white);
               
         } else {
           print('false');

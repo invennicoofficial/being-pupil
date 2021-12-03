@@ -116,7 +116,7 @@ class _RequestListState extends State<RequestList> {
             child: ListView.builder(
                 controller: _scrollController,
                 padding:
-                    EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
+                    EdgeInsets.symmetric(horizontal: 2.0.w, vertical: 2.0.h),
                 //physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: _userId.length == 0 ? 0 : _userId.length,
@@ -136,18 +136,7 @@ class _RequestListState extends State<RequestList> {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  registerAs == 'E'
-                                      ? pushNewScreen(context,
-                                          screen: EducatorProfileViewScreen(),
-                                          withNavBar: false,
-                                          pageTransitionAnimation:
-                                              PageTransitionAnimation.cupertino)
-                                      : pushNewScreen(context,
-                                          screen: LearnerProfileViewScreen(),
-                                          withNavBar: false,
-                                          pageTransitionAnimation:
-                                              PageTransitionAnimation
-                                                  .cupertino);
+                                  getUserProfile(_userId[index]);
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
@@ -281,6 +270,7 @@ class _RequestListState extends State<RequestList> {
       print(response.statusCode);
 
       if (response.statusCode == 200) {
+        print(response.data);
         // closeProgressDialog(context);
         //return EducatorPost.fromJson(json)
         //result = EducatorPost.fromJson(response.data);
@@ -395,6 +385,57 @@ class _RequestListState extends State<RequestList> {
         print(response.statusCode);
       }
     } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+    }
+  }
+
+  Future<void> getUserProfile(id) async {
+    // displayProgressDialog(context);
+
+    Map<String, dynamic> map = {};
+    try {
+      Dio dio = Dio();
+
+      var response = await dio.get('${Config.myProfileUrl}/$id',
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        map = response.data;
+
+        print(map['data']);
+        //print(mapData);
+        if (map['data'] != null) {
+          setState(() {});
+          map['data']['role'] == 'E'
+              ? pushNewScreen(context,
+              screen: EducatorProfileViewScreen(id: id,),
+              withNavBar: false,
+              pageTransitionAnimation:
+              PageTransitionAnimation.cupertino)
+              :
+          pushNewScreen(context,
+              screen: LearnerProfileViewScreen(id: id,),
+              withNavBar: false,
+              pageTransitionAnimation:
+              PageTransitionAnimation
+                  .cupertino);
+        } else {
+          isLoading = false;
+          setState(() {});
+        }
+        //print(result.data);
+        //return result;
+        setState(() {
+          isLoading = false;
+        });
+      } else {
+        print('${response.statusCode} : ${response.data.toString()}');
+        throw response.statusCode;
+      }
+    } on DioError catch (e, stack) {
+      // closeProgressDialog(context);
       print(e.response);
       print(stack);
     }

@@ -249,7 +249,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                             children: <Widget>[
                               GestureDetector(
                                 onTap: () {
-                                  _showDialog();
+                                  // _showDialog();
                                   print('Apple!!!');
                                 },
                                 child: Container(
@@ -523,12 +523,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                         padding: EdgeInsets.only(left: 8.0.w),
                                         onSelected: (value) {
                                           if (value == 2) {
-                                            isProfileLoading = true;
-                                            deletePostApi(
-                                                postIdList[index].toString(),
-                                                index);
-
-                                            getMyPostApi(page);
+                                            // isProfileLoading = true;
+                                            _showDialog(postIdList[index].toString(), index);
                                           } else {
                                             pushNewScreen(context,
                                                 screen: imageListMap.length ==
@@ -600,16 +596,20 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                             ]),
                                   ),
                                   //Post descriptionText
-                                  Container(
-                                    width: 88.0.w,
-                                    child: Text(descriptionList[index],
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                    child: Container(
+                                      width: 88.0.w,
+                                      child: Text(descriptionList[index],
                                         style: TextStyle(
-                                            fontSize: 9.0.sp,
-                                            color: Constants
-                                                .bpOnBoardSubtitleStyle,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w400),
-                                        textAlign: TextAlign.justify),
+                                          fontSize: 9.0.sp,
+                                          color: Constants.bpOnBoardSubtitleStyle,
+                                          fontFamily: 'Montserrat',
+                                          height: 1.5,
+                                          fontWeight: FontWeight.w400,),
+                                        // textAlign: TextAlign.justify
+                                      ),
+                                    ),
                                   ),
                                   SizedBox(
                                     height: 1.0.h,
@@ -641,55 +641,57 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                             },
                                           ),
                                         ),
-                                  //Row for Liked, commented, shared
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 1.0.h),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Row(
-                                          children: [
-                                            ImageIcon(
-                                              AssetImage(
-                                                  'assets/icons/likeNew.png'),
-                                              size: 25.0,
-                                              color: Constants.bgColor,
-                                            ),
-                                            SizedBox(
-                                              width: 1.0.w,
-                                            ),
-                                            Container(
-                                              padding:
-                                                  EdgeInsets.only(top: 1.0.h),
-                                              child: Text(
-                                                "${likesList[index]} Likes",
-                                                style: TextStyle(
-                                                    fontSize: 6.5.sp,
-                                                    color: Constants
-                                                        .bpOnBoardSubtitleStyle,
-                                                    fontFamily: 'Montserrat',
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.only(top: 1.0.h),
-                                          child: Text(
-                                            "${totalCommentsList[index]} Comments",
-                                            style: TextStyle(
-                                                fontSize: 6.5.sp,
-                                                color: Constants
-                                                    .bpOnBoardSubtitleStyle,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
+
+                                  // //Row for Liked, commented, shared
+                                  // Padding(
+                                  //   padding: EdgeInsets.only(top: 1.0.h),
+                                  //   child: Row(
+                                  //     mainAxisAlignment:
+                                  //         MainAxisAlignment.spaceBetween,
+                                  //     children: <Widget>[
+                                  //       Row(
+                                  //         children: [
+                                  //           ImageIcon(
+                                  //             AssetImage(
+                                  //                 'assets/icons/likeNew.png'),
+                                  //             size: 25.0,
+                                  //             color: Constants.bgColor,
+                                  //           ),
+                                  //           SizedBox(
+                                  //             width: 1.0.w,
+                                  //           ),
+                                  //           Container(
+                                  //             padding:
+                                  //                 EdgeInsets.only(top: 1.0.h),
+                                  //             child: Text(
+                                  //               "${likesList[index]} Likes",
+                                  //               style: TextStyle(
+                                  //                   fontSize: 6.5.sp,
+                                  //                   color: Constants
+                                  //                       .bpOnBoardSubtitleStyle,
+                                  //                   fontFamily: 'Montserrat',
+                                  //                   fontWeight:
+                                  //                       FontWeight.w400),
+                                  //             ),
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //       Container(
+                                  //         padding: EdgeInsets.only(top: 1.0.h),
+                                  //         child: Text(
+                                  //           "${totalCommentsList[index]} Comments",
+                                  //           style: TextStyle(
+                                  //               fontSize: 6.5.sp,
+                                  //               color: Constants
+                                  //                   .bpOnBoardSubtitleStyle,
+                                  //               fontFamily: 'Montserrat',
+                                  //               fontWeight: FontWeight.w400),
+                                  //         ),
+                                  //       )
+                                  //     ],
+                                  //   ),
+                                  // ),
+                                  //
                                   //divider
                                   Divider(
                                     height: 1.0.h,
@@ -699,7 +701,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                   ),
                                   //Row for Like comment and Share
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.0.h),
+                                    padding: EdgeInsets.only(top: 1.0.h, bottom: 1.0.h),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -724,7 +726,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                               ImageIcon(
                                                 isLiked[index]
                                                     ? AssetImage(
-                                                        'assets/icons/likeThumb.png')
+                                                        'assets/icons/likeNew.png')
                                                     : AssetImage(
                                                         'assets/icons/likeThumb.png'),
                                                 color: isLiked[index]
@@ -734,20 +736,20 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                 size: 30.0,
                                               ),
                                               SizedBox(
-                                                width: 1.0.w,
+                                                width: 2.0.w,
                                               ),
                                               Container(
                                                 padding:
-                                                    EdgeInsets.only(top: 1.0.h),
+                                                EdgeInsets.only(top: 1.0.h),
                                                 child: Text(
-                                                  "Like",
+                                                  "${likesList[index]} Likes",
                                                   style: TextStyle(
                                                       fontSize: 6.5.sp,
                                                       color: Constants
                                                           .bpOnBoardSubtitleStyle,
                                                       fontFamily: 'Montserrat',
                                                       fontWeight:
-                                                          FontWeight.w400),
+                                                      FontWeight.w400),
                                                 ),
                                               ),
                                             ],
@@ -790,22 +792,20 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                     .bpOnBoardSubtitleStyle,
                                               ),
                                               SizedBox(
-                                                width: 1.0.w,
+                                                width: 2.0.w,
                                               ),
                                               Container(
-                                                padding:
-                                                    EdgeInsets.only(top: 1.0.h),
+                                                padding: EdgeInsets.only(top: 1.0.h),
                                                 child: Text(
-                                                  "Comment",
+                                                  "${totalCommentsList[index]} Comments",
                                                   style: TextStyle(
                                                       fontSize: 6.5.sp,
                                                       color: Constants
                                                           .bpOnBoardSubtitleStyle,
                                                       fontFamily: 'Montserrat',
-                                                      fontWeight:
-                                                          FontWeight.w400),
+                                                      fontWeight: FontWeight.w400),
                                                 ),
-                                              ),
+                                              )
                                             ],
                                           ),
                                         ),
@@ -879,25 +879,22 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
   }
 
   //Alert Dialog for Delete Post
-  void _showDialog() {
+  void _showDialog(id, index) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Delete Post'),
-              Padding(
-                padding: EdgeInsets.only(left: 50.0),
-                child: IconButton(
-                  icon: Icon(Icons.close),
-                  iconSize: 20.0,
-                  color: Constants.bpOnBoardSubtitleStyle,
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
+              IconButton(
+                icon: Icon(Icons.close),
+                iconSize: 20.0,
+                color: Constants.bpOnBoardSubtitleStyle,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               )
             ],
           ),
@@ -906,28 +903,33 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
           actions: [
             // usually buttons at the bottom of the dialog
 
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                    height: 40.0,
-                    width: 30.0.w,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border:
-                            Border.all(color: Constants.bgColor, width: 1.0)),
-                    child: Center(child: Text('NO'))),
-                Container(
-                    height: 40.0,
-                    width: 30.0.w,
-                    decoration: BoxDecoration(
-                        color: Constants.bgColor,
-                        borderRadius: BorderRadius.circular(20),
-                        border:
-                            Border.all(color: Constants.bgColor, width: 1.0)),
-                    child: Center(child: Text('YES'))),
-              ],
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                  height: 40.0,
+                  width: 30.0.w,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border:
+                      Border.all(color: Constants.bgColor, width: 1.0)),
+                  child: Center(child: Text('NO'))),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+                deletePostApi(id, index);
+              },
+              child: Container(
+                  height: 40.0,
+                  width: 30.0.w,
+                  decoration: BoxDecoration(
+                      color: Constants.bgColor,
+                      borderRadius: BorderRadius.circular(20),
+                      border:
+                      Border.all(color: Constants.bgColor, width: 1.0)),
+                  child: Center(child: Text('YES', style: TextStyle(color: Colors.white),))),
             ),
           ],
         );
@@ -971,7 +973,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
       // var response =
       //     await dio.get('${Config.getEducatorPostUrl}$userId?page=$page');
       //var response = await dio.get(Config.myProfileUrl,options: Options(headers: {"Authorization": 'Bearer $authToken'}));
-      var response = await dio.get('${Config.getEducatorPostUrl}?page=$page',
+      var response = await dio.get('${Config.getEducatorPostUrl}/$userId?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
       print(response.statusCode);
 
@@ -1060,9 +1062,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
         //delResult = postDeleteFromJson(response.data);
         delMap = response.data;
 
-        setState(() {
-          isLoading = false;
-        });
+        // getMyPostApi(page);
+      
         if (delMap['status'] == true) {
           isProfileLoading = false;
           print('true');

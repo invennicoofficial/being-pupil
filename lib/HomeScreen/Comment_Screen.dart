@@ -269,15 +269,20 @@ class _CommentScreenState extends State<CommentScreen> {
                                 //ImageIcon(AssetImage('assets/icons/report.png'),)
                               ),
                               //Post descriptionText
-                              Container(
-                                width: 88.0.w,
-                                child: Text(widget.description,
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Container(
+                                  width: 88.0.w,
+                                  child: Text(widget.description,
                                     style: TextStyle(
-                                        fontSize: 9.0.sp,
-                                        color: Constants.bpOnBoardSubtitleStyle,
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w400),
-                                    textAlign: TextAlign.justify),
+                                      fontSize: 9.0.sp,
+                                      color: Constants.bpOnBoardSubtitleStyle,
+                                      fontFamily: 'Montserrat',
+                                      height: 1.5,
+                                      fontWeight: FontWeight.w400,),
+                                    // textAlign: TextAlign.justify
+                                  ),
+                                ),
                               ),
                               SizedBox(
                                 height: 1.0.h,
@@ -308,52 +313,6 @@ class _CommentScreenState extends State<CommentScreen> {
                                         },
                                       ),
                                     ),
-                              //Row for Liked, commented, shared
-                              Padding(
-                                padding: EdgeInsets.only(top: 1.0.h),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Row(
-                                      children: [
-                                        ImageIcon(
-                                          AssetImage('assets/icons/likeNew.png'),
-                                          size: 25.0,
-                                          color: Constants.bgColor,
-                                        ),
-                                        SizedBox(
-                                          width: 1.0.w,
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.only(top: 1.0.h),
-                                          child: Text(
-                                            "${widget.like} Likes",
-                                            style: TextStyle(
-                                                fontSize: 6.5.sp,
-                                                color: Constants
-                                                    .bpOnBoardSubtitleStyle,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.only(top: 1.0.h),
-                                      child: Text(
-                                        "${widget.comment} Comments",
-                                        style: TextStyle(
-                                            fontSize: 6.5.sp,
-                                            color: Constants
-                                                .bpOnBoardSubtitleStyle,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
                               //divider
                               Divider(
                                 height: 1.0.h,
@@ -363,7 +322,7 @@ class _CommentScreenState extends State<CommentScreen> {
                               ),
                               //Row for Like comment and Share
                               Padding(
-                                padding: EdgeInsets.only(top: 1.0.h),
+                                padding: EdgeInsets.only(top: 1.0.h, bottom: 1.0.h),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -386,7 +345,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                         children: [
                                          ImageIcon(
                                               widget.isLiked
-                                                  ? AssetImage('assets/icons/likeThumb.png')
+                                                  ? AssetImage('assets/icons/likeNew.png')
                                                   : AssetImage('assets/icons/likeThumb.png'),
                                               color: widget.isLiked
                                                   ? Constants.selectedIcon
@@ -394,13 +353,12 @@ class _CommentScreenState extends State<CommentScreen> {
                                               size: 30.0,
                                             ),
                                           SizedBox(
-                                            width: 1.0.w,
+                                            width: 2.0.w,
                                           ),
                                           Container(
-                                            padding:
-                                                EdgeInsets.only(top: 1.0.h),
+                                            padding: EdgeInsets.only(top: 1.0.h),
                                             child: Text(
-                                              "Like",
+                                              "${widget.like} Likes",
                                               style: TextStyle(
                                                   fontSize: 6.5.sp,
                                                   color: Constants
@@ -422,12 +380,12 @@ class _CommentScreenState extends State<CommentScreen> {
                                               color: Constants.bpOnBoardSubtitleStyle,
                                             ),
                                         SizedBox(
-                                          width: 1.0.w,
+                                          width: 2.0.w,
                                         ),
                                         Container(
                                           padding: EdgeInsets.only(top: 1.0.h),
                                           child: Text(
-                                            "Comment",
+                                            "${widget.comment} Comments",
                                             style: TextStyle(
                                                 fontSize: 6.5.sp,
                                                 color: Constants
@@ -435,7 +393,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                 fontFamily: 'Montserrat',
                                                 fontWeight: FontWeight.w400),
                                           ),
-                                        ),
+                                        )
                                       ],
                                     ),
                                     GestureDetector(

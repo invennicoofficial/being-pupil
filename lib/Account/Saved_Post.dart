@@ -222,16 +222,20 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                   //ImageIcon(AssetImage('assets/icons/report.png'),)
                                 ),
                                 //Post descriptionText
-                                Container(
-                                  width: 88.0.w,
-                                  child: Text(descriptionList[index],
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Container(
+                                    width: 88.0.w,
+                                    child: Text(descriptionList[index],
                                       style: TextStyle(
-                                          fontSize: 9.0.sp,
-                                          color:
-                                              Constants.bpOnBoardSubtitleStyle,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w400),
-                                      textAlign: TextAlign.justify),
+                                        fontSize: 9.0.sp,
+                                        color: Constants.bpOnBoardSubtitleStyle,
+                                        fontFamily: 'Montserrat',
+                                        height: 1.5,
+                                        fontWeight: FontWeight.w400,),
+                                      // textAlign: TextAlign.justify
+                                    ),
+                                  ),
                                 ),
                                 SizedBox(
                                   height: 1.0.h,
@@ -262,72 +266,6 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                           },
                                         ),
                                       ),
-                                //Row for Liked, commented, shared
-                                Padding(
-                                  padding: EdgeInsets.only(top: 1.0.h),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Row(
-                                        children: [
-                                          ImageIcon(
-                                          AssetImage('assets/icons/likeNew.png'),
-                                          size: 25.0,
-                                          color: Constants.bgColor,
-                                        ),
-                                          SizedBox(
-                                            width: 1.0.w,
-                                          ),
-                                          Container(
-                                            padding:
-                                                EdgeInsets.only(top: 1.0.h),
-                                            child: Text(
-                                              "${likesList[index]} Likes",
-                                              style: TextStyle(
-                                                  fontSize: 6.5.sp,
-                                                  color: Constants
-                                                      .bpOnBoardSubtitleStyle,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Container(
-                                            padding:
-                                                EdgeInsets.only(top: 1.0.h),
-                                            child: Text(
-                                              "${totalCommentsList[index]} Comments",
-                                              style: TextStyle(
-                                                  fontSize: 6.5.sp,
-                                                  color: Constants
-                                                      .bpOnBoardSubtitleStyle,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          ),
-                                          // Container(
-                                          //   padding: EdgeInsets.only(top: 1.0.h),
-                                          //   child: Text(
-                                          //     "1 Share",
-                                          //     style: TextStyle(
-                                          //         fontSize: 6.5.sp,
-                                          //         color: Constants
-                                          //             .bpOnBoardSubtitleStyle,
-                                          //         fontFamily: 'Montserrat',
-                                          //         fontWeight: FontWeight.w400),
-                                          //   ),
-                                          // ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
                                 //divider
                                 Divider(
                                   height: 1.0.h,
@@ -336,10 +274,10 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                 ),
                                 //Row for Like comment and Share
                                 Padding(
-                                  padding: EdgeInsets.only(top: 1.0.h),
+                                  padding: EdgeInsets.only(top: 1.0.h, bottom: 1.0.h),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       GestureDetector(
                                         onTap: () {
@@ -354,89 +292,119 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                                 : likesList[index]--;
                                           });
                                         },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                           ImageIcon(
-                                              isLiked[index]
-                                                  ? AssetImage('assets/icons/likeThumb.png')
-                                                  : AssetImage('assets/icons/likeThumb.png'),
-                                              color: isLiked[index]
-                                                  ? Constants.selectedIcon
-                                                  : Constants.bpOnBoardSubtitleStyle,
-                                              size: 30.0,
-                                            ),
-                                            SizedBox(
-                                              width: 1.0.w,
-                                            ),
-                                            Container(
-                                              padding:
-                                                  EdgeInsets.only(top: 1.0.h),
-                                              child: Text(
-                                                "Like",
-                                                style: TextStyle(
-                                                    fontSize: 6.5.sp,
-                                                    color: Constants
-                                                        .bpOnBoardSubtitleStyle,
-                                                    fontFamily: 'Montserrat',
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          pushNewScreen(context,
-                                            withNavBar: false,
-                                            screen: CommentScreen(
-                                              postId: postIdList[index],
-                                              name: nameList[index],
-                                              profileImage: profileImageList[index],
-                                              degree: degreeList[index],
-                                              schoolName: schoolList[index],
-                                              date: dateList[index],
-                                              description: descriptionList[index],
-                                              like: likesList[index],
-                                              comment: totalCommentsList[index],
-                                              isLiked: isLiked[index],
-                                              isSaved: isSaved[index],
-                                              imageListMap: imageListMap,
-                                              index: index,
-                                            ),
-                                            pageTransitionAnimation:
-                                                PageTransitionAnimation
-                                                    .cupertino);
-                                        },
                                         child: Container(
                                           child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.start,
+                                            MainAxisAlignment.start,
                                             children: [
                                               ImageIcon(
-                                              AssetImage('assets/icons/commentNew.png'),
-                                              size: 25.0,
-                                              color: Constants.bpOnBoardSubtitleStyle,
-                                            ),
+                                                isLiked[index]
+                                                    ? AssetImage('assets/icons/likeNew.png')
+                                                    : AssetImage('assets/icons/likeThumb.png'),
+                                                color: isLiked[index]
+                                                    ? Constants.selectedIcon
+                                                    : Constants.bpOnBoardSubtitleStyle,
+                                                size: 30.0,
+                                              ),
                                               SizedBox(
-                                                width: 1.0.w,
+                                                width: 2.0.w,
                                               ),
                                               Container(
-                                                padding:
-                                                    EdgeInsets.only(top: 1.0.h),
+                                                padding: EdgeInsets.only(top: 1.0.h),
                                                 child: Text(
-                                                  "Comment",
+                                                  "${likesList[index]} Likes",
                                                   style: TextStyle(
                                                       fontSize: 6.5.sp,
                                                       color: Constants
                                                           .bpOnBoardSubtitleStyle,
                                                       fontFamily: 'Montserrat',
-                                                      fontWeight:
-                                                          FontWeight.w400),
+                                                      fontWeight: FontWeight.w400),
                                                 ),
                                               ),
+                                              // Container(
+                                              //   padding:
+                                              //       EdgeInsets.only(top: 1.0.h),
+                                              //   child: Text(
+                                              //     "Like",
+                                              //     style: TextStyle(
+                                              //         fontSize: 6.5.sp,
+                                              //         color: Constants
+                                              //             .bpOnBoardSubtitleStyle,
+                                              //         fontFamily: 'Montserrat',
+                                              //         fontWeight: FontWeight.w400),
+                                              //   ),
+                                              // ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          pushNewScreen(context,
+                                              withNavBar: false,
+                                              screen: CommentScreen(
+                                                postId: postIdList[index],
+                                                name: nameList[index],
+                                                profileImage: profileImageList[index],
+                                                degree: degreeList[index],
+                                                schoolName: schoolList[index],
+                                                date: dateList[index],
+                                                description: descriptionList[index],
+                                                like: likesList[index],
+                                                comment: totalCommentsList[index],
+                                                isLiked: isLiked[index],
+                                                isSaved: isSaved[index],
+                                                imageListMap: imageListMap,
+                                                index: index,
+                                              ),
+                                              pageTransitionAnimation:
+                                              PageTransitionAnimation
+                                                  .cupertino);
+                                        },
+                                        child: Container(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                            children: [
+                                              ImageIcon(
+                                                AssetImage('assets/icons/commentNew.png'),
+                                                size: 25.0,
+                                                color: Constants.bpOnBoardSubtitleStyle,
+                                              ),
+                                              // Icon(
+                                              //   Icons.comment_outlined,
+                                              //   color: Constants
+                                              //       .bpOnBoardSubtitleStyle,
+                                              //   size: 30.0,
+                                              // ),
+                                              SizedBox(
+                                                width: 2.0.w,
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.only(top: 1.0.h),
+                                                child: Text(
+                                                  "${totalCommentsList[index]} Comments",
+                                                  style: TextStyle(
+                                                      fontSize: 6.5.sp,
+                                                      color: Constants
+                                                          .bpOnBoardSubtitleStyle,
+                                                      fontFamily: 'Montserrat',
+                                                      fontWeight: FontWeight.w400),
+                                                ),
+                                              )
+                                              // Container(
+                                              //   padding:
+                                              //       EdgeInsets.only(top: 1.0.h),
+                                              //   child: Text(
+                                              //     "Comment",
+                                              //     style: TextStyle(
+                                              //         fontSize: 6.5.sp,
+                                              //         color: Constants
+                                              //             .bpOnBoardSubtitleStyle,
+                                              //         fontFamily: 'Montserrat',
+                                              //         fontWeight: FontWeight.w400),
+                                              //   ),
+                                              // ),
                                             ],
                                           ),
                                         ),
@@ -446,44 +414,40 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                           setState(() {
                                             isSaved[index] = !isSaved[index];
                                           });
-                                          savePostApi(
-                                              postIdList[index].toString());
-                                          isLoading = true;
-                                          setState(() {});
-
-                                          //save.savePostApi(int.parse(postIdList[index]), authToken);
+                                          savePostApi(postIdList[index].toString());
                                         },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            ImageIcon(
-                                              isSaved[index]
-                                                  ? AssetImage('assets/icons/saveGreen.png')
-                                                  : AssetImage('assets/icons/saveNew.png'),
-                                              color: isSaved[index]
-                                                  ? Constants.selectedIcon
-                                                  : Constants.bpOnBoardSubtitleStyle,
-                                              size: 25.0,
-                                            ),
-                                            SizedBox(
-                                              width: 1.0.w,
-                                            ),
-                                            Container(
-                                              padding:
-                                                  EdgeInsets.only(top: 1.0.h),
-                                              child: Text(
-                                                "Save",
-                                                style: TextStyle(
-                                                    fontSize: 6.5.sp,
-                                                    color: Constants
-                                                        .bpOnBoardSubtitleStyle,
-                                                    fontFamily: 'Montserrat',
-                                                    fontWeight:
-                                                        FontWeight.w400),
+                                        child: Container(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                            children: [
+                                              ImageIcon(
+                                                isSaved[index]
+                                                    ? AssetImage('assets/icons/saveGreen.png')
+                                                    : AssetImage('assets/icons/saveNew.png'),
+                                                color: isSaved[index]
+                                                    ? Constants.selectedIcon
+                                                    : Constants.bpOnBoardSubtitleStyle,
+                                                size: 25.0,
                                               ),
-                                            ),
-                                          ],
+                                              SizedBox(
+                                                width: 1.0.w,
+                                              ),
+                                              Container(
+                                                padding:
+                                                EdgeInsets.only(top: 1.0.h),
+                                                child: Text(
+                                                  "Save",
+                                                  style: TextStyle(
+                                                      fontSize: 6.5.sp,
+                                                      color: Constants
+                                                          .bpOnBoardSubtitleStyle,
+                                                      fontFamily: 'Montserrat',
+                                                      fontWeight: FontWeight.w400),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],

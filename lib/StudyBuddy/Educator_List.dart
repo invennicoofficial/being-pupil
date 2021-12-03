@@ -134,19 +134,7 @@ class _EducatorListState extends State<EducatorList> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    registerAs == 'E'
-                                        ? pushNewScreen(context,
-                                            screen: EducatorProfileViewScreen(),
-                                            withNavBar: false,
-                                            pageTransitionAnimation:
-                                                PageTransitionAnimation
-                                                    .cupertino)
-                                        : pushNewScreen(context,
-                                            screen: LearnerProfileViewScreen(),
-                                            withNavBar: false,
-                                            pageTransitionAnimation:
-                                                PageTransitionAnimation
-                                                    .cupertino);
+                                    getUserProfile(_userId[index]);
                                   },
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(50),
@@ -274,6 +262,58 @@ class _EducatorListState extends State<EducatorList> {
           setState(() {});
         }
 
+        setState(() {
+          isLoading = false;
+        });
+      } else {
+        print('${response.statusCode} : ${response.data.toString()}');
+        throw response.statusCode;
+      }
+    } on DioError catch (e, stack) {
+      // closeProgressDialog(context);
+      print(e.response);
+      print(stack);
+    }
+  }
+
+
+  Future<void> getUserProfile(id) async {
+    // displayProgressDialog(context);
+
+    Map<String, dynamic> map = {};
+    try {
+      Dio dio = Dio();
+
+      var response = await dio.get('${Config.myProfileUrl}/$id',
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        map = response.data;
+
+        print(map['data']);
+        //print(mapData);
+        if (map['data'] != null || map['data'] != []) {
+          setState(() {});
+          map['data']['role'] == 'E'
+              ? pushNewScreen(context,
+              screen: EducatorProfileViewScreen(id: id,),
+              withNavBar: false,
+              pageTransitionAnimation:
+              PageTransitionAnimation.cupertino)
+              :
+          pushNewScreen(context,
+              screen: LearnerProfileViewScreen(id: id,),
+              withNavBar: false,
+              pageTransitionAnimation:
+              PageTransitionAnimation
+                  .cupertino);
+        } else {
+          isLoading = false;
+          setState(() {});
+        }
+        //print(result.data);
+        //return result;
         setState(() {
           isLoading = false;
         });
