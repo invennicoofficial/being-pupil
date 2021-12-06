@@ -1,5 +1,9 @@
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/Stay_And_Study_Model/Check_Booking_Model.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
+import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,6 +13,7 @@ import 'package:sizer/sizer.dart';
 
 import 'Booking_Review_Screen.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class BookPropertyScreen extends StatefulWidget {
   BookPropertyScreen({Key key}) : super(key: key);
@@ -36,14 +41,21 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
   int selectedMonth = 0;
   bool isRoomSelected = false;
 
+  String authToken;
+
   // List<String> sharingList = ['Single Sharing', 'Double Sharing'];
   // List<String> sharingPriceList = ['₹4000/mth', '₹6000/mth'];
 
   @override
   void initState() {
-    getData();
     // TODO: implement initState
     super.initState();
+    getToken();
+  }
+
+  void getToken() async {
+    authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+    getData();
   }
 
   getData() async {
@@ -992,21 +1004,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                           textColor: Colors.white,
                           fontSize: 10.0.sp);
                     } else {
-                      pushNewScreen(context,
-                          screen: BookingReviewScreen(
-                            name: userName,
-                            mobileNumber: userNumber,
-                            checkIn: DateFormat('EEE, dd MMM yyyy').format(checkInDate).toString(),
-                            checkOut: DateFormat('EEE, dd MMM yyyy').format(checkOutDate).toString(),
-                            roomType: roomType,
-                            meal: selectedMeal.toString(),
-                            roomCharge: roomCharge,
-                            mealCharge: mealCharge,
-                            taxCharge: taxCharge,
-                            total: total,
-                          ),
-                          withNavBar: false,
-                          pageTransitionAnimation: PageTransitionAnimation.cupertino);
+                      checkBookingDateAPI();
                     }
                   },
                   child: Container(
@@ -1037,5 +1035,95 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
             ],
           ),
         ));
+  }
+
+  //Booking Date Check API
+  Future<CheckBooking> checkBookingDateAPI() async {
+    displayProgressDialog(context);
+    print(checkInDate);
+    var result = CheckBooking();
+    try {
+      var dio = Dio();
+      FormData formData = FormData.fromMap({
+        'checkIn_date': '10/01/2022 09:10:22 AM',
+        'checkOut_date': '09/02/2022 09:10:22 AM'
+      });
+      var response = await dio.post(Config.bookingCheckUrl,
+          data: formData,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+      if (response.statusCode == 200) {
+        closeProgressDialog(context);
+        result = CheckBooking.fromJson(response.data);
+        print(response.data);
+
+        if (result.status == true) {
+          //Continue for Payment
+          pushNewScreen(context,
+              screen: BookingReviewScreen(
+                name: userName,
+                mobileNumber: userNumber,
+                checkIn: DateFormat('EEE, dd MMM yyyy')
+                    .format(checkInDate)
+                    .toString(),
+                checkOut: DateFormat('EEE, dd MMM yyyy')
+                    .format(checkOutDate)
+                    .toString(),
+                roomType: roomType,
+                meal: selectedMeal.toString(),
+                roomCharge: roomCharge,
+                mealCharge: mealCharge,
+                taxCharge: taxCharge,
+                total: total,
+              ),
+              withNavBar: false,
+              pageTransitionAnimation: PageTransitionAnimation.cupertino);
+        } else {
+          closeProgressDialog(context);
+          Fluttertoast.showToast(
+            msg: result.message == null ? result.errorMsg : result.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        }
+      }
+    } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+      closeProgressDialog(context);
+      if (e.response != null) {
+        print("This is the error message::::" +
+            e.response.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.request);
+        print(e.message);
+      }
+    }
+    return result;
+  }
+
+  displayProgressDialog(BuildContext context) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new ProgressDialog();
+        }));
+  }
+
+  closeProgressDialog(BuildContext context) {
+    Navigator.of(context).pop();
   }
 }
