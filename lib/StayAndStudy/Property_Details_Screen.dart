@@ -1,4 +1,5 @@
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Model/Stay_And_Study_Model/Get_All_Property_Model.dart';
 import 'package:being_pupil/StayAndStudy/Property_Book_Screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +7,19 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:readmore/readmore.dart';
 import 'package:share/share.dart';
 import 'package:sizer/sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'Rating_Review_Screen.dart';
 
 class PropertyDetailScreen extends StatefulWidget {
-  const PropertyDetailScreen({Key key}) : super(key: key);
+  // String propertyName, propertyDescription, propertyLat, propertyLng;
+  // int propertyId, propertyRating, propertyReview;
+  // List<String> propertyImages;
+  // List<List<dynamic>> propertyAminities, propertyRoom, propertyMeal;
+  GetAllProperty propertyDetails;
+  int index;
+  PropertyDetailScreen(
+      {Key key, @required this.propertyDetails, @required this.index})
+      : super(key: key);
 
   @override
   _PropertyDetailScreenState createState() => _PropertyDetailScreenState();
@@ -43,6 +53,17 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
     'assets/icons/washer.png',
     'assets/icons/fire.png',
   ];
+
+  double lat = 0.0, long = 0.0;
+
+ void _launchMapsUrl(double lat, double long) async {
+  final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$long';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -79,13 +100,14 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                 padding: EdgeInsets.only(top: 2.0.h),
                 child: CarouselSlider(
                     carouselController: _controller,
-                    items: imgList
-                        .map((item) => Container(
-                              child: Center(
-                                  child: Image.network(item,
-                                      fit: BoxFit.cover, width: 1000)),
-                            ))
-                        .toList(),
+                    items: //imgList
+                        widget.propertyDetails.data[widget.index].featuredImage
+                            .map((item) => Container(
+                                  child: Center(
+                                      child: Image.network(item,
+                                          fit: BoxFit.cover, width: 1000)),
+                                ))
+                            .toList(),
                     options: CarouselOptions(
                       height: 30.0.h,
                       aspectRatio: 16 / 9,
@@ -131,7 +153,11 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                                     padding: EdgeInsets.zero,
                                     decoration: BoxDecoration(
                                         image: DecorationImage(
-                                            image: NetworkImage(imgList[index]),
+                                            image: NetworkImage(//imgList[index]
+                                                widget
+                                                    .propertyDetails
+                                                    .data[widget.index]
+                                                    .featuredImage[index]),
                                             fit: BoxFit.fill)),
                                   ),
                                 ),
@@ -150,7 +176,7 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    'Lorem ipsum dolor sit amet',
+                    widget.propertyDetails.data[widget.index].name,
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 12.0.sp,
@@ -199,7 +225,7 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                       width: 1.0.w,
                     ),
                     Text(
-                      '4.5 Rating | 5 Review',
+                      '${widget.propertyDetails.data[widget.index].rating} Rating | ${widget.propertyDetails.data[widget.index].review} Review',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 10.0.sp,
@@ -226,26 +252,26 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                 ],
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 1.0.h),
-              child: Row(
-                children: [
-                  Text(
-                    'sit amet, consetetur sadipscing elitr, sed',
-                    style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 10.0.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Constants.blueTitle),
-                  ),
-                ],
-              ),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 1.0.h),
+            //   child: Row(
+            //     children: [
+            //       Text(
+            //         'sit amet, consetetur sadipscing elitr, sed',
+            //         style: TextStyle(
+            //             fontFamily: 'Montserrat',
+            //             fontSize: 10.0.sp,
+            //             fontWeight: FontWeight.w600,
+            //             color: Constants.blueTitle),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             Padding(
               padding: EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 1.0.h),
               child: Container(
                 child: ReadMoreText(
-                  'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna erat, Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,',
+                  '${widget.propertyDetails.data[widget.index].description}',
                   trimLines: 3,
                   trimMode: TrimMode.Line,
                   trimCollapsedText: 'Read More',
@@ -284,7 +310,8 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                       GridView.builder(
                           shrinkWrap: true,
                           padding: EdgeInsets.all(0.0),
-                          itemCount: ameList.length,
+                          itemCount: widget.propertyDetails.data[widget.index]
+                              .amenities.length,
                           physics: NeverScrollableScrollPhysics(),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
@@ -295,14 +322,21 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                               contentPadding: EdgeInsets.zero,
                               title: Row(
                                 children: [
-                                  ImageIcon(
-                                    AssetImage(ameIcon[index]),
-                                    size: 22.0,
-                                    color: Constants.bgColor,
+                                  //ImageIcon(
+                                  Image.network(
+                                    widget.propertyDetails.data[widget.index]
+                                        .amenities[index].amenitiesImage,
+                                    fit: BoxFit.contain,
                                   ),
-                                  SizedBox(width: 5.0,),
+                                  // size: 22.0,
+                                  //color: Constants.bgColor,
+                                  //),
+                                  SizedBox(
+                                    width: 5.0,
+                                  ),
                                   Text(
-                                    ameList[index],
+                                    widget.propertyDetails.data[widget.index]
+                                        .amenities[index].amenitiesName,
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 9.0.sp,
@@ -317,26 +351,37 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                   )),
             ),
             //Show map button
-            Container(
-              height: 7.0.h,
-              width: 90.0.w,
-              padding: const EdgeInsets.all(1.0),
-              decoration: BoxDecoration(
-                //color: Constants.bpOnBoardTitleStyle,
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                border: Border.all(
-                  //color: Constants.bgColor,
-                  width: 1.0,
+            GestureDetector(
+              onTap: () {
+              setState(() {
+                lat = double.parse(widget.propertyDetails.data[widget.index].location.lat);
+                long = double.parse(widget.propertyDetails.data[widget.index].location.lng);
+              });
+              print(lat);
+              print(long);
+                _launchMapsUrl(lat, long);
+              },
+              child: Container(
+                height: 7.0.h,
+                width: 90.0.w,
+                padding: const EdgeInsets.all(1.0),
+                decoration: BoxDecoration(
+                  //color: Constants.bpOnBoardTitleStyle,
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  border: Border.all(
+                    //color: Constants.bgColor,
+                    width: 1.0,
+                  ),
                 ),
-              ),
-              child: Center(
-                child: Text(
-                  'Show on Map',
-                  style: TextStyle(
-                      color: Constants.bgColor,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w700,
-                      fontSize: 11.0.sp),
+                child: Center(
+                  child: Text(
+                    'Show on Map',
+                    style: TextStyle(
+                        color: Constants.bgColor,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w700,
+                        fontSize: 11.0.sp),
+                  ),
                 ),
               ),
             ),
