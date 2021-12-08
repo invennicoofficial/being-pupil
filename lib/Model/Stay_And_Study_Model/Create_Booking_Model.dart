@@ -1,15 +1,15 @@
 // To parse this JSON data, do
 //
-//     final checkBooking = checkBookingFromJson(jsonString);
+//     final createBooking = createBookingFromJson(jsonString);
 
 import 'dart:convert';
 
-CheckBooking checkBookingFromJson(String str) => CheckBooking.fromJson(json.decode(str));
+CreateBooking createBookingFromJson(String str) => CreateBooking.fromJson(json.decode(str));
 
-String checkBookingToJson(CheckBooking data) => json.encode(data.toJson());
+String createBookingToJson(CreateBooking data) => json.encode(data.toJson());
 
-class CheckBooking {
-    CheckBooking({
+class CreateBooking {
+    CreateBooking({
         this.status,
         this.errorCode,
         this.errorMsg,
@@ -25,13 +25,12 @@ class CheckBooking {
     Data data;
     dynamic metaParams;
 
-    factory CheckBooking.fromJson(Map<String, dynamic> json) => CheckBooking(
+    factory CreateBooking.fromJson(Map<String, dynamic> json) => CreateBooking(
         status: json["status"],
         errorCode: json["error_code"],
         errorMsg: json["error_msg"],
         message: json["message"],
-        data: json["data"] == null
-         ? null : Data.fromJson(json["data"]),
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
         metaParams: json["meta_params"],
     );
 
@@ -47,16 +46,28 @@ class CheckBooking {
 
 class Data {
     Data({
-        this.dataContinue,
+        this.userId,
+        this.bookingId,
+        this.guestName,
+        this.mobileNumber,
     });
 
-    bool dataContinue;
+    int userId;
+    String bookingId;
+    String guestName;
+    String mobileNumber;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
-        dataContinue: json["continue"],
+        userId: json["user_id"],
+        bookingId: json["booking_id"],
+        guestName: json["guest_name"],
+        mobileNumber: json["mobile_number"],
     );
 
     Map<String, dynamic> toJson() => {
-        "continue": dataContinue,
+        "user_id": userId,
+        "booking_id": bookingId,
+        "guest_name": guestName,
+        "mobile_number": mobileNumber,
     };
 }

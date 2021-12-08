@@ -385,6 +385,7 @@ class _OtpScreenState extends State<OtpScreen> {
               preferences.setString("name", result.data.userObject.name);
               preferences.setString("mobileNumber", result.data.userObject.mobileNumber);
               preferences.setString("gender", result.data.userObject.gender);
+              preferences.setString("email", result.data.userObject.email);
               //result.data.userObject.role == 'E' ? 
               preferences.setString("imageUrl", result.data.userObject.imageUrl);
               // : preferences.setString("imageUrl", '');

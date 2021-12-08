@@ -45,6 +45,7 @@ class Config{
   static const String discontinueCourseUrl = baseUrl + "user/discontinueCourse";
   static const String getAllPropertyUrl = baseUrl + "property/getAll";
   static const String bookingCheckUrl = baseUrl + "property/booking/check";
+  static const String createBookingUrl = baseUrl + "property/book";
 }
 
 

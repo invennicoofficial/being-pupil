@@ -392,7 +392,10 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
             GestureDetector(
               onTap: () {
                 pushNewScreen(context,
-                    screen: BookPropertyScreen(),
+                    screen: BookPropertyScreen(
+                      propertyDetails: widget.propertyDetails,
+                      index: widget.index,
+                    ),
                     withNavBar: false,
                     pageTransitionAnimation: PageTransitionAnimation.cupertino);
               },

@@ -60,6 +60,7 @@ class UserObject {
   String role;
   String isNew;
   String name;
+  String email;
   String mobileNumber;
   String gender;
   String imageUrl;
@@ -74,6 +75,7 @@ class UserObject {
       {this.role,
       this.isNew,
       this.name,
+      this.email,
       this.mobileNumber,
       this.gender,
       this.imageUrl,
@@ -90,6 +92,7 @@ class UserObject {
         role: json['register_as'],
         isNew: json['isNew'],
         name: json['name'],
+        email: json['email'],
         mobileNumber: json['mobile_number'],
         gender: json['gender'],
         imageUrl: json['image_url'],
@@ -112,6 +115,7 @@ class UserObject {
     data['role'] = this.role;
     data['isNew'] = this.isNew;
     data['name'] = this.name;
+    data['email'] = this.email;
     data['mobile_number'] = this.mobileNumber;
     data['gender'] = this.gender;
     data['location'] = this.location;

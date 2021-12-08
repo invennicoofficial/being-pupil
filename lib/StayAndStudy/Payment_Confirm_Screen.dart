@@ -1,10 +1,33 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
-class PaymentConfirmScreen extends StatelessWidget {
-  const PaymentConfirmScreen({Key key}) : super(key: key);
+class PaymentConfirmScreen extends StatefulWidget {
+  String name, mobileNumber, checkIn, checkOut, roomType, meal;
+  PaymentConfirmScreen({Key key, this.name, this.mobileNumber, this.checkIn, this.checkOut, this.roomType, this.meal}) : super(key: key);
+
+  @override
+  _PaymentConfirmScreenState createState() => _PaymentConfirmScreenState();
+}
+
+class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
+  String email;
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+   setState(() {
+      email = preferences.getString('email');
+   });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +98,7 @@ class PaymentConfirmScreen extends StatelessWidget {
                         color: Constants.bgColor),
                   ),
                   Text(
-                    'Divyang Dantani',
+                    widget.name,
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10.0.sp,
@@ -99,7 +122,7 @@ class PaymentConfirmScreen extends StatelessWidget {
                         color: Constants.bgColor),
                   ),
                   Text(
-                    '9737887570',
+                    widget.mobileNumber,
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10.0.sp,
@@ -123,7 +146,7 @@ class PaymentConfirmScreen extends StatelessWidget {
                         color: Constants.bgColor),
                   ),
                   Text(
-                    'Fri, 21 Jan 2021',
+                    widget.checkIn,
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10.0.sp,
@@ -147,7 +170,7 @@ class PaymentConfirmScreen extends StatelessWidget {
                         color: Constants.bgColor),
                   ),
                   Text(
-                    'Fri, 21 Mar 2021',
+                    widget.checkOut,
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10.0.sp,
@@ -171,7 +194,7 @@ class PaymentConfirmScreen extends StatelessWidget {
                         color: Constants.bgColor),
                   ),
                   Text(
-                    'Double Sharing',
+                    widget.roomType,
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10.0.sp,
@@ -195,7 +218,7 @@ class PaymentConfirmScreen extends StatelessWidget {
                         color: Constants.bgColor),
                   ),
                   Text(
-                    'Breakfast, Lunch',
+                    widget.meal.substring(1, widget.meal.length - 1),
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10.0.sp,
@@ -218,7 +241,7 @@ class PaymentConfirmScreen extends StatelessWidget {
                     color: Constants.bgColor),
               ),
               TextSpan(
-                text: 'yourmail@gmail.com ',
+                text: email,
                 style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 10.0.sp,

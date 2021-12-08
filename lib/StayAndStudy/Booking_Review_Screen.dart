@@ -1,12 +1,30 @@
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/Stay_And_Study_Model/Create_Booking_Model.dart';
+import 'package:being_pupil/Model/Stay_And_Study_Model/Get_All_Property_Model.dart';
 import 'package:being_pupil/StayAndStudy/Payment_Confirm_Screen.dart';
+import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
-class BookingReviewScreen extends StatelessWidget {
-  final String name, mobileNumber, checkIn, checkOut, roomType, meal;
-  final int roomCharge, mealCharge, taxCharge, total;
+class BookingReviewScreen extends StatefulWidget {
+  final String name,
+      mobileNumber,
+      checkIn,
+      checkOut,
+      roomType,
+      meal,
+      checkInDateFormat,
+      checkOutDateFormat;
+  GetAllProperty propertyDetails;
+  int index;
+  final int roomCharge, mealCharge, taxCharge, total, roomId ,stayMonths;
+  List<int> mealId = [];
+
   BookingReviewScreen(
       {Key key,
       this.name,
@@ -15,11 +33,35 @@ class BookingReviewScreen extends StatelessWidget {
       this.checkOut,
       this.roomType,
       this.meal,
+      this.mealId,
       this.roomCharge,
       this.mealCharge,
       this.taxCharge,
-      this.total})
+      this.total,
+      this.checkInDateFormat,
+      this.checkOutDateFormat,
+      this.propertyDetails,
+      this.index,
+      this.roomId,
+      this.stayMonths})
       : super(key: key);
+
+  @override
+  _BookingReviewScreenState createState() => _BookingReviewScreenState();
+}
+
+class _BookingReviewScreenState extends State<BookingReviewScreen> {
+  String authToken;
+
+  @override
+  void initState() {
+    super.initState();
+    getToken();
+  }
+
+  void getToken() async {
+    authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +101,7 @@ class BookingReviewScreen extends StatelessWidget {
                   width: 100.0.w,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/images/house.jpg'),
+                      image: NetworkImage(widget.propertyDetails.data[widget.index].featuredImage[0]),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(8.0),
@@ -68,13 +110,17 @@ class BookingReviewScreen extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(top: 1.0.h),
-                child: Text(
-                  'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod',
-                  style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 11.0.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Constants.bgColor),
+                child: Row(
+                  children: [
+                    Text(
+                      widget.propertyDetails.data[widget.index].name,
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 12.0.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Constants.bgColor),
+                    ),
+                  ],
                 ),
               ),
               Padding(
@@ -110,7 +156,7 @@ class BookingReviewScreen extends StatelessWidget {
                                 color: Constants.bgColor),
                           ),
                           Text(
-                            name,
+                            widget.name,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -134,7 +180,7 @@ class BookingReviewScreen extends StatelessWidget {
                                 color: Constants.bgColor),
                           ),
                           Text(
-                            mobileNumber,
+                            widget.mobileNumber,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -158,7 +204,7 @@ class BookingReviewScreen extends StatelessWidget {
                                 color: Constants.bgColor),
                           ),
                           Text(
-                            checkIn,
+                            widget.checkIn,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -182,7 +228,7 @@ class BookingReviewScreen extends StatelessWidget {
                                 color: Constants.bgColor),
                           ),
                           Text(
-                            checkOut,
+                            widget.checkOut,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -206,7 +252,7 @@ class BookingReviewScreen extends StatelessWidget {
                                 color: Constants.bgColor),
                           ),
                           Text(
-                            roomType,
+                            widget.roomType,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -230,7 +276,7 @@ class BookingReviewScreen extends StatelessWidget {
                                 color: Constants.bgColor),
                           ),
                           Text(
-                            meal.substring(1, meal.length - 1),
+                            widget.meal.substring(1, widget.meal.length - 1),
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -284,14 +330,15 @@ class BookingReviewScreen extends StatelessWidget {
                                     fontWeight: FontWeight.w400,
                                     color: Constants.bgColor)),
                             TextSpan(
-                                text: '($roomType)',
+                                text: '(${widget.roomType})',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 8.0.sp,
                                     fontWeight: FontWeight.w400,
                                     color: Constants.blueTitle)),
                           ])),
-                          Text('₹$roomCharge',
+                          Text(
+                            '₹${widget.roomCharge}',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -315,14 +362,15 @@ class BookingReviewScreen extends StatelessWidget {
                                     fontWeight: FontWeight.w400,
                                     color: Constants.bgColor)),
                             TextSpan(
-                                text: '(${meal.substring(1, meal.length - 1)})',
+                                text: '(${widget.meal.substring(1, widget.meal.length - 1)})',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 8.0.sp,
                                     fontWeight: FontWeight.w400,
                                     color: Constants.blueTitle)),
                           ])),
-                          Text('₹$mealCharge',
+                          Text(
+                            '₹${widget.mealCharge}',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -345,7 +393,8 @@ class BookingReviewScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text('₹$taxCharge',
+                          Text(
+                            '₹${widget.taxCharge}',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -379,7 +428,8 @@ class BookingReviewScreen extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                           color: Constants.bgColor),
                     ),
-                    Text('₹$total',
+                    Text(
+                      '₹${widget.total}',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 14.0.sp,
@@ -393,8 +443,7 @@ class BookingReviewScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 3.0.h),
                 child: GestureDetector(
                   onTap: () {
-                    pushNewScreen(context, screen: PaymentConfirmScreen(),
-                    withNavBar: false, pageTransitionAnimation: PageTransitionAnimation.cupertino);
+                    createBookingAPI();
                   },
                   child: Container(
                     height: 7.0.h,
@@ -426,5 +475,90 @@ class BookingReviewScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<CreateBooking> createBookingAPI() async {
+    // print(widget.mealId);
+    displayProgressDialog(context);
+    var result = CreateBooking();
+    try {
+      var dio = Dio();
+      FormData formData = FormData.fromMap({
+        'property_id': widget.propertyDetails.data[widget.index].propertyId,
+        'room_id': widget.roomId,
+        'guest_name': widget.name,
+        'mobile_number': widget.mobileNumber,
+        'stay_months': widget.stayMonths,
+        'checkIn_date': widget.checkInDateFormat,
+        'checkOut_date': widget.checkOutDateFormat,
+        'tax_amount': widget.taxCharge,
+        'total_amount': widget.total
+      });
+      
+        for(int i = 0; i < widget.mealId.length; i++){
+          print(widget.mealId[i]);
+          formData.fields.addAll([
+            MapEntry('meal_id[$i]', widget.mealId[i].toString())
+          ]);
+        }
+    
+      var response = await dio.post(Config.createBookingUrl,
+          data: formData,
+          options: Options(headers: {"Authorization": 'Bearer $authToken'}));
+
+      if(response.statusCode == 200){
+        closeProgressDialog(context);
+        print(response.data);
+        result = CreateBooking.fromJson(response.data);
+        if(result.status == true){
+          pushNewScreen(context,
+          screen: PaymentConfirmScreen(
+            name: widget.name,
+            mobileNumber: widget.mobileNumber,
+            checkIn: widget.checkIn,
+            checkOut: widget.checkOut,
+            roomType: widget.roomType,
+            meal: widget.meal
+          ),
+          withNavBar: false,
+          pageTransitionAnimation:
+          PageTransitionAnimation.cupertino);
+        }
+      }
+    } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+      closeProgressDialog(context);
+      if (e.response != null) {
+        print("This is the error message::::" +
+            e.response.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.request);
+        print(e.message);
+      }
+    }
+    return result;
+  }
+
+   displayProgressDialog(BuildContext context) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new ProgressDialog();
+        }));
+  }
+
+  closeProgressDialog(BuildContext context) {
+    Navigator.of(context).pop();
   }
 }
