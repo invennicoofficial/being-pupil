@@ -1,6 +1,9 @@
+import 'package:being_pupil/ConnectyCube/chat_dialog_screen.dart';
+import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Connection_Model.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +36,7 @@ class _ConnectionListState extends State<ConnectionList> {
   List<int> _userId = [];
   List<String> _profileImage = [];
   List<String> _name = [];
+  List<String> _email = [];
   List<String> _lastDegree = [];
   List<String> _schoolName = [];
   List<String> _status = [];
@@ -214,26 +218,55 @@ class _ConnectionListState extends State<ConnectionList> {
                                           ),
                                         ),
                                       )
-                                    : Container(
-                                        height: 3.5.h,
-                                        width: 16.0.w,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Constants.bgColor,
-                                                width: 0.5),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8.0))),
-                                        child: Center(
-                                          child: Text(
-                                            'Chat',
-                                            style: TextStyle(
-                                                fontSize: 8.0.sp,
-                                                color: Constants.bgColor,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w500),
+                                    : GestureDetector(
+                                  onTap: () async {
+                                    SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+                                    CubeUser user = sharedPrefs.getUser();
+                                    print(_email[index]);
+                                    getUserByEmail(_email[index])
+                                        .then((cubeUser) {
+                                          CubeDialog newDialog = CubeDialog(
+                                        CubeDialogType.PRIVATE,
+                                        occupantsIds: [cubeUser.id]);
+                                    createDialog(newDialog)
+                                        .then((createdDialog) {
+                                      pushNewScreen(context,
+                                          screen: ChatDialogScreen(user, createdDialog, _profileImage[index]),
+                                          withNavBar: false,
+                                          pageTransitionAnimation:
+                                          PageTransitionAnimation
+                                              .cupertino);
+                                    })
+                                        .catchError((error) {
+
+                                    });
+                                    })
+                                        .catchError((error) {
+
+                                    });
+
+                                  },
+                                      child: Container(
+                                          height: 3.5.h,
+                                          width: 16.0.w,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Constants.bgColor,
+                                                  width: 0.5),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8.0))),
+                                          child: Center(
+                                            child: Text(
+                                              'Chat',
+                                              style: TextStyle(
+                                                  fontSize: 8.0.sp,
+                                                  color: Constants.bgColor,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w500),
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                    ),
                               ),
                             )),
                       ),
@@ -310,12 +343,13 @@ class _ConnectionListState extends State<ConnectionList> {
         //return EducatorPost.fromJson(json)
         //result = EducatorPost.fromJson(response.data);
         connection = Connection.fromJson(response.data);
-
+        print(response.data);
         if (connection.data.length > 0) {
           for (int i = 0; i < connection.data.length; i++) {
             _userId.add(connection.data[i].userId);
             _profileImage.add(connection.data[i].profileImage);
             _name.add(connection.data[i].name);
+            _email.add(connection.data[i].email);
             _lastDegree.add(connection.data[i].lastDegree);
             _schoolName.add(connection.data[i].schoolName);
             _status.add(connection.data[i].status);

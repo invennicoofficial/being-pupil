@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:being_pupil/ConnectyCube/api_utils.dart';
+import 'package:being_pupil/ConnectyCube/pref_util.dart';
+import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
@@ -81,6 +84,8 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
 
   Map<String, dynamic> hobbieMap = Map<String, dynamic>();
   List<dynamic> hobbieMapData = List();
+
+  static const String TAG = "_LoginPageState";
   //List<String> _schoolNameList
 
   // List<Skills> _selectedSkills;
@@ -3051,8 +3056,9 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
                               } else {
+                                // _signInCC(context, CubeUser(fullName:  _nameController.text, login: _emailController.text, password: '12345678'));
                                 addEducatorProfile(
-                                    //userId,
+                                  //userId,
                                     registerAs,
                                     _nameController.text,
                                     _mobileController.text,
@@ -3111,6 +3117,64 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
             ),
           ),
         ));
+  }
+
+
+
+  //ConnectyCube
+
+  _signInCC(BuildContext context, CubeUser user) async {
+    if (!CubeSessionManager.instance.isActiveSessionValid()) {
+      try {
+        await createSession();
+      } catch (error) {
+        _processLoginError(error);
+      }
+    }
+    signUp(user).then((newUser) async {
+      print("signUp newUser $newUser");
+      user.id = newUser.id;
+      SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+      sharedPrefs.saveNewUser(user);
+      addEducatorProfile(
+        //userId,
+          registerAs,
+          _nameController.text,
+          _mobileController.text,
+          _emailController.text,
+          gender,
+          birthDateInString,
+          docType,
+          _document,
+          _image,
+          _idNumController.text,
+          address1,
+          address2,
+          city,
+          country,
+          pinCode,
+          lat,
+          lng,
+          _achivementController.text,
+          selectedSkillList.toString(),
+          selectedHobbiesList.toString(),
+          _fbLinkController.text,
+          _instagramLinkController.text,
+          _linkedInLinkLinkController.text,
+          _otherLinkLinkController.text,
+          totalWorkExp,
+          totalTeachExp);
+    }).catchError((exception) {
+      _processLoginError(exception);
+    });
+  }
+
+  void _processLoginError(exception) {
+    log("Login error $exception", TAG);
+    setState(() {
+
+    });
+    showDialogError(exception, context);
   }
 
 //Save Education Details

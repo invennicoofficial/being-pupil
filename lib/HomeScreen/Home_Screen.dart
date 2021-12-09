@@ -1,8 +1,12 @@
+import 'package:being_pupil/ConnectyCube/api_utils.dart';
+import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Create_Post_Screen.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:connectycube_sdk/connectycube_core.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +19,7 @@ import 'package:sizer/sizer.dart';
 import 'Comment_Screen.dart';
 import 'Report_Feed.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
+import 'package:being_pupil/ConnectyCube/configs.dart' as config;
 
 class EducatorHomeScreen extends StatefulWidget {
   EducatorHomeScreen({Key key}) : super(key: key);
@@ -57,6 +62,8 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
   String authToken, registerAs;
   Map<String, dynamic> saveMap;
   LikePostAPI like = LikePostAPI();
+  static const String TAG = "_LoginPageState";
+  CubeUser user;
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -79,6 +86,12 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
       registerAs = preferences.getString('RegisterAs');
     });
     print('RoLE::::::' + registerAs.toString());
+    SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+    user = sharedPrefs.getUser();
+
+    if(user != null) {
+      _loginToCubeChat(context, user);
+    }
     getAllPostApi(page);
      _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -625,6 +638,27 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
       // )
     );
   }
+
+  //ConnectyCube
+  _loginToCubeChat(BuildContext context, CubeUser user) {
+    user.password = '12345678';
+    print("_loginToCubeChat user $user");
+    CubeChatConnectionSettings.instance.totalReconnections = 0;
+    CubeChatConnection.instance.login(user).then((cubeUser) {
+    }).catchError((error) {
+      print('Came Here!!');
+      _processLoginError(error);
+    });
+  }
+
+  void _processLoginError(exception) {
+    log("Login error $exception", TAG);
+    setState(() {
+
+    });
+    showDialogError(exception, context);
+  }
+
 
   //Get all Post API
   Future<void> getAllPostApi(int page) async {

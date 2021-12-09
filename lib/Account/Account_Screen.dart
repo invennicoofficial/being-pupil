@@ -7,8 +7,11 @@ import 'package:being_pupil/Account/My_Profile/Edit_Profile_Educator.dart';
 import 'package:being_pupil/Account/My_Profile/Learner_MyProfile.dart';
 import 'package:being_pupil/Account/Saved_Post.dart';
 import 'package:being_pupil/Account/Terms_And_Policy_Screen.dart';
+import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Login/Login_Screen.dart';
+import 'package:connectycube_sdk/connectycube_core.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:share/share.dart';
@@ -309,17 +312,30 @@ class _AccountScreenState extends State<AccountScreen> {
                           InkWell(
                             onTap: () {
                               logout();
-                              pushNewScreen(
-                                context,
-                                screen: LoginScreen(),
-                                withNavBar: false,
-                                pageTransitionAnimation:
-                                    PageTransitionAnimation.cupertino,
-                              );
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) => LoginScreen()),
-                                  (Route<dynamic> route) => false);
+                              signOut().then(
+                                    (voidValue) {
+
+                                },
+                              ).catchError(
+                                    (onError) {
+
+                                },
+                              ).whenComplete(() {
+                                CubeChatConnection.instance.destroy();
+                                SharedPrefs.instance.deleteUser();
+                                pushNewScreen(
+                                  context,
+                                  screen: LoginScreen(),
+                                  withNavBar: false,
+                                  pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino,
+                                );
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginScreen()),
+                                        (Route<dynamic> route) => false);
+                              });
+
                               // Navigator.of(context).push(PageRouteBuilder(
                               //     pageBuilder: (_, __, ____) =>
                               //         EducatorHomeScreen()));

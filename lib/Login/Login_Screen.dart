@@ -1,3 +1,5 @@
+import 'package:being_pupil/ConnectyCube/api_utils.dart';
+import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Login_Model.dart';
@@ -19,6 +21,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'Login_Mobile_Check.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:being_pupil/Registration/Educator_Registration.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -44,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
    String registerAs;
   String role;
   String name;
+  static const String TAG = "_LoginPageState";
 
   void initState() {
     // TODO: implement initState
@@ -384,7 +388,7 @@ class _LoginScreenState extends State<LoginScreen> {
         'country_code': '+91',
         'deviceType': 'A',
         'deviceId': '1234567',
-        'registration_type': registrationType,
+        'registration_type': 'M',
         'social_login_details[display_name]':
             registrationType == 'M' ? null : socialName,
         'name': registrationType == 'M' ? null : socialName,
@@ -481,7 +485,7 @@ class _LoginScreenState extends State<LoginScreen> {
       var response = await dio.post(Config.checkSocialLogin, data: formData);
       if (response.statusCode == 200) {
         print(response.data);
-        closeProgressDialog(context);
+
         result = SocialLoginCheck.fromJson(response.data);
 
         //print('ID ::: ' + result.data.userObject.userId.toString());
@@ -496,6 +500,7 @@ class _LoginScreenState extends State<LoginScreen> {
           //   textColor: Colors.white,
           //   fontSize: 10.0.sp,
           // );
+          closeProgressDialog(context);
           Navigator.push(
               context,
               PageTransition(
@@ -522,15 +527,9 @@ class _LoginScreenState extends State<LoginScreen> {
           
 
          if(result.data.userObject.isNew == "true") {
-            result.data.userObject.role == 'L'
-                ? Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => bottomNavBar(0)),
-                    (Route<dynamic> route) => false)
-                : Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => EducatorRegistration(
-                  name: name,
-                  mobileNumber: mobileNumberFromAPi,
-                )));
+
+           _signInCC(context, CubeUser(fullName: result.data.userObject.name, login: socialEmail, password: '12345678'), result);
+
           } else {
               preferences.setString("name", result.data.userObject.name);
               preferences.setString("mobileNumber", result.data.userObject.mobileNumber);
@@ -552,9 +551,16 @@ class _LoginScreenState extends State<LoginScreen> {
           print('Gender::: ${result.data.userObject.gender}');
           print('IMAGE:::' + result.data.userObject.imageUrl);
 
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => bottomNavBar(0)),
-                    (Route<dynamic> route) => false);
+              signIn(CubeUser(fullName: result.data.userObject.name, login: socialEmail, password: '12345678'))
+                  .then((cubeUser) async {
+                closeProgressDialog(context);
+                SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+                sharedPrefs.saveNewUser(cubeUser);
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+                        (Route<dynamic> route) => false);
+              })
+                  .catchError((error){});
           }
 
           // Navigator.push(
@@ -620,6 +626,45 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
     return result;
+  }
+
+
+  //ConnectyCube
+
+  _signInCC(BuildContext context, CubeUser user, result) async {
+    if (!CubeSessionManager.instance.isActiveSessionValid()) {
+      try {
+        await createSession();
+      } catch (error) {
+        _processLoginError(error);
+      }
+    }
+    signUp(user).then((newUser) async {
+      print("signUp newUser $newUser");
+      user.id = newUser.id;
+      SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+      sharedPrefs.saveNewUser(user);
+      closeProgressDialog(context);
+      result.data.userObject.role == 'L'
+          ? Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+              (Route<dynamic> route) => false)
+          : Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => EducatorRegistration(
+            name: name,
+            mobileNumber: mobileNumberFromAPi,
+          )));
+    }).catchError((exception) {
+      _processLoginError(exception);
+    });
+  }
+
+  void _processLoginError(exception) {
+    log("Login error $exception", TAG);
+    setState(() {
+
+    });
+    showDialogError(exception, context);
   }
 
   Future<void> _handleGoogleSignIn() async {

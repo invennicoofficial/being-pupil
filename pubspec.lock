@@ -78,6 +78,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0-nullsafety.3"
+  connectycube_sdk:
+    dependency: "direct main"
+    description:
+      name: connectycube_sdk
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.3"
+  console:
+    dependency: transitive
+    description:
+      name: console
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.0"
   convert:
     dependency: transitive
     description:
@@ -85,6 +99,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  crossplat_objectid:
+    dependency: transitive
+    description:
+      name: crossplat_objectid
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.4"
   crypto:
     dependency: transitive
     description:
@@ -92,6 +113,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.5"
+  cryptoutils:
+    dependency: transitive
+    description:
+      name: cryptoutils
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -99,6 +127,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  device_id:
+    dependency: transitive
+    description:
+      name: device_id
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   dio:
     dependency: "direct main"
     description:
@@ -113,6 +148,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.7"
+  eventify:
+    dependency: transitive
+    description:
+      name: eventify
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.6"
   extended_image:
     dependency: transitive
     description:
@@ -296,6 +338,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_webrtc:
+    dependency: transitive
+    description:
+      name: flutter_webrtc
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.7"
   fluttertoast:
     dependency: "direct main"
     description:
@@ -443,6 +492,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0"
+  package_info:
+    dependency: transitive
+    description:
+      name: package_info
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.3+4"
   page_transition:
     dependency: "direct main"
     description:
@@ -597,6 +653,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.5"
+  razorpay_flutter:
+    dependency: "direct main"
+    description:
+      name: razorpay_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.5"
   readmore:
     dependency: "direct main"
     description:
@@ -749,6 +812,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.19-nullsafety.2"
+  tuple:
+    dependency: transitive
+    description:
+      name: tuple
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   typed_data:
     dependency: transitive
     description:
@@ -756,6 +826,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.0-nullsafety.3"
+  unorm_dart:
+    dependency: transitive
+    description:
+      name: unorm_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
   url_launcher:
     dependency: "direct main"
     description:
@@ -833,6 +910,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.4+1"
+  web_socket_channel:
+    dependency: transitive
+    description:
+      name: web_socket_channel
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   webview_flutter:
     dependency: "direct main"
     description:
@@ -868,6 +952,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.5.1"
+  xmpp_stone:
+    dependency: transitive
+    description:
+      name: xmpp_stone
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.3"
 sdks:
   dart: ">=2.10.0 <2.11.0"
   flutter: ">=1.22.0 <2.0.0"

@@ -49,6 +49,7 @@ class Data {
         this.userId,
         this.profileImage,
         this.name,
+        this.email,
         this.lastDegree,
         this.schoolName,
         this.date,
@@ -58,6 +59,7 @@ class Data {
     int userId;
     String profileImage;
     String name;
+    String email;
     String lastDegree;
     String schoolName;
     String date;
@@ -67,6 +69,7 @@ class Data {
         userId: json["user_id"],
         profileImage: json["profile_image"],
         name: json["name"],
+        email: json["email"],
         lastDegree: json["last_degree"],
         schoolName: json["school_name"],
         date: json["date"],
@@ -77,6 +80,7 @@ class Data {
         "user_id": userId,
         "profile_image": profileImage,
         "name": name,
+        "email": email,
         "last_degree": lastDegree,
         "school_name": schoolName,
         "date": date,

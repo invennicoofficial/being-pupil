@@ -282,7 +282,6 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                       fontSize: 8.0.sp,
                       fontWeight: FontWeight.w400,
                       color: Constants.bpOnBoardSubtitleStyle),
-                  textAlign: TextAlign.justify,
                 ),
               ),
             ),

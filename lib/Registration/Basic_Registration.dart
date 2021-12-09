@@ -1,11 +1,18 @@
+import 'dart:io';
+
+import 'package:being_pupil/ConnectyCube/api_utils.dart';
+import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Login/Login_Screen.dart';
 import 'package:being_pupil/Login/OTP_Screen.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Model_Class.dart';
+import 'package:being_pupil/Registration/Educator_Registration.dart';
+import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:being_pupil/Widgets/Preference.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,7 +33,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String registerAs = 'notSelected';
   TextEditingController nameController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
-  
+  TextEditingController emailController = TextEditingController();
+
+  static const String TAG = "_LoginPageState";
+
   @override
   void initState() {
     // TODO: implement initState
@@ -186,6 +196,44 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         child: Padding(
                           padding: EdgeInsets.only(
+                              left: 3.0.w, right: 3.0.w, top: 3.0.h),
+                          child: Container(
+                            height: 7.0.h,
+                            width: 90.0.w,
+                            child: TextFormField(
+                              controller: emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                labelText: "Email",
+                                fillColor: Colors.white,
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                    color: Constants.formBorder,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                    color: Constants.formBorder,
+                                    //width: 2.0,
+                                  ),
+                                ),
+                              ),
+                              //keyboardType: TextInputType.emailAddress,
+                              style: new TextStyle(
+                                  fontFamily: "Montserrat", fontSize: 10.0.sp),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Theme(
+                        data: new ThemeData(
+                          primaryColor: Constants.bpSkipStyle,
+                          primaryColorDark: Constants.bpSkipStyle,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(
                               left: 3.0.w,
                               right: 3.0.w,
                               top: 3.0.h,
@@ -276,10 +324,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(
-                            left: 3.0.w, right: 3.0.w, top: 6.0.h),
+                            left: 3.0.w, right: 3.0.w, top: 0.0.h),
                         child: GestureDetector(
                           onTap: () {
                             print('Sign Up!!!');
+                            bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9."
+                            r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(emailController.text.trim());
                             //signUp(nameController.text.trim(), mobileController.text.trim(), registerAs, deviceType, deviceId)
                             if (nameController.text.isEmpty){
                               Fluttertoast.showToast(
@@ -300,6 +351,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   textColor: Colors.white,
                                   fontSize: 10.0.sp);
                             }
+                            else if (emailController.text.trim().isEmpty ||
+                                (emailValid == false)) {
+                              Fluttertoast.showToast(
+                                  msg: "Please Enter Valid Email Id",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Constants.bgColor,
+                                  textColor: Colors.white,
+                                  fontSize: 10.0.sp);
+                            }
                             else if (registerAs == 'notSelected') {
                               Fluttertoast.showToast(
                                   msg: "Please Select Register As",
@@ -310,11 +372,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   textColor: Colors.white,
                                   fontSize: 10.0.sp);
                             } else {
-                              signUp(
+                              register(
                                   nameController.text.trim(),
                                   mobileController.text.trim(),
+                                  emailController.text.trim(),
                                   registerAs,
-                                  'A',
+                                  Platform.isAndroid ? 'A' : 'I',
                                   '1234567');
                             }
                           },
@@ -345,7 +408,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 20.0.h,//20.0.h
+                        height: 15.0.h,//20.0.h
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -394,7 +457,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Future<SignUp> signUp(String name, String mobileNumber, String registerAs,
+
+  //ConnectyCube
+
+  _signInCC(BuildContext context, CubeUser user, result) async {
+    if (!CubeSessionManager.instance.isActiveSessionValid()) {
+      try {
+        await createSession();
+      } catch (error) {
+        _processLoginError(error);
+      }
+    }
+    signUp(user).then((newUser) async {
+      print("signUp newUser $newUser");
+      user.id = newUser.id;
+      SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+      sharedPrefs.saveNewUser(user);
+      Navigator.push(
+          context,
+          PageTransition(
+              type: PageTransitionType.fade, child: OtpScreen(
+            mobileNumber: mobileController.text,
+          )));
+      Fluttertoast.showToast(
+        msg: result.message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Constants.bgColor,
+        textColor: Colors.white,
+        fontSize: 10.0.sp,
+      );
+    }).catchError((exception) {
+      _processLoginError(exception);
+    });
+  }
+
+  void _processLoginError(exception) {
+    log("Login error $exception", TAG);
+    setState(() {
+
+    });
+    showDialogError(exception, context);
+  }
+
+  Future<SignUp> register(String name, String mobileNumber, String email, String registerAs,
       String deviceType, String deviceId) async {
     displayProgressDialog(context);
     var result = SignUp();
@@ -403,6 +510,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       FormData formData = FormData.fromMap({
         'name': name,
         'mobile_number': mobileNumber,
+        'email': email,
         'register_as': registerAs,
         'deviceType': deviceType,
         'deviceId': deviceId,
@@ -416,22 +524,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if(result.status == true){
         print('ID ::: ' + result.data.userId.toString());
         saveUserData(result.data.userId);
-        Navigator.push(
-            context,
-            PageTransition(
-                type: PageTransitionType.fade, child: OtpScreen(
-                  mobileNumber: mobileController.text,
-                )));
-        Fluttertoast.showToast(
-          msg: result.message,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Constants.bgColor,
-          textColor: Colors.white,
-          fontSize: 10.0.sp,
-        );
-        }else {
+        _signInCC(context, CubeUser(fullName: name, login: email, password: '12345678', email: email), result);
+        } else {
           Fluttertoast.showToast(
           msg: result.message,
           toastLength: Toast.LENGTH_SHORT,

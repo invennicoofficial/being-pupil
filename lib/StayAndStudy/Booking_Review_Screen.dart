@@ -10,10 +10,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class BookingReviewScreen extends StatefulWidget {
   final String name,
       mobileNumber,
+      email,
       checkIn,
       checkOut,
       roomType,
@@ -22,7 +26,8 @@ class BookingReviewScreen extends StatefulWidget {
       checkOutDateFormat;
   GetAllProperty propertyDetails;
   int index;
-  final int roomCharge, mealCharge, taxCharge, total, roomId ,stayMonths;
+  final double roomCharge, mealCharge, taxCharge, total;
+  final int roomId, stayMonths;
   List<int> mealId = [];
 
   BookingReviewScreen(
@@ -43,7 +48,8 @@ class BookingReviewScreen extends StatefulWidget {
       this.propertyDetails,
       this.index,
       this.roomId,
-      this.stayMonths})
+      this.stayMonths,
+      this.email})
       : super(key: key);
 
   @override
@@ -52,10 +58,14 @@ class BookingReviewScreen extends StatefulWidget {
 
 class _BookingReviewScreenState extends State<BookingReviewScreen> {
   String authToken;
+  var _razorpay = Razorpay();
 
   @override
   void initState() {
     super.initState();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
     getToken();
   }
 
@@ -443,7 +453,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                 padding: EdgeInsets.symmetric(vertical: 3.0.h),
                 child: GestureDetector(
                   onTap: () {
-                    createBookingAPI();
+                    createRazorPayOrderId();
                   },
                   child: Container(
                     height: 7.0.h,
@@ -477,7 +487,73 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
     );
   }
 
-  Future<CreateBooking> createBookingAPI() async {
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    // Do something when payment succeeds
+    print('kama liyaa!');
+    print(response.orderId);
+    print(response.paymentId);
+    print(response.signature);
+    createBookingAPI(response.orderId, response.paymentId, response.signature);
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    // Do something when payment fails
+    Fluttertoast.showToast(msg: 'Payment Failed! Please try again');
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    // Do something when an external wallet was selected
+
+  }
+
+  Future<void> createRazorPayOrderId() async {
+    Map<String, dynamic> map = {};
+    var headers = {
+      'Authorization': 'Basic cnpwX3Rlc3RfTXREclBQTFdiVWRzWTc6TlZiWU5VNHRQMVdrQlU4SGlpWlljU21i'
+    };
+    var request = http.MultipartRequest('POST', Uri.parse('https://api.razorpay.com/v1/orders'));
+    request.fields.addAll({
+      'amount': (widget.total * 100).toInt().toString(),
+      'currency': 'INR'
+    });
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String jsonResponse = await response.stream.bytesToString();
+      map = json.decode(jsonResponse);
+      print(map['id']);
+      var options = {
+        'key': 'rzp_test_MtDrPPLWbUdsY7',
+        'amount': (widget.total * 100),
+        'name': widget.name,
+        'order_id': map['id'],
+        'description': widget.propertyDetails.data[widget.index].name,
+        'prefill': {
+          'contact': widget.mobileNumber,
+          'email': widget.email
+        }
+      };
+      _razorpay.open(options);
+    }
+    else {
+      Fluttertoast.showToast(
+        msg: 'Please try again',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Constants.bgColor,
+        textColor: Colors.white,
+        fontSize: 10.0.sp,
+      );
+    }
+
+  }
+
+  Future<CreateBooking> createBookingAPI(orderId, paymentId, signature) async {
     // print(widget.mealId);
     displayProgressDialog(context);
     var result = CreateBooking();
@@ -492,7 +568,10 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
         'checkIn_date': widget.checkInDateFormat,
         'checkOut_date': widget.checkOutDateFormat,
         'tax_amount': widget.taxCharge,
-        'total_amount': widget.total
+        'total_amount': widget.total,
+        'order_id': orderId,
+        'payment_id': paymentId,
+        'signature': signature
       });
       
         for(int i = 0; i < widget.mealId.length; i++){

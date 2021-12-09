@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
+import 'package:being_pupil/ConnectyCube/pref_util.dart';
+import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -356,7 +358,7 @@ class _OtpScreenState extends State<OtpScreen> {
       var response = await dio.post(Config.otpUrl, data: formData);
       if (response.statusCode == 200) {
         print(response.data);
-        closeProgressDialog(context);
+
         result = OtpResponse.fromJson(response.data);
         if (result.status == true) {
           //print('TOKEN ::' + result.data.token);
@@ -372,6 +374,7 @@ class _OtpScreenState extends State<OtpScreen> {
          // print('EDUCATION ::' + result.data.userObject.educationalDetail.qualification);
           print('MOBILE ::' + mobileNumber);
           if(result.data.userObject.isNew == "true") {
+            closeProgressDialog(context);
             role == 'L'
                 ? Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => bottomNavBar(0)),
@@ -403,9 +406,16 @@ class _OtpScreenState extends State<OtpScreen> {
           print('Gender::: ${result.data.userObject.gender}');
           print('IMAGE:::' + result.data.userObject.imageUrl);
 
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => bottomNavBar(0)),
-                    (Route<dynamic> route) => false);
+              signIn(CubeUser(fullName: result.data.userObject.name, login: result.data.userObject.email, password: '12345678'))
+                  .then((cubeUser) async {
+                closeProgressDialog(context);
+                SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+                sharedPrefs.saveNewUser(cubeUser);
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+                        (Route<dynamic> route) => false);
+              })
+                  .catchError((error){});
           }
 
           Fluttertoast.showToast(
