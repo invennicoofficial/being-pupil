@@ -1,16 +1,17 @@
-import 'package:being_pupil/Account/My_Bookings/Cancel_Reason_Screen.dart';
 import 'package:being_pupil/Constants/Const.dart';
-import 'package:being_pupil/Model/Booking_Model/UpComing_Booking_Model.dart';
+import 'package:being_pupil/Model/Booking_Model/Get_Booking_Data_Model.dart';
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:sizer/sizer.dart';
 
 class ViewBookingScreen extends StatefulWidget {
-  UpComingBooking bookingDetails;
-  int index;
-  String meal;
+  // BookingDetails bookingDetails;
+  // //CancelledBooking cancelBookingDetails;
+   int index;
+  String meal, image, guestName, mobileNumber, checkIn, checkOut, roomType, name;
+  dynamic roomAmount, mealAmount, taxAmount, totalAmount;
   ViewBookingScreen(
-      {Key key, this.bookingDetails, this.index, this.meal})
+      {Key key,this.meal, this.image, this.index, this.guestName, this.mobileNumber,
+      this.checkOut, this.checkIn, this.roomType, this.name, this.roomAmount, this.mealAmount, this.taxAmount, this.totalAmount})
       : super(key: key);
 
   @override
@@ -56,7 +57,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                   width: 100.0.w,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(widget.bookingDetails.data[widget.index].propertyImage),
+                      image: NetworkImage(widget.image[widget.index]),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(8.0),
@@ -66,7 +67,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
               Padding(
                 padding: EdgeInsets.only(top: 1.0.h),
                 child: Text(
-                  widget.bookingDetails.data[widget.index].name,
+                  widget.name[widget.index],
                   style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 11.0.sp,
@@ -106,7 +107,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(widget.bookingDetails.data[widget.index].guestName,//name,
+                          Text(widget.guestName[widget.index],//name,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -129,7 +130,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(widget.bookingDetails.data[widget.index].mobileNumber,//mobileNumber,
+                          Text(widget.mobileNumber[widget.index],//mobileNumber,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -152,7 +153,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(widget.bookingDetails.data[widget.index].checkInDate,//checkIn,
+                          Text(widget.checkIn[widget.index],//checkIn,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -175,7 +176,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(widget.bookingDetails.data[widget.index].checkOutDate,//checkOut,
+                          Text(widget.checkOut[widget.index],//checkOut,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -198,7 +199,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(widget.bookingDetails.data[widget.index].roomType,//roomType,
+                          Text(widget.roomType[widget.index],//roomType,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -275,14 +276,14 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                     fontWeight: FontWeight.w400,
                                     color: Constants.bgColor)),
                             TextSpan(
-                                text: '(${widget.bookingDetails.data[widget.index].roomType})',//'($roomType)',
+                                text: '(${widget.roomType[widget.index]})',//'($roomType)',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 8.0.sp,
                                     fontWeight: FontWeight.w400,
                                     color: Constants.blueTitle)),
                           ])),
-                          Text('₹${widget.bookingDetails.data[widget.index].roomAmount}',//'₹$roomCharge',
+                          Text('₹${widget.roomAmount[widget.index]}',//'₹$roomCharge',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -313,7 +314,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                     fontWeight: FontWeight.w400,
                                     color: Constants.blueTitle)),
                           ])),
-                          Text('₹${widget.bookingDetails.data[widget.index].mealAmount}',//'₹$mealCharge',
+                          Text('₹${widget.mealAmount[widget.index]}',//'₹$mealCharge',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -336,7 +337,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text('₹${widget.bookingDetails.data[widget.index].taxAmount}',//'₹$taxCharge',
+                          Text('₹${widget.taxAmount[widget.index]}',//'₹$taxCharge',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -370,7 +371,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                           fontWeight: FontWeight.w700,
                           color: Constants.bgColor),
                     ),
-                    Text('₹${widget.bookingDetails.data[widget.index].totalAmount}',//'₹$total',
+                    Text('₹${widget.totalAmount[widget.index]}',//'₹$total',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 14.0.sp,

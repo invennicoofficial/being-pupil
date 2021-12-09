@@ -4,12 +4,12 @@
 
 import 'dart:convert';
 
-UpComingBooking upComingBookingFromJson(String str) => UpComingBooking.fromJson(json.decode(str));
+BookingDetails bookingDetailsFromJson(String str) => BookingDetails.fromJson(json.decode(str));
 
-String upComingBookingToJson(UpComingBooking data) => json.encode(data.toJson());
+String bookingDetailsToJson(BookingDetails data) => json.encode(data.toJson());
 
-class UpComingBooking {
-    UpComingBooking({
+class BookingDetails {
+    BookingDetails({
         this.status,
         this.errorCode,
         this.errorMsg,
@@ -22,15 +22,15 @@ class UpComingBooking {
     dynamic errorCode;
     dynamic errorMsg;
     String message;
-    List<Datum> data;
+    List<Data> data;
     dynamic metaParams;
 
-    factory UpComingBooking.fromJson(Map<String, dynamic> json) => UpComingBooking(
+    factory BookingDetails.fromJson(Map<String, dynamic> json) => BookingDetails(
         status: json["status"],
         errorCode: json["error_code"],
         errorMsg: json["error_msg"],
         message: json["message"],
-        data: json["data"] != null ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))) : null,
+        data: json["data"] != null ? List<Data>.from(json["data"].map((x) => Data.fromJson(x))) : null,
         metaParams: json["meta_params"],
     );
 
@@ -44,8 +44,8 @@ class UpComingBooking {
     };
 }
 
-class Datum {
-    Datum({
+class Data {
+    Data({
         this.propertyId,
         this.propertyImage,
         this.name,
@@ -77,7 +77,7 @@ class Datum {
     double taxAmount;
     int totalAmount;
 
-    factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+    factory Data.fromJson(Map<String, dynamic> json) => Data(
         propertyId: json["property_id"],
         propertyImage: json["property_image"],
         name: json["name"],

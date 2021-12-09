@@ -1,6 +1,6 @@
 import 'package:being_pupil/Account/My_Bookings/Cancel_Booking_Screen.dart';
 import 'package:being_pupil/Account/My_Bookings/View_Booking_Details.dart';
-import 'package:being_pupil/Model/Booking_Model/UpComing_Booking_Model.dart';
+import 'package:being_pupil/Model/Booking_Model/Get_Booking_Data_Model.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,7 @@ class UpComingList extends StatefulWidget {
 }
 
 class _UpComingListState extends State<UpComingList> {
-  var result = UpComingBooking();
+  var result = BookingDetails();
   bool isLoading = true;
   String authToken;
   ScrollController _scrollController = ScrollController();
@@ -27,8 +27,19 @@ class _UpComingListState extends State<UpComingList> {
   List<String> bookingImage = [];
   List<String> bookingName = [];
   List<String> bookingId = [];
+  List<String> propertyId = [];
   List<String> bookingType = [];
-  List<String> bookingPeriod = [];
+  //List<String> bookingPeriod = [];
+  List<String> bookingGuestName = [];
+  List<String> bookingMobileNumber = [];
+  List<String> bookingCheckIn = [];
+  List<String> bookingCheckOut = [];
+  List<String> bookingRoomType = [];
+  List<String> bookingRoomAmount = [];
+  List<String> bookingTaxAmount = [];
+  List<String> bookingMealAmount = [];
+  List<String> bookingTotalAmount = [];
+  List<List<String>> bookingMeal = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -162,7 +173,7 @@ class _UpComingListState extends State<UpComingList> {
                             Padding(
                               padding: EdgeInsets.only(top: 1.0.h),
                               child: Text(
-                                bookingPeriod[index],
+                                '${bookingCheckIn[index]} to ${bookingCheckOut[index]}',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 9.0.sp,
@@ -182,7 +193,13 @@ class _UpComingListState extends State<UpComingList> {
                       InkWell(
                         onTap: () {
                           pushNewScreen(context,
-                              screen: CancelBookingScreen(),
+                              screen: CancelBookingScreen(
+                                propertyDetails: result,
+                                index: index,
+                                meal: result.data[index].meal.toString(),
+                                propertyId: int.parse(propertyId[index]),
+                                bookingId: bookingId[index],
+                                ),
                               withNavBar: false,
                               pageTransitionAnimation:
                                   PageTransitionAnimation.cupertino);
@@ -200,9 +217,19 @@ class _UpComingListState extends State<UpComingList> {
                         onTap: () {
                           pushNewScreen(context,
                               screen: ViewBookingScreen(
-                                bookingDetails: result,
-                                index: index,
-                                meal: result.data[index].meal.toString(),
+                                image: bookingImage[index],
+                                      name: bookingName[index],
+                                      index: index,
+                                      guestName: bookingGuestName[index],
+                                      mobileNumber: bookingMobileNumber[index],
+                                      checkIn: bookingCheckIn[index],
+                                      checkOut: bookingCheckOut[index],
+                                      roomType: bookingRoomType[index],
+                                      meal: bookingMeal[index].toString(),
+                                      roomAmount: bookingRoomAmount[index],
+                                      mealAmount: bookingMealAmount[index],
+                                      taxAmount: bookingTaxAmount[index],
+                                      totalAmount: bookingTotalAmount[index],
                               ),
                               withNavBar: false,
                               pageTransitionAnimation:
@@ -227,22 +254,24 @@ class _UpComingListState extends State<UpComingList> {
   }
 
   //Get UpComing Bookings API
-  Future<UpComingBooking> getUpComingBookingAPI(int page) async{
+  Future<BookingDetails> getUpComingBookingAPI(int page) async{
     try{
       Dio dio = Dio();
       var response = await dio.get('${Config.upComingBookingUrl}?page=$page',
       options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
       if(response.statusCode == 200){
         print(response.data);
-        result = UpComingBooking.fromJson(response.data);
+        result = BookingDetails.fromJson(response.data);
 
         if(result.data.length > 0){
           for(int i = 0; i < result.data.length; i++){
             bookingId.add(result.data[i].bookingId);
+            propertyId.add(result.data[i].propertyId);
             bookingName.add(result.data[i].name);
             bookingImage.add(result.data[i].propertyImage);
             bookingType.add(result.data[i].roomType);
-            bookingPeriod.add('${result.data[i].checkInDate} to ${result.data[i].checkOutDate}');
+            bookingMeal.add(result.data[i].meal);
+            //bookingPeriod.add('${result.data[i].checkInDate} to ${result.data[i].checkOutDate}');
           }
           print(bookingId);
           isLoading = false;

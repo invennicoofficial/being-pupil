@@ -1,14 +1,25 @@
 import 'package:being_pupil/Account/My_Bookings/Cancel_Reason_Screen.dart';
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Model/Booking_Model/Get_Booking_Data_Model.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:sizer/sizer.dart';
 
-class CancelBookingScreen extends StatelessWidget {
+class CancelBookingScreen extends StatefulWidget {
+  final int propertyId;
+  final String bookingId;
+  BookingDetails propertyDetails;
+  int index;
+  String meal;
   // final String name, mobileNumber, checkIn, checkOut, roomType, meal;
   // final int roomCharge, mealCharge, taxCharge, total;
   CancelBookingScreen(
       {Key key,
+      @ required this.propertyId,
+      @ required this.bookingId,
+      @required this.propertyDetails,
+      this.index,
+      @required this.meal
       // this.name,
       // this.mobileNumber,
       // this.checkIn,
@@ -22,6 +33,11 @@ class CancelBookingScreen extends StatelessWidget {
       })
       : super(key: key);
 
+  @override
+  _CancelBookingScreenState createState() => _CancelBookingScreenState();
+}
+
+class _CancelBookingScreenState extends State<CancelBookingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +76,7 @@ class CancelBookingScreen extends StatelessWidget {
                   width: 100.0.w,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/images/house.jpg'),
+                      image: NetworkImage(widget.propertyDetails.data[widget.index].propertyImage),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(8.0),
@@ -70,7 +86,7 @@ class CancelBookingScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(top: 1.0.h),
                 child: Text(
-                  'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod',
+                  widget.propertyDetails.data[widget.index].name,
                   style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 11.0.sp,
@@ -110,7 +126,7 @@ class CancelBookingScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text('Divyang Dantani',//name,
+                          Text(widget.propertyDetails.data[widget.index].guestName,//name,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -133,7 +149,7 @@ class CancelBookingScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text('9737857570',//mobileNumber,
+                          Text(widget.propertyDetails.data[widget.index].mobileNumber,//mobileNumber,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -156,7 +172,7 @@ class CancelBookingScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text('Fri, 21 Jan 2021',//checkIn,
+                          Text(widget.propertyDetails.data[widget.index].checkInDate,//checkIn,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -179,7 +195,7 @@ class CancelBookingScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text('Fri, 21 Jan 2021',//checkOut,
+                          Text(widget.propertyDetails.data[widget.index].checkOutDate,//checkOut,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -202,7 +218,7 @@ class CancelBookingScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text('Double Sharing',//roomType,
+                          Text(widget.propertyDetails.data[widget.index].roomType,//roomType,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -225,7 +241,7 @@ class CancelBookingScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text('Breakfast, Lunch',//meal.substring(1, meal.length - 1),
+                          Text(widget.meal.substring(1, widget.meal.length - 1),//meal.substring(1, meal.length - 1),
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -279,14 +295,14 @@ class CancelBookingScreen extends StatelessWidget {
                                     fontWeight: FontWeight.w400,
                                     color: Constants.bgColor)),
                             TextSpan(
-                                text: '(Double Sharing)',//'($roomType)',
+                                text: widget.propertyDetails.data[widget.index].roomType,//'($roomType)',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 8.0.sp,
                                     fontWeight: FontWeight.w400,
                                     color: Constants.blueTitle)),
                           ])),
-                          Text('₹6000',//'₹$roomCharge',
+                          Text('₹${widget.propertyDetails.data[widget.index].roomAmount}',//'₹$roomCharge',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -310,14 +326,14 @@ class CancelBookingScreen extends StatelessWidget {
                                     fontWeight: FontWeight.w400,
                                     color: Constants.bgColor)),
                             TextSpan(
-                                text: '(Breakfast, Lunch)',//'(${meal.substring(1, meal.length - 1)})',
+                                text: widget.meal.substring(1, widget.meal.length - 1),//'(${meal.substring(1, meal.length - 1)})',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 8.0.sp,
                                     fontWeight: FontWeight.w400,
                                     color: Constants.blueTitle)),
                           ])),
-                          Text('₹3000',//'₹$mealCharge',
+                          Text('₹${widget.propertyDetails.data[widget.index].mealAmount}',//'₹$mealCharge',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -340,7 +356,7 @@ class CancelBookingScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text('₹500',//'₹$taxCharge',
+                          Text('₹${widget.propertyDetails.data[widget.index].taxAmount}',//'₹$taxCharge',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -374,7 +390,7 @@ class CancelBookingScreen extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                           color: Constants.bgColor),
                     ),
-                    Text('₹9500',//'₹$total',
+                    Text('₹${widget.propertyDetails.data[widget.index].totalAmount}',//'₹$total',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 14.0.sp,
@@ -388,7 +404,13 @@ class CancelBookingScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 3.0.h),
                 child: GestureDetector(
                   onTap: () {
-                    pushNewScreen(context, screen: ReasonForCancelBooking(),
+                    pushNewScreen(context, screen: ReasonForCancelBooking(
+                      propertyDetails: widget.propertyDetails,
+                      index: widget.index,
+                      propertyId: widget.propertyId,
+                      bookingId: widget.bookingId,
+                      meal: widget.meal,
+                    ),
                     withNavBar: false, pageTransitionAnimation: PageTransitionAnimation.cupertino);
                   },
                   child: Container(

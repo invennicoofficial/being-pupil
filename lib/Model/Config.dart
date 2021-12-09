@@ -47,7 +47,10 @@ class Config{
   static const String bookingCheckUrl = baseUrl + "property/booking/check";
   static const String createBookingUrl = baseUrl + "property/book";
   static const String upComingBookingUrl = baseUrl + "property/booking/upcoming";
+  static const String cancelledBookingUrl = baseUrl + "property/booking/cancelled";
   static const String getOrderIdRP = baseUrl + "https://api.razorpay.com/v1/orders";
+  static const String getCancelReasonList = baseUrl + "property/getCancelReasonList";
+  static const String submitCancelReason = baseUrl + "property/booking/cancel";
 }
 
 
