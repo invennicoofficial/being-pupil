@@ -90,7 +90,17 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
     user = sharedPrefs.getUser();
 
     if(user != null) {
-      _loginToCubeChat(context, user);
+      user.password = '12345678';
+      createSession(user)
+          .then((cubeSession) {
+        signIn(user)
+            .then((cubeUser) async {
+          _loginToCubeChat(context, user);
+        })
+            .catchError((error){});
+      })
+          .catchError((error){});
+
     }
     getAllPostApi(page);
      _scrollController.addListener(() {

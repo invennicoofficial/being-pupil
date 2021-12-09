@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,6 +48,11 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   String isNew, registerAs;
   bool isLoggedIn;
+
+  StreamSubscription<ConnectivityResult> connectivityStateSubscription;
+  AppLifecycleState appState;
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -62,8 +69,63 @@ class _SplashScreenState extends State<SplashScreen> {
           return createSession(user);
         });
 
+    connectivityStateSubscription =
+        Connectivity().onConnectivityChanged.listen((connectivityType) {
+          print('yaaha');
+          if (AppLifecycleState.resumed != appState) return;
+
+          if (connectivityType != ConnectivityResult.none) {
+            log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
+            bool isChatDisconnected =
+                CubeChatConnection.instance.chatConnectionState ==
+                    CubeChatConnectionState.Closed ||
+                    CubeChatConnection.instance.chatConnectionState ==
+                        CubeChatConnectionState.ForceClosed;
+
+            if (isChatDisconnected &&
+                CubeChatConnection.instance.currentUser != null) {
+              print('yaaha');
+              CubeChatConnection.instance.relogin();
+            }
+          }
+        });
+
+    appState = WidgetsBinding.instance.lifecycleState;
+    // WidgetsBinding.instance.addObserver(this);
+
     getLoginStatus();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    connectivityStateSubscription.cancel();
+
+    // WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    log("Current app state: $state");
+    appState = state;
+
+    if (AppLifecycleState.paused == state) {
+      if (CubeChatConnection.instance.isAuthenticated()) {
+        print('yaaha1');
+        CubeChatConnection.instance.logout();
+      }
+    } else if (AppLifecycleState.resumed == state) {
+      SharedPrefs.instance.init().then((sharedPrefs) {
+        CubeUser user = sharedPrefs.getUser();
+        print('yaaha2');
+
+        if (user != null && !CubeChatConnection.instance.isAuthenticated()) {
+          print('yaaha3');
+          CubeChatConnection.instance.login(user);
+        }
+      });
+    }
   }
 
   getLoginStatus() async {
