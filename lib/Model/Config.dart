@@ -46,6 +46,7 @@ class Config{
   static const String getAllPropertyUrl = baseUrl + "property/getAll";
   static const String bookingCheckUrl = baseUrl + "property/booking/check";
   static const String createBookingUrl = baseUrl + "property/book";
+  static const String upComingBookingUrl = baseUrl + "property/booking/upcoming";
   static const String getOrderIdRP = baseUrl + "https://api.razorpay.com/v1/orders";
 }
 

@@ -1,9 +1,14 @@
 import 'package:being_pupil/Account/My_Bookings/Cancel_Booking_Screen.dart';
 import 'package:being_pupil/Account/My_Bookings/View_Booking_Details.dart';
+import 'package:being_pupil/Model/Booking_Model/UpComing_Booking_Model.dart';
+import 'package:being_pupil/Model/Config.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class UpComingList extends StatefulWidget {
   UpComingList({Key key}) : super(key: key);
@@ -13,139 +18,247 @@ class UpComingList extends StatefulWidget {
 }
 
 class _UpComingListState extends State<UpComingList> {
+  var result = UpComingBooking();
+  bool isLoading = true;
+  String authToken;
+  ScrollController _scrollController = ScrollController();
+  int page = 1;
+
+  List<String> bookingImage = [];
+  List<String> bookingName = [];
+  List<String> bookingId = [];
+  List<String> bookingType = [];
+  List<String> bookingPeriod = [];
+
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  @override
+  void initState() {
+    super.initState();
+    getToken();
+  }
+
+ void getToken() async {
+    authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+    getUpComingBookingAPI(page);
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        if (page > 1) {
+          if (result.data.length > 0) {
+            page++;
+            getUpComingBookingAPI(page);
+            print(page);
+          } else {
+            _refreshController.loadComplete();
+          }
+        } else {
+          page++;
+          getUpComingBookingAPI(page);
+          print(page);
+        }
+      }
+    });
+  }
+
+  void _onLoading() async {
+      _refreshController.loadComplete();
+      _refreshController.loadNoData();
+   
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-        itemCount: 5,
-        shrinkWrap: true,
-        physics: BouncingScrollPhysics(),
-        separatorBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 0.0.h),
-            child: Divider(
-              height: 0.0.h,
-              color: Constants.formBorder,
-              thickness: 1.0,
+    return isLoading
+        ? Center(
+            child: CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
             ),
-          );
-        },
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.only(
-                top: 2.0.h, bottom: 1.0.h, left: 4.0.w, right: 4.0.w),
-            child: Column(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    //Image for booking
-                    Padding(
-                      padding: EdgeInsets.only(right: 4.0.w),
-                      child: Container(
-                        height: 12.0.h,
-                        width: 22.0.w,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            image: DecorationImage(
-                                image:
-                                    AssetImage('assets/images/postImage.png'),
-                                fit: BoxFit.cover)),
-                      ),
-                    ),
-                    //Other booking details
-                    Container(
-                      width: 65.0.w,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Lorem ipsum dolor sit amet, consetetur',
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 11.0.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Constants.bgColor),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 1.0.h),
-                            child: Text(
-                              'Booking ID : 1234567',
-                              style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 9.0.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Constants.bgColor),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 1.0.h),
-                            child: Text(
-                              'Double Sharing',
-                              style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 9.0.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Constants.bgColor),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 1.0.h),
-                            child: Text(
-                              '21 Jan 2021 to 21 Mar 2021',
-                              style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 9.0.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Constants.bgColor),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                //Foe cancel and view details
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        pushNewScreen(context,
-                            screen: CancelBookingScreen(),
-                            withNavBar: false,
-                            pageTransitionAnimation:
-                                PageTransitionAnimation.cupertino);
-                      },
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 9.0.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xFFEF1616)),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        pushNewScreen(context,
-                            screen: ViewBookingScreen(),
-                            withNavBar: false,
-                            pageTransitionAnimation:
-                                PageTransitionAnimation.cupertino);
-                      },
-                      child: Text(
-                        'View Details',
-                        style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 9.0.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xFF1F7DE9)),
-                      ),
-                    )
-                  ],
-                ),
-              ],
+          )
+        : SmartRefresher(
+            controller: _refreshController,
+            enablePullDown: false,
+            enablePullUp: true,
+            footer: ClassicFooter(
+              loadStyle: LoadStyle.ShowWhenLoading,
+              noDataText: 'No More Up Coming Bookings',
+              //noMoreIcon: Icon(Icons.refresh_outlined),
             ),
-          );
-        });
+            onLoading: _onLoading,
+          child: ListView.separated(
+          controller: _scrollController,
+          itemCount: bookingId.length == 0 ? 0 : bookingId.length,
+          shrinkWrap: true,
+          physics: BouncingScrollPhysics(),
+          separatorBuilder: (context, index) {
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 0.0.h),
+              child: Divider(
+                height: 0.0.h,
+                color: Constants.formBorder,
+                thickness: 1.0,
+              ),
+            );
+          },
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: EdgeInsets.only(
+                  top: 2.0.h, bottom: 1.0.h, left: 4.0.w, right: 4.0.w),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      //Image for booking
+                      Padding(
+                        padding: EdgeInsets.only(right: 4.0.w),
+                        child: Container(
+                          height: 12.0.h,
+                          width: 22.0.w,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              image: DecorationImage(
+                                  image:
+                                      NetworkImage(bookingImage[index]),
+                                  fit: BoxFit.cover)),
+                        ),
+                      ),
+                      //Other booking details
+                      Container(
+                        width: 65.0.w,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              bookingName[index],
+                              style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 11.0.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Constants.bgColor),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 1.0.h),
+                              child: Text(
+                                'Booking ID : ${bookingId[index]}',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 9.0.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Constants.bgColor),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 1.0.h),
+                              child: Text(
+                                bookingType[index],
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 9.0.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Constants.bgColor),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 1.0.h),
+                              child: Text(
+                                bookingPeriod[index],
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 9.0.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Constants.bgColor),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  //Foe cancel and view details
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          pushNewScreen(context,
+                              screen: CancelBookingScreen(),
+                              withNavBar: false,
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino);
+                        },
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 9.0.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFFEF1616)),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          pushNewScreen(context,
+                              screen: ViewBookingScreen(
+                                bookingDetails: result,
+                                index: index,
+                                meal: result.data[index].meal.toString(),
+                              ),
+                              withNavBar: false,
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino);
+                        },
+                        child: Text(
+                          'View Details',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 9.0.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF1F7DE9)),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }),
+    );
+  }
+
+  //Get UpComing Bookings API
+  Future<UpComingBooking> getUpComingBookingAPI(int page) async{
+    try{
+      Dio dio = Dio();
+      var response = await dio.get('${Config.upComingBookingUrl}?page=$page',
+      options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+      if(response.statusCode == 200){
+        print(response.data);
+        result = UpComingBooking.fromJson(response.data);
+
+        if(result.data.length > 0){
+          for(int i = 0; i < result.data.length; i++){
+            bookingId.add(result.data[i].bookingId);
+            bookingName.add(result.data[i].name);
+            bookingImage.add(result.data[i].propertyImage);
+            bookingType.add(result.data[i].roomType);
+            bookingPeriod.add('${result.data[i].checkInDate} to ${result.data[i].checkOutDate}');
+          }
+          print(bookingId);
+          isLoading = false;
+          setState(() {});
+        } else {
+          isLoading = false;
+          setState(() {});
+        }
+      }else {
+        print('${response.statusCode} : ${response.data.toString()}');
+        throw response.statusCode;
+      }
+    }on DioError catch(e, stack){
+      print(e.response);
+      print(stack);
+    }
+    return result;
   }
 }
