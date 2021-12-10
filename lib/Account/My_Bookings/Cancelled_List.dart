@@ -251,10 +251,12 @@ class _CancelledListState extends State<CancelledList> {
             bookingCheckIn.add(result.data[i].checkInDate);
             bookingCheckOut.add(result.data[i].checkOutDate);
             bookingRoomType.add(result.data[i].roomType);
-            bookingTaxAmount.add(result.data[i].roomAmount);
+            bookingRoomAmount.add(result.data[i].roomAmount);
+            bookingTaxAmount.add(result.data[i].taxAmount);
             bookingMealAmount.add(result.data[i].mealAmount);
             bookingTotalAmount.add(result.data[i].totalAmount);
           }
+          print(bookingGuestName);
           print(bookingId);
           isLoading = false;
           setState(() {});

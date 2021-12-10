@@ -63,8 +63,8 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
                 children: [
                   Image.asset(
                     'assets/icons/ok.png',
-                    height: 15.0.h,
-                    width: 25.0.w,
+                    height: 100,
+                    width: 100,
                     fit: BoxFit.cover,
                   ),
                   SizedBox(

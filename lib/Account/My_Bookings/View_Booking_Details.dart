@@ -57,7 +57,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                   width: 100.0.w,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(widget.image[widget.index]),
+                      image: NetworkImage(widget.image),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(8.0),
@@ -67,7 +67,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
               Padding(
                 padding: EdgeInsets.only(top: 1.0.h),
                 child: Text(
-                  widget.name[widget.index],
+                  widget.name,
                   style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 11.0.sp,
@@ -107,7 +107,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(widget.guestName[widget.index],//name,
+                          Text(widget.guestName,//name,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -130,7 +130,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(widget.mobileNumber[widget.index],//mobileNumber,
+                          Text(widget.mobileNumber,//mobileNumber,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -153,7 +153,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(widget.checkIn[widget.index],//checkIn,
+                          Text(widget.checkIn,//checkIn,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -176,7 +176,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(widget.checkOut[widget.index],//checkOut,
+                          Text(widget.checkOut,//checkOut,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -199,7 +199,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(widget.roomType[widget.index],//roomType,
+                          Text(widget.roomType,//roomType,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -276,14 +276,14 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                     fontWeight: FontWeight.w400,
                                     color: Constants.bgColor)),
                             TextSpan(
-                                text: '(${widget.roomType[widget.index]})',//'($roomType)',
+                                text: '(${widget.roomType})',//'($roomType)',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 8.0.sp,
                                     fontWeight: FontWeight.w400,
                                     color: Constants.blueTitle)),
                           ])),
-                          Text('₹${widget.roomAmount[widget.index]}',//'₹$roomCharge',
+                          Text('₹${widget.roomAmount}',//'₹$roomCharge',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -314,7 +314,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                     fontWeight: FontWeight.w400,
                                     color: Constants.blueTitle)),
                           ])),
-                          Text('₹${widget.mealAmount[widget.index]}',//'₹$mealCharge',
+                          Text('₹${widget.mealAmount.toStringAsFixed(2)}',//'₹$mealCharge',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -337,7 +337,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text('₹${widget.taxAmount[widget.index]}',//'₹$taxCharge',
+                          Text('₹${widget.taxAmount}',//'₹$taxCharge',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -371,7 +371,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                           fontWeight: FontWeight.w700,
                           color: Constants.bgColor),
                     ),
-                    Text('₹${widget.totalAmount[widget.index]}',//'₹$total',
+                    Text('₹${widget.totalAmount}',//'₹$total',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 14.0.sp,

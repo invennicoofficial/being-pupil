@@ -35,10 +35,10 @@ class _UpComingListState extends State<UpComingList> {
   List<String> bookingCheckIn = [];
   List<String> bookingCheckOut = [];
   List<String> bookingRoomType = [];
-  List<String> bookingRoomAmount = [];
-  List<String> bookingTaxAmount = [];
-  List<String> bookingMealAmount = [];
-  List<String> bookingTotalAmount = [];
+  List<double> bookingRoomAmount = [];
+  List<double> bookingTaxAmount = [];
+  List<double> bookingMealAmount = [];
+  List<double> bookingTotalAmount = [];
   List<List<String>> bookingMeal = [];
 
   RefreshController _refreshController =
@@ -196,7 +196,7 @@ class _UpComingListState extends State<UpComingList> {
                               screen: CancelBookingScreen(
                                 propertyDetails: result,
                                 index: index,
-                                meal: result.data[index].meal.toString(),
+                                meal: bookingMeal[index].toString(),
                                 propertyId: int.parse(propertyId[index]),
                                 bookingId: bookingId[index],
                                 ),
@@ -272,6 +272,15 @@ class _UpComingListState extends State<UpComingList> {
             bookingType.add(result.data[i].roomType);
             bookingMeal.add(result.data[i].meal);
             //bookingPeriod.add('${result.data[i].checkInDate} to ${result.data[i].checkOutDate}');
+            bookingGuestName.add(result.data[i].guestName);
+            bookingMobileNumber.add(result.data[i].mobileNumber);
+            bookingCheckIn.add(result.data[i].checkInDate);
+            bookingCheckOut.add(result.data[i].checkOutDate);
+            bookingRoomType.add(result.data[i].roomType);
+            bookingRoomAmount.add(result.data[i].roomAmount);
+            bookingTaxAmount.add(result.data[i].taxAmount);
+            bookingMealAmount.add(result.data[i].mealAmount);
+            bookingTotalAmount.add(result.data[i].totalAmount);
           }
           print(bookingId);
           isLoading = false;

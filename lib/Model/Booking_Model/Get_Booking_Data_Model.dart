@@ -72,10 +72,10 @@ class Data {
     String guestName;
     String mobileNumber;
     List<String> meal;
-    int roomAmount;
+    double roomAmount;
     double mealAmount;
     double taxAmount;
-    int totalAmount;
+    double totalAmount;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         propertyId: json["property_id"],
@@ -88,10 +88,10 @@ class Data {
         guestName: json["guest_name"],
         mobileNumber: json["mobile_number"],
         meal: List<String>.from(json["meal"].map((x) => x)),
-        roomAmount: json["room_amount"],
+        roomAmount: json["room_amount"].toDouble(),
         mealAmount: json["meal_amount"].toDouble(),
         taxAmount: json["tax_amount"].toDouble(),
-        totalAmount: json["total_amount"],
+        totalAmount: json["total_amount"].toDouble(),
     );
 
     Map<String, dynamic> toJson() => {
