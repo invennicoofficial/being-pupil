@@ -95,7 +95,7 @@ class Rating {
         the3: json["3"],
         the4: json["4"],
         the5: json["5"],
-        avgRating: json["avg_rating"],
+        avgRating: json["avg_rating"].toDouble(),
     );
 
     Map<String, dynamic> toJson() => {

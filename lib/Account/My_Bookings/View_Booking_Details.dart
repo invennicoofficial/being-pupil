@@ -394,36 +394,38 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                         thickness: 1.0,
                       ),
                     ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 3.0.h),
-                child: Column(
-                  children: [
-                   Text('Something not right?',
-                      style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 8.0.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Constants.bpSkipStyle),
-                    ),
-                    SizedBox(height: 0.5.h,),
-                    Text.rich(TextSpan(children: [
-                      TextSpan(text: 'Contact Us ',
-                       style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 9.0.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Constants.bgColor),
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 3.0.h),
+                  child: Column(
+                    children: [
+                     Text('Something not right?',
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 8.0.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Constants.bpSkipStyle),
                       ),
-                      TextSpan(text: 'for help',
-                       style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 8.0.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Constants.bpSkipStyle),
-                      )
-                    ]))
-                  ],
-                )
+                      SizedBox(height: 0.5.h,),
+                      Text.rich(TextSpan(children: [
+                        TextSpan(text: 'Contact Us ',
+                         style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 9.0.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Constants.bgColor),
+                        ),
+                        TextSpan(text: 'for help',
+                         style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 8.0.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Constants.bpSkipStyle),
+                        )
+                      ]))
+                    ],
+                  )
+                ),
               ),
             ],
           ),

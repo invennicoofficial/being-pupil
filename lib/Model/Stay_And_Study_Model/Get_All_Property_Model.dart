@@ -63,7 +63,7 @@ class Data {
     String description;
     Location location;
     List<String> featuredImage;
-    dynamic rating;
+    double rating;
     int review;
     List<Amenity> amenities;
     List<Room> room;
@@ -75,7 +75,7 @@ class Data {
         description: json["description"],
         location: Location.fromJson(json["location"]),
         featuredImage: List<String>.from(json["featured_image"].map((x) => x)),
-        rating: json["rating"],
+        rating: json["rating"].toDouble(),
         review: json["review"],
         amenities: List<Amenity>.from(json["amenities"].map((x) => Amenity.fromJson(x))),
         room: List<Room>.from(json["room"].map((x) => Room.fromJson(x))),

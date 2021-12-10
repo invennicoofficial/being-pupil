@@ -1,7 +1,9 @@
+import 'package:being_pupil/ConnectyCube/consts.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Learner/Connection_API.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Educator_List_Model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -137,13 +139,42 @@ class _EducatorListState extends State<EducatorList> {
                                     getUserProfile(_userId[index]);
                                   },
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child: Image.network(
-                                      _profileImage[index],
-                                      width: 40.0,
-                                      height: 40.0,
-                                      fit: BoxFit.cover,
-                                    ),
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: CachedNetworkImage(
+                                        placeholder: (context, url) => Container(
+                                          child: CircularProgressIndicator(
+                                            valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Colors.black),
+                                          ),
+                                          width: 40.0,
+                                          height: 40.0,
+                                          padding: EdgeInsets.all(70.0),
+                                          decoration: BoxDecoration(
+                                            color: greyColor2,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0),
+                                            ),
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Material(
+                                              child: Image.asset(
+                                                'assets/images/studyBudyBg.png',
+                                                width: 40.0,
+                                                height: 40.0,
+                                                fit: BoxFit.cover,
+                                              ),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(8.0),
+                                              ),
+                                              clipBehavior: Clip.hardEdge,
+                                            ),
+                                        imageUrl: _profileImage[index],
+                                        width: 40.0,
+                                        height: 40.0,
+                                        fit: BoxFit.fitWidth,
+                                      )
                                   ),
                                 ),
                                 SizedBox(

@@ -1,8 +1,11 @@
 import 'package:being_pupil/ConnectyCube/chat_dialog_screen.dart';
+import 'package:being_pupil/ConnectyCube/consts.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Connection_Model.dart';
+import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -142,14 +145,42 @@ class _ConnectionListState extends State<ConnectionList> {
                                     getUserProfile(_userId[index]);
                                   },
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child: Image.network(
-                                      _profileImage[index],
-                                      //connection.data[index].profileImage,
-                                      width: 40.0,
-                                      height: 40.0,
-                                      fit: BoxFit.cover,
-                                    ),
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: CachedNetworkImage(
+                                        placeholder: (context, url) => Container(
+                                          child: CircularProgressIndicator(
+                                            valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Colors.black),
+                                          ),
+                                          width: 40.0,
+                                          height: 40.0,
+                                          padding: EdgeInsets.all(70.0),
+                                          decoration: BoxDecoration(
+                                            color: greyColor2,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0),
+                                            ),
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Material(
+                                              child: Image.asset(
+                                                'assets/images/studyBudyBg.png',
+                                                width: 40.0,
+                                                height: 40.0,
+                                                fit: BoxFit.cover,
+                                              ),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(8.0),
+                                              ),
+                                              clipBehavior: Clip.hardEdge,
+                                            ),
+                                        imageUrl: _profileImage[index],
+                                        width: 40.0,
+                                        height: 40.0,
+                                        fit: BoxFit.fitWidth,
+                                      )
                                   ),
                                 ),
                                 SizedBox(
@@ -220,6 +251,7 @@ class _ConnectionListState extends State<ConnectionList> {
                                       )
                                     : GestureDetector(
                                   onTap: () async {
+                                    displayProgressDialog(context);
                                     SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
                                     CubeUser user = sharedPrefs.getUser();
                                     print(_email[index]);
@@ -230,6 +262,7 @@ class _ConnectionListState extends State<ConnectionList> {
                                         occupantsIds: [cubeUser.id]);
                                     createDialog(newDialog)
                                         .then((createdDialog) {
+                                      closeProgressDialog(context);
                                       pushNewScreen(context,
                                           screen: ChatDialogScreen(user, createdDialog, _profileImage[index]),
                                           withNavBar: false,
@@ -238,11 +271,11 @@ class _ConnectionListState extends State<ConnectionList> {
                                               .cupertino);
                                     })
                                         .catchError((error) {
-
+                                      displayProgressDialog(context);
                                     });
                                     })
                                         .catchError((error) {
-
+                                      displayProgressDialog(context);
                                     });
 
                                   },
@@ -327,6 +360,19 @@ class _ConnectionListState extends State<ConnectionList> {
     }
   }
 
+
+  displayProgressDialog(BuildContext context) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new ProgressDialog1();
+        }));
+  }
+
+  closeProgressDialog(BuildContext context) {
+    Navigator.of(context).pop();
+  }
+
   //Get Connection List API
   Future<void> getConnectionApi(int page) async {
     // displayProgressDialog(context);
@@ -384,5 +430,40 @@ class _ConnectionListState extends State<ConnectionList> {
       print(e.response);
       print(stack);
     }
+  }
+}
+
+
+class ProgressDialog1 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: new Container(
+        height: 75,
+        width: 75,
+        decoration: BoxDecoration(
+          color: Constants.bgColor,
+            border: Border.all(
+                color: Constants.bgColor, width: 0.5),
+            borderRadius: BorderRadius.all(
+                Radius.circular(8.0))),
+        child: new GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: new Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new CircularProgressIndicator(
+                  valueColor:
+                  new AlwaysStoppedAnimation<Color>(Constants.selectedIcon),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

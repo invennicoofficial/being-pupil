@@ -550,7 +550,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
           print('Gender::: ${result.data.userObject.gender}');
           print('IMAGE:::' + result.data.userObject.imageUrl);
-
+              saveUserData(result.data.userObject.userId);
               signIn(CubeUser(fullName: result.data.userObject.name, login: socialEmail, password: '12345678'))
                   .then((cubeUser) async {
                 closeProgressDialog(context);

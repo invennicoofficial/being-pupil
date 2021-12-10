@@ -135,7 +135,10 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                       child: Center(
                         child: ListView.builder(
                             physics: BouncingScrollPhysics(),
-                            itemCount: imgList.length,
+                            itemCount:  widget
+                                .propertyDetails
+                                .data[widget.index]
+                                .featuredImage.length,
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
