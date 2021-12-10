@@ -63,7 +63,7 @@ class Data {
     String description;
     Location location;
     List<String> featuredImage;
-    int rating;
+    dynamic rating;
     int review;
     List<Amenity> amenities;
     List<Room> room;

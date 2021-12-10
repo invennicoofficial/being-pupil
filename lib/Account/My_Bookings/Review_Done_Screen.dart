@@ -13,9 +13,8 @@ class ReviewDoneScreen extends StatelessWidget {
       floatingActionButton: GestureDetector(
                   onTap: () {
                     print('GO TO!!!');
-                //    Navigator.of(context).pushAndRemoveUntil(
-                // MaterialPageRoute(builder: (context) => MyBookingScreen()),
-                //     (Route<dynamic> route) => false);
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
                   },
                   child: Padding(
                     padding: EdgeInsets.only(bottom: 5.0.h),

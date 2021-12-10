@@ -7,11 +7,12 @@ class ViewBookingScreen extends StatefulWidget {
   // BookingDetails bookingDetails;
   // //CancelledBooking cancelBookingDetails;
    int index;
-  String meal, image, guestName, mobileNumber, checkIn, checkOut, roomType, name;
+  String meal, image, guestName, mobileNumber, checkIn, checkOut, roomType, name, propertyId, bookingId;
   dynamic roomAmount, mealAmount, taxAmount, totalAmount;
   ViewBookingScreen(
       {Key key,this.meal, this.image, this.index, this.guestName, this.mobileNumber,
-      this.checkOut, this.checkIn, this.roomType, this.name, this.roomAmount, this.mealAmount, this.taxAmount, this.totalAmount})
+      this.checkOut, this.checkIn, this.roomType, this.name, this.roomAmount, this.mealAmount, this.taxAmount, this.totalAmount,
+      this.propertyId, this.bookingId})
       : super(key: key);
 
   @override
@@ -49,7 +50,6 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(top: 2.0.h),
@@ -67,13 +67,17 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
               ),
               Padding(
                 padding: EdgeInsets.only(top: 1.0.h),
-                child: Text(
-                  widget.name,
-                  style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 11.0.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Constants.bgColor),
+                child: Row(
+                  children: [
+                    Text(
+                      widget.name,
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 11.0.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Constants.bgColor),
+                    ),
+                  ],
                 ),
               ),
               Padding(

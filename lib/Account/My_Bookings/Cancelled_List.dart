@@ -3,6 +3,7 @@ import 'package:being_pupil/Model/Booking_Model/Get_Booking_Data_Model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
@@ -236,7 +237,7 @@ class _CancelledListState extends State<CancelledList> {
       if (response.statusCode == 200) {
         print(response.data);
         result = BookingDetails.fromJson(response.data);
-
+        if(result.status == true){
         if (result.data.length > 0) {
           for (int i = 0; i < result.data.length; i++) {
             bookingId.add(result.data[i].bookingId);
@@ -263,6 +264,17 @@ class _CancelledListState extends State<CancelledList> {
         } else {
           isLoading = false;
           setState(() {});
+        }
+        }else {
+          Fluttertoast.showToast(
+            msg: result.message == null ? result.errorMsg : result.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
         }
       } else {
         print('${response.statusCode} : ${response.data.toString()}');

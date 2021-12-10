@@ -86,7 +86,6 @@ class _CancelBookingScreenState extends State<CancelBookingScreen> {
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(top: 2.0.h),
@@ -104,13 +103,17 @@ class _CancelBookingScreenState extends State<CancelBookingScreen> {
               ),
               Padding(
                 padding: EdgeInsets.only(top: 1.0.h),
-                child: Text(
-                  widget.name,
-                  style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 11.0.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Constants.bgColor),
+                child: Row(
+                  children: [
+                    Text(
+                      widget.name,
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 11.0.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Constants.bgColor),
+                    ),
+                  ],
                 ),
               ),
               Padding(

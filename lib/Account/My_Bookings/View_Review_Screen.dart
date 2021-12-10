@@ -1,11 +1,20 @@
+import 'package:being_pupil/Model/Booking_Model/Completed_Booking_Model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:sizer/sizer.dart';
 import 'package:being_pupil/Constants/Const.dart';
 
-class ViewReviewScreen extends StatelessWidget {
-  const ViewReviewScreen({Key key}) : super(key: key);
+class ViewReviewScreen extends StatefulWidget {
+  String image, headline, description;
+  Review review;
+  double rating;
+  ViewReviewScreen({Key key, this.image, this.headline, this.description, this.review, this.rating}) : super(key: key);
 
+  @override
+  _ViewReviewScreenState createState() => _ViewReviewScreenState();
+}
+
+class _ViewReviewScreenState extends State<ViewReviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +64,7 @@ class ViewReviewScreen extends StatelessWidget {
                   width: 100.0.w,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/images/house.jpg'),
+                      image: NetworkImage(widget.image),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(8.0),
@@ -79,7 +88,7 @@ class ViewReviewScreen extends StatelessWidget {
               Padding(
                   padding: EdgeInsets.only(top: 0.5.h),
                   child: RatingBar(
-                    initialRating: 5,
+                    initialRating: widget.rating,
                     direction: Axis.horizontal,
                     allowHalfRating: false,
                     itemCount: 5,
@@ -89,9 +98,7 @@ class ViewReviewScreen extends StatelessWidget {
                       empty: Image.asset('assets/icons/star.png'),
                     ),
                     itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                    onRatingUpdate: (rating) {
-                      print(rating);
-                    },
+                    onRatingUpdate: null,
                   )),
               Padding(
                 padding: EdgeInsets.only(top: 0.5.h),
@@ -119,7 +126,7 @@ class ViewReviewScreen extends StatelessWidget {
                 padding: EdgeInsets.only(top: 2.0.h),
                 child: Center(
                   child: Text(
-                    'GOOD EXPERIENCE',
+                    widget.headline == null ? '' : widget.headline,
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 12.0.sp,
@@ -133,7 +140,7 @@ class ViewReviewScreen extends StatelessWidget {
                 width: 100.0.w,
                 padding: EdgeInsets.only(top: 0.5.h),
                 child: Text(
-                  'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd',
+                   widget.description == null ? '' : widget.description,
                   style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 10.0.sp,

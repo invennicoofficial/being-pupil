@@ -211,7 +211,9 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
               child: GestureDetector(
                 onTap: () {
                   pushNewScreen(context,
-                      screen: RatingReviewScreen(),
+                      screen: RatingReviewScreen(
+                        propertyId: widget.propertyDetails.data[widget.index].propertyId,
+                      ),
                       withNavBar: false,
                       pageTransitionAnimation:
                           PageTransitionAnimation.cupertino);

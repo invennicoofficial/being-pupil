@@ -1,21 +1,45 @@
 import 'package:being_pupil/Account/My_Bookings/Review_Done_Screen.dart';
+import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:sizer/sizer.dart';
 import 'package:being_pupil/Constants/Const.dart';
-
-TextEditingController _headLineController = TextEditingController();
-TextEditingController _descriptioController = TextEditingController();
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class ReviewScreen extends StatefulWidget {
-  ReviewScreen({Key key}) : super(key: key);
+  String image, bookingId;
+  int propertyId;
+  double rating;
+  ReviewScreen({Key key, this.image, this.propertyId, this.bookingId})
+      : super(key: key);
 
   @override
   _ReviewScreenState createState() => _ReviewScreenState();
 }
 
 class _ReviewScreenState extends State<ReviewScreen> {
+  double starRating = 1.0;
+  TextEditingController _headLineController = TextEditingController();
+  TextEditingController _descriptioController = TextEditingController();
+  Map<String, dynamic> map;
+  List<dynamic> mapData;
+  String authToken;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getToken();
+  }
+
+  void getToken() async {
+    authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +89,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   width: 100.0.w,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/images/house.jpg'),
+                      image: NetworkImage(widget.image),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(8.0),
@@ -89,7 +113,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
               Padding(
                   padding: EdgeInsets.only(top: 0.5.h),
                   child: RatingBar(
-                    initialRating: 2,
+                    initialRating: starRating,
                     direction: Axis.horizontal,
                     allowHalfRating: false,
                     itemCount: 5,
@@ -101,6 +125,9 @@ class _ReviewScreenState extends State<ReviewScreen> {
                     itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                     onRatingUpdate: (rating) {
                       print(rating);
+                      setState(() {
+                        starRating = rating;
+                      });
                     },
                   )),
               Padding(
@@ -219,11 +246,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 padding: EdgeInsets.only(top: 4.0.h),
                 child: GestureDetector(
                   onTap: () {
-                    pushNewScreen(context,
-                        screen: ReviewDoneScreen(),
-                        withNavBar: false,
-                        pageTransitionAnimation:
-                            PageTransitionAnimation.cupertino);
+                    submitBookingReview();
                   },
                   child: Container(
                     height: 7.0.h,
@@ -252,5 +275,68 @@ class _ReviewScreenState extends State<ReviewScreen> {
         ),
       ),
     );
+  }
+
+// Submit Booking Review
+  submitBookingReview() async {
+    displayProgressDialog(context);
+    try {
+      Dio dio = Dio();
+      FormData formData = FormData.fromMap({
+        'property_id': widget.propertyId,
+        'booking_id': widget.bookingId,
+        'rating': starRating,
+        'headline': _headLineController.text,
+        'descreption': _descriptioController.text
+      });
+
+      var response = await dio.post(Config.addReviewUrl,
+          data: formData,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+
+      if (response.statusCode == 200) {
+        map = response.data;
+        print(map);
+        closeProgressDialog(context);
+
+        if (map['status'] == true && map['data']['isReviewed'] == true) {
+          pushNewScreen(context,
+              screen: ReviewDoneScreen(),
+              withNavBar: false,
+              pageTransitionAnimation: PageTransitionAnimation.cupertino);
+        } else {
+          Fluttertoast.showToast(
+            msg: map['message'] == null ? map['error_msg'] : map['message'],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        }
+      }else{
+        closeProgressDialog(context);
+         print('${response.statusCode} : ${response.data.toString()}');
+        throw response.statusCode;
+      }
+    } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+    }
+  }
+
+  displayProgressDialog(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.of(context).push(new PageRouteBuilder(
+          opaque: false,
+          pageBuilder: (BuildContext context, _, __) {
+            return new ProgressDialog();
+          }));
+    });
+  }
+
+  closeProgressDialog(BuildContext context) {
+    Navigator.of(context).pop();
   }
 }

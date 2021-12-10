@@ -25,7 +25,7 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
   int page = 1;
   bool isLoading = false;
   List<int> propertyId = [];
-  List<int> propertyRating = [];
+  List<dynamic> propertyRating = [];
   List<String> propertyName = [];
   List<String> propertyImage = [];
   List<String> propertyLocation = [];

@@ -1,9 +1,10 @@
 import 'package:being_pupil/Account/My_Bookings/Review_Screen.dart';
-import 'package:being_pupil/Model/Booking_Model/Get_Booking_Data_Model.dart';
+import 'package:being_pupil/Model/Booking_Model/Completed_Booking_Model.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
@@ -19,7 +20,7 @@ class CompletedList extends StatefulWidget {
 }
 
 class _CompletedListState extends State<CompletedList> {
-  var result = BookingDetails();
+  var result = CompletedBooking();
   bool isLoading = true;
   String authToken;
   ScrollController _scrollController = ScrollController();
@@ -41,6 +42,8 @@ class _CompletedListState extends State<CompletedList> {
   List<dynamic> bookingTaxAmount = [];
   List<dynamic> bookingMealAmount = [];
   List<dynamic> bookingTotalAmount = [];
+  List<bool> bookingIsReviewed = [];
+  List<Review> bookingReview = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -129,8 +132,8 @@ class _CompletedListState extends State<CompletedList> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.0),
                                     image: DecorationImage(
-                                        image: AssetImage(
-                                            'assets/images/postImage.png'),
+                                        image:
+                                            NetworkImage(bookingImage[index]),
                                         fit: BoxFit.cover)),
                               ),
                             ),
@@ -141,7 +144,7 @@ class _CompletedListState extends State<CompletedList> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    'Lorem ipsum dolor sit amet, consetetur',
+                                    bookingName[index],
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 11.0.sp,
@@ -151,7 +154,7 @@ class _CompletedListState extends State<CompletedList> {
                                   Padding(
                                     padding: EdgeInsets.only(top: 1.0.h),
                                     child: Text(
-                                      'Booking ID : 1234567',
+                                      'Booking ID : ${bookingId[index]}',
                                       style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontSize: 9.0.sp,
@@ -162,7 +165,7 @@ class _CompletedListState extends State<CompletedList> {
                                   Padding(
                                     padding: EdgeInsets.only(top: 1.0.h),
                                     child: Text(
-                                      'Double Sharing',
+                                      bookingRoomType[index],
                                       style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontSize: 9.0.sp,
@@ -173,7 +176,7 @@ class _CompletedListState extends State<CompletedList> {
                                   Padding(
                                     padding: EdgeInsets.only(top: 1.0.h),
                                     child: Text(
-                                      '21 Jan 2021 to 21 Mar 2021',
+                                      '${bookingCheckIn[index]} to ${bookingCheckOut[index]}',
                                       style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontSize: 9.0.sp,
@@ -191,10 +194,15 @@ class _CompletedListState extends State<CompletedList> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             InkWell(
-                              onTap: index == 0
+                              onTap: bookingIsReviewed[index] == false
                                   ? () {
                                       pushNewScreen(context,
-                                          screen: ReviewScreen(),
+                                          screen: ReviewScreen(
+                                            propertyId:
+                                                int.parse(propertyId[index]),
+                                            bookingId: bookingId[index],
+                                            image: bookingImage[index],
+                                          ),
                                           withNavBar: false,
                                           pageTransitionAnimation:
                                               PageTransitionAnimation
@@ -202,14 +210,23 @@ class _CompletedListState extends State<CompletedList> {
                                     }
                                   : () {
                                       pushNewScreen(context,
-                                          screen: ViewReviewScreen(),
+                                          screen: ViewReviewScreen(
+                                            image: bookingImage[index],
+                                            headline:
+                                                bookingReview[index].headline,
+                                            description: bookingReview[index]
+                                                .descrieption,
+                                            rating: bookingReview[index].rating,
+                                          ),
                                           withNavBar: false,
                                           pageTransitionAnimation:
                                               PageTransitionAnimation
                                                   .cupertino);
                                     },
                               child: Text(
-                                index == 0 ? 'Write Review' : 'View Review',
+                                bookingIsReviewed[index] == false
+                                    ? 'Write Review'
+                                    : 'View Review',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 10.0.sp,
@@ -257,40 +274,56 @@ class _CompletedListState extends State<CompletedList> {
   }
 
   //Get Completted Bookings API
-  Future<BookingDetails> getCompletedBookingAPI(int page) async {
+  Future<CompletedBooking> getCompletedBookingAPI(int page) async {
     try {
       Dio dio = Dio();
       var response = await dio.get('${Config.completedBookingUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
       if (response.statusCode == 200) {
         print(response.data);
-        result = BookingDetails.fromJson(response.data);
+        result = CompletedBooking.fromJson(response.data);
 
-        if (result.data.length > 0) {
-          for (int i = 0; i < result.data.length; i++) {
-            bookingId.add(result.data[i].bookingId);
-            propertyId.add(result.data[i].propertyId);
-            bookingName.add(result.data[i].name);
-            bookingImage.add(result.data[i].propertyImage);
-            bookingType.add(result.data[i].roomType);
-            bookingMeal.add(result.data[i].meal);
-            //bookingPeriod.add('${result.data[i].checkInDate} to ${result.data[i].checkOutDate}');
-            bookingGuestName.add(result.data[i].guestName);
-            bookingMobileNumber.add(result.data[i].mobileNumber);
-            bookingCheckIn.add(result.data[i].checkInDate);
-            bookingCheckOut.add(result.data[i].checkOutDate);
-            bookingRoomType.add(result.data[i].roomType);
-            bookingRoomAmount.add(result.data[i].roomAmount);
-            bookingTaxAmount.add(result.data[i].taxAmount);
-            bookingMealAmount.add(result.data[i].mealAmount);
-            bookingTotalAmount.add(result.data[i].totalAmount);
+        if (result.status == true) {
+          if (result.data.length > 0) {
+            for (int i = 0; i < result.data.length; i++) {
+              bookingId.add(result.data[i].bookingId);
+              propertyId.add(result.data[i].propertyId);
+              bookingName.add(result.data[i].name);
+              bookingImage.add(result.data[i].propertyImage);
+              bookingType.add(result.data[i].roomType);
+              bookingMeal.add(result.data[i].meal);
+              //bookingPeriod.add('${result.data[i].checkInDate} to ${result.data[i].checkOutDate}');
+              bookingGuestName.add(result.data[i].guestName);
+              bookingMobileNumber.add(result.data[i].mobileNumber);
+              bookingCheckIn.add(result.data[i].checkInDate);
+              bookingCheckOut.add(result.data[i].checkOutDate);
+              bookingRoomType.add(result.data[i].roomType);
+              bookingRoomAmount.add(result.data[i].roomAmount);
+              bookingTaxAmount.add(result.data[i].taxAmount);
+              bookingMealAmount.add(result.data[i].mealAmount);
+              bookingTotalAmount.add(result.data[i].totalAmount);
+              bookingIsReviewed.add(result.data[i].isReviewed);
+              bookingReview.add(result.data[i].review);
+            }
+            // print(bookingReview[0].headline);
+            // print(bookingReview[0].descrieption);
+            // print(bookingReview[0].rating);
+            isLoading = false;
+            setState(() {});
+          } else {
+            isLoading = false;
+            setState(() {});
           }
-          print(bookingId);
-          isLoading = false;
-          setState(() {});
         } else {
-          isLoading = false;
-          setState(() {});
+          Fluttertoast.showToast(
+            msg: result.message == null ? result.errorMsg : result.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
         }
       } else {
         print('${response.statusCode} : ${response.data.toString()}');
