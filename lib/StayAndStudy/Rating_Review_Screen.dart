@@ -1,3 +1,6 @@
+import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/Stay_And_Study_Model/Get_Property_Review_Model.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sizer/sizer.dart';
@@ -5,7 +8,8 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 
 class RatingReviewScreen extends StatefulWidget {
-  RatingReviewScreen({Key key}) : super(key: key);
+  int propertyId;
+  RatingReviewScreen({Key key, this.propertyId}) : super(key: key);
 
   @override
   _RatingReviewScreenState createState() => _RatingReviewScreenState();
@@ -21,6 +25,16 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
     Color(0xFFF77A19),
     Color(0xFFEF1616)
   ];
+  bool isLoading = true;
+  var result = PropertyReview();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getPropertyReviewAPI();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +60,13 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                 color: Colors.white),
           ),
         ),
-        body: Column(
+        body: isLoading
+        ? Center(
+            child: CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
+            ),
+          )
+        : Column(
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(
@@ -66,7 +86,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          '4.5 / 5',
+                          '${result.data.rating.avgRating} / 5',
                           style: TextStyle(
                               fontFamily: 'Montserrat',
                               fontSize: 16.0.sp,
@@ -77,7 +97,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                           height: 3.0.h,
                         ),
                         Text(
-                          '15 Rating',
+                          '${result.data.totalRating} Rating',
                           style: TextStyle(
                               fontFamily: 'Montserrat',
                               fontSize: 11.0.sp,
@@ -88,7 +108,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                           height: 0.5.h,
                         ),
                         Text(
-                          '6 Review',
+                          '${result.data.totalReview} Review',
                           style: TextStyle(
                               fontFamily: 'Montserrat',
                               fontSize: 11.0.sp,
@@ -100,7 +120,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                   ),
                   Expanded(
                     child: ListView.builder(
-                        itemCount: rating.length,
+                        itemCount: 5,
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
@@ -192,7 +212,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                     fontFamily: 'Montserrat',
                                     fontWeight: FontWeight.w500)),
                             TextSpan(
-                                text: '(6)',
+                                text: '(${result.data.review.length})',
                                 style: TextStyle(
                                     fontSize: 11.0.sp,
                                     color: Constants.bpOnBoardSubtitleStyle,
@@ -206,7 +226,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                         height: 100.0.h,
                         width: double.infinity,
                         child: ListView.separated(
-                          itemCount: 6,
+                          itemCount: result.data.review.length,
                           physics: BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
                             return Column(
@@ -221,8 +241,8 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                         ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(50),
-                                          child: Image.asset(
-                                            'assets/images/educatorDP.png',
+                                          child: Image.network(
+                                            result.data.review[index].profileImage,
                                             width: 9.0.w,
                                             height: 4.5.h,
                                             fit: BoxFit.cover,
@@ -244,7 +264,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                                   fontWeight: FontWeight.w700),
                                             ),
                                             Text(
-                                              "28 Jun 2021",
+                                              result.data.review[index].date,
                                               style: TextStyle(
                                                   fontSize: 6.5.sp,
                                                   color: Constants
@@ -265,7 +285,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                               fontFamily: 'Montserrat',
                                               fontWeight: FontWeight.w500)),
                                       TextSpan(
-                                          text: '5/5',
+                                          text: '${result.data.review[index].rating}/5',
                                           style: TextStyle(
                                               fontSize: 7.0.sp,
                                               color: Constants.selectedIcon,
@@ -274,7 +294,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                     ]))),
                                 Container(
                                   child: ReadMoreText(
-                                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna erat, Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,',
+                                    result.data.review[index].descreption,
                                     trimLines: 3,
                                     colorClickableText: Constants.blueTitle,
                                     trimMode: TrimMode.Line,
@@ -286,7 +306,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                         fontWeight: FontWeight.w400,
                                         color:
                                             Constants.bpOnBoardSubtitleStyle),
-                                    textAlign: TextAlign.justify,
+                                    //textAlign: TextAlign.justify,
                                   ),
                                 ),
                               ],
@@ -311,5 +331,29 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
             )
           ],
         ));
+  }
+
+  //Get Property Review API
+  Future<PropertyReview> getPropertyReviewAPI() async {
+    try {
+      var dio = Dio();
+      var response = await dio.get('${Config.getReviewUrl}?property_id=${widget.propertyId}');
+
+      if (response.statusCode == 200) {
+        print(response.data);
+        result = PropertyReview.fromJson(response.data);
+
+        if (result.status == true) {
+          isLoading = false;
+          setState(() {});
+        } else {
+          isLoading = false;
+          setState(() {});
+        }
+      }
+    } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+    }
   }
 }
