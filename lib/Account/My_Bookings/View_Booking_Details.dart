@@ -49,6 +49,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(top: 2.0.h),

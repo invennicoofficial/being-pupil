@@ -50,7 +50,7 @@ class _UpComingListState extends State<UpComingList> {
     getToken();
   }
 
- void getToken() async {
+  void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     getUpComingBookingAPI(page);
     _scrollController.addListener(() {
@@ -74,9 +74,8 @@ class _UpComingListState extends State<UpComingList> {
   }
 
   void _onLoading() async {
-      _refreshController.loadComplete();
-      _refreshController.loadNoData();
-   
+    _refreshController.loadComplete();
+    _refreshController.loadNoData();
   }
 
   @override
@@ -97,127 +96,105 @@ class _UpComingListState extends State<UpComingList> {
               //noMoreIcon: Icon(Icons.refresh_outlined),
             ),
             onLoading: _onLoading,
-          child: ListView.separated(
-          controller: _scrollController,
-          itemCount: bookingId.length == 0 ? 0 : bookingId.length,
-          shrinkWrap: true,
-          physics: BouncingScrollPhysics(),
-          separatorBuilder: (context, index) {
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 0.0.h),
-              child: Divider(
-                height: 0.0.h,
-                color: Constants.formBorder,
-                thickness: 1.0,
-              ),
-            );
-          },
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: EdgeInsets.only(
-                  top: 2.0.h, bottom: 1.0.h, left: 4.0.w, right: 4.0.w),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      //Image for booking
-                      Padding(
-                        padding: EdgeInsets.only(right: 4.0.w),
-                        child: Container(
-                          height: 12.0.h,
-                          width: 22.0.w,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              image: DecorationImage(
-                                  image:
-                                      NetworkImage(bookingImage[index]),
-                                  fit: BoxFit.cover)),
-                        ),
-                      ),
-                      //Other booking details
-                      Container(
-                        width: 65.0.w,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView.separated(
+                controller: _scrollController,
+                itemCount: bookingId.length == 0 ? 0 : bookingId.length,
+                shrinkWrap: true,
+                physics: BouncingScrollPhysics(),
+                separatorBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 4.0.w, vertical: 0.0.h),
+                    child: Divider(
+                      height: 0.0.h,
+                      color: Constants.formBorder,
+                      thickness: 1.0,
+                    ),
+                  );
+                },
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.only(
+                        top: 2.0.h, bottom: 1.0.h, left: 4.0.w, right: 4.0.w),
+                    child: Column(
+                      children: <Widget>[
+                        Row(
                           children: <Widget>[
-                            Text(
-                              bookingName[index],
-                              style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 11.0.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: Constants.bgColor),
-                            ),
+                            //Image for booking
                             Padding(
-                              padding: EdgeInsets.only(top: 1.0.h),
-                              child: Text(
-                                'Booking ID : ${bookingId[index]}',
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 9.0.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Constants.bgColor),
+                              padding: EdgeInsets.only(right: 4.0.w),
+                              child: Container(
+                                height: 12.0.h,
+                                width: 22.0.w,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    image: DecorationImage(
+                                        image:
+                                            NetworkImage(bookingImage[index]),
+                                        fit: BoxFit.cover)),
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 1.0.h),
-                              child: Text(
-                                bookingType[index],
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 9.0.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Constants.bgColor),
+                            //Other booking details
+                            Container(
+                              width: 65.0.w,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    bookingName[index],
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 11.0.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Constants.bgColor),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 1.0.h),
+                                    child: Text(
+                                      'Booking ID : ${bookingId[index]}',
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 9.0.sp,
+                                          fontWeight: FontWeight.w400,
+                                          color: Constants.bgColor),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 1.0.h),
+                                    child: Text(
+                                      bookingType[index],
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 9.0.sp,
+                                          fontWeight: FontWeight.w400,
+                                          color: Constants.bgColor),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 1.0.h),
+                                    child: Text(
+                                      '${bookingCheckIn[index]} to ${bookingCheckOut[index]}',
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 9.0.sp,
+                                          fontWeight: FontWeight.w400,
+                                          color: Constants.bgColor),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 1.0.h),
-                              child: Text(
-                                '${bookingCheckIn[index]} to ${bookingCheckOut[index]}',
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 9.0.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Constants.bgColor),
-                              ),
-                            ),
+                            )
                           ],
                         ),
-                      )
-                    ],
-                  ),
-                  //Foe cancel and view details
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          pushNewScreen(context,
-                              screen: CancelBookingScreen(
-                                propertyDetails: result,
-                                index: index,
-                                meal: bookingMeal[index].toString(),
-                                propertyId: int.parse(propertyId[index]),
-                                bookingId: bookingId[index],
-                                ),
-                              withNavBar: false,
-                              pageTransitionAnimation:
-                                  PageTransitionAnimation.cupertino);
-                        },
-                        child: Text(
-                          'Cancel',
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 9.0.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFFEF1616)),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          pushNewScreen(context,
-                              screen: ViewBookingScreen(
-                                image: bookingImage[index],
+                        //Foe cancel and view details
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                pushNewScreen(context,
+                                    screen: CancelBookingScreen(
+                                      image: bookingImage[index],
                                       name: bookingName[index],
                                       index: index,
                                       guestName: bookingGuestName[index],
@@ -230,41 +207,74 @@ class _UpComingListState extends State<UpComingList> {
                                       mealAmount: bookingMealAmount[index],
                                       taxAmount: bookingTaxAmount[index],
                                       totalAmount: bookingTotalAmount[index],
+                                      propertyId: int.parse(propertyId[index]),
+                                      bookingId: bookingId[index],
+                                    ),
+                                    withNavBar: false,
+                                    pageTransitionAnimation:
+                                        PageTransitionAnimation.cupertino);
+                              },
+                              child: Text(
+                                'Cancel',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 9.0.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xFFEF1616)),
                               ),
-                              withNavBar: false,
-                              pageTransitionAnimation:
-                                  PageTransitionAnimation.cupertino);
-                        },
-                        child: Text(
-                          'View Details',
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 9.0.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFF1F7DE9)),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                pushNewScreen(context,
+                                    screen: ViewBookingScreen(
+                                      image: bookingImage[index],
+                                      name: bookingName[index],
+                                      index: index,
+                                      guestName: bookingGuestName[index],
+                                      mobileNumber: bookingMobileNumber[index],
+                                      checkIn: bookingCheckIn[index],
+                                      checkOut: bookingCheckOut[index],
+                                      roomType: bookingRoomType[index],
+                                      meal: bookingMeal[index].toString(),
+                                      roomAmount: bookingRoomAmount[index],
+                                      mealAmount: bookingMealAmount[index],
+                                      taxAmount: bookingTaxAmount[index],
+                                      totalAmount: bookingTotalAmount[index],
+                                    ),
+                                    withNavBar: false,
+                                    pageTransitionAnimation:
+                                        PageTransitionAnimation.cupertino);
+                              },
+                              child: Text(
+                                'View Details',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 9.0.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xFF1F7DE9)),
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            );
-          }),
-    );
+                      ],
+                    ),
+                  );
+                }),
+          );
   }
 
   //Get UpComing Bookings API
-  Future<BookingDetails> getUpComingBookingAPI(int page) async{
-    try{
+  Future<BookingDetails> getUpComingBookingAPI(int page) async {
+    try {
       Dio dio = Dio();
       var response = await dio.get('${Config.upComingBookingUrl}?page=$page',
-      options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
-      if(response.statusCode == 200){
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+      if (response.statusCode == 200) {
         print(response.data);
         result = BookingDetails.fromJson(response.data);
 
-        if(result.data.length > 0){
-          for(int i = 0; i < result.data.length; i++){
+        if (result.data.length > 0) {
+          for (int i = 0; i < result.data.length; i++) {
             bookingId.add(result.data[i].bookingId);
             propertyId.add(result.data[i].propertyId);
             bookingName.add(result.data[i].name);
@@ -289,11 +299,11 @@ class _UpComingListState extends State<UpComingList> {
           isLoading = false;
           setState(() {});
         }
-      }else {
+      } else {
         print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode;
       }
-    }on DioError catch(e, stack){
+    } on DioError catch (e, stack) {
       print(e.response);
       print(stack);
     }

@@ -6,11 +6,37 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class CancelDoneScreen extends StatefulWidget {
+  final int propertyId;
+  final String bookingId;
   BookingDetails propertyDetails;
   int index;
-  String meal;
-  CancelDoneScreen({Key key, @required this.propertyDetails, this.index, @required this.meal}) : super(key: key);
-
+  String meal,
+      image,
+      guestName,
+      mobileNumber,
+      checkIn,
+      checkOut,
+      roomType,
+      name;
+  dynamic roomAmount, mealAmount, taxAmount, totalAmount;
+  CancelDoneScreen(
+      {Key key,
+      @required this.propertyId,
+      @required this.bookingId,
+      this.meal,
+      this.image,
+      this.index,
+      this.guestName,
+      this.mobileNumber,
+      this.checkOut,
+      this.checkIn,
+      this.roomType,
+      this.name,
+      this.roomAmount,
+      this.mealAmount,
+      this.taxAmount,
+      this.totalAmount})
+      : super(key: key);
   @override
   _CancelDoneScreenState createState() => _CancelDoneScreenState();
 }
@@ -92,7 +118,7 @@ class _CancelDoneScreenState extends State<CancelDoneScreen> {
                       height: 1.0.h,
                     ),
                     Text(
-                      'Amount will be refunded in 7-14 working days in ${widget.propertyDetails.data[widget.index].mobileNumber}',
+                      'Amount will be refunded in 7-14 working days in ${widget.mobileNumber}',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 9.0.sp,
@@ -120,7 +146,7 @@ class _CancelDoneScreenState extends State<CancelDoneScreen> {
                           color: Constants.bgColor),
                     ),
                     Text(
-                      widget.propertyDetails.data[widget.index].guestName,
+                      widget.guestName,
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 10.0.sp,
@@ -144,7 +170,7 @@ class _CancelDoneScreenState extends State<CancelDoneScreen> {
                           color: Constants.bgColor),
                     ),
                     Text(
-                      widget.propertyDetails.data[widget.index].mobileNumber,
+                      widget.mobileNumber,
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 10.0.sp,
@@ -168,7 +194,7 @@ class _CancelDoneScreenState extends State<CancelDoneScreen> {
                           color: Constants.bgColor),
                     ),
                     Text(
-                      widget.propertyDetails.data[widget.index].checkInDate,
+                      widget.checkIn,
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 10.0.sp,
@@ -192,7 +218,7 @@ class _CancelDoneScreenState extends State<CancelDoneScreen> {
                           color: Constants.bgColor),
                     ),
                     Text(
-                      widget.propertyDetails.data[widget.index].checkOutDate,
+                      widget.checkOut,
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 10.0.sp,
@@ -216,7 +242,7 @@ class _CancelDoneScreenState extends State<CancelDoneScreen> {
                           color: Constants.bgColor),
                     ),
                     Text(
-                      widget.propertyDetails.data[widget.index].roomType,
+                      widget.roomType,
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 10.0.sp,
