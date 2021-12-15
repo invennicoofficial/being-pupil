@@ -703,7 +703,7 @@ class _LoginScreenState extends State<LoginScreen> {
       socialPhotoUrl = fbUserData['picture']['data']['url'];
       socialId = fbUserData['id'].toString();
       setState(() {});
-      print('FACEBOOK::::$socialPhotoUrl');
+      print('FACEBOOK::::$socialEmail');
       if (fbUserData != null) {
         checkLogin(fbUserData['id'].toString());
       }

@@ -143,7 +143,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
       for(int i = 0; i < result.data.educationalDetails1.length; i++){
         controllersList.add(TextEditingController());
         controllersList[i].text = eduMapData[i]['school_name'];
-
+        result.data.educationalDetails1[i]['year'] = eduMapData[i]['year'];
+        result.data.educationalDetails1[i]['qualification'] = eduMapData[i]['qualification'];
+        //fileImage.add(result.data.educationalDetails1[i]['certificate_file']);
       }
     }else{
       if(eduMapData != null){
@@ -168,7 +170,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     print(authToken);
     getCatSkillHobbieList();
-   
+
   }
 
   getData() async {
@@ -1142,11 +1144,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                             child: ClipRRect(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5)),
-                              child: GestureDetector(
-                                onTap: () {
-                                  print('Upload!!!');
-                                  _uploadDocument();
-                                },
+                              // child: GestureDetector(
+                              //   onTap: () {
+                              //     print('Upload!!!');
+                              //     _uploadDocument();
+                              //   },
                                 child: Container(
                                   height: 6.0.h,
                                   width: 90.0.w,
@@ -1218,7 +1220,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                       //     )
                                       //   ],
                                       // ),
-                                      ),
+                                      //),
                                 ),
                               ),
                             ),
@@ -1371,40 +1373,40 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 dashPattern: [4, 3],
                                 child: Column(
                                   children: <Widget>[
-                                    index == 0
-                                        ? Container()
-                                        : Align(
-                                            alignment: Alignment.topRight,
-                                            child: Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 4.0.w),
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  print(
-                                                      'Remove Education ${index + 1} Block');
-                                                  setState(() {
-                                                    //itemCount = itemCount - 1;
-                                                    // educationDetailMap
-                                                    //     .removeWhere(
-                                                    //         (key, value) =>
-                                                    //             key == index);
-                                                    result.data.educationalDetails1.removeAt(index);
-                                                  });
-                                                  //print(educationDetailMap);
-                                                },
-                                                child: CircleAvatar(
-                                                  radius: 12.0,
-                                                  backgroundColor:
-                                                      Constants.bgColor,
-                                                  child: Icon(
-                                                    Icons.close_rounded,
-                                                    color: Colors.white,
-                                                    size: 12.0,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+                                    // index == 0
+                                    //     ? Container()
+                                    //     : Align(
+                                    //         alignment: Alignment.topRight,
+                                    //         child: Padding(
+                                    //           padding:
+                                    //               EdgeInsets.only(left: 4.0.w),
+                                    //           child: GestureDetector(
+                                    //             onTap: () {
+                                    //               print(
+                                    //                   'Remove Education ${index + 1} Block');
+                                    //               setState(() {
+                                    //                 //itemCount = itemCount - 1;
+                                    //                 // educationDetailMap
+                                    //                 //     .removeWhere(
+                                    //                 //         (key, value) =>
+                                    //                 //             key == index);
+                                    //                 result.data.educationalDetails1.removeAt(index);
+                                    //               });
+                                    //               //print(educationDetailMap);
+                                    //             },
+                                    //             child: CircleAvatar(
+                                    //               radius: 12.0,
+                                    //               backgroundColor:
+                                    //                   Constants.bgColor,
+                                    //               child: Icon(
+                                    //                 Icons.close_rounded,
+                                    //                 color: Colors.white,
+                                    //                 size: 12.0,
+                                    //               ),
+                                    //             ),
+                                    //           ),
+                                    //         ),
+                                    //       ),
                                     Theme(
                                       data: new ThemeData(
                                         primaryColor: Constants.bpSkipStyle,
@@ -1419,7 +1421,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                           height: 7.0.h,
                                           width: 90.0.w,
                                           child: TextFormField(
-                                            //readOnly: true,
+                                            readOnly: true,
                                             controller: controllersList[index],
                                             // onChanged: (value) {
                                             //   educationDetailMap[index]
@@ -1430,10 +1432,10 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                             // },
                                             decoration: InputDecoration(
                                               labelText: 
-                                              result
-                                                  .data
-                                                  .educationalDetails1[index]['school_name'],
-                                                   //"Name of School",
+                                              // result
+                                              //     .data
+                                              //     .educationalDetails1[index]['school_name'],
+                                                   "Name of School",
                                               fillColor: Colors.white,
                                               // hintText: result
                                               //     .data
@@ -1477,78 +1479,79 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                               left: 1.0.w,
                                               right: 1.0.w,
                                               top: 3.0.h),
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              print('Year!!!');
-                                              showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: Text(
-                                                      "Select Qualification Year",
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'Montserrat',
-                                                          fontSize: 14.0.sp,
-                                                          color:
-                                                              Constants.bgColor,
-                                                          fontWeight:
-                                                              FontWeight.w700),
-                                                    ),
-                                                    content: Container(
-                                                      // Need to use container to add size constraint.
-                                                      width: 75.0.w,
-                                                      height: 50.0.h,
-                                                      child: YearPicker(
-                                                        firstDate: DateTime(
-                                                            DateTime(1960).year,
-                                                            1),
-                                                        lastDate: DateTime(
-                                                            DateTime.now().year,
-                                                            1),
-                                                        //initialDate: DateTime.now(),
-                                                        // save the selected date to _selectedDate DateTime variable.
-                                                        // It's used to set the previous selected date when
-                                                        // re-showing the dialog.
-                                                        selectedDate:
-                                                            // isYearSelected
-                                                            //     ? DateFormat('YYYY').parse(educationDetailMap[index]['year'])
-                                                            //     :
-                                                            DateTime(
-                                                                DateTime.now()
-                                                                    .year),
-                                                        onChanged: (DateTime
-                                                            dateTime) {
-                                                          // close the dialog when year is selected.
-                                                          setState(() {
-                                                            isYearSelected =
-                                                                true;
-                                                            selectedYear =
-                                                                dateTime;
-                                                          });
+                                          // child: GestureDetector(
+                                          //   onTap: () async {
+                                          //     print('Year!!!');
+                                          //     showDialog(
+                                          //       context: context,
+                                          //       builder:
+                                          //           (BuildContext context) {
+                                          //         return AlertDialog(
+                                          //           title: Text(
+                                          //             "Select Qualification Year",
+                                          //             style: TextStyle(
+                                          //                 fontFamily:
+                                          //                     'Montserrat',
+                                          //                 fontSize: 14.0.sp,
+                                          //                 color:
+                                          //                     Constants.bgColor,
+                                          //                 fontWeight:
+                                          //                     FontWeight.w700),
+                                          //           ),
+                                          //           content: Container(
+                                          //             // Need to use container to add size constraint.
+                                          //             width: 75.0.w,
+                                          //             height: 50.0.h,
+                                          //             child: YearPicker(
+                                          //               firstDate: DateTime(
+                                          //                   DateTime(1960).year,
+                                          //                   1),
+                                          //               lastDate: DateTime(
+                                          //                   DateTime.now().year,
+                                          //                   1),
+                                          //               //initialDate: DateTime.now(),
+                                          //               // save the selected date to _selectedDate DateTime variable.
+                                          //               // It's used to set the previous selected date when
+                                          //               // re-showing the dialog.
+                                          //               selectedDate:
+                                          //                   // isYearSelected
+                                          //                   //     ? DateFormat('YYYY').parse(educationDetailMap[index]['year'])
+                                          //                   //     :
+                                          //                   DateTime(
+                                          //                       DateTime.now()
+                                          //                           .year),
+                                          //               onChanged: (DateTime
+                                          //                   dateTime) {
+                                          //                 // close the dialog when year is selected.
+                                          //                 setState(() {
+                                          //                   isYearSelected =
+                                          //                       true;
+                                          //                   selectedYear =
+                                          //                       dateTime;
+                                          //                 });
 
-                                                           result.data.educationalDetails1[index]['year'] =
-                                                              selectedYear.year
-                                                                  .toString();
+                                          //                  result.data.educationalDetails1[index]['year'] =
+                                          //                     selectedYear.year
+                                          //                         .toString();
 
-                                                          print(educationDetailMap);
-                                                          print(selectedYear);
-                                                          print(selectedYear
-                                                              .year);
-                                                          Navigator.pop(
-                                                              context);
-                                                          // Do something with the dateTime selected.
-                                                          // Remember that you need to use dateTime.year to get the year
-                                                        },
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              );
+                                          //                 print(educationDetailMap);
+                                          //                 print(selectedYear);
+                                          //                 print(selectedYear
+                                          //                     .year);
+                                          //                 Navigator.pop(
+                                          //                     context);
+                                          //                 // Do something with the dateTime selected.
+                                          //                 // Remember that you need to use dateTime.year to get the year
+                                          //               },
+                                          //             ),
+                                          //           ),
+                                          //         );
+                                          //       },
+                                          //     );
                                               
-                                            },
-                                            child: Container(
+                                          //   },
+                                            child: 
+                                            Container(
                                               height: 7.0.h,
                                               width: 90.0.w,
                                               padding: EdgeInsets.symmetric(
@@ -1589,7 +1592,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                 )
                                                 ],
                                               ),
-                                            ),
+                                            //),
                                           )),
                                     ),
                                     
@@ -1603,129 +1606,173 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                             left: 1.0.w,
                                             right: 1.0.w,
                                             top: 3.0.h),
-                                        child: CustomDropdown<int>(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 3.0.w),
-                                                child: Text(result.data.educationalDetails1[index]['qualification'],
-                                                  // result
-                                                  //     .data
-                                                  //     .educationalDetails[index]
-                                                  //     .qualification,
-                                                  //'Qualification',
-                                                  style: TextStyle(
-                                                      fontFamily: 'Montserrat',
-                                                      fontSize: 10.0.sp,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      color: Constants
-                                                          .bpSkipStyle),
-                                                ),
+                                        //child: 
+                                        // CustomDropdown<int>(
+                                        //   child: Row(
+                                        //     mainAxisAlignment:
+                                        //         MainAxisAlignment.spaceBetween,
+                                        //     children: [
+                                        //       Padding(
+                                        //         padding: EdgeInsets.symmetric(
+                                        //             horizontal: 3.0.w),
+                                        //         child: Text(result.data.educationalDetails1[index]['qualification'],
+                                        //           // result
+                                        //           //     .data
+                                        //           //     .educationalDetails[index]
+                                        //           //     .qualification,
+                                        //           //'Qualification',
+                                        //           style: TextStyle(
+                                        //               fontFamily: 'Montserrat',
+                                        //               fontSize: 10.0.sp,
+                                        //               fontWeight:
+                                        //                   FontWeight.w400,
+                                        //               color: Constants
+                                        //                   .bpSkipStyle),
+                                        //         ),
+                                        //       ),
+                                        //       //SizedBox(width: 50.0.w)
+                                        //     ],
+                                        //   ),
+                                        //   // icon: Icon(
+                                        //   //   Icons.expand_more,
+                                        //   //   color: Constants.bpSkipStyle,
+                                        //   // ),
+                                        //   onChange: (int value, int index) {
+                                        //     print(value);
+                                        //     if (value > 0) {
+                                        //       setState(() {
+                                        //         qualification = '1';
+                                        //       });
+                                        //     }
+                                        //     if (value == 1) {
+                                        //       qualification = 'Graduate';
+                                        //       // educationDetailMap[educationId]
+                                        //       //         ['qualification'] =
+                                        //       //     'Graduate';
+                                        //       eduMapData[index]['qualification'] = 'Graduate';
+                                        //       print(qualification);
+                                        //     } else if (value == 2) {
+                                        //       qualification = 'Post-graduate';
+                                        //       // educationDetailMap[educationId]
+                                        //       //         ['qualification'] =
+                                        //       //     'Post-graduate';
+                                        //       eduMapData[index]['qualification'] = 'Post-graduate';
+                                        //       print(qualification);
+                                        //     } else if (value == 3) {
+                                        //       qualification =
+                                        //           'Chartered Accountant';
+                                        //       // educationDetailMap[educationId]
+                                        //       //         ['qualification'] =
+                                        //       //     'Chartered Accountant';
+                                        //       eduMapData[index]['qualification'] = 'Chartered Accountant';
+                                        //       print(qualification);
+                                        //     } else {
+                                        //       qualification = 'Others';
+                                        //       // educationDetailMap[educationId]
+                                        //       //     ['qualification'] = 'Others';
+                                        //       eduMapData[index]['qualification'] = 'Others';
+                                        //       print(qualification);
+                                        //     }
+                                        //   },
+                                        //   dropdownButtonStyle:
+                                        //       DropdownButtonStyle(
+                                        //     height: 7.0.h,
+                                        //     width: 90.0.w,
+                                        //     //padding: EdgeInsets.only(left: 2.0.w),
+                                        //     elevation: 0,
+                                        //     //backgroundColor: Colors.white,
+                                        //     primaryColor: Constants.bpSkipStyle,
+                                        //     side: BorderSide(
+                                        //         color: Constants.formBorder),
+                                        //   ),
+                                        //   dropdownStyle: DropdownStyle(
+                                        //     borderRadius:
+                                        //         BorderRadius.circular(10.0),
+                                        //     elevation: 6,
+                                        //     padding: EdgeInsets.symmetric(
+                                        //         horizontal: 2.0.w,
+                                        //         vertical: 1.5.h),
+                                        //   ),
+                                        //   items: [
+                                        //     'Graduate',
+                                        //     'Post-graduate',
+                                        //     'Chartered Accountant',
+                                        //     'Others'
+                                        //   ]
+                                        //       .asMap()
+                                        //       .entries
+                                        //       .map(
+                                        //         (item) => DropdownItem<int>(
+                                        //           value: item.key + 1,
+                                        //           child: Padding(
+                                        //             padding:
+                                        //                 const EdgeInsets.all(
+                                        //                     8.0),
+                                                    child: Container(
+                                              height: 7.0.h,
+                                              width: 90.0.w,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 3.0.w),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color:
+                                                        Constants.formBorder),
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
+                                                //color: Color(0xFFA8B4C1).withOpacity(0.5),
                                               ),
-                                              //SizedBox(width: 50.0.w)
-                                            ],
-                                          ),
-                                          // icon: Icon(
-                                          //   Icons.expand_more,
-                                          //   color: Constants.bpSkipStyle,
-                                          // ),
-                                          onChange: (int value, int index) {
-                                            print(value);
-                                            if (value > 0) {
-                                              setState(() {
-                                                qualification = '1';
-                                              });
-                                            }
-                                            if (value == 1) {
-                                              qualification = 'Graduate';
-                                              // educationDetailMap[educationId]
-                                              //         ['qualification'] =
-                                              //     'Graduate';
-                                              eduMapData[index]['qualification'] = 'Graduate';
-                                              print(qualification);
-                                            } else if (value == 2) {
-                                              qualification = 'Post-graduate';
-                                              // educationDetailMap[educationId]
-                                              //         ['qualification'] =
-                                              //     'Post-graduate';
-                                              eduMapData[index]['qualification'] = 'Post-graduate';
-                                              print(qualification);
-                                            } else if (value == 3) {
-                                              qualification =
-                                                  'Chartered Accountant';
-                                              // educationDetailMap[educationId]
-                                              //         ['qualification'] =
-                                              //     'Chartered Accountant';
-                                              eduMapData[index]['qualification'] = 'Chartered Accountant';
-                                              print(qualification);
-                                            } else {
-                                              qualification = 'Others';
-                                              // educationDetailMap[educationId]
-                                              //     ['qualification'] = 'Others';
-                                              eduMapData[index]['qualification'] = 'Others';
-                                              print(qualification);
-                                            }
-                                          },
-                                          dropdownButtonStyle:
-                                              DropdownButtonStyle(
-                                            height: 7.0.h,
-                                            width: 90.0.w,
-                                            //padding: EdgeInsets.only(left: 2.0.w),
-                                            elevation: 0,
-                                            //backgroundColor: Colors.white,
-                                            primaryColor: Constants.bpSkipStyle,
-                                            side: BorderSide(
-                                                color: Constants.formBorder),
-                                          ),
-                                          dropdownStyle: DropdownStyle(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                            elevation: 6,
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 2.0.w,
-                                                vertical: 1.5.h),
-                                          ),
-                                          items: [
-                                            'Graduate',
-                                            'Post-graduate',
-                                            'Chartered Accountant',
-                                            'Others'
-                                          ]
-                                              .asMap()
-                                              .entries
-                                              .map(
-                                                (item) => DropdownItem<int>(
-                                                  value: item.key + 1,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Row(
-                                                      children: [
-                                                        Text(
-                                                          item.value,
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  'Montserrat',
-                                                              fontSize: 10.0.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              color: Constants
-                                                                  .bpSkipStyle),
-                                                        ),
-                                                        //SizedBox(width: 60.0.w)
-                                                      ],
-                                                    ),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    // isYearSelected
+                                                    //     ? selectedYear.year.toString()
+                                                    //     : 
+                                                       result.data.educationalDetails1[index]['qualification'],
+                                                    //'Year',
+                                                    style: TextStyle(
+                                                        fontFamily:
+                                                            'Montserrat',
+                                                        fontSize: 10.0.sp,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Constants
+                                                            .bpSkipStyle),
                                                   ),
-                                                ),
-                                              )
-                                              .toList(),
-                                        ),
+                                                  Padding(
+                                                  padding: EdgeInsets.only(left: 0.0),
+                                                  child: Icon(
+                                                    Icons.keyboard_arrow_down,
+                                                    size: 25,
+                                                    color: Constants.formBorder,
+                                                  ),
+                                                )
+                                                ],
+                                              ),
+                                            //),
+                                          )
+                                                  //   Row(
+                                                  //     children: [
+                                                  //       Text(
+                                                  //         result.data.educationalDetails1[index]['qualification'],
+                                                  //         style: TextStyle(
+                                                  //             fontFamily:
+                                                  //                 'Montserrat',
+                                                  //             fontSize: 10.0.sp,
+                                                  //             fontWeight:
+                                                  //                 FontWeight
+                                                  //                     .w400,
+                                                  //             color: Constants
+                                                  //                 .bpSkipStyle),
+                                                  //       ),
+                                                  //       //SizedBox(width: 60.0.w)
+                                                  //     ],
+                                                  //   //),
+                                                  // ),
+                                                //),
+                                              //)
+                                              //.toList(),
+                                       // ),
                                       ),
                                     ),
 
@@ -1744,13 +1791,13 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                         child: ClipRRect(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(5)),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              print('Upload!!!');
-                                              //certificateList.removeAt(index);
-                                              _showCertificatePicker(context, index);
-                                              print(fileImage);
-                                            },
+                                          //child:  GestureDetector(
+                                          //   onTap: () {
+                                          //     print('Upload!!!');
+                                          //     //certificateList.removeAt(index);
+                                          //     _showCertificatePicker(context, index);
+                                          //     print(fileImage);
+                                          //   },
                                             child: Container(
                                               height: 6.0.h,
                                               width: 90.0.w,
@@ -1766,10 +1813,10 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                     width: 15.0.w,
                                                     decoration: BoxDecoration(
                                                         image: DecorationImage(
-                                                            image: fileImage[index] == null
-                                                            ? //NetworkImage(certificateList[index])
-                                                            NetworkImage(result.data.educationalDetails1[index]['certificate_file'])
-                                                            : FileImage(fileImage[index]),
+                                                            image: 
+                                                            //fileImage[index] == null ? //NetworkImage(certificateList[index])
+                                                            NetworkImage(result.data.educationalDetails1[index]['certificate_file']),
+                                                            //: FileImage(fileImage[index]),
                                                             fit: BoxFit.fill)),
                                                   ),
                                                   SizedBox(width: 2.0.w),
@@ -1808,7 +1855,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                               )
                                                  
                                                   ),
-                                            ),
+                                            //),
                                           ),
                                         ),
                                       ),
@@ -1820,102 +1867,104 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                           },
                         ),
 
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 3.0.w,
-                                right: 3.0.w,
-                                top: 3.0.h,
-                                //bottom: 3.0.h
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    // if (itemCount < 5) {
-                                    //   itemCount = itemCount + 1;
-                                    // } else {
-                                    //   Fluttertoast.showToast(
-                                    //       msg: "You can add only 5 degree",
-                                    //       toastLength: Toast.LENGTH_SHORT,
-                                    //       gravity: ToastGravity.BOTTOM,
-                                    //       timeInSecForIosWeb: 1,
-                                    //       backgroundColor: Constants.bgColor,
-                                    //       textColor: Colors.white,
-                                    //       fontSize: 10.0.sp);
-                                    //}
-                                  //});
-                                  //print(myControllers[1].text.toString());
-                                  print('Add more!!!');
-                                  //setState(() {
-                                    // educationId = educationId + 1;
-                                    result.data.educationalDetails.length = result.data.educationalDetails.length + 1;
-                                    fileImage.add(_certificate);
-                                    if(result.data.educationalDetails1 != null){
-                                      result.data.educationalDetails1.add({
-                                        'id': null,
-                                        'school_name': 'Name of School',
-                                        'year': 'Select Year',
-                                        'qualification': 'Select Qualification',
-                                        'certificate_file': 'Upload Degree'
-                                      });
-                                    }
-                                    print(result.data.educationalDetails1);
-                                    print(fileImage);
-                                    populateEducationDetails();
-                                    //}
-                                  });
+                        // Theme(
+                        //   data: new ThemeData(
+                        //     primaryColor: Constants.bpSkipStyle,
+                        //     primaryColorDark: Constants.bpSkipStyle,
+                        //   ),
+                        //   child: Padding(
+                        //       padding: EdgeInsets.only(
+                        //         left: 3.0.w,
+                        //         right: 3.0.w,
+                        //         top: 3.0.h,
+                        //         //bottom: 3.0.h
+                        //       ),
+                        //       child: GestureDetector(
+                        //         onTap: () {
+                        //           setState(() {
+                        //             // if (itemCount < 5) {
+                        //             //   itemCount = itemCount + 1;
+                        //             // } else {
+                        //             //   Fluttertoast.showToast(
+                        //             //       msg: "You can add only 5 degree",
+                        //             //       toastLength: Toast.LENGTH_SHORT,
+                        //             //       gravity: ToastGravity.BOTTOM,
+                        //             //       timeInSecForIosWeb: 1,
+                        //             //       backgroundColor: Constants.bgColor,
+                        //             //       textColor: Colors.white,
+                        //             //       fontSize: 10.0.sp);
+                        //             //}
+                        //           //});
+                        //           //print(myControllers[1].text.toString());
+                        //           print('Add more!!!');
+                        //           //setState(() {
+                        //             // educationId = educationId + 1;
+                        //             result.data.educationalDetails.length = result.data.educationalDetails.length + 1;
+                        //             fileImage.add(_certificate);
+                        //             // if(result.data.educationalDetails1 != null){
+                        //             //   result.data.educationalDetails1.add({
+                        //             //     //'id': null,
+                        //             //     'school_name': 'Name of School',
+                        //             //     'year': 'Select Year',
+                        //             //     'qualification': 'Select Qualification',
+                        //             //     'certificate_file': 'Upload Degree'
+                        //               //}
+                        //               //);
+                        //             //}       
+
+                        //             print(result.data.educationalDetails1);
+                        //             print(fileImage);
+                        //             populateEducationDetails();
+                        //             //}
+                        //           });
                                   
-                                  // educationDetailMap[educationId] = {
-                                  //   'school_name': 'MSU',
-                                  //   'year': 'Year',
-                                  //   'qualification': 'BCA',
-                                  //   'certificate': 'Upload Certificate/Degree'
-                                  // };
-                                  // print(educationDetailMap);
-                                  // educationDetailMap[educationId] = {
-                                  //   'school_name'
-                                  // };
-                                  //saveEducationDetails();
-                                },
-                                child: Container(
-                                  height: 7.0.h,
-                                  width: 90.0.w,
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 3.0.w),
-                                  decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Constants.formBorder),
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    //color: Color(0xFFA8B4C1).withOpacity(0.5),
-                                  ),
-                                  child: Center(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.add,
-                                          size: 15,
-                                          color: Constants.bgColor,
-                                        ),
-                                        Text(
-                                          ' Add more details',
-                                          style: TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              fontSize: 10.0.sp,
-                                              fontWeight: FontWeight.w400,
-                                              color: Constants.bgColor),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              )),
-                        ),
+                        //           // educationDetailMap[educationId] = {
+                        //           //   'school_name': 'MSU',
+                        //           //   'year': 'Year',
+                        //           //   'qualification': 'BCA',
+                        //           //   'certificate': 'Upload Certificate/Degree'
+                        //           // };
+                        //           // print(educationDetailMap);
+                        //           // educationDetailMap[educationId] = {
+                        //           //   'school_name'
+                        //           // };
+                        //           //saveEducationDetails();
+                        //         },
+                        //         child: Container(
+                        //           height: 7.0.h,
+                        //           width: 90.0.w,
+                        //           padding:
+                        //               EdgeInsets.symmetric(horizontal: 3.0.w),
+                        //           decoration: BoxDecoration(
+                        //             border:
+                        //                 Border.all(color: Constants.formBorder),
+                        //             borderRadius: BorderRadius.circular(5.0),
+                        //             //color: Color(0xFFA8B4C1).withOpacity(0.5),
+                        //           ),
+                        //           child: Center(
+                        //             child: Row(
+                        //               mainAxisAlignment:
+                        //                   MainAxisAlignment.center,
+                        //               children: [
+                        //                 Icon(
+                        //                   Icons.add,
+                        //                   size: 15,
+                        //                   color: Constants.bgColor,
+                        //                 ),
+                        //                 Text(
+                        //                   ' Add more details',
+                        //                   style: TextStyle(
+                        //                       fontFamily: 'Montserrat',
+                        //                       fontSize: 10.0.sp,
+                        //                       fontWeight: FontWeight.w400,
+                        //                       color: Constants.bgColor),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       )),
+                        // ),
 
                         //Work Experience
                         Row(
@@ -3027,16 +3076,18 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                              } else if (qualification == '0') {
-                                Fluttertoast.showToast(
-                                    msg: "Please Select Qualification",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Constants.bgColor,
-                                    textColor: Colors.white,
-                                    fontSize: 10.0.sp);
-                              } else if (totalWorkExp == null) {
+                              } 
+                              // else if (qualification == '0') {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Please Select Qualification",
+                              //       toastLength: Toast.LENGTH_SHORT,
+                              //       gravity: ToastGravity.BOTTOM,
+                              //       timeInSecForIosWeb: 1,
+                              //       backgroundColor: Constants.bgColor,
+                              //       textColor: Colors.white,
+                              //       fontSize: 10.0.sp);
+                              // } 
+                              else if (totalWorkExp == null) {
                                 Fluttertoast.showToast(
                                     msg: "Please Select Work Experience",
                                     toastLength: Toast.LENGTH_SHORT,
@@ -3121,39 +3172,41 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
 
                                 
                                     
-                                     _image == null && _document != null 
-                                    ? updateProfileWithDocument(
-                                    //userId,
-                                    registerAs,
-                                    _nameController.text,
-                                    _mobileController.text,
-                                    _emailController.text,
-                                    gender,
-                                    birthDateInString,
-                                    docType,
-                                    //_document != null ? _document : result.data.documentUrl,
-                                    //_document.uri.path,
-                                    //_image != null ? _image : result.data.imageUrl,
-                                    //_image.uri.path,
-                                    //certiFile,
-                                    _idNumController.text,
-                                    address1,
-                                    address2,
-                                    city,
-                                    country,
-                                    pinCode,
-                                    lat,
-                                    lng,
-                                    _achivementController.text,
-                                    selectedSkillList == null ? result.data.skills : selectedSkillList.toString(),
-                                    selectedHobbiesList == null ? result.data.hobbies : selectedHobbiesList.toString(),
-                                    _fbLinkController.text,
-                                    _instagramLinkController.text,
-                                    _linkedInLinkLinkController.text,
-                                    _otherLinkLinkController.text,
-                                    totalWorkExp,
-                                    totalTeachExp)
-                                    : _image != null && _document == null
+                                    //  _image == null && _document != null 
+                                    // ? updateProfileWithDocument(
+                                    // //userId,
+                                    // registerAs,
+                                    // _nameController.text,
+                                    // _mobileController.text,
+                                    // _emailController.text,
+                                    // gender,
+                                    // birthDateInString,
+                                    // docType,
+                                    // //_document != null ? _document : result.data.documentUrl,
+                                    // //_document.uri.path,
+                                    // //_image != null ? _image : result.data.imageUrl,
+                                    // //_image.uri.path,
+                                    // //certiFile,
+                                    // _idNumController.text,
+                                    // address1,
+                                    // address2,
+                                    // city,
+                                    // country,
+                                    // pinCode,
+                                    // lat,
+                                    // lng,
+                                    // _achivementController.text,
+                                    // selectedSkillList == null ? result.data.skills : selectedSkillList.toString(),
+                                    // selectedHobbiesList == null ? result.data.hobbies : selectedHobbiesList.toString(),
+                                    // _fbLinkController.text,
+                                    // _instagramLinkController.text,
+                                    // _linkedInLinkLinkController.text,
+                                    // _otherLinkLinkController.text,
+                                    // totalWorkExp,
+                                    // totalTeachExp)
+                                   // :
+                                     _image != null
+                                    //&& _document == null
                                     ? updateProfileWithImage(
                                     //userId,
                                     registerAs,
@@ -3177,46 +3230,50 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     lat,
                                     lng,
                                     _achivementController.text,
-                                    selectedSkillList == null ? result.data.skills : selectedSkillList.toString(),
-                                    selectedHobbiesList == null ? result.data.hobbies : selectedHobbiesList.toString(),
+                                    // selectedSkillList == [] ? result.data.skills : selectedSkillList.toString(),
+                                    // selectedHobbiesList == [] ? result.data.hobbies : selectedHobbiesList.toString(),
+                                    selectedSkillList.length == 0 ? result.data.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')
+                                            .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    selectedHobbiesList.length == 0 ? result.data.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '')
+                                           .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
                                     _fbLinkController.text,
                                     _instagramLinkController.text,
                                     _linkedInLinkLinkController.text,
                                     _otherLinkLinkController.text,
                                     totalWorkExp,
                                     totalTeachExp)
-                                    : _image != null && _document != null
-                                    ? updateProfileWithBoth(
-                                    //userId,
-                                    registerAs,
-                                    _nameController.text,
-                                    _mobileController.text,
-                                    _emailController.text,
-                                    gender,
-                                    birthDateInString,
-                                    docType,
-                                    //_document != null ? _document : result.data.documentUrl,
-                                    //_document.uri.path,
-                                    //_image != null ? _image : result.data.imageUrl,
-                                    //_image.uri.path,
-                                    //certiFile,
-                                    _idNumController.text,
-                                    address1,
-                                    address2,
-                                    city,
-                                    country,
-                                    pinCode,
-                                    lat,
-                                    lng,
-                                    _achivementController.text,
-                                    selectedSkillList == null ? result.data.skills : selectedSkillList.toString(),
-                                    selectedHobbiesList == null ? result.data.hobbies : selectedHobbiesList.toString(),
-                                    _fbLinkController.text,
-                                    _instagramLinkController.text,
-                                    _linkedInLinkLinkController.text,
-                                    _otherLinkLinkController.text,
-                                    totalWorkExp,
-                                    totalTeachExp)
+                                    // : _image != null && _document != null
+                                    // ? updateProfileWithBoth(
+                                    // //userId,
+                                    // registerAs,
+                                    // _nameController.text,
+                                    // _mobileController.text,
+                                    // _emailController.text,
+                                    // gender,
+                                    // birthDateInString,
+                                    // docType,
+                                    // //_document != null ? _document : result.data.documentUrl,
+                                    // //_document.uri.path,
+                                    // //_image != null ? _image : result.data.imageUrl,
+                                    // //_image.uri.path,
+                                    // //certiFile,
+                                    // _idNumController.text,
+                                    // address1,
+                                    // address2,
+                                    // city,
+                                    // country,
+                                    // pinCode,
+                                    // lat,
+                                    // lng,
+                                    // _achivementController.text,
+                                    // selectedSkillList == null ? result.data.skills : selectedSkillList.toString(),
+                                    // selectedHobbiesList == null ? result.data.hobbies : selectedHobbiesList.toString(),
+                                    // _fbLinkController.text,
+                                    // _instagramLinkController.text,
+                                    // _linkedInLinkLinkController.text,
+                                    // _otherLinkLinkController.text,
+                                    // totalWorkExp,
+                                    // totalTeachExp)
                                     : updateProfile(
                                     //userId,
                                     registerAs,
@@ -3240,16 +3297,19 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     lat,
                                     lng,
                                     _achivementController.text,
-                                    selectedSkillList == null ? result.data.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '').
-                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedHobbiesList == null ? result.data.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '').
-                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    selectedSkillList.length == 0 ? result.data.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')
+                                            .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    selectedHobbiesList.length == 0 ? result.data.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '')
+                                           .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
                                     _fbLinkController.text,
                                     _instagramLinkController.text,
                                     _linkedInLinkLinkController.text,
                                     _otherLinkLinkController.text,
                                     totalWorkExp,
                                     totalTeachExp);
+                                    print('SKILL1 '+ result.data.skills);
+                                    print('SKILL2 '+ selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'));
+                                    print('SKILL3 '+ selectedSkillList.toString());
                                 //}
                                 // else {
                                 // updateProfileWithoutMedia(
@@ -3502,6 +3562,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         hobbieMap = response[2].data;
         
         //saveImage();
+        print('SKILLDATA::: ${result.data.skills}');
         print(response[0].data);
         eduMap = response[0].data;
         eduMapData = eduMap['data']['educational_details'];
@@ -3767,20 +3828,21 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
               result.data.educationalDetails1[i]['year'].toString()),
           MapEntry('educational_details[$i][qualification]',
               result.data.educationalDetails1[i]['qualification']),
-          //MapEntry('educational_details[$i][certificate_file]', ''),
+          MapEntry('educational_details[$i][certificate_file]', ''),
           
         ]);
-        fileImage[i] != null
-        ? formData.files.addAll([
-          MapEntry(
-              'educational_details[$i][certificate_file]', 
-              //MultipartFile.fromString(result.data.educationalDetails[i].certificateFile)
-              await MultipartFile.fromFile(fileImage[i].path,
-                  filename: fileImage[i].toString().split('/').last)
-                 ),
-        ])
-        : MapEntry('educational_details[$i][certificate_file]', fileImage[i]);
-        } else{
+        // fileImage[i] != null
+        // ? formData.files.addAll([
+        //   MapEntry(
+        //       'educational_details[$i][certificate_file]', 
+        //       //MultipartFile.fromString(result.data.educationalDetails[i].certificateFile)
+        //       await MultipartFile.fromFile(fileImage[i].path,
+        //           filename: fileImage[i].toString().split('/').last)
+        //          ),
+        // ])
+        // : MapEntry('educational_details[$i][certificate_file]', fileImage[i]);
+        } 
+        else{
           formData.fields.addAll([
            MapEntry('educational_details[$i][id]', result.data.educationalDetails1[i]['id'].toString()),
           MapEntry('educational_details[$i][school_name]',
@@ -3789,16 +3851,16 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
               result.data.educationalDetails1[i]['year'].toString()),
           MapEntry('educational_details[$i][qualification]',
               result.data.educationalDetails1[i]['qualification']),
-          //MapEntry('educational_details[$i][certificate_file]', ''),
+          MapEntry('educational_details[$i][certificate_file]', ''),
         ]);
-         formData.files.addAll([
-          MapEntry(
-              'educational_details[$i][certificate_file]', 
-              //MultipartFile.fromString(result.data.educationalDetails[i].certificateFile)
-              await MultipartFile.fromFile(fileImage[i].path,
-                  filename: fileImage[i].toString().split('/').last)
-                 ),
-        ]);
+        //  formData.files.addAll([
+        //   MapEntry(
+        //       'educational_details[$i][certificate_file]', 
+        //       //MultipartFile.fromString(result.data.educationalDetails[i].certificateFile)
+        //       await MultipartFile.fromFile(fileImage[i].path,
+        //           filename: fileImage[i].toString().split('/').last)
+        //          ),
+        // ]);
         }
       }
 
@@ -3808,7 +3870,8 @@ print('MAP:::' + formData.fields.toString());
       print(fileImage);
       //print(educationList);
 
-      print('FORMDATA::: updateProfile()');
+      print('FORMDATA::: ${result.data.skills}');
+      print('FORMDATA::: ${selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')}');
 
       var response = await dio.post(
         Config.updateProfileUrl,
@@ -3939,6 +4002,7 @@ print('MAP:::' + formData.fields.toString());
     int totalTeachExp,
     //List<InterestedCategory> interestedCategory,
   ) async {
+    print('PROFILE::: DOCUMENT');
     displayProgressDialog(context);
     // String docname = documentFile.path.split('/').last;
     // String imgname = imageFile.path.split('/').last;
@@ -4147,6 +4211,7 @@ print('MAP:::' + formData.fields.toString());
     int totalTeachExp,
     //List<InterestedCategory> interestedCategory,
   ) async {
+    print('PROFILE::: IMAGE');
     displayProgressDialog(context);
     // String docname = documentFile.path.split('/').last;
     // String imgname = imageFile.path.split('/').last;
@@ -4354,6 +4419,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
     int totalTeachExp,
     //List<InterestedCategory> interestedCategory,
   ) async {
+    print('PROFILE::: BOTH');
     displayProgressDialog(context);
     // String docname = documentFile.path.split('/').last;
     // String imgname = imageFile.path.split('/').last;
@@ -4556,6 +4622,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
     int totalTeachExp,
     //List<InterestedCategory> interestedCategory,
   ) async {
+    print('PROFILE::: NO MEDIA');
     displayProgressDialog(context);
     //String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMy4yMzMuNTcuMTU2XC9iZWluZy1wdXBpbC1iYWNrZW5kXC9wdWJsaWNcL2FwaVwvdXNlclwvdmVyaWZ5X290cCIsImlhdCI6MTYzMDMxMTU3OSwiZXhwIjoxNjMwMzE1MTc5LCJuYmYiOjE2MzAzMTE1NzksImp0aSI6IkcxRkJUVG5OWDYyVFhWajUiLCJzdWIiOjQ1LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.ukcztXx2Kq-fsD3hWotr2GNZdIHxICNFT3h_Scjwq1s";
     //String url = "http://13.233.57.156/being-pupil-backend/public/api/user/profile/update";
