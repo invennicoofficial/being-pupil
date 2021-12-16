@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/UpdateProfile_Model.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
+import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:place_picker/entities/location_result.dart';
 import 'package:place_picker/widgets/place_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:dio/dio.dart';
@@ -29,7 +32,7 @@ class LearnerRegistration extends StatefulWidget {
 }
 
 class _LearnerRegistrationState extends State<LearnerRegistration> {
-  File _image, _certificate;
+  File _image, _certificate, _document;
   String birthDateInString, selectedYearString;
   DateTime birthDate, selectedYear;
   bool isDateSelected = false;
@@ -80,6 +83,9 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
   List<String> catList = List();
   String _certiName;
   List<dynamic> educationDetailMap = [];
+  int userId;
+  String registerAs;
+  int totalWorkExp;
 
   @override
   void initState() {
@@ -87,6 +93,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
     // _selectedSkills = [];
     // _selectedHobbies = [];
     getToken();
+    getData();
     _nameController.text = widget.name;
     _mobileController.text = widget.mobileNumber;
     educationDetailMap.add({
@@ -114,6 +121,15 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
   //   _selectedHobbies.clear();
   //   super.dispose();
   // }
+
+  getData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      registerAs = preferences.getString('RegisterAs');
+      userId = preferences.getInt('userId');
+    });
+    print(registerAs);
+  }
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
@@ -333,6 +349,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
       PlatformFile file = result.files.first;
       setState(() {
         fileName = file.name;
+        _document = File(file.path);
       });
 
       print(file.name);
@@ -463,8 +480,8 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                                     BorderRadius.circular(70),
                                                 child: Image.file(
                                                   _image,
-                                                  height: 14.0.h,
-                                                  width: 30.0.w,
+                                                  height: 125.0,//14.0.h,
+                                                  width: 125.0,//30.0.w,
                                                   fit: BoxFit.cover,
                                                 ),
                                               ),
@@ -846,8 +863,34 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                         birthDate = datePick;
                                         isDateSelected = true;
 
-                                        birthDateInString =
-                                            "${birthDate.day}/${birthDate.month}/${birthDate.year}"; // 08/14/2019
+                                        if (birthDate.day.toString().length ==
+                                                1 &&
+                                            birthDate.month.toString().length ==
+                                                1) {
+                                          setState(() {
+                                            birthDateInString =
+                                                "0${birthDate.day.toString()}/0${birthDate.month}/${birthDate.year}";
+                                          });
+                                          print('11111');
+                                        } else if (birthDate.day
+                                                .toString()
+                                                .length ==
+                                            1) {
+                                          setState(() {
+                                            birthDateInString =
+                                                "0${birthDate.day}/${birthDate.month}/${birthDate.year}";
+                                          });
+                                          print('22222');
+                                        } else if (birthDate.month
+                                                .toString()
+                                                .length ==
+                                            1) {
+                                          birthDateInString =
+                                              "${birthDate.day}/0${birthDate.month}/${birthDate.year}";
+                                        } else {
+                                          birthDateInString =
+                                              "${birthDate.day}/${birthDate.month}/${birthDate.year}";
+                                        } // 08/14/2019
                                       });
                                     }
                                   },
@@ -1926,6 +1969,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                               //   color: Constants.bpSkipStyle,
                               // ),
                               onChange: (int value, int index) {
+                                totalWorkExp = value;
                                 print(value);
                                 if (value > 0) {
                                   setState(() {
@@ -2114,14 +2158,15 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                   child: Text(
                                     // result.data.skills != null
                                     //     ? result.data.skills :
-                                    selectedSkillList.length > 0
-                                        ? selectedSkillList
-                                            .toString()
-                                            .replaceAll('[', '')
-                                            .replaceAll(']', '')
-                                            .replaceAll(new RegExp(r', '), ' #')
-                                            .replaceFirst('', '#')
-                                        : "Please mention your hobbies example #skill1 #skill2....",
+                                    // selectedSkillList.length > 0
+                                    //     ? selectedSkillList
+                                    //         .toString()
+                                    //         .replaceAll('[', '')
+                                    //         .replaceAll(']', '')
+                                    //         .replaceAll(new RegExp(r', '), ' #')
+                                    //         .replaceFirst('', '#')
+                                    //     : 
+                                        "Please mention your hobbies example #skill1 #skill2....",
                                     //: '',
                                     //.replaceAll(new RegExp(r', '), '# '),
                                     style: TextStyle(
@@ -2178,15 +2223,16 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                       // result.data.hobbies != null
                                       //     ? result.data.hobbies
                                       //     :
-                                      selectedHobbiesList.length > 0
-                                          ? selectedHobbiesList
-                                              .toString()
-                                              .replaceAll('[', '')
-                                              .replaceAll(']', '')
-                                              .replaceAll(
-                                                  new RegExp(r', '), ' #')
-                                              .replaceFirst('', '#')
-                                          : "Please mention your hobbies example #hobbie1 #hobbie2....",
+                                      // selectedHobbiesList.length > 0
+                                      //     ? selectedHobbiesList
+                                      //         .toString()
+                                      //         .replaceAll('[', '')
+                                      //         .replaceAll(']', '')
+                                      //         .replaceAll(
+                                      //             new RegExp(r', '), ' #')
+                                      //         .replaceFirst('', '#')
+                                      //     : 
+                                          "Please mention your hobbies example #hobbie1 #hobbie2....",
                                       // selectedHobbiesList == null ||
                                       //         selectedHobbiesList.length == 0
                                       //     ? "Please mention your hobbies example #hobbie1 #hobbie2..."
@@ -2629,10 +2675,39 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
                               } else {
-                                Navigator.of(context).push
-                                    //pushAndRemoveUntil
-                                    (MaterialPageRoute(
-                                        builder: (context) => bottomNavBar(0)));
+                                addLearnerProfile(
+                                  //userId,
+                                    registerAs,
+                                    _nameController.text,
+                                    _mobileController.text,
+                                    _emailController.text,
+                                    gender,
+                                    birthDateInString,
+                                    docType,
+                                    _document,
+                                    _image,
+                                    _idNumController.text,
+                                    address1,
+                                    address2,
+                                    city,
+                                    country,
+                                    pinCode,
+                                    lat,
+                                    lng,
+                                    _achivementController.text,
+                                    selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')
+                                            .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '')
+                                           .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    _fbLinkController.text,
+                                    _instagramLinkController.text,
+                                    _linkedInLinkLinkController.text,
+                                    _otherLinkLinkController.text,
+                                    totalWorkExp);
+                                // Navigator.of(context).push
+                                //     //pushAndRemoveUntil
+                                //     (MaterialPageRoute(
+                                //         builder: (context) => bottomNavBar(0)));
                                 //(Route<dynamic> route) => false);
                               }
                             },
@@ -2929,6 +3004,243 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
     }
     //return result;
   }
+
+  //Add profile for Educator
+  Future<ProfileUpdate> addLearnerProfile(
+    //int userId,
+    String registerAs,
+    //String imageFile,
+    //String imageUrl,
+    String name,
+    String mobileNumber,
+    String email,
+    String gender,
+    String dob,
+    String documentType,
+    File documentFile,
+    File imageFile,
+    //File certificateFile,
+    //String documentUrl,
+    String idNumber,
+    String addressLine1,
+    String addressLine2,
+    String city,
+    String country,
+    String pinCode,
+    double latitude,
+    double longitude,
+    String achievements,
+    String skills,
+    String hobbies,
+    String facbookUrl,
+    String instaUrl,
+    String linkedinUrl,
+    String otherUrl,
+    //List<EducationalDetails> educationalDetails,
+    int totalWorkExp,
+    //List<InterestedCategory> interestedCategory,
+  ) async {
+    displayProgressDialog(context);
+    String docname = documentFile.path.split('/').last;
+    String imgname = imageFile.path.split('/').last;
+    //String certiname = certificateFile.path.split('/').last;
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var result = ProfileUpdate();
+    // for (int i = 0; i <= myControllers.length; i++) {
+    //   //education_details.add()
+    // educationDetailMap = {
+    //   //"id": 5,
+    //   "school_name": ,
+    //   "year": "",
+    //   "qualification": "",
+    //   "certificate_file": ""
+    // };
+    // }
+
+    try {
+      Dio dio = Dio();
+      FormData formData = FormData.fromMap({
+        //'user_id': userId,
+        'register_as': registerAs,
+        'name': name,
+        'mobile_number': mobileNumber,
+        'email': email,
+        'gender': gender,
+        'dob': dob,
+        'document_type': documentType,
+        'document_file': await MultipartFile.fromFile(
+          documentFile.path,
+          filename: docname,
+        ),
+        'image_file': await MultipartFile.fromFile(
+          imageFile.path,
+          filename: imgname,
+        ),
+        //'document_url': documentUrl,
+        'identification_document_number': idNumber,
+        //'location[0][id]': 54,
+        'location[0][address_line_1]': addressLine1,
+        'location[0][address_line_2]': addressLine2,
+        'location[0][city]': city,
+        'location[0][country]': country,
+        'location[0][pincode]': pinCode,
+        'location[0][latitude]': latitude,
+        'location[0][longitude]': longitude,
+        'location[0][location_type]': 'work',
+        'achievements': achievements,
+        'skills': skills,
+        'hobbies': hobbies,
+        //'educational_details[0][id]': 25,
+        // 'educational_details[0][school_name]': myControllers[0].text.toString(),
+        // 'educational_details[0][year]': selectedYear.year,
+        // 'educational_details[0][qualification]': qualification.toString(),
+        // 'educational_details[0][certificate_file]':
+        //     await MultipartFile.fromFile(
+        //   certificateFile.path,
+        //   filename: certiname,
+        //   //contentType: new MediaType("jpg", "jpeg", "png", "pdf"),
+        // ),
+        'facebook_url': facbookUrl,
+        'insta_url': instaUrl,
+        'linkedin_url': linkedinUrl,
+        'other_url': otherUrl,
+        'total_work_experience': totalWorkExp,
+      });
+
+      // print('MAP:::' + educationDetailMap[0]['school_name']);
+      // print('MAP:::' + educationDetailMap[1]['school_name']);
+      // print('MAP:::' + educationDetailMap[2]['school_name']);
+      // print('MAP:::' + educationDetailMap[3]['school_name']);
+
+      print('MAPO:::' + educationDetailMap.length.toString());
+
+      for (int i = 0; i < educationDetailMap.length; i++) {
+        //formData.fields.addAll(params.entries);
+        //print('MAP:::' + educationDetailMap.length.toString());
+        formData.fields.addAll([
+          MapEntry('educational_details[$i][school_name]',
+              educationDetailMap[i]['school_name'].toString()),
+          MapEntry('educational_details[$i][year]',
+              educationDetailMap[i]['year'].toString()),
+          MapEntry('educational_details[$i][qualification]',
+              educationDetailMap[i]['qualification'].toString()),
+        ]);
+        formData.files.addAll([
+          MapEntry(
+              'educational_details[$i][certificate_file]',
+              await MultipartFile.fromFile(educationDetailMap[i]['certificate'],
+                  filename: educationDetailMap[i]['certificate'])),
+        ]);
+      }
+      print('MAP:::' + educationDetailMap.toString());
+
+      for(int i = 0; i < intrestedCatKey.length; i++){
+        formData.fields.addAll([
+          MapEntry('interested_category[$i]', intrestedCatKey[i].toString())
+        ]);
+        print('ICAT:::' + intrestedCatKey[i].toString());
+      }
+      
+      print(formData.fields);
+
+      var response = await dio.post(
+        Config.updateProfileUrl,
+        data: formData,
+        options: Options(headers: {"Authorization": 'Bearer ' + authToken}),
+        // onSendProgress: (int sent, int total){
+        //   print('SENT $sent + TOTAL $total');
+        // }
+      );
+      if (response.statusCode == 200) {
+        print(response.data);
+        closeProgressDialog(context);
+        result = ProfileUpdate.fromJson(response.data);
+        print(result.data.name);
+        if (result.status == true) {
+          print('TRUE::');
+          preferences.setString("name", result.data.name);
+          preferences.setString("imageUrl", result.data.imageUrl);
+          preferences.setString("mobileNumber", result.data.mobileNumber);
+          preferences.setString("gender", result.data.gender);
+          preferences.setString("email", result.data.email);
+          preferences.setString("qualification", result.data.educationalDetails[0].qualification.toString());
+          preferences.setString("schoolName", result.data.educationalDetails[0].schoolName.toString());
+          preferences.setString("address1", result.data.location.toString());
+          preferences.setString("address2", result.data.location.toString());
+          preferences.setString("facebookUrl", result.data.facbookUrl);
+          preferences.setString("instaUrl", result.data.instaUrl);
+          preferences.setString("linkedInUrl", result.data.linkedinUrl);
+          preferences.setString("otherUrl", result.data.otherUrl);
+          print('QUALIFICATION:::: ' +
+              result.data.educationalDetails.last.qualification);
+          print('LOCATION:::: ' + result.data.location[0].addressLine2);
+          print('IMAGE:::: ' + result.data.imageUrl);
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+              (Route<dynamic> route) => false);
+        } else {
+          print('FALSE::');
+        }
+        // saveUserData(result.data.userId);
+
+        Fluttertoast.showToast(
+          msg: result.message,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: result.message,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
+      print(result);
+    } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+      closeProgressDialog(context);
+      if (e.response != null) {
+        print("This is the error message::::" +
+            e.response.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.request);
+        print(e.message);
+      }
+    }
+    return result;
+  }
+
+  displayProgressDialog(BuildContext context) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new ProgressDialog();
+        }));
+  }
+
+  closeProgressDialog(BuildContext context) {
+    Navigator.of(context).pop();
+  }
+
 }
 
 /// LanguageService

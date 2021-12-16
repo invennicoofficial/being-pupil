@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Learner_ProfileDetails_Model.dart';
+import 'package:being_pupil/Model/Profile_Details_Model.dart';
 import 'package:being_pupil/Model/UpdateProfile_Model.dart';
 import 'package:being_pupil/Model/Update_Learner_Profile_Model.dart';
+import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
@@ -46,7 +48,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
   String fileName;
   String imagePath, documentPath;
   String address1, address2, city, country, pinCode;
-  String lat, lng;
+  double lat, lng;
   bool isCat1 = false;
   TextEditingController _nameController = TextEditingController();
   TextEditingController _mobileController = TextEditingController();
@@ -73,7 +75,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
   Map<String, dynamic> hobbieMap = Map<String, dynamic>();
   List<dynamic> hobbieMapData = List();
 
-  var result = LearnerProfileDetails();
+  var result = EducatorProfileDetails();
   bool isLoading = true;
   String registerAs;
   int totalWorkExp;
@@ -86,6 +88,9 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
 
   List<String> catList = List();
   String authToken;
+  List controllersList = [];
+  Map<String, dynamic> eduMap;
+  List<dynamic> eduMapData;
 
   @override
   void initState() {
@@ -110,6 +115,28 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
   void setState(fn){
     if(mounted){
       super.setState(fn);
+    }
+  }
+
+   populateEducationDetails(){
+    print(result.data.educationalDetails);
+    if(result.data.educationalDetails != null){
+      for(int i = 0; i < result.data.educationalDetails.length; i++){
+        controllersList.add(TextEditingController());
+        controllersList[i].text = eduMapData[i]['school_name'];
+        result.data.educationalDetails1[i]['year'] = eduMapData[i]['year'];
+        result.data.educationalDetails1[i]['qualification'] = eduMapData[i]['qualification'];
+        //fileImage.add(result.data.educationalDetails1[i]['certificate_file']);
+      }
+    }else{
+      if(eduMapData != null){
+        for(int i = 0; i < eduMapData.length; i++){
+          controllersList.add(TextEditingController());
+          controllersList[i].text = eduMapData[i]['school_name'];
+        }
+      }else{
+        eduMapData = [];
+      }
     }
   }
 
@@ -425,8 +452,8 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                                 borderRadius: BorderRadius.circular(70),
                                                 child: Image.file(
                                                   _image,
-                                                  height: 14.0.h,
-                                                  width: 30.0.w,
+                                                  height: 125.0,//14.0.h,
+                                                  width: 125.0,//30.0.w,
                                                   fit: BoxFit.cover,
                                                 ),
                                               ),
@@ -1290,6 +1317,535 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                               // SizedBox(
                               //   height: 4.0.h,
                               // ),
+                               Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 4.0.h, left: 3.0.w, right: 3.0.w),
+                              child: Text(
+                                'Educational Details',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 12.0.sp,
+                                    color: Constants.bgColor,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        ListView.builder(
+                          itemCount: result.data.educationalDetails.length, //educationDetailMap.length, //itemCount,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                  left: 3.0.w, right: 3.0.w, top: 3.0.h),
+                              child: DottedBorder(
+                                borderType: BorderType.RRect,
+                                radius: Radius.circular(5),
+                                padding: EdgeInsets.all(12),
+                                color: Constants.formBorder.withOpacity(0.7),
+                                strokeWidth: 1.8,
+                                strokeCap: StrokeCap.butt,
+                                dashPattern: [4, 3],
+                                child: Column(
+                                  children: <Widget>[
+                                    // index == 0
+                                    //     ? Container()
+                                    //     : Align(
+                                    //         alignment: Alignment.topRight,
+                                    //         child: Padding(
+                                    //           padding:
+                                    //               EdgeInsets.only(left: 4.0.w),
+                                    //           child: GestureDetector(
+                                    //             onTap: () {
+                                    //               print(
+                                    //                   'Remove Education ${index + 1} Block');
+                                    //               setState(() {
+                                    //                 //itemCount = itemCount - 1;
+                                    //                 // educationDetailMap
+                                    //                 //     .removeWhere(
+                                    //                 //         (key, value) =>
+                                    //                 //             key == index);
+                                    //                 result.data.educationalDetails1.removeAt(index);
+                                    //               });
+                                    //               //print(educationDetailMap);
+                                    //             },
+                                    //             child: CircleAvatar(
+                                    //               radius: 12.0,
+                                    //               backgroundColor:
+                                    //                   Constants.bgColor,
+                                    //               child: Icon(
+                                    //                 Icons.close_rounded,
+                                    //                 color: Colors.white,
+                                    //                 size: 12.0,
+                                    //               ),
+                                    //             ),
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    Theme(
+                                      data: new ThemeData(
+                                        primaryColor: Constants.bpSkipStyle,
+                                        primaryColorDark: Constants.bpSkipStyle,
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 1.0.w,
+                                            right: 1.0.w,
+                                            top: 1.0.h),
+                                        child: Container(
+                                          height: 7.0.h,
+                                          width: 90.0.w,
+                                          child: TextFormField(
+                                            readOnly: true,
+                                            controller: controllersList[index],
+                                            // onChanged: (value) {
+                                            //   educationDetailMap[index]
+                                            //           ['school_name'] =
+                                            //       value.toString();
+                                            //   print(
+                                            //       'SCHOOL### ${value.toString()}');
+                                            // },
+                                            decoration: InputDecoration(
+                                              labelText: 
+                                              // result
+                                              //     .data
+                                              //     .educationalDetails1[index]['school_name'],
+                                                   "Name of School",
+                                              fillColor: Colors.white,
+                                              // hintText: result
+                                              //     .data
+                                              //     .educationalDetails[index]
+                                              //     .schoolName,
+                                              // educationDetailMap[index]
+                                              //         ['school_name']
+                                              //     .toString(),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
+                                                borderSide: BorderSide(
+                                                  color: Constants.formBorder,
+                                                ),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
+                                                borderSide: BorderSide(
+                                                  color: Constants.formBorder,
+                                                  //width: 2.0,
+                                                ),
+                                              ),
+                                            ),
+                                            //keyboardType: TextInputType.emailAddress,
+                                            style: new TextStyle(
+                                                fontFamily: "Montserrat",
+                                                fontSize: 10.0.sp),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    Theme(
+                                      data: new ThemeData(
+                                        primaryColor: Constants.bpSkipStyle,
+                                        primaryColorDark: Constants.bpSkipStyle,
+                                      ),
+                                      child: Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 1.0.w,
+                                              right: 1.0.w,
+                                              top: 3.0.h),
+                                          // child: GestureDetector(
+                                          //   onTap: () async {
+                                          //     print('Year!!!');
+                                          //     showDialog(
+                                          //       context: context,
+                                          //       builder:
+                                          //           (BuildContext context) {
+                                          //         return AlertDialog(
+                                          //           title: Text(
+                                          //             "Select Qualification Year",
+                                          //             style: TextStyle(
+                                          //                 fontFamily:
+                                          //                     'Montserrat',
+                                          //                 fontSize: 14.0.sp,
+                                          //                 color:
+                                          //                     Constants.bgColor,
+                                          //                 fontWeight:
+                                          //                     FontWeight.w700),
+                                          //           ),
+                                          //           content: Container(
+                                          //             // Need to use container to add size constraint.
+                                          //             width: 75.0.w,
+                                          //             height: 50.0.h,
+                                          //             child: YearPicker(
+                                          //               firstDate: DateTime(
+                                          //                   DateTime(1960).year,
+                                          //                   1),
+                                          //               lastDate: DateTime(
+                                          //                   DateTime.now().year,
+                                          //                   1),
+                                          //               //initialDate: DateTime.now(),
+                                          //               // save the selected date to _selectedDate DateTime variable.
+                                          //               // It's used to set the previous selected date when
+                                          //               // re-showing the dialog.
+                                          //               selectedDate:
+                                          //                   // isYearSelected
+                                          //                   //     ? DateFormat('YYYY').parse(educationDetailMap[index]['year'])
+                                          //                   //     :
+                                          //                   DateTime(
+                                          //                       DateTime.now()
+                                          //                           .year),
+                                          //               onChanged: (DateTime
+                                          //                   dateTime) {
+                                          //                 // close the dialog when year is selected.
+                                          //                 setState(() {
+                                          //                   isYearSelected =
+                                          //                       true;
+                                          //                   selectedYear =
+                                          //                       dateTime;
+                                          //                 });
+
+                                          //                  result.data.educationalDetails1[index]['year'] =
+                                          //                     selectedYear.year
+                                          //                         .toString();
+
+                                          //                 print(educationDetailMap);
+                                          //                 print(selectedYear);
+                                          //                 print(selectedYear
+                                          //                     .year);
+                                          //                 Navigator.pop(
+                                          //                     context);
+                                          //                 // Do something with the dateTime selected.
+                                          //                 // Remember that you need to use dateTime.year to get the year
+                                          //               },
+                                          //             ),
+                                          //           ),
+                                          //         );
+                                          //       },
+                                          //     );
+                                              
+                                          //   },
+                                            child: 
+                                            Container(
+                                              height: 7.0.h,
+                                              width: 90.0.w,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 3.0.w),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color:
+                                                        Constants.formBorder),
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
+                                                //color: Color(0xFFA8B4C1).withOpacity(0.5),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    // isYearSelected
+                                                    //     ? selectedYear.year.toString()
+                                                    //     : 
+                                                        result.data.educationalDetails1[index]['year'],
+                                                    //'Year',
+                                                    style: TextStyle(
+                                                        fontFamily:
+                                                            'Montserrat',
+                                                        fontSize: 10.0.sp,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Constants
+                                                            .bpSkipStyle),
+                                                  ),
+                                                  Padding(
+                                                  padding: EdgeInsets.only(left: 0.0),
+                                                  child: Icon(
+                                                    Icons.keyboard_arrow_down,
+                                                    size: 25,
+                                                    color: Constants.formBorder,
+                                                  ),
+                                                )
+                                                ],
+                                              ),
+                                            //),
+                                          )),
+                                    ),
+                                    
+                                    Theme(
+                                      data: new ThemeData(
+                                        primaryColor: Constants.bpSkipStyle,
+                                        primaryColorDark: Constants.bpSkipStyle,
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 1.0.w,
+                                            right: 1.0.w,
+                                            top: 3.0.h),
+                                        //child: 
+                                        // CustomDropdown<int>(
+                                        //   child: Row(
+                                        //     mainAxisAlignment:
+                                        //         MainAxisAlignment.spaceBetween,
+                                        //     children: [
+                                        //       Padding(
+                                        //         padding: EdgeInsets.symmetric(
+                                        //             horizontal: 3.0.w),
+                                        //         child: Text(result.data.educationalDetails1[index]['qualification'],
+                                        //           // result
+                                        //           //     .data
+                                        //           //     .educationalDetails[index]
+                                        //           //     .qualification,
+                                        //           //'Qualification',
+                                        //           style: TextStyle(
+                                        //               fontFamily: 'Montserrat',
+                                        //               fontSize: 10.0.sp,
+                                        //               fontWeight:
+                                        //                   FontWeight.w400,
+                                        //               color: Constants
+                                        //                   .bpSkipStyle),
+                                        //         ),
+                                        //       ),
+                                        //       //SizedBox(width: 50.0.w)
+                                        //     ],
+                                        //   ),
+                                        //   // icon: Icon(
+                                        //   //   Icons.expand_more,
+                                        //   //   color: Constants.bpSkipStyle,
+                                        //   // ),
+                                        //   onChange: (int value, int index) {
+                                        //     print(value);
+                                        //     if (value > 0) {
+                                        //       setState(() {
+                                        //         qualification = '1';
+                                        //       });
+                                        //     }
+                                        //     if (value == 1) {
+                                        //       qualification = 'Graduate';
+                                        //       // educationDetailMap[educationId]
+                                        //       //         ['qualification'] =
+                                        //       //     'Graduate';
+                                        //       eduMapData[index]['qualification'] = 'Graduate';
+                                        //       print(qualification);
+                                        //     } else if (value == 2) {
+                                        //       qualification = 'Post-graduate';
+                                        //       // educationDetailMap[educationId]
+                                        //       //         ['qualification'] =
+                                        //       //     'Post-graduate';
+                                        //       eduMapData[index]['qualification'] = 'Post-graduate';
+                                        //       print(qualification);
+                                        //     } else if (value == 3) {
+                                        //       qualification =
+                                        //           'Chartered Accountant';
+                                        //       // educationDetailMap[educationId]
+                                        //       //         ['qualification'] =
+                                        //       //     'Chartered Accountant';
+                                        //       eduMapData[index]['qualification'] = 'Chartered Accountant';
+                                        //       print(qualification);
+                                        //     } else {
+                                        //       qualification = 'Others';
+                                        //       // educationDetailMap[educationId]
+                                        //       //     ['qualification'] = 'Others';
+                                        //       eduMapData[index]['qualification'] = 'Others';
+                                        //       print(qualification);
+                                        //     }
+                                        //   },
+                                        //   dropdownButtonStyle:
+                                        //       DropdownButtonStyle(
+                                        //     height: 7.0.h,
+                                        //     width: 90.0.w,
+                                        //     //padding: EdgeInsets.only(left: 2.0.w),
+                                        //     elevation: 0,
+                                        //     //backgroundColor: Colors.white,
+                                        //     primaryColor: Constants.bpSkipStyle,
+                                        //     side: BorderSide(
+                                        //         color: Constants.formBorder),
+                                        //   ),
+                                        //   dropdownStyle: DropdownStyle(
+                                        //     borderRadius:
+                                        //         BorderRadius.circular(10.0),
+                                        //     elevation: 6,
+                                        //     padding: EdgeInsets.symmetric(
+                                        //         horizontal: 2.0.w,
+                                        //         vertical: 1.5.h),
+                                        //   ),
+                                        //   items: [
+                                        //     'Graduate',
+                                        //     'Post-graduate',
+                                        //     'Chartered Accountant',
+                                        //     'Others'
+                                        //   ]
+                                        //       .asMap()
+                                        //       .entries
+                                        //       .map(
+                                        //         (item) => DropdownItem<int>(
+                                        //           value: item.key + 1,
+                                        //           child: Padding(
+                                        //             padding:
+                                        //                 const EdgeInsets.all(
+                                        //                     8.0),
+                                                    child: Container(
+                                              height: 7.0.h,
+                                              width: 90.0.w,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 3.0.w),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color:
+                                                        Constants.formBorder),
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
+                                                //color: Color(0xFFA8B4C1).withOpacity(0.5),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    // isYearSelected
+                                                    //     ? selectedYear.year.toString()
+                                                    //     : 
+                                                       result.data.educationalDetails1[index]['qualification'],
+                                                    //'Year',
+                                                    style: TextStyle(
+                                                        fontFamily:
+                                                            'Montserrat',
+                                                        fontSize: 10.0.sp,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Constants
+                                                            .bpSkipStyle),
+                                                  ),
+                                                  Padding(
+                                                  padding: EdgeInsets.only(left: 0.0),
+                                                  child: Icon(
+                                                    Icons.keyboard_arrow_down,
+                                                    size: 25,
+                                                    color: Constants.formBorder,
+                                                  ),
+                                                )
+                                                ],
+                                              ),
+                                            //),
+                                          )
+                                                  //   Row(
+                                                  //     children: [
+                                                  //       Text(
+                                                  //         result.data.educationalDetails1[index]['qualification'],
+                                                  //         style: TextStyle(
+                                                  //             fontFamily:
+                                                  //                 'Montserrat',
+                                                  //             fontSize: 10.0.sp,
+                                                  //             fontWeight:
+                                                  //                 FontWeight
+                                                  //                     .w400,
+                                                  //             color: Constants
+                                                  //                 .bpSkipStyle),
+                                                  //       ),
+                                                  //       //SizedBox(width: 60.0.w)
+                                                  //     ],
+                                                  //   //),
+                                                  // ),
+                                                //),
+                                              //)
+                                              //.toList(),
+                                       // ),
+                                      ),
+                                    ),
+
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 1.0.w,
+                                          right: 1.0.w,
+                                          top: 3.0.h),
+                                      child: DottedBorder(
+                                        borderType: BorderType.RRect,
+                                        radius: Radius.circular(5),
+                                        padding: EdgeInsets.all(12),
+                                        color: Constants.formBorder
+                                            .withOpacity(0.5),
+                                        strokeWidth: 1.5,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(5)),
+                                          //child:  GestureDetector(
+                                          //   onTap: () {
+                                          //     print('Upload!!!');
+                                          //     //certificateList.removeAt(index);
+                                          //     _showCertificatePicker(context, index);
+                                          //     print(fileImage);
+                                          //   },
+                                            child: Container(
+                                              height: 6.0.h,
+                                              width: 90.0.w,
+                                              color: Colors.transparent,
+                                              child: Center(
+                                                  child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: <Widget>[
+                                                  Container(
+                                                    //height: 5.0.h,
+                                                    width: 15.0.w,
+                                                    decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                            image: 
+                                                            //fileImage[index] == null ? //NetworkImage(certificateList[index])
+                                                            NetworkImage(result.data.educationalDetails1[index]['certificate_file']),
+                                                            //: FileImage(fileImage[index]),
+                                                            fit: BoxFit.fill)),
+                                                  ),
+                                                  SizedBox(width: 2.0.w),
+                                                  Expanded(
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      physics:
+                                                          BouncingScrollPhysics(),
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      child: Container(
+                                                        height: 3.0.h,
+                                                        //width: 50.0.w,
+                                                        child: Text('Certificate ${index + 1}',
+                                                          // result
+                                                          //     .data
+                                                          //     .educationalDetails1[
+                                                          //         index]['certificate_file']
+                                                          //     .split('/')
+                                                          //     .last,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'Montserrat',
+                                                              fontSize: 10.0.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              color: Constants
+                                                                  .bpSkipStyle),
+                                                          //overflow: TextOverflow.fade,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                                 
+                                                  ),
+                                            //),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+
                               Row(
                                 children: [
                                   Padding(
@@ -1598,7 +2154,8 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                               BorderRadius.circular(5.0)),
                                       child: Center(
                                         child: Text(
-                                          result.data.skills != null
+                                          selectedSkillList == null ||
+                                            selectedSkillList.length == 0
                                               ? result.data.skills
                                               : selectedSkillList.length > 0
                                                   ? selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '').
@@ -1761,7 +2318,8 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                               BorderRadius.circular(5.0)),
                                       child: Center(
                                         child: Text(
-                                          result.data.hobbies != null
+                                          selectedHobbiesList == null ||
+                                            selectedHobbiesList.length == 0
                                               ? result.data.hobbies
                                               : selectedHobbiesList.length > 0
                                                   ? selectedHobbiesList
@@ -2211,32 +2769,105 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                           textColor: Colors.white,
                                           fontSize: 10.0.sp);
                                     } else {
-                                      editLearnerProfileApi(
-                                          registerAs,
-                                          _nameController.text,
-                                          _mobileController.text,
-                                          _emailController.text,
-                                          gender == 'Gender' ? result.data.gender : gender ,
-                                          birthDateInString,
-                                          docType == 'DocType' ? result.data.documentType : docType,
-                                          _document,
-                                          _image,
-                                          _idNumController.text,
-                                          address1 == null ? result.data.location[0].addressLine1 : address1,
-                                          address2 == null ? result.data.location[0].addressLine2 : address2,
-                                          city == null ? result.data.location[0].city : city,
-                                          country == null ? result.data.location[0].country : country,
-                                          pinCode == null ? result.data.location[0].pincode : pinCode,
-                                          lat == null ? result.data.location[0].latitude : lat,
-                                          lng == null ? result.data.location[0].longitude : lng,
-                                          _achivementController.text,
-                                          selectedSkillList.isEmpty ? result.data.skills.toString() : selectedSkillList.toString(),
-                                          selectedHobbiesList.isEmpty ? result.data.hobbies.toString() : selectedHobbiesList.toString(),
-                                          _fbLinkController.text,
-                                          _instagramLinkController.text,
-                                          _linkedInLinkLinkController.text,
-                                          _otherLinkLinkController.text,
-                                          totalWorkExp);
+                                      _image != null
+                                    //&& _document == null
+                                    ? updateProfileWithImage(
+                                    //userId,
+                                    registerAs,
+                                    _nameController.text,
+                                    _mobileController.text,
+                                    _emailController.text,
+                                    gender,
+                                    birthDateInString,
+                                    docType,
+                                    //_document != null ? _document : result.data.documentUrl,
+                                    //_document.uri.path,
+                                    //_image != null ? _image : result.data.imageUrl,
+                                    //_image.uri.path,
+                                    //certiFile,
+                                    _idNumController.text,
+                                    address1,
+                                    address2,
+                                    city,
+                                    country,
+                                    pinCode,
+                                    lat,
+                                    lng,
+                                    _achivementController.text,
+                                    // selectedSkillList == [] ? result.data.skills : selectedSkillList.toString(),
+                                    // selectedHobbiesList == [] ? result.data.hobbies : selectedHobbiesList.toString(),
+                                    selectedSkillList.length == 0 ? result.data.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')
+                                            .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    selectedHobbiesList.length == 0 ? result.data.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '')
+                                           .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    _fbLinkController.text,
+                                    _instagramLinkController.text,
+                                    _linkedInLinkLinkController.text,
+                                    _otherLinkLinkController.text,
+                                    totalWorkExp,
+                                    totalWorkExp)
+                                    : updateProfile(
+                                    //userId,
+                                    registerAs,
+                                    _nameController.text,
+                                    _mobileController.text,
+                                    _emailController.text,
+                                    gender,
+                                    birthDateInString,
+                                    docType,
+                                    //_document != null ? _document : result.data.documentUrl,
+                                    //_document.uri.path,
+                                    //_image != null ? _image : result.data.imageUrl,
+                                    //_image.uri.path,
+                                    //certiFile,
+                                    _idNumController.text,
+                                    address1,
+                                    address2,
+                                    city,
+                                    country,
+                                    pinCode,
+                                    lat,
+                                    lng,
+                                    _achivementController.text,
+                                    selectedSkillList.length == 0 ? result.data.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')
+                                            .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    selectedHobbiesList.length == 0 ? result.data.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '')
+                                           .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    _fbLinkController.text,
+                                    _instagramLinkController.text,
+                                    _linkedInLinkLinkController.text,
+                                    _otherLinkLinkController.text,
+                                    totalWorkExp,
+                                    totalWorkExp);
+                                    print('SKILL1 '+ result.data.skills);
+                                    print('SKILL2 '+ selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'));
+                                    print('SKILL3 '+ selectedSkillList.toString());
+                                      // editLearnerProfileApi(
+                                      //     registerAs,
+                                      //     _nameController.text,
+                                      //     _mobileController.text,
+                                      //     _emailController.text,
+                                      //     gender == 'Gender' ? result.data.gender : gender ,
+                                      //     birthDateInString,
+                                      //     docType == 'DocType' ? result.data.documentType : docType,
+                                      //     _document,
+                                      //     _image,
+                                      //     _idNumController.text,
+                                      //     address1 == null ? result.data.location[0].addressLine1 : address1,
+                                      //     address2 == null ? result.data.location[0].addressLine2 : address2,
+                                      //     city == null ? result.data.location[0].city : city,
+                                      //     country == null ? result.data.location[0].country : country,
+                                      //     pinCode == null ? result.data.location[0].pincode : pinCode,
+                                      //     lat == null ? result.data.location[0].latitude : lat,
+                                      //     lng == null ? result.data.location[0].longitude : lng,
+                                      //     _achivementController.text,
+                                      //     selectedSkillList.isEmpty ? result.data.skills.toString() : selectedSkillList.toString(),
+                                      //     selectedHobbiesList.isEmpty ? result.data.hobbies.toString() : selectedHobbiesList.toString(),
+                                      //     _fbLinkController.text,
+                                      //     _instagramLinkController.text,
+                                      //     _linkedInLinkLinkController.text,
+                                      //     _otherLinkLinkController.text,
+                                      //     totalWorkExp);
                                       // Navigator.of(context).push
                                       //     //pushAndRemoveUntil
                                       //     (MaterialPageRoute(
@@ -2421,8 +3052,8 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
       address2 = result.subLocalityLevel1.name;
       city = result.locality;
       country = result.country.name;
-      lat = result.latLng.latitude.toString();
-      lng = result.latLng.longitude.toString();
+      lat = result.latLng.latitude;
+      lng = result.latLng.longitude;
       pinCode = result.postalCode;
     });
 
@@ -2488,11 +3119,18 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
           response[2].statusCode == 200 &&
           response[3].statusCode == 200) {
         //closeProgressDialog(context);
-        result = LearnerProfileDetails.fromJson(response[0].data);
+        result = EducatorProfileDetails.fromJson(response[0].data);
         categoryMap = response[1].data;
         skillMap = response[2].data;
         hobbieMap = response[3].data;
-        saveImage();
+        //saveImage();
+
+          print('SKILLDATA::: ${result.data.skills}');
+        print(response[0].data);
+        eduMap = response[0].data;
+        eduMapData = eduMap['data']['educational_details'];
+        print('EDU:::' + eduMapData.toString());
+         populateEducationDetails();
         
           categoryMapData = categoryMap['data'];
           skillMapData = skillMap['data'];
@@ -2552,9 +3190,10 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
 
         for (int i = 0; i < categoryMapData.length; i++) {
           intrestedCat.add(categoryMapData[i]['selected']);
-          // if(intrestedCat[i] == true){
-          //   intrestedCatKey.add(categoryMapData[i]['key']);
-          // } else{
+          if(intrestedCat[i] == true){
+            intrestedCatKey.add(categoryMapData[i]['key']);
+          } 
+          //else{
           //   intrestedCatKey.removeAt(i);
           // }
         }
@@ -2625,8 +3264,396 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
   }
 
 
-//Add profile for Learner
-  Future<LearnerProfileUpdate> addLearnerProfileApi(
+// //Add profile for Learner
+//   Future<LearnerProfileUpdate> addLearnerProfileApi(
+//     //int userId,
+//     String registerAs,
+//     //String imageFile,
+//     //String imageUrl,
+//     String name,
+//     String mobileNumber,
+//     String email,
+//     String gender,
+//     String dob,
+//     String documentType,
+//     File documentFile,
+//     File imageFile,
+//     //File certificateFile,
+//     //String documentUrl,
+//     String idNumber,
+//     String addressLine1,
+//     String addressLine2,
+//     String city,
+//     String country,
+//     String pinCode,
+//     double latitude,
+//     double longitude,
+//     String achievements,
+//     String skills,
+//     String hobbies,
+//     String facbookUrl,
+//     String instaUrl,
+//     String linkedinUrl,
+//     String otherUrl,
+//     //List<EducationalDetails> educationalDetails,
+//     int totalWorkExp,
+//     //int totalTeachExp,
+//     //List<InterestedCategory> interestedCategory,
+//   ) async {
+//     displayProgressDialog(context);
+//     String docname = documentFile.path.split('/').last;
+//     String imgname = imageFile.path.split('/').last;
+//     //String certiname = certificateFile.path.split('/').last;
+//     //SharedPreferences preferences = await SharedPreferences.getInstance();
+//     var updateResult = LearnerProfileUpdate();
+
+//     try {
+//       Dio dio = Dio();
+//       FormData formData = FormData.fromMap({
+//         //'user_id': userId,
+//         'register_as': registerAs,
+//         'name': name,
+//         'mobile_number': mobileNumber,
+//         'email': email,
+//         'gender': gender,
+//         'dob': dob,
+//         'document_type': documentType,
+//         'document_file': await MultipartFile.fromFile(
+//           //documentPath,
+//           documentFile.path,
+//           filename: docname,
+//         ),
+//         'image_file': await MultipartFile.fromFile(
+//           imageFile.path,
+//           //imagePath,
+//           filename: imgname,
+//         ),
+//         //'document_url': documentUrl,
+//         'identification_document_number': idNumber,
+//         //'location[0][id]': result.data.location[0].id,
+//         'location[0][address_line_1]': addressLine1,
+//         'location[0][address_line_2]': addressLine2,
+//         'location[0][city]': city,
+//         'location[0][country]': country,
+//         'location[0][pincode]': pinCode,
+//         'location[0][latitude]': latitude,
+//         'location[0][longitude]': longitude,
+//         'location[0][location_type]': 'work',
+//         'achievements': achievements,
+//         'skills': skills,
+//         'hobbies': hobbies,
+//         'educational_details[]': '[]',
+//         //'interested_category[]': intrestedCatKey.toString(),
+//         //'educational_details[0][id]': 25,
+//         // 'educational_details[0][school_name]': myControllers[0].text.toString(),
+//         // 'educational_details[0][year]': selectedYear.year,
+//         // 'educational_details[0][qualification]': qualification.toString(),
+//         // 'educational_details[0][certificate_file]':
+//         //     await MultipartFile.fromFile(
+//         //   certificateFile.path,
+//         //   filename: certiname,
+//         //   //contentType: new MediaType("jpg", "jpeg", "png", "pdf"),
+//         // ),
+//         'facebook_url': facbookUrl,
+//         'insta_url': instaUrl,
+//         'linkedin_url': linkedinUrl,
+//         'other_url': otherUrl,
+//         'total_work_experience': totalWorkExp,
+//         //'total_teaching_experience': totalTeachExp,
+//       });
+
+//       // for(int i = 0; i < result.data.interestedCategory.length; i++){
+//       //   formData.fields.add(
+//       //     MapEntry('interested_category[$i]', result.data.interestedCategory[i].key.toString()),
+//       //   );
+//       // }
+
+//       // print('MAP:::' + educationDetailMap[0]['school_name']);
+//       // print('MAP:::' + educationDetailMap[1]['school_name']);
+//       // print('MAP:::' + educationDetailMap[2]['school_name']);
+//       // print('MAP:::' + educationDetailMap[3]['school_name']);
+
+//       //print(formData.fields);
+
+//       var response = await dio.post(
+//         Config.updateProfileUrl,
+//         data: formData,
+//         options: Options(headers: {"Authorization": 'Bearer ' + authToken}),
+//         // onSendProgress: (int sent, int total){
+//         //   print('SENT $sent + TOTAL $total');
+//         // }
+//       );
+//       if (response.statusCode == 200) {
+//         print(response.data);
+//         closeProgressDialog(context);
+//         updateResult = LearnerProfileUpdate.fromJson(response.data);
+//         print(updateResult.data.name);
+//         if (updateResult.status == true) {
+//           print('TRUE::');
+//           // preferences.setString("name", result.data.name);
+//           // preferences.setString("imageUrl", result.data.imageUrl);
+//           // preferences.setString("mobileNumber", result.data.mobileNumber);
+//           // preferences.setString("gender", result.data.gender);
+//           // preferences.setString(
+//           //     "qualification", result.data.educationalDetails.toString());
+//           // preferences.setString(
+//           //     "schoolName", result.data.educationalDetails.toString());
+//           // preferences.setString("address1", result.data.location.toString());
+//           // preferences.setString("address2", result.data.location.toString());
+//           // preferences.setString("facebookUrl", result.data.facebookUrl);
+//           // preferences.setString("instaUrl", result.data.instaUrl);
+//           // preferences.setString("linkedInUrl", result.data.linkedinUrl);
+//           // preferences.setString("otherUrl", result.data.otherUrl);
+//           // print('QUALIFICATION:::: ' +
+//           //     result.data.educationalDetails.last.qualification);
+//           // print('LOCATION:::: ' + result.data.location[0].addressLine2);
+//           // print('IMAGE:::: ' + result.data.imageUrl);
+//           // Navigator.of(context).pushAndRemoveUntil(
+//           //     MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+//           //     (Route<dynamic> route) => false);
+//         } else {
+//           print('FALSE::');
+//         }
+//         // saveUserData(result.data.userId);
+
+//         Fluttertoast.showToast(
+//           msg: updateResult.message,
+//           toastLength: Toast.LENGTH_SHORT,
+//           gravity: ToastGravity.BOTTOM,
+//           timeInSecForIosWeb: 1,
+//           backgroundColor: Constants.bgColor,
+//           textColor: Colors.white,
+//           fontSize: 10.0.sp,
+//         );
+//       } else {
+//         Fluttertoast.showToast(
+//           msg: updateResult.message,
+//           toastLength: Toast.LENGTH_SHORT,
+//           gravity: ToastGravity.BOTTOM,
+//           timeInSecForIosWeb: 1,
+//           backgroundColor: Constants.bgColor,
+//           textColor: Colors.white,
+//           fontSize: 10.0.sp,
+//         );
+//       }
+//       print(result);
+//     } on DioError catch (e, stack) {
+//       print(e.response);
+//       print(stack);
+//       //closeProgressDialog(context);
+//       if (e.response != null) {
+//         print("This is the error message::::" +
+//             e.response.data['meta']['message']);
+//         Fluttertoast.showToast(
+//           msg: e.response.data['meta']['message'],
+//           toastLength: Toast.LENGTH_SHORT,
+//           gravity: ToastGravity.BOTTOM,
+//           timeInSecForIosWeb: 1,
+//           backgroundColor: Constants.bgColor,
+//           textColor: Colors.white,
+//           fontSize: 10.0.sp,
+//         );
+//       } else {
+//         // Something happened in setting up or sending the request that triggered an Error
+//         print(e.request);
+//         print(e.message);
+//       }
+//     }
+//     return updateResult;
+//   }
+
+//   //Update profile for Learner
+//   Future<LearnerProfileUpdate> editLearnerProfileApi(
+//     //int userId,
+//     String registerAs,
+//     //String imageFile,
+//     //String imageUrl,
+//     String name,
+//     String mobileNumber,
+//     String email,
+//     String gender,
+//     String dob,
+//     String documentType,
+//     File documentFile,
+//     File imageFile,
+//     //File certificateFile,
+//     //String documentUrl,
+//     String idNumber,
+//     String addressLine1,
+//     String addressLine2,
+//     String city,
+//     String country,
+//     String pinCode,
+//     String latitude,
+//     String longitude,
+//     String achievements,
+//     String skills,
+//     String hobbies,
+//     String facbookUrl,
+//     String instaUrl,
+//     String linkedinUrl,
+//     String otherUrl,
+//     //List<EducationalDetails> educationalDetails,
+//     int totalWorkExp,
+//     //int totalTeachExp,
+//     //List<InterestedCategory> interestedCategory,
+//   ) async {
+//     //displayProgressDialog(context);
+//     //String docname = documentFile.path.split('/').last;
+//     //String imgname = imageFile.path.split('/').last;
+//     //String certiname = certificateFile.path.split('/').last;
+//     //SharedPreferences preferences = await SharedPreferences.getInstance();
+//     var updateResult = LearnerProfileUpdate();
+
+//     try {
+//       Dio dio = Dio();
+//       FormData formData = FormData.fromMap({
+//         //'user_id': userId,
+//         'register_as': registerAs,
+//         'name': name,
+//         'mobile_number': mobileNumber,
+//         'email': email,
+//         'gender': gender,
+//         'dob': dob,
+//         'document_type': documentType,
+//         'document_file': await MultipartFile.fromFile(
+//           _document.path,
+//           //documentPath.toString(),
+//           filename: //docname,
+//           _document.path.split("/").last,
+//         ),
+//         'image_file': await MultipartFile.fromFile(
+//           _image.path,
+//           //imagePath.toString(),
+//           filename: //imgname,
+//           _image.path.split("/").last,
+//         ),
+//         //'document_url': documentUrl,
+//         'identification_document_number': idNumber,
+//         'location[0][id]': result.data.location.isEmpty  ? null : result.data.location[0].id,
+//         'location[0][address_line_1]': addressLine1,
+//         'location[0][address_line_2]': addressLine2,
+//         'location[0][city]': city,
+//         'location[0][country]': country,
+//         'location[0][pincode]': pinCode,
+//         'location[0][latitude]': latitude,
+//         'location[0][longitude]': longitude,
+//         'location[0][location_type]': 'work',
+//         'achievements': achievements,
+//         'skills': skills,
+//         'hobbies': hobbies,
+//         'educational_details[]': '[]',
+//         'facebook_url': facbookUrl,
+//         'insta_url': instaUrl,
+//         'linkedin_url': linkedinUrl,
+//         'other_url': otherUrl,
+//         'total_work_experience': totalWorkExp,
+//         //'total_teaching_experience': totalTeachExp,
+//       });
+
+//       for (int i = 0; i < intrestedCatKey.length; i++) {
+//         //formData.fields.addAll(params.entries);
+//         //print('MAP:::' + educationDetailMap.length.toString());
+//         formData.fields.addAll([
+//           MapEntry('interested_category[$i]', intrestedCatKey.contains(i) ? '0' : '1'
+//               //intrestedCatKey[i].toString()
+//               ),
+//         ]);
+//       }
+
+//       //print(formData.fields);
+
+//       var response = await dio.post(
+//         Config.updateProfileUrl,
+//         data: formData,
+//         options: Options(headers: {"Authorization": 'Bearer ' + authToken}),
+//         // onSendProgress: (int sent, int total){
+//         //   print('SENT $sent + TOTAL $total');
+//         // }
+//       );
+//       if (response.statusCode == 200) {
+//         print(response.data);
+//         //closeProgressDialog(context);
+//         updateResult = LearnerProfileUpdate.fromJson(response.data);
+//         print(updateResult.data.name);
+//         if (updateResult.status == true) {
+//           print('TRUE::');
+//           print(gender);
+//           print(result.data.gender);
+//           // preferences.setString("name", result.data.name);
+//           // preferences.setString("imageUrl", result.data.imageUrl);
+//           // preferences.setString("mobileNumber", result.data.mobileNumber);
+//           // preferences.setString("gender", result.data.gender);
+//           // preferences.setString(
+//           //     "qualification", result.data.educationalDetails.toString());
+//           // preferences.setString(
+//           //     "schoolName", result.data.educationalDetails.toString());
+//           // preferences.setString("address1", result.data.location.toString());
+//           // preferences.setString("address2", result.data.location.toString());
+//           // preferences.setString("facebookUrl", result.data.facebookUrl);
+//           // preferences.setString("instaUrl", result.data.instaUrl);
+//           // preferences.setString("linkedInUrl", result.data.linkedinUrl);
+//           // preferences.setString("otherUrl", result.data.otherUrl);
+//           // print('QUALIFICATION:::: ' +
+//           //     result.data.educationalDetails.last.qualification);
+//           // print('LOCATION:::: ' + result.data.location[0].addressLine2);
+//           // print('IMAGE:::: ' + result.data.imageUrl);
+//           // Navigator.of(context).pushAndRemoveUntil(
+//           //     MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+//           //     (Route<dynamic> route) => false);
+//         } else {
+//           print('FALSE::');
+//         }
+//         // saveUserData(result.data.userId);
+
+//         Fluttertoast.showToast(
+//           msg: updateResult.message,
+//           toastLength: Toast.LENGTH_SHORT,
+//           gravity: ToastGravity.BOTTOM,
+//           timeInSecForIosWeb: 1,
+//           backgroundColor: Constants.bgColor,
+//           textColor: Colors.white,
+//           fontSize: 10.0.sp,
+//         );
+//       } else {
+//         Fluttertoast.showToast(
+//           msg: updateResult.message,
+//           toastLength: Toast.LENGTH_SHORT,
+//           gravity: ToastGravity.BOTTOM,
+//           timeInSecForIosWeb: 1,
+//           backgroundColor: Constants.bgColor,
+//           textColor: Colors.white,
+//           fontSize: 10.0.sp,
+//         );
+//       }
+//       print(result);
+//     } on DioError catch (e, stack) {
+//       print(e.response);
+//       print(stack);
+//       //closeProgressDialog(context);
+//       if (e.response != null) {
+//         print("This is the error message::::" +
+//             e.response.data['meta']['message']);
+//         Fluttertoast.showToast(
+//           msg: e.response.data['meta']['message'],
+//           toastLength: Toast.LENGTH_SHORT,
+//           gravity: ToastGravity.BOTTOM,
+//           timeInSecForIosWeb: 1,
+//           backgroundColor: Constants.bgColor,
+//           textColor: Colors.white,
+//           fontSize: 10.0.sp,
+//         );
+//       } else {
+//         // Something happened in setting up or sending the request that triggered an Error
+//         print(e.request);
+//         print(e.message);
+//       }
+//     }
+//     return updateResult;
+//   }
+
+   //Update Profile API
+  Future<ProfileUpdate> updateProfile(
     //int userId,
     String registerAs,
     //String imageFile,
@@ -2637,10 +3664,10 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
     String gender,
     String dob,
     String documentType,
-    File documentFile,
-    File imageFile,
-    //File certificateFile,
+    //File documentFile,
     //String documentUrl,
+    //File imageFile,
+    //String imageUrl,
     String idNumber,
     String addressLine1,
     String addressLine2,
@@ -2658,18 +3685,19 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
     String otherUrl,
     //List<EducationalDetails> educationalDetails,
     int totalWorkExp,
-    //int totalTeachExp,
+    int totalTeachExp,
     //List<InterestedCategory> interestedCategory,
   ) async {
     displayProgressDialog(context);
-    String docname = documentFile.path.split('/').last;
-    String imgname = imageFile.path.split('/').last;
+    // String docname = documentFile.path.split('/').last;
+    // String imgname = imageFile.path.split('/').last;
     //String certiname = certificateFile.path.split('/').last;
-    //SharedPreferences preferences = await SharedPreferences.getInstance();
-    var updateResult = LearnerProfileUpdate();
 
+    var update = ProfileUpdate();
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     try {
       Dio dio = Dio();
+      
       FormData formData = FormData.fromMap({
         //'user_id': userId,
         'register_as': registerAs,
@@ -2679,62 +3707,110 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
         'gender': gender,
         'dob': dob,
         'document_type': documentType,
-        'document_file': await MultipartFile.fromFile(
-          //documentPath,
-          documentFile.path,
-          filename: docname,
-        ),
-        'image_file': await MultipartFile.fromFile(
-          imageFile.path,
-          //imagePath,
-          filename: imgname,
-        ),
+        'document_url': result.data.documentUrl,
+        // 'document_file': _document != null ? await MultipartFile.fromFile(
+        //   _document.path, //documentFile.path,
+        //   filename: _document.path.split("/").last,
+        // )
+        // : result.data.documentUrl,
         //'document_url': documentUrl,
+      //   'image_file':  _image != null
+      //   ? await MultipartFile.fromFile(
+      //     _image.path,//imageFile.path,
+      //     filename: _image.path.split("/").last,
+      //   )
+      //  : null,
+        //result.data.imageUrl,
+        'image_url': result.data.imageUrl,
         'identification_document_number': idNumber,
-        //'location[0][id]': result.data.location[0].id,
-        'location[0][address_line_1]': addressLine1,
-        'location[0][address_line_2]': addressLine2,
-        'location[0][city]': city,
-        'location[0][country]': country,
-        'location[0][pincode]': pinCode,
-        'location[0][latitude]': latitude,
-        'location[0][longitude]': longitude,
+        //?TODO: Used dynamic ID at location[0][id]
+        'location[0][id]': result.data.location[0].id,
+        'location[0][address_line_1]': addressLine1 == null ? result.data.location[0].addressLine1 : addressLine1,
+        'location[0][address_line_2]': addressLine2 == null ? result.data.location[0].addressLine2 : addressLine2,
+        'location[0][city]': city == null ? result.data.location[0].city : city,
+        'location[0][country]': country == null ? result.data.location[0].country : country,
+        'location[0][pincode]': pinCode == null ? result.data.location[0].pincode : pinCode,
+        'location[0][latitude]': latitude == null ? result.data.location[0].latitude : latitude,
+        'location[0][longitude]': longitude == null ?  result.data.location[0].longitude : longitude,
         'location[0][location_type]': 'work',
         'achievements': achievements,
         'skills': skills,
         'hobbies': hobbies,
-        'educational_details[]': '[]',
-        //'interested_category[]': intrestedCatKey.toString(),
-        //'educational_details[0][id]': 25,
-        // 'educational_details[0][school_name]': myControllers[0].text.toString(),
-        // 'educational_details[0][year]': selectedYear.year,
-        // 'educational_details[0][qualification]': qualification.toString(),
-        // 'educational_details[0][certificate_file]':
-        //     await MultipartFile.fromFile(
-        //   certificateFile.path,
-        //   filename: certiname,
-        //   //contentType: new MediaType("jpg", "jpeg", "png", "pdf"),
-        // ),
         'facebook_url': facbookUrl,
         'insta_url': instaUrl,
         'linkedin_url': linkedinUrl,
         'other_url': otherUrl,
         'total_work_experience': totalWorkExp,
-        //'total_teaching_experience': totalTeachExp,
+        'total_teaching_experience': totalTeachExp,
       });
 
-      // for(int i = 0; i < result.data.interestedCategory.length; i++){
-      //   formData.fields.add(
-      //     MapEntry('interested_category[$i]', result.data.interestedCategory[i].key.toString()),
-      //   );
-      // }
+      print('MAPO:::' + eduMap.length.toString());
+      print('Called:::No');
+      print('RESULT:::'+result.data.educationalDetails.toString());
 
-      // print('MAP:::' + educationDetailMap[0]['school_name']);
-      // print('MAP:::' + educationDetailMap[1]['school_name']);
-      // print('MAP:::' + educationDetailMap[2]['school_name']);
-      // print('MAP:::' + educationDetailMap[3]['school_name']);
+      for (int i = 0; i < result.data.educationalDetails.length; i++) {
+        //formData.fields.addAll(params.entries);
+        if(result.data.educationalDetails1[i]['id'] != null){
+        formData.fields.addAll([
+          //?TODO: Used dynamic ID at educational_details[0][id]
+          MapEntry('educational_details[$i][id]', result.data.educationalDetails1[i]['id'].toString()),
+          MapEntry('educational_details[$i][school_name]',
+              controllersList[i].text),
+          MapEntry('educational_details[$i][year]',
+              result.data.educationalDetails1[i]['year'].toString()),
+          MapEntry('educational_details[$i][qualification]',
+              result.data.educationalDetails1[i]['qualification']),
+          MapEntry('educational_details[$i][certificate_file]', ''),
+          
+        ]);
+        // fileImage[i] != null
+        // ? formData.files.addAll([
+        //   MapEntry(
+        //       'educational_details[$i][certificate_file]', 
+        //       //MultipartFile.fromString(result.data.educationalDetails[i].certificateFile)
+        //       await MultipartFile.fromFile(fileImage[i].path,
+        //           filename: fileImage[i].toString().split('/').last)
+        //          ),
+        // ])
+        // : MapEntry('educational_details[$i][certificate_file]', fileImage[i]);
+        } 
+        else{
+          formData.fields.addAll([
+           MapEntry('educational_details[$i][id]', result.data.educationalDetails1[i]['id'].toString()),
+          MapEntry('educational_details[$i][school_name]',
+              controllersList[i].text),
+          MapEntry('educational_details[$i][year]',
+              result.data.educationalDetails1[i]['year'].toString()),
+          MapEntry('educational_details[$i][qualification]',
+              result.data.educationalDetails1[i]['qualification']),
+          MapEntry('educational_details[$i][certificate_file]', ''),
+        ]);
+        //  formData.files.addAll([
+        //   MapEntry(
+        //       'educational_details[$i][certificate_file]', 
+        //       //MultipartFile.fromString(result.data.educationalDetails[i].certificateFile)
+        //       await MultipartFile.fromFile(fileImage[i].path,
+        //           filename: fileImage[i].toString().split('/').last)
+        //          ),
+        // ]);
+        }
+      }
 
-      //print(formData.fields);
+      for(int i = 0; i < intrestedCatKey.length; i++){
+        formData.fields.addAll([
+          MapEntry('interested_category[$i]', intrestedCatKey[i].toString())
+        ]);
+        print('ICAT:::' + intrestedCatKey[i].toString());
+      }
+
+      debugPrint('REQ:::'+formData.files.toString());
+print('MAP:::' + formData.fields.toString());
+      //print('MAP:::' + result.data.educationalDetails1[1].toString());
+      //print(fileImage);
+      //print(educationList);
+
+      print('FORMDATA::: ${result.data.skills}');
+      print('FORMDATA::: ${selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')}');
 
       var response = await dio.post(
         Config.updateProfileUrl,
@@ -2747,48 +3823,55 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
       if (response.statusCode == 200) {
         print(response.data);
         closeProgressDialog(context);
-        updateResult = LearnerProfileUpdate.fromJson(response.data);
-        print(updateResult.data.name);
-        if (updateResult.status == true) {
-          print('TRUE::');
-          // preferences.setString("name", result.data.name);
-          // preferences.setString("imageUrl", result.data.imageUrl);
-          // preferences.setString("mobileNumber", result.data.mobileNumber);
-          // preferences.setString("gender", result.data.gender);
-          // preferences.setString(
-          //     "qualification", result.data.educationalDetails.toString());
-          // preferences.setString(
-          //     "schoolName", result.data.educationalDetails.toString());
-          // preferences.setString("address1", result.data.location.toString());
-          // preferences.setString("address2", result.data.location.toString());
-          // preferences.setString("facebookUrl", result.data.facebookUrl);
-          // preferences.setString("instaUrl", result.data.instaUrl);
-          // preferences.setString("linkedInUrl", result.data.linkedinUrl);
-          // preferences.setString("otherUrl", result.data.otherUrl);
-          // print('QUALIFICATION:::: ' +
-          //     result.data.educationalDetails.last.qualification);
-          // print('LOCATION:::: ' + result.data.location[0].addressLine2);
-          // print('IMAGE:::: ' + result.data.imageUrl);
-          // Navigator.of(context).pushAndRemoveUntil(
-          //     MaterialPageRoute(builder: (context) => bottomNavBar(0)),
-          //     (Route<dynamic> route) => false);
-        } else {
-          print('FALSE::');
-        }
+        update = ProfileUpdate.fromJson(response.data);
+    
+        print(update.data.name);
+        //if(result.status == true){
+        // print('ID ::: ' + result.data.userId.toString());
         // saveUserData(result.data.userId);
 
-        Fluttertoast.showToast(
-          msg: updateResult.message,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Constants.bgColor,
-          textColor: Colors.white,
-          fontSize: 10.0.sp,
-        );
+        if (update.status == true) {
+          print('TRUE::');
+
+          setState(() {
+            preferences.setString("name", update.data.name);
+            preferences.setString("mobileNumber", update.data.mobileNumber);
+          });
+
+          Fluttertoast.showToast(
+            msg: update.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+          // Close current screen after profile update
+          //Navigator.of(context).pop();
+          Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return bottomNavBar(4);
+              },
+             ),
+             (_) => false,
+            );
+        } else {
+          print('FALSE::');
+          Fluttertoast.showToast(
+            msg: update.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        }
       } else {
         Fluttertoast.showToast(
-          msg: updateResult.message,
+          msg: update.message,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -2797,13 +3880,13 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
           fontSize: 10.0.sp,
         );
       }
-      print(result);
+      print(update);
     } on DioError catch (e, stack) {
       print(e.response);
       print(stack);
-      //closeProgressDialog(context);
+      closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
+        print("This is the error message::::"  +
             e.response.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response.data['meta']['message'],
@@ -2820,11 +3903,10 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
         print(e.message);
       }
     }
-    return updateResult;
+    return update;
   }
 
-  //Update profile for Learner
-  Future<LearnerProfileUpdate> editLearnerProfileApi(
+  Future<ProfileUpdate> updateProfileWithImage(
     //int userId,
     String registerAs,
     //String imageFile,
@@ -2835,18 +3917,18 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
     String gender,
     String dob,
     String documentType,
-    File documentFile,
-    File imageFile,
-    //File certificateFile,
+    //File documentFile,
     //String documentUrl,
+    //File imageFile,
+    //String imageUrl,
     String idNumber,
     String addressLine1,
     String addressLine2,
     String city,
     String country,
     String pinCode,
-    String latitude,
-    String longitude,
+    double latitude,
+    double longitude,
     String achievements,
     String skills,
     String hobbies,
@@ -2856,19 +3938,21 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
     String otherUrl,
     //List<EducationalDetails> educationalDetails,
     int totalWorkExp,
-    //int totalTeachExp,
+    int totalTeachExp,
     //List<InterestedCategory> interestedCategory,
   ) async {
-    //displayProgressDialog(context);
-    //String docname = documentFile.path.split('/').last;
-    //String imgname = imageFile.path.split('/').last;
+    print('PROFILE::: IMAGE');
+    displayProgressDialog(context);
+    // String docname = documentFile.path.split('/').last;
+    // String imgname = imageFile.path.split('/').last;
     //String certiname = certificateFile.path.split('/').last;
-    //SharedPreferences preferences = await SharedPreferences.getInstance();
-    var updateResult = LearnerProfileUpdate();
 
+    var update = ProfileUpdate();
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     try {
       Dio dio = Dio();
-      FormData formData = FormData.fromMap({
+      
+     FormData formDataI = FormData.fromMap({
         //'user_id': userId,
         'register_as': registerAs,
         'name': name,
@@ -2877,56 +3961,78 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
         'gender': gender,
         'dob': dob,
         'document_type': documentType,
-        'document_file': await MultipartFile.fromFile(
-          _document.path,
-          //documentPath.toString(),
-          filename: //docname,
-          _document.path.split("/").last,
-        ),
-        'image_file': await MultipartFile.fromFile(
-          _image.path,
-          //imagePath.toString(),
-          filename: //imgname,
-          _image.path.split("/").last,
-        ),
+        'document_url': result.data.documentUrl,
+        // 'document_file': await MultipartFile.fromFile(
+        //   _document.path, //documentFile.path,
+        //   filename: _document.path.split("/").last,
+        // ),
+        // : result.data.documentUrl,
         //'document_url': documentUrl,
+        'image_file':
+        await MultipartFile.fromFile(
+          _image.path,//imageFile.path,
+          filename: _image.path.split("/").last,
+        ),
+        // : 
+        //result.data.imageUrl,
+        //'image_url': null,
         'identification_document_number': idNumber,
-        'location[0][id]': result.data.location.isEmpty  ? null : result.data.location[0].id,
-        'location[0][address_line_1]': addressLine1,
-        'location[0][address_line_2]': addressLine2,
-        'location[0][city]': city,
-        'location[0][country]': country,
-        'location[0][pincode]': pinCode,
-        'location[0][latitude]': latitude,
-        'location[0][longitude]': longitude,
+        //?TODO: Used dynamic ID at location[0][id]
+        'location[0][id]': result.data.location[0].id,
+        'location[0][address_line_1]': addressLine1 == null ? result.data.location[0].addressLine1 : addressLine1,
+        'location[0][address_line_2]': addressLine2 == null ? result.data.location[0].addressLine2 : addressLine2,
+        'location[0][city]': city == null ? result.data.location[0].city : city,
+        'location[0][country]': country == null ? result.data.location[0].country : country,
+        'location[0][pincode]': pinCode == null ? result.data.location[0].pincode : pinCode,
+        'location[0][latitude]': latitude == null ? result.data.location[0].latitude : latitude,
+        'location[0][longitude]': longitude == null ?  result.data.location[0].longitude : longitude,
         'location[0][location_type]': 'work',
         'achievements': achievements,
         'skills': skills,
         'hobbies': hobbies,
-        'educational_details[]': '[]',
         'facebook_url': facbookUrl,
         'insta_url': instaUrl,
         'linkedin_url': linkedinUrl,
         'other_url': otherUrl,
         'total_work_experience': totalWorkExp,
-        //'total_teaching_experience': totalTeachExp,
+        'total_teaching_experience': totalTeachExp,
       });
 
-      for (int i = 0; i < intrestedCatKey.length; i++) {
-        //formData.fields.addAll(params.entries);
-        //print('MAP:::' + educationDetailMap.length.toString());
-        formData.fields.addAll([
-          MapEntry('interested_category[$i]', intrestedCatKey.contains(i) ? '0' : '1'
-              //intrestedCatKey[i].toString()
-              ),
+
+      //print('MAPO:::' + educationDetailMap.length.toString());
+      print('Called:::Image');
+      print('IDDD::'+result.data.educationalDetails[0].id.toString());
+
+      for (int i = 0; i < result.data.educationalDetails.length; i++) {
+
+        formDataI.fields.addAll([
+          //?TODO: Used dynamic ID at educational_details[0][id]
+          MapEntry('educational_details[$i][id]', result.data.educationalDetails[i].id.toString()),
+          MapEntry('educational_details[$i][school_name]',
+              result.data.educationalDetails[i].schoolName.toString()),
+          MapEntry('educational_details[$i][year]',
+              result.data.educationalDetails[i].year.toString()),
+          MapEntry('educational_details[$i][qualification]',
+              result.data.educationalDetails[i].qualification.toString()),
+          MapEntry('educational_details[$i][certificate_file]', ''),
         ]);
       }
 
-      //print(formData.fields);
+      for(int i = 0; i < intrestedCatKey.length; i++){
+        formDataI.fields.addAll([
+          MapEntry('interested_category[$i]', intrestedCatKey[i].toString())
+        ]);
+        print('ICAT:::' + intrestedCatKey[i].toString());
+      }
+
+      //print('MAP:::' + educationDetailMap.toString());
+      print('FORMDATA::: updateProfileWithImage()');
+      //print(educationList);
 
       var response = await dio.post(
         Config.updateProfileUrl,
-        data: formData,
+        data: 
+         formDataI,
         options: Options(headers: {"Authorization": 'Bearer ' + authToken}),
         // onSendProgress: (int sent, int total){
         //   print('SENT $sent + TOTAL $total');
@@ -2934,51 +4040,54 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
       );
       if (response.statusCode == 200) {
         print(response.data);
-        //closeProgressDialog(context);
-        updateResult = LearnerProfileUpdate.fromJson(response.data);
-        print(updateResult.data.name);
-        if (updateResult.status == true) {
-          print('TRUE::');
-          print(gender);
-          print(result.data.gender);
-          // preferences.setString("name", result.data.name);
-          // preferences.setString("imageUrl", result.data.imageUrl);
-          // preferences.setString("mobileNumber", result.data.mobileNumber);
-          // preferences.setString("gender", result.data.gender);
-          // preferences.setString(
-          //     "qualification", result.data.educationalDetails.toString());
-          // preferences.setString(
-          //     "schoolName", result.data.educationalDetails.toString());
-          // preferences.setString("address1", result.data.location.toString());
-          // preferences.setString("address2", result.data.location.toString());
-          // preferences.setString("facebookUrl", result.data.facebookUrl);
-          // preferences.setString("instaUrl", result.data.instaUrl);
-          // preferences.setString("linkedInUrl", result.data.linkedinUrl);
-          // preferences.setString("otherUrl", result.data.otherUrl);
-          // print('QUALIFICATION:::: ' +
-          //     result.data.educationalDetails.last.qualification);
-          // print('LOCATION:::: ' + result.data.location[0].addressLine2);
-          // print('IMAGE:::: ' + result.data.imageUrl);
-          // Navigator.of(context).pushAndRemoveUntil(
-          //     MaterialPageRoute(builder: (context) => bottomNavBar(0)),
-          //     (Route<dynamic> route) => false);
-        } else {
-          print('FALSE::');
-        }
+        closeProgressDialog(context);
+        update = ProfileUpdate.fromJson(response.data);
+        print(update.data.name);
+        //if(result.status == true){
+        // print('ID ::: ' + result.data.userId.toString());
         // saveUserData(result.data.userId);
 
-        Fluttertoast.showToast(
-          msg: updateResult.message,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Constants.bgColor,
-          textColor: Colors.white,
-          fontSize: 10.0.sp,
-        );
+        if (update.status == true) {
+          print('TRUE::');
+          setState(() {
+            preferences.setString("name", update.data.name);
+            preferences.setString("imageUrl", update.data.imageUrl);
+            preferences.setString("mobileNumber", update.data.mobileNumber);
+          });
+          Fluttertoast.showToast(
+            msg: update.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+          // Close current screen after profile update
+          //Navigator.of(context).pop();
+           Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return bottomNavBar(4);
+              },
+             ),
+             (_) => false,
+            );
+        } else {
+          print('FALSE::');
+          Fluttertoast.showToast(
+            msg: update.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        }
       } else {
         Fluttertoast.showToast(
-          msg: updateResult.message,
+          msg: update.message,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -2987,13 +4096,13 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
           fontSize: 10.0.sp,
         );
       }
-      print(result);
+      print(update);
     } on DioError catch (e, stack) {
       print(e.response);
       print(stack);
-      //closeProgressDialog(context);
+      closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
+        print("This is the error message::::"  +
             e.response.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response.data['meta']['message'],
@@ -3010,11 +4119,11 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
         print(e.message);
       }
     }
-    return updateResult;
+    return update;
   }
 
 //Update Profile API
-  Future<ProfileUpdate> updateProfile(String name, String mobileNumber,
+  Future<ProfileUpdate> learnerUpdateProfile(String name, String mobileNumber,
       String registerAs, String deviceType, String deviceId) async {
     displayProgressDialog(context);
     var result = ProfileUpdate();
@@ -3084,13 +4193,14 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
   }
 
   displayProgressDialog(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    //WidgetsBinding.instance.addPostFrameCallback((_) {
+
       Navigator.of(context).push(new PageRouteBuilder(
           opaque: false,
           pageBuilder: (BuildContext context, _, __) {
             return new ProgressDialog();
           }));
-    });
+    //});
   }
 
   closeProgressDialog(BuildContext context) {

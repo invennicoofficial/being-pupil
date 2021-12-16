@@ -392,7 +392,7 @@ class Data {
     List<EducationalDetail> educationalDetails;
     String totalWorkExperience;
     String totalTeachingExperience;
-    List<dynamic> interestedCategory;
+    List<InterestedCategory> interestedCategory;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         userId: json["user_id"],
@@ -419,7 +419,9 @@ class Data {
         educationalDetails: List<EducationalDetail>.from(json["educational_details"].map((x) => EducationalDetail.fromJson(x))),
         totalWorkExperience: json["total_work_experience"],
         totalTeachingExperience: json["total_teaching_experience"],
-        interestedCategory: List<dynamic>.from(json["interested_category"].map((x) => x)),
+        interestedCategory: json["interested_category"] != []
+        ? List<InterestedCategory>.from(json["interested_category"].map((x) => InterestedCategory.fromJson(x)))
+        : null,
     );
 
     Map<String, dynamic> toJson() => {
@@ -447,12 +449,36 @@ class Data {
         "educational_details": List<dynamic>.from(educationalDetails.map((x) => x.toJson())),
         "total_work_experience": totalWorkExperience,
         "total_teaching_experience": totalTeachingExperience,
-        "interested_category": List<dynamic>.from(interestedCategory.map((x) => x)),
+        "interested_category": List<dynamic>.from(interestedCategory.map((x) => x.toJson())),
     };
 
     Data.toEmpty(List<dynamic> json) {
     return;
   }
+}
+
+class InterestedCategory {
+    InterestedCategory({
+        this.key,
+        this.value,
+        this.selected,
+    });
+
+    int key;
+    String value;
+    bool selected;
+
+    factory InterestedCategory.fromJson(Map<String, dynamic> json) => InterestedCategory(
+        key: json["key"],
+        value: json["value"],
+        selected: json["selected"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "key": key,
+        "value": value,
+        "selected": selected,
+    };
 }
 
 class EducationalDetail {

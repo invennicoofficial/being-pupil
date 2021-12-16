@@ -12,7 +12,7 @@ class LearnerProfileDetails {
     LearnerProfileDetails({
         this.status,
         this.errorCode,
-        this.errorMsg,
+        this.errorMsg, 
         this.message,
         this.data,
         this.metaParams,
@@ -94,7 +94,7 @@ class Data {
     String instaUrl;
     dynamic linkedinUrl;
     dynamic otherUrl;
-    List<dynamic> educationalDetails;
+    List<dynamic> educationalDetails = [];
     String totalWorkExperience;
     String totalTeachingExperience;
     List<InterestedCategory> interestedCategory;
@@ -121,7 +121,8 @@ class Data {
         instaUrl: json["insta_url"],
         linkedinUrl: json["linkedin_url"],
         otherUrl: json["other_url"],
-        educationalDetails: List<dynamic>.from(json["educational_details"].map((x) => x)),
+        educationalDetails: json["educational_details"],
+        //educationalDetails: List<dynamic>.from(json["educational_details"].map((x) => x)),
         totalWorkExperience: json["total_work_experience"],
         totalTeachingExperience: json["total_teaching_experience"],
         interestedCategory: List<InterestedCategory>.from(json["interested_category"].map((x) => InterestedCategory.fromJson(x))),
@@ -149,7 +150,7 @@ class Data {
         "insta_url": instaUrl,
         "linkedin_url": linkedinUrl,
         "other_url": otherUrl,
-        "educational_details": List<dynamic>.from(educationalDetails.map((x) => x)),
+        "educational_details": List<dynamic>.from(educationalDetails.map((x) => x.toJson())),
         "total_work_experience": totalWorkExperience,
         "total_teaching_experience": totalTeachingExperience,
         "interested_category": List<dynamic>.from(interestedCategory.map((x) => x.toJson())),
@@ -181,6 +182,38 @@ class InterestedCategory {
         "key": key,
         "value": value,
         "selected": selected,
+    };
+}
+
+class EducationalDetail {
+    EducationalDetail({
+        this.id,
+        this.schoolName,
+        this.year,
+        this.qualification,
+        this.certificateFile,
+    });
+
+    int id;
+    String schoolName;
+    String year;
+    String qualification;
+    String certificateFile;
+
+    factory EducationalDetail.fromJson(Map<String, dynamic> json) => EducationalDetail(
+        id: json["id"],
+        schoolName: json["school_name"],
+        year: json["year"],
+        qualification: json["qualification"],
+        certificateFile: json["certificate_file"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "school_name": schoolName,
+        "year": year,
+        "qualification": qualification,
+        "certificate_file": certificateFile,
     };
 }
 
