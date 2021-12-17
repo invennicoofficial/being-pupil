@@ -72,7 +72,7 @@ class Data {
         this.otherUrl,
         this.location,
         this.isNew,
-        this.interestedCategory,
+        //this.interestedCategory,
     });
 
     int userId;
@@ -101,7 +101,7 @@ class Data {
     String otherUrl;
     List<Location> location;
     String isNew;
-    List<InterestedCategory> interestedCategory = [];
+    //List<InterestedCategory> interestedCategory = [];
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         userId: json["user_id"],
@@ -130,9 +130,9 @@ class Data {
         otherUrl: json["other_url"],
         location: List<Location>.from(json["location"].map((x) => Location.fromJson(x))),
         isNew: json["isNew"],
-        interestedCategory: json["interested_category"] != []
-        ? List<InterestedCategory>.from(json["interested_category"].map((x) => InterestedCategory.fromJson(x)))
-        : null,
+        // interestedCategory: json["interested_category"] != []
+        // ? List<InterestedCategory>.from(json["interested_category"].map((x) => InterestedCategory.fromJson(x)))
+        // : null,
     );
 
     Map<String, dynamic> toJson() => {
@@ -161,7 +161,7 @@ class Data {
         "other_url": otherUrl,
         "location": List<dynamic>.from(location.map((x) => x.toJson())),
         "isNew": isNew,
-        "interested_category": List<dynamic>.from(interestedCategory.map((x) => x.toJson())),
+        //"interested_category": List<dynamic>.from(interestedCategory.map((x) => x.toJson())),
     };
 
     Data.toEmpty(List<dynamic> json) {
@@ -169,29 +169,29 @@ class Data {
   }
 }
 
-class InterestedCategory {
-    InterestedCategory({
-        this.key,
-        this.value,
-        this.selected,
-    });
+// class InterestedCategory {
+//     InterestedCategory({
+//         this.key,
+//         this.value,
+//         this.selected,
+//     });
 
-    int key;
-    String value;
-    bool selected;
+//     int key;
+//     String value;
+//     bool selected;
 
-    factory InterestedCategory.fromJson(Map<String, dynamic> json) => InterestedCategory(
-        key: json["key"],
-        value: json["value"],
-        selected: json["selected"],
-    );
+//     factory InterestedCategory.fromJson(Map<String, dynamic> json) => InterestedCategory(
+//         key: json["key"],
+//         value: json["value"],
+//         selected: json["selected"],
+//     );
 
-    Map<String, dynamic> toJson() => {
-        "key": key,
-        "value": value,
-        "selected": selected,
-    };
-}
+//     Map<String, dynamic> toJson() => {
+//         "key": key,
+//         "value": value,
+//         "selected": selected,
+//     };
+// }
 
 
 class EducationalDetail {

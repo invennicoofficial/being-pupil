@@ -75,7 +75,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
   Map<String, dynamic> hobbieMap = Map<String, dynamic>();
   List<dynamic> hobbieMapData = List();
 
-  var result = EducatorProfileDetails();
+  var result = LearnerProfileDetails();
   bool isLoading = true;
   String registerAs;
   int totalWorkExp;
@@ -3119,7 +3119,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
           response[2].statusCode == 200 &&
           response[3].statusCode == 200) {
         //closeProgressDialog(context);
-        result = EducatorProfileDetails.fromJson(response[0].data);
+        result = LearnerProfileDetails.fromJson(response[0].data);
         categoryMap = response[1].data;
         skillMap = response[2].data;
         hobbieMap = response[3].data;
