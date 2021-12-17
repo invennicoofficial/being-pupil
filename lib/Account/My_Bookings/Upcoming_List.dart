@@ -188,74 +188,77 @@ class _UpComingListState extends State<UpComingList> {
                           ],
                         ),
                         //Foe cancel and view details
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                pushNewScreen(context,
-                                    screen: CancelBookingScreen(
-                                      image: bookingImage[index],
-                                      name: bookingName[index],
-                                      index: index,
-                                      guestName: bookingGuestName[index],
-                                      mobileNumber: bookingMobileNumber[index],
-                                      checkIn: bookingCheckIn[index],
-                                      checkOut: bookingCheckOut[index],
-                                      roomType: bookingRoomType[index],
-                                      meal: bookingMeal[index].toString(),
-                                      roomAmount: bookingRoomAmount[index],
-                                      mealAmount: bookingMealAmount[index],
-                                      taxAmount: bookingTaxAmount[index],
-                                      totalAmount: bookingTotalAmount[index],
-                                      propertyId: int.parse(propertyId[index]),
-                                      bookingId: bookingId[index],
-                                    ),
-                                    withNavBar: false,
-                                    pageTransitionAnimation:
-                                        PageTransitionAnimation.cupertino);
-                              },
-                              child: Text(
-                                'Cancel',
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 9.0.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xFFEF1616)),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  pushNewScreen(context,
+                                      screen: CancelBookingScreen(
+                                        image: bookingImage[index],
+                                        name: bookingName[index],
+                                        index: index,
+                                        guestName: bookingGuestName[index],
+                                        mobileNumber: bookingMobileNumber[index],
+                                        checkIn: bookingCheckIn[index],
+                                        checkOut: bookingCheckOut[index],
+                                        roomType: bookingRoomType[index],
+                                        meal: bookingMeal[index].toString(),
+                                        roomAmount: bookingRoomAmount[index],
+                                        mealAmount: bookingMealAmount[index],
+                                        taxAmount: bookingTaxAmount[index],
+                                        totalAmount: bookingTotalAmount[index],
+                                        propertyId: int.parse(propertyId[index]),
+                                        bookingId: bookingId[index],
+                                      ),
+                                      withNavBar: false,
+                                      pageTransitionAnimation:
+                                          PageTransitionAnimation.cupertino);
+                                },
+                                child: Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 9.0.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFFEF1616)),
+                                ),
                               ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                pushNewScreen(context,
-                                    screen: ViewBookingScreen(
-                                      image: bookingImage[index],
-                                      name: bookingName[index],
-                                      index: index,
-                                      guestName: bookingGuestName[index],
-                                      mobileNumber: bookingMobileNumber[index],
-                                      checkIn: bookingCheckIn[index],
-                                      checkOut: bookingCheckOut[index],
-                                      roomType: bookingRoomType[index],
-                                      meal: bookingMeal[index].toString(),
-                                      roomAmount: bookingRoomAmount[index],
-                                      mealAmount: bookingMealAmount[index],
-                                      taxAmount: bookingTaxAmount[index],
-                                      totalAmount: bookingTotalAmount[index],
-                                    ),
-                                    withNavBar: false,
-                                    pageTransitionAnimation:
-                                        PageTransitionAnimation.cupertino);
-                              },
-                              child: Text(
-                                'View Details',
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 9.0.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xFF1F7DE9)),
-                              ),
-                            )
-                          ],
+                              InkWell(
+                                onTap: () {
+                                  pushNewScreen(context,
+                                      screen: ViewBookingScreen(
+                                        image: bookingImage[index],
+                                        name: bookingName[index],
+                                        index: index,
+                                        guestName: bookingGuestName[index],
+                                        mobileNumber: bookingMobileNumber[index],
+                                        checkIn: bookingCheckIn[index],
+                                        checkOut: bookingCheckOut[index],
+                                        roomType: bookingRoomType[index],
+                                        meal: bookingMeal[index].toString(),
+                                        roomAmount: bookingRoomAmount[index],
+                                        mealAmount: bookingMealAmount[index],
+                                        taxAmount: bookingTaxAmount[index],
+                                        totalAmount: bookingTotalAmount[index],
+                                      ),
+                                      withNavBar: false,
+                                      pageTransitionAnimation:
+                                          PageTransitionAnimation.cupertino);
+                                },
+                                child: Text(
+                                  'View Details',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 9.0.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFF1F7DE9)),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     ),
