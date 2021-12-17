@@ -2155,20 +2155,13 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                         Border.all(color: Constants.formBorder),
                                     borderRadius: BorderRadius.circular(5.0)),
                                 child: Center(
-                                  child: Text(
-                                    // result.data.skills != null
-                                    //     ? result.data.skills :
-                                    // selectedSkillList.length > 0
-                                    //     ? selectedSkillList
-                                    //         .toString()
-                                    //         .replaceAll('[', '')
-                                    //         .replaceAll(']', '')
-                                    //         .replaceAll(new RegExp(r', '), ' #')
-                                    //         .replaceFirst('', '#')
-                                    //     : 
-                                        "Please mention your hobbies example #skill1 #skill2....",
-                                    //: '',
-                                    //.replaceAll(new RegExp(r', '), '# '),
+                                  child: Text('gyusguysgysgugs',
+                                  //  selectedSkillList == null ||
+                                  //           selectedSkillList.length == 0
+                                  //       ? "Please mention your skills example #skills1 #skills2..."
+                                  //       : selectedSkillList
+                                  //           .toString().replaceAll('[', '').replaceAll(']', '').
+                                  //           replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
                                     style: TextStyle(
                                         fontFamily: "Montserrat",
                                         fontSize: 10.0.sp,
@@ -2220,24 +2213,12 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                       borderRadius: BorderRadius.circular(5.0)),
                                   child: Center(
                                     child: Text(
-                                      // result.data.hobbies != null
-                                      //     ? result.data.hobbies
-                                      //     :
-                                      // selectedHobbiesList.length > 0
-                                      //     ? selectedHobbiesList
-                                      //         .toString()
-                                      //         .replaceAll('[', '')
-                                      //         .replaceAll(']', '')
-                                      //         .replaceAll(
-                                      //             new RegExp(r', '), ' #')
-                                      //         .replaceFirst('', '#')
-                                      //     : 
-                                          "Please mention your hobbies example #hobbie1 #hobbie2....",
-                                      // selectedHobbiesList == null ||
-                                      //         selectedHobbiesList.length == 0
-                                      //     ? "Please mention your hobbies example #hobbie1 #hobbie2..."
-                                      //     : selectedHobbiesList
-                                      //         .toString(), //.replaceAll(new RegExp(r', '), '# '),
+                                     selectedHobbiesList == null ||
+                                            selectedHobbiesList.length == 0
+                                        ? "Please mention your hobbies example #hobbie1 #hobbie2..."
+                                        : selectedHobbiesList
+                                            .toString().replaceAll('[', '').replaceAll(']', '').
+                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
                                       style: TextStyle(
                                           fontFamily: "Montserrat",
                                           fontSize: 10.0.sp,
@@ -2674,6 +2655,15 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
+                              } else if(_image == null){
+                                Fluttertoast.showToast(
+                                    msg: "Please Pick Profile Image",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp);
                               } else {
                                 addLearnerProfile(
                                   //userId,
@@ -2743,7 +2733,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
         ));
   }
 
-  //Tag for Skills
+   //Tag for Skills
   void _openFilterSkillsDialog() async {
     await FilterListDialog.display(context,
         listData: skillMapData,
@@ -3176,7 +3166,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
           print('LOCATION:::: ' + result.data.location[0].addressLine2);
           print('IMAGE:::: ' + result.data.imageUrl);
           Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+              MaterialPageRoute(builder: (context) => bottomNavBar(4)),
               (Route<dynamic> route) => false);
         } else {
           print('FALSE::');
