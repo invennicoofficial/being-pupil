@@ -2154,6 +2154,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                               BorderRadius.circular(5.0)),
                                       child: Center(
                                         child: Text(
+                                            result.data.identificationDocumentNumber == null ? 'Please mention your hobbies example #skill1 #skill2....' :
                                           selectedSkillList == null ||
                                             selectedSkillList.length == 0
                                               ? result.data.skills
@@ -2318,6 +2319,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                               BorderRadius.circular(5.0)),
                                       child: Center(
                                         child: Text(
+                                          result.data.identificationDocumentNumber == null ? 'Please mention your hobbies example #hobbie1 #hobbie2....' :
                                           selectedHobbiesList == null ||
                                             selectedHobbiesList.length == 0
                                               ? result.data.hobbies
@@ -3157,7 +3159,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
         setState(() {});
 
         if(result.data.identificationDocumentNumber != null){
-         
+
             _nameController.text = result.data.name;
           _mobileController.text = result.data.mobileNumber;
           _emailController.text =
@@ -3176,8 +3178,8 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
           _linkedInLinkLinkController.text = result.data.linkedinUrl;
           _otherLinkLinkController.text = result.data.otherUrl;
          setState(() {});
-        }else{
-          
+        } else {
+
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LearnerRegistration(
             name: result.data.name,
             mobileNumber: result.data.mobileNumber,

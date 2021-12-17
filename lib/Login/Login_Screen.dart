@@ -698,6 +698,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // get the user data
       fbUserData = await FacebookAuth.instance.getUserData();
       print(fbUserData);
+      print(fbUserData['email']);
       socialName = fbUserData['name'];
       socialEmail = fbUserData['email'];
       socialPhotoUrl = fbUserData['picture']['data']['url'];
