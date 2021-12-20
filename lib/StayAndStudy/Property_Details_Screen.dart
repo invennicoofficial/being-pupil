@@ -17,8 +17,10 @@ class PropertyDetailScreen extends StatefulWidget {
   // List<List<dynamic>> propertyAminities, propertyRoom, propertyMeal;
   GetAllProperty propertyDetails;
   int index;
+  //List<GetAllProperty> propDataList;
+  List<dynamic> propData;
   PropertyDetailScreen(
-      {Key key, @required this.propertyDetails, @required this.index})
+      {Key key, @required this.propertyDetails, @required this.index, this.propData})
       : super(key: key);
 
   @override
@@ -101,8 +103,9 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                 child: CarouselSlider(
                     carouselController: _controller,
                     items: //imgList
-                        widget.propertyDetails.data[widget.index].featuredImage
-                            .map((item) => Container(
+                        //widget.propertyDetails.data[widget.index].featuredImage
+                        widget.propData[widget.index]['featured_image']
+                            .map<Widget>((item) => Container(
                                   child: Center(
                                       child: Image.network(item,
                                           fit: BoxFit.cover, width: 1000)),
@@ -135,10 +138,12 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                       child: Center(
                         child: ListView.builder(
                             physics: BouncingScrollPhysics(),
-                            itemCount:  widget
-                                .propertyDetails
-                                .data[widget.index]
-                                .featuredImage.length,
+                            itemCount: widget.propData[widget.index]['featured_image'].length,
+                            //widget.propDataList[widget.index].data[widget.index].featuredImage.length,
+                            // widget
+                            //     .propertyDetails
+                            //     .data[widget.index]
+                            //     .featuredImage.length,
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
@@ -156,11 +161,16 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                                     padding: EdgeInsets.zero,
                                     decoration: BoxDecoration(
                                         image: DecorationImage(
-                                            image: NetworkImage(//imgList[index]
-                                                widget
-                                                    .propertyDetails
-                                                    .data[widget.index]
-                                                    .featuredImage[index]),
+                                            image: NetworkImage(widget.propData[widget.index]['featured_image'] != null
+                                              ? widget.propData[widget.index]['featured_image'][index]
+                                              : '',
+                                              //imgList[index]
+                                            //widget.propDataList[widget.index].data[widget.index].featuredImage[index]
+                                                // widget
+                                                //     .propertyDetails
+                                                //     .data[widget.index]
+                                                //     .featuredImage[index]
+                                                    ),
                                             fit: BoxFit.fill)),
                                   ),
                                 ),
@@ -178,8 +188,10 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
-                    widget.propertyDetails.data[widget.index].name,
+                  Text(widget.propData[widget.index]['name'] != null
+                    ? widget.propData[widget.index]['name'] : 'Name not added',
+                    //widget.propDataList[widget.index].data[widget.index].name,
+                    //widget.propertyDetails.data[widget.index].name,
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 12.0.sp,
@@ -215,7 +227,9 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                 onTap: () {
                   pushNewScreen(context,
                       screen: RatingReviewScreen(
-                        propertyId: widget.propertyDetails.data[widget.index].propertyId,
+                        propertyId: widget.propData[widget.index]['property_id'],
+                        //propertyId: widget.propDataList[widget.index].data[widget.index].propertyId
+                        //widget.propertyDetails.data[widget.index].propertyId,
                       ),
                       withNavBar: false,
                       pageTransitionAnimation:
@@ -229,8 +243,11 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                     SizedBox(
                       width: 1.0.w,
                     ),
-                    Text(
-                      '${widget.propertyDetails.data[widget.index].rating} Rating | ${widget.propertyDetails.data[widget.index].review} Review',
+                    Text(widget.propData[widget.index]['rating'] != null
+                      ? '${widget.propData[widget.index]['rating'].toDouble()} Rating | ${widget.propData[widget.index]['review']} Review'
+                      : '0 Rating | 0 Review',
+                      //'${widget.propertyDetails.data[widget.index].rating} Rating | ${widget.propertyDetails.data[widget.index].review} Review',
+                      //'${widget.propDataList[widget.index].data[widget.index].rating} Rating | ${widget.propDataList[widget.index].data[widget.index].review} Review',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 10.0.sp,
@@ -275,8 +292,10 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
             Padding(
               padding: EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 1.0.h),
               child: Container(
-                child: ReadMoreText(
-                  '${widget.propertyDetails.data[widget.index].description}',
+                child: ReadMoreText(widget.propData[widget.index]['description'] != null
+                  ? '${widget.propData[widget.index]['description']}' : '',
+                  //'${widget.propertyDetails.data[widget.index].description}',
+                  //'${widget.propDataList[widget.index].data[widget.index].description}',
                   trimLines: 3,
                   trimMode: TrimMode.Line,
                   trimCollapsedText: 'Read More',
@@ -314,8 +333,10 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                       GridView.builder(
                           shrinkWrap: true,
                           padding: EdgeInsets.all(0.0),
-                          itemCount: widget.propertyDetails.data[widget.index]
-                              .amenities.length,
+                          itemCount: widget.propData[widget.index]['amenities'].length,
+                          //widget.propDataList[widget.index].data[widget.index].amenities.length,
+                          // widget.propertyDetails.data[widget.index]
+                          //     .amenities.length,
                           physics: NeverScrollableScrollPhysics(),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
@@ -327,9 +348,11 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                               title: Row(
                                 children: [
                                   //ImageIcon(
-                                  Image.network(
-                                    widget.propertyDetails.data[widget.index]
-                                        .amenities[index].amenitiesImage,
+                                  Image.network(widget.propData[widget.index]['amenities'] != [] || widget.propData[widget.index]['amenities'] != null
+                                    ? widget.propData[widget.index]['amenities'][index]['amenities_image'] : '',
+                                    //widget.propDataList[widget.index].data[widget.index].amenities[index].amenitiesImage,
+                                    // widget.propertyDetails.data[widget.index]
+                                    //     .amenities[index].amenitiesImage,
                                     fit: BoxFit.contain,
                                   ),
                                   // size: 22.0,
@@ -338,9 +361,11 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                                   SizedBox(
                                     width: 5.0,
                                   ),
-                                  Text(
-                                    widget.propertyDetails.data[widget.index]
-                                        .amenities[index].amenitiesName,
+                                  Text(widget.propData[widget.index]['amenities'] != [] || widget.propData[widget.index]['amenities'] != null
+                                    ? widget.propData[widget.index]['amenities'][index]['amenities_name'] : 'No name added',
+                                    //widget.propDataList[widget.index].data[widget.index].amenities[index].amenitiesName,
+                                    // widget.propertyDetails.data[widget.index]
+                                    //     .amenities[index].amenitiesName,
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 9.0.sp,
@@ -358,8 +383,12 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
             GestureDetector(
               onTap: () {
               setState(() {
-                lat = double.parse(widget.propertyDetails.data[widget.index].location.lat);
-                long = double.parse(widget.propertyDetails.data[widget.index].location.lng);
+                lat = double.parse(widget.propData[widget.index]['location']['lat']);
+                //double.parse(widget.propDataList[widget.index].data[widget.index].location.lat);
+                long = double.parse(widget.propData[widget.index]['location']['lng']);
+                //double.parse(widget.propDataList[widget.index].data[widget.index].location.lng);
+                // lat = double.parse(widget.propertyDetails.data[widget.index].location.lat);
+                // long = double.parse(widget.propertyDetails.data[widget.index].location.lng);
               });
               print(lat);
               print(long);
@@ -399,6 +428,7 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                     screen: BookPropertyScreen(
                       propertyDetails: widget.propertyDetails,
                       index: widget.index,
+                      propData: widget.propData
                     ),
                     withNavBar: false,
                     pageTransitionAnimation: PageTransitionAnimation.cupertino);

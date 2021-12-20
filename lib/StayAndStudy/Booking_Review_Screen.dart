@@ -24,7 +24,7 @@ class BookingReviewScreen extends StatefulWidget {
       meal,
       checkInDateFormat,
       checkOutDateFormat;
-  GetAllProperty propertyDetails;
+  List<dynamic> propertyDetails;
   int index;
   final double roomCharge, mealCharge, taxCharge, total;
   final int roomId, stayMonths;
@@ -111,7 +111,9 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                   width: 100.0.w,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(widget.propertyDetails.data[widget.index].featuredImage[0]),
+                      image: NetworkImage(widget.propertyDetails[widget.index]['featured_image'][0]
+                        //widget.propertyDetails.data[widget.index].featuredImage[0]
+                        ),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(8.0),
@@ -123,7 +125,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                 child: Row(
                   children: [
                     Text(
-                      widget.propertyDetails.data[widget.index].name,
+                      widget.propertyDetails[widget.index]['name'],
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 12.0.sp,
@@ -532,7 +534,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
         'amount': (widget.total * 100),
         'name': widget.name,
         'order_id': map['id'],
-        'description': widget.propertyDetails.data[widget.index].name,
+        'description': widget.propertyDetails[widget.index]['name'],//widget.propertyDetails.data[widget.index].name,
         'prefill': {
           'contact': widget.mobileNumber,
           'email': widget.email
@@ -561,7 +563,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
     try {
       var dio = Dio();
       FormData formData = FormData.fromMap({
-        'property_id': widget.propertyDetails.data[widget.index].propertyId,
+        'property_id': widget.propertyDetails[widget.index]['property_id'],//widget.propertyDetails.data[widget.index].propertyId,
         'room_id': widget.roomId,
         'guest_name': widget.name,
         'mobile_number': widget.mobileNumber,

@@ -23,37 +23,44 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
   var result = GetAllProperty();
   int propertyLength = 0;
   int page = 1;
-  bool isLoading = false;
+  bool isLoading = true;
   List<int> propertyId = [];
   List<double> propertyRating = [];
   List<String> propertyName = [];
   List<String> propertyImage = [];
   List<String> propertyLocation = [];
   List<String> propertyPrice = [];
+  List<List<String>> allImage = [];
+  List<dynamic> propDataList = [];
   ScrollController _scrollController = ScrollController();
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+
+  Map<String, dynamic> map;
+  List<dynamic> mapData;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getToken();
+     
   }
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     getAllPropertyAPI(page);
-    _scrollController.addListener(() {
+   _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if (page > 1) {
-          if (propertyLength > 0) {
+          if (result.data.length > 0) {
+            //print(propertyLength);
             page++;
             getAllPropertyAPI(page);
             print(page);
           } else {
-            _refreshController.loadComplete();
+           _refreshController.loadComplete();
           }
         } else {
           page++;
@@ -110,172 +117,174 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                       new AlwaysStoppedAnimation<Color>(Constants.bgColor),
                 ),
               )
-            : SmartRefresher(
-                controller: _refreshController,
-                enablePullDown: true,
-                enablePullUp: true,
-                header: WaterDropMaterialHeader(),
-                footer: ClassicFooter(
-                  loadStyle: LoadStyle.ShowWhenLoading,
-                ),
-                onLoading: _onLoading,
-                onRefresh: _onRefresh,
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(top: 1.0.h, left: 4.0.w, right: 4.0.w),
-                  child: ListView.separated(
-                      controller: _scrollController,
-                      physics: BouncingScrollPhysics(),
-                      itemCount: propertyLength,
-                      shrinkWrap: true,
-                      separatorBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.only(top: 1.0.h),
-                          child: Divider(
-                            height: 1.0,
-                            color: Constants.formBorder,
-                            thickness: 0.8,
-                          ),
-                        );
-                      },
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            print('Select $index Property!!!');
-                            pushNewScreen(context,
-                                withNavBar: false,
-                                screen: PropertyDetailScreen(propertyDetails: result,
-                                index: index,),
-                                pageTransitionAnimation:
-                                    PageTransitionAnimation.cupertino);
-                          },
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 2.0.h),
-                                //Image and Rating
-                                child: Stack(
-                                  children: <Widget>[
-                                    Container(
-                                      height: 20.0.h,
-                                      width: 100.0.w,
+            : Padding(
+              padding:
+                  EdgeInsets.only(left: 4.0.w, right: 4.0.w),
+              // child: SmartRefresher(
+              // controller: _refreshController,
+              // enablePullDown: true,
+              // enablePullUp: true,
+              // header: WaterDropMaterialHeader(),
+              // footer: ClassicFooter(
+              //   loadStyle: LoadStyle.ShowWhenLoading,
+              // ),
+              // onRefresh: _onRefresh,
+              // onLoading: _onLoading,
+                              child: ListView.separated(
+                    controller: _scrollController,
+                    //physics: BouncingScrollPhysics(),
+                    itemCount: propertyId.length,
+                    shrinkWrap: true,
+                    separatorBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.only(top: 1.0.h),
+                        child: Divider(
+                          height: 1.0,
+                          color: Constants.formBorder,
+                          thickness: 0.8,
+                        ),
+                      );
+                    },
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          print('Select $index Property!!!');
+                          print(propDataList[index]);
+                          pushNewScreen(context,
+                              withNavBar: false,
+                              screen: PropertyDetailScreen(propertyDetails: result,
+                              index: index,
+                              propData: propDataList,),
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino);
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 2.0.h),
+                              //Image and Rating
+                              child: Stack(
+                                children: <Widget>[
+                                  Container(
+                                    height: 20.0.h,
+                                    width: 100.0.w,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            propertyImage[index]),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      borderRadius:
+                                          BorderRadius.circular(8.0),
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: Container(
+                                      height: 4.0.h,
+                                      width: 15.0.w,
                                       decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              propertyImage[index]),
-                                          fit: BoxFit.cover,
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(
+                                              bottomLeft:
+                                                  Radius.circular(8.0),
+                                              topRight:
+                                                  Radius.circular(8.0))),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          Image.asset(
+                                            'assets/icons/greenStar.png',
+                                            height: 2.5.h,
+                                            width: 5.0.w,
+                                            fit: BoxFit.fill,
+                                          ),
+                                          Text(
+                                            propertyRating[index].toString(),
+                                            style: TextStyle(
+                                                fontFamily: 'Montserrat',
+                                                fontSize: 10.0.sp,
+                                                fontWeight: FontWeight.w600,
+                                                color: Constants.bgColor),
+                                          )
+                                        ],
                                       ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: Container(
-                                        height: 4.0.h,
-                                        width: 15.0.w,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.only(
-                                                bottomLeft:
-                                                    Radius.circular(8.0),
-                                                topRight:
-                                                    Radius.circular(8.0))),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: <Widget>[
-                                            Image.asset(
-                                              'assets/icons/greenStar.png',
-                                              height: 2.5.h,
-                                              width: 5.0.w,
-                                              fit: BoxFit.fill,
-                                            ),
-                                            Text(
-                                              propertyRating[index].toString(),
-                                              style: TextStyle(
-                                                  fontFamily: 'Montserrat',
-                                                  fontSize: 10.0.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Constants.bgColor),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              //Title of property
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 0.5.h),
-                                    child: Text(
-                                      propertyName[index],
-                                      style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 10.0.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: Constants.bgColor),
                                     ),
                                   ),
                                 ],
                               ),
-                              // Row(
-                              //   mainAxisAlignment:
-                              //       MainAxisAlignment.spaceBetween,
-                              //   children: <Widget>[
-                                  //Location of Property
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 2.0),
-                                        child: ImageIcon(
-                                          AssetImage(
-                                              'assets/icons/locationPin.png'),
-                                          color: Constants.bpOnBoardSubtitleStyle,
-                                          size: 13.0,
-                                        ),
-                                      ),
-                                      Container(
-                                        //height: 20,
-                                        width: 88.0.w,
-                                        child: Text(
-                                          propertyLocation[index],
-                                          style: TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              fontSize: 8.0.sp,
-                                              fontWeight: FontWeight.w400,
-                                              color: Constants
-                                                  .bpOnBoardSubtitleStyle),
-                                                  overflow: TextOverflow.clip,
-                                        ),
-                                      ),
-                                    ],
+                            ),
+                            //Title of property
+                            Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(vertical: 0.5.h),
+                                  child: Text(
+                                    propertyName[index],
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 10.0.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: Constants.bgColor),
                                   ),
-                                  //Rent of Property
-                              //     Text(
-                              //       '₹${propertyPrice[index]}/mth',
-                              //       style: TextStyle(
-                              //           fontFamily: 'Montserrat',
-                              //           fontSize: 11.0.sp,
-                              //           fontWeight: FontWeight.w600,
-                              //           color: Color(0xFF277344)),
-                              //     ),
-                              //   ],
-                              // ),
-                            ],
-                          ),
-                        );
-                      }),
-                ),
-              ));
+                                ),
+                              ],
+                            ),
+                            // Row(
+                            //   mainAxisAlignment:
+                            //       MainAxisAlignment.spaceBetween,
+                            //   children: <Widget>[
+                                //Location of Property
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 2.0),
+                                      child: ImageIcon(
+                                        AssetImage(
+                                            'assets/icons/locationPin.png'),
+                                        color: Constants.bpOnBoardSubtitleStyle,
+                                        size: 13.0,
+                                      ),
+                                    ),
+                                    Container(
+                                      //height: 20,
+                                      width: 88.0.w,
+                                      child: Text(
+                                        propertyLocation[index],
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            fontSize: 8.0.sp,
+                                            fontWeight: FontWeight.w400,
+                                            color: Constants
+                                                .bpOnBoardSubtitleStyle),
+                                                overflow: TextOverflow.clip,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                //Rent of Property
+                            //     Text(
+                            //       '₹${propertyPrice[index]}/mth',
+                            //       style: TextStyle(
+                            //           fontFamily: 'Montserrat',
+                            //           fontSize: 11.0.sp,
+                            //           fontWeight: FontWeight.w600,
+                            //           color: Color(0xFF277344)),
+                            //     ),
+                            //   ],
+                            // ),
+                          ],
+                        ),
+                      );
+                    }),
+              //),
+            ));
   }
 
   //GetAll Property List API
@@ -284,27 +293,33 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
 
     try {
       var dio = Dio();
-      var response = await dio.get(Config.getAllPropertyUrl,
+      var response = await dio.get('${Config.getAllPropertyUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
       if (response.statusCode == 200) {
-        result = GetAllProperty.fromJson(response.data);
-        print(response.data);
+        //result = GetAllProperty.fromJson(response.data);
+        map = response.data;
+        mapData = map['data'];
+        print(mapData);
         //closeProgressDialog(context);
 
-        if (result.status == true) {
-          propertyLength = 0;
-          propertyLength = result.data == [] ? 0 : result.data.length;
-          print('PROP:::' + propertyLength.toString());
-          if (propertyLength > 0) {
-            for (int i = 0; i < propertyLength; i++) {
-              propertyId.add(result.data[i].propertyId);
-              propertyName.add(result.data[i].name);
-              propertyLocation.add(result.data[i].location.address);
-              propertyImage.add(result.data[i].featuredImage[0].toString());
-              propertyPrice
-                  .add('${int.parse(result.data[i].room[0].roomAmount)}');
-              propertyRating.add(result.data[i].rating);
+        if (map['status'] == true) {
+         // propertyLength = 0;
+          // propertyLength = result.data == [] ? 0 : result.data.length;
+          // setState(() {});
+          // print('PROP:::' + propertyLength.toString());
+          // print('PROP:::' + page.toString());
+          if (page > 0) {
+            for (int i = 0; i < mapData.length; i++) {
+              propertyId.add(mapData[i]['property_id']);
+              propertyName.add(mapData[i]['name']);
+              propertyLocation.add(mapData[i]['location']['address']);
+              propertyImage.add(mapData[i]['featured_image'][0]);
+              //propertyPrice.add('${int.parse(result.data[i].room[0].roomAmount)}');
+              propertyRating.add(mapData[i]['rating'].toDouble());
+              //allImage.add(result.data[i].featuredImage);
+              propDataList.add(mapData[i]);
             }
+            print('DATAPROP:::'+ propDataList.toString());
             isLoading = false;
             setState(() {});
           } else {

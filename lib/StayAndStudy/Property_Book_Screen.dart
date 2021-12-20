@@ -18,8 +18,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class BookPropertyScreen extends StatefulWidget {
   GetAllProperty propertyDetails;
+  List<dynamic> propData;
   int index;
-  BookPropertyScreen({Key key, this.index, this.propertyDetails}) : super(key: key);
+  BookPropertyScreen({Key key, this.index, this.propertyDetails, this.propData}) : super(key: key);
 
   @override
   _BookPropertyScreenState createState() => _BookPropertyScreenState();
@@ -140,23 +141,27 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                     // ),
                     onChange: (int value, int index) async {
                       print(value);
-                      if (value == 1) {
+                      if (value == index+1) {
                         setState(() {
                           isRoomSelected = true;
-                          roomType = widget.propertyDetails.data[widget.index].room[0].roomType;
+                          roomType = widget.propData[widget.index]['room'][index]['room_type'];
+                          //widget.propertyDetails.data[widget.index].room[0].roomType;
                           roomId = 1;
-                          roomCharge = int.parse(widget.propertyDetails.data[widget.index].room[0].roomAmount);
+                          roomCharge = int.parse(widget.propData[widget.index]['room'][index]['room_amount']);
+                          //int.parse(widget.propertyDetails.data[widget.index].room[0].roomAmount);
                           total = roomCharge + mealCharge + taxCharge;
                         });
-                      } else {
-                        setState(() {
-                          isRoomSelected = true;
-                          roomType = widget.propertyDetails.data[widget.index].room[1].roomType;
-                          roomId = 2;
-                          roomCharge = int.parse(widget.propertyDetails.data[widget.index].room[1].roomAmount);
-                          total = roomCharge + mealCharge + taxCharge;
-                        });
-                      }
+                      } 
+                      // else {
+                      //   setState(() {
+                      //     isRoomSelected = true;
+                      //     roomType = widget.propData[widget.index]['room'][0]['room_type'];
+                      //     //widget.propertyDetails.data[widget.index].room[1].roomType;
+                      //     roomId = 2;
+                      //     roomCharge = int.parse(widget.propertyDetails.data[widget.index].room[1].roomAmount);
+                      //     total = roomCharge + mealCharge + taxCharge;
+                      //   });
+                      // }
                     },
                     dropdownButtonStyle: DropdownButtonStyle(
                       height: 7.0.h,
@@ -174,8 +179,11 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                           horizontal: 2.0.w, vertical: 1.5.h),
                     ),
                     items: [
-                      '${widget.propertyDetails.data[widget.index].room[0].roomType}\t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t₹${widget.propertyDetails.data[widget.index].room[0].roomAmount}',
-                      '${widget.propertyDetails.data[widget.index].room[1].roomType}\t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t ₹${widget.propertyDetails.data[widget.index].room[1].roomAmount}',
+                      for(int i = 0; i < widget.propData[widget.index]['room'].length ; i++){
+                         '${widget.propData[widget.index]['room'][i]['room_type']}\t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t₹${widget.propData[widget.index]['room'][i]['room_amount']}',
+                      }
+                      // '${widget.propertyDetails.data[widget.index].room[0].roomType}\t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t₹${widget.propertyDetails.data[widget.index].room[0].roomAmount}',
+                      // '${widget.propertyDetails.data[widget.index].room[1].roomType}\t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t ₹${widget.propertyDetails.data[widget.index].room[1].roomAmount}',
                       // 'Single Sharing                           ₹4000/mth',
                       // 'Double Sharing                         ₹6000/mth'
                     ]
@@ -187,7 +195,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                item.value,
+                                item.value.toString().substring(1, item.value.toString().length - 1),
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 10.0.sp,
@@ -226,7 +234,8 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                     padding:
                         EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 2.0.h),
                     child: ListView.builder(
-                        itemCount: widget.propertyDetails.data[widget.index].meal.length,
+                        itemCount: widget.propData[widget.index]['meal'].length,
+                        //widget.propertyDetails.data[widget.index].meal.length,
                         physics: NeverScrollableScrollPhysics(),
                         padding: EdgeInsets.zero,
                         shrinkWrap: true,
@@ -240,14 +249,16 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(widget.propertyDetails.data[widget.index].meal[index].mealType,
+                                  Text(widget.propData[widget.index]['meal'][index]['meal_type'],
+                                    //widget.propertyDetails.data[widget.index].meal[index].mealType,
                                       style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontSize: 10.0.sp,
                                           color: Color(0xFF6B737C),
                                           fontWeight: FontWeight.w400)),
                                   Text(
-                                      '₹${widget.propertyDetails.data[widget.index].meal[index].mealAmount}/mth',
+                                    '₹${widget.propData[widget.index]['meal'][index]['meal_amount']}/mth',
+                                      //'₹${widget.propertyDetails.data[widget.index].meal[index].mealAmount}/mth',
                                       style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontSize: 10.0.sp,
@@ -261,21 +272,26 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                 setState(() {
                                   isMeal[index] = !isMeal[index];
                                 });
+                                print(isMeal);
                                 if (isMeal[index] == true) {
                                   setState(() {
-                                    mealCharge =
-                                        mealCharge + int.parse(widget.propertyDetails.data[widget.index].meal[index].mealAmount);
+                                    mealCharge = mealCharge + int.parse(widget.propData[widget.index]['meal'][index]['meal_amount']);
+                                        //mealCharge + int.parse(widget.propertyDetails.data[widget.index].meal[index].mealAmount);
                                     total = mealCharge + taxCharge + roomCharge;
-                                    selectedMeal.add(widget.propertyDetails.data[widget.index].meal[index].mealType);
-                                    selectedMealId.add(widget.propertyDetails.data[widget.index].meal[index].mealId);
+                                    selectedMeal.add(widget.propData[widget.index]['meal'][index]['meal_type']);
+                                    //selectedMeal.add(widget.propertyDetails.data[widget.index].meal[index].mealType);
+                                    selectedMealId.add(widget.propData[widget.index]['meal'][index]['meal_id']);
+                                    //selectedMealId.add(widget.propertyDetails.data[widget.index].meal[index].mealId);
                                   });
                                 } else {
                                   setState(() {
-                                    mealCharge =
-                                        mealCharge - int.parse(widget.propertyDetails.data[widget.index].meal[index].mealAmount);
-                                    total = total - mealCharge;
-                                    selectedMeal.remove(widget.propertyDetails.data[widget.index].meal[index].mealType);
-                                    selectedMealId.remove(widget.propertyDetails.data[widget.index].meal[index].mealId);
+                                    mealCharge = mealCharge - int.parse(widget.propData[widget.index]['meal'][index]['meal_amount']);
+                                        //mealCharge - int.parse(widget.propertyDetails.data[widget.index].meal[index].mealAmount);
+                                    total = total - int.parse(widget.propData[widget.index]['meal'][index]['meal_amount']);
+                                    selectedMeal.remove(widget.propData[widget.index]['meal'][index]['meal_type']);
+                                    // selectedMeal.remove(widget.propertyDetails.data[widget.index].meal[index].mealType);
+                                    selectedMealId.remove(widget.propData[widget.index]['meal'][index]['meal_id']);
+                                    //selectedMealId.remove(widget.propertyDetails.data[widget.index].meal[index].mealId);
                                   });
                                 }
                               });
@@ -1087,7 +1103,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                 mealCharge: mealCharge.toDouble(),
                 taxCharge: taxCharge.toDouble(),
                 total: total.toDouble(),
-                propertyDetails: widget.propertyDetails,
+                propertyDetails: widget.propData,//widget.propertyDetails,
                 index: widget.index,
                 roomId: roomId,
                 stayMonths: selectedMonth,

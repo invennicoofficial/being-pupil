@@ -3577,7 +3577,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
           print('LOCATION:::: ' + result.data.location[0].addressLine2);
           print('IMAGE:::: ' + result.data.imageUrl);
           Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+              MaterialPageRoute(builder: (context) => bottomNavBar(4)),
               (Route<dynamic> route) => false);
         } else {
           print('FALSE::');

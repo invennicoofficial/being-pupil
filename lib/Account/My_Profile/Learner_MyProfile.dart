@@ -191,7 +191,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                         ),
                         //Name of Learner
                         Padding(
-                          padding: EdgeInsets.only(top: 2.0.h),
+                          padding: EdgeInsets.only(top: 1.0.h),
                           child: Text(
                             name,
                             style: TextStyle(
@@ -202,24 +202,24 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                           ),
                         ),
                         //Degree
-                        Padding(
-                          padding: degreeName == ''
-                              ? EdgeInsets.zero
-                              : EdgeInsets.only(top: 2.0.h),
-                          child: Text(
-                            degreeName == '' ? '' : '$degreeName | $schoolName',
-                            style: TextStyle(
-                                fontSize: 10.0.sp,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w400,
-                                color: Constants.bgColor),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: degreeName == ''
+                        //       ? EdgeInsets.zero
+                        //       : EdgeInsets.only(top: 2.0.h),
+                        //   child: Text(
+                        //     degreeName == '' ? '' : '$degreeName | $schoolName',
+                        //     style: TextStyle(
+                        //         fontSize: 10.0.sp,
+                        //         fontFamily: 'Montserrat',
+                        //         fontWeight: FontWeight.w400,
+                        //         color: Constants.bgColor),
+                        //   ),
+                        // ),
                         //Location
                         Padding(
                           padding: location == ''
                               ? EdgeInsets.zero
-                              : EdgeInsets.only(top: 2.0.h),
+                              : EdgeInsets.only(top: 1.0.h),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
@@ -245,16 +245,15 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                             ],
                           ),
                         ),
-                        //Social Handle
+                         //Social Handle
                         Padding(
-                          padding: location == ''
-                              ? EdgeInsets.zero
-                              : EdgeInsets.only(top: 2.0.h),
+                          padding: EdgeInsets.only(top: 1.0.h),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               GestureDetector(
                                 onTap: () {
+                                  // _showDialog();
                                   print('Apple!!!');
                                 },
                                 child: Container(
@@ -283,33 +282,134 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                               SizedBox(
                                 width: 1.0.w,
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  print('Facebook!!!');
-                                },
-                                child: Container(
-                                    height: 4.0.h,
-                                    width: 8.0.w,
-                                    child: Image.asset(
-                                      'assets/icons/facebook.png',
-                                      fit: BoxFit.contain,
-                                    )),
+                              Visibility(
+                                visible: myProfileMap['data']
+                                            ['facebook_link'] ==
+                                        null
+                                    ? false
+                                    : true,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print('Facebook!!!');
+                                  },
+                                  child: Container(
+                                      height: 4.0.h,
+                                      width: 8.0.w,
+                                      child: Image.asset(
+                                        'assets/icons/facebook.png',
+                                        fit: BoxFit.contain,
+                                      )),
+                                ),
                               ),
-                              SizedBox(
-                                width: 1.0.w,
+                              Visibility(
+                                visible: myProfileMap['data']
+                                            ['facebook_link'] ==
+                                        null
+                                    ? false
+                                    : true,
+                                child: SizedBox(
+                                  width: 1.0.w,
+                                ),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  print('LinkedIn!!!');
-                                },
-                                child: Container(
-                                    height: 4.0.h,
-                                    width: 8.0.w,
-                                    child: Image.asset(
-                                      'assets/icons/linkedin.png',
-                                      fit: BoxFit.contain,
-                                    )),
+                              Visibility(
+                                visible: myProfileMap['data']
+                                            ['linkedin_link'] ==
+                                        null
+                                    ? false
+                                    : true,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print('LinkedIn!!!');
+                                  },
+                                  child: Container(
+                                      height: 4.0.h,
+                                      width: 8.0.w,
+                                      child: Image.asset(
+                                        'assets/icons/linkedin.png',
+                                        fit: BoxFit.contain,
+                                      )),
+                                ),
                               ),
+                            ],
+                          ),
+                        ),
+                        //Other Details
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 2.0.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Column>[
+                              Column(
+                                children: <Widget>[
+                                  Text(
+                                    '${myProfileMap['data']['total_experience']} Yrs',
+                                    style: TextStyle(
+                                        fontSize: 10.0.sp,
+                                        color: Constants.bgColor,
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: 'Montserrat'),
+                                  ),
+                                  SizedBox(
+                                    height: 1.0.h,
+                                  ),
+                                  Text(
+                                    'Experience',
+                                    style: TextStyle(
+                                        fontSize: 8.0.sp,
+                                        color: Constants.bgColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: 'Montserrat'),
+                                  )
+                                ],
+                              ),
+                              // Column(
+                              //   children: <Widget>[
+                              //     Text(
+                              //       myProfileMap['data']['total_post']
+                              //           .toString(),
+                              //       style: TextStyle(
+                              //           fontSize: 10.0.sp,
+                              //           color: Constants.bgColor,
+                              //           fontWeight: FontWeight.w700,
+                              //           fontFamily: 'Montserrat'),
+                              //     ),
+                              //     SizedBox(
+                              //       height: 1.0.h,
+                              //     ),
+                              //     Text(
+                              //       'Posts',
+                              //       style: TextStyle(
+                              //           fontSize: 8.0.sp,
+                              //           color: Constants.bgColor,
+                              //           fontWeight: FontWeight.w500,
+                              //           fontFamily: 'Montserrat'),
+                              //     )
+                              //   ],
+                              // ),
+                              Column(
+                                children: <Widget>[
+                                  Text(
+                                    myProfileMap['data']['total_connections']
+                                        .toString(),
+                                    style: TextStyle(
+                                        fontSize: 10.0.sp,
+                                        color: Constants.bgColor,
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: 'Montserrat'),
+                                  ),
+                                  SizedBox(
+                                    height: 1.0.h,
+                                  ),
+                                  Text(
+                                    'Connections',
+                                    style: TextStyle(
+                                        fontSize: 8.0.sp,
+                                        color: Constants.bgColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: 'Montserrat'),
+                                  )
+                                ],
+                              )
                             ],
                           ),
                         ),
@@ -422,16 +522,20 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
         print('PROFILE:::' + myProfileMap.toString());
         if (myProfileMap['data'] != null) {
           name = myProfileMap['data']['name'];
+          print('NAME:::'+name);
           profileImageUrl = myProfileMap['data']['profile_image'];
           degreeName = myProfileMap['data']['last_degree'] == null
               ? ''
               : myProfileMap['data']['last_degree'];
+          print('DEGREE:::'+degreeName);
           schoolName = myProfileMap['data']['school_name'] == null
               ? ''
               : myProfileMap['data']['school_name'];
-          location = myProfileMap['data']['city'] == null
+          print('SCHOOL:::'+schoolName);
+          location = myProfileMap['data']['City'] == null
               ? ''
-              : myProfileMap['data']['city'];
+              : myProfileMap['data']['City'];
+          print('LOCATION:::'+location);
           getEnrolledCourseAPI(page);
           isProfileLoading = false;
           setState(() {});
