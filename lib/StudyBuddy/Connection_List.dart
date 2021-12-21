@@ -381,7 +381,7 @@ class _ConnectionListState extends State<ConnectionList> {
       Dio dio = Dio();
 
       var response =
-          await dio.get('${Config.getConnectionUrl}$userId?page=$page');
+          await dio.get('${Config.getConnectionUrl}$userId?page=$page&user_type=$registerAs');
       print(response.statusCode);
 
       if (response.statusCode == 200) {

@@ -266,7 +266,7 @@ class _RequestListState extends State<RequestList> {
     try {
       Dio dio = Dio();
 
-      var response = await dio.get('${Config.getRequestUrl}$userId?page=$page');
+      var response = await dio.get('${Config.getRequestUrl}$userId?page=$page&user_type=$registerAs');
       print(response.statusCode);
 
       if (response.statusCode == 200) {
