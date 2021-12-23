@@ -11,7 +11,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'View_Booking_Details.dart';
 
 class CancelledList extends StatefulWidget {
-  CancelledList({Key key}) : super(key: key);
+  CancelledList({Key? key}) : super(key: key);
 
   @override
   _CancelledListState createState() => _CancelledListState();
@@ -20,21 +20,21 @@ class CancelledList extends StatefulWidget {
 class _CancelledListState extends State<CancelledList> {
   var result = BookingDetails();
   bool isLoading = true;
-  String authToken;
+  String? authToken;
   ScrollController _scrollController = ScrollController();
   int page = 1;
-  List<String> bookingImage = [];
-  List<String> bookingName = [];
-  List<String> bookingId = [];
-  List<String> propertyId = [];
-  List<String> bookingType = [];
+  List<String?> bookingImage = [];
+  List<String?> bookingName = [];
+  List<String?> bookingId = [];
+  List<String?> propertyId = [];
+  List<String?> bookingType = [];
   //List<String> bookingPeriod = [];
-  List<List<String>> bookingMeal = [];
-   List<String> bookingGuestName = [];
-  List<String> bookingMobileNumber = [];
-  List<String> bookingCheckIn = [];
-  List<String> bookingCheckOut = [];
-  List<String> bookingRoomType = [];
+  List<List<String>?> bookingMeal = [];
+   List<String?> bookingGuestName = [];
+  List<String?> bookingMobileNumber = [];
+  List<String?> bookingCheckIn = [];
+  List<String?> bookingCheckOut = [];
+  List<String?> bookingRoomType = [];
   List<dynamic> bookingRoomAmount = [];
   List<dynamic> bookingTaxAmount = [];
   List<dynamic> bookingMealAmount = [];
@@ -56,7 +56,7 @@ class _CancelledListState extends State<CancelledList> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if (page > 1) {
-          if (result.data.length > 0) {
+          if (result.data!.length > 0) {
             page++;
             getCancelledBookingAPI(page);
             print(page);
@@ -128,7 +128,7 @@ class _CancelledListState extends State<CancelledList> {
                                     borderRadius: BorderRadius.circular(10.0),
                                     image: DecorationImage(
                                         image:
-                                            NetworkImage(bookingImage[index]),
+                                            NetworkImage(bookingImage[index]!),
                                         fit: BoxFit.cover)),
                               ),
                             ),
@@ -139,7 +139,7 @@ class _CancelledListState extends State<CancelledList> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    bookingName[index],
+                                    bookingName[index]!,
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 11.0.sp,
@@ -160,7 +160,7 @@ class _CancelledListState extends State<CancelledList> {
                                   Padding(
                                     padding: EdgeInsets.only(top: 1.0.h),
                                     child: Text(
-                                      bookingType[index],
+                                      bookingType[index]!,
                                       style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontSize: 9.0.sp,
@@ -238,24 +238,24 @@ class _CancelledListState extends State<CancelledList> {
         print(response.data);
         result = BookingDetails.fromJson(response.data);
         if(result.status == true){
-        if (result.data.length > 0) {
-          for (int i = 0; i < result.data.length; i++) {
-            bookingId.add(result.data[i].bookingId);
-            propertyId.add(result.data[i].propertyId);
-            bookingName.add(result.data[i].name);
-            bookingImage.add(result.data[i].propertyImage);
-            bookingType.add(result.data[i].roomType);
-            bookingMeal.add(result.data[i].meal);
+        if (result.data!.length > 0) {
+          for (int i = 0; i < result.data!.length; i++) {
+            bookingId.add(result.data![i].bookingId);
+            propertyId.add(result.data![i].propertyId);
+            bookingName.add(result.data![i].name);
+            bookingImage.add(result.data![i].propertyImage);
+            bookingType.add(result.data![i].roomType);
+            bookingMeal.add(result.data![i].meal);
             //bookingPeriod.add('${result.data[i].checkInDate} to ${result.data[i].checkOutDate}');
-            bookingGuestName.add(result.data[i].guestName);
-            bookingMobileNumber.add(result.data[i].mobileNumber);
-            bookingCheckIn.add(result.data[i].checkInDate);
-            bookingCheckOut.add(result.data[i].checkOutDate);
-            bookingRoomType.add(result.data[i].roomType);
-            bookingRoomAmount.add(result.data[i].roomAmount);
-            bookingTaxAmount.add(result.data[i].taxAmount);
-            bookingMealAmount.add(result.data[i].mealAmount);
-            bookingTotalAmount.add(result.data[i].totalAmount);
+            bookingGuestName.add(result.data![i].guestName);
+            bookingMobileNumber.add(result.data![i].mobileNumber);
+            bookingCheckIn.add(result.data![i].checkInDate);
+            bookingCheckOut.add(result.data![i].checkOutDate);
+            bookingRoomType.add(result.data![i].roomType);
+            bookingRoomAmount.add(result.data![i].roomAmount);
+            bookingTaxAmount.add(result.data![i].taxAmount);
+            bookingMealAmount.add(result.data![i].mealAmount);
+            bookingTotalAmount.add(result.data![i].totalAmount);
           }
           print(bookingGuestName);
           print(bookingId);
@@ -267,7 +267,7 @@ class _CancelledListState extends State<CancelledList> {
         }
         }else {
           Fluttertoast.showToast(
-            msg: result.message == null ? result.errorMsg : result.message,
+            msg: result.message == null ? result.errorMsg : result.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -278,7 +278,7 @@ class _CancelledListState extends State<CancelledList> {
         }
       } else {
         print('${response.statusCode} : ${response.data.toString()}');
-        throw response.statusCode;
+        throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       print(e.response);

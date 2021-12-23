@@ -18,11 +18,11 @@ class PropertyReview {
         this.metaParams,
     });
 
-    bool status;
+    bool? status;
     dynamic errorCode;
     dynamic errorMsg;
-    String message;
-    Data data;
+    String? message;
+    Data? data;
     dynamic metaParams;
 
     factory PropertyReview.fromJson(Map<String, dynamic> json) => PropertyReview(
@@ -39,7 +39,7 @@ class PropertyReview {
         "error_code": errorCode,
         "error_msg": errorMsg,
         "message": message,
-        "data": data.toJson(),
+        "data": data!.toJson(),
         "meta_params": metaParams,
     };
 }
@@ -52,10 +52,10 @@ class Data {
         this.review,
     });
 
-    int totalRating;
-    int totalReview;
-    Rating rating;
-    List<Review> review;
+    int? totalRating;
+    int? totalReview;
+    Rating? rating;
+    List<Review>? review;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         totalRating: json["total_rating"],
@@ -67,8 +67,8 @@ class Data {
     Map<String, dynamic> toJson() => {
         "total_rating": totalRating,
         "total_review": totalReview,
-        "rating": rating.toJson(),
-        "review": List<dynamic>.from(review.map((x) => x.toJson())),
+        "rating": rating!.toJson(),
+        "review": List<dynamic>.from(review!.map((x) => x.toJson())),
     };
 }
 
@@ -82,12 +82,12 @@ class Rating {
         this.avgRating,
     });
 
-    int the1;
-    int the2;
-    int the3;
-    int the4;
-    int the5;
-    double avgRating;
+    int? the1;
+    int? the2;
+    int? the3;
+    int? the4;
+    int? the5;
+    double? avgRating;
 
     factory Rating.fromJson(Map<String, dynamic> json) => Rating(
         the1: json["1"],
@@ -119,13 +119,13 @@ class Review {
         this.rating,
     });
 
-    int reviewId;
-    int reviewUserId;
-    String profileImage;
-    String date;
-    String headline;
-    String descreption;
-    String rating;
+    int? reviewId;
+    int? reviewUserId;
+    String? profileImage;
+    String? date;
+    String? headline;
+    String? descreption;
+    String? rating;
 
     factory Review.fromJson(Map<String, dynamic> json) => Review(
         reviewId: json["review_id"],

@@ -13,11 +13,11 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'Update_Course_Screen.dart';
 
 class EnrolledCourseDetailScreen extends StatefulWidget {
-  String courseName, coursDate, courseDescription;
-  List<String> courseLinks;
-  int courseId;
+  String? courseName, coursDate, courseDescription;
+  List<String>? courseLinks;
+  int? courseId;
   EnrolledCourseDetailScreen(
-      {Key key,
+      {Key? key,
       this.courseId,
       this.courseName,
       this.coursDate,
@@ -30,7 +30,7 @@ class EnrolledCourseDetailScreen extends StatefulWidget {
 }
 
 class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen> {
-  String registerAs, authToken;
+  String? registerAs, authToken;
 
   @override
   void initState() {
@@ -144,7 +144,7 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  widget.courseName,
+                  widget.courseName!,
                   style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 14.0.sp,
@@ -166,7 +166,7 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
                     SizedBox(
                       width: 2.0.w,
                     ),
-                    Text(widget.coursDate,
+                    Text(widget.coursDate!,
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 10.0.sp,
@@ -179,7 +179,7 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
                 ),
                 Container(
                   child: Text(
-                    widget.courseDescription,
+                    widget.courseDescription!,
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10.0.sp,
@@ -193,7 +193,7 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
                 ),
                 ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: widget.courseLinks.length,
+                    itemCount: widget.courseLinks!.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return Padding(
@@ -230,7 +230,7 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
                                     //width: 70.0.w,
                                     child: Center(
                                       child: Text(
-                                        widget.courseLinks[index],
+                                        widget.courseLinks![index],
                                         style: TextStyle(
                                             fontFamily: 'Montserrat',
                                             fontSize: 10.0.sp,
@@ -263,7 +263,7 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
       FormData formData = FormData.fromMap({'course_id': widget.courseId});
       var response = await dio.post(Config.discontinueCourseUrl,
           data: formData,
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         print(response.data);
         result = DiscontinueCourse.fromJson(response.data);
@@ -283,7 +283,7 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
           );
         } else {
           Fluttertoast.showToast(
-            msg: result.message,
+            msg: result.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -309,9 +309,9 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -321,7 +321,7 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }

@@ -18,11 +18,11 @@ class GetAllProperty {
         this.metaParams,
     });
 
-    bool status;
+    bool? status;
     dynamic errorCode;
     dynamic errorMsg;
-    String message;
-    List<Data> data;
+    String? message;
+    List<Data>? data;
     dynamic metaParams;
 
     factory GetAllProperty.fromJson(Map<String, dynamic> json) => GetAllProperty(
@@ -39,7 +39,7 @@ class GetAllProperty {
         "error_code": errorCode,
         "error_msg": errorMsg,
         "message": message,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
         "meta_params": metaParams,
     };
 }
@@ -58,16 +58,16 @@ class Data {
         this.meal,
     });
 
-    int propertyId;
-    String name;
-    String description;
-    Location location;
-    List<String> featuredImage;
-    double rating;
-    int review;
-    List<Amenity> amenities;
-    List<Room> room;
-    List<Meal> meal;
+    int? propertyId;
+    String? name;
+    String? description;
+    Location? location;
+    List<String>? featuredImage;
+    double? rating;
+    int? review;
+    List<Amenity>? amenities;
+    List<Room>? room;
+    List<Meal>? meal;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         propertyId: json["property_id"],
@@ -86,13 +86,13 @@ class Data {
         "property_id": propertyId,
         "name": name,
         "description": description,
-        "location": location.toJson(),
-        "featured_image": List<dynamic>.from(featuredImage.map((x) => x)),
+        "location": location!.toJson(),
+        "featured_image": List<dynamic>.from(featuredImage!.map((x) => x)),
         "rating": rating,
         "review": review,
-        "amenities": List<dynamic>.from(amenities.map((x) => x.toJson())),
-        "room": List<dynamic>.from(room.map((x) => x.toJson())),
-        "meal": List<dynamic>.from(meal.map((x) => x.toJson())),
+        "amenities": List<dynamic>.from(amenities!.map((x) => x.toJson())),
+        "room": List<dynamic>.from(room!.map((x) => x.toJson())),
+        "meal": List<dynamic>.from(meal!.map((x) => x.toJson())),
     };
 }
 
@@ -103,9 +103,9 @@ class Amenity {
         this.amenitiesImage,
     });
 
-    int amenitiesId;
-    String amenitiesName;
-    String amenitiesImage;
+    int? amenitiesId;
+    String? amenitiesName;
+    String? amenitiesImage;
 
     factory Amenity.fromJson(Map<String, dynamic> json) => Amenity(
         amenitiesId: json["amenities_id"],
@@ -127,9 +127,9 @@ class Location {
         this.lng,
     });
 
-    String address;
-    String lat;
-    String lng;
+    String? address;
+    String? lat;
+    String? lng;
 
     factory Location.fromJson(Map<String, dynamic> json) => Location(
         address: json["address"],
@@ -151,9 +151,9 @@ class Meal {
         this.mealAmount,
     });
 
-    int mealId;
-    String mealType;
-    String mealAmount;
+    int? mealId;
+    String? mealType;
+    String? mealAmount;
 
     factory Meal.fromJson(Map<String, dynamic> json) => Meal(
         mealId: json["meal_id"],
@@ -175,9 +175,9 @@ class Room {
         this.roomAmount,
     });
 
-    int roomId;
-    String roomType;
-    String roomAmount;
+    int? roomId;
+    String? roomType;
+    String? roomAmount;
 
     factory Room.fromJson(Map<String, dynamic> json) => Room(
         roomId: json["room_id"],

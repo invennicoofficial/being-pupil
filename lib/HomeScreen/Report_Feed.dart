@@ -10,8 +10,8 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class ReportFeed extends StatefulWidget {
-  final int postId;
-  const ReportFeed({Key key, @required this.postId}) : super(key: key);
+  final int? postId;
+  const ReportFeed({Key? key, required this.postId}) : super(key: key);
 
   @override
   _ReportFeedState createState() => _ReportFeedState();
@@ -20,11 +20,11 @@ class ReportFeed extends StatefulWidget {
 class _ReportFeedState extends State<ReportFeed> {
   bool isOther = false;
   TextEditingController _detailController = TextEditingController();
-  Map<String, dynamic> reportMap = Map<String, dynamic>();
-  List<dynamic> reportMapData = List<dynamic>();
-  int selectedIssue;
-  String authToken;
-  int issueId;
+  Map<String, dynamic>? reportMap = Map<String, dynamic>();
+  List<dynamic>? reportMapData = [];//List<dynamic>();
+  int? selectedIssue;
+  String? authToken;
+  int? issueId;
 
   @override
   void initState() {
@@ -168,7 +168,7 @@ class _ReportFeedState extends State<ReportFeed> {
         child: Column(
           children: <Widget>[
             ListView.builder(
-                itemCount: reportMapData.length,
+                itemCount: reportMapData!.length,
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
@@ -178,7 +178,7 @@ class _ReportFeedState extends State<ReportFeed> {
                         setState(() {
                           selectedIssue = index;
                           issueId = index + 1;
-                          reportMapData[index]['name'] == 'Others'
+                          reportMapData![index]['name'] == 'Others'
                               ? isOther = true
                               : isOther = false;
                         });
@@ -189,7 +189,7 @@ class _ReportFeedState extends State<ReportFeed> {
                           ? Constants.bgColor.withOpacity(0.7)
                           : null,
                       title: Text(
-                        '${reportMapData[index]['name']}',
+                        '${reportMapData![index]['name']}',
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 12.0.sp,
@@ -227,7 +227,7 @@ class _ReportFeedState extends State<ReportFeed> {
         //result = reportIssueFromJson(response.data);
         reportMap = response.data;
         setState(() {
-          reportMapData = reportMap['data'];
+          reportMapData = reportMap!['data'];
         });
         print(reportMap);
         //return ReportIssue.fromJson(json.decode(response.data));
@@ -241,16 +241,16 @@ class _ReportFeedState extends State<ReportFeed> {
   }
 
   //Report Issue on Post API
-  reportIssueOnPost(int postId, int issueId) async {
+  reportIssueOnPost(int? postId, int? issueId) async {
     displayProgressDialog(context);
     //var result = ReportIssue();
-    Map<String, dynamic> map = Map<String, dynamic>();
+    Map<String, dynamic>? map = Map<String, dynamic>();
     try {
       Dio dio = Dio();
       FormData formData = FormData.fromMap({
         'post_id': postId,
         'issue_id': issueId,
-        'description':  reportMapData[selectedIssue]['name'] == 'Others' ? _detailController.text : null
+        'description':  reportMapData![selectedIssue!]['name'] == 'Others' ? _detailController.text : null
       });
 
       var response = await dio.post(Config.reportIssueUrl,
@@ -265,7 +265,7 @@ class _ReportFeedState extends State<ReportFeed> {
         // print(result);
         map = response.data;
         //mapData = map['data'];
-        if(map['status'] == true){
+        if(map!['status'] == true){
          Fluttertoast.showToast(
           msg: map['message'],//map['data']['status'],
           toastLength: Toast.LENGTH_SHORT,
@@ -306,9 +306,9 @@ class _ReportFeedState extends State<ReportFeed> {
       print(stack);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -318,14 +318,14 @@ class _ReportFeedState extends State<ReportFeed> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }
   }
 
   displayProgressDialog(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).push(new PageRouteBuilder(
           opaque: false,
           pageBuilder: (BuildContext context, _, __) {

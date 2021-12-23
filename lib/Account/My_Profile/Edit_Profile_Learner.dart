@@ -30,25 +30,25 @@ import 'package:being_pupil/Registration/Learner_Registration.dart';
 
 
 class EditLearnerProfile extends StatefulWidget {
-  const EditLearnerProfile({Key key}) : super(key: key);
+  const EditLearnerProfile({Key? key}) : super(key: key);
 
   @override
   _EditLearnerProfileState createState() => _EditLearnerProfileState();
 }
 
 class _EditLearnerProfileState extends State<EditLearnerProfile> {
-  File _image, _certificate, _document;
-  String birthDateInString, selectedYearString;
-  DateTime birthDate, selectedYear;
+  XFile? _image, _certificate, _document;
+  String? birthDateInString, selectedYearString;
+  DateTime? birthDate, selectedYear;
   bool isDateSelected = false;
   bool isYearSelected = false;
-  String gender = 'Gender';
-  String docType = 'DocType';
+  String? gender = 'Gender';
+  String? docType = 'DocType';
   String workExp = '0';
-  String fileName;
-  String imagePath, documentPath;
-  String address1, address2, city, country, pinCode;
-  double lat, lng;
+  String? fileName;
+  String? imagePath, documentPath;
+  String? address1, address2, city, country, pinCode;
+  double? lat, lng;
   bool isCat1 = false;
   TextEditingController _nameController = TextEditingController();
   TextEditingController _mobileController = TextEditingController();
@@ -61,24 +61,24 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
   TextEditingController _otherLinkLinkController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
 
-  Map<String, dynamic> categoryMap = Map<String, dynamic>();
-  List<dynamic> categoryMapData = List<dynamic>();
-  List<bool> intrestedCat = List<bool>();
-  List<int> intrestedCatKey = List<int>();
+  Map<String, dynamic>? categoryMap = Map<String, dynamic>();
+  List<dynamic>? categoryMapData = [];//List<dynamic>();
+  List<bool?> intrestedCat = [];//List<bool?>();
+  List<int?> intrestedCatKey = [];//List<int?>();
 
   List<String> selectedSkillList = [];
   List<String> selectedHobbiesList = [];
 
-  Map<String, dynamic> skillMap = Map<String, dynamic>();
-  List<dynamic> skillMapData = List();
+  Map<String, dynamic>? skillMap = Map<String, dynamic>();
+  List<dynamic>? skillMapData = [];//List();
 
-  Map<String, dynamic> hobbieMap = Map<String, dynamic>();
-  List<dynamic> hobbieMapData = List();
+  Map<String, dynamic>? hobbieMap = Map<String, dynamic>();
+  List<dynamic>? hobbieMapData = [];//List();
 
   var result = LearnerProfileDetails();
   bool isLoading = true;
-  String registerAs;
-  int totalWorkExp;
+  String? registerAs;
+  int? totalWorkExp;
 
   // List<Skills> _selectedSkills;
   // String _selectedSkillsJson = 'Nothing to show';
@@ -86,11 +86,12 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
   // List<Hobbies> _selectedHobbies;
   // String _selectedHobbiesJson = 'Nothing to show';
 
-  List<String> catList = List();
-  String authToken;
+  List<String> catList = [];//List();
+  String? authToken;
   List controllersList = [];
-  Map<String, dynamic> eduMap;
-  List<dynamic> eduMapData;
+  Map<String, dynamic>? eduMap;
+  List<dynamic>? eduMapData;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
@@ -119,20 +120,20 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
   }
 
    populateEducationDetails(){
-    print(result.data.educationalDetails);
-    if(result.data.educationalDetails != null){
-      for(int i = 0; i < result.data.educationalDetails.length; i++){
+    print(result.data!.educationalDetails);
+    if(result.data!.educationalDetails != null){
+      for(int i = 0; i < result.data!.educationalDetails!.length; i++){
         controllersList.add(TextEditingController());
-        controllersList[i].text = eduMapData[i]['school_name'];
-        result.data.educationalDetails1[i]['year'] = eduMapData[i]['year'];
-        result.data.educationalDetails1[i]['qualification'] = eduMapData[i]['qualification'];
+        controllersList[i].text = eduMapData![i]['school_name'];
+        result.data!.educationalDetails1![i]['year'] = eduMapData![i]['year'];
+        result.data!.educationalDetails1![i]['qualification'] = eduMapData![i]['qualification'];
         //fileImage.add(result.data.educationalDetails1[i]['certificate_file']);
       }
     }else{
       if(eduMapData != null){
-        for(int i = 0; i < eduMapData.length; i++){
+        for(int i = 0; i < eduMapData!.length; i++){
           controllersList.add(TextEditingController());
-          controllersList[i].text = eduMapData[i]['school_name'];
+          controllersList[i].text = eduMapData![i]['school_name'];
         }
       }else{
         eduMapData = [];
@@ -166,23 +167,23 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
   }
 
   _imageFromCamera() async {
-    File image = await ImagePicker.pickImage(
+    XFile? image = await _picker.pickImage(
         source: ImageSource.camera, imageQuality: 50);
 
     setState(() {
       _image = image;
-      imagePath = _image.path;
+      imagePath = _image!.path;
     });
     //print('FILE::' + imagePath);
   }
 
   _imageFromGallery() async {
-    File image = await ImagePicker.pickImage(
+    XFile? image = await _picker.pickImage(
         source: ImageSource.gallery, imageQuality: 50);
 
     setState(() {
       _image = image;
-      imagePath = _image.path;
+      imagePath = _image!.path;
     });
   }
 
@@ -372,7 +373,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
   }
 
   void _uploadDocument() async {
-    FilePickerResult result = await FilePicker.platform.pickFiles(
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf']);
     if (result != null) {
@@ -380,15 +381,15 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
       PlatformFile file = result.files.first;
       setState(() {
         fileName = file.name;
-        _document = File(file.path);
-        documentPath = _document.path;
+        _document = XFile(file.path!);
+        documentPath = _document!.path;
       });
 
       print(file.name);
       print(file.bytes);
       print(file.size);
       print(file.extension);
-      print('DOC:::' + documentPath);
+      print('DOC:::' + documentPath!);
     } else {}
   }
 
@@ -451,7 +452,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                               child: ClipRRect(
                                                 borderRadius: BorderRadius.circular(70),
                                                 child: Image.file(
-                                                  _image,
+                                                  File(_image!.path),
                                                   height: 125.0,//14.0.h,
                                                   width: 125.0,//30.0.w,
                                                   fit: BoxFit.cover,
@@ -501,7 +502,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                               child: ClipRRect(
                                           borderRadius: BorderRadius.circular(70),
                                           child: Image.network(
-                                            result.data.imageUrl,
+                                            result.data!.imageUrl!,
                                             height: 125.0,//14.0.h,
                                             width: 125.0,//30.0.w,
                                             fit: BoxFit.cover,
@@ -749,12 +750,12 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 3.0.w),
                                                 child: Text(
-                                                  result.data.gender == null
+                                                  result.data!.gender == null
                                                       ? 'Gender'
-                                                      : result.data.gender ==
+                                                      : result.data!.gender ==
                                                               'M'
                                                           ? 'Male'
-                                                          : result.data
+                                                          : result.data!
                                                                       .gender ==
                                                                   'F'
                                                               ? 'Female'
@@ -872,33 +873,33 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                         birthDate = datePick;
                                         isDateSelected = true;
 
-                                        if (birthDate.day.toString().length ==
+                                        if (birthDate!.day.toString().length ==
                                                 1 &&
-                                            birthDate.month.toString().length ==
+                                            birthDate!.month.toString().length ==
                                                 1) {
                                           setState(() {
                                             birthDateInString =
-                                                "0${birthDate.day.toString()}/0${birthDate.month}/${birthDate.year}";
+                                                "0${birthDate!.day.toString()}/0${birthDate!.month}/${birthDate!.year}";
                                           });
                                           print('11111');
-                                        } else if (birthDate.day
+                                        } else if (birthDate!.day
                                                 .toString()
                                                 .length ==
                                             1) {
                                           setState(() {
                                             birthDateInString =
-                                                "0${birthDate.day}/${birthDate.month}/${birthDate.year}";
+                                                "0${birthDate!.day}/${birthDate!.month}/${birthDate!.year}";
                                           });
                                           print('22222');
-                                        } else if (birthDate.month
+                                        } else if (birthDate!.month
                                                 .toString()
                                                 .length ==
                                             1) {
                                           birthDateInString =
-                                              "${birthDate.day}/0${birthDate.month}/${birthDate.year}";
+                                              "${birthDate!.day}/0${birthDate!.month}/${birthDate!.year}";
                                         } else {
                                           birthDateInString =
-                                              "${birthDate.day}/${birthDate.month}/${birthDate.year}";
+                                              "${birthDate!.day}/${birthDate!.month}/${birthDate!.year}";
                                         } // 08/14/2019
                                       });
                                           }
@@ -920,9 +921,9 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                             children: [
                                               Text(
                                                 isDateSelected
-                                                    ? birthDateInString
-                                                    : result.data.dob != null
-                                                        ? result.data.dob
+                                                    ? birthDateInString!
+                                                    : result.data!.dob != null
+                                                        ? result.data!.dob!
                                                         : 'DOB',
                                                 style: TextStyle(
                                                     fontFamily: 'Montserrat',
@@ -965,20 +966,20 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 3.0.w),
                                           child: Text(
-                                            result.data.documentType == null
+                                            result.data!.documentType == null
                                                 ? 'Select Document Type'
-                                                : result.data.documentType ==
+                                                : result.data!.documentType ==
                                                         'A'
                                                     ? 'Aadhaar'
-                                                    : result.data
+                                                    : result.data!
                                                                 .documentType ==
                                                             'PN'
                                                         ? 'PAN'
-                                                        : result.data
+                                                        : result.data!
                                                                     .documentType ==
                                                                 'PAS'
                                                             ? 'Passport'
-                                                            : result.data
+                                                            : result.data!
                                                                         .documentType ==
                                                                     'VI'
                                                                 ? 'Voter ID'
@@ -1103,7 +1104,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                         width: 90.0.w,
                                         color: Colors.transparent,
                                         child: Center(
-                                            child: result.data.documentUrl ==
+                                            child: result.data!.documentUrl ==
                                                     null
                                                 ? Row(
                                                     mainAxisAlignment:
@@ -1123,7 +1124,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                                         (fileName == null ||
                                                                 fileName == '')
                                                             ? 'Upload the file'
-                                                            : fileName,
+                                                            : fileName!,
                                                         style: TextStyle(
                                                             fontFamily:
                                                                 'Montserrat',
@@ -1146,8 +1147,8 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                                         decoration: BoxDecoration(
                                                             image: DecorationImage(
                                                                 image: NetworkImage(
-                                                                    result.data
-                                                                        .documentUrl),
+                                                                    result.data!
+                                                                        .documentUrl!),
                                                                 fit: BoxFit
                                                                     .fill)),
                                                       ),
@@ -1163,8 +1164,8 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                                             height: 3.0.h,
                                                             //width: 50.0.w,
                                                             child: Text(
-                                                              result.data
-                                                                  .documentUrl
+                                                              result.data!
+                                                                  .documentUrl!
                                                                   .split('/')
                                                                   .last,
                                                               style: TextStyle(
@@ -1275,14 +1276,14 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                                   //width: 70.0.w,
                                                   child: Text(
                                                     address1 != null
-                                                        ? address1
-                                                        : result.data.location
+                                                        ? address1!
+                                                        : result.data!.location!
                                                                 .isEmpty
                                                             ? 'Location'
                                                             : result
-                                                                .data
-                                                                .location[0]
-                                                                .addressLine1,
+                                                                .data!
+                                                                .location![0]
+                                                                .addressLine1!,
                                                     // address1 == null
                                                     //     ? 'Location'
                                                     //     : address1,
@@ -1335,7 +1336,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                         ),
 
                         ListView.builder(
-                          itemCount: result.data.educationalDetails.length, //educationDetailMap.length, //itemCount,
+                          itemCount: result.data!.educationalDetails!.length, //educationDetailMap.length, //itemCount,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
@@ -1550,7 +1551,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                                     // isYearSelected
                                                     //     ? selectedYear.year.toString()
                                                     //     : 
-                                                        result.data.educationalDetails1[index]['year'],
+                                                        result.data!.educationalDetails1![index]['year'],
                                                     //'Year',
                                                     style: TextStyle(
                                                         fontFamily:
@@ -1707,7 +1708,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                                     // isYearSelected
                                                     //     ? selectedYear.year.toString()
                                                     //     : 
-                                                       result.data.educationalDetails1[index]['qualification'],
+                                                       result.data!.educationalDetails1![index]['qualification'],
                                                     //'Year',
                                                     style: TextStyle(
                                                         fontFamily:
@@ -1794,7 +1795,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                                         image: DecorationImage(
                                                             image: 
                                                             //fileImage[index] == null ? //NetworkImage(certificateList[index])
-                                                            NetworkImage(result.data.educationalDetails1[index]['certificate_file']),
+                                                            NetworkImage(result.data!.educationalDetails1![index]['certificate_file']),
                                                             //: FileImage(fileImage[index]),
                                                             fit: BoxFit.fill)),
                                                   ),
@@ -1866,7 +1867,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                               GridView.builder(
                                   shrinkWrap: true,
                                   padding: EdgeInsets.all(0.0),
-                                  itemCount: categoryMapData.length,
+                                  itemCount: categoryMapData!.length,
                                   physics: NeverScrollableScrollPhysics(),
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
@@ -1877,7 +1878,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                         controlAffinity:
                                             ListTileControlAffinity.leading,
                                         title: Text(
-                                            categoryMapData[index]['value'],
+                                            categoryMapData![index]['value'],
                                             style: TextStyle(
                                                 fontFamily: 'Montserrat',
                                                 fontSize: 10.0.sp,
@@ -1888,7 +1889,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                         onChanged: (value) {
                                           setState(() {
                                             intrestedCat[index] =
-                                                !intrestedCat[index];
+                                                !intrestedCat[index]!;
                                             if (intrestedCat[index] == true) {
                                               intrestedCatKey.add(index + 1);
                                               intrestedCatKey.sort();
@@ -1940,10 +1941,10 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 3.0.w),
                                           child: Text(
-                                            result.data.totalWorkExperience ==
+                                            result.data!.totalWorkExperience ==
                                                     null
                                                 ? 'Total Work Experience'
-                                                : result.data.totalWorkExperience,
+                                                : result.data!.totalWorkExperience!,
                                             style: TextStyle(
                                                 fontFamily: 'Montserrat',
                                                 fontSize: 10.0.sp,
@@ -2154,10 +2155,10 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                               BorderRadius.circular(5.0)),
                                       child: Center(
                                         child: Text(
-                                            result.data.identificationDocumentNumber == null ? 'Please mention your hobbies example #skill1 #skill2....' :
+                                            result.data!.identificationDocumentNumber == null ? 'Please mention your hobbies example #skill1 #skill2....' :
                                           selectedSkillList == null ||
                                             selectedSkillList.length == 0
-                                              ? result.data.skills
+                                              ? result.data!.skills!
                                               : selectedSkillList.length > 0
                                                   ? selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '').
                                             replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#')
@@ -2319,10 +2320,10 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                               BorderRadius.circular(5.0)),
                                       child: Center(
                                         child: Text(
-                                          result.data.identificationDocumentNumber == null ? 'Please mention your hobbies example #hobbie1 #hobbie2....' :
+                                          result.data!.identificationDocumentNumber == null ? 'Please mention your hobbies example #hobbie1 #hobbie2....' :
                                           selectedHobbiesList == null ||
                                             selectedHobbiesList.length == 0
-                                              ? result.data.hobbies
+                                              ? result.data!.hobbies!
                                               : selectedHobbiesList.length > 0
                                                   ? selectedHobbiesList
                                                       .toString().replaceAll('[', '').replaceAll(']', '').
@@ -2760,7 +2761,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                           backgroundColor: Constants.bgColor,
                                           textColor: Colors.white,
                                           fontSize: 10.0.sp);
-                                    } else if (fileName == null  && result.data.imageUrl.split("/").last == 'default.jpg'//|| fileName == ''
+                                    } else if (fileName == null  && result.data!.imageUrl!.split("/").last == 'default.jpg'//|| fileName == ''
                                     ) {
                                       Fluttertoast.showToast(
                                           msg: "Please Pick Selected Document",
@@ -2798,9 +2799,9 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                     _achivementController.text,
                                     // selectedSkillList == [] ? result.data.skills : selectedSkillList.toString(),
                                     // selectedHobbiesList == [] ? result.data.hobbies : selectedHobbiesList.toString(),
-                                    selectedSkillList.length == 0 ? result.data.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')
+                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')
                                             .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedHobbiesList.length == 0 ? result.data.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '')
+                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '')
                                            .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
                                     _fbLinkController.text,
                                     _instagramLinkController.text,
@@ -2831,9 +2832,9 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                     lat,
                                     lng,
                                     _achivementController.text,
-                                    selectedSkillList.length == 0 ? result.data.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')
+                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')
                                             .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedHobbiesList.length == 0 ? result.data.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '')
+                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '')
                                            .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
                                     _fbLinkController.text,
                                     _instagramLinkController.text,
@@ -2841,7 +2842,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                     _otherLinkLinkController.text,
                                     totalWorkExp,
                                     totalWorkExp);
-                                    print('SKILL1 '+ result.data.skills);
+                                    print('SKILL1 '+ result.data!.skills!);
                                     print('SKILL2 '+ selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'));
                                     print('SKILL3 '+ selectedSkillList.toString());
                                       // editLearnerProfileApi(
@@ -2914,7 +2915,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
   //Tag for Skills
   void _openFilterSkillsDialog() async {
     await FilterListDialog.display(context,
-        listData: skillMapData,
+        listData: skillMapData!,
         selectedListData: selectedSkillList,
         height: 480,
         headlineText: "Select or Search Skill",
@@ -2929,11 +2930,11 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
             fontWeight: FontWeight.w500,
             fontSize: 12.0.sp,
             color: Constants.bgColor),
-        label: (item) {
+        choiceChipLabel: (dynamic item) {
           return item;
         },
-        validateSelectedItem: (list, val) {
-          return list.contains(val);
+        validateSelectedItem: (list, dynamic val) {
+          return list!.contains(val);
         },
         applyButonTextBackgroundColor: Constants.bgColor,
         applyButtonTextStyle: TextStyle(
@@ -2958,13 +2959,14 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
             color: Constants.bgColor),
         //useSafeArea: true,
         onItemSearch: (list, text) {
-          if (list.any((element) =>
-              element.toLowerCase().contains(text.toLowerCase()))) {
+          if (list!.any((element) =>
+              element.toString().toLowerCase().contains(text.toLowerCase()))) {
             return list
                 .where((element) =>
-                    element.toLowerCase().contains(text.toLowerCase()))
+                    element.toString().toLowerCase().contains(text.toLowerCase()))
                 .toList();
           }
+          return list;
         },
         onApplyButtonClick: (list) {
           if (list != null) {
@@ -2979,7 +2981,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
   //Tag for Hobbies
   void _openFilterHobbiesDialog() async {
     await FilterListDialog.display(context,
-        listData: hobbieMapData,
+        listData: hobbieMapData!,
         selectedListData: selectedHobbiesList,
         height: 480,
         headlineText: "Select or Search Hobbie",
@@ -2994,11 +2996,11 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
             fontWeight: FontWeight.w500,
             fontSize: 12.0.sp,
             color: Constants.bgColor),
-        label: (item) {
+        choiceChipLabel: (dynamic item) {
           return item;
         },
-        validateSelectedItem: (list, val) {
-          return list.contains(val);
+        validateSelectedItem: (list, dynamic val) {
+          return list!.contains(val);
         },
         applyButonTextBackgroundColor: Constants.bgColor,
         applyButtonTextStyle: TextStyle(
@@ -3023,13 +3025,14 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
             color: Constants.bgColor),
         //useSafeArea: true,
         onItemSearch: (list, text) {
-          if (list.any((element) =>
-              element.toLowerCase().contains(text.toLowerCase()))) {
+          if (list!.any((element) =>
+              element.toString().toLowerCase().contains(text.toLowerCase()))) {
             return list
                 .where((element) =>
-                    element.toLowerCase().contains(text.toLowerCase()))
+                    element.toString().toLowerCase().contains(text.toLowerCase()))
                 .toList();
           }
+          return list;
         },
         onApplyButtonClick: (list) {
           if (list != null) {
@@ -3043,19 +3046,19 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
 
   //Location Picker
   void showPlacePicker() async {
-    LocationResult result = await Navigator.of(context).push(MaterialPageRoute(
+    LocationResult result = await (Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => PlacePicker(
               Config.locationKey,
               // displayLocation: customLocation,
-            )));
+            ))));
 
     setState(() {
       address1 = result.formattedAddress;
-      address2 = result.subLocalityLevel1.name;
+      address2 = result.subLocalityLevel1!.name;
       city = result.locality;
-      country = result.country.name;
-      lat = result.latLng.latitude;
-      lng = result.latLng.longitude;
+      country = result.country!.name;
+      lat = result.latLng!.latitude;
+      lng = result.latLng!.longitude;
       pinCode = result.postalCode;
     });
 
@@ -3065,37 +3068,37 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
     print('ADDRESS::: $address1');
   }
 
- Future<void> saveImage() async {
-    final response = await http.get(result.data.imageUrl);
-    final response1 = await http.get(result.data.documentUrl);
+//  Future<void> saveImage() async {
+//     final response = await http.get(result.data.imageUrl);
+//     final response1 = await http.get(result.data.documentUrl);
 
-    // Get the image name 
-    final imageName = path.basename(result.data.imageUrl);
-    final documentName = path.basename(result.data.documentUrl);
-    // Get the document directory path 
-    final appDir = await pathProvider.getApplicationDocumentsDirectory();
+//     // Get the image name 
+//     final imageName = path.basename(result.data.imageUrl);
+//     final documentName = path.basename(result.data.documentUrl);
+//     // Get the document directory path 
+//     final appDir = await pathProvider.getApplicationDocumentsDirectory();
 
-    // This is the saved image path 
-    // You can use it to display the saved image later. 
-    final localPath = path.join(appDir.path, imageName);
-    final localPath1 = path.join(appDir.path, documentName);
+//     // This is the saved image path 
+//     // You can use it to display the saved image later. 
+//     final localPath = path.join(appDir.path, imageName);
+//     final localPath1 = path.join(appDir.path, documentName);
 
-    setState(() {
-      imagePath = localPath;
-      documentPath = localPath1;
-       _image = File(imagePath);
-      _document = File(documentPath);
-    });
-    print(imagePath);
-    print(documentPath);
-    // Downloading
-    final imageFile = File(localPath);
-    final documentFile = File(localPath1);
-    await imageFile.writeAsBytes(response.bodyBytes);
-    await documentFile.writeAsBytes(response1.bodyBytes);
-    print('Image Downloaded!');
-    print('Document Downloaded!');
-}
+//     setState(() {
+//       imagePath = localPath;
+//       documentPath = localPath1;
+//        _image = File(imagePath);
+//       _document = File(documentPath);
+//     });
+//     print(imagePath);
+//     print(documentPath);
+//     // Downloading
+//     final imageFile = File(localPath);
+//     final documentFile = File(localPath1);
+//     await imageFile.writeAsBytes(response.bodyBytes);
+//     await documentFile.writeAsBytes(response1.bodyBytes);
+//     print('Image Downloaded!');
+//     print('Document Downloaded!');
+// }
 
 //Get Category, Skills, and Hobbies List
   getCatSkillHobbieList() async {
@@ -3127,16 +3130,16 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
         hobbieMap = response[3].data;
         //saveImage();
 
-          print('SKILLDATA::: ${result.data.skills}');
+          print('SKILLDATA::: ${result.data!.skills}');
         print(response[0].data);
         eduMap = response[0].data;
-        eduMapData = eduMap['data']['educational_details'];
+        eduMapData = eduMap!['data']['educational_details'];
         print('EDU:::' + eduMapData.toString());
          populateEducationDetails();
         
-          categoryMapData = categoryMap['data'];
-          skillMapData = skillMap['data'];
-          hobbieMapData = hobbieMap['data'];
+          categoryMapData = categoryMap!['data'];
+          skillMapData = skillMap!['data'];
+          hobbieMapData = hobbieMap!['data'];
           // _image = File(imagePath);
           // _document = File(documentPath);
           // _nameController.text = result.data.name;
@@ -3158,31 +3161,31 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
           // _otherLinkLinkController.text = result.data.otherUrl;
         setState(() {});
 
-        if(result.data.identificationDocumentNumber != null){
+        if(result.data!.identificationDocumentNumber != null){
 
-            _nameController.text = result.data.name;
-          _mobileController.text = result.data.mobileNumber;
+            _nameController.text = result.data!.name!;
+          _mobileController.text = result.data!.mobileNumber!;
           _emailController.text =
               //result.data.email == null ? '' :
-              result.data.email;
-          gender = result.data.gender;
-          birthDateInString = result.data.dob;
-          docType = result.data.documentType;
-          totalWorkExp = int.parse(result.data.totalWorkExperience);
+              result.data!.email!;
+          gender = result.data!.gender;
+          birthDateInString = result.data!.dob;
+          docType = result.data!.documentType;
+          totalWorkExp = int.parse(result.data!.totalWorkExperience!);
           _idNumController.text =
               //result.data.identificationDocumentNumber == null ? '' :
-              result.data.identificationDocumentNumber;
-          _achivementController.text = result.data.achievements;
-          _fbLinkController.text = result.data.facebookUrl;
-          _instagramLinkController.text = result.data.instaUrl;
-          _linkedInLinkLinkController.text = result.data.linkedinUrl;
-          _otherLinkLinkController.text = result.data.otherUrl;
+              result.data!.identificationDocumentNumber!;
+          _achivementController.text = result.data!.achievements!;
+          _fbLinkController.text = result.data!.facebookUrl;
+          _instagramLinkController.text = result.data!.instaUrl!;
+          _linkedInLinkLinkController.text = result.data!.linkedinUrl!;
+          _otherLinkLinkController.text = result.data!.otherUrl!;
          setState(() {});
         } else {
 
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LearnerRegistration(
-            name: result.data.name,
-            mobileNumber: result.data.mobileNumber,
+            name: result.data!.name,
+            mobileNumber: result.data!.mobileNumber,
           )));
         }
 
@@ -3190,18 +3193,18 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
           isLoading = false;
         }
 
-        for (int i = 0; i < categoryMapData.length; i++) {
-          intrestedCat.add(categoryMapData[i]['selected']);
+        for (int i = 0; i < categoryMapData!.length; i++) {
+          intrestedCat.add(categoryMapData![i]['selected']);
           if(intrestedCat[i] == true){
-            intrestedCatKey.add(categoryMapData[i]['key']);
+            intrestedCatKey.add(categoryMapData![i]['key']);
           } 
           //else{
           //   intrestedCatKey.removeAt(i);
           // }
         }
-        print(result.data.documentUrl);
-        debugPrint(result.data.skills);
-        debugPrint(result.data.hobbies);
+        print(result.data!.documentUrl);
+        debugPrint(result.data!.skills);
+        debugPrint(result.data!.hobbies);
         print(intrestedCat);
         print(intrestedCatKey);
         print(categoryMap);
@@ -3210,9 +3213,9 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
         //closeProgressDialog(context);
       } else {
         //closeProgressDialog(context);
-        if (categoryMap['error_msg'] != null) {
+        if (categoryMap!['error_msg'] != null) {
           Fluttertoast.showToast(
-            msg: categoryMap['error_msg'],
+            msg: categoryMap!['error_msg'],
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -3220,9 +3223,9 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-        } else if (skillMap['error_msg'] != null) {
+        } else if (skillMap!['error_msg'] != null) {
           Fluttertoast.showToast(
-            msg: skillMap['error_msg'],
+            msg: skillMap!['error_msg'],
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -3230,9 +3233,9 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-        } else if (hobbieMap['error_msg'] != null) {
+        } else if (hobbieMap!['error_msg'] != null) {
           Fluttertoast.showToast(
-            msg: hobbieMap['error_msg'],
+            msg: hobbieMap!['error_msg'],
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -3246,9 +3249,9 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
       //closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -3258,7 +3261,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }
@@ -3657,37 +3660,37 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
    //Update Profile API
   Future<ProfileUpdate> updateProfile(
     //int userId,
-    String registerAs,
+    String? registerAs,
     //String imageFile,
     //String imageUrl,
     String name,
     String mobileNumber,
     String email,
-    String gender,
-    String dob,
-    String documentType,
+    String? gender,
+    String? dob,
+    String? documentType,
     //File documentFile,
     //String documentUrl,
     //File imageFile,
     //String imageUrl,
     String idNumber,
-    String addressLine1,
-    String addressLine2,
-    String city,
-    String country,
-    String pinCode,
-    double latitude,
-    double longitude,
+    String? addressLine1,
+    String? addressLine2,
+    String? city,
+    String? country,
+    String? pinCode,
+    double? latitude,
+    double? longitude,
     String achievements,
-    String skills,
-    String hobbies,
+    String? skills,
+    String? hobbies,
     String facbookUrl,
     String instaUrl,
     String linkedinUrl,
     String otherUrl,
     //List<EducationalDetails> educationalDetails,
-    int totalWorkExp,
-    int totalTeachExp,
+    int? totalWorkExp,
+    int? totalTeachExp,
     //List<InterestedCategory> interestedCategory,
   ) async {
     displayProgressDialog(context);
@@ -3709,7 +3712,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
         'gender': gender,
         'dob': dob,
         'document_type': documentType,
-        'document_url': result.data.documentUrl,
+        'document_url': result.data!.documentUrl,
         // 'document_file': _document != null ? await MultipartFile.fromFile(
         //   _document.path, //documentFile.path,
         //   filename: _document.path.split("/").last,
@@ -3723,17 +3726,17 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
       //   )
       //  : null,
         //result.data.imageUrl,
-        'image_url': result.data.imageUrl,
+        'image_url': result.data!.imageUrl,
         'identification_document_number': idNumber,
         //?TODO: Used dynamic ID at location[0][id]
-        'location[0][id]': result.data.location[0].id,
-        'location[0][address_line_1]': addressLine1 == null ? result.data.location[0].addressLine1 : addressLine1,
-        'location[0][address_line_2]': addressLine2 == null ? result.data.location[0].addressLine2 : addressLine2,
-        'location[0][city]': city == null ? result.data.location[0].city : city,
-        'location[0][country]': country == null ? result.data.location[0].country : country,
-        'location[0][pincode]': pinCode == null ? result.data.location[0].pincode : pinCode,
-        'location[0][latitude]': latitude == null ? result.data.location[0].latitude : latitude,
-        'location[0][longitude]': longitude == null ?  result.data.location[0].longitude : longitude,
+        'location[0][id]': result.data!.location![0].id,
+        'location[0][address_line_1]': addressLine1 == null ? result.data!.location![0].addressLine1 : addressLine1,
+        'location[0][address_line_2]': addressLine2 == null ? result.data!.location![0].addressLine2 : addressLine2,
+        'location[0][city]': city == null ? result.data!.location![0].city : city,
+        'location[0][country]': country == null ? result.data!.location![0].country : country,
+        'location[0][pincode]': pinCode == null ? result.data!.location![0].pincode : pinCode,
+        'location[0][latitude]': latitude == null ? result.data!.location![0].latitude : latitude,
+        'location[0][longitude]': longitude == null ?  result.data!.location![0].longitude : longitude,
         'location[0][location_type]': 'work',
         'achievements': achievements,
         'skills': skills,
@@ -3746,22 +3749,22 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
         'total_teaching_experience': totalTeachExp,
       });
 
-      print('MAPO:::' + eduMap.length.toString());
+      print('MAPO:::' + eduMap!.length.toString());
       print('Called:::No');
-      print('RESULT:::'+result.data.educationalDetails.toString());
+      print('RESULT:::'+result.data!.educationalDetails.toString());
 
-      for (int i = 0; i < result.data.educationalDetails.length; i++) {
+      for (int i = 0; i < result.data!.educationalDetails!.length; i++) {
         //formData.fields.addAll(params.entries);
-        if(result.data.educationalDetails1[i]['id'] != null){
+        if(result.data!.educationalDetails1![i]['id'] != null){
         formData.fields.addAll([
           //?TODO: Used dynamic ID at educational_details[0][id]
-          MapEntry('educational_details[$i][id]', result.data.educationalDetails1[i]['id'].toString()),
+          MapEntry('educational_details[$i][id]', result.data!.educationalDetails1![i]['id'].toString()),
           MapEntry('educational_details[$i][school_name]',
               controllersList[i].text),
           MapEntry('educational_details[$i][year]',
-              result.data.educationalDetails1[i]['year'].toString()),
+              result.data!.educationalDetails1![i]['year'].toString()),
           MapEntry('educational_details[$i][qualification]',
-              result.data.educationalDetails1[i]['qualification']),
+              result.data!.educationalDetails1![i]['qualification']),
           MapEntry('educational_details[$i][certificate_file]', ''),
           
         ]);
@@ -3778,13 +3781,13 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
         } 
         else{
           formData.fields.addAll([
-           MapEntry('educational_details[$i][id]', result.data.educationalDetails1[i]['id'].toString()),
+           MapEntry('educational_details[$i][id]', result.data!.educationalDetails1![i]['id'].toString()),
           MapEntry('educational_details[$i][school_name]',
               controllersList[i].text),
           MapEntry('educational_details[$i][year]',
-              result.data.educationalDetails1[i]['year'].toString()),
+              result.data!.educationalDetails1![i]['year'].toString()),
           MapEntry('educational_details[$i][qualification]',
-              result.data.educationalDetails1[i]['qualification']),
+              result.data!.educationalDetails1![i]['qualification']),
           MapEntry('educational_details[$i][certificate_file]', ''),
         ]);
         //  formData.files.addAll([
@@ -3811,13 +3814,13 @@ print('MAP:::' + formData.fields.toString());
       //print(fileImage);
       //print(educationList);
 
-      print('FORMDATA::: ${result.data.skills}');
+      print('FORMDATA::: ${result.data!.skills}');
       print('FORMDATA::: ${selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')}');
 
       var response = await dio.post(
         Config.updateProfileUrl,
         data: formData,
-        options: Options(headers: {"Authorization": 'Bearer ' + authToken}),
+        options: Options(headers: {"Authorization": 'Bearer ' + authToken!}),
         // onSendProgress: (int sent, int total){
         //   print('SENT $sent + TOTAL $total');
         // }
@@ -3827,7 +3830,7 @@ print('MAP:::' + formData.fields.toString());
         closeProgressDialog(context);
         update = ProfileUpdate.fromJson(response.data);
     
-        print(update.data.name);
+        print(update.data!.name);
         //if(result.status == true){
         // print('ID ::: ' + result.data.userId.toString());
         // saveUserData(result.data.userId);
@@ -3836,12 +3839,12 @@ print('MAP:::' + formData.fields.toString());
           print('TRUE::');
 
           setState(() {
-            preferences.setString("name", update.data.name);
-            preferences.setString("mobileNumber", update.data.mobileNumber);
+            preferences.setString("name", update.data!.name!);
+            preferences.setString("mobileNumber", update.data!.mobileNumber!);
           });
 
           Fluttertoast.showToast(
-            msg: update.message,
+            msg: update.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -3862,7 +3865,7 @@ print('MAP:::' + formData.fields.toString());
         } else {
           print('FALSE::');
           Fluttertoast.showToast(
-            msg: update.message,
+            msg: update.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -3873,7 +3876,7 @@ print('MAP:::' + formData.fields.toString());
         }
       } else {
         Fluttertoast.showToast(
-          msg: update.message,
+          msg: update.message!,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -3889,9 +3892,9 @@ print('MAP:::' + formData.fields.toString());
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::"  +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -3901,7 +3904,7 @@ print('MAP:::' + formData.fields.toString());
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }
@@ -3910,37 +3913,37 @@ print('MAP:::' + formData.fields.toString());
 
   Future<ProfileUpdate> updateProfileWithImage(
     //int userId,
-    String registerAs,
+    String? registerAs,
     //String imageFile,
     //String imageUrl,
     String name,
     String mobileNumber,
     String email,
-    String gender,
-    String dob,
-    String documentType,
+    String? gender,
+    String? dob,
+    String? documentType,
     //File documentFile,
     //String documentUrl,
     //File imageFile,
     //String imageUrl,
     String idNumber,
-    String addressLine1,
-    String addressLine2,
-    String city,
-    String country,
-    String pinCode,
-    double latitude,
-    double longitude,
+    String? addressLine1,
+    String? addressLine2,
+    String? city,
+    String? country,
+    String? pinCode,
+    double? latitude,
+    double? longitude,
     String achievements,
-    String skills,
-    String hobbies,
+    String? skills,
+    String? hobbies,
     String facbookUrl,
     String instaUrl,
     String linkedinUrl,
     String otherUrl,
     //List<EducationalDetails> educationalDetails,
-    int totalWorkExp,
-    int totalTeachExp,
+    int? totalWorkExp,
+    int? totalTeachExp,
     //List<InterestedCategory> interestedCategory,
   ) async {
     print('PROFILE::: IMAGE');
@@ -3963,7 +3966,7 @@ print('MAP:::' + formData.fields.toString());
         'gender': gender,
         'dob': dob,
         'document_type': documentType,
-        'document_url': result.data.documentUrl,
+        'document_url': result.data!.documentUrl,
         // 'document_file': await MultipartFile.fromFile(
         //   _document.path, //documentFile.path,
         //   filename: _document.path.split("/").last,
@@ -3972,22 +3975,22 @@ print('MAP:::' + formData.fields.toString());
         //'document_url': documentUrl,
         'image_file':
         await MultipartFile.fromFile(
-          _image.path,//imageFile.path,
-          filename: _image.path.split("/").last,
+          _image!.path,//imageFile.path,
+          filename: _image!.path.split("/").last,
         ),
         // : 
         //result.data.imageUrl,
         //'image_url': null,
         'identification_document_number': idNumber,
         //?TODO: Used dynamic ID at location[0][id]
-        'location[0][id]': result.data.location[0].id,
-        'location[0][address_line_1]': addressLine1 == null ? result.data.location[0].addressLine1 : addressLine1,
-        'location[0][address_line_2]': addressLine2 == null ? result.data.location[0].addressLine2 : addressLine2,
-        'location[0][city]': city == null ? result.data.location[0].city : city,
-        'location[0][country]': country == null ? result.data.location[0].country : country,
-        'location[0][pincode]': pinCode == null ? result.data.location[0].pincode : pinCode,
-        'location[0][latitude]': latitude == null ? result.data.location[0].latitude : latitude,
-        'location[0][longitude]': longitude == null ?  result.data.location[0].longitude : longitude,
+        'location[0][id]': result.data!.location![0].id,
+        'location[0][address_line_1]': addressLine1 == null ? result.data!.location![0].addressLine1 : addressLine1,
+        'location[0][address_line_2]': addressLine2 == null ? result.data!.location![0].addressLine2 : addressLine2,
+        'location[0][city]': city == null ? result.data!.location![0].city : city,
+        'location[0][country]': country == null ? result.data!.location![0].country : country,
+        'location[0][pincode]': pinCode == null ? result.data!.location![0].pincode : pinCode,
+        'location[0][latitude]': latitude == null ? result.data!.location![0].latitude : latitude,
+        'location[0][longitude]': longitude == null ?  result.data!.location![0].longitude : longitude,
         'location[0][location_type]': 'work',
         'achievements': achievements,
         'skills': skills,
@@ -4003,19 +4006,19 @@ print('MAP:::' + formData.fields.toString());
 
       //print('MAPO:::' + educationDetailMap.length.toString());
       print('Called:::Image');
-      print('IDDD::'+result.data.educationalDetails[0].id.toString());
+      print('IDDD::'+result.data!.educationalDetails![0].id.toString());
 
-      for (int i = 0; i < result.data.educationalDetails.length; i++) {
+      for (int i = 0; i < result.data!.educationalDetails!.length; i++) {
 
         formDataI.fields.addAll([
           //?TODO: Used dynamic ID at educational_details[0][id]
-          MapEntry('educational_details[$i][id]', result.data.educationalDetails[i].id.toString()),
+          MapEntry('educational_details[$i][id]', result.data!.educationalDetails![i].id.toString()),
           MapEntry('educational_details[$i][school_name]',
-              result.data.educationalDetails[i].schoolName.toString()),
+              result.data!.educationalDetails![i].schoolName.toString()),
           MapEntry('educational_details[$i][year]',
-              result.data.educationalDetails[i].year.toString()),
+              result.data!.educationalDetails![i].year.toString()),
           MapEntry('educational_details[$i][qualification]',
-              result.data.educationalDetails[i].qualification.toString()),
+              result.data!.educationalDetails![i].qualification.toString()),
           MapEntry('educational_details[$i][certificate_file]', ''),
         ]);
       }
@@ -4035,7 +4038,7 @@ print('MAP:::' + formData.fields.toString());
         Config.updateProfileUrl,
         data: 
          formDataI,
-        options: Options(headers: {"Authorization": 'Bearer ' + authToken}),
+        options: Options(headers: {"Authorization": 'Bearer ' + authToken!}),
         // onSendProgress: (int sent, int total){
         //   print('SENT $sent + TOTAL $total');
         // }
@@ -4044,7 +4047,7 @@ print('MAP:::' + formData.fields.toString());
         print(response.data);
         closeProgressDialog(context);
         update = ProfileUpdate.fromJson(response.data);
-        print(update.data.name);
+        print(update.data!.name);
         //if(result.status == true){
         // print('ID ::: ' + result.data.userId.toString());
         // saveUserData(result.data.userId);
@@ -4052,12 +4055,12 @@ print('MAP:::' + formData.fields.toString());
         if (update.status == true) {
           print('TRUE::');
           setState(() {
-            preferences.setString("name", update.data.name);
-            preferences.setString("imageUrl", update.data.imageUrl);
-            preferences.setString("mobileNumber", update.data.mobileNumber);
+            preferences.setString("name", update.data!.name!);
+            preferences.setString("imageUrl", update.data!.imageUrl!);
+            preferences.setString("mobileNumber", update.data!.mobileNumber!);
           });
           Fluttertoast.showToast(
-            msg: update.message,
+            msg: update.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -4078,7 +4081,7 @@ print('MAP:::' + formData.fields.toString());
         } else {
           print('FALSE::');
           Fluttertoast.showToast(
-            msg: update.message,
+            msg: update.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -4089,7 +4092,7 @@ print('MAP:::' + formData.fields.toString());
         }
       } else {
         Fluttertoast.showToast(
-          msg: update.message,
+          msg: update.message!,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -4105,9 +4108,9 @@ print('MAP:::' + formData.fields.toString());
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::"  +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -4117,7 +4120,7 @@ print('MAP:::' + formData.fields.toString());
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }
@@ -4175,9 +4178,9 @@ print('MAP:::' + formData.fields.toString());
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -4187,7 +4190,7 @@ print('MAP:::' + formData.fields.toString());
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }

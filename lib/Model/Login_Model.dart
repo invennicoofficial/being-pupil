@@ -1,10 +1,10 @@
 //Model Class for Login
 class Login {
-  bool status;
-  String errorCode;
-  String errorMsg;
-  String message;
-  Data data;
+  bool? status;
+  String? errorCode;
+  String? errorMsg;
+  String? message;
+  Data? data;
 
   Login({this.status, this.errorCode, this.errorMsg, this.message, this.data});
 
@@ -26,17 +26,17 @@ class Login {
     data['error_msg'] = this.errorMsg;
     data['message'] = this.message;
     if (this.data != null) {
-      data['data'] = this.data.toJson();
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
 class Data {
-  int userId;
-  String name;
-  String mobileNumber;
-  String isNew;
+  int? userId;
+  String? name;
+  String? mobileNumber;
+  String? isNew;
 
   Data({this.userId, this.name, this.mobileNumber, this.isNew});
 
@@ -58,7 +58,7 @@ class Data {
     return data;
   }
 
-  Data.toEmpty(List<dynamic> json) {
+  Data.toEmpty(List<dynamic>? json) {
     return;
   }
 }

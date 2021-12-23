@@ -20,8 +20,8 @@ import 'package:being_pupil/Registration/Educator_Registration.dart';
 import 'OTP_Screen.dart';
 
 class SignUpAfterLoginScreen extends StatefulWidget {
-  final String mobileNumber, name, registrationType, socialDisplayName, socialEmail, socialPhotoUrl, socialId;
-  SignUpAfterLoginScreen({Key key, this.mobileNumber, this.name, this.registrationType, this.socialDisplayName, this.socialEmail, this.socialPhotoUrl, this.socialId})
+  final String? mobileNumber, name, registrationType, socialDisplayName, socialEmail, socialPhotoUrl, socialId;
+  SignUpAfterLoginScreen({Key? key, this.mobileNumber, this.name, this.registrationType, this.socialDisplayName, this.socialEmail, this.socialPhotoUrl, this.socialId})
       : super(key: key);
 
   @override
@@ -39,8 +39,8 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
     // TODO: implement initState
     // //SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     super.initState();
-    nameController.text = widget.name;
-    mobileController.text = widget.mobileNumber;
+    nameController.text = widget.name!;
+    mobileController.text = widget.mobileNumber!;
   }
 
   @override
@@ -250,7 +250,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
                               sharedPreferences.setString(
                                   'RegisterAs', registerAs);
                               print('Preffff ::: ' +
-                                  sharedPreferences.getString('RegisterAs'));
+                                  sharedPreferences.getString('RegisterAs')!);
                             },
                             dropdownButtonStyle: DropdownButtonStyle(
                               height: 7.0.h,
@@ -375,7 +375,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
     );
   }
 
-  Future<SocialLogin> login(String name, String mobileNumber,
+  Future<SocialLogin> login(String name, String? mobileNumber,
       String registerAs, String deviceType, String deviceId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     displayProgressDialog(context);
@@ -403,11 +403,11 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
         if (result.status == true) {
           // print('ID ::: ' + result.data.userObject.userId.toString());
           // saveUserData(result.data.userObject.userId);
-          print('ROLE ::' + result.data.userObject.role.toString());
-          saveToken(result.data.token);
-          preferences.setString('RegisterAs', result.data.userObject.role);
-          if(result.data.userObject.isNew == "true") {
-            result.data.userObject.role == 'L'
+          print('ROLE ::' + result.data!.userObject!.role.toString());
+          saveToken(result.data!.token!);
+          preferences.setString('RegisterAs', result.data!.userObject!.role!);
+          if(result.data!.userObject!.isNew == "true") {
+            result.data!.userObject!.role == 'L'
                 ? Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => bottomNavBar(0)),
                     (Route<dynamic> route) => false)
@@ -450,7 +450,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
           //           mobileNumber: mobileController.text,
                  // )));
           Fluttertoast.showToast(
-            msg: result.message,
+            msg: result.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -460,7 +460,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
           );
         } else {
           Fluttertoast.showToast(
-            msg: result.message,
+            msg: result.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -477,9 +477,9 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -489,7 +489,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }

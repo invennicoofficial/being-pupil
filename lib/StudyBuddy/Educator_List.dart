@@ -16,14 +16,14 @@ import 'Learner_ProfileView_Screen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class EducatorList extends StatefulWidget {
-  EducatorList({Key key}) : super(key: key);
+  EducatorList({Key? key}) : super(key: key);
 
   @override
   _EducatorListState createState() => _EducatorListState();
 }
 
 class _EducatorListState extends State<EducatorList> {
-  String registerAs, authToken;
+  String? registerAs, authToken;
   ScrollController _scrollController = ScrollController();
   int page = 1;
   int k = 0;
@@ -32,13 +32,13 @@ class _EducatorListState extends State<EducatorList> {
   EducatorListModel educator = EducatorListModel();
   ConnectionAPI connect = ConnectionAPI();
 
-  List<int> _userId = [];
-  List<String> _profileImage = [];
-  List<String> _name = [];
-  List<String> _lastDegree = [];
-  List<String> _schoolName = [];
-  List<String> _date = [];
-  List<String> _distance = [];
+  List<int?> _userId = [];
+  List<String?> _profileImage = [];
+  List<String?> _name = [];
+  List<String?> _lastDegree = [];
+  List<String?> _schoolName = [];
+  List<String?> _date = [];
+  List<String?> _distance = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -65,7 +65,7 @@ class _EducatorListState extends State<EducatorList> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if (page > 1) {
-          if (educator.data.length > 0) {
+          if (educator.data!.length > 0) {
             page++;
             getEducatorListApi(page);
             print(_name);
@@ -170,7 +170,7 @@ class _EducatorListState extends State<EducatorList> {
                                               ),
                                               clipBehavior: Clip.hardEdge,
                                             ),
-                                        imageUrl: _profileImage[index],
+                                        imageUrl: _profileImage[index]!,
                                         width: 40.0,
                                         height: 40.0,
                                         fit: BoxFit.fitWidth,
@@ -185,7 +185,7 @@ class _EducatorListState extends State<EducatorList> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      _name[index],
+                                      _name[index]!,
                                       style: TextStyle(
                                           fontSize: 9.0.sp,
                                           color: Constants.bgColor,
@@ -214,7 +214,7 @@ class _EducatorListState extends State<EducatorList> {
                               child: GestureDetector(
                                 onTap: () async{
                                   print('$index is Connected');
-                                  await connect.connectionApi(_userId[index], authToken);
+                                  await connect.connectionApi(_userId[index], authToken!);
                                   setState(() {
                                     isLoading = true;
                                     page = 1;
@@ -264,7 +264,7 @@ class _EducatorListState extends State<EducatorList> {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.getEducatorListUrl}?page=$page',
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       print(response.statusCode);
 
       if (response.statusCode == 200) {
@@ -273,15 +273,15 @@ class _EducatorListState extends State<EducatorList> {
         //result = EducatorPost.fromJson(response.data);
         educator = EducatorListModel.fromJson(response.data);
 
-        if (educator.data.length > 0) {
-          for (int i = 0; i < educator.data.length; i++) {
-            _userId.add(educator.data[i].userId);
-            _profileImage.add(educator.data[i].profileImage);
-            _name.add(educator.data[i].name);
-            _lastDegree.add(educator.data[i].lastDegree);
-            _schoolName.add(educator.data[i].schoolName);
-            _date.add(educator.data[i].date);
-            _distance.add(educator.data[i].distance);
+        if (educator.data!.length > 0) {
+          for (int i = 0; i < educator.data!.length; i++) {
+            _userId.add(educator.data![i].userId);
+            _profileImage.add(educator.data![i].profileImage);
+            _name.add(educator.data![i].name);
+            _lastDegree.add(educator.data![i].lastDegree);
+            _schoolName.add(educator.data![i].schoolName);
+            _date.add(educator.data![i].date);
+            _distance.add(educator.data![i].distance);
           }
 
           print(_name);
@@ -298,7 +298,7 @@ class _EducatorListState extends State<EducatorList> {
         });
       } else {
         print('${response.statusCode} : ${response.data.toString()}');
-        throw response.statusCode;
+        throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
@@ -311,18 +311,18 @@ class _EducatorListState extends State<EducatorList> {
   Future<void> getUserProfile(id) async {
     // displayProgressDialog(context);
 
-    Map<String, dynamic> map = {};
+    Map<String, dynamic>? map = {};
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        print(map['data']);
+        print(map!['data']);
         //print(mapData);
         if (map['data'] != null || map['data'] != []) {
           setState(() {});
@@ -350,7 +350,7 @@ class _EducatorListState extends State<EducatorList> {
         });
       } else {
         print('${response.statusCode} : ${response.data.toString()}');
-        throw response.statusCode;
+        throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);

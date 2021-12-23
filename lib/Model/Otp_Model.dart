@@ -1,7 +1,7 @@
 class OtpResponse {
-  bool status;
-  String message;
-  OtpData data;
+  bool? status;
+  String? message;
+  OtpData? data;
 
   OtpResponse({this.status, this.message, this.data});
 
@@ -22,15 +22,15 @@ class OtpResponse {
     data['message'] = this.message;
 
     if (this.data != null) {
-      data['data'] = this.data.toJson();
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
 class OtpData {
-  String token;
-  UserObject userObject;
+  String? token;
+  UserObject? userObject;
 
   OtpData({this.token, this.userObject});
 
@@ -51,25 +51,25 @@ class OtpData {
     return data;
   }
 
-  OtpData.toEmpty(List<dynamic> json) {
+  OtpData.toEmpty(List<dynamic>? json) {
     return;
   }
 }
 
 class UserObject {
-  String role;
-  String isNew;
-  String name;
-  String email;
-  String mobileNumber;
-  String gender;
-  String imageUrl;
-  Location location;
-  EducationalDetails educationalDetail;
-  String fbUrl;
-  String instaUrl;
-  String liUrl;
-  String otherUrl;
+  String? role;
+  String? isNew;
+  String? name;
+  String? email;
+  String? mobileNumber;
+  String? gender;
+  String? imageUrl;
+  Location? location;
+  EducationalDetails? educationalDetail;
+  String? fbUrl;
+  String? instaUrl;
+  String? liUrl;
+  String? otherUrl;
 
   UserObject(
       {this.role,
@@ -135,9 +135,9 @@ class EducationalDetails {
     this.qualification,
   });
 
-  int id;
-  String schoolName;
-  String qualification;
+  int? id;
+  String? schoolName;
+  String? qualification;
 
   factory EducationalDetails.fromJson(Map<String, dynamic> json) =>
       EducationalDetails(
@@ -163,9 +163,9 @@ class Location {
     this.city,
   });
 
-  int id;
-  String addressLine2;
-  String city;
+  int? id;
+  String? addressLine2;
+  String? city;
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
         id: json["id"],

@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class ConnectionAPI {
-  Map<String, dynamic> map;
-  bool status;
+  Map<String, dynamic>? map;
+  bool? status;
 
   //For save, unsave post API
-  Future<void> connectionApi(int userId, String authToken) async {
+  Future<void> connectionApi(int? userId, String authToken) async {
     //var delResult = PostDelete();
 
     try {
@@ -29,17 +29,17 @@ class ConnectionAPI {
         // setState(() {
         //   isLoading = false;
         // });
-        if (map['status'] == true) {
+        if (map!['status'] == true) {
           print('true');
           print(map);
-          if (map['data']['Status'] == 1) {
+          if (map!['data']['Status'] == 1) {
             status = true;
           } else {
             status = false;
           }
           // getSavedPostApi(page);
           Fluttertoast.showToast(
-              msg: map['message'],
+              msg: map!['message'],
               backgroundColor: Constants.bgColor,
               gravity: ToastGravity.BOTTOM,
               fontSize: 10.0.sp,
@@ -47,9 +47,9 @@ class ConnectionAPI {
               textColor: Colors.white);
         } else {
           print('false');
-          if (map['message'] == null) {
+          if (map!['message'] == null) {
             Fluttertoast.showToast(
-                msg: map['error_msg'],
+                msg: map!['error_msg'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,
@@ -57,7 +57,7 @@ class ConnectionAPI {
                 textColor: Colors.white);
           } else {
             Fluttertoast.showToast(
-                msg: map['message'],
+                msg: map!['message'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,

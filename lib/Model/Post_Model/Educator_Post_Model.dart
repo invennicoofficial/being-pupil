@@ -14,11 +14,11 @@ class EducatorPost {
         this.metaParams,
     });
 
-    bool status;
+    bool? status;
     dynamic errorCode;
     dynamic errorMsg;
-    String message;
-    Map<dynamic, dynamic> data;
+    String? message;
+    Map<dynamic, dynamic>? data;
     dynamic metaParams;
 
     factory EducatorPost.fromJson(Map<String, dynamic> json) => EducatorPost(
@@ -43,7 +43,7 @@ class EducatorPost {
         "error_code": errorCode,
         "error_msg": errorMsg,
         "message": message,
-        "data": Map<dynamic, dynamic>.from(data.map((x,_) => x.toJson())),
+        "data": Map<dynamic, dynamic>.from(data!.map((x,_) => x.toJson())),
         "meta_params": metaParams,
     };
 }
@@ -63,17 +63,17 @@ class Data {
         this.totalComments,
     });
 
-    int postId;
-    int postUserId;
-    String profileImage;
-    String name;
-    String lastDegree;
-    String schoolName;
-    String date;
-    String description;
-    List<PostMedia> postMedia;
-    int totalLikes;
-    int totalComments;
+    int? postId;
+    int? postUserId;
+    String? profileImage;
+    String? name;
+    String? lastDegree;
+    String? schoolName;
+    String? date;
+    String? description;
+    List<PostMedia>? postMedia;
+    int? totalLikes;
+    int? totalComments;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         postId: json["post_id"],
@@ -98,7 +98,7 @@ class Data {
         "school_name": schoolName,
         "date": date,
         "description": description,
-        "post_media": List<dynamic>.from(postMedia.map((x) => x.toJson())),
+        "post_media": List<dynamic>.from(postMedia!.map((x) => x.toJson())),
         "total_likes": totalLikes,
         "total_comments": totalComments,
     };
@@ -110,8 +110,8 @@ class PostMedia {
         this.file,
     });
 
-    int id;
-    String file;
+    int? id;
+    String? file;
 
     factory PostMedia.fromJson(Map<String, dynamic> json) => PostMedia(
         id: json["id"],

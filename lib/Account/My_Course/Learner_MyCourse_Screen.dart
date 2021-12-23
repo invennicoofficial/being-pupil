@@ -11,14 +11,14 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class LearnerMyCourseScreen extends StatefulWidget {
-  LearnerMyCourseScreen({Key key}) : super(key: key);
+  LearnerMyCourseScreen({Key? key}) : super(key: key);
 
   @override
   _LearnerMyCourseScreenState createState() => _LearnerMyCourseScreenState();
 }
 
 class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
-  String authToken;
+  String? authToken;
   int courseLength = 0;
   var result = GetMyCourse();
 
@@ -95,7 +95,7 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
                         children: <Widget>[
                           Container(
                             width: 65.0.w,
-                            child: Text(result.data[index].courseName,
+                            child: Text(result.data![index].courseName!,
                               style: TextStyle(
                                   fontFamily: 'Montserrat',
                                   fontSize: 11.0.sp,
@@ -107,7 +107,7 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
                           SizedBox(
                             height: 0.5.h,
                           ),
-                          Text('${result.data[index].startDate} to ${result.data[index].endDate}',
+                          Text('${result.data![index].startDate} to ${result.data![index].endDate}',
                               style: TextStyle(
                                   fontFamily: 'Montserrat',
                                   fontSize: 8.0.sp,
@@ -131,16 +131,16 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
     try {
       var dio = Dio();
       var response = await dio.get(Config.getMyCourseUrl,
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         result = GetMyCourse.fromJson(response.data);
         print(response.data);
-        courseLength = result.data == [] ? 0 : result.data.length;
+        courseLength = result.data == [] ? 0 : result.data!.length;
         setState((){});
         closeProgressDialog(context);
       } else {
         Fluttertoast.showToast(
-          msg: result.message,
+          msg: result.message!,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -156,9 +156,9 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -168,7 +168,7 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }

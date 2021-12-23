@@ -4,7 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'package:being_pupil/Constants/Const.dart';
 
 class ReviewDoneScreen extends StatelessWidget {
-  const ReviewDoneScreen({Key key}) : super(key: key);
+  const ReviewDoneScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

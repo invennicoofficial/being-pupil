@@ -7,10 +7,10 @@ import 'package:sizer/sizer.dart';
 
 class CancelBookingScreen extends StatefulWidget {
   final int propertyId;
-  final String bookingId;
-  BookingDetails propertyDetails;
-  int index;
-  String meal,
+  final String? bookingId;
+  BookingDetails? propertyDetails;
+  int? index;
+  String? meal,
       image,
       guestName,
       mobileNumber,
@@ -22,9 +22,9 @@ class CancelBookingScreen extends StatefulWidget {
   // final String name, mobileNumber, checkIn, checkOut, roomType, meal;
   // final int roomCharge, mealCharge, taxCharge, total;
   CancelBookingScreen(
-      {Key key,
-      @required this.propertyId,
-      @required this.bookingId,
+      {Key? key,
+      required this.propertyId,
+      required this.bookingId,
       this.meal,
       this.image,
       this.index,
@@ -94,7 +94,7 @@ class _CancelBookingScreenState extends State<CancelBookingScreen> {
                   width: 100.0.w,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(widget.image),
+                      image: NetworkImage(widget.image!),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(8.0),
@@ -106,7 +106,7 @@ class _CancelBookingScreenState extends State<CancelBookingScreen> {
                 child: Row(
                   children: [
                     Text(
-                      widget.name,
+                      widget.name!,
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 11.0.sp,
@@ -149,7 +149,7 @@ class _CancelBookingScreenState extends State<CancelBookingScreen> {
                                 color: Constants.bgColor),
                           ),
                           Text(
-                            widget.guestName, //name,
+                            widget.guestName!, //name,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -173,7 +173,7 @@ class _CancelBookingScreenState extends State<CancelBookingScreen> {
                                 color: Constants.bgColor),
                           ),
                           Text(
-                            widget.mobileNumber, //mobileNumber,
+                            widget.mobileNumber!, //mobileNumber,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -197,7 +197,7 @@ class _CancelBookingScreenState extends State<CancelBookingScreen> {
                                 color: Constants.bgColor),
                           ),
                           Text(
-                            widget.checkIn, //checkIn,
+                            widget.checkIn!, //checkIn,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -221,7 +221,7 @@ class _CancelBookingScreenState extends State<CancelBookingScreen> {
                                 color: Constants.bgColor),
                           ),
                           Text(
-                            widget.checkOut, //checkOut,
+                            widget.checkOut!, //checkOut,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -245,7 +245,7 @@ class _CancelBookingScreenState extends State<CancelBookingScreen> {
                                 color: Constants.bgColor),
                           ),
                           Text(
-                            widget.roomType, //roomType,
+                            widget.roomType!, //roomType,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -269,9 +269,9 @@ class _CancelBookingScreenState extends State<CancelBookingScreen> {
                                 color: Constants.bgColor),
                           ),
                           Text(
-                            widget.meal.substring(
+                            widget.meal!.substring(
                                 1,
-                                widget.meal.length -
+                                widget.meal!.length -
                                     1), //meal.substring(1, meal.length - 1),
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
@@ -358,7 +358,7 @@ class _CancelBookingScreenState extends State<CancelBookingScreen> {
                                     fontWeight: FontWeight.w400,
                                     color: Constants.bgColor)),
                             TextSpan(
-                                text: '(${widget.meal.substring(1, widget.meal.length -1)})', //'(${meal.substring(1, meal.length - 1)})',
+                                text: '(${widget.meal!.substring(1, widget.meal!.length -1)})', //'(${meal.substring(1, meal.length - 1)})',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 8.0.sp,

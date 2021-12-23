@@ -9,8 +9,8 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class SearchScreen extends StatefulWidget {
-  String searchIn;
-  SearchScreen({Key key, this.searchIn}) : super(key: key);
+  String? searchIn;
+  SearchScreen({Key? key, this.searchIn}) : super(key: key);
 
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -18,27 +18,27 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController searchController = TextEditingController();
-  Map<String, dynamic> map;
-  List<dynamic> mapData;
+  Map<String, dynamic>? map;
+  List<dynamic>? mapData;
   ScrollController _scrollController = ScrollController();
   ConnectionAPI connect = ConnectionAPI();
   int page = 1;
   int k = 0;
   bool isLoading = false;
-  String authToken;
+  String? authToken;
 
-  List<int> _userId = [];
-  List<String> _profileImage = [];
-  List<String> _name = [];
-  List<String> _lastDegree = [];
-  List<String> _schoolName = [];
-  List<String> _date = [];
-  List<String> _distance = [];
-  List<String> _status = [];
+  List<int?> _userId = [];
+  List<String?> _profileImage = [];
+  List<String?> _name = [];
+  List<String?> _lastDegree = [];
+  List<String?> _schoolName = [];
+  List<String?> _date = [];
+  List<String?> _distance = [];
+  List<String?> _status = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  Map<String, dynamic> actionMap;
+  Map<String, dynamic>? actionMap;
   
    @override
   void initState() {
@@ -189,7 +189,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
                                   child: Image.network(
-                                    _profileImage[index],
+                                    _profileImage[index]!,
                                     width: 8.5.w,
                                     height: 5.0.h,
                                     fit: BoxFit.cover,
@@ -206,7 +206,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      _name[index],
+                                      _name[index]!,
                                       style: TextStyle(
                                           fontSize: 9.0.sp,
                                           color: Constants.bgColor,
@@ -341,7 +341,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(50),
                                     child: Image.network(
-                                      _profileImage[index],
+                                      _profileImage[index]!,
                                       //connection.data[index].profileImage,
                                       width: 40.0,
                                       height: 40.0,
@@ -357,7 +357,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      _name[index],
+                                      _name[index]!,
                                       //connection.data[index].name,
                                       style: TextStyle(
                                           fontSize: 9.0.sp,
@@ -447,7 +447,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               child: GestureDetector(
                                 onTap: () async{
                                   print('$index is Connected');
-                                  await connect.connectionApi(_userId[index], authToken);
+                                  await connect.connectionApi(_userId[index], authToken!);
                                   // setState(() {
                                   //   isLoading = true;
                                   //   page = 1;
@@ -504,18 +504,18 @@ class _SearchScreenState extends State<SearchScreen> {
       //FormData formData = FormData.fromMap({'search_in': widget.searchIn, 'search': searchController.text});
       var response = await dio.get('${Config.searchUserUrl}?search_in=${widget.searchIn}&search=$search',
           //data: formData,
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
         map = response.data;
-        mapData = map['data'];
+        mapData = map!['data'];
         //saveMapData = map['data']['status'];
 
         print(mapData);
         // setState(() {
         //   isLoading = false;
         // });
-        print('LENGTH: ' + mapData.length.toString());
+        print('LENGTH: ' + mapData!.length.toString());
         _userId = [];
         _profileImage = [];
         _name = [];
@@ -525,19 +525,19 @@ class _SearchScreenState extends State<SearchScreen> {
         _date = [];
         _distance = [];
         setState((){});
-        if (mapData.length > 0) {
-          for (int i = 0; i < mapData.length; i++) {
-            _userId.add(mapData[i]['user_id']);
-            _profileImage.add(mapData[i]['profile_image']);
-            _name.add(mapData[i]['name']);
-            _lastDegree.add(mapData[i]['last_degree']);
-            _schoolName.add(mapData[i]['school_name']);
-            _date.add(mapData[i]['date']);
+        if (mapData!.length > 0) {
+          for (int i = 0; i < mapData!.length; i++) {
+            _userId.add(mapData![i]['user_id']);
+            _profileImage.add(mapData![i]['profile_image']);
+            _name.add(mapData![i]['name']);
+            _lastDegree.add(mapData![i]['last_degree']);
+            _schoolName.add(mapData![i]['school_name']);
+            _date.add(mapData![i]['date']);
             if(widget.searchIn == 'C' || widget.searchIn == 'R'){
-               _status.add(mapData[i]['status']);
+               _status.add(mapData![i]['status']);
             } else //if(widget.searchIn == 'E' || widget.searchIn == 'L')
             {
-              _distance.add(mapData[i]['distance']);
+              _distance.add(mapData![i]['distance']);
             }
            
             
@@ -561,7 +561,7 @@ class _SearchScreenState extends State<SearchScreen> {
         });
       } else {
         print('${response.statusCode} : ${response.data.toString()}');
-        throw response.statusCode;
+        throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
@@ -583,18 +583,18 @@ class _SearchScreenState extends State<SearchScreen> {
       //FormData formData = FormData.fromMap({'search_in': widget.searchIn, 'search': searchController.text});
       var response = await dio.get('${Config.searchUserUrl}?search_in=${widget.searchIn}&search=$search',
           //data: formData,
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
         map = response.data;
-        mapData = map['data'];
+        mapData = map!['data'];
         //saveMapData = map['data']['status'];
 
         print(mapData);
         // setState(() {
         //   isLoading = false;
         // });
-        print('LENGTH: ' + mapData.length.toString());
+        print('LENGTH: ' + mapData!.length.toString());
         _userId = [];
         _profileImage = [];
         _name = [];
@@ -603,15 +603,15 @@ class _SearchScreenState extends State<SearchScreen> {
         _date = [];
         _distance = [];
         setState((){});
-        if (mapData.length > 0) {
-          for (int i = 0; i < mapData.length; i++) {
-            _userId.add(mapData[i]['user_id']);
-            _profileImage.add(mapData[i]['profile_image']);
-            _name.add(mapData[i]['name']);
-            _lastDegree.add(mapData[i]['last_degree']);
-            _schoolName.add(mapData[i]['school_name']);
-            _date.add(mapData[i]['date']);
-            _distance.add(mapData[i]['distance']);
+        if (mapData!.length > 0) {
+          for (int i = 0; i < mapData!.length; i++) {
+            _userId.add(mapData![i]['user_id']);
+            _profileImage.add(mapData![i]['profile_image']);
+            _name.add(mapData![i]['name']);
+            _lastDegree.add(mapData![i]['last_degree']);
+            _schoolName.add(mapData![i]['school_name']);
+            _date.add(mapData![i]['date']);
+            _distance.add(mapData![i]['distance']);
             //_distance.add(mapData[i].distance);
           }
           // k++;
@@ -632,7 +632,7 @@ class _SearchScreenState extends State<SearchScreen> {
         });
       } else {
         print('${response.statusCode} : ${response.data.toString()}');
-        throw response.statusCode;
+        throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
@@ -642,7 +642,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
 //For request Action
-   Future<void> requestActionApi(int reqId, String action) async {
+   Future<void> requestActionApi(int? reqId, String action) async {
     //var delResult = PostDelete();
 
     try {
@@ -652,7 +652,7 @@ class _SearchScreenState extends State<SearchScreen> {
           FormData.fromMap({'request_id': reqId, 'action': action});
       var response = await dio.post(Config.requestActionUrl,
           data: formData,
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
         //delResult = postDeleteFromJson(response.data);
@@ -663,7 +663,7 @@ class _SearchScreenState extends State<SearchScreen> {
         // setState(() {
         //   isLoading = false;
         // });
-        if (actionMap['status'] == true) {
+        if (actionMap!['status'] == true) {
           print('true');
           // setState(() {
           //   isLoading = true;
@@ -677,7 +677,7 @@ class _SearchScreenState extends State<SearchScreen> {
           // });
           //getRequestApi(page);
           Fluttertoast.showToast(
-              msg: actionMap['message'],
+              msg: actionMap!['message'],
               backgroundColor: Constants.bgColor,
               gravity: ToastGravity.BOTTOM,
               fontSize: 10.0.sp,
@@ -685,9 +685,9 @@ class _SearchScreenState extends State<SearchScreen> {
               textColor: Colors.white);
         } else {
           print('false');
-          if (actionMap['message'] == null) {
+          if (actionMap!['message'] == null) {
             Fluttertoast.showToast(
-                msg: actionMap['error_msg'],
+                msg: actionMap!['error_msg'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,
@@ -695,7 +695,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 textColor: Colors.white);
           } else {
             Fluttertoast.showToast(
-                msg: actionMap['message'],
+                msg: actionMap!['message'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,

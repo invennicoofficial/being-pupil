@@ -14,8 +14,8 @@ import 'Registration_After_Login.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginMobileCheckScreen extends StatefulWidget {
-  String socialId, registrationType, socialDisplayName, socialEmail, socialPhotoUrl;
-  LoginMobileCheckScreen({Key key, @required this.socialId, @required this.registrationType, @required this.socialDisplayName, @required this.socialEmail, @required this.socialPhotoUrl }) : super(key: key);
+  String? socialId, registrationType, socialDisplayName, socialEmail, socialPhotoUrl;
+  LoginMobileCheckScreen({Key? key, required this.socialId, required this.registrationType, required this.socialDisplayName, required this.socialEmail, required this.socialPhotoUrl }) : super(key: key);
 
   @override
   _LoginMobileCheckScreenState createState() => _LoginMobileCheckScreenState();
@@ -25,9 +25,9 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
   final TextEditingController mobileController = TextEditingController();
 
   final storage = new FlutterSecureStorage();
-  String role;
-  Map<String, dynamic> map;
-  List<dynamic> mapData;
+  String? role;
+  Map<String, dynamic>? map;
+  List<dynamic>? mapData;
 
   @override
   Widget build(BuildContext context) {
@@ -247,11 +247,11 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
         //result = MobileCheck.fromJson(response.data);
   
         //if (result.status == true)
-         if (map['status'] == true){
+         if (map!['status'] == true){
           
      
           //if(result.data.userObject == null)
-          if(map['data']['userObj'] == null){
+          if(map!['data']['userObj'] == null){
            Navigator.push(
               context,
               PageTransition(
@@ -266,7 +266,7 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
                   )));          
           }else{
             Fluttertoast.showToast(
-            msg: map['message'],//result.message,
+            msg: map!['message'],//result.message,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -274,38 +274,38 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-          role = map['data']['userObj']['register_as']; //result.data.userObject.role;
-          saveUserData(map['data']['userObj']['user_id']);//saveUserData(result.data.userObject.userId);
-          saveToken(map['data']['access_token']); //saveToken(result.data.token);
+          role = map!['data']['userObj']['register_as']; //result.data.userObject.role;
+          saveUserData(map!['data']['userObj']['user_id']);//saveUserData(result.data.userObject.userId);
+          saveToken(map!['data']['access_token']); //saveToken(result.data.token);
           
-              preferences.setInt('userId', map['data']['userObj']['user_id']);
-              preferences.setString('RegisterAs', role);
-              preferences.setString("name", map['data']['userObj']['name']);
-              preferences.setString("mobileNumber", map['data']['userObj']['mobile_number']);
-              preferences.setString("gender", map['data']['userObj']['gender']);
+              preferences.setInt('userId', map!['data']['userObj']['user_id']);
+              preferences.setString('RegisterAs', role!);
+              preferences.setString("name", map!['data']['userObj']['name']);
+              preferences.setString("mobileNumber", map!['data']['userObj']['mobile_number']);
+              preferences.setString("gender", map!['data']['userObj']['gender']);
              
-              preferences.setString("imageUrl", map['data']['userObj']['image_url']);
+              preferences.setString("imageUrl", map!['data']['userObj']['image_url']);
 
-              if(map['data']['userObj']['isNew'] == 'false'){
+              if(map!['data']['userObj']['isNew'] == 'false'){
         
-              role == 'E' ? preferences.setString("qualification", map['data']['userObj']['educational_details'].last['qualification']) : preferences.setString("qualification", '');
-              role == 'E' ? preferences.setString("schoolName", map['data']['userObj']['educational_details'].last['school_name']) : preferences.setString("schoolName",'');
-              role == 'E' ? preferences.setString("address1", map['data']['userObj']['location'][0]['address_line1']): preferences.setString("address1", '');
-              role == 'E' ? preferences.setString("address2", map['data']['userObj']['location'][0]['city']): preferences.setString("address2", '');
-              role == 'E' ? preferences.setString("facebookUrl", map['data']['userObj']['facebook_url']) : preferences.setString("facebookUrl",'');
-              role == 'E' ? preferences.setString("instaUrl", map['data']['userObj']['insta_url']) : preferences.setString("instaUrl",'');
-              role == 'E' ? preferences.setString("linkedInUrl", map['data']['userObj']['linkedin_url']) : preferences.setString("linkedInUrl", '');
-              role == 'E' ? preferences.setString("otherUrl", map['data']['userObj']['other_url']) : preferences.setString("otherUrl", '');
-              role == 'E' ? preferences.setString("isNew", map['data']['userObj']['isNew']) : preferences.setString("isNew", '');
+              role == 'E' ? preferences.setString("qualification", map!['data']['userObj']['educational_details'].last['qualification']) : preferences.setString("qualification", '');
+              role == 'E' ? preferences.setString("schoolName", map!['data']['userObj']['educational_details'].last['school_name']) : preferences.setString("schoolName",'');
+              role == 'E' ? preferences.setString("address1", map!['data']['userObj']['location'][0]['address_line1']): preferences.setString("address1", '');
+              role == 'E' ? preferences.setString("address2", map!['data']['userObj']['location'][0]['city']): preferences.setString("address2", '');
+              role == 'E' ? preferences.setString("facebookUrl", map!['data']['userObj']['facebook_url']) : preferences.setString("facebookUrl",'');
+              role == 'E' ? preferences.setString("instaUrl", map!['data']['userObj']['insta_url']) : preferences.setString("instaUrl",'');
+              role == 'E' ? preferences.setString("linkedInUrl", map!['data']['userObj']['linkedin_url']) : preferences.setString("linkedInUrl", '');
+              role == 'E' ? preferences.setString("otherUrl", map!['data']['userObj']['other_url']) : preferences.setString("otherUrl", '');
+              role == 'E' ? preferences.setString("isNew", map!['data']['userObj']['isNew']) : preferences.setString("isNew", '');
               preferences.setBool('isLoggedIn', true);
               }
-              print('ROLE:::' + preferences.getString('RegisterAs'));
-              print('ISNEW:::' + map['data']['userObj']['isNew']);
+              print('ROLE:::' + preferences.getString('RegisterAs')!);
+              print('ISNEW:::' + map!['data']['userObj']['isNew']);
 
-            if(role == 'E' && map['data']['userObj']['isNew'] == 'true'){
+            if(role == 'E' && map!['data']['userObj']['isNew'] == 'true'){
              Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => EducatorRegistration(
-                  name: map['data']['userObj']['name'].toString(),
+                  name: map!['data']['userObj']['name'].toString(),
                   mobileNumber: mobileNumber,
                 )));
               }
@@ -316,9 +316,9 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
             
           }
         } else {
-          if(map['message'] == null){
+          if(map!['message'] == null){
           Fluttertoast.showToast(
-            msg: map['error_msg'],
+            msg: map!['error_msg'],
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -328,7 +328,7 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
           );
           } else {
             Fluttertoast.showToast(
-            msg:map['message'],
+            msg:map!['message'],
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -346,9 +346,9 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -358,7 +358,7 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+       // print(e.request);
         print(e.message);
       }
     }
@@ -372,7 +372,7 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
     //closeProgressDialog(context);
   }
 
-  void saveUserData(int userId) async {
+  void saveUserData(int? userId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     
   }

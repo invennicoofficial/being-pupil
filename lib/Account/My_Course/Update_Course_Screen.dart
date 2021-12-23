@@ -12,7 +12,7 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class UpdateCourseScreen extends StatefulWidget {
-  const UpdateCourseScreen({Key key}) : super(key: key);
+  const UpdateCourseScreen({Key? key}) : super(key: key);
 
   @override
   _UpdateCourseScreenState createState() => _UpdateCourseScreenState();
@@ -20,11 +20,11 @@ class UpdateCourseScreen extends StatefulWidget {
 
 class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
   //List<Widget> childeren = [];
-  List<TextEditingController> linkControllers = List<TextEditingController>();
+  List<TextEditingController> linkControllers = [];//List<TextEditingController>();
   int linkCount = 1;
-  DateTime startDate, endDate;
+  DateTime? startDate, endDate;
   bool isStartDateSelected = false, isEndDateSelected = false;
-  String startDateInString, endDateInString, authToken;
+  String? startDateInString, endDateInString, authToken;
   TextEditingController courseNameController = TextEditingController();
   TextEditingController courseDescController = TextEditingController();
   int wordCount = 0;
@@ -198,25 +198,25 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                         setState(() {
                           startDate = datePick;
                           isStartDateSelected = true;
-                          if (startDate.day.toString().length == 1 &&
-                              startDate.month.toString().length == 1) {
+                          if (startDate!.day.toString().length == 1 &&
+                              startDate!.month.toString().length == 1) {
                             setState(() {
                               startDateInString =
-                                  "0${startDate.day.toString()}/0${startDate.month}/${startDate.year}";
+                                  "0${startDate!.day.toString()}/0${startDate!.month}/${startDate!.year}";
                             });
                             print('11111');
-                          } else if (startDate.day.toString().length == 1) {
+                          } else if (startDate!.day.toString().length == 1) {
                             setState(() {
                               startDateInString =
-                                  "0${startDate.day}/${startDate.month}/${startDate.year}";
+                                  "0${startDate!.day}/${startDate!.month}/${startDate!.year}";
                             });
                             print('22222');
-                          } else if (startDate.month.toString().length == 1) {
+                          } else if (startDate!.month.toString().length == 1) {
                             startDateInString =
-                                "${startDate.day}/0${startDate.month}/${startDate.year}";
+                                "${startDate!.day}/0${startDate!.month}/${startDate!.year}";
                           } else {
                             startDateInString =
-                                "${startDate.day}/${startDate.month}/${startDate.year}";
+                                "${startDate!.day}/${startDate!.month}/${startDate!.year}";
                           }
                           // 08/14/2019
                         });
@@ -236,7 +236,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                         children: [
                           Text(
                             isStartDateSelected
-                                ? startDateInString
+                                ? startDateInString!
                                 : 'Starting Date',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
@@ -273,25 +273,25 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                         setState(() {
                           endDate = datePick;
                           isEndDateSelected = true;
-                          if (endDate.day.toString().length == 1 &&
-                              endDate.month.toString().length == 1) {
+                          if (endDate!.day.toString().length == 1 &&
+                              endDate!.month.toString().length == 1) {
                             setState(() {
                               endDateInString =
-                                  "0${endDate.day.toString()}/0${endDate.month}/${endDate.year}";
+                                  "0${endDate!.day.toString()}/0${endDate!.month}/${endDate!.year}";
                             });
                             print('11111');
-                          } else if (endDate.day.toString().length == 1) {
+                          } else if (endDate!.day.toString().length == 1) {
                             setState(() {
                               endDateInString =
-                                  "0${endDate.day}/${endDate.month}/${endDate.year}";
+                                  "0${endDate!.day}/${endDate!.month}/${endDate!.year}";
                             });
                             print('22222');
-                          } else if (endDate.month.toString().length == 1) {
+                          } else if (endDate!.month.toString().length == 1) {
                             endDateInString =
-                                "${endDate.day}/0${endDate.month}/${endDate.year}";
+                                "${endDate!.day}/0${endDate!.month}/${endDate!.year}";
                           } else {
                             endDateInString =
-                                "${endDate.day}/${endDate.month}/${endDate.year}";
+                                "${endDate!.day}/${endDate!.month}/${endDate!.year}";
                           }
                           // 08/14/2019
                         });
@@ -310,7 +310,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            isEndDateSelected ? endDateInString : 'End Date',
+                            isEndDateSelected ? endDateInString! : 'End Date',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -553,7 +553,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
       }
       var response = await dio.post(Config.updateCourseUrl,
           data: formData,
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
         closeProgressDialog(context);
@@ -561,7 +561,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
         print(response.data);
         if (result.status == true) {
            Fluttertoast.showToast(
-            msg: result.message,
+            msg: result.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -572,7 +572,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
           Navigator.of(context).pop();
         } else {
           Fluttertoast.showToast(
-            msg: result.message,
+            msg: result.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -583,7 +583,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
         }
       } else {
         Fluttertoast.showToast(
-          msg: result.message,
+          msg: result.message!,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,

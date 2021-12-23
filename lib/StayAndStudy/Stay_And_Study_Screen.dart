@@ -12,23 +12,23 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class StayAndStudyScreen extends StatefulWidget {
-  StayAndStudyScreen({Key key}) : super(key: key);
+  StayAndStudyScreen({Key? key}) : super(key: key);
 
   @override
   _StayAndStudyScreenState createState() => _StayAndStudyScreenState();
 }
 
 class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
-  String authToken;
+  String? authToken;
   var result = GetAllProperty();
   int propertyLength = 0;
   int page = 1;
   bool isLoading = true;
-  List<int> propertyId = [];
-  List<double> propertyRating = [];
-  List<String> propertyName = [];
-  List<String> propertyImage = [];
-  List<String> propertyLocation = [];
+  List<int?> propertyId = [];
+  List<double?> propertyRating = [];
+  List<String?> propertyName = [];
+  List<String?> propertyImage = [];
+  List<String?> propertyLocation = [];
   List<String> propertyPrice = [];
   List<List<String>> allImage = [];
   List<dynamic> propDataList = [];
@@ -36,8 +36,8 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  Map<String, dynamic> map;
-  List<dynamic> mapData;
+  Map<String, dynamic>? map;
+  List<dynamic>? mapData;
 
   @override
   void initState() {
@@ -54,7 +54,7 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if (page > 1) {
-          if (result.data.length > 0) {
+          if (result.data!.length > 0) {
             //print(propertyLength);
             page++;
             getAllPropertyAPI(page);
@@ -172,7 +172,7 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         image: NetworkImage(
-                                            propertyImage[index]),
+                                            propertyImage[index]!),
                                         fit: BoxFit.cover,
                                       ),
                                       borderRadius:
@@ -223,7 +223,7 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                                   padding:
                                       EdgeInsets.symmetric(vertical: 0.5.h),
                                   child: Text(
-                                    propertyName[index],
+                                    propertyName[index]!,
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 10.0.sp,
@@ -256,7 +256,7 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                                       //height: 20,
                                       width: 88.0.w,
                                       child: Text(
-                                        propertyLocation[index],
+                                        propertyLocation[index]!,
                                         style: TextStyle(
                                             fontFamily: 'Montserrat',
                                             fontSize: 8.0.sp,
@@ -294,30 +294,30 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
     try {
       var dio = Dio();
       var response = await dio.get('${Config.getAllPropertyUrl}?page=$page',
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         //result = GetAllProperty.fromJson(response.data);
         map = response.data;
-        mapData = map['data'];
+        mapData = map!['data'];
         print(mapData);
         //closeProgressDialog(context);
 
-        if (map['status'] == true) {
+        if (map!['status'] == true) {
          // propertyLength = 0;
           // propertyLength = result.data == [] ? 0 : result.data.length;
           // setState(() {});
           // print('PROP:::' + propertyLength.toString());
           // print('PROP:::' + page.toString());
           if (page > 0) {
-            for (int i = 0; i < mapData.length; i++) {
-              propertyId.add(mapData[i]['property_id']);
-              propertyName.add(mapData[i]['name']);
-              propertyLocation.add(mapData[i]['location']['address']);
-              propertyImage.add(mapData[i]['featured_image'][0]);
+            for (int i = 0; i < mapData!.length; i++) {
+              propertyId.add(mapData![i]['property_id']);
+              propertyName.add(mapData![i]['name']);
+              propertyLocation.add(mapData![i]['location']['address']);
+              propertyImage.add(mapData![i]['featured_image'][0]);
               //propertyPrice.add('${int.parse(result.data[i].room[0].roomAmount)}');
-              propertyRating.add(mapData[i]['rating'].toDouble());
+              propertyRating.add(mapData![i]['rating'].toDouble());
               //allImage.add(result.data[i].featuredImage);
-              propDataList.add(mapData[i]);
+              propDataList.add(mapData![i]);
             }
             print('DATAPROP:::'+ propDataList.toString());
             isLoading = false;
@@ -346,9 +346,9 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -358,7 +358,7 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }

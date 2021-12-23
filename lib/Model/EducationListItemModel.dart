@@ -1,11 +1,13 @@
 
 import 'dart:io';
 
+import 'package:image_picker/image_picker.dart';
+
 class EducationListItemModel {
-  String school_name;
-  String year;
-  String qualification;
-  File file;
+  String? school_name;
+  String? year;
+  String? qualification;
+  XFile? file;
 
   EducationListItemModel(
       {this.school_name,

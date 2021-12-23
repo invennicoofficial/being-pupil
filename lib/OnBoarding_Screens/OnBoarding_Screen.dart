@@ -8,7 +8,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 
 class OnBoardingScreen extends StatefulWidget {
-  const OnBoardingScreen({Key key}) : super(key: key);
+  const OnBoardingScreen({Key? key}) : super(key: key);
 
   @override
   _OnBoardingScreenState createState() => _OnBoardingScreenState();

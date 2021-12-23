@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 
 class PostApi{
   //API for get All report list
-  Map<String, dynamic> reportMap = Map<String, dynamic>();
-  List<dynamic> reportMapData = List<dynamic>();
+  Map<String, dynamic>? reportMap = Map<String, dynamic>();
+  List<dynamic>? reportMapData = [];//List<dynamic>();
   
    getReportIssueList() async{
     //displayProgressDialog(context);
@@ -23,7 +23,7 @@ class PostApi{
         //closeProgressDialog(context);
         //result = reportIssueFromJson(response.data);
         reportMap = response.data;
-        reportMapData = reportMap['data'];
+        reportMapData = reportMap!['data'];
         print(reportMap);
         //return ReportIssue.fromJson(json.decode(response.data));
       }else{

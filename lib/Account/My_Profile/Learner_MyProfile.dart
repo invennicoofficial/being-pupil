@@ -16,26 +16,26 @@ import 'Edit_Profile_Learner.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class LearnerMyProfileScreen extends StatefulWidget {
-  const LearnerMyProfileScreen({Key key}) : super(key: key);
+  const LearnerMyProfileScreen({Key? key}) : super(key: key);
 
   @override
   _LearnerMyProfileScreenState createState() => _LearnerMyProfileScreenState();
 }
 
 class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
-  String registerAs, authToken;
-  Map<String, dynamic> myProfileMap;
+  String? registerAs, authToken;
+  Map<String, dynamic>? myProfileMap;
   bool isProfileLoading = true;
-  String name = '';
-  String profileImageUrl = '';
-  String degreeName = '';
-  String schoolName = '';
-  String location = '';
+  String? name = '';
+  String? profileImageUrl = '';
+  String? degreeName = '';
+  String? schoolName = '';
+  String? location = '';
   List<String> dateList = [];
-  List<int> idList = [];
-  List<String> nameList = [];
-  List<String> descriptionList = [];
-  List<List<dynamic>> linksList = [];
+  List<int?> idList = [];
+  List<String?> nameList = [];
+  List<String?> descriptionList = [];
+  List<List<dynamic>?> linksList = [];
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   int courseLength = 0;
@@ -183,7 +183,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(100),
                           child: Image.network(
-                            profileImageUrl,
+                            profileImageUrl!,
                             width: 150,
                             height: 150,
                             fit: BoxFit.cover,
@@ -193,7 +193,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                         Padding(
                           padding: EdgeInsets.only(top: 1.0.h),
                           child: Text(
-                            name,
+                            name!,
                             style: TextStyle(
                                 fontSize: 12.0.sp,
                                 fontFamily: 'Montserrat',
@@ -235,7 +235,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                 width: 0.5.w,
                               ),
                               Text(
-                                location,
+                                location!,
                                 style: TextStyle(
                                     fontSize: 10.0.sp,
                                     fontFamily: 'Montserrat',
@@ -283,7 +283,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                 width: 1.0.w,
                               ),
                               Visibility(
-                                visible: myProfileMap['data']
+                                visible: myProfileMap!['data']
                                             ['facebook_link'] ==
                                         null
                                     ? false
@@ -302,7 +302,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                 ),
                               ),
                               Visibility(
-                                visible: myProfileMap['data']
+                                visible: myProfileMap!['data']
                                             ['facebook_link'] ==
                                         null
                                     ? false
@@ -312,7 +312,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                 ),
                               ),
                               Visibility(
-                                visible: myProfileMap['data']
+                                visible: myProfileMap!['data']
                                             ['linkedin_link'] ==
                                         null
                                     ? false
@@ -342,7 +342,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                               Column(
                                 children: <Widget>[
                                   Text(
-                                    '${myProfileMap['data']['total_experience']} Yrs',
+                                    '${myProfileMap!['data']['total_experience']} Yrs',
                                     style: TextStyle(
                                         fontSize: 10.0.sp,
                                         color: Constants.bgColor,
@@ -389,7 +389,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                               Column(
                                 children: <Widget>[
                                   Text(
-                                    myProfileMap['data']['total_connections']
+                                    myProfileMap!['data']['total_connections']
                                         .toString(),
                                     style: TextStyle(
                                         fontSize: 10.0.sp,
@@ -442,7 +442,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                     courseName: nameList[index],
                                     coursDate: dateList[index],
                                     courseDescription: descriptionList[index],
-                                    courseLinks: linksList[index],
+                                    courseLinks: linksList[index] as List<String>?,
                                   ),
                                   withNavBar: false,
                                   pageTransitionAnimation:
@@ -475,7 +475,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                     Container(
                                       width: 65.0.w,
                                       child: Text(
-                                        nameList[index],
+                                        nameList[index]!,
                                         //result.data[index].courseName,
                                         style: TextStyle(
                                             fontFamily: 'Montserrat',
@@ -514,28 +514,28 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
       Dio dio = Dio();
 
       var response = await dio.get(Config.myProfileUrl,
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
         myProfileMap = response.data;
 
         print('PROFILE:::' + myProfileMap.toString());
-        if (myProfileMap['data'] != null) {
-          name = myProfileMap['data']['name'];
-          print('NAME:::'+name);
-          profileImageUrl = myProfileMap['data']['profile_image'];
-          degreeName = myProfileMap['data']['last_degree'] == null
+        if (myProfileMap!['data'] != null) {
+          name = myProfileMap!['data']['name'];
+          print('NAME:::'+name!);
+          profileImageUrl = myProfileMap!['data']['profile_image'];
+          degreeName = myProfileMap!['data']['last_degree'] == null
               ? ''
-              : myProfileMap['data']['last_degree'];
-          print('DEGREE:::'+degreeName);
-          schoolName = myProfileMap['data']['school_name'] == null
+              : myProfileMap!['data']['last_degree'];
+          print('DEGREE:::'+degreeName!);
+          schoolName = myProfileMap!['data']['school_name'] == null
               ? ''
-              : myProfileMap['data']['school_name'];
-          print('SCHOOL:::'+schoolName);
-          location = myProfileMap['data']['City'] == null
+              : myProfileMap!['data']['school_name'];
+          print('SCHOOL:::'+schoolName!);
+          location = myProfileMap!['data']['City'] == null
               ? ''
-              : myProfileMap['data']['City'];
-          print('LOCATION:::'+location);
+              : myProfileMap!['data']['City'];
+          print('LOCATION:::'+location!);
           getEnrolledCourseAPI(page);
           isProfileLoading = false;
           setState(() {});
@@ -544,7 +544,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
           setState(() {});
         }
       } else {
-        throw response.statusCode;
+        throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       print(e.response);
@@ -558,23 +558,23 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
     try {
       var dio = Dio();
       var response = await dio.get('${Config.getEnrollCourseUrl}?page=$page',
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         result = GetEnrolledCourse.fromJson(response.data);
         print(response.data);
         courseLength = 0;
-        courseLength = result.data == [] ? 0 : result.data.length;
+        courseLength = result.data == [] ? 0 : result.data!.length;
 
         setState(() {});
         //closeProgressDialog(context);
         if (courseLength > 0) {
           for (int i = 0; i < courseLength; i++) {
-            idList.add(result.data[i].courseId);
-            nameList.add(result.data[i].courseName);
+            idList.add(result.data![i].courseId);
+            nameList.add(result.data![i].courseName);
             dateList.add(
-                '${result.data[i].startDate} to ${result.data[i].endDate}');
-            descriptionList.add(result.data[i].courseDescription);
-            linksList.add(result.data[i].courseLink);
+                '${result.data![i].startDate} to ${result.data![i].endDate}');
+            descriptionList.add(result.data![i].courseDescription);
+            linksList.add(result.data![i].courseLink);
           }
           isProfileLoading = false;
           setState(() {});
@@ -586,7 +586,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
         isProfileLoading = false;
         setState(() {});
         Fluttertoast.showToast(
-          msg: result.message,
+          msg: result.message!,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -602,9 +602,9 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
       //closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -614,7 +614,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }

@@ -18,11 +18,11 @@ class MyProfile {
         this.metaParams,
     });
 
-    bool status;
+    bool? status;
     dynamic errorCode;
     dynamic errorMsg;
-    String message;
-    Data data;
+    String? message;
+    Data? data;
     dynamic metaParams;
 
     factory MyProfile.fromJson(Map<String, dynamic> json) => MyProfile(
@@ -39,7 +39,7 @@ class MyProfile {
         "error_code": errorCode,
         "error_msg": errorMsg,
         "message": message,
-        "data": data.toJson(),
+        "data": data!.toJson(),
         "meta_params": metaParams,
     };
 }
@@ -63,21 +63,21 @@ class Data {
         this.posts,
     });
 
-    int userId;
-    String profileImage;
-    String role;
-    String name;
-    String lastDegree;
-    String schoolName;
-    String city;
-    String instagramLink;
+    int? userId;
+    String? profileImage;
+    String? role;
+    String? name;
+    String? lastDegree;
+    String? schoolName;
+    String? city;
+    String? instagramLink;
     dynamic facebookLink;
-    String linkedinLink;
-    String otherLink;
-    int totalConnections;
-    int totalPost;
-    int totalExperience;
-    List<Post> posts;
+    String? linkedinLink;
+    String? otherLink;
+    int? totalConnections;
+    int? totalPost;
+    int? totalExperience;
+    List<Post>? posts;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         userId: json["user_id"],
@@ -112,10 +112,10 @@ class Data {
         "total_connections": totalConnections,
         "total_post": totalPost,
         "total_experience": totalExperience,
-        "posts": List<dynamic>.from(posts.map((x) => x.toJson())),
+        "posts": List<dynamic>.from(posts!.map((x) => x.toJson())),
     };
 
-    Data.toEmpty(List<dynamic> json){
+    Data.toEmpty(List<dynamic>? json){
       return;
     }
 }
@@ -136,18 +136,18 @@ class Post {
         this.distance,
     });
 
-    int postId;
-    int postUserId;
-    String profileImage;
-    String name;
-    String lastDegree;
-    String schoolName;
-    String date;
-    String description;
-    List<PostMedia> postMedia;
-    int totalLikes;
-    int totalComments;
-    String distance;
+    int? postId;
+    int? postUserId;
+    String? profileImage;
+    String? name;
+    String? lastDegree;
+    String? schoolName;
+    String? date;
+    String? description;
+    List<PostMedia>? postMedia;
+    int? totalLikes;
+    int? totalComments;
+    String? distance;
 
     factory Post.fromJson(Map<String, dynamic> json) => Post(
         postId: json["post_id"],
@@ -173,7 +173,7 @@ class Post {
         "school_name": schoolName,
         "date": date,
         "description": description,
-        "post_media": List<dynamic>.from(postMedia.map((x) => x.toJson())),
+        "post_media": List<dynamic>.from(postMedia!.map((x) => x.toJson())),
         "total_likes": totalLikes,
         "total_comments": totalComments,
         "distance": distance,
@@ -186,8 +186,8 @@ class PostMedia {
         this.file,
     });
 
-    int id;
-    String file;
+    int? id;
+    String? file;
 
     factory PostMedia.fromJson(Map<String, dynamic> json) => PostMedia(
         id: json["id"],

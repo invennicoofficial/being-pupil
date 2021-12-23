@@ -13,7 +13,7 @@ import 'View_Booking_Details.dart';
 import 'View_Review_Screen.dart';
 
 class CompletedList extends StatefulWidget {
-  CompletedList({Key key}) : super(key: key);
+  CompletedList({Key? key}) : super(key: key);
 
   @override
   _CompletedListState createState() => _CompletedListState();
@@ -22,28 +22,28 @@ class CompletedList extends StatefulWidget {
 class _CompletedListState extends State<CompletedList> {
   var result = CompletedBooking();
   bool isLoading = true;
-  String authToken;
+  String? authToken;
   ScrollController _scrollController = ScrollController();
   int page = 1;
 
-  List<String> bookingImage = [];
-  List<String> bookingName = [];
-  List<String> bookingId = [];
-  List<String> propertyId = [];
-  List<String> bookingType = [];
+  List<String?> bookingImage = [];
+  List<String?> bookingName = [];
+  List<String?> bookingId = [];
+  List<String?> propertyId = [];
+  List<String?> bookingType = [];
   //List<String> bookingPeriod = [];
-  List<List<String>> bookingMeal = [];
-  List<String> bookingGuestName = [];
-  List<String> bookingMobileNumber = [];
-  List<String> bookingCheckIn = [];
-  List<String> bookingCheckOut = [];
-  List<String> bookingRoomType = [];
+  List<List<String>?> bookingMeal = [];
+  List<String?> bookingGuestName = [];
+  List<String?> bookingMobileNumber = [];
+  List<String?> bookingCheckIn = [];
+  List<String?> bookingCheckOut = [];
+  List<String?> bookingRoomType = [];
   List<dynamic> bookingRoomAmount = [];
   List<dynamic> bookingTaxAmount = [];
   List<dynamic> bookingMealAmount = [];
   List<dynamic> bookingTotalAmount = [];
-  List<bool> bookingIsReviewed = [];
-  List<Review> bookingReview = [];
+  List<bool?> bookingIsReviewed = [];
+  List<Review?> bookingReview = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -61,7 +61,7 @@ class _CompletedListState extends State<CompletedList> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if (page > 1) {
-          if (result.data.length > 0) {
+          if (result.data!.length > 0) {
             page++;
             getCompletedBookingAPI(page);
             print(page);
@@ -133,7 +133,7 @@ class _CompletedListState extends State<CompletedList> {
                                     borderRadius: BorderRadius.circular(10.0),
                                     image: DecorationImage(
                                         image:
-                                            NetworkImage(bookingImage[index]),
+                                            NetworkImage(bookingImage[index]!),
                                         fit: BoxFit.cover)),
                               ),
                             ),
@@ -144,7 +144,7 @@ class _CompletedListState extends State<CompletedList> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    bookingName[index],
+                                    bookingName[index]!,
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 11.0.sp,
@@ -165,7 +165,7 @@ class _CompletedListState extends State<CompletedList> {
                                   Padding(
                                     padding: EdgeInsets.only(top: 1.0.h),
                                     child: Text(
-                                      bookingRoomType[index],
+                                      bookingRoomType[index]!,
                                       style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontSize: 9.0.sp,
@@ -199,7 +199,7 @@ class _CompletedListState extends State<CompletedList> {
                                       pushNewScreen(context,
                                           screen: ReviewScreen(
                                             propertyId:
-                                                int.parse(propertyId[index]),
+                                                int.parse(propertyId[index]!),
                                             bookingId: bookingId[index],
                                             image: bookingImage[index],
                                           ),
@@ -213,10 +213,10 @@ class _CompletedListState extends State<CompletedList> {
                                           screen: ViewReviewScreen(
                                             image: bookingImage[index],
                                             headline:
-                                                bookingReview[index].headline,
-                                            description: bookingReview[index]
+                                                bookingReview[index]!.headline,
+                                            description: bookingReview[index]!
                                                 .descrieption,
-                                            rating: bookingReview[index].rating,
+                                            rating: bookingReview[index]!.rating,
                                           ),
                                           withNavBar: false,
                                           pageTransitionAnimation:
@@ -278,32 +278,32 @@ class _CompletedListState extends State<CompletedList> {
     try {
       Dio dio = Dio();
       var response = await dio.get('${Config.completedBookingUrl}?page=$page',
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         print(response.data);
         result = CompletedBooking.fromJson(response.data);
 
         if (result.status == true) {
-          if (result.data.length > 0) {
-            for (int i = 0; i < result.data.length; i++) {
-              bookingId.add(result.data[i].bookingId);
-              propertyId.add(result.data[i].propertyId);
-              bookingName.add(result.data[i].name);
-              bookingImage.add(result.data[i].propertyImage);
-              bookingType.add(result.data[i].roomType);
-              bookingMeal.add(result.data[i].meal);
+          if (result.data!.length > 0) {
+            for (int i = 0; i < result.data!.length; i++) {
+              bookingId.add(result.data![i].bookingId);
+              propertyId.add(result.data![i].propertyId);
+              bookingName.add(result.data![i].name);
+              bookingImage.add(result.data![i].propertyImage);
+              bookingType.add(result.data![i].roomType);
+              bookingMeal.add(result.data![i].meal);
               //bookingPeriod.add('${result.data[i].checkInDate} to ${result.data[i].checkOutDate}');
-              bookingGuestName.add(result.data[i].guestName);
-              bookingMobileNumber.add(result.data[i].mobileNumber);
-              bookingCheckIn.add(result.data[i].checkInDate);
-              bookingCheckOut.add(result.data[i].checkOutDate);
-              bookingRoomType.add(result.data[i].roomType);
-              bookingRoomAmount.add(result.data[i].roomAmount);
-              bookingTaxAmount.add(result.data[i].taxAmount);
-              bookingMealAmount.add(result.data[i].mealAmount);
-              bookingTotalAmount.add(result.data[i].totalAmount);
-              bookingIsReviewed.add(result.data[i].isReviewed);
-              bookingReview.add(result.data[i].review);
+              bookingGuestName.add(result.data![i].guestName);
+              bookingMobileNumber.add(result.data![i].mobileNumber);
+              bookingCheckIn.add(result.data![i].checkInDate);
+              bookingCheckOut.add(result.data![i].checkOutDate);
+              bookingRoomType.add(result.data![i].roomType);
+              bookingRoomAmount.add(result.data![i].roomAmount);
+              bookingTaxAmount.add(result.data![i].taxAmount);
+              bookingMealAmount.add(result.data![i].mealAmount);
+              bookingTotalAmount.add(result.data![i].totalAmount);
+              bookingIsReviewed.add(result.data![i].isReviewed);
+              bookingReview.add(result.data![i].review);
             }
             // print(bookingReview[0].headline);
             // print(bookingReview[0].descrieption);
@@ -316,7 +316,7 @@ class _CompletedListState extends State<CompletedList> {
           }
         } else {
           Fluttertoast.showToast(
-            msg: result.message == null ? result.errorMsg : result.message,
+            msg: result.message == null ? result.errorMsg : result.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -327,7 +327,7 @@ class _CompletedListState extends State<CompletedList> {
         }
       } else {
         print('${response.statusCode} : ${response.data.toString()}');
-        throw response.statusCode;
+        throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       print(e.response);

@@ -18,11 +18,11 @@ class BookingDetails {
         this.metaParams,
     });
 
-    bool status;
+    bool? status;
     dynamic errorCode;
     dynamic errorMsg;
-    String message;
-    List<Data> data;
+    String? message;
+    List<Data>? data;
     dynamic metaParams;
 
     factory BookingDetails.fromJson(Map<String, dynamic> json) => BookingDetails(
@@ -39,7 +39,7 @@ class BookingDetails {
         "error_code": errorCode,
         "error_msg": errorMsg,
         "message": message,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
         "meta_params": metaParams,
     };
 }
@@ -62,20 +62,20 @@ class Data {
         this.totalAmount,
     });
 
-    String propertyId;
-    String propertyImage;
-    String name;
-    String bookingId;
-    String roomType;
-    String checkInDate;
-    String checkOutDate;
-    String guestName;
-    String mobileNumber;
-    List<String> meal;
-    double roomAmount;
-    double mealAmount;
-    double taxAmount;
-    double totalAmount;
+    String? propertyId;
+    String? propertyImage;
+    String? name;
+    String? bookingId;
+    String? roomType;
+    String? checkInDate;
+    String? checkOutDate;
+    String? guestName;
+    String? mobileNumber;
+    List<String>? meal;
+    double? roomAmount;
+    double? mealAmount;
+    double? taxAmount;
+    double? totalAmount;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         propertyId: json["property_id"],
@@ -104,7 +104,7 @@ class Data {
         "checkOut_date": checkOutDate,
         "guest_name": guestName,
         "mobile_number": mobileNumber,
-        "meal": List<dynamic>.from(meal.map((x) => x)),
+        "meal": List<dynamic>.from(meal!.map((x) => x)),
         "room_amount": roomAmount,
         "meal_amount": mealAmount,
         "tax_amount": taxAmount,

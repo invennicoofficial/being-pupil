@@ -22,20 +22,20 @@ import 'My_Course/Educator_MyCourse_Screen.dart';
 import 'My_Course/Learner_MyCourse_Screen.dart';
 
 class AccountScreen extends StatefulWidget {
-  AccountScreen({Key key}) : super(key: key);
+  AccountScreen({Key? key}) : super(key: key);
 
   @override
   _AccountScreenState createState() => _AccountScreenState();
 }
 
 class _AccountScreenState extends State<AccountScreen> {
-  String registerAs, imageUrl;
+  String? registerAs, imageUrl;
 
-  String profilePicUrl;
-  String name;
-  String mobileNumber;
-  String degreeName;
-  String schoolName;
+  String? profilePicUrl;
+  String? name;
+  String? mobileNumber;
+  String? degreeName;
+  String? schoolName;
 
   @override
   void initState() {
@@ -57,7 +57,7 @@ class _AccountScreenState extends State<AccountScreen> {
     print(registerAs);
     print(degreeName);
     print(schoolName);
-    print('DP:::' + imageUrl);
+    print('DP:::' + imageUrl!);
   }
 
   @override
@@ -109,7 +109,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             //color: Colors.grey,
                             child: CircleAvatar(
                               backgroundImage: //AssetImage('assets/images/dp2.png'),
-                                  NetworkImage(profilePicUrl),
+                                  NetworkImage(profilePicUrl!),
                               //backgroundColor: Colors.grey,
                               radius: 100.0,
                             ),
@@ -118,7 +118,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             height: 0.5.h,
                           ),
                           Text(
-                            name,
+                            name!,
                             style: TextStyle(
                                 color: Constants.profileTitle,
                                 fontFamily: 'Montserrat',
@@ -129,7 +129,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             height: 0.5.h,
                           ),
                           Text(
-                            mobileNumber,
+                            mobileNumber!,
                             style: TextStyle(
                                 color: Constants.bgColor,
                                 fontFamily: 'Montserrat',
@@ -369,9 +369,9 @@ class _AccountScreenState extends State<AccountScreen> {
 //Profile Component
 class ProfileList extends StatelessWidget {
   @override
-  String txt, image;
-  GestureTapCallback tap;
-  double padding, sizeImage;
+  String? txt, image;
+  GestureTapCallback? tap;
+  double? padding, sizeImage;
 
   ProfileList({this.txt, this.image, this.tap, this.padding, this.sizeImage});
 
@@ -390,13 +390,13 @@ class ProfileList extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(right: 4.0.w),
                       child: Image.asset(
-                        image,
+                        image!,
                         height: sizeImage,
                         color: Constants.bgColor,
                       ),
                     ),
                     Text(
-                      txt,
+                      txt!,
                       style: TextStyle(
                           color: Constants.bgColor,
                           fontFamily: 'Montserrat',

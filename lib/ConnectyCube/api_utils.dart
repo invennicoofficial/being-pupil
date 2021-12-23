@@ -48,12 +48,12 @@ class ListItem<T> {
   ListItem(this.data); //Constructor to assign the data
 }
 
-Future<Map<int, CubeUser>> getUsersByIds(Set<int> ids) async {
-  Completer<Map<int, CubeUser>> completer = Completer();
-  Map<int, CubeUser> users = HashMap();
+Future<Map<int?, CubeUser?>> getUsersByIds(Set<int> ids) async {
+  Completer<Map<int?, CubeUser?>> completer = Completer();
+  Map<int?, CubeUser?> users = HashMap();
   try {
-    var result = await (getAllUsersByIds(ids)
-        as FutureOr<PagedResult<CubeUser>>);
+    var result = await ((getAllUsersByIds(ids)
+        as FutureOr<PagedResult<CubeUser>?>) as FutureOr<PagedResult<CubeUser>>);
     users.addAll(Map.fromIterable(result.items,
         key: (item) => item.id, value: (item) => item));
   } catch (ex) {
@@ -67,10 +67,11 @@ Future<Map<int, CubeUser>> getUsersByIds(Set<int> ids) async {
 Future<CubeFile> getUploadingImageFuture(FilePickerResult result) async {
   // there possible to upload the file as an array of bytes, but here showed two ways just as an example
   if(kIsWeb){
+     return uploadFile(File(result.files.single.path!));
     //  return uploadRawFile(result.files.single.bytes, result.files.single.name, isPublic: true, onProgress: (progress) {
     //   log("uploadImageFile progress= $progress");
     // });
   } else {
-    return uploadFile(File(result.files.single.path));
+    return uploadFile(File(result.files.single.path!));
   }
 }

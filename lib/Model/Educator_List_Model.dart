@@ -18,11 +18,11 @@ class EducatorListModel {
         this.metaParams,
     });
 
-    bool status;
+    bool? status;
     dynamic errorCode;
     dynamic errorMsg;
-    String message;
-    List<Data> data;
+    String? message;
+    List<Data>? data;
     dynamic metaParams;
 
     factory EducatorListModel.fromJson(Map<String, dynamic> json) => EducatorListModel(
@@ -39,7 +39,7 @@ class EducatorListModel {
         "error_code": errorCode,
         "error_msg": errorMsg,
         "message": message,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
         "meta_params": metaParams,
     };
 }
@@ -55,13 +55,13 @@ class Data {
         this.distance,
     });
 
-    int userId;
-    String profileImage;
-    String name;
+    int? userId;
+    String? profileImage;
+    String? name;
     dynamic lastDegree;
     dynamic schoolName;
-    String date;
-    String distance;
+    String? date;
+    String? distance;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         userId: json["user_id"],

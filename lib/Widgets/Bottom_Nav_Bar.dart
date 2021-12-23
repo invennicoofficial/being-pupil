@@ -24,8 +24,8 @@ class _bottomNavBarState extends State<bottomNavBar> {
   PersistentTabController _controller =
       PersistentTabController(initialIndex: 0);
   bool isSubscribed = false;
-  String authToken;
-  String registerAs;
+  String? authToken;
+  String? registerAs;
 
   @override
   void initState() {

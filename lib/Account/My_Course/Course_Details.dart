@@ -12,11 +12,11 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'Update_Course_Screen.dart';
 
 class CourseDetailScreen extends StatefulWidget {
-  String courseName, coursDate, courseDescription;
-  List<String> courseLinks;
-  int courseId;
+  String? courseName, coursDate, courseDescription;
+  List<String>? courseLinks;
+  int? courseId;
   CourseDetailScreen(
-      {Key key,
+      {Key? key,
       this.courseId,
       this.courseName,
       this.coursDate,
@@ -29,7 +29,7 @@ class CourseDetailScreen extends StatefulWidget {
 }
 
 class _CourseDetailScreenState extends State<CourseDetailScreen> {
-  String registerAs, authToken;
+  String? registerAs, authToken;
 
   @override
   void initState() {
@@ -143,7 +143,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  widget.courseName,
+                  widget.courseName!,
                   style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 14.0.sp,
@@ -165,7 +165,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     SizedBox(
                       width: 2.0.w,
                     ),
-                    Text(widget.coursDate,
+                    Text(widget.coursDate!,
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 10.0.sp,
@@ -178,7 +178,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                 ),
                 Container(
                   child: Text(
-                    widget.courseDescription,
+                    widget.courseDescription!,
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10.0.sp,
@@ -192,7 +192,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                 ),
                 ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: widget.courseLinks.length,
+                    itemCount: widget.courseLinks!.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return Padding(
@@ -229,7 +229,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                                     //width: 70.0.w,
                                     child: Center(
                                       child: Text(
-                                        widget.courseLinks[index],
+                                        widget.courseLinks![index],
                                         style: TextStyle(
                                             fontFamily: 'Montserrat',
                                             fontSize: 10.0.sp,
@@ -262,7 +262,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
       FormData formData = FormData.fromMap({'course_id': widget.courseId});
       var response = await dio.post(Config.enrollCourseUrl,
           data: formData,
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         print(response.data);
         result = EnrollCourse.fromJson(response.data);
@@ -279,7 +279,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
           );
         } else {
           Fluttertoast.showToast(
-            msg: result.message,
+            msg: result.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -305,9 +305,9 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -317,7 +317,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }

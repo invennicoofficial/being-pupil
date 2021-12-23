@@ -5,15 +5,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class PaymentConfirmScreen extends StatefulWidget {
-  String name, mobileNumber, checkIn, checkOut, roomType, meal;
-  PaymentConfirmScreen({Key key, this.name, this.mobileNumber, this.checkIn, this.checkOut, this.roomType, this.meal}) : super(key: key);
+  String? name, mobileNumber, checkIn, checkOut, roomType, meal;
+  PaymentConfirmScreen({Key? key, this.name, this.mobileNumber, this.checkIn, this.checkOut, this.roomType, this.meal}) : super(key: key);
 
   @override
   _PaymentConfirmScreenState createState() => _PaymentConfirmScreenState();
 }
 
 class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
-  String email;
+  String? email;
 
   @override
   void initState() {
@@ -98,7 +98,7 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
                         color: Constants.bgColor),
                   ),
                   Text(
-                    widget.name,
+                    widget.name!,
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10.0.sp,
@@ -122,7 +122,7 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
                         color: Constants.bgColor),
                   ),
                   Text(
-                    widget.mobileNumber,
+                    widget.mobileNumber!,
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10.0.sp,
@@ -146,7 +146,7 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
                         color: Constants.bgColor),
                   ),
                   Text(
-                    widget.checkIn,
+                    widget.checkIn!,
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10.0.sp,
@@ -170,7 +170,7 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
                         color: Constants.bgColor),
                   ),
                   Text(
-                    widget.checkOut,
+                    widget.checkOut!,
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10.0.sp,
@@ -194,7 +194,7 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
                         color: Constants.bgColor),
                   ),
                   Text(
-                    widget.roomType,
+                    widget.roomType!,
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10.0.sp,
@@ -218,7 +218,7 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
                         color: Constants.bgColor),
                   ),
                   Text(
-                    widget.meal.substring(1, widget.meal.length - 1),
+                    widget.meal!.substring(1, widget.meal!.length - 1),
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10.0.sp,

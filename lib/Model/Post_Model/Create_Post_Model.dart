@@ -14,11 +14,11 @@ class CreatePost {
         this.metaParams,
     });
 
-    bool status;
+    bool? status;
     dynamic errorCode;
     dynamic errorMsg;
-    String message;
-    Data data;
+    String? message;
+    Data? data;
     dynamic metaParams;
 
     factory CreatePost.fromJson(Map<String, dynamic> json) => CreatePost(
@@ -35,7 +35,7 @@ class CreatePost {
         "error_code": errorCode,
         "error_msg": errorMsg,
         "message": message,
-        "data": data.toJson(),
+        "data": data!.toJson(),
         "meta_params": metaParams,
     };
 }
@@ -50,12 +50,12 @@ class Data {
         this.postMedia,
     });
 
-    int postId;
-    String description;
-    int totalLikes;
-    int totalComments;
-    DateTime createdAt;
-    List<dynamic> postMedia;
+    int? postId;
+    String? description;
+    int? totalLikes;
+    int? totalComments;
+    DateTime? createdAt;
+    List<dynamic>? postMedia;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         postId: json["post_id"],
@@ -71,7 +71,7 @@ class Data {
         "description": description,
         "total_likes": totalLikes,
         "total_comments": totalComments,
-        "created_at": createdAt.toIso8601String(),
-        "post_media": List<dynamic>.from(postMedia.map((x) => x)),
+        "created_at": createdAt!.toIso8601String(),
+        "post_media": List<dynamic>.from(postMedia!.map((x) => x)),
     };
 }

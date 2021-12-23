@@ -22,18 +22,18 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'package:being_pupil/ConnectyCube/configs.dart' as config;
 
 class EducatorHomeScreen extends StatefulWidget {
-  EducatorHomeScreen({Key key}) : super(key: key);
+  EducatorHomeScreen({Key? key}) : super(key: key);
 
   @override
   _EducatorHomeScreenState createState() => _EducatorHomeScreenState();
 }
 
 class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
-  List<bool> isLiked = [];
-  List<bool> isSaved = [];
+  List<bool?> isLiked = [];
+  List<bool?> isSaved = [];
 
-  Map<String, dynamic> map;
-  List<dynamic> mapData;
+  Map<String, dynamic>? map;
+  List<dynamic>? mapData;
 
   String name = '';
   String profileImageUrl = '';
@@ -48,22 +48,22 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
   ScrollController _scrollController = ScrollController();
   int k = 0;
 
-  List<int> postIdList = [];
-  List<String> dateList = [];
-  List<String> nameList = [];
-  List<String> profileImageList = [];
-  List<String> degreeList = [];
-  List<String> schoolList = [];
-  List<String> descriptionList = [];
+  List<int?> postIdList = [];
+  List<String?> dateList = [];
+  List<String?> nameList = [];
+  List<String?> profileImageList = [];
+  List<String?> degreeList = [];
+  List<String?> schoolList = [];
+  List<String?> descriptionList = [];
   Map<int, dynamic> imageListMap = {};
-  List<int> likesList = [];
-  List<int> totalCommentsList = [];
+  List<int?> likesList = [];
+  List<int?> totalCommentsList = [];
 
-  String authToken, registerAs;
-  Map<String, dynamic> saveMap;
+  String? authToken, registerAs;
+  Map<String, dynamic>? saveMap;
   LikePostAPI like = LikePostAPI();
   static const String TAG = "_LoginPageState";
-  CubeUser user;
+  CubeUser? user;
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -90,12 +90,12 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
     user = sharedPrefs.getUser();
 
     if(user != null) {
-      user.password = '12345678';
+      user!.password = '12345678';
       createSession(user)
           .then((cubeSession) {
-        signIn(user)
+        signIn(user!)
             .then((cubeUser) async {
-          _loginToCubeChat(context, user);
+          _loginToCubeChat(context, user!);
         })
             .catchError((error){});
       })
@@ -107,7 +107,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if (page > 1) {
-          if (map['data'].length > 0) {
+          if (map!['data'].length > 0) {
             page++;
             getAllPostApi(page);
             print(page);
@@ -130,7 +130,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
     setState(() {
       isLoading = true;
       page = 1;
-      map.clear();
+      map!.clear();
       map = {};
       mapData = [];
       postIdList = [];
@@ -154,7 +154,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
 
   void _onLoading() async {
     //if (mounted) setState(() {});
-    if(map['data'].length == 0){
+    if(map!['data'].length == 0){
     //_refreshController.loadComplete();
     _refreshController.loadNoData();
     } else{
@@ -267,7 +267,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(50),
                                       child: Image.network(
-                                        profileImageList[index],
+                                        profileImageList[index]!,
                                         width: 40.0,
                                         height: 40.0,
                                         fit: BoxFit.cover,
@@ -283,7 +283,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            nameList[index],
+                                            nameList[index]!,
                                             style: TextStyle(
                                                 fontSize: 9.0.sp,
                                                 color: Constants.bgColor,
@@ -299,7 +299,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                                 fontWeight: FontWeight.w400),
                                           ),
                                           Text(
-                                            dateList[index],
+                                            dateList[index]!,
                                             style: TextStyle(
                                                 fontSize: 6.5.sp,
                                                 color: Constants.bpOnBoardSubtitleStyle,
@@ -338,7 +338,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                                 child: Container(
                                   width: 88.0.w,
-                                  child: Text(descriptionList[index],
+                                  child: Text(descriptionList[index]!,
                                       style: TextStyle(
                                           fontSize: 9.0.sp,
                                           color: Constants.bpOnBoardSubtitleStyle,
@@ -458,14 +458,14 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                     GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          isLiked[index] = !isLiked[index];
+                                          isLiked[index] = !isLiked[index]!;
                                         });
                                         like.likePostApi(
-                                            postIdList[index], authToken);
+                                            postIdList[index], authToken!);
                                         setState(() {
                                           isLiked[index] == true
-                                              ? likesList[index]++
-                                              : likesList[index]--;
+                                              ? likesList[index]! + 1
+                                              : likesList[index]! - 1;
                                         });
                                       },
                                       child: Container(
@@ -474,10 +474,10 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                               MainAxisAlignment.start,
                                           children: [
                                             ImageIcon(
-                                              isLiked[index]
+                                              isLiked[index]!
                                                   ? AssetImage('assets/icons/likeNew.png')
                                                   : AssetImage('assets/icons/likeThumb.png'),
-                                              color: isLiked[index]
+                                              color: isLiked[index]!
                                                   ? Constants.selectedIcon
                                                   : Constants.bpOnBoardSubtitleStyle,
                                               size: 30.0,
@@ -588,7 +588,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                     GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          isSaved[index] = !isSaved[index];
+                                          isSaved[index] = !isSaved[index]!;
                                         });
                                         savePostApi(postIdList[index]);
                                       },
@@ -598,10 +598,10 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                               MainAxisAlignment.start,
                                           children: [
                                             ImageIcon(
-                                              isSaved[index]
+                                              isSaved[index]!
                                                   ? AssetImage('assets/icons/saveGreen.png')
                                                   : AssetImage('assets/icons/saveNew.png'),
-                                              color: isSaved[index]
+                                              color: isSaved[index]!
                                                   ? Constants.selectedIcon
                                                   : Constants.bpOnBoardSubtitleStyle,
                                               size: 25.0,
@@ -687,11 +687,11 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
         //return EducatorPost.fromJson(json)
         //result = EducatorPost.fromJson(response.data);
         map = response.data;
-        mapData = map['data'];
+        mapData = map!['data'];
 
         print(map);
         print(mapData);
-        if (map['data'].length > 0) {
+        if (map!['data'].length > 0) {
           // if (name == '') {
           //   name = map['data'][0]['name'];
           //   profileImageUrl = map['data'][0]['profile_image'];
@@ -700,20 +700,20 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
           // }
           print("HELLO");
 
-          for (int i = 0; i < map['data'].length; i++) {
-            nameList.add(map['data'][i]['name']);
-            profileImageList.add(map['data'][i]['profile_image']);
-            degreeList.add(map['data'][i]['last_degree']);
-            schoolList.add(map['data'][i]['school_name']);
-            postIdList.add(map['data'][i]['post_id']);
-            dateList.add(map['data'][i]['date']);
-            descriptionList.add(map['data'][i]['description']);
-            isLiked.add(map['data'][i]['isLiked']);
-            isSaved.add(map['data'][i]['isSaved']);
-            likesList.add(map['data'][i]['total_likes']);
-            totalCommentsList.add(map['data'][i]['total_comments']);
-            for (int j = 0; j < map['data'].length; j++) {
-              imageListMap.putIfAbsent(k, () => map['data'][i]['post_media']);
+          for (int i = 0; i < map!['data'].length; i++) {
+            nameList.add(map!['data'][i]['name']);
+            profileImageList.add(map!['data'][i]['profile_image']);
+            degreeList.add(map!['data'][i]['last_degree']);
+            schoolList.add(map!['data'][i]['school_name']);
+            postIdList.add(map!['data'][i]['post_id']);
+            dateList.add(map!['data'][i]['date']);
+            descriptionList.add(map!['data'][i]['description']);
+            isLiked.add(map!['data'][i]['isLiked']);
+            isSaved.add(map!['data'][i]['isSaved']);
+            likesList.add(map!['data'][i]['total_likes']);
+            totalCommentsList.add(map!['data'][i]['total_comments']);
+            for (int j = 0; j < map!['data'].length; j++) {
+              imageListMap.putIfAbsent(k, () => map!['data'][i]['post_media']);
             }
             k++;
             print(k);
@@ -734,11 +734,11 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
           isPostLoading = false;
         });
 
-        if (map['status'] == true) {
+        if (map!['status'] == true) {
           print('TRUE');
         } else {
           Fluttertoast.showToast(
-              msg: map['error_msg'],
+              msg: map!['error_msg'],
               backgroundColor: Constants.bgColor,
               gravity: ToastGravity.BOTTOM,
               fontSize: 10.0.sp,
@@ -747,7 +747,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
         }
       } else {
         print('${response.statusCode} : ${response.data.toString()}');
-        throw response.statusCode;
+        throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
@@ -756,7 +756,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
     }
   }
 
-  Future<void> savePostApi(int postID) async {
+  Future<void> savePostApi(int? postID) async {
     //var delResult = PostDelete();
 
     try {
@@ -765,7 +765,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
       FormData formData = FormData.fromMap({'post_id': postID});
       var response = await dio.post(Config.savePostUrl,
           data: formData,
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
         //delResult = postDeleteFromJson(response.data);
@@ -776,11 +776,11 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
         // setState(() {
         //   isLoading = false;
         // });
-        if (saveMap['status'] == true) {
+        if (saveMap!['status'] == true) {
           print('true');
           //getEducatorPostApi(page);
           Fluttertoast.showToast(
-              msg: saveMap['message'],
+              msg: saveMap!['message'],
               backgroundColor: Constants.bgColor,
               gravity: ToastGravity.BOTTOM,
               fontSize: 10.0.sp,
@@ -788,9 +788,9 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
               textColor: Colors.white);
         } else {
           print('false');
-          if (saveMap['message'] == null) {
+          if (saveMap!['message'] == null) {
             Fluttertoast.showToast(
-                msg: saveMap['error_msg'],
+                msg: saveMap!['error_msg'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,
@@ -798,7 +798,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                 textColor: Colors.white);
           } else {
             Fluttertoast.showToast(
-                msg: saveMap['message'],
+                msg: saveMap!['message'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,

@@ -8,8 +8,8 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 
 class RatingReviewScreen extends StatefulWidget {
-  int propertyId;
-  RatingReviewScreen({Key key, this.propertyId}) : super(key: key);
+  int? propertyId;
+  RatingReviewScreen({Key? key, this.propertyId}) : super(key: key);
 
   @override
   _RatingReviewScreenState createState() => _RatingReviewScreenState();
@@ -87,7 +87,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                           child: Column(
                             children: <Widget>[
                               Text(
-                                '${result.data.rating.avgRating} / 5',
+                                '${result.data!.rating!.avgRating} / 5',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 16.0.sp,
@@ -98,7 +98,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                 height: 3.0.h,
                               ),
                               Text(
-                                '${result.data.totalRating} Rating',
+                                '${result.data!.totalRating} Rating',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 11.0.sp,
@@ -109,7 +109,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                 height: 0.5.h,
                               ),
                               Text(
-                                '${result.data.totalReview} Review',
+                                '${result.data!.totalReview} Review',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 11.0.sp,
@@ -153,7 +153,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   transform: Matrix4.translationValues(
                                       -5.0.w, 0.0, 0.0),
                                   child: Text(
-                                    result.data.rating.the5.toString(),
+                                    result.data!.rating!.the5.toString(),
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 10.0.sp,
@@ -167,7 +167,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   child: Container(
                                     height: 1.0.h,
                                     child: FAProgressBar(
-                                      currentValue: result.data.rating.the5,
+                                      currentValue: result.data!.rating!.the5!,
                                       maxValue: 100,
                                       direction: Axis.horizontal,
                                       backgroundColor: Color(0xFFD3D9E0),
@@ -208,7 +208,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   transform: Matrix4.translationValues(
                                       -5.0.w, 0.0, 0.0),
                                   child: Text(
-                                    result.data.rating.the4.toString(),
+                                    result.data!.rating!.the4.toString(),
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 10.0.sp,
@@ -222,7 +222,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   child: Container(
                                     height: 1.0.h,
                                     child: FAProgressBar(
-                                      currentValue: result.data.rating.the4,
+                                      currentValue: result.data!.rating!.the4!,
                                       maxValue: 100,
                                       direction: Axis.horizontal,
                                       backgroundColor: Color(0xFFD3D9E0),
@@ -263,7 +263,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   transform: Matrix4.translationValues(
                                       -5.0.w, 0.0, 0.0),
                                   child: Text(
-                                    result.data.rating.the3.toString(),
+                                    result.data!.rating!.the3.toString(),
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 10.0.sp,
@@ -277,7 +277,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   child: Container(
                                     height: 1.0.h,
                                     child: FAProgressBar(
-                                      currentValue: result.data.rating.the3,
+                                      currentValue: result.data!.rating!.the3!,
                                       maxValue: 100,
                                       direction: Axis.horizontal,
                                       backgroundColor: Color(0xFFD3D9E0),
@@ -318,7 +318,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   transform: Matrix4.translationValues(
                                       -5.0.w, 0.0, 0.0),
                                   child: Text(
-                                    result.data.rating.the2.toString(),
+                                    result.data!.rating!.the2.toString(),
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 10.0.sp,
@@ -332,7 +332,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   child: Container(
                                     height: 1.0.h,
                                     child: FAProgressBar(
-                                      currentValue: result.data.rating.the2,
+                                      currentValue: result.data!.rating!.the2!,
                                       maxValue: 100,
                                       direction: Axis.horizontal,
                                       backgroundColor: Color(0xFFD3D9E0),
@@ -373,7 +373,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   transform: Matrix4.translationValues(
                                       -5.0.w, 0.0, 0.0),
                                   child: Text(
-                                    result.data.rating.the1.toString(),
+                                    result.data!.rating!.the1.toString(),
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 10.0.sp,
@@ -387,7 +387,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   child: Container(
                                     height: 1.0.h,
                                     child: FAProgressBar(
-                                      currentValue: result.data.rating.the1,
+                                      currentValue: result.data!.rating!.the1!,
                                       maxValue: 100,
                                       direction: Axis.horizontal,
                                       backgroundColor: Color(0xFFD3D9E0),
@@ -494,7 +494,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                           fontFamily: 'Montserrat',
                                           fontWeight: FontWeight.w500)),
                                   TextSpan(
-                                      text: '(${result.data.review.length})',
+                                      text: '(${result.data!.review!.length})',
                                       style: TextStyle(
                                           fontSize: 11.0.sp,
                                           color:
@@ -509,7 +509,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                               height: 100.0.h,
                               width: double.infinity,
                               child: ListView.separated(
-                                itemCount: result.data.review.length,
+                                itemCount: result.data!.review!.length,
                                 physics: BouncingScrollPhysics(),
                                 itemBuilder: (context, index) {
                                   return Column(
@@ -525,8 +525,8 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                                 borderRadius:
                                                     BorderRadius.circular(50),
                                                 child: Image.network(
-                                                  result.data.review[index]
-                                                      .profileImage,
+                                                  result.data!.review![index]
+                                                      .profileImage!,
                                                   width: 9.0.w,
                                                   height: 4.5.h,
                                                   fit: BoxFit.cover,
@@ -551,8 +551,8 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                                             FontWeight.w700),
                                                   ),
                                                   Text(
-                                                    result.data.review[index]
-                                                        .date,
+                                                    result.data!.review![index]
+                                                        .date!,
                                                     style: TextStyle(
                                                         fontSize: 6.5.sp,
                                                         color: Constants
@@ -578,7 +578,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                                         FontWeight.w500)),
                                             TextSpan(
                                                 text:
-                                                    '${result.data.review[index].rating}/5',
+                                                    '${result.data!.review![index].rating}/5',
                                                 style: TextStyle(
                                                     fontSize: 7.0.sp,
                                                     color:
@@ -589,7 +589,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                           ]))),
                                       Container(
                                         child: ReadMoreText(
-                                          result.data.review[index].descreption,
+                                          result.data!.review![index].descreption!,
                                           trimLines: 3,
                                           colorClickableText:
                                               Constants.blueTitle,
@@ -631,6 +631,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
 
   //Get Property Review API
   Future<PropertyReview> getPropertyReviewAPI() async {
+    var result;
     try {
       var dio = Dio();
       var response = await dio
@@ -652,5 +653,6 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
       print(e.response);
       print(stack);
     }
+    return result;
   }
 }

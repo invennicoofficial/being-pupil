@@ -13,7 +13,7 @@ const String prefSubscriptionId = "pref_subscription_id";
 
 class SharedPrefs {
   static final SharedPrefs _instance = SharedPrefs._internal();
-  SharedPreferences prefs;
+  late SharedPreferences prefs;
 
   SharedPrefs._internal();
 
@@ -34,25 +34,25 @@ class SharedPrefs {
   }
 
   saveNewUser(CubeUser cubeUser) {
-    prefs.setString(prefUserLogin, cubeUser.login);
-    prefs.setString(prefUserPsw, cubeUser.password);
-    prefs.setString(prefUserName, cubeUser.fullName);
-    prefs.setInt(prefUserId, cubeUser.id);
+    prefs.setString(prefUserLogin, cubeUser.login!);
+    prefs.setString(prefUserPsw, cubeUser.password!);
+    prefs.setString(prefUserName, cubeUser.fullName!);
+    prefs.setInt(prefUserId, cubeUser.id!);
     if (cubeUser.avatar != null)
-      prefs.setString(prefUserAvatar, cubeUser.avatar);
+      prefs.setString(prefUserAvatar, cubeUser.avatar!);
   }
 
   updateUser(CubeUser cubeUser) {
     if (cubeUser.password != null)
-      prefs.setString(prefUserPsw, cubeUser.password);
-    if (cubeUser.login != null) prefs.setString(prefUserLogin, cubeUser.login);
+      prefs.setString(prefUserPsw, cubeUser.password!);
+    if (cubeUser.login != null) prefs.setString(prefUserLogin, cubeUser.login!);
     if (cubeUser.fullName != null)
-      prefs.setString(prefUserName, cubeUser.fullName);
+      prefs.setString(prefUserName, cubeUser.fullName!);
     if (cubeUser.avatar != null)
-      prefs.setString(prefUserAvatar, cubeUser.avatar);
+      prefs.setString(prefUserAvatar, cubeUser.avatar!);
   }
 
-  CubeUser getUser() {
+  CubeUser? getUser() {
     if (prefs.get(prefUserLogin) == null) return null;
     var user = CubeUser();
     user.login = prefs.getString(prefUserLogin);

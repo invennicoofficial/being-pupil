@@ -17,10 +17,10 @@ import 'package:intl/intl.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class BookPropertyScreen extends StatefulWidget {
-  GetAllProperty propertyDetails;
-  List<dynamic> propData;
-  int index;
-  BookPropertyScreen({Key key, this.index, this.propertyDetails, this.propData}) : super(key: key);
+  GetAllProperty? propertyDetails;
+  List<dynamic>? propData;
+  int? index;
+  BookPropertyScreen({Key? key, this.index, this.propertyDetails, this.propData}) : super(key: key);
 
   @override
   _BookPropertyScreenState createState() => _BookPropertyScreenState();
@@ -30,24 +30,24 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _mobileController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
-  DateTime checkInDate, checkOutDate;
+  DateTime? checkInDate, checkOutDate;
   bool isCheckedIn = false, isCheckedOut = false;
-  String checkInString, checkOutString, roomType = '';
-  String checkInStringDate, checkOutStringDate;
+  String? checkInString, checkOutString, roomType = '';
+  String? checkInStringDate, checkOutStringDate;
   List<String> mealList = ['Breakfast', 'Lunch', 'Dinner'];
   List<int> mealPriceList = [1000, 2000, 2000];
-  List<String> selectedMeal = [];
-  List<int> selectedMealId = [];
+  List<String?> selectedMeal = [];
+  List<int?> selectedMealId = [];
   List<bool> isMeal = [false, false, false];
 
-  String userName, userGender, userNumber, userEmail;
+  String? userName, userGender, userNumber, userEmail;
   int roomCharge = 0, mealCharge = 0, taxCharge = 500, total = 500;
 
   int selectedMonth = 0;
   bool isRoomSelected = false;
 
-  String authToken;
-  int roomId;
+  String? authToken;
+  int? roomId;
 
   // List<String> sharingList = ['Single Sharing', 'Double Sharing'];
   // List<String> sharingPriceList = ['₹4000/mth', '₹6000/mth'];
@@ -71,9 +71,9 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
       userNumber = preferences.getString('mobileNumber');
       userGender = preferences.getString('gender');
       userEmail = preferences.getString('email');
-      _nameController.text = userName;
+      _nameController.text = userName!;
       _mobileController.text = '+91$userNumber';
-      _emailController.text = userEmail;
+      _emailController.text = userEmail!;
     });
   }
 
@@ -144,10 +144,10 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                       if (value == index+1) {
                         setState(() {
                           isRoomSelected = true;
-                          roomType = widget.propData[widget.index]['room'][index]['room_type'];
+                          roomType = widget.propData![widget.index!]['room'][index]['room_type'];
                           //widget.propertyDetails.data[widget.index].room[0].roomType;
                           roomId = 1;
-                          roomCharge = int.parse(widget.propData[widget.index]['room'][index]['room_amount']);
+                          roomCharge = int.parse(widget.propData![widget.index!]['room'][index]['room_amount']);
                           //int.parse(widget.propertyDetails.data[widget.index].room[0].roomAmount);
                           total = roomCharge + mealCharge + taxCharge;
                         });
@@ -179,8 +179,8 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                           horizontal: 2.0.w, vertical: 1.5.h),
                     ),
                     items: [
-                      for(int i = 0; i < widget.propData[widget.index]['room'].length ; i++){
-                         '${widget.propData[widget.index]['room'][i]['room_type']}\t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t₹${widget.propData[widget.index]['room'][i]['room_amount']}',
+                      for(int i = 0; i < widget.propData![widget.index!]['room'].length ; i++){
+                         '${widget.propData![widget.index!]['room'][i]['room_type']}\t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t₹${widget.propData![widget.index!]['room'][i]['room_amount']}',
                       }
                       // '${widget.propertyDetails.data[widget.index].room[0].roomType}\t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t₹${widget.propertyDetails.data[widget.index].room[0].roomAmount}',
                       // '${widget.propertyDetails.data[widget.index].room[1].roomType}\t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t ₹${widget.propertyDetails.data[widget.index].room[1].roomAmount}',
@@ -234,7 +234,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                     padding:
                         EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 2.0.h),
                     child: ListView.builder(
-                        itemCount: widget.propData[widget.index]['meal'].length,
+                        itemCount: widget.propData![widget.index!]['meal'].length,
                         //widget.propertyDetails.data[widget.index].meal.length,
                         physics: NeverScrollableScrollPhysics(),
                         padding: EdgeInsets.zero,
@@ -249,7 +249,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(widget.propData[widget.index]['meal'][index]['meal_type'],
+                                  Text(widget.propData![widget.index!]['meal'][index]['meal_type'],
                                     //widget.propertyDetails.data[widget.index].meal[index].mealType,
                                       style: TextStyle(
                                           fontFamily: 'Montserrat',
@@ -257,7 +257,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                           color: Color(0xFF6B737C),
                                           fontWeight: FontWeight.w400)),
                                   Text(
-                                    '₹${widget.propData[widget.index]['meal'][index]['meal_amount']}/mth',
+                                    '₹${widget.propData![widget.index!]['meal'][index]['meal_amount']}/mth',
                                       //'₹${widget.propertyDetails.data[widget.index].meal[index].mealAmount}/mth',
                                       style: TextStyle(
                                           fontFamily: 'Montserrat',
@@ -275,22 +275,22 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                 print(isMeal);
                                 if (isMeal[index] == true) {
                                   setState(() {
-                                    mealCharge = mealCharge + int.parse(widget.propData[widget.index]['meal'][index]['meal_amount']);
+                                    mealCharge = mealCharge + int.parse(widget.propData![widget.index!]['meal'][index]['meal_amount']);
                                         //mealCharge + int.parse(widget.propertyDetails.data[widget.index].meal[index].mealAmount);
                                     total = mealCharge + taxCharge + roomCharge;
-                                    selectedMeal.add(widget.propData[widget.index]['meal'][index]['meal_type']);
+                                    selectedMeal.add(widget.propData![widget.index!]['meal'][index]['meal_type']);
                                     //selectedMeal.add(widget.propertyDetails.data[widget.index].meal[index].mealType);
-                                    selectedMealId.add(widget.propData[widget.index]['meal'][index]['meal_id']);
+                                    selectedMealId.add(widget.propData![widget.index!]['meal'][index]['meal_id']);
                                     //selectedMealId.add(widget.propertyDetails.data[widget.index].meal[index].mealId);
                                   });
                                 } else {
                                   setState(() {
-                                    mealCharge = mealCharge - int.parse(widget.propData[widget.index]['meal'][index]['meal_amount']);
+                                    mealCharge = mealCharge - int.parse(widget.propData![widget.index!]['meal'][index]['meal_amount']);
                                         //mealCharge - int.parse(widget.propertyDetails.data[widget.index].meal[index].mealAmount);
-                                    total = total - int.parse(widget.propData[widget.index]['meal'][index]['meal_amount']);
-                                    selectedMeal.remove(widget.propData[widget.index]['meal'][index]['meal_type']);
+                                    total = total - int.parse(widget.propData![widget.index!]['meal'][index]['meal_amount']);
+                                    selectedMeal.remove(widget.propData![widget.index!]['meal'][index]['meal_type']);
                                     // selectedMeal.remove(widget.propertyDetails.data[widget.index].meal[index].mealType);
-                                    selectedMealId.remove(widget.propData[widget.index]['meal'][index]['meal_id']);
+                                    selectedMealId.remove(widget.propData![widget.index!]['meal'][index]['meal_id']);
                                     //selectedMealId.remove(widget.propertyDetails.data[widget.index].meal[index].mealId);
                                   });
                                 }
@@ -409,32 +409,32 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                   checkInDate = datePick;
                                   isCheckedIn = true;
 
-                                  if (checkInDate.day.toString().length == 1 &&
-                                      checkInDate.month.toString().length ==
+                                  if (checkInDate!.day.toString().length == 1 &&
+                                      checkInDate!.month.toString().length ==
                                           1) {
                                     setState(() {
-                                      checkInString = "0${checkInDate.day.toString()}/0${checkInDate.month}";
-                                      checkInStringDate = "0${checkInDate.day.toString()}/0${checkInDate.month}/${checkInDate.year}";
+                                      checkInString = "0${checkInDate!.day.toString()}/0${checkInDate!.month}";
+                                      checkInStringDate = "0${checkInDate!.day.toString()}/0${checkInDate!.month}/${checkInDate!.year}";
                                     });
                                     print('11111');
-                                  } else if (checkInDate.day
+                                  } else if (checkInDate!.day
                                           .toString()
                                           .length ==
                                       1) {
                                     setState(() {
-                                      checkInString = "0${checkInDate.day}/${checkInDate.month}";
-                                      checkInStringDate = "0${checkInDate.day.toString()}/${checkInDate.month}/${checkInDate.year}";
+                                      checkInString = "0${checkInDate!.day}/${checkInDate!.month}";
+                                      checkInStringDate = "0${checkInDate!.day.toString()}/${checkInDate!.month}/${checkInDate!.year}";
                                     });
                                     print('22222');
-                                  } else if (checkInDate.month
+                                  } else if (checkInDate!.month
                                           .toString()
                                           .length ==
                                       1) {
-                                    checkInString = "${checkInDate.day}/0${checkInDate.month}";
-                                    checkInStringDate = "${checkInDate.day.toString()}/0${checkInDate.month}/${checkInDate.year}";
+                                    checkInString = "${checkInDate!.day}/0${checkInDate!.month}";
+                                    checkInStringDate = "${checkInDate!.day.toString()}/0${checkInDate!.month}/${checkInDate!.year}";
                                   } else {
-                                    checkInString = "${checkInDate.day}/${checkInDate.month}";
-                                    checkInStringDate = "${checkInDate.day.toString()}/${checkInDate.month}/${checkInDate.year}";
+                                    checkInString = "${checkInDate!.day}/${checkInDate!.month}";
+                                    checkInStringDate = "${checkInDate!.day.toString()}/${checkInDate!.month}/${checkInDate!.year}";
                                   }
                                   // checkInString =
                                   //     "${checkInDate.day}/${checkInDate.month}";
@@ -463,7 +463,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    isCheckedIn ? checkInString : 'Check In',
+                                    isCheckedIn ? checkInString! : 'Check In',
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 10.0.sp,
@@ -494,9 +494,9 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                 print('Date Picker!!!');
                                 final datePick = await showDatePicker(
                                     context: context,
-                                    initialDate: checkInDate,
-                                    firstDate: checkInDate,
-                                    lastDate: checkInDate.add(selectedMonth == 1
+                                    initialDate: checkInDate!,
+                                    firstDate: checkInDate!,
+                                    lastDate: checkInDate!.add(selectedMonth == 1
                                         ? const Duration(days: 30)
                                         : selectedMonth == 2
                                             ? const Duration(days: 60)
@@ -508,33 +508,33 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                     checkOutDate = datePick;
                                     isCheckedOut = true;
 
-                                    if (checkOutDate.day.toString().length ==
+                                    if (checkOutDate!.day.toString().length ==
                                             1 &&
-                                        checkOutDate.month.toString().length ==
+                                        checkOutDate!.month.toString().length ==
                                             1) {
                                       setState(() {
-                                        checkOutString =  "0${checkOutDate.day.toString()}/0${checkOutDate.month}";
-                                        checkOutStringDate = "0${checkOutDate.day.toString()}/0${checkOutDate.month}/${checkOutDate.year}";
+                                        checkOutString =  "0${checkOutDate!.day.toString()}/0${checkOutDate!.month}";
+                                        checkOutStringDate = "0${checkOutDate!.day.toString()}/0${checkOutDate!.month}/${checkOutDate!.year}";
                                       });
                                       print('11111');
-                                    } else if (checkOutDate.day
+                                    } else if (checkOutDate!.day
                                             .toString()
                                             .length ==
                                         1) {
                                       setState(() {
-                                        checkOutString = "0${checkOutDate.day}/${checkOutDate.month}";
-                                         checkOutStringDate = "0${checkOutDate.day.toString()}/${checkOutDate.month}/${checkOutDate.year}";
+                                        checkOutString = "0${checkOutDate!.day}/${checkOutDate!.month}";
+                                         checkOutStringDate = "0${checkOutDate!.day.toString()}/${checkOutDate!.month}/${checkOutDate!.year}";
                                       });
                                       print('22222');
-                                    } else if (checkOutDate.month
+                                    } else if (checkOutDate!.month
                                             .toString()
                                             .length ==
                                         1) {
-                                      checkOutString = "${checkOutDate.day}/0${checkOutDate.month}";
-                                       checkOutStringDate = "${checkOutDate.day.toString()}/0${checkOutDate.month}/${checkOutDate.year}";
+                                      checkOutString = "${checkOutDate!.day}/0${checkOutDate!.month}";
+                                       checkOutStringDate = "${checkOutDate!.day.toString()}/0${checkOutDate!.month}/${checkOutDate!.year}";
                                     } else {
-                                      checkOutString = "${checkOutDate.day}/${checkOutDate.month}";
-                                       checkOutStringDate = "${checkOutDate.day.toString()}/${checkOutDate.month}/${checkOutDate.year}";
+                                      checkOutString = "${checkOutDate!.day}/${checkOutDate!.month}";
+                                       checkOutStringDate = "${checkOutDate!.day.toString()}/${checkOutDate!.month}/${checkOutDate!.year}";
                                     }
                                     // checkOutString =
                                     //     "${checkOutDate.day}/${checkOutDate.month}";
@@ -565,7 +565,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    isCheckedOut ? checkOutString : 'Check Out',
+                                    isCheckedOut ? checkOutString! : 'Check Out',
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 10.0.sp,
@@ -1079,7 +1079,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
       });
       var response = await dio.post(Config.bookingCheckUrl,
           data: formData,
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         closeProgressDialog(context);
         result = CheckBooking.fromJson(response.data);
@@ -1092,8 +1092,8 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                 name: userName,
                 mobileNumber: userNumber,
                 email: userEmail,
-                checkIn: DateFormat('EEE, dd MMM yyyy').format(checkInDate).toString(),
-                checkOut: DateFormat('EEE, dd MMM yyyy').format(checkOutDate).toString(),
+                checkIn: DateFormat('EEE, dd MMM yyyy').format(checkInDate!).toString(),
+                checkOut: DateFormat('EEE, dd MMM yyyy').format(checkOutDate!).toString(),
                 checkInDateFormat: '$checkInStringDate 09:10:22 AM',
                 checkOutDateFormat: '$checkOutStringDate 09:10:22 AM',
                 roomType: roomType,
@@ -1113,7 +1113,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
         } else {
           //closeProgressDialog(context);
           Fluttertoast.showToast(
-            msg: result.message == null ? result.errorMsg : result.message,
+            msg: result.message == null ? result.errorMsg : result.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -1129,9 +1129,9 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -1141,7 +1141,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }

@@ -18,11 +18,11 @@ class CreateBooking {
         this.metaParams,
     });
 
-    bool status;
+    bool? status;
     dynamic errorCode;
     dynamic errorMsg;
-    String message;
-    Data data;
+    String? message;
+    Data? data;
     dynamic metaParams;
 
     factory CreateBooking.fromJson(Map<String, dynamic> json) => CreateBooking(
@@ -39,7 +39,7 @@ class CreateBooking {
         "error_code": errorCode,
         "error_msg": errorMsg,
         "message": message,
-        "data": data.toJson(),
+        "data": data!.toJson(),
         "meta_params": metaParams,
     };
 }
@@ -52,10 +52,10 @@ class Data {
         this.mobileNumber,
     });
 
-    int userId;
-    String bookingId;
-    String guestName;
-    String mobileNumber;
+    int? userId;
+    String? bookingId;
+    String? guestName;
+    String? mobileNumber;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         userId: json["user_id"],

@@ -22,9 +22,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'package:filter_list/filter_list.dart';
 
 class LearnerRegistration extends StatefulWidget {
-  String name, mobileNumber;
+  String? name, mobileNumber;
   LearnerRegistration(
-      {Key key, @required this.name, @required this.mobileNumber})
+      {Key? key, required this.name, required this.mobileNumber})
       : super(key: key);
 
   @override
@@ -32,22 +32,22 @@ class LearnerRegistration extends StatefulWidget {
 }
 
 class _LearnerRegistrationState extends State<LearnerRegistration> {
-  File _image, _certificate, _document;
-  String birthDateInString, selectedYearString;
-  DateTime birthDate, selectedYear;
+  XFile? _image, _certificate, _document;
+  String? birthDateInString, selectedYearString;
+  DateTime? birthDate, selectedYear;
   bool isDateSelected = false;
   bool isYearSelected = false;
   String gender = 'Gender';
   String docType = 'DocType';
   String qualification = '0';
   String workExp = '0';
-  String fileName;
-  String address1, address2, city, country, pinCode;
-  double lat, lng;
+  String? fileName;
+  String? address1, address2, city, country, pinCode;
+  double? lat, lng;
   bool isCat1 = false;
   int itemCount = 0;
   int educationId = 0;
-  String authToken;
+  String? authToken;
   List<String> skillList = [];
   List<String> hobbieList = [];
   TextEditingController _nameController = TextEditingController();
@@ -63,29 +63,30 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
   List<String> selectedSkillList = [];
   List<String> selectedHobbiesList = [];
 
-  Map<String, dynamic> skillMap = Map<String, dynamic>();
-  List<dynamic> skillMapData = List();
+  Map<String, dynamic>? skillMap = Map<String, dynamic>();
+  List<dynamic>? skillMapData = [];//List();
 
-  Map<String, dynamic> hobbieMap = Map<String, dynamic>();
-  List<dynamic> hobbieMapData = List();
+  Map<String, dynamic>? hobbieMap = Map<String, dynamic>();
+  List<dynamic>? hobbieMapData = [];//List();
 
-  Map<String, dynamic> categoryMap = Map<String, dynamic>();
-  List<dynamic> categoryMapData = List();
+  Map<String, dynamic>? categoryMap = Map<String, dynamic>();
+  List<dynamic>? categoryMapData = [];//List();
 
-  List<bool> intrestedCat = List<bool>();
-  List<int> intrestedCatKey = List<int>();
+  List<bool?> intrestedCat = [];//List<bool?>();
+  List<int> intrestedCatKey = [];//List<int>();
   // List<Skills> _selectedSkills;
   // String _selectedSkillsJson = 'Nothing to show';
 
   // List<Hobbies> _selectedHobbies;
   // String _selectedHobbiesJson = 'Nothing to show';
 
-  List<String> catList = List();
-  String _certiName;
+  List<String> catList = [];//List();
+  String? _certiName;
   List<dynamic> educationDetailMap = [];
-  int userId;
-  String registerAs;
-  int totalWorkExp;
+  int? userId;
+  String? registerAs;
+  int? totalWorkExp;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
@@ -94,8 +95,8 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
     // _selectedHobbies = [];
     getToken();
     getData();
-    _nameController.text = widget.name;
-    _mobileController.text = widget.mobileNumber;
+    _nameController.text = widget.name!;
+    _mobileController.text = widget.mobileNumber!;
     educationDetailMap.add({
       'school_name': 'MSU',
       'year': 'Year',
@@ -138,7 +139,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
   }
 
   _imageFromCamera() async {
-    File image = await ImagePicker.pickImage(
+    XFile? image = await _picker.pickImage(
         source: ImageSource.camera, imageQuality: 50);
 
     setState(() {
@@ -147,7 +148,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
   }
 
   _imageFromGallery() async {
-    File image = await ImagePicker.pickImage(
+    XFile? image = await _picker.pickImage(
         source: ImageSource.gallery, imageQuality: 50);
 
     setState(() {
@@ -341,7 +342,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
   }
 
   void _uploadDocument() async {
-    FilePickerResult result = await FilePicker.platform.pickFiles(
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf']);
     if (result != null) {
@@ -349,7 +350,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
       PlatformFile file = result.files.first;
       setState(() {
         fileName = file.name;
-        _document = File(file.path);
+        _document = XFile(file.path!);
       });
 
       print(file.name);
@@ -361,24 +362,24 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
   }
 
   _certificateFromCamera(int index) async {
-    File doc = (await ImagePicker.pickImage(
+    XFile? doc = (await _picker.pickImage(
         source: ImageSource.camera, imageQuality: 50));
 
     setState(() {
       _certificate = doc;
-      _certiName = doc.path.split('/scaled_').last.substring(35);
-      educationDetailMap[index]['certificate'] = _certificate.path;
+      _certiName = doc!.path.split('/scaled_').last.substring(35);
+      educationDetailMap[index]['certificate'] = _certificate!.path;
     });
   }
 
   _certificateFromGallery(int index) async {
-    File doc = (await ImagePicker.pickImage(
+    XFile? doc = (await _picker.pickImage(
         source: ImageSource.gallery, imageQuality: 50));
 
     setState(() {
       _certificate = doc;
-      _certiName = doc.path.split('/scaled_image_picker').last;
-      educationDetailMap[index]['certificate'] = _certificate.path;
+      _certiName = doc!.path.split('/scaled_image_picker').last;
+      educationDetailMap[index]['certificate'] = _certificate!.path;
       print(_certiName);
     });
   }
@@ -479,7 +480,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                                 borderRadius:
                                                     BorderRadius.circular(70),
                                                 child: Image.file(
-                                                  _image,
+                                                  File(_image!.path),
                                                   height: 125.0,//14.0.h,
                                                   width: 125.0,//30.0.w,
                                                   fit: BoxFit.cover,
@@ -863,33 +864,33 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                         birthDate = datePick;
                                         isDateSelected = true;
 
-                                        if (birthDate.day.toString().length ==
+                                        if (birthDate!.day.toString().length ==
                                                 1 &&
-                                            birthDate.month.toString().length ==
+                                            birthDate!.month.toString().length ==
                                                 1) {
                                           setState(() {
                                             birthDateInString =
-                                                "0${birthDate.day.toString()}/0${birthDate.month}/${birthDate.year}";
+                                                "0${birthDate!.day.toString()}/0${birthDate!.month}/${birthDate!.year}";
                                           });
                                           print('11111');
-                                        } else if (birthDate.day
+                                        } else if (birthDate!.day
                                                 .toString()
                                                 .length ==
                                             1) {
                                           setState(() {
                                             birthDateInString =
-                                                "0${birthDate.day}/${birthDate.month}/${birthDate.year}";
+                                                "0${birthDate!.day}/${birthDate!.month}/${birthDate!.year}";
                                           });
                                           print('22222');
-                                        } else if (birthDate.month
+                                        } else if (birthDate!.month
                                                 .toString()
                                                 .length ==
                                             1) {
                                           birthDateInString =
-                                              "${birthDate.day}/0${birthDate.month}/${birthDate.year}";
+                                              "${birthDate!.day}/0${birthDate!.month}/${birthDate!.year}";
                                         } else {
                                           birthDateInString =
-                                              "${birthDate.day}/${birthDate.month}/${birthDate.year}";
+                                              "${birthDate!.day}/${birthDate!.month}/${birthDate!.year}";
                                         } // 08/14/2019
                                       });
                                     }
@@ -910,7 +911,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                       children: [
                                         Text(
                                           isDateSelected
-                                              ? birthDateInString
+                                              ? birthDateInString!
                                               : 'DOB',
                                           style: TextStyle(
                                               fontFamily: 'Montserrat',
@@ -1067,7 +1068,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                         Text(
                                           (fileName == null || fileName == '')
                                               ? 'Upload the file'
-                                              : fileName,
+                                              : fileName!,
                                           style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               fontSize: 10.0.sp,
@@ -1164,7 +1165,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                             child: Text(
                                               address1 == null
                                                   ? 'Location'
-                                                  : address1,
+                                                  : address1!,
                                               style: TextStyle(
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 10.0.sp,
@@ -1354,10 +1355,10 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                                           educationDetailMap[
                                                                       index]
                                                                   ['year'] =
-                                                              selectedYear.year
+                                                              selectedYear!.year
                                                                   .toString();
 
-                                                          print(selectedYear
+                                                          print(selectedYear!
                                                               .year);
                                                           Navigator.pop(
                                                               context);
@@ -1881,7 +1882,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                         GridView.builder(
                             shrinkWrap: true,
                             padding: EdgeInsets.all(0.0),
-                            itemCount: categoryMapData.length,
+                            itemCount: categoryMapData!.length,
                             physics: NeverScrollableScrollPhysics(),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
@@ -1890,7 +1891,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                               return CheckboxListTile(
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
-                                  title: Text(categoryMapData[index]['value'],
+                                  title: Text(categoryMapData![index]['value'],
                                       style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontSize: 10.0.sp,
@@ -1901,7 +1902,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                   onChanged: (value) {
                                     setState(() {
                                       intrestedCat[index] =
-                                          !intrestedCat[index];
+                                          !intrestedCat[index]!;
                                       if (intrestedCat[index] == true) {
                                         intrestedCatKey.add(index + 1);
                                         intrestedCatKey.sort();
@@ -2674,8 +2675,8 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                     gender,
                                     birthDateInString,
                                     docType,
-                                    _document,
-                                    _image,
+                                    _document!,
+                                    _image!,
                                     _idNumController.text,
                                     address1,
                                     address2,
@@ -2736,7 +2737,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
    //Tag for Skills
   void _openFilterSkillsDialog() async {
     await FilterListDialog.display(context,
-        listData: skillMapData,
+        listData: skillMapData!,
         selectedListData: selectedSkillList,
         height: 480,
         headlineText: "Select or Search Skill",
@@ -2751,11 +2752,11 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
             fontWeight: FontWeight.w500,
             fontSize: 12.0.sp,
             color: Constants.bgColor),
-        label: (item) {
+        choiceChipLabel: (dynamic item) {
           return item;
         },
-        validateSelectedItem: (list, val) {
-          return list.contains(val);
+        validateSelectedItem: (list, dynamic val) {
+          return list!.contains(val);
         },
         applyButonTextBackgroundColor: Constants.bgColor,
         applyButtonTextStyle: TextStyle(
@@ -2780,13 +2781,14 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
             color: Constants.bgColor),
         //useSafeArea: true,
         onItemSearch: (list, text) {
-          if (list.any((element) =>
-              element.toLowerCase().contains(text.toLowerCase()))) {
+          if (list!.any((element) =>
+              element.toString().toLowerCase().contains(text.toLowerCase()))) {
             return list
                 .where((element) =>
-                    element.toLowerCase().contains(text.toLowerCase()))
+                    element.toString().toLowerCase().contains(text.toLowerCase()))
                 .toList();
           }
+          return list;
         },
         onApplyButtonClick: (list) {
           if (list != null) {
@@ -2801,7 +2803,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
   //Tag for Hobbies
   void _openFilterHobbiesDialog() async {
     await FilterListDialog.display(context,
-        listData: hobbieMapData,
+        listData: hobbieMapData!,
         selectedListData: selectedHobbiesList,
         height: 480,
         headlineText: "Select or Search Hobbie",
@@ -2816,11 +2818,11 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
             fontWeight: FontWeight.w500,
             fontSize: 12.0.sp,
             color: Constants.bgColor),
-        label: (item) {
+        choiceChipLabel: (dynamic item) {
           return item;
         },
-        validateSelectedItem: (list, val) {
-          return list.contains(val);
+        validateSelectedItem: (list, dynamic val) {
+          return list!.contains(val);
         },
         applyButonTextBackgroundColor: Constants.bgColor,
         applyButtonTextStyle: TextStyle(
@@ -2845,13 +2847,14 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
             color: Constants.bgColor),
         //useSafeArea: true,
         onItemSearch: (list, text) {
-          if (list.any((element) =>
-              element.toLowerCase().contains(text.toLowerCase()))) {
+          if (list!.any((element) =>
+              element.toString().toLowerCase().contains(text.toLowerCase()))) {
             return list
                 .where((element) =>
-                    element.toLowerCase().contains(text.toLowerCase()))
+                    element.toString().toLowerCase().contains(text.toLowerCase()))
                 .toList();
           }
+          return list;
         },
         onApplyButtonClick: (list) {
           if (list != null) {
@@ -2865,19 +2868,19 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
 
   //Location Picker
   void showPlacePicker() async {
-    LocationResult result = await Navigator.of(context).push(MaterialPageRoute(
+    LocationResult result = await (Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => PlacePicker(
               Config.locationKey,
               // displayLocation: customLocation,
-            )));
+            ))));
 
     setState(() {
       address1 = result.formattedAddress;
-      address2 = result.subLocalityLevel1.name;
+      address2 = result.subLocalityLevel1!.name;
       city = result.locality;
-      country = result.country.name;
-      lat = result.latLng.latitude;
-      lng = result.latLng.longitude;
+      country = result.country!.name;
+      lat = result.latLng!.latitude;
+      lng = result.latLng!.longitude;
       pinCode = result.postalCode;
     });
 
@@ -2912,17 +2915,17 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
         hobbieMap = response[2].data;
         //saveImage();
         setState(() {
-          categoryMapData = categoryMap['data'];
-          skillMapData = skillMap['data'];
-          hobbieMapData = hobbieMap['data'];
+          categoryMapData = categoryMap!['data'];
+          skillMapData = skillMap!['data'];
+          hobbieMapData = hobbieMap!['data'];
         });
 
         // if (result != null) {
         //   isLoading = false;
         // }
 
-        for (int i = 0; i < categoryMapData.length; i++) {
-          intrestedCat.add(categoryMapData[i]['selected']);
+        for (int i = 0; i < categoryMapData!.length; i++) {
+          intrestedCat.add(categoryMapData![i]['selected']);
           // if(intrestedCat[i] == true){
           //   intrestedCatKey.add(categoryMapData[i]['key']);
           // } else{
@@ -2940,9 +2943,9 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
         //closeProgressDialog(context);
       } else {
         //closeProgressDialog(context);
-        if (categoryMap['error_msg'] != null) {
+        if (categoryMap!['error_msg'] != null) {
           Fluttertoast.showToast(
-            msg: categoryMap['error_msg'],
+            msg: categoryMap!['error_msg'],
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -2950,9 +2953,9 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-        } else if (skillMap['error_msg'] != null) {
+        } else if (skillMap!['error_msg'] != null) {
           Fluttertoast.showToast(
-            msg: skillMap['error_msg'],
+            msg: skillMap!['error_msg'],
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -2960,9 +2963,9 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-        } else if (hobbieMap['error_msg'] != null) {
+        } else if (hobbieMap!['error_msg'] != null) {
           Fluttertoast.showToast(
-            msg: hobbieMap['error_msg'],
+            msg: hobbieMap!['error_msg'],
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -2976,9 +2979,9 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
       //closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -2988,7 +2991,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }
@@ -2998,27 +3001,27 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
   //Add profile for Educator
   Future<ProfileUpdate> addLearnerProfile(
     //int userId,
-    String registerAs,
+    String? registerAs,
     //String imageFile,
     //String imageUrl,
     String name,
     String mobileNumber,
     String email,
     String gender,
-    String dob,
+    String? dob,
     String documentType,
-    File documentFile,
-    File imageFile,
+    XFile documentFile,
+    XFile imageFile,
     //File certificateFile,
     //String documentUrl,
     String idNumber,
-    String addressLine1,
-    String addressLine2,
-    String city,
-    String country,
-    String pinCode,
-    double latitude,
-    double longitude,
+    String? addressLine1,
+    String? addressLine2,
+    String? city,
+    String? country,
+    String? pinCode,
+    double? latitude,
+    double? longitude,
     String achievements,
     String skills,
     String hobbies,
@@ -3027,7 +3030,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
     String linkedinUrl,
     String otherUrl,
     //List<EducationalDetails> educationalDetails,
-    int totalWorkExp,
+    int? totalWorkExp,
     //List<InterestedCategory> interestedCategory,
   ) async {
     displayProgressDialog(context);
@@ -3136,7 +3139,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
       var response = await dio.post(
         Config.updateProfileUrl,
         data: formData,
-        options: Options(headers: {"Authorization": 'Bearer ' + authToken}),
+        options: Options(headers: {"Authorization": 'Bearer ' + authToken!}),
         // onSendProgress: (int sent, int total){
         //   print('SENT $sent + TOTAL $total');
         // }
@@ -3145,26 +3148,26 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
         print(response.data);
         closeProgressDialog(context);
         result = ProfileUpdate.fromJson(response.data);
-        print(result.data.name);
+        print(result.data!.name);
         if (result.status == true) {
           print('TRUE::');
-          preferences.setString("name", result.data.name);
-          preferences.setString("imageUrl", result.data.imageUrl);
-          preferences.setString("mobileNumber", result.data.mobileNumber);
-          preferences.setString("gender", result.data.gender);
-          preferences.setString("email", result.data.email);
-          preferences.setString("qualification", result.data.educationalDetails[0].qualification.toString());
-          preferences.setString("schoolName", result.data.educationalDetails[0].schoolName.toString());
-          preferences.setString("address1", result.data.location.toString());
-          preferences.setString("address2", result.data.location.toString());
-          preferences.setString("facebookUrl", result.data.facbookUrl);
-          preferences.setString("instaUrl", result.data.instaUrl);
-          preferences.setString("linkedInUrl", result.data.linkedinUrl);
-          preferences.setString("otherUrl", result.data.otherUrl);
+          preferences.setString("name", result.data!.name!);
+          preferences.setString("imageUrl", result.data!.imageUrl!);
+          preferences.setString("mobileNumber", result.data!.mobileNumber!);
+          preferences.setString("gender", result.data!.gender!);
+          preferences.setString("email", result.data!.email!);
+          preferences.setString("qualification", result.data!.educationalDetails![0].qualification.toString());
+          preferences.setString("schoolName", result.data!.educationalDetails![0].schoolName.toString());
+          preferences.setString("address1", result.data!.location.toString());
+          preferences.setString("address2", result.data!.location.toString());
+          preferences.setString("facebookUrl", result.data!.facbookUrl);
+          preferences.setString("instaUrl", result.data!.instaUrl);
+          preferences.setString("linkedInUrl", result.data!.linkedinUrl);
+          preferences.setString("otherUrl", result.data!.otherUrl);
           print('QUALIFICATION:::: ' +
-              result.data.educationalDetails.last.qualification);
-          print('LOCATION:::: ' + result.data.location[0].addressLine2);
-          print('IMAGE:::: ' + result.data.imageUrl);
+              result.data!.educationalDetails!.last.qualification!);
+          print('LOCATION:::: ' + result.data!.location![0].addressLine2!);
+          print('IMAGE:::: ' + result.data!.imageUrl!);
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => bottomNavBar(4)),
               (Route<dynamic> route) => false);
@@ -3174,7 +3177,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
         // saveUserData(result.data.userId);
 
         Fluttertoast.showToast(
-          msg: result.message,
+          msg: result.message!,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -3184,7 +3187,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
         );
       } else {
         Fluttertoast.showToast(
-          msg: result.message,
+          msg: result.message!,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -3200,9 +3203,9 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -3212,7 +3215,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }

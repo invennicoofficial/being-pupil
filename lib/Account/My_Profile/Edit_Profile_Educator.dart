@@ -35,25 +35,25 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as pathProvider;
 
 class EditEducatorProfile extends StatefulWidget {
-  const EditEducatorProfile({Key key}) : super(key: key);
+  const EditEducatorProfile({Key? key}) : super(key: key);
 
   @override
   _EditEducatorProfileState createState() => _EditEducatorProfileState();
 }
 
 class _EditEducatorProfileState extends State<EditEducatorProfile> {
-  File _image, _certificate, _document;
-  String birthDateInString, selectedYearString;
-  DateTime birthDate, selectedYear;
+  XFile? _image, _certificate, _document;
+  String? birthDateInString, selectedYearString;
+  DateTime? birthDate, selectedYear;
   bool isDateSelected = false;
   bool isYearSelected = false;
-  String gender = 'Gender';
-  String docType = 'DocType';
+  String? gender = 'Gender';
+  String? docType = 'DocType';
   String qualification = '0';
   String workExp = '0';
   String teachExp = '0';
-  String fileName;
-  String _certiName;
+  String? fileName;
+  String? _certiName;
   int itemCount = 0;
   TextEditingController _nameController = TextEditingController();
   TextEditingController _mobileController = TextEditingController();
@@ -69,47 +69,49 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   int educationId = 0;
   List controllersList = [];
   var certificate = [];
-  List<File> certiList = List<File>();
-  String registerAs;
-  int userId;
-  String authToken;
+  List<File> certiList = [];//List<File>();
+  String? registerAs;
+  int? userId;
+  String? authToken;
   List<String> education_details = [];
-  List<String> skillList = [];
-  List<String> hobbieList = [];
-  int totalWorkExp, totalTeachExp;
-  Map<String, dynamic> responseMap;
-  String address1, address2, city, country, pinCode;
-  double lat, lng;
+  List<String?> skillList = [];
+  List<String?> hobbieList = [];
+  int? totalWorkExp, totalTeachExp;
+  Map<String, dynamic>? responseMap;
+  String? address1, address2, city, country, pinCode;
+  double? lat, lng;
   List<EducationListItemModel> educationList = [];
 
   List<String> selectedSkillList = [];
   List<String> selectedHobbiesList = [];
 
-  Map<String, dynamic> skillMap = Map<String, dynamic>();
-  List<dynamic> skillMapData = List();
+  Map<String, dynamic>? skillMap = Map<String, dynamic>();
+  List<dynamic>? skillMapData = [];//List();
 
-  Map<String, dynamic> hobbieMap = Map<String, dynamic>();
-  List<dynamic> hobbieMapData = List();
+  Map<String, dynamic>? hobbieMap = Map<String, dynamic>();
+  List<dynamic>? hobbieMapData = [];//List();
 
-  Map<String, dynamic> profileMap;
-  List<dynamic> profileMapData = List();
+  Map<String, dynamic>? profileMap;
+  List<dynamic> profileMapData = [];//List();
 
   var result = EducatorProfileDetails();
 
   bool isLoading = true;
-  String imagePath, documentPath;
+  String? imagePath, documentPath;
 
   List<int> educationListId = [];
   List<String> schoolNameList = [];
-  List<String> qualificationList = [];
+  List<String?> qualificationList = [];
   List<String> yearList = [];
-  Map<int, dynamic> certificateList;
+  Map<int, dynamic>? certificateList;
 
-  Map<String, dynamic> eduMap;
-  List<dynamic> eduMapData;
+  Map<String, dynamic>? eduMap;
+  List<dynamic>? eduMapData;
 
-  List<String> netImage = [];
-  List<File> fileImage = [];
+  List<String?> netImage = [];
+  List<XFile?> fileImage = [];
+    final ImagePicker _picker = ImagePicker();
+
   //List<String> _schoolNameList
 
   // List<Skills> _selectedSkills;
@@ -138,20 +140,20 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   }
 
   populateEducationDetails(){
-    print(result.data.educationalDetails1);
-    if(result.data.educationalDetails1 != null){
-      for(int i = 0; i < result.data.educationalDetails1.length; i++){
+    print(result.data!.educationalDetails1);
+    if(result.data!.educationalDetails1 != null){
+      for(int i = 0; i < result.data!.educationalDetails1!.length; i++){
         controllersList.add(TextEditingController());
-        controllersList[i].text = eduMapData[i]['school_name'];
-        result.data.educationalDetails1[i]['year'] = eduMapData[i]['year'];
-        result.data.educationalDetails1[i]['qualification'] = eduMapData[i]['qualification'];
+        controllersList[i].text = eduMapData![i]['school_name'];
+        result.data!.educationalDetails1![i]['year'] = eduMapData![i]['year'];
+        result.data!.educationalDetails1![i]['qualification'] = eduMapData![i]['qualification'];
         //fileImage.add(result.data.educationalDetails1[i]['certificate_file']);
       }
     }else{
       if(eduMapData != null){
-        for(int i = 0; i < eduMapData.length; i++){
+        for(int i = 0; i < eduMapData!.length; i++){
           controllersList.add(TextEditingController());
-          controllersList[i].text = eduMapData[i]['school_name'];
+          controllersList[i].text = eduMapData![i]['school_name'];
         }
       }else{
         eduMapData = [];
@@ -183,22 +185,22 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   }
 
   _imageFromCamera() async {
-    File image = (await ImagePicker.pickImage(
+    XFile? image = (await _picker.pickImage(
         source: ImageSource.camera, imageQuality: 50));
 
     setState(() {
       _image = image;
-      imagePath = _image.path;
+      imagePath = _image!.path;
     });
   }
 
   _imageFromGallery() async {
-    File image = (await ImagePicker.pickImage(
+    XFile? image = (await _picker.pickImage(
         source: ImageSource.gallery, imageQuality: 50));
 
     setState(() {
       _image = image;
-      imagePath = _image.path;
+      imagePath = _image!.path;
     });
   }
 
@@ -388,7 +390,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   }
 
   void _uploadDocument() async {
-    FilePickerResult result = await FilePicker.platform.pickFiles(
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf']);
     if (result != null) {
@@ -396,8 +398,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
       PlatformFile file = result.files.first;
       setState(() {
         fileName = file.name;
-        _document = File(file.path);
-        documentPath = _document.path;
+        _document = XFile(file.path!);
+        documentPath = _document!.path;
       });
 
       print(file.name);
@@ -409,27 +411,27 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   }
 
   _certificateFromCamera(int index) async {
-    File doc = (await ImagePicker.pickImage(
+    XFile? doc = (await _picker.pickImage(
         source: ImageSource.camera, imageQuality: 50));
 
     setState(() {
       _certificate = doc;
       fileImage[index] =_certificate;
       //certificateList.add(doc);
-      _certiName = doc.path.split('/scaled_').last.substring(35);
+      _certiName = doc!.path.split('/scaled_').last.substring(35);
      // educationDetailMap[educationId]['certificate'] = _certificate.path;
      print(fileImage);
     });
   }
 
   _certificateFromGallery(int index) async {
-    File doc = (await ImagePicker.pickImage(
+    XFile? doc = (await _picker.pickImage(
         source: ImageSource.gallery, imageQuality: 50));
 
     setState(() {
       _certificate = doc;
       fileImage[index] =_certificate;
-      _certiName = doc.path.split('/scaled_image_picker').last;
+      _certiName = doc!.path.split('/scaled_image_picker').last;
       //educationDetailMap[educationId]['certificate'] = _certificate.path;
       print(fileImage);
     });
@@ -536,7 +538,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                         child: ClipRRect(
                                           borderRadius: BorderRadius.circular(70),
                                           child: Image.file(
-                                            _image,
+                                            File(_image!.path),
                                             height: 125.0,//14.0.h,
                                             width: 125.0,//30.0.w,
                                             fit: BoxFit.cover,
@@ -586,7 +588,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                         child: ClipRRect(
                                           borderRadius: BorderRadius.circular(70),
                                           child: Image.network(
-                                            result.data.imageUrl,
+                                            result.data!.imageUrl!,
                                             height: 125.0,//14.0.h,
                                             width: 125.0,//30.0.w,
                                             fit: BoxFit.cover,
@@ -825,9 +827,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 3.0.w),
                                           child: Text(
-                                            result.data.gender == 'M'
+                                            result.data!.gender == 'M'
                                                 ? 'Male'
-                                                : result.data.gender == 'F'
+                                                : result.data!.gender == 'F'
                                                     ? 'Female'
                                                     : 'Other',
                                             //'Gender',
@@ -935,33 +937,33 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                       setState(() {
                                         birthDate = datePick;
                                         isDateSelected = true;
-                                        if (birthDate.day.toString().length ==
+                                        if (birthDate!.day.toString().length ==
                                                 1 &&
-                                            birthDate.month.toString().length ==
+                                            birthDate!.month.toString().length ==
                                                 1) {
                                           setState(() {
                                             birthDateInString =
-                                                "0${birthDate.day.toString()}/0${birthDate.month}/${birthDate.year}";
+                                                "0${birthDate!.day.toString()}/0${birthDate!.month}/${birthDate!.year}";
                                           });
                                           print('11111');
-                                        } else if (birthDate.day
+                                        } else if (birthDate!.day
                                                 .toString()
                                                 .length ==
                                             1) {
                                           setState(() {
                                             birthDateInString =
-                                                "0${birthDate.day}/${birthDate.month}/${birthDate.year}";
+                                                "0${birthDate!.day}/${birthDate!.month}/${birthDate!.year}";
                                           });
                                           print('22222');
-                                        } else if (birthDate.month
+                                        } else if (birthDate!.month
                                                 .toString()
                                                 .length ==
                                             1) {
                                           birthDateInString =
-                                              "${birthDate.day}/0${birthDate.month}/${birthDate.year}";
+                                              "${birthDate!.day}/0${birthDate!.month}/${birthDate!.year}";
                                         } else {
                                           birthDateInString =
-                                              "${birthDate.day}/${birthDate.month}/${birthDate.year}";
+                                              "${birthDate!.day}/${birthDate!.month}/${birthDate!.year}";
                                         }
                                         // 08/14/2019
                                       });
@@ -985,8 +987,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                         Text(
                                           isDateSelected
                                               //result.data.dob != null
-                                              ? birthDateInString
-                                              : result.data.dob, //'DOB',
+                                              ? birthDateInString!
+                                              : result.data!.dob!, //'DOB',
                                           style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               fontSize: 10.0.sp,
@@ -1027,14 +1029,14 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 3.0.w),
                                     child: Text(
-                                      result.data.documentType == 'A'
+                                      result.data!.documentType == 'A'
                                           ? 'Aadhaar'
-                                          : result.data.documentType == 'PN'
+                                          : result.data!.documentType == 'PN'
                                               ? 'PAN'
-                                              : result.data.documentType ==
+                                              : result.data!.documentType ==
                                                       'PAS'
                                                   ? 'Passport'
-                                                  : result.data.documentType ==
+                                                  : result.data!.documentType ==
                                                           'VI'
                                                       ? 'Voter ID'
                                                       : 'Driving Licence',
@@ -1163,10 +1165,10 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                         width: 15.0.w,
                                         decoration: BoxDecoration(
                                             image: DecorationImage(
-                                                image: _document == null
+                                                image: (_document == null
                                                 ? NetworkImage(
-                                                    result.data.documentUrl)
-                                                : FileImage(_document),
+                                                    result.data!.documentUrl!)
+                                                : FileImage(File(_document!.path))) as ImageProvider<Object>,
                                                 fit: BoxFit.fill)),
                                       ),
                                       SizedBox(width: 2.0.w),
@@ -1178,7 +1180,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                             height: 3.0.h,
                                             //width: 50.0.w,
                                             child: Text(
-                                              result.data.documentFile
+                                              result.data!.documentFile!
                                                   .split('/')
                                                   .last,
                                               style: TextStyle(
@@ -1307,9 +1309,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                             //width: 70.0.w,
                                             child: Text(
                                               address1 != null
-                                                  ? address1
-                                                  : result.data.location[0]
-                                                      .addressLine1,
+                                                  ? address1!
+                                                  : result.data!.location![0]
+                                                      .addressLine1!,
                                               //result.data.location[0].city,
                                               style: TextStyle(
                                                   fontFamily: 'Montserrat',
@@ -1356,7 +1358,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                         ),
 
                         ListView.builder(
-                          itemCount: result.data.educationalDetails1.length, //educationDetailMap.length, //itemCount,
+                          itemCount: result.data!.educationalDetails1!.length, //educationDetailMap.length, //itemCount,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
@@ -1571,7 +1573,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                     // isYearSelected
                                                     //     ? selectedYear.year.toString()
                                                     //     : 
-                                                        result.data.educationalDetails1[index]['year'],
+                                                        result.data!.educationalDetails1![index]['year'],
                                                     //'Year',
                                                     style: TextStyle(
                                                         fontFamily:
@@ -1728,7 +1730,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                     // isYearSelected
                                                     //     ? selectedYear.year.toString()
                                                     //     : 
-                                                       result.data.educationalDetails1[index]['qualification'],
+                                                       result.data!.educationalDetails1![index]['qualification'],
                                                     //'Year',
                                                     style: TextStyle(
                                                         fontFamily:
@@ -1815,7 +1817,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                                         image: DecorationImage(
                                                             image: 
                                                             //fileImage[index] == null ? //NetworkImage(certificateList[index])
-                                                            NetworkImage(result.data.educationalDetails1[index]['certificate_file']),
+                                                            NetworkImage(result.data!.educationalDetails1![index]['certificate_file']),
                                                             //: FileImage(fileImage[index]),
                                                             fit: BoxFit.fill)),
                                                   ),
@@ -2005,7 +2007,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 3.0.w),
                                     child: Text(
-                                      result.data.totalWorkExperience,
+                                      result.data!.totalWorkExperience!,
                                       //'Total Work Experience',
                                       style: TextStyle(
                                           fontFamily: 'Montserrat',
@@ -2113,7 +2115,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 3.0.w),
                                     child: Text(
-                                      result.data.totalTeachingExperience,
+                                      result.data!.totalTeachingExperience!,
                                       //'Total Teaching Experience',
                                       style: TextStyle(
                                           fontFamily: 'Montserrat',
@@ -2319,8 +2321,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                   child: Text(
                                     selectedSkillList == null ||
                                             selectedSkillList.length == 0
-                                        ? result.data
-                                            .skills //"Please mention your skills example #skills1 #skills2..."
+                                        ? result.data!
+                                            .skills! //"Please mention your skills example #skills1 #skills2..."
                                         : selectedSkillList
                                             .toString().replaceAll('[', '').replaceAll(']', '').
                                             replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
@@ -2565,8 +2567,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                   child: Text(
                                     selectedHobbiesList == null ||
                                             selectedHobbiesList.length == 0
-                                        ? result.data
-                                            .hobbies //"Please mention your hobbies example #hobbie1 #hobbie2..."
+                                        ? result.data!
+                                            .hobbies! //"Please mention your hobbies example #hobbie1 #hobbie2..."
                                         : selectedHobbiesList
                                             .toString().replaceAll('[', '').replaceAll(']', '').
                                             replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
@@ -3105,7 +3107,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                              } else if (fileName == null  && result.data.imageUrl.split("/").last == 'default.jpg'){//|| fileName == '') {
+                              } else if (fileName == null  && result.data!.imageUrl!.split("/").last == 'default.jpg'){//|| fileName == '') {
                                 Fluttertoast.showToast(
                                     msg: "Please Pick Selected Document",
                                     toastLength: Toast.LENGTH_SHORT,
@@ -3114,7 +3116,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                              } else if (_certiName == null && result.data.educationalDetails.isEmpty//|| _certiName == ''
+                              } else if (_certiName == null && result.data!.educationalDetails!.isEmpty//|| _certiName == ''
                                   ) {
                                 Fluttertoast.showToast(
                                     msg: "Please Pick Certificate",
@@ -3232,9 +3234,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     _achivementController.text,
                                     // selectedSkillList == [] ? result.data.skills : selectedSkillList.toString(),
                                     // selectedHobbiesList == [] ? result.data.hobbies : selectedHobbiesList.toString(),
-                                    selectedSkillList.length == 0 ? result.data.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')
+                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')
                                             .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedHobbiesList.length == 0 ? result.data.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '')
+                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '')
                                            .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
                                     _fbLinkController.text,
                                     _instagramLinkController.text,
@@ -3297,9 +3299,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     lat,
                                     lng,
                                     _achivementController.text,
-                                    selectedSkillList.length == 0 ? result.data.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')
+                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')
                                             .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedHobbiesList.length == 0 ? result.data.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '')
+                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '')
                                            .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
                                     _fbLinkController.text,
                                     _instagramLinkController.text,
@@ -3307,7 +3309,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     _otherLinkLinkController.text,
                                     totalWorkExp,
                                     totalTeachExp);
-                                    print('SKILL1 '+ result.data.skills);
+                                    print('SKILL1 '+ result.data!.skills!);
                                     print('SKILL2 '+ selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'));
                                     print('SKILL3 '+ selectedSkillList.toString());
                                 //}
@@ -3375,19 +3377,19 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   //Location Picker
   void showPlacePicker() async {
     AddressComponent addressLine;
-    LocationResult result = await Navigator.of(context).push(MaterialPageRoute(
+    LocationResult result = await (Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => PlacePicker(
               Config.locationKey,
               // displayLocation: customLocation,
-            )));
+            ))));
 
     setState(() {
       address1 = result.formattedAddress;
-      address2 = result.subLocalityLevel1.name;
+      address2 = result.subLocalityLevel1!.name;
       city = result.locality;
-      country = result.country.name;
-      lat = result.latLng.latitude;
-      lng = result.latLng.longitude;
+      country = result.country!.name;
+      lat = result.latLng!.latitude;
+      lng = result.latLng!.longitude;
       pinCode = result.postalCode;
     });
 
@@ -3411,7 +3413,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   //Tag for Skills
   void _openFilterSkillsDialog() async {
     await FilterListDialog.display(context,
-        listData: skillMapData,
+        listData: skillMapData!,
         selectedListData: selectedSkillList,
         height: 480,
         headlineText: "Select or Search Skill",
@@ -3426,11 +3428,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
             fontWeight: FontWeight.w500,
             fontSize: 12.0.sp,
             color: Constants.bgColor),
-        label: (item) {
+        choiceChipLabel: (dynamic item) {
           return item;
         },
-        validateSelectedItem: (list, val) {
-          return list.contains(val);
+        validateSelectedItem: (list, dynamic val) {
+          return list!.contains(val);
         },
         applyButonTextBackgroundColor: Constants.bgColor,
         applyButtonTextStyle: TextStyle(
@@ -3455,13 +3457,14 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
             color: Constants.bgColor),
         //useSafeArea: true,
         onItemSearch: (list, text) {
-          if (list.any((element) =>
-              element.toLowerCase().contains(text.toLowerCase()))) {
+          if (list!.any((element) =>
+              element.toString().toLowerCase().contains(text.toLowerCase()))) {
             return list
                 .where((element) =>
-                    element.toLowerCase().contains(text.toLowerCase()))
+                    element.toString().toLowerCase().contains(text.toLowerCase()))
                 .toList();
           }
+          return list;
         },
         onApplyButtonClick: (list) {
           if (list != null) {
@@ -3476,7 +3479,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   //Tag for Hobbies
   void _openFilterHobbiesDialog() async {
     await FilterListDialog.display(context,
-        listData: hobbieMapData,
+        listData: hobbieMapData!,
         selectedListData: selectedHobbiesList,
         height: 480,
         headlineText: "Select or Search Hobbie",
@@ -3491,11 +3494,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
             fontWeight: FontWeight.w500,
             fontSize: 12.0.sp,
             color: Constants.bgColor),
-        label: (item) {
+        choiceChipLabel: (dynamic item) {
           return item;
         },
-        validateSelectedItem: (list, val) {
-          return list.contains(val);
+        validateSelectedItem: (list, dynamic val) {
+          return list!.contains(val);
         },
         applyButonTextBackgroundColor: Constants.bgColor,
         applyButtonTextStyle: TextStyle(
@@ -3520,13 +3523,14 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
             color: Constants.bgColor),
         //useSafeArea: true,
         onItemSearch: (list, text) {
-          if (list.any((element) =>
-              element.toLowerCase().contains(text.toLowerCase()))) {
+          if (list!.any((element) =>
+              element.toString().toLowerCase().contains(text.toLowerCase()))) {
             return list
                 .where((element) =>
-                    element.toLowerCase().contains(text.toLowerCase()))
+                    element.toString().toLowerCase().contains(text.toLowerCase()))
                 .toList();
           }
+          return list;
         },
         onApplyButtonClick: (list) {
           if (list != null) {
@@ -3562,33 +3566,33 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         hobbieMap = response[2].data;
         
         //saveImage();
-        print('SKILLDATA::: ${result.data.skills}');
+        print('SKILLDATA::: ${result.data!.skills}');
         print(response[0].data);
         eduMap = response[0].data;
-        eduMapData = eduMap['data']['educational_details'];
+        eduMapData = eduMap!['data']['educational_details'];
         print('EDU:::' + eduMapData.toString());
          populateEducationDetails();
         setState(() {
           //profileMapData = profileMap['data'];
-          skillMapData = skillMap['data'];
-          hobbieMapData = hobbieMap['data'];
-          _nameController.text = result.data.name;
-          _mobileController.text = result.data.mobileNumber;
-          _emailController.text = result.data.email;
-          gender = result.data.gender;
-          birthDateInString = result.data.dob;
-          docType = result.data.documentType;
-          totalWorkExp = int.parse(result.data.totalWorkExperience);
-          totalTeachExp = int.parse(result.data.totalTeachingExperience);
-           for(int i = 0; i < eduMapData.length; i++){
+          skillMapData = skillMap!['data'];
+          hobbieMapData = hobbieMap!['data'];
+          _nameController.text = result.data!.name!;
+          _mobileController.text = result.data!.mobileNumber!;
+          _emailController.text = result.data!.email!;
+          gender = result.data!.gender;
+          birthDateInString = result.data!.dob;
+          docType = result.data!.documentType;
+          totalWorkExp = int.parse(result.data!.totalWorkExperience!);
+          totalTeachExp = int.parse(result.data!.totalTeachingExperience!);
+           for(int i = 0; i < eduMapData!.length; i++){
           //   qualification = result.data.educationalDetails[i].qualification;
           //   educationListId.add(result.data.educationalDetails[i].id);
           //   schoolNameList.add(result.data.educationalDetails[i].schoolName);
-             qualificationList.add(result.data.educationalDetails1[i]['qualification']);
+             qualificationList.add(result.data!.educationalDetails1![i]['qualification']);
           //   yearList.add(result.data.educationalDetails[i].year);
              //certificateList.add(result.data.educationalDetails1[i]['certificate_file']);
              //certificateList.putIfAbsent(i, () => eduMapData[i]['certificate_file']);
-             netImage.add(result.data.educationalDetails1[i]['certificate_file']);
+             netImage.add(result.data!.educationalDetails1![i]['certificate_file']);
              fileImage.add(_certificate);
            }
 
@@ -3609,29 +3613,29 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
           //             : result.data.documentType == 'VI'
           //                 ? documentTypeList[3].toString()
           //                 : documentTypeList[4].toString();
-          _idNumController.text = result.data.identificationDocumentNumber;
-          _achivementController.text = result.data.achievements;
-          skillList.add(result.data.skills);
-          hobbieList.add(result.data.hobbies);
-          _fbLinkController.text = result.data.facebookUrl;
-          _instagramLinkController.text = result.data.instaUrl;
-          _linkedInLinkLinkController.text = result.data.linkedinUrl;
-          _otherLinkLinkController.text = result.data.otherUrl;
+          _idNumController.text = result.data!.identificationDocumentNumber!;
+          _achivementController.text = result.data!.achievements!;
+          skillList.add(result.data!.skills);
+          hobbieList.add(result.data!.hobbies);
+          _fbLinkController.text = result.data!.facebookUrl;
+          _instagramLinkController.text = result.data!.instaUrl!;
+          _linkedInLinkLinkController.text = result.data!.linkedinUrl!;
+          _otherLinkLinkController.text = result.data!.otherUrl!;
         });
         if(result != null){
           isLoading = false;
         }
-        print(result.data.name);
+        print(result.data!.name);
         print(skillMap);
         print(hobbieMap);
         print(schoolNameList);
-        print('URL::: '+result.data.imageUrl);
+        print('URL::: '+result.data!.imageUrl!);
         //closeProgressDialog(context);
       } else {
         //closeProgressDialog(context);
-        if (skillMap['error_msg'] != null) {
+        if (skillMap!['error_msg'] != null) {
           Fluttertoast.showToast(
-            msg: skillMap['error_msg'],
+            msg: skillMap!['error_msg'],
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -3639,9 +3643,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-        } else if (hobbieMap['error_msg'] != null) {
+        } else if (hobbieMap!['error_msg'] != null) {
           Fluttertoast.showToast(
-            msg: hobbieMap['error_msg'],
+            msg: hobbieMap!['error_msg'],
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -3655,9 +3659,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
       //closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -3667,7 +3671,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }
@@ -3688,72 +3692,72 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   // }
 
 
-  Future<void> saveImage() async {
-    final response = await http.get(result.data.imageUrl);
-    final response1 = await http.get(result.data.documentUrl);
+//   Future<void> saveImage() async {
+//     final response = await http.get(result.data.imageUrl);
+//     final response1 = await http.get(result.data.documentUrl);
 
-    // Get the image name 
-    final imageName = path.basename(result.data.imageUrl);
-    final documentName = path.basename(result.data.documentUrl);
-    // Get the document directory path 
-    final appDir = await pathProvider.getApplicationDocumentsDirectory();
+//     // Get the image name 
+//     final imageName = path.basename(result.data.imageUrl);
+//     final documentName = path.basename(result.data.documentUrl);
+//     // Get the document directory path 
+//     final appDir = await pathProvider.getApplicationDocumentsDirectory();
 
-    // This is the saved image path 
-    // You can use it to display the saved image later. 
-    final localPath = path.join(appDir.path, imageName);
-    final localPath1 = path.join(appDir.path, documentName);
+//     // This is the saved image path 
+//     // You can use it to display the saved image later. 
+//     final localPath = path.join(appDir.path, imageName);
+//     final localPath1 = path.join(appDir.path, documentName);
 
-    setState(() {
-      imagePath = localPath;
-      documentPath = localPath1;
-       _image = File(imagePath);
-       _document = File(documentPath);
-    });
-    print(imagePath);
-    print(documentPath);
-    // Downloading
-    final imageFile = File(localPath);
-    final documentFile = File(localPath1);
-    await imageFile.writeAsBytes(response.bodyBytes);
-    await documentFile.writeAsBytes(response1.bodyBytes);
-    print('Image Downloaded!');
-    print('Document Downloaded!');
-}
+//     setState(() {
+//       imagePath = localPath;
+//       documentPath = localPath1;
+//        _image = XFile(imagePath);
+//        _document = XFile(documentPath);
+//     });
+//     print(imagePath);
+//     print(documentPath);
+//     // Downloading
+//     final imageFile = File(localPath);
+//     final documentFile = File(localPath1);
+//     await imageFile.writeAsBytes(response.bodyBytes);
+//     await documentFile.writeAsBytes(response1.bodyBytes);
+//     print('Image Downloaded!');
+//     print('Document Downloaded!');
+// }
 
   //Update Profile API
   Future<ProfileUpdate> updateProfile(
     //int userId,
-    String registerAs,
+    String? registerAs,
     //String imageFile,
     //String imageUrl,
     String name,
     String mobileNumber,
     String email,
-    String gender,
-    String dob,
-    String documentType,
+    String? gender,
+    String? dob,
+    String? documentType,
     //File documentFile,
     //String documentUrl,
     //File imageFile,
     //String imageUrl,
     String idNumber,
-    String addressLine1,
-    String addressLine2,
-    String city,
-    String country,
-    String pinCode,
-    double latitude,
-    double longitude,
+    String? addressLine1,
+    String? addressLine2,
+    String? city,
+    String? country,
+    String? pinCode,
+    double? latitude,
+    double? longitude,
     String achievements,
-    String skills,
-    String hobbies,
+    String? skills,
+    String? hobbies,
     String facbookUrl,
     String instaUrl,
     String linkedinUrl,
     String otherUrl,
     //List<EducationalDetails> educationalDetails,
-    int totalWorkExp,
-    int totalTeachExp,
+    int? totalWorkExp,
+    int? totalTeachExp,
     //List<InterestedCategory> interestedCategory,
   ) async {
     displayProgressDialog(context);
@@ -3775,7 +3779,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         'gender': gender,
         'dob': dob,
         'document_type': documentType,
-        'document_url': result.data.documentUrl,
+        'document_url': result.data!.documentUrl,
         // 'document_file': _document != null ? await MultipartFile.fromFile(
         //   _document.path, //documentFile.path,
         //   filename: _document.path.split("/").last,
@@ -3789,17 +3793,17 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         // )
         // : 
         //result.data.imageUrl,
-        'image_url': result.data.imageUrl,
+        'image_url': result.data!.imageUrl,
         'identification_document_number': idNumber,
         //?TODO: Used dynamic ID at location[0][id]
-        'location[0][id]': result.data.location[0].id,
-        'location[0][address_line_1]': addressLine1 == null ? result.data.location[0].addressLine1 : addressLine1,
-        'location[0][address_line_2]': addressLine2 == null ? result.data.location[0].addressLine2 : addressLine2,
-        'location[0][city]': city == null ? result.data.location[0].city : city,
-        'location[0][country]': country == null ? result.data.location[0].country : country,
-        'location[0][pincode]': pinCode == null ? result.data.location[0].pincode : pinCode,
-        'location[0][latitude]': latitude == null ? result.data.location[0].latitude : latitude,
-        'location[0][longitude]': longitude == null ?  result.data.location[0].longitude : longitude,
+        'location[0][id]': result.data!.location![0].id,
+        'location[0][address_line_1]': addressLine1 == null ? result.data!.location![0].addressLine1 : addressLine1,
+        'location[0][address_line_2]': addressLine2 == null ? result.data!.location![0].addressLine2 : addressLine2,
+        'location[0][city]': city == null ? result.data!.location![0].city : city,
+        'location[0][country]': country == null ? result.data!.location![0].country : country,
+        'location[0][pincode]': pinCode == null ? result.data!.location![0].pincode : pinCode,
+        'location[0][latitude]': latitude == null ? result.data!.location![0].latitude : latitude,
+        'location[0][longitude]': longitude == null ?  result.data!.location![0].longitude : longitude,
         'location[0][location_type]': 'work',
         'achievements': achievements,
         'skills': skills,
@@ -3812,22 +3816,22 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         'total_teaching_experience': totalTeachExp,
       });
 
-      print('MAPO:::' + eduMap.length.toString());
+      print('MAPO:::' + eduMap!.length.toString());
       print('Called:::No');
-      print('RESULT:::'+result.data.educationalDetails1.toString());
+      print('RESULT:::'+result.data!.educationalDetails1.toString());
 
-      for (int i = 0; i < result.data.educationalDetails1.length; i++) {
+      for (int i = 0; i < result.data!.educationalDetails1!.length; i++) {
         //formData.fields.addAll(params.entries);
-        if(result.data.educationalDetails1[i]['id'] != null){
+        if(result.data!.educationalDetails1![i]['id'] != null){
         formData.fields.addAll([
           //?TODO: Used dynamic ID at educational_details[0][id]
-          MapEntry('educational_details[$i][id]', result.data.educationalDetails1[i]['id'].toString()),
+          MapEntry('educational_details[$i][id]', result.data!.educationalDetails1![i]['id'].toString()),
           MapEntry('educational_details[$i][school_name]',
               controllersList[i].text),
           MapEntry('educational_details[$i][year]',
-              result.data.educationalDetails1[i]['year'].toString()),
+              result.data!.educationalDetails1![i]['year'].toString()),
           MapEntry('educational_details[$i][qualification]',
-              result.data.educationalDetails1[i]['qualification']),
+              result.data!.educationalDetails1![i]['qualification']),
           MapEntry('educational_details[$i][certificate_file]', ''),
           
         ]);
@@ -3844,13 +3848,13 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         } 
         else{
           formData.fields.addAll([
-           MapEntry('educational_details[$i][id]', result.data.educationalDetails1[i]['id'].toString()),
+           MapEntry('educational_details[$i][id]', result.data!.educationalDetails1![i]['id'].toString()),
           MapEntry('educational_details[$i][school_name]',
               controllersList[i].text),
           MapEntry('educational_details[$i][year]',
-              result.data.educationalDetails1[i]['year'].toString()),
+              result.data!.educationalDetails1![i]['year'].toString()),
           MapEntry('educational_details[$i][qualification]',
-              result.data.educationalDetails1[i]['qualification']),
+              result.data!.educationalDetails1![i]['qualification']),
           MapEntry('educational_details[$i][certificate_file]', ''),
         ]);
         //  formData.files.addAll([
@@ -3870,13 +3874,13 @@ print('MAP:::' + formData.fields.toString());
       print(fileImage);
       //print(educationList);
 
-      print('FORMDATA::: ${result.data.skills}');
+      print('FORMDATA::: ${result.data!.skills}');
       print('FORMDATA::: ${selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')}');
 
       var response = await dio.post(
         Config.updateProfileUrl,
         data: formData,
-        options: Options(headers: {"Authorization": 'Bearer ' + authToken}),
+        options: Options(headers: {"Authorization": 'Bearer ' + authToken!}),
         // onSendProgress: (int sent, int total){
         //   print('SENT $sent + TOTAL $total');
         // }
@@ -3886,7 +3890,7 @@ print('MAP:::' + formData.fields.toString());
         closeProgressDialog(context);
         update = ProfileUpdate.fromJson(response.data);
     
-        print(update.data.name);
+        print(update.data!.name);
         //if(result.status == true){
         // print('ID ::: ' + result.data.userId.toString());
         // saveUserData(result.data.userId);
@@ -3895,12 +3899,12 @@ print('MAP:::' + formData.fields.toString());
           print('TRUE::');
 
           setState(() {
-            preferences.setString("name", update.data.name);
-            preferences.setString("mobileNumber", update.data.mobileNumber);
+            preferences.setString("name", update.data!.name!);
+            preferences.setString("mobileNumber", update.data!.mobileNumber!);
           });
 
           Fluttertoast.showToast(
-            msg: update.message,
+            msg: update.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -3921,7 +3925,7 @@ print('MAP:::' + formData.fields.toString());
         } else {
           print('FALSE::');
           Fluttertoast.showToast(
-            msg: update.message,
+            msg: update.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -3932,7 +3936,7 @@ print('MAP:::' + formData.fields.toString());
         }
       } else {
         Fluttertoast.showToast(
-          msg: update.message,
+          msg: update.message!,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -3948,9 +3952,9 @@ print('MAP:::' + formData.fields.toString());
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::"  +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -3960,7 +3964,7 @@ print('MAP:::' + formData.fields.toString());
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }
@@ -4025,8 +4029,8 @@ print('MAP:::' + formData.fields.toString());
         'document_type': documentType,
         //'document_url': null,
         'document_file': await MultipartFile.fromFile(
-          _document.path, //documentFile.path,
-          filename: _document.path.split("/").last,
+          _document!.path, //documentFile.path,
+          filename: _document!.path.split("/").last,
         ),
         // : result.data.documentUrl,
         //'document_url': documentUrl,
@@ -4037,17 +4041,17 @@ print('MAP:::' + formData.fields.toString());
         // ),
         // : 
         //result.data.imageUrl,
-        'image_url': result.data.imageUrl,
+        'image_url': result.data!.imageUrl,
         'identification_document_number': idNumber,
         //?TODO: Used dynamic ID at location[0][id]
-        'location[0][id]': result.data.location[0].id,
-        'location[0][address_line_1]': addressLine1 == null ? result.data.location[0].addressLine1 : addressLine1,
-        'location[0][address_line_2]': addressLine2 == null ? result.data.location[0].addressLine2 : addressLine2,
-        'location[0][city]': city == null ? result.data.location[0].city : city,
-        'location[0][country]': country == null ? result.data.location[0].country : country,
-        'location[0][pincode]': pinCode == null ? result.data.location[0].pincode : pinCode,
-        'location[0][latitude]': latitude == null ? result.data.location[0].latitude : latitude,
-        'location[0][longitude]': longitude == null ?  result.data.location[0].longitude : longitude,
+        'location[0][id]': result.data!.location![0].id,
+        'location[0][address_line_1]': addressLine1 == null ? result.data!.location![0].addressLine1 : addressLine1,
+        'location[0][address_line_2]': addressLine2 == null ? result.data!.location![0].addressLine2 : addressLine2,
+        'location[0][city]': city == null ? result.data!.location![0].city : city,
+        'location[0][country]': country == null ? result.data!.location![0].country : country,
+        'location[0][pincode]': pinCode == null ? result.data!.location![0].pincode : pinCode,
+        'location[0][latitude]': latitude == null ? result.data!.location![0].latitude : latitude,
+        'location[0][longitude]': longitude == null ?  result.data!.location![0].longitude : longitude,
         'location[0][location_type]': 'work',
         'achievements': achievements,
         'skills': skills,
@@ -4063,17 +4067,17 @@ print('MAP:::' + formData.fields.toString());
       print('MAPO:::' + educationDetailMap.length.toString());
       print('Called:::Document');
 
-      for (int i = 0; i < result.data.educationalDetails.length; i++) {
+      for (int i = 0; i < result.data!.educationalDetails!.length; i++) {
 
         formDataD.fields.addAll([
           //?TODO: Used dynamic ID at educational_details[0][id]
-          MapEntry('educational_details[$i][id]', result.data.educationalDetails[i].id.toString()),
+          MapEntry('educational_details[$i][id]', result.data!.educationalDetails![i].id.toString()),
           MapEntry('educational_details[$i][school_name]',
-              result.data.educationalDetails[i].schoolName.toString()),
+              result.data!.educationalDetails![i].schoolName.toString()),
           MapEntry('educational_details[$i][year]',
-              result.data.educationalDetails[i].year.toString()),
+              result.data!.educationalDetails![i].year.toString()),
           MapEntry('educational_details[$i][qualification]',
-              result.data.educationalDetails[i].qualification.toString()),
+              result.data!.educationalDetails![i].qualification.toString()),
           MapEntry('educational_details[$i][certificate_file]', ''),
         ]);
       }
@@ -4087,7 +4091,7 @@ print('MAP:::' + formData.fields.toString());
         Config.updateProfileUrl,
         data: 
          formDataD,
-        options: Options(headers: {"Authorization": 'Bearer ' + authToken}),
+        options: Options(headers: {"Authorization": 'Bearer ' + authToken!}),
         // onSendProgress: (int sent, int total){
         //   print('SENT $sent + TOTAL $total');
         // }
@@ -4096,7 +4100,7 @@ print('MAP:::' + formData.fields.toString());
         print(response.data);
         closeProgressDialog(context);
         update = ProfileUpdate.fromJson(response.data);
-        print(update.data.name);
+        print(update.data!.name);
         //if(result.status == true){
         // print('ID ::: ' + result.data.userId.toString());
         // saveUserData(result.data.userId);
@@ -4104,12 +4108,12 @@ print('MAP:::' + formData.fields.toString());
         if (update.status == true) {
           print('TRUE::');
           setState(() {
-            preferences.setString("name", update.data.name);
-            preferences.setString("imageUrl", update.data.imageUrl);
-            preferences.setString("mobileNumber", update.data.mobileNumber);
+            preferences.setString("name", update.data!.name!);
+            preferences.setString("imageUrl", update.data!.imageUrl!);
+            preferences.setString("mobileNumber", update.data!.mobileNumber!);
           });
           Fluttertoast.showToast(
-            msg: update.message,
+            msg: update.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -4130,7 +4134,7 @@ print('MAP:::' + formData.fields.toString());
         } else {
           print('FALSE::');
           Fluttertoast.showToast(
-            msg: update.message,
+            msg: update.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -4141,7 +4145,7 @@ print('MAP:::' + formData.fields.toString());
         }
       } else {
         Fluttertoast.showToast(
-          msg: update.message,
+          msg: update.message!,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -4157,9 +4161,9 @@ print('MAP:::' + formData.fields.toString());
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::"  +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -4169,7 +4173,7 @@ print('MAP:::' + formData.fields.toString());
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }
@@ -4178,37 +4182,37 @@ print('MAP:::' + formData.fields.toString());
 
   Future<ProfileUpdate> updateProfileWithImage(
     //int userId,
-    String registerAs,
+    String? registerAs,
     //String imageFile,
     //String imageUrl,
     String name,
     String mobileNumber,
     String email,
-    String gender,
-    String dob,
-    String documentType,
+    String? gender,
+    String? dob,
+    String? documentType,
     //File documentFile,
     //String documentUrl,
     //File imageFile,
     //String imageUrl,
     String idNumber,
-    String addressLine1,
-    String addressLine2,
-    String city,
-    String country,
-    String pinCode,
-    double latitude,
-    double longitude,
+    String? addressLine1,
+    String? addressLine2,
+    String? city,
+    String? country,
+    String? pinCode,
+    double? latitude,
+    double? longitude,
     String achievements,
-    String skills,
-    String hobbies,
+    String? skills,
+    String? hobbies,
     String facbookUrl,
     String instaUrl,
     String linkedinUrl,
     String otherUrl,
     //List<EducationalDetails> educationalDetails,
-    int totalWorkExp,
-    int totalTeachExp,
+    int? totalWorkExp,
+    int? totalTeachExp,
     //List<InterestedCategory> interestedCategory,
   ) async {
     print('PROFILE::: IMAGE');
@@ -4231,7 +4235,7 @@ print('MAP:::' + formData.fields.toString());
         'gender': gender,
         'dob': dob,
         'document_type': documentType,
-        'document_url': result.data.documentUrl,
+        'document_url': result.data!.documentUrl,
         // 'document_file': await MultipartFile.fromFile(
         //   _document.path, //documentFile.path,
         //   filename: _document.path.split("/").last,
@@ -4240,22 +4244,22 @@ print('MAP:::' + formData.fields.toString());
         //'document_url': documentUrl,
         'image_file':
         await MultipartFile.fromFile(
-          _image.path,//imageFile.path,
-          filename: _image.path.split("/").last,
+          _image!.path,//imageFile.path,
+          filename: _image!.path.split("/").last,
         ),
         // : 
         //result.data.imageUrl,
         //'image_url': null,
         'identification_document_number': idNumber,
         //?TODO: Used dynamic ID at location[0][id]
-        'location[0][id]': result.data.location[0].id,
-        'location[0][address_line_1]': addressLine1 == null ? result.data.location[0].addressLine1 : addressLine1,
-        'location[0][address_line_2]': addressLine2 == null ? result.data.location[0].addressLine2 : addressLine2,
-        'location[0][city]': city == null ? result.data.location[0].city : city,
-        'location[0][country]': country == null ? result.data.location[0].country : country,
-        'location[0][pincode]': pinCode == null ? result.data.location[0].pincode : pinCode,
-        'location[0][latitude]': latitude == null ? result.data.location[0].latitude : latitude,
-        'location[0][longitude]': longitude == null ?  result.data.location[0].longitude : longitude,
+        'location[0][id]': result.data!.location![0].id,
+        'location[0][address_line_1]': addressLine1 == null ? result.data!.location![0].addressLine1 : addressLine1,
+        'location[0][address_line_2]': addressLine2 == null ? result.data!.location![0].addressLine2 : addressLine2,
+        'location[0][city]': city == null ? result.data!.location![0].city : city,
+        'location[0][country]': country == null ? result.data!.location![0].country : country,
+        'location[0][pincode]': pinCode == null ? result.data!.location![0].pincode : pinCode,
+        'location[0][latitude]': latitude == null ? result.data!.location![0].latitude : latitude,
+        'location[0][longitude]': longitude == null ?  result.data!.location![0].longitude : longitude,
         'location[0][location_type]': 'work',
         'achievements': achievements,
         'skills': skills,
@@ -4272,17 +4276,17 @@ print('MAP:::' + formData.fields.toString());
       print('MAPO:::' + educationDetailMap.length.toString());
       print('Called:::Image');
 
-      for (int i = 0; i < result.data.educationalDetails.length; i++) {
+      for (int i = 0; i < result.data!.educationalDetails!.length; i++) {
 
         formDataI.fields.addAll([
           //?TODO: Used dynamic ID at educational_details[0][id]
-          MapEntry('educational_details[$i][id]', result.data.educationalDetails[i].id.toString()),
+          MapEntry('educational_details[$i][id]', result.data!.educationalDetails![i].id.toString()),
           MapEntry('educational_details[$i][school_name]',
-              result.data.educationalDetails[i].schoolName.toString()),
+              result.data!.educationalDetails![i].schoolName.toString()),
           MapEntry('educational_details[$i][year]',
-              result.data.educationalDetails[i].year.toString()),
+              result.data!.educationalDetails![i].year.toString()),
           MapEntry('educational_details[$i][qualification]',
-              result.data.educationalDetails[i].qualification.toString()),
+              result.data!.educationalDetails![i].qualification.toString()),
           MapEntry('educational_details[$i][certificate_file]', ''),
         ]);
       }
@@ -4295,7 +4299,7 @@ print('MAP:::' + formData.fields.toString());
         Config.updateProfileUrl,
         data: 
          formDataI,
-        options: Options(headers: {"Authorization": 'Bearer ' + authToken}),
+        options: Options(headers: {"Authorization": 'Bearer ' + authToken!}),
         // onSendProgress: (int sent, int total){
         //   print('SENT $sent + TOTAL $total');
         // }
@@ -4304,7 +4308,7 @@ print('MAP:::' + formData.fields.toString());
         print(response.data);
         closeProgressDialog(context);
         update = ProfileUpdate.fromJson(response.data);
-        print(update.data.name);
+        print(update.data!.name);
         //if(result.status == true){
         // print('ID ::: ' + result.data.userId.toString());
         // saveUserData(result.data.userId);
@@ -4312,12 +4316,12 @@ print('MAP:::' + formData.fields.toString());
         if (update.status == true) {
           print('TRUE::');
           setState(() {
-            preferences.setString("name", update.data.name);
-            preferences.setString("imageUrl", update.data.imageUrl);
-            preferences.setString("mobileNumber", update.data.mobileNumber);
+            preferences.setString("name", update.data!.name!);
+            preferences.setString("imageUrl", update.data!.imageUrl!);
+            preferences.setString("mobileNumber", update.data!.mobileNumber!);
           });
           Fluttertoast.showToast(
-            msg: update.message,
+            msg: update.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -4338,7 +4342,7 @@ print('MAP:::' + formData.fields.toString());
         } else {
           print('FALSE::');
           Fluttertoast.showToast(
-            msg: update.message,
+            msg: update.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -4349,7 +4353,7 @@ print('MAP:::' + formData.fields.toString());
         }
       } else {
         Fluttertoast.showToast(
-          msg: update.message,
+          msg: update.message!,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -4365,9 +4369,9 @@ print('MAP:::' + formData.fields.toString());
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::"  +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -4377,7 +4381,7 @@ print('MAP:::' + formData.fields.toString());
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }
@@ -4442,29 +4446,29 @@ Future<ProfileUpdate> updateProfileWithBoth(
         'document_type': documentType,
         //'document_url': result.data.documentUrl,
         'document_file': await MultipartFile.fromFile(
-          _document.path, //documentFile.path,
-          filename: _document.path.split("/").last,
+          _document!.path, //documentFile.path,
+          filename: _document!.path.split("/").last,
         ),
         // : result.data.documentUrl,
         //'document_url': documentUrl,
         'image_file':
         await MultipartFile.fromFile(
-          _image.path,//imageFile.path,
-          filename: _image.path.split("/").last,
+          _image!.path,//imageFile.path,
+          filename: _image!.path.split("/").last,
         ),
         // : 
         //result.data.imageUrl,
         //'image_url': result.data.imageUrl,
         'identification_document_number': idNumber,
         //?TODO: Used dynamic ID at location[0][id]
-        'location[0][id]': result.data.location[0].id,
-        'location[0][address_line_1]': addressLine1 == null ? result.data.location[0].addressLine1 : addressLine1,
-        'location[0][address_line_2]': addressLine2 == null ? result.data.location[0].addressLine2 : addressLine2,
-        'location[0][city]': city == null ? result.data.location[0].city : city,
-        'location[0][country]': country == null ? result.data.location[0].country : country,
-        'location[0][pincode]': pinCode == null ? result.data.location[0].pincode : pinCode,
-        'location[0][latitude]': latitude == null ? result.data.location[0].latitude : latitude,
-        'location[0][longitude]': longitude == null ?  result.data.location[0].longitude : longitude,
+        'location[0][id]': result.data!.location![0].id,
+        'location[0][address_line_1]': addressLine1 == null ? result.data!.location![0].addressLine1 : addressLine1,
+        'location[0][address_line_2]': addressLine2 == null ? result.data!.location![0].addressLine2 : addressLine2,
+        'location[0][city]': city == null ? result.data!.location![0].city : city,
+        'location[0][country]': country == null ? result.data!.location![0].country : country,
+        'location[0][pincode]': pinCode == null ? result.data!.location![0].pincode : pinCode,
+        'location[0][latitude]': latitude == null ? result.data!.location![0].latitude : latitude,
+        'location[0][longitude]': longitude == null ?  result.data!.location![0].longitude : longitude,
         'location[0][location_type]': 'work',
         'achievements': achievements,
         'skills': skills,
@@ -4480,17 +4484,17 @@ Future<ProfileUpdate> updateProfileWithBoth(
       print('MAPO:::' + educationDetailMap.length.toString());
       print('Called:::Image');
 
-      for (int i = 0; i < result.data.educationalDetails.length; i++) {
+      for (int i = 0; i < result.data!.educationalDetails!.length; i++) {
 
         formDataID.fields.addAll([
           //?TODO: Used dynamic ID at educational_details[0][id]
-          MapEntry('educational_details[$i][id]', result.data.educationalDetails[i].id.toString()),
+          MapEntry('educational_details[$i][id]', result.data!.educationalDetails![i].id.toString()),
           MapEntry('educational_details[$i][school_name]',
-              result.data.educationalDetails[i].schoolName.toString()),
+              result.data!.educationalDetails![i].schoolName.toString()),
           MapEntry('educational_details[$i][year]',
-              result.data.educationalDetails[i].year.toString()),
+              result.data!.educationalDetails![i].year.toString()),
           MapEntry('educational_details[$i][qualification]',
-              result.data.educationalDetails[i].qualification.toString()),
+              result.data!.educationalDetails![i].qualification.toString()),
           MapEntry('educational_details[$i][certificate_file]', ''),
         ]);
       }
@@ -4503,7 +4507,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
         Config.updateProfileUrl,
         data: 
          formDataID,
-        options: Options(headers: {"Authorization": 'Bearer ' + authToken}),
+        options: Options(headers: {"Authorization": 'Bearer ' + authToken!}),
         // onSendProgress: (int sent, int total){
         //   print('SENT $sent + TOTAL $total');
         // }
@@ -4512,7 +4516,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
         print(response.data);
         closeProgressDialog(context);
         update = ProfileUpdate.fromJson(response.data);
-        print(update.data.name);
+        print(update.data!.name);
         //if(result.status == true){
         // print('ID ::: ' + result.data.userId.toString());
         // saveUserData(result.data.userId);
@@ -4520,12 +4524,12 @@ Future<ProfileUpdate> updateProfileWithBoth(
         if (update.status == true) {
           print('TRUE::');
          setState(() {
-            preferences.setString("name", update.data.name);
-            preferences.setString("imageUrl", update.data.imageUrl);
-            preferences.setString("mobileNumber", update.data.mobileNumber);
+            preferences.setString("name", update.data!.name!);
+            preferences.setString("imageUrl", update.data!.imageUrl!);
+            preferences.setString("mobileNumber", update.data!.mobileNumber!);
           });
           Fluttertoast.showToast(
-            msg: update.message,
+            msg: update.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -4546,7 +4550,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
         } else {
           print('FALSE::');
           Fluttertoast.showToast(
-            msg: update.message,
+            msg: update.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -4557,7 +4561,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
         }
       } else {
         Fluttertoast.showToast(
-          msg: update.message,
+          msg: update.message!,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -4573,9 +4577,9 @@ Future<ProfileUpdate> updateProfileWithBoth(
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::"  +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -4585,7 +4589,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }
@@ -4654,19 +4658,19 @@ Future<ProfileUpdate> updateProfileWithBoth(
         params['educational_details[$i][qualification]'] =
             educationDetailMap[i]['qualification'].toString();
         //educationList[i].qualification.toString();
-        String fileStringPath = educationList[i].file.path;
+        String fileStringPath = educationList[i].file!.path;
         if (!fileStringPath.contains('.pdf')) {
           var files = await http.MultipartFile.fromPath(
               //"educational_details[$i][certificate_file]",
               "educationDetailMap[$i]['certificate']",
-              educationList[i].file.path,
+              educationList[i].file!.path,
               contentType: MediaType('image', 'png'));
           request.files.add(files);
         } else {
           var files = await http.MultipartFile.fromPath(
               //"educational_details[$i][certificate_file]",
               "educationDetailMap[$i]['certificate']",
-              educationList[i].file.path,
+              educationList[i].file!.path,
               contentType: MediaType('application', 'pdf'));
           request.files.add(files);
         }
@@ -4685,7 +4689,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
     params['dob'] = dob;
     params['document_type'] = documentType;
     var document = await http.MultipartFile.fromPath(
-        params['document_file'], documentFile.path,
+        params['document_file']!, documentFile.path,
         filename: documentFile.path, contentType: MediaType('image', 'png'));
     var docstream = http.ByteStream(documentFile.openRead());
     final doclength = await documentFile.length();
@@ -4695,7 +4699,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
     var imgstream = http.ByteStream(imageFile.openRead());
     final imglength = await documentFile.length();
     var image = await http.MultipartFile.fromPath(
-        params['image_file'], imageFile.path,
+        params['image_file']!, imageFile.path,
         filename: imageFile.path, contentType: MediaType('image', 'png'));
     request.files.add(http.MultipartFile(
         params['image_file'].toString(), imgstream, imglength,
@@ -4753,7 +4757,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
       log('LOG:::' + responseData.toString());
       responseMap = jsonDecode(responseData.toString());
       Fluttertoast.showToast(
-        msg: responseMap['message'],
+        msg: responseMap!['message'],
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -4764,7 +4768,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
     } else {
       closeProgressDialog(context);
       Fluttertoast.showToast(
-        msg: responseMap['message'],
+        msg: responseMap!['message'],
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -4903,7 +4907,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
   // }
 
   // compress image
-  Future<File> compressAndGetFile(File file, String targetPath) async {
+  Future<File?> compressAndGetFile(File file, String targetPath) async {
     var result = await FlutterImageCompress.compressAndGetFile(
       file.absolute.path,
       targetPath,

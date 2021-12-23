@@ -20,37 +20,37 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return OrientationBuilder(builder: (context, orientation) {
-        SizerUtil().init(constraints, orientation);
+    //return LayoutBuilder(builder: (context, constraints) {
+      return Sizer(builder: (context, orientation, deviceType) {
+        //SizerUtil().init(constraints, orientation);
         return MaterialApp(
             theme: ThemeData(
                 primaryColor: Constants.bgColor,
                 accentColor: Constants.bgColor.withOpacity(0.5)),
             debugShowCheckedModeBanner: false,
             home: SplashScreen());
-      });
-    });
+    //   });
+     });
   }
 }
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key key}) : super(key: key);
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  String isNew, registerAs;
-  bool isLoggedIn;
+  String? isNew, registerAs;
+  bool? isLoggedIn;
 
-  StreamSubscription<ConnectivityResult> connectivityStateSubscription;
-  AppLifecycleState appState;
+  late StreamSubscription<ConnectivityResult> connectivityStateSubscription;
+  AppLifecycleState? appState;
 
 
   @override
@@ -64,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
     init(config.APP_ID, config.AUTH_KEY, config.AUTH_SECRET,
         onSessionRestore: () async {
           SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
-          CubeUser user = sharedPrefs.getUser();
+          CubeUser? user = sharedPrefs.getUser();
 
           return createSession(user);
         });
@@ -90,7 +90,7 @@ class _SplashScreenState extends State<SplashScreen> {
           }
         });
 
-    appState = WidgetsBinding.instance.lifecycleState;
+    appState = WidgetsBinding.instance!.lifecycleState;
     // WidgetsBinding.instance.addObserver(this);
 
     getLoginStatus();
@@ -117,7 +117,7 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     } else if (AppLifecycleState.resumed == state) {
       SharedPrefs.instance.init().then((sharedPrefs) {
-        CubeUser user = sharedPrefs.getUser();
+        CubeUser? user = sharedPrefs.getUser();
         print('yaaha2');
 
         if (user != null && !CubeChatConnection.instance.isAuthenticated()) {

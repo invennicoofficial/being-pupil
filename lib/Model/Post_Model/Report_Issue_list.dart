@@ -14,11 +14,11 @@ class ReportIssueList {
         this.metaParams,
     });
 
-    bool status;
+    bool? status;
     dynamic errorCode;
     dynamic errorMsg;
-    String message;
-    List<Data> data;
+    String? message;
+    List<Data>? data;
     dynamic metaParams;
 
     factory ReportIssueList.fromJson(Map<String, dynamic> json) => ReportIssueList(
@@ -35,7 +35,7 @@ class ReportIssueList {
         "error_code": errorCode,
         "error_msg": errorMsg,
         "message": message,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
         "meta_params": metaParams,
     };
 }
@@ -46,8 +46,8 @@ class Data {
         this.name,
     });
 
-    int issueId;
-    String name;
+    int? issueId;
+    String? name;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         issueId: json["issue_id"],

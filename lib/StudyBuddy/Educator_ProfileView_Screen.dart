@@ -17,7 +17,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class EducatorProfileViewScreen extends StatefulWidget {
   final id;
-  EducatorProfileViewScreen({Key key, this.id}) : super(key: key);
+  EducatorProfileViewScreen({Key? key, this.id}) : super(key: key);
 
   @override
   _EducatorProfileViewScreenState createState() =>
@@ -25,17 +25,17 @@ class EducatorProfileViewScreen extends StatefulWidget {
 }
 
 class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
-  List<bool> isLiked = [];
-  List<bool> isSaved = [];
+  List<bool?> isLiked = [];
+  List<bool?> isSaved = [];
   var result = EducatorPost();
-  Map<String, dynamic> map;
-  List<dynamic> mapData;
+  Map<String, dynamic>? map;
+  List<dynamic>? mapData;
 
-  String name = '';
-  String profileImageUrl = '';
-  String degreeName = '';
-  String schoolName = '';
-  String location = '';
+  String? name = '';
+  String? profileImageUrl = '';
+  String? degreeName = '';
+  String? schoolName = '';
+  String? location = '';
 
   int page = 1;
 
@@ -45,21 +45,21 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
   ScrollController _scrollController = ScrollController();
   int k = 0;
 
-  List<int> postIdList = [];
-  List<String> dateList = [];
-  List<String> descriptionList = [];
-  List<String> nameList = [];
-  List<String> profileImageList = [];
-  List<String> degreeList = [];
-  List<String> schoolList = [];
+  List<int?> postIdList = [];
+  List<String?> dateList = [];
+  List<String?> descriptionList = [];
+  List<String?> nameList = [];
+  List<String?> profileImageList = [];
+  List<String?> degreeList = [];
+  List<String?> schoolList = [];
   Map<int, dynamic> imageListMap = {};
-  List<int> likesList = [];
-  List<int> totalCommentsList = [];
+  List<int?> likesList = [];
+  List<int?> totalCommentsList = [];
   LikePostAPI like = LikePostAPI();
-  Map<String, dynamic> profileMap = {};
+  Map<String, dynamic>? profileMap = {};
 
-  Map<String, dynamic> saveMap;
-  String authToken;
+  Map<String, dynamic>? saveMap;
+  String? authToken;
 
 
   @override
@@ -78,7 +78,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if(page > 1) {
-          if(map['data'].length > 0) {
+          if(map!['data'].length > 0) {
             page++;
             getEducatorPostApi(page);
             print(page);
@@ -141,7 +141,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(100),
                     child:Image.network(
-                      profileImageUrl,
+                      profileImageUrl!,
                       width: 150,
                       height: 150,
                       fit: BoxFit.cover,
@@ -151,7 +151,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                   Padding(
                     padding: EdgeInsets.only(top: 1.0.h),
                     child: Text(
-                      name,
+                      name!,
                       style: TextStyle(
                           fontSize: 10.0.sp,
                           fontFamily: 'Montserrat',
@@ -186,7 +186,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                           width: 0.5.w,
                         ),
                         Text(
-                          location,
+                          location!,
                           style: TextStyle(
                               fontSize: 8.0.sp,
                               fontFamily: 'Montserrat',
@@ -202,7 +202,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        profileMap['data'] == null || profileMap['data'] == {} ? Container() : profileMap['data']['instagram_link'] == null ? Container() : GestureDetector(
+                        profileMap!['data'] == null || profileMap!['data'] == {} ? Container() : profileMap!['data']['instagram_link'] == null ? Container() : GestureDetector(
                           onTap: () {
                             print('Google!!!');
                           },
@@ -217,7 +217,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                         SizedBox(
                           width: 1.0.w,
                         ),
-                        profileMap['data'] == null || profileMap['data'] == {} ? Container() : profileMap['data']['facebook_link'] == null ? Container() : GestureDetector(
+                        profileMap!['data'] == null || profileMap!['data'] == {} ? Container() : profileMap!['data']['facebook_link'] == null ? Container() : GestureDetector(
                           onTap: () {
                             print('Facebook!!!');
                           },
@@ -232,7 +232,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                         SizedBox(
                           width: 1.0.w,
                         ),
-                        profileMap['data'] == null || profileMap['data'] == {} ? Container() : profileMap['data']['linkedin_link'] == null ? Container() : GestureDetector(
+                        profileMap!['data'] == null || profileMap!['data'] == {} ? Container() : profileMap!['data']['linkedin_link'] == null ? Container() : GestureDetector(
                           onTap: () {
                             print('LinkedIn!!!');
                           },
@@ -303,7 +303,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                     ),
                   ),
                   //Other Details
-                  profileMap['data'] == null || profileMap['data'] == {} ? Container() : Padding(
+                  profileMap!['data'] == null || profileMap!['data'] == {} ? Container() : Padding(
                     padding: EdgeInsets.symmetric(vertical: 2.0.h),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -311,7 +311,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                         Column(
                           children: <Widget>[
                             Text(
-                              profileMap['data']['total_experience'].toString(),
+                              profileMap!['data']['total_experience'].toString(),
                               style: TextStyle(
                                   fontSize: 10.0.sp,
                                   color: Constants.bgColor,
@@ -334,7 +334,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                         Column(
                           children: <Widget>[
                             Text(
-                              profileMap['data']['total_post'].toString(),
+                              profileMap!['data']['total_post'].toString(),
                               style: TextStyle(
                                   fontSize: 10.0.sp,
                                   color: Constants.bgColor,
@@ -357,7 +357,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                         Column(
                           children: <Widget>[
                             Text(
-                              profileMap['data']['total_connections'].toString(),
+                              profileMap!['data']['total_connections'].toString(),
                               style: TextStyle(
                                   fontSize: 10.0.sp,
                                   color: Constants.bgColor,
@@ -426,7 +426,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(50),
                                     child: Image.network(
-                                      profileImageUrl,
+                                      profileImageUrl!,
                                       width: 8.5.w,
                                       height: 5.0.h,
                                       fit: BoxFit.cover,
@@ -442,7 +442,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          name,
+                                          name!,
                                           style: TextStyle(
                                               fontSize: 9.0.sp,
                                               color: Constants.bgColor,
@@ -458,7 +458,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                               fontWeight: FontWeight.w400),
                                         ),
                                         Text(
-                                          dateList[index],
+                                          dateList[index]!,
                                           style: TextStyle(
                                               fontSize: 6.5.sp,
                                               color: Constants.bgColor,
@@ -493,7 +493,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                               padding: const EdgeInsets.symmetric(vertical: 8.0),
                               child: Container(
                                 width: 88.0.w,
-                                child: Text(descriptionList[index],
+                                child: Text(descriptionList[index]!,
                                   style: TextStyle(
                                     fontSize: 9.0.sp,
                                     color: Constants.bpOnBoardSubtitleStyle,
@@ -545,14 +545,14 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                   GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        isLiked[index] = !isLiked[index];
+                                        isLiked[index] = !isLiked[index]!;
                                       });
                                       like.likePostApi(
-                                          postIdList[index], authToken);
+                                          postIdList[index], authToken!);
                                       setState(() {
                                         isLiked[index] == true
-                                            ? likesList[index]++
-                                            : likesList[index]--;
+                                            ? likesList[index]! + 1
+                                            : likesList[index]! - 1;
                                       });
                                     },
                                     child: Row(
@@ -560,10 +560,10 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                           MainAxisAlignment.start,
                                       children: [
                                         ImageIcon(
-                                          isLiked[index]
+                                          isLiked[index]!
                                               ? AssetImage('assets/icons/likeNew.png')
                                               : AssetImage('assets/icons/likeThumb.png'),
-                                          color: isLiked[index]
+                                          color: isLiked[index]!
                                               ? Constants.selectedIcon
                                               : Constants.bpOnBoardSubtitleStyle,
                                           size: 30.0,
@@ -660,7 +660,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                   GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        isSaved[index] = !isSaved[index];
+                                        isSaved[index] = !isSaved[index]!;
                                       });
                                       savePostApi(postIdList[index]);
                                     },
@@ -670,10 +670,10 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                         MainAxisAlignment.start,
                                         children: [
                                           ImageIcon(
-                                            isSaved[index]
+                                            isSaved[index]!
                                                 ? AssetImage('assets/icons/saveGreen.png')
                                                 : AssetImage('assets/icons/saveNew.png'),
-                                            color: isSaved[index]
+                                            color: isSaved[index]!
                                                 ? Constants.selectedIcon
                                                 : Constants.bpOnBoardSubtitleStyle,
                                             size: 25.0,
@@ -730,7 +730,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.getEducatorPostUrl}/${widget.id}?page=$page',
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       print(response.statusCode);
 
       if (response.statusCode == 200) {
@@ -738,25 +738,25 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
         //return EducatorPost.fromJson(json)
         //result = EducatorPost.fromJson(response.data);
         map = response.data;
-        mapData = map['data'];
+        mapData = map!['data'];
 
         print(map);
         print(mapData);
-        if(map['data'].length > 0) {
-          for (int i = 0; i < map['data'].length; i++) {
-            nameList.add(map['data'][i]['name']);
-            profileImageList.add(map['data'][i]['profile_image']);
-            degreeList.add(map['data'][i]['last_degree']);
-            schoolList.add(map['data'][i]['school_name']);
-            postIdList.add(map['data'][i]['post_id']);
-            dateList.add(map['data'][i]['date']);
-            descriptionList.add(map['data'][i]['description']);
-            isLiked.add(map['data'][i]['isLiked']);
-            isSaved.add(map['data'][i]['isSaved']);
-            likesList.add(map['data'][i]['total_likes']);
-            totalCommentsList.add(map['data'][i]['total_comments']);
-            for (int j = 0; j < map['data'].length; j++) {
-              imageListMap.putIfAbsent(k, () => map['data'][i]['post_media']);
+        if(map!['data'].length > 0) {
+          for (int i = 0; i < map!['data'].length; i++) {
+            nameList.add(map!['data'][i]['name']);
+            profileImageList.add(map!['data'][i]['profile_image']);
+            degreeList.add(map!['data'][i]['last_degree']);
+            schoolList.add(map!['data'][i]['school_name']);
+            postIdList.add(map!['data'][i]['post_id']);
+            dateList.add(map!['data'][i]['date']);
+            descriptionList.add(map!['data'][i]['description']);
+            isLiked.add(map!['data'][i]['isLiked']);
+            isSaved.add(map!['data'][i]['isSaved']);
+            likesList.add(map!['data'][i]['total_likes']);
+            totalCommentsList.add(map!['data'][i]['total_comments']);
+            for (int j = 0; j < map!['data'].length; j++) {
+              imageListMap.putIfAbsent(k, () => map!['data'][i]['post_media']);
             }
             k++;
             print(k);
@@ -779,7 +779,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
         });
       } else {
         print('${response.statusCode} : ${response.data.toString()}');
-        throw response.statusCode;
+        throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
@@ -797,20 +797,20 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       print(response.statusCode);
 
       if (response.statusCode == 200) {
         profileMap = response.data;
 
-        print(profileMap['data']);
+        print(profileMap!['data']);
         //print(mapData);
-        if (profileMap['data'] != null) {
-          name = profileMap['data']['name'];
-          profileImageUrl = profileMap['data']['profile_image'];
-          degreeName = profileMap['data']['last_degree'];
-          schoolName = profileMap['data']['school_name'];
-          location = profileMap['data']['city'];
+        if (profileMap!['data'] != null) {
+          name = profileMap!['data']['name'];
+          profileImageUrl = profileMap!['data']['profile_image'];
+          degreeName = profileMap!['data']['last_degree'];
+          schoolName = profileMap!['data']['school_name'];
+          location = profileMap!['data']['city'];
           getEducatorPostApi(page);
           setState(() {
             isLoading = false;
@@ -826,7 +826,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
         });
       } else {
         print('${response.statusCode} : ${response.data.toString()}');
-        throw response.statusCode;
+        throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
@@ -836,7 +836,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
   }
 
 // Save post API
-   Future<void> savePostApi(int postID) async {
+   Future<void> savePostApi(int? postID) async {
     //var delResult = PostDelete();
 
     try {
@@ -845,7 +845,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
       FormData formData = FormData.fromMap({'post_id': postID});
       var response = await dio.post(Config.savePostUrl,
           data: formData,
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
         //delResult = postDeleteFromJson(response.data);
@@ -856,11 +856,11 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
         // setState(() {
         //   isLoading = false;
         // });
-        if (saveMap['status'] == true) {
+        if (saveMap!['status'] == true) {
           print('true');
           //getEducatorPostApi(page);
           Fluttertoast.showToast(
-              msg: saveMap['message'],
+              msg: saveMap!['message'],
               backgroundColor: Constants.bgColor,
               gravity: ToastGravity.BOTTOM,
               fontSize: 10.0.sp,
@@ -868,9 +868,9 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
               textColor: Colors.white);
         } else {
           print('false');
-          if (saveMap['message'] == null) {
+          if (saveMap!['message'] == null) {
             Fluttertoast.showToast(
-                msg: saveMap['error_msg'],
+                msg: saveMap!['error_msg'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,
@@ -878,7 +878,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                 textColor: Colors.white);
           } else {
             Fluttertoast.showToast(
-                msg: saveMap['message'],
+                msg: saveMap!['message'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,
@@ -898,7 +898,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
   }
 
   displayProgressDialog(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).push(new PageRouteBuilder(
           opaque: false,
           pageBuilder: (BuildContext context, _, __) {

@@ -18,56 +18,56 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  argon_buttons_flutter: ^1.0.6
-  cached_network_image: ^2.5.1
-  carousel_slider: ^2.0.0
-  cupertino_icons: ^1.0.0
-  dio: ^3.0.10
-  dotted_border: ^1.0.7
-  file_picker: ^2.1.5
-  filter_list: ^0.0.8
-  flutter_animation_progress_bar: ^1.0.6
-  firebase_auth: ^0.20.1
-  flutter_facebook_auth: ^2.0.2
-  flutter_image_compress: ^0.7.0
-  flutter_secure_storage: ^3.3.5
-  flutter_rating_bar: ^3.2.0
-  fluttertoast: ^7.0.4
-  google_sign_in: ^4.5.9
-  image_picker: ^0.6.6+5
-  page_transition: ^1.1.7+6
-  path_provider: ^1.6.28
-  persistent_bottom_nav_bar: ^3.2.0
-  photo_view: ^0.10.3
-  pin_code_fields: ^6.1.0
-  place_picker: ^0.9.15
-  pull_to_refresh: 1.6.3
-  readmore: ^1.0.0
-  sign_in_with_apple: ^2.5.4
-  share: ^0.6.5+4
-  shared_preferences: ^0.5.12+4
-  sizer: ^1.1.8
+  argon_buttons_flutter: ^1.1.0
+  cached_network_image: ^3.2.0
+  carousel_slider: ^4.0.0
+  cupertino_icons: ^1.0.4
+  dio: ^4.0.4
+  dotted_border: ^2.0.0+2
+  file_picker: ^4.3.0
+  filter_list: ^1.0.0
+  flutter_animation_progress_bar: ^2.0.1
+  firebase_auth: ^3.3.4
+  flutter_facebook_auth: ^3.5.7
+  flutter_image_compress: ^1.1.0
+  flutter_secure_storage: ^5.0.2
+  flutter_rating_bar: ^4.0.0
+  fluttertoast: ^8.0.8
+  google_sign_in: ^5.2.1
+  image_picker: ^0.8.4+4
+  page_transition: ^2.0.4
+  path_provider: ^2.0.8
+  persistent_bottom_nav_bar: ^4.0.2
+  photo_view: ^0.13.0
+  pin_code_fields: ^7.3.0
+  place_picker: ^0.9.19-nullsafety #0.9.15
+  pull_to_refresh: ^2.0.0
+  readmore: ^2.1.0
+  sign_in_with_apple: ^3.3.0
+  share: ^2.0.4
+  shared_preferences: ^2.0.11
+  sizer: ^2.0.15
   #syncfusion_flutter_datepicker: ^18.4.49-beta
   #textfield_tags: ^1.1.1
-  webview_flutter: ^1.0.7
+  webview_flutter: ^3.0.0
   #api_hit_app
-  http: ^0.12.2
-  google_fonts: ^1.1.2 
-  flutter_svg: ^0.19.1
-  url_launcher: ^5.7.10
+  http: ^0.13.1
+  google_fonts: ^2.1.0
+  flutter_svg: ^1.0.0
+  url_launcher: ^6.0.17
   #image_picker: ^0.6.7
   #dio: ^3.0.10 
-  mime: ^0.9.7
-  http_parser: ^3.1.4
-  wechat_assets_picker: ^4.2.2
-  connectycube_sdk: ^1.1.3
-  razorpay_flutter: ^1.2.5
-  connectivity_plus:
+  mime: ^1.0.1
+  http_parser: ^4.0.0
+  wechat_assets_picker: ^6.3.1
+  connectycube_sdk: ^2.0.7
+  razorpay_flutter: ^1.2.7
+  connectivity_plus: ^2.1.0
 
 dev_dependencies:
   flutter_test:

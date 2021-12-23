@@ -7,10 +7,10 @@ import 'package:sizer/sizer.dart';
 
 class CancelDoneScreen extends StatefulWidget {
   final int propertyId;
-  final String bookingId;
-  BookingDetails propertyDetails;
-  int index;
-  String meal,
+  final String? bookingId;
+  BookingDetails? propertyDetails;
+  int? index;
+  String? meal,
       image,
       guestName,
       mobileNumber,
@@ -20,9 +20,9 @@ class CancelDoneScreen extends StatefulWidget {
       name;
   dynamic roomAmount, mealAmount, taxAmount, totalAmount;
   CancelDoneScreen(
-      {Key key,
-      @required this.propertyId,
-      @required this.bookingId,
+      {Key? key,
+      required this.propertyId,
+      required this.bookingId,
       this.meal,
       this.image,
       this.index,
@@ -42,7 +42,7 @@ class CancelDoneScreen extends StatefulWidget {
 }
 
 class _CancelDoneScreenState extends State<CancelDoneScreen> {
-  String email;
+  String? email;
 
   @override
   void initState() {
@@ -89,7 +89,7 @@ class _CancelDoneScreenState extends State<CancelDoneScreen> {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => bottomNavBar(0)),
               (Route<dynamic> route) => false);
-        },
+        } as Future<bool> Function()?,
         child: Padding(
           padding: EdgeInsets.only(top: 4.0.h, left: 4.0.w, right: 4.0.w),
           child: Column(
@@ -146,7 +146,7 @@ class _CancelDoneScreenState extends State<CancelDoneScreen> {
                           color: Constants.bgColor),
                     ),
                     Text(
-                      widget.guestName,
+                      widget.guestName!,
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 10.0.sp,
@@ -170,7 +170,7 @@ class _CancelDoneScreenState extends State<CancelDoneScreen> {
                           color: Constants.bgColor),
                     ),
                     Text(
-                      widget.mobileNumber,
+                      widget.mobileNumber!,
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 10.0.sp,
@@ -194,7 +194,7 @@ class _CancelDoneScreenState extends State<CancelDoneScreen> {
                           color: Constants.bgColor),
                     ),
                     Text(
-                      widget.checkIn,
+                      widget.checkIn!,
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 10.0.sp,
@@ -218,7 +218,7 @@ class _CancelDoneScreenState extends State<CancelDoneScreen> {
                           color: Constants.bgColor),
                     ),
                     Text(
-                      widget.checkOut,
+                      widget.checkOut!,
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 10.0.sp,
@@ -242,7 +242,7 @@ class _CancelDoneScreenState extends State<CancelDoneScreen> {
                           color: Constants.bgColor),
                     ),
                     Text(
-                      widget.roomType,
+                      widget.roomType!,
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 10.0.sp,
@@ -266,7 +266,7 @@ class _CancelDoneScreenState extends State<CancelDoneScreen> {
                           color: Constants.bgColor),
                     ),
                     Text(
-                      widget.meal.substring(1, widget.meal.length - 1),
+                      widget.meal!.substring(1, widget.meal!.length - 1),
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 10.0.sp,

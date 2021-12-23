@@ -23,7 +23,7 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key key}) : super(key: key);
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
@@ -277,7 +277,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               sharedPreferences.setString(
                                   'RegisterAs', registerAs);
                               print('Preffff ::: ' +
-                                  sharedPreferences.getString('RegisterAs'));
+                                  sharedPreferences.getString('RegisterAs')!);
                             },
                             dropdownButtonStyle: DropdownButtonStyle(
                               height: 7.0.h,
@@ -522,12 +522,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         result = SignUp.fromJson(response.data);
         //print(result.data.name);
         if(result.status == true){
-        print('ID ::: ' + result.data.userId.toString());
-        saveUserData(result.data.userId);
+        print('ID ::: ' + result.data!.userId.toString());
+        saveUserData(result.data!.userId!);
         _signInCC(context, CubeUser(fullName: name, login: email, password: '12345678', email: email), result);
         } else {
           Fluttertoast.showToast(
-          msg: result.message,
+          msg: result.message!,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -545,9 +545,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
        closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -557,7 +557,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }

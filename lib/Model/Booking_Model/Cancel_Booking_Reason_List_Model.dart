@@ -18,11 +18,11 @@ class CancelBookoingReason {
         this.metaParams,
     });
 
-    bool status;
+    bool? status;
     dynamic errorCode;
     dynamic errorMsg;
-    String message;
-    List<Datum> data;
+    String? message;
+    List<Datum>? data;
     dynamic metaParams;
 
     factory CancelBookoingReason.fromJson(Map<String, dynamic> json) => CancelBookoingReason(
@@ -39,7 +39,7 @@ class CancelBookoingReason {
         "error_code": errorCode,
         "error_msg": errorMsg,
         "message": message,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
         "meta_params": metaParams,
     };
 }
@@ -50,8 +50,8 @@ class Datum {
         this.name,
     });
 
-    int cancelId;
-    String name;
+    int? cancelId;
+    String? name;
 
     factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         cancelId: json["cancel_id"],

@@ -18,11 +18,11 @@ class Connection {
         this.metaParams,
     });
 
-    bool status;
+    bool? status;
     dynamic errorCode;
     dynamic errorMsg;
-    String message;
-    List<Data> data;
+    String? message;
+    List<Data>? data;
     dynamic metaParams;
 
     factory Connection.fromJson(Map<String, dynamic> json) => Connection(
@@ -30,7 +30,7 @@ class Connection {
         errorCode: json["error_code"],
         errorMsg: json["error_msg"],
         message: json["message"],
-        data: json["status"] == true ? List<Data>.from(json["data"].map((x) => Data.fromJson(x))) : new Data.toEmpty(json['data']),
+        data: json["status"] == true ? List<Data>.from(json["data"].map((x) => Data.fromJson(x))) : new Data.toEmpty(json['data']) as List<Data>?,
         metaParams: json["meta_params"],
     );
 
@@ -39,7 +39,7 @@ class Connection {
         "error_code": errorCode,
         "error_msg": errorMsg,
         "message": message,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
         "meta_params": metaParams,
     };
 }
@@ -56,14 +56,14 @@ class Data {
         this.status,
     });
 
-    int userId;
-    String profileImage;
-    String name;
-    String email;
-    String lastDegree;
-    String schoolName;
-    String date;
-    String status;
+    int? userId;
+    String? profileImage;
+    String? name;
+    String? email;
+    String? lastDegree;
+    String? schoolName;
+    String? date;
+    String? status;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         userId: json["user_id"],
@@ -87,7 +87,7 @@ class Data {
         "status": status,
     };
 
-    Data.toEmpty(Map<String, dynamic> json){
+    Data.toEmpty(Map<String, dynamic>? json){
       return;
     }
 }

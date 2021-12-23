@@ -7,7 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class LearnerProfileViewScreen extends StatefulWidget {
   final id;
-  const LearnerProfileViewScreen({Key key, this.id}) : super(key: key);
+  const LearnerProfileViewScreen({Key? key, this.id}) : super(key: key);
 
   @override
   _LearnerProfileViewScreenState createState() =>
@@ -15,9 +15,9 @@ class LearnerProfileViewScreen extends StatefulWidget {
 }
 
 class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
-  Map<String, dynamic> map = {};
+  Map<String, dynamic>? map = {};
   bool isLoading = true;
-  String authToken;
+  String? authToken;
 
   @override
   void initState() {
@@ -70,7 +70,7 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
                         new AlwaysStoppedAnimation<Color>(Constants.bgColor),
                   ),
                 )
-              : map['data'] == null || map['data'] == {}
+              : map!['data'] == null || map!['data'] == {}
                   ? Center(
                       child: Text(
                         'No Data Found!',
@@ -90,7 +90,7 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(100),
                             child: Image.network(
-                              map['data']['profile_image'],
+                              map!['data']['profile_image'],
                               height: 120,
                               width: 120,
                               fit: BoxFit.cover,
@@ -100,7 +100,7 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
                           Padding(
                             padding: EdgeInsets.only(top: 2.0.h),
                             child: Text(
-                              map['data']['name'],
+                              map!['data']['name'],
                               style: TextStyle(
                                   fontSize: 12.0.sp,
                                   fontFamily: 'Montserrat',
@@ -109,10 +109,10 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
                             ),
                           ),
                           //Degree
-                          map['data']['last_degree'] == null ? Container() : Padding(
+                          map!['data']['last_degree'] == null ? Container() : Padding(
                             padding: EdgeInsets.only(top: 2.0.h),
                             child: Text(
-                              '${map['data']['last_degree']} | ${map['data']['school_name']}',
+                              '${map!['data']['last_degree']} | ${map!['data']['school_name']}',
                               style: TextStyle(
                                   fontSize: 10.0.sp,
                                   fontFamily: 'Montserrat',
@@ -121,7 +121,7 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
                             ),
                           ),
                           //Location
-                          map['data']['city'] == null ? Container() : Padding(
+                          map!['data']['city'] == null ? Container() : Padding(
                             padding: EdgeInsets.only(top: 2.0.h),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -135,7 +135,7 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
                                   width: 0.5.w,
                                 ),
                                 Text(
-                                  map['data']['city'] == null ? '' : map['data']['city'],
+                                  map!['data']['city'] == null ? '' : map!['data']['city'],
                                   style: TextStyle(
                                       fontSize: 10.0.sp,
                                       fontFamily: 'Montserrat',
@@ -229,15 +229,15 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.myProfileUrl}/${widget.id}',
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        print(map['data']);
+        print(map!['data']);
         //print(mapData);
-        if (map['data'] != null) {
+        if (map!['data'] != null) {
           isLoading = false;
           setState(() {});
         } else {
@@ -251,7 +251,7 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
         });
       } else {
         print('${response.statusCode} : ${response.data.toString()}');
-        throw response.statusCode;
+        throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);

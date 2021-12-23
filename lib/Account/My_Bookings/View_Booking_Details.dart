@@ -6,11 +6,11 @@ import 'package:sizer/sizer.dart';
 class ViewBookingScreen extends StatefulWidget {
   // BookingDetails bookingDetails;
   // //CancelledBooking cancelBookingDetails;
-   int index;
-  String meal, image, guestName, mobileNumber, checkIn, checkOut, roomType, name, propertyId, bookingId;
+   int? index;
+  String? meal, image, guestName, mobileNumber, checkIn, checkOut, roomType, name, propertyId, bookingId;
   dynamic roomAmount, mealAmount, taxAmount, totalAmount;
   ViewBookingScreen(
-      {Key key,this.meal, this.image, this.index, this.guestName, this.mobileNumber,
+      {Key? key,this.meal, this.image, this.index, this.guestName, this.mobileNumber,
       this.checkOut, this.checkIn, this.roomType, this.name, this.roomAmount, this.mealAmount, this.taxAmount, this.totalAmount,
       this.propertyId, this.bookingId})
       : super(key: key);
@@ -58,7 +58,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                   width: 100.0.w,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(widget.image),
+                      image: NetworkImage(widget.image!),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(8.0),
@@ -70,7 +70,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                 child: Row(
                   children: [
                     Text(
-                      widget.name,
+                      widget.name!,
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 11.0.sp,
@@ -112,7 +112,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(widget.guestName,//name,
+                          Text(widget.guestName!,//name,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -135,7 +135,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(widget.mobileNumber,//mobileNumber,
+                          Text(widget.mobileNumber!,//mobileNumber,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -158,7 +158,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(widget.checkIn,//checkIn,
+                          Text(widget.checkIn!,//checkIn,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -181,7 +181,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(widget.checkOut,//checkOut,
+                          Text(widget.checkOut!,//checkOut,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -204,7 +204,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(widget.roomType,//roomType,
+                          Text(widget.roomType!,//roomType,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -227,7 +227,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: Constants.bgColor),
                           ),
-                          Text(widget.meal.substring(1, widget.meal.length - 1),
+                          Text(widget.meal!.substring(1, widget.meal!.length - 1),
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -312,7 +312,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                                     fontWeight: FontWeight.w400,
                                     color: Constants.bgColor)),
                             TextSpan(
-                                text: '(${widget.meal.substring(1, widget.meal.length - 1)})',//'(${meal.substring(1, meal.length - 1)})',
+                                text: '(${widget.meal!.substring(1, widget.meal!.length - 1)})',//'(${meal.substring(1, meal.length - 1)})',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 8.0.sp,

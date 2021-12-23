@@ -18,11 +18,11 @@ class GetCommentList {
         this.metaParams,
     });
 
-    bool status;
+    bool? status;
     dynamic errorCode;
     dynamic errorMsg;
-    String message;
-    List<Data> data;
+    String? message;
+    List<Data>? data;
     dynamic metaParams;
 
     factory GetCommentList.fromJson(Map<String, dynamic> json) => GetCommentList(
@@ -39,7 +39,7 @@ class GetCommentList {
         "error_code": errorCode,
         "error_msg": errorMsg,
         "message": message,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
         "meta_params": metaParams,
     };
 }
@@ -56,14 +56,14 @@ class Data {
         this.totalComments,
     });
 
-    int commentId;
-    String commentUserId;
-    String profileImage;
-    String name;
-    String date;
-    String comment;
-    int postId;
-    int totalComments;
+    int? commentId;
+    String? commentUserId;
+    String? profileImage;
+    String? name;
+    String? date;
+    String? comment;
+    int? postId;
+    int? totalComments;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         commentId: json["comment_id"],

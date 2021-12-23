@@ -13,7 +13,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class GetEducatorCourseScreen extends StatefulWidget {
   final userId;
-  GetEducatorCourseScreen({Key key, @required this.userId}) : super(key: key);
+  GetEducatorCourseScreen({Key? key, required this.userId}) : super(key: key);
 
   @override
   _GetEducatorCourseScreenState createState() =>
@@ -21,17 +21,17 @@ class GetEducatorCourseScreen extends StatefulWidget {
 }
 
 class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
-  String authToken;
+  String? authToken;
   int courseLength = 0;
   var result = GetEducatorCourse();
   ScrollController _scrollController = ScrollController();
   bool isLoading = true;
   int page = 1;
   List<String> dateList = [];
-  List<int> idList = [];
-  List<String> nameList = [];
-  List<String> descriptionList = [];
-  List<List<dynamic>> linksList = [];
+  List<int?> idList = [];
+  List<String?> nameList = [];
+  List<String?> descriptionList = [];
+  List<List<dynamic>?> linksList = [];
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
@@ -130,7 +130,7 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
                                 courseName: nameList[index],
                                 coursDate: dateList[index],
                                 courseDescription: descriptionList[index],
-                                courseLinks: linksList[index],
+                                courseLinks: linksList[index] as List<String>?,
                               ),
                               withNavBar: false,
                               pageTransitionAnimation:
@@ -160,7 +160,7 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
                                 Container(
                                   width: 65.0.w,
                                   child: Text(
-                                    nameList[index],
+                                    nameList[index]!,
                                     //result.data[index].courseName,
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
@@ -200,23 +200,23 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
       var dio = Dio();
       var response = await dio.get(
           '${Config.getEducatorCourseUrl}${widget.userId}?page=$page',
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         result = GetEducatorCourse.fromJson(response.data);
         print(response.data);
         courseLength = 0;
-        courseLength = result.data == [] ? 0 : result.data.length;
+        courseLength = result.data == [] ? 0 : result.data!.length;
 
         setState(() {});
         //closeProgressDialog(context);
         if (courseLength > 0) {
           for (int i = 0; i < courseLength; i++) {
-            idList.add(result.data[i].courseId);
-            nameList.add(result.data[i].courseName);
+            idList.add(result.data![i].courseId);
+            nameList.add(result.data![i].courseName);
             dateList.add(
-                '${result.data[i].startDate} to ${result.data[i].endDate}');
-            descriptionList.add(result.data[i].courseDescription);
-            linksList.add(result.data[i].courseLink);
+                '${result.data![i].startDate} to ${result.data![i].endDate}');
+            descriptionList.add(result.data![i].courseDescription);
+            linksList.add(result.data![i].courseLink);
           }
           isLoading = false;
           setState(() {});
@@ -228,7 +228,7 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
         isLoading = false;
         setState(() {});
         Fluttertoast.showToast(
-          msg: result.message,
+          msg: result.message!,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -244,9 +244,9 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
       //closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -256,7 +256,7 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }

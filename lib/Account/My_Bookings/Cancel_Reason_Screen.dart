@@ -13,10 +13,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class ReasonForCancelBooking extends StatefulWidget {
   final int propertyId;
-  final String bookingId;
-  BookingDetails propertyDetails;
-  int index;
-  String meal,
+  final String? bookingId;
+  BookingDetails? propertyDetails;
+  int? index;
+  String? meal,
       image,
       guestName,
       mobileNumber,
@@ -28,9 +28,9 @@ class ReasonForCancelBooking extends StatefulWidget {
   // final String name, mobileNumber, checkIn, checkOut, roomType, meal;
   // final int roomCharge, mealCharge, taxCharge, total;
   ReasonForCancelBooking(
-      {Key key,
-      @required this.propertyId,
-      @required this.bookingId,
+      {Key? key,
+      required this.propertyId,
+      required this.bookingId,
       this.meal,
       this.image,
       this.index,
@@ -54,9 +54,9 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
   TextEditingController _detailController = TextEditingController();
   // Map<String, dynamic> reportMap = Map<String, dynamic>();
   // List<dynamic> reportMapData = List<dynamic>();
-  int selectedIssue;
-  String authToken;
-  int issueId;
+  int? selectedIssue;
+  String? authToken;
+  int? issueId;
   var result = CancelBookoingReason();
   bool isLoading = true;
 
@@ -175,7 +175,7 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
               child: Column(
                 children: <Widget>[
                   ListView.builder(
-                      itemCount: result.data.length,
+                      itemCount: result.data!.length,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
@@ -187,7 +187,7 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
                                 selectedIssue = index;
                                 issueId = index + 1;
                                 //reportMapData[index]['name'] == 'Others'
-                                result.data[index].name == 'Other'
+                                result.data![index].name == 'Other'
                                     ? isOther = true
                                     : isOther = false;
                               });
@@ -198,7 +198,7 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
                                 ? Constants.bgColor.withOpacity(0.7)
                                 : null,
                             title: Text(
-                              result.data[index].name,
+                              result.data![index].name!,
                               //index == 7 ? 'Other' : 'Report issue $index',
                               // '${reportMapData[index]['name']}',
                               style: TextStyle(
@@ -295,15 +295,15 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
 
   //submit Cancel Rason API
   submitCancelRason() async {
-    print(result.data[selectedIssue].cancelId);
+    print(result.data![selectedIssue!].cancelId);
     displayProgressDialog(context);
     //var result = ReportIssue();
-    Map<String, dynamic> map = Map<String, dynamic>();
+    Map<String, dynamic>? map = Map<String, dynamic>();
     try {
       Dio dio = Dio();
       FormData formData = FormData.fromMap({
         'property_id': widget.propertyId,
-        'cancel_id': result.data[selectedIssue].cancelId,
+        'cancel_id': result.data![selectedIssue!].cancelId,
         'booking_id': widget.bookingId,
         'description': isOther ? _detailController.text : null
       });
@@ -320,7 +320,7 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
         // print(result);
         map = response.data;
         //mapData = map['data'];
-        if (map['status'] == true) {
+        if (map!['status'] == true) {
           Fluttertoast.showToast(
             msg: map['message'], //map['data']['status'],
             toastLength: Toast.LENGTH_SHORT,
@@ -382,9 +382,9 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
       print(stack);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -394,14 +394,14 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }
   }
 
   displayProgressDialog(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).push(new PageRouteBuilder(
           opaque: false,
           pageBuilder: (BuildContext context, _, __) {

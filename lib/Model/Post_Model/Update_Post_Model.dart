@@ -18,11 +18,11 @@ class UpdatePost {
         this.metaParams,
     });
 
-    bool status;
+    bool? status;
     dynamic errorCode;
     dynamic errorMsg;
-    String message;
-    Data data;
+    String? message;
+    Data? data;
     dynamic metaParams;
 
     factory UpdatePost.fromJson(Map<String, dynamic> json) => UpdatePost(
@@ -39,7 +39,7 @@ class UpdatePost {
         "error_code": errorCode,
         "error_msg": errorMsg,
         "message": message,
-        "data": data.toJson(),
+        "data": data!.toJson(),
         "meta_params": metaParams,
     };
 }
@@ -54,12 +54,12 @@ class Data {
         this.postMedia,
     });
 
-    int postId;
-    String description;
-    int totalLikes;
-    int totalComments;
-    DateTime updatedAt;
-    List<PostMedia> postMedia;
+    int? postId;
+    String? description;
+    int? totalLikes;
+    int? totalComments;
+    DateTime? updatedAt;
+    List<PostMedia>? postMedia;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         postId: json["post_id"],
@@ -75,8 +75,8 @@ class Data {
         "description": description,
         "total_likes": totalLikes,
         "total_comments": totalComments,
-        "updated_at": updatedAt.toIso8601String(),
-        "post_media": List<dynamic>.from(postMedia.map((x) => x.toJson())),
+        "updated_at": updatedAt!.toIso8601String(),
+        "post_media": List<dynamic>.from(postMedia!.map((x) => x.toJson())),
     };
 }
 
@@ -86,8 +86,8 @@ class PostMedia {
         this.file,
     });
 
-    int id;
-    String file;
+    int? id;
+    String? file;
 
     factory PostMedia.fromJson(Map<String, dynamic> json) => PostMedia(
         id: json["id"],

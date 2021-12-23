@@ -13,14 +13,14 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class EducatorScreen extends StatefulWidget {
-  EducatorScreen({Key key}) : super(key: key);
+  EducatorScreen({Key? key}) : super(key: key);
 
   @override
   _EducatorScreenState createState() => _EducatorScreenState();
 }
 
 class _EducatorScreenState extends State<EducatorScreen> {
-  String registerAs, authToken;
+  String? registerAs, authToken;
   ScrollController _scrollController = ScrollController();
   int page = 1;
   int k = 0;
@@ -29,13 +29,13 @@ class _EducatorScreenState extends State<EducatorScreen> {
   EducatorListModel educator = EducatorListModel();
   ConnectionAPI connect = ConnectionAPI();
 
-  List<int> _userId = [];
-  List<String> _profileImage = [];
-  List<String> _name = [];
-  List<String> _lastDegree = [];
-  List<String> _schoolName = [];
-  List<String> _date = [];
-  List<String> _distance = [];
+  List<int?> _userId = [];
+  List<String?> _profileImage = [];
+  List<String?> _name = [];
+  List<String?> _lastDegree = [];
+  List<String?> _schoolName = [];
+  List<String?> _date = [];
+  List<String?> _distance = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -62,7 +62,7 @@ class _EducatorScreenState extends State<EducatorScreen> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if (page > 1) {
-          if (educator.data.length > 0) {
+          if (educator.data!.length > 0) {
             page++;
             getEducatorListApi(page);
             print(_name);
@@ -172,7 +172,7 @@ class _EducatorScreenState extends State<EducatorScreen> {
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(50),
                                     child: Image.network(
-                                      _profileImage[index],
+                                      _profileImage[index]!,
                                       width: 40.0,
                                       height: 40.0,
                                       fit: BoxFit.cover,
@@ -187,7 +187,7 @@ class _EducatorScreenState extends State<EducatorScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        _name[index],
+                                        _name[index]!,
                                         style: TextStyle(
                                             fontSize: 9.0.sp,
                                             color: Constants.bgColor,
@@ -220,7 +220,7 @@ class _EducatorScreenState extends State<EducatorScreen> {
                                   onTap: () async {
                                     print('$index is Connected');
                                     await connect.connectionApi(
-                                        _userId[index], authToken);
+                                        _userId[index], authToken!);
                                     setState(() {
                                       isLoading = true;
                                       page = 1;
@@ -272,7 +272,7 @@ class _EducatorScreenState extends State<EducatorScreen> {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.getEducatorListUrl}?page=$page',
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       print(response.statusCode);
 
       if (response.statusCode == 200) {
@@ -281,15 +281,15 @@ class _EducatorScreenState extends State<EducatorScreen> {
         //result = EducatorPost.fromJson(response.data);
         educator = EducatorListModel.fromJson(response.data);
 
-        if (educator.data.length > 0) {
-          for (int i = 0; i < educator.data.length; i++) {
-            _userId.add(educator.data[i].userId);
-            _profileImage.add(educator.data[i].profileImage);
-            _name.add(educator.data[i].name);
-            _lastDegree.add(educator.data[i].lastDegree);
-            _schoolName.add(educator.data[i].schoolName);
-            _date.add(educator.data[i].date);
-            _distance.add(educator.data[i].distance);
+        if (educator.data!.length > 0) {
+          for (int i = 0; i < educator.data!.length; i++) {
+            _userId.add(educator.data![i].userId);
+            _profileImage.add(educator.data![i].profileImage);
+            _name.add(educator.data![i].name);
+            _lastDegree.add(educator.data![i].lastDegree);
+            _schoolName.add(educator.data![i].schoolName);
+            _date.add(educator.data![i].date);
+            _distance.add(educator.data![i].distance);
           }
 
           print(_name);
@@ -306,7 +306,7 @@ class _EducatorScreenState extends State<EducatorScreen> {
         });
       } else {
         print('${response.statusCode} : ${response.data.toString()}');
-        throw response.statusCode;
+        throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);

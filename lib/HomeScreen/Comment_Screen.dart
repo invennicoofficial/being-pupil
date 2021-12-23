@@ -12,12 +12,12 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class CommentScreen extends StatefulWidget {
-  String name, profileImage, degree, schoolName, date, description;
-  int postId, like, comment, index;
-  bool isLiked, isSaved;
-  Map<int, dynamic> imageListMap;
+  String? name, profileImage, degree, schoolName, date, description;
+  int? postId, like, comment, index;
+  bool? isLiked, isSaved;
+  Map<int, dynamic>? imageListMap;
   CommentScreen(
-      {Key key,
+      {Key? key,
       this.postId,
       this.name,
       this.profileImage,
@@ -39,33 +39,33 @@ class CommentScreen extends StatefulWidget {
 
 class _CommentScreenState extends State<CommentScreen> {
   List<String> dpImages = [];
-  List<String> profileImages = [];
-  List<String> name = [];
-  List<String> date = [];
-  List<String> comments = [];
-  List<int> commentId = [];
-  List<String> commentUserId = [];
+  List<String?> profileImages = [];
+  List<String?> name = [];
+  List<String?> date = [];
+  List<String?> comments = [];
+  List<int?> commentId = [];
+  List<String?> commentUserId = [];
   TextEditingController commentController = TextEditingController();
   CommentAPI comment = CommentAPI();
   //GetCommentList commentList = GetCommentList();
-  String authToken;
+  String? authToken;
   int page = 1;
   bool isLoading = true;
   ScrollController _scrollController = ScrollController();
   int k = 0;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  String imageUrl;
-  Map<String, dynamic> commentMap;
-  List<dynamic> commentMapData;
-  int userId;
-  Map<String, dynamic> delMap;
-  Map<String, dynamic> editMap;
+  String? imageUrl;
+  Map<String, dynamic>? commentMap;
+  List<dynamic>? commentMapData;
+  int? userId;
+  Map<String, dynamic>? delMap;
+  Map<String, dynamic>? editMap;
   bool isEdit = false;
   FocusNode focusNode = FocusNode();
-  int idForEdit;
+  int? idForEdit;
   LikePostAPI like = LikePostAPI();
-  Map<String, dynamic> saveMap;
+  Map<String, dynamic>? saveMap;
 
   @override
   void initState() {
@@ -102,7 +102,7 @@ class _CommentScreenState extends State<CommentScreen> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if (page > 1) {
-          if (commentMapData.length > 0) {
+          if (commentMapData!.length > 0) {
             page++;
             getCommentListApi(page);
             print(page);
@@ -120,7 +120,7 @@ class _CommentScreenState extends State<CommentScreen> {
 
   void _onLoading() async {
     //if (mounted) setState(() {});
-    if (commentMapData.length == 0) {
+    if (commentMapData!.length == 0) {
       //_refreshController.loadComplete();
       _refreshController.loadNoData();
     } else {
@@ -208,7 +208,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(50),
                                       child: Image.network(
-                                        widget.profileImage,
+                                        widget.profileImage!,
                                         width: 8.5.w,
                                         height: 5.0.h,
                                         fit: BoxFit.cover,
@@ -224,7 +224,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            widget.name,
+                                            widget.name!,
                                             style: TextStyle(
                                                 fontSize: 9.0.sp,
                                                 color: Constants.bgColor,
@@ -240,7 +240,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                 fontWeight: FontWeight.w400),
                                           ),
                                           Text(
-                                            widget.date,
+                                            widget.date!,
                                             style: TextStyle(
                                                 fontSize: 6.5.sp,
                                                 color: Constants.bgColor,
@@ -273,7 +273,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                                 child: Container(
                                   width: 88.0.w,
-                                  child: Text(widget.description,
+                                  child: Text(widget.description!,
                                     style: TextStyle(
                                       fontSize: 9.0.sp,
                                       color: Constants.bpOnBoardSubtitleStyle,
@@ -288,7 +288,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                 height: 1.0.h,
                               ),
                               // Container for image or video
-                              widget.imageListMap[widget.index].length == 0
+                              widget.imageListMap![widget.index!].length == 0
                                   ? Container()
                                   : Container(
                                       height: 25.0.h,
@@ -298,12 +298,12 @@ class _CommentScreenState extends State<CommentScreen> {
                                         physics: BouncingScrollPhysics(),
                                         scrollDirection: Axis.horizontal,
                                         itemCount: widget
-                                            .imageListMap[widget.index].length,
+                                            .imageListMap![widget.index!].length,
                                         itemBuilder: (context, imageIndex) {
                                           return Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Image.network(
-                                              widget.imageListMap[widget.index]
+                                              widget.imageListMap![widget.index!]
                                                   [imageIndex]['file'],
                                               height: 100,
                                               width: 250,
@@ -330,13 +330,13 @@ class _CommentScreenState extends State<CommentScreen> {
                                     GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          widget.isLiked = !widget.isLiked;
+                                          widget.isLiked = !widget.isLiked!;
                                         });
-                                        like.likePostApi(widget.postId, authToken);
+                                        like.likePostApi(widget.postId, authToken!);
                                         setState(() {
                                           widget.isLiked == true
-                                              ? widget.like++
-                                              : widget.like--;
+                                              ? widget.like! + 1
+                                              : widget.like! + 1;
                                         });
                                       },
                                       child: Row(
@@ -344,10 +344,10 @@ class _CommentScreenState extends State<CommentScreen> {
                                             MainAxisAlignment.start,
                                         children: [
                                          ImageIcon(
-                                              widget.isLiked
+                                              widget.isLiked!
                                                   ? AssetImage('assets/icons/likeNew.png')
                                                   : AssetImage('assets/icons/likeThumb.png'),
-                                              color: widget.isLiked
+                                              color: widget.isLiked!
                                                   ? Constants.selectedIcon
                                                   : Constants.bpOnBoardSubtitleStyle,
                                               size: 30.0,
@@ -399,7 +399,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                     GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          widget.isSaved = !widget.isSaved;
+                                          widget.isSaved = !widget.isSaved!;
                                         });
                                         savePostApi(widget.postId);
                                       },
@@ -408,10 +408,10 @@ class _CommentScreenState extends State<CommentScreen> {
                                             MainAxisAlignment.start,
                                         children: [
                                           ImageIcon(
-                                              widget.isSaved
+                                              widget.isSaved!
                                                   ? AssetImage('assets/icons/saveGreen.png')
                                                   : AssetImage('assets/icons/saveNew.png'),
-                                              color: widget.isSaved
+                                              color: widget.isSaved!
                                                   ? Constants.selectedIcon
                                                   : Constants.bpOnBoardSubtitleStyle,
                                               size: 25.0,
@@ -540,7 +540,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                           borderRadius:
                                               BorderRadius.circular(50),
                                           child: Image.network(
-                                            profileImages[index],
+                                            profileImages[index]!,
                                             height: 4.5.h,
                                             width: 7.5.w,
                                             fit: BoxFit.cover,
@@ -577,7 +577,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                       CrossAxisAlignment.start,
                                                   children: <Widget>[
                                                     Text(
-                                                      name[index],
+                                                      name[index]!,
                                                       style: TextStyle(
                                                           fontFamily:
                                                               'Montserrat',
@@ -588,7 +588,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                               .bgColor),
                                                     ),
                                                     Text(
-                                                      date[index],
+                                                      date[index]!,
                                                       style: TextStyle(
                                                           fontFamily:
                                                               'Montserrat',
@@ -622,13 +622,13 @@ class _CommentScreenState extends State<CommentScreen> {
                                                           size: 20.0,
                                                         ),
                                                         onSelected:
-                                                            (value) async {
+                                                            (dynamic value) async {
                                                           if (value == 1) {
                                                             //Edit Comment API
                                                             setState(() {
                                                               isEdit = true;
                                                               idForEdit = commentId[index];
-                                                              commentController.text = comments[index];
+                                                              commentController.text = comments[index]!;
                                                               focusNode.requestFocus();
                                                             });
                                                           } else {
@@ -692,7 +692,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                     //color: Colors.grey,
                                                     width: 77.0.w,
                                                     child: Text(
-                                                      comments[index],
+                                                      comments[index]!,
                                                       style: TextStyle(
                                                           fontFamily:
                                                               'Montserrat',
@@ -764,7 +764,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                         child: ClipRRect(
                                           borderRadius: BorderRadius.circular(50),
                                           child: Image.network(
-                                            imageUrl,
+                                            imageUrl!,
                                             width: 3.0.w,
                                             height: 1.0.h,
                                             fit: BoxFit.cover,
@@ -852,7 +852,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                         child: ClipRRect(
                                           borderRadius: BorderRadius.circular(50),
                                           child: Image.network(
-                                            imageUrl,
+                                            imageUrl!,
                                             width: 3.0.w,
                                             height: 1.0.h,
                                             fit: BoxFit.cover,
@@ -867,7 +867,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                             await comment.addCommentApi(
                                                 widget.postId,
                                                 commentController.text,
-                                                authToken);
+                                                authToken!);
                                             setState(() {
                                               focusNode.unfocus();
                                               commentController.text = '';
@@ -920,23 +920,23 @@ class _CommentScreenState extends State<CommentScreen> {
           .get('${Config.getCommentListUrl}${widget.postId}?page=$page');
       //commentList = GetCommentList.fromJson(response.data);
       commentMap = response.data;
-      commentMapData = commentMap['data'];
+      commentMapData = commentMap!['data'];
 
       if (response.statusCode == 200) {
-        if (commentMap['status'] == true) {
+        if (commentMap!['status'] == true) {
           setState(() {
             isLoading = false;
           });
 
-          if (commentMapData.length > 0) {
+          if (commentMapData!.length > 0) {
             print(commentMap);
-            for (int i = 0; i < commentMapData.length; i++) {
-              commentId.add(commentMapData[i]['comment_id']);
-              commentUserId.add(commentMapData[i]['comment_user_id']);
-              profileImages.add(commentMapData[i]['profile_image']);
-              name.add(commentMapData[i]['name']);
-              date.add(commentMapData[i]['date']);
-              comments.add(commentMapData[i]['comment']);
+            for (int i = 0; i < commentMapData!.length; i++) {
+              commentId.add(commentMapData![i]['comment_id']);
+              commentUserId.add(commentMapData![i]['comment_user_id']);
+              profileImages.add(commentMapData![i]['profile_image']);
+              name.add(commentMapData![i]['name']);
+              date.add(commentMapData![i]['date']);
+              comments.add(commentMapData![i]['comment']);
             }
             print(name);
             isLoading = false;
@@ -949,7 +949,7 @@ class _CommentScreenState extends State<CommentScreen> {
           }
         } else {
           Fluttertoast.showToast(
-              msg: commentMap['message'],
+              msg: commentMap!['message'],
               backgroundColor: Constants.bgColor,
               gravity: ToastGravity.BOTTOM,
               fontSize: 10.0.sp,
@@ -958,7 +958,7 @@ class _CommentScreenState extends State<CommentScreen> {
         }
       } else {
         print('${response.statusCode} : ${response.data.toString()}');
-        throw response.statusCode;
+        throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       print(e.response);
@@ -968,7 +968,7 @@ class _CommentScreenState extends State<CommentScreen> {
   }
 
 //Delete Comment API
-  Future<void> deleteCommentApi(int commentId) async {
+  Future<void> deleteCommentApi(int? commentId) async {
     //var delResult = PostDelete();
 
     try {
@@ -977,16 +977,16 @@ class _CommentScreenState extends State<CommentScreen> {
       FormData formData = FormData.fromMap({'comment_id': commentId});
       var response = await dio.post(Config.deleteCommentUrl,
           data: formData,
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
         delMap = response.data;
 
-        if (delMap['status'] == true) {
+        if (delMap!['status'] == true) {
           print('true');
           print(delMap);
           Fluttertoast.showToast(
-              msg: delMap['message'],
+              msg: delMap!['message'],
               backgroundColor: Constants.bgColor,
               gravity: ToastGravity.BOTTOM,
               fontSize: 10.0.sp,
@@ -994,9 +994,9 @@ class _CommentScreenState extends State<CommentScreen> {
               textColor: Colors.white);
         } else {
           print('false');
-          if (delMap['message'] == null) {
+          if (delMap!['message'] == null) {
             Fluttertoast.showToast(
-                msg: delMap['error_msg'],
+                msg: delMap!['error_msg'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,
@@ -1004,7 +1004,7 @@ class _CommentScreenState extends State<CommentScreen> {
                 textColor: Colors.white);
           } else {
             Fluttertoast.showToast(
-                msg: delMap['message'],
+                msg: delMap!['message'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,
@@ -1024,7 +1024,7 @@ class _CommentScreenState extends State<CommentScreen> {
   }
 
   //Edit Comment API
-  Future<void> editCommentApi(int commentId) async {
+  Future<void> editCommentApi(int? commentId) async {
     //var delResult = PostDelete();
 
     try {
@@ -1033,18 +1033,18 @@ class _CommentScreenState extends State<CommentScreen> {
       FormData formData = FormData.fromMap({'comment_id': commentId, 'comment': commentController.text});
       var response = await dio.post(Config.editCommentUrl,
           data: formData,
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
         editMap = response.data;
 
-        if (editMap['status'] == true) {
+        if (editMap!['status'] == true) {
           print('true');
           print(editMap);
           isEdit = false;
           setState((){});
           Fluttertoast.showToast(
-              msg: editMap['message'],
+              msg: editMap!['message'],
               backgroundColor: Constants.bgColor,
               gravity: ToastGravity.BOTTOM,
               fontSize: 10.0.sp,
@@ -1052,9 +1052,9 @@ class _CommentScreenState extends State<CommentScreen> {
               textColor: Colors.white);
         } else {
           print('false');
-          if (editMap['message'] == null) {
+          if (editMap!['message'] == null) {
             Fluttertoast.showToast(
-                msg: editMap['error_msg'],
+                msg: editMap!['error_msg'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,
@@ -1062,7 +1062,7 @@ class _CommentScreenState extends State<CommentScreen> {
                 textColor: Colors.white);
           } else {
             Fluttertoast.showToast(
-                msg: editMap['message'],
+                msg: editMap!['message'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,
@@ -1081,7 +1081,7 @@ class _CommentScreenState extends State<CommentScreen> {
     }
   }
 
-  Future<void> savePostApi(int postID) async {
+  Future<void> savePostApi(int? postID) async {
     //var delResult = PostDelete();
 
     try {
@@ -1090,7 +1090,7 @@ class _CommentScreenState extends State<CommentScreen> {
       FormData formData = FormData.fromMap({'post_id': postID});
       var response = await dio.post(Config.savePostUrl,
           data: formData,
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
         //delResult = postDeleteFromJson(response.data);
@@ -1101,11 +1101,11 @@ class _CommentScreenState extends State<CommentScreen> {
         // setState(() {
         //   isLoading = false;
         // });
-        if (saveMap['status'] == true) {
+        if (saveMap!['status'] == true) {
           print('true');
           //getEducatorPostApi(page);
           Fluttertoast.showToast(
-              msg: saveMap['message'],
+              msg: saveMap!['message'],
               backgroundColor: Constants.bgColor,
               gravity: ToastGravity.BOTTOM,
               fontSize: 10.0.sp,
@@ -1113,9 +1113,9 @@ class _CommentScreenState extends State<CommentScreen> {
               textColor: Colors.white);
         } else {
           print('false');
-          if (saveMap['message'] == null) {
+          if (saveMap!['message'] == null) {
             Fluttertoast.showToast(
-                msg: saveMap['error_msg'],
+                msg: saveMap!['error_msg'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,
@@ -1123,7 +1123,7 @@ class _CommentScreenState extends State<CommentScreen> {
                 textColor: Colors.white);
           } else {
             Fluttertoast.showToast(
-                msg: saveMap['message'],
+                msg: saveMap!['message'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,

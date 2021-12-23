@@ -18,11 +18,11 @@ class EnrollCourse {
         this.metaParams,
     });
 
-    bool status;
+    bool? status;
     dynamic errorCode;
     dynamic errorMsg;
-    String message;
-    Data data;
+    String? message;
+    Data? data;
     dynamic metaParams;
 
     factory EnrollCourse.fromJson(Map<String, dynamic> json) => EnrollCourse(
@@ -41,7 +41,7 @@ class EnrollCourse {
         "error_code": errorCode,
         "error_msg": errorMsg,
         "message": message,
-        "data": data.toJson(),
+        "data": data!.toJson(),
         "meta_params": metaParams,
     };
 }
@@ -52,8 +52,8 @@ class Data {
         this.courseId,
     });
 
-    int status;
-    String courseId;
+    int? status;
+    String? courseId;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         status: json["status"],

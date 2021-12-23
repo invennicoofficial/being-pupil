@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class EducatorStudyBuddyScreen extends StatefulWidget {
-  EducatorStudyBuddyScreen({Key key}) : super(key: key);
+  EducatorStudyBuddyScreen({Key? key}) : super(key: key);
 
   @override
   _EducatorStudyBuddyScreenState createState() =>
@@ -20,7 +20,7 @@ class EducatorStudyBuddyScreen extends StatefulWidget {
 class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
 //with SingleTickerProviderStateMixin
 {
-  String registerAs;
+  String? registerAs;
   //TabController _tabController;
   //int selectedIndex = 0;
   String searchIn = 'C';

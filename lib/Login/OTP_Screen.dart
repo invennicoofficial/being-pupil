@@ -20,9 +20,9 @@ import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 
 class OtpScreen extends StatefulWidget {
-  String mobileNumber;
+  String? mobileNumber;
   OtpScreen({
-    Key key,
+    Key? key,
     this.mobileNumber,
   }) : super(key: key);
 
@@ -32,18 +32,18 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   TextEditingController otpPinController = TextEditingController();
-  StreamController<ErrorAnimationType> errorController;
+  StreamController<ErrorAnimationType>? errorController;
   final storage = new FlutterSecureStorage();
-  String newMobNumber;
+  String? newMobNumber;
 
   bool hasError = false;
   String currentText = "";
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
-  String registerAs;
-  String role;
-  int userId;
-  String name, mobileNumber;
+  String? registerAs;
+  String? role;
+  int? userId;
+  String? name, mobileNumber;
 
   void initState() {
     // TODO: implement initState
@@ -63,7 +63,7 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   void dispose() {
     // TODO: implement dispose
-    errorController.close();
+    errorController!.close();
     super.dispose();
   }
 
@@ -79,8 +79,8 @@ class _OtpScreenState extends State<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    for(int i = 0; i < widget.mobileNumber.length - 3; i++){
-      newMobNumber = replaceCharAt(newMobNumber, i, '*');
+    for(int i = 0; i < widget.mobileNumber!.length - 3; i++){
+      newMobNumber = replaceCharAt(newMobNumber!, i, '*');
     }
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
@@ -278,7 +278,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           onTap: () {
                             print('Verify!!!');
                             if (currentText.length != 4) {
-                              errorController.add(ErrorAnimationType
+                              errorController!.add(ErrorAnimationType
                                   .shake); // Triggering error shake animation
                               setState(() {
                                 hasError = true;
@@ -348,7 +348,7 @@ class _OtpScreenState extends State<OtpScreen> {
   }
 
   //OTP verification API
-  Future<OtpResponse> otpVerification(int userId, String otp) async {
+  Future<OtpResponse> otpVerification(int? userId, String otp) async {
     displayProgressDialog(context);
      SharedPreferences preferences = await SharedPreferences.getInstance();
     var result = OtpResponse();
@@ -362,18 +362,18 @@ class _OtpScreenState extends State<OtpScreen> {
         result = OtpResponse.fromJson(response.data);
         if (result.status == true) {
           //print('TOKEN ::' + result.data.token);
-          saveToken(result.data.token);
-          role = result.data.userObject.role;
-          name = result.data.userObject.name;
-          mobileNumber = result.data.userObject.mobileNumber;
-          preferences.setString('RegisterAs', role);
-          print('ROLE ::' + preferences.getString('RegisterAs'));
+          saveToken(result.data!.token!);
+          role = result.data!.userObject!.role;
+          name = result.data!.userObject!.name;
+          mobileNumber = result.data!.userObject!.mobileNumber;
+          preferences.setString('RegisterAs', role!);
+          print('ROLE ::' + preferences.getString('RegisterAs')!);
           //print('ROLE ::' + result.data.userObject.location.toString());
          
           //print('LOCATION ::' + result.data.userObject.location.addressLine2);
          // print('EDUCATION ::' + result.data.userObject.educationalDetail.qualification);
-          print('MOBILE ::' + mobileNumber);
-          if(result.data.userObject.isNew == "true") {
+          print('MOBILE ::' + mobileNumber!);
+          if(result.data!.userObject!.isNew == "true") {
             closeProgressDialog(context);
             role == 'L'
                 ? Navigator.of(context).pushAndRemoveUntil(
@@ -385,28 +385,28 @@ class _OtpScreenState extends State<OtpScreen> {
                   mobileNumber: mobileNumber,
                 )));
           } else {
-              preferences.setString("name", result.data.userObject.name);
-              preferences.setString("mobileNumber", result.data.userObject.mobileNumber);
-              preferences.setString("gender", result.data.userObject.gender);
-              preferences.setString("email", result.data.userObject.email);
+              preferences.setString("name", result.data!.userObject!.name!);
+              preferences.setString("mobileNumber", result.data!.userObject!.mobileNumber!);
+              preferences.setString("gender", result.data!.userObject!.gender!);
+              preferences.setString("email", result.data!.userObject!.email!);
               //result.data.userObject.role == 'E' ? 
-              preferences.setString("imageUrl", result.data.userObject.imageUrl);
+              preferences.setString("imageUrl", result.data!.userObject!.imageUrl!);
               // : preferences.setString("imageUrl", '');
-              result.data.userObject.role == 'E' ? preferences.setString("qualification", result.data.userObject.educationalDetail.qualification) : preferences.setString("qualification", '');
-              result.data.userObject.role == 'E' ? preferences.setString("schoolName", result.data.userObject.educationalDetail.schoolName) : preferences.setString("schoolName",'');
-              result.data.userObject.role == 'E' ? preferences.setString("address1", result.data.userObject.location.addressLine2): preferences.setString("address1", '');
-              result.data.userObject.role == 'E' ? preferences.setString("address2", result.data.userObject.location.city): preferences.setString("address2", '');
-              result.data.userObject.role == 'E' ? preferences.setString("facebookUrl", result.data.userObject.fbUrl) : preferences.setString("facebookUrl",'');
-              result.data.userObject.role == 'E' ? preferences.setString("instaUrl", result.data.userObject.instaUrl) : preferences.setString("instaUrl",'');
-              result.data.userObject.role == 'E' ? preferences.setString("linkedInUrl", result.data.userObject.liUrl) : preferences.setString("linkedInUrl", '');
-              result.data.userObject.role == 'E' ? preferences.setString("otherUrl", result.data.userObject.otherUrl) : preferences.setString("otherUrl", '');
-              result.data.userObject.role == 'E' ? preferences.setString("isNew", result.data.userObject.isNew) : preferences.setString("isNew", '');
+              result.data!.userObject!.role == 'E' ? preferences.setString("qualification", result.data!.userObject!.educationalDetail!.qualification!) : preferences.setString("qualification", '');
+              result.data!.userObject!.role == 'E' ? preferences.setString("schoolName", result.data!.userObject!.educationalDetail!.schoolName!) : preferences.setString("schoolName",'');
+              result.data!.userObject!.role == 'E' ? preferences.setString("address1", result.data!.userObject!.location!.addressLine2!): preferences.setString("address1", '');
+              result.data!.userObject!.role == 'E' ? preferences.setString("address2", result.data!.userObject!.location!.city!): preferences.setString("address2", '');
+              result.data!.userObject!.role == 'E' ? preferences.setString("facebookUrl", result.data!.userObject!.fbUrl!) : preferences.setString("facebookUrl",'');
+              result.data!.userObject!.role == 'E' ? preferences.setString("instaUrl", result.data!.userObject!.instaUrl!) : preferences.setString("instaUrl",'');
+              result.data!.userObject!.role == 'E' ? preferences.setString("linkedInUrl", result.data!.userObject!.liUrl!) : preferences.setString("linkedInUrl", '');
+              result.data!.userObject!.role == 'E' ? preferences.setString("otherUrl", result.data!.userObject!.otherUrl!) : preferences.setString("otherUrl", '');
+              result.data!.userObject!.role == 'E' ? preferences.setString("isNew", result.data!.userObject!.isNew!) : preferences.setString("isNew", '');
               preferences.setBool('isLoggedIn', true);
 
-          print('Gender::: ${result.data.userObject.gender}');
-          print('IMAGE:::' + result.data.userObject.imageUrl);
+          print('Gender::: ${result.data!.userObject!.gender}');
+          print('IMAGE:::' + result.data!.userObject!.imageUrl!);
 
-              signIn(CubeUser(fullName: result.data.userObject.name, login: result.data.userObject.email, password: '12345678'))
+              signIn(CubeUser(fullName: result.data!.userObject!.name, login: result.data!.userObject!.email, password: '12345678'))
                   .then((cubeUser) async {
                 closeProgressDialog(context);
                 SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
@@ -419,7 +419,7 @@ class _OtpScreenState extends State<OtpScreen> {
           }
 
           Fluttertoast.showToast(
-            msg: result.message,
+            msg: result.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -429,7 +429,7 @@ class _OtpScreenState extends State<OtpScreen> {
           );
         } else {
           Fluttertoast.showToast(
-            msg: result.message,
+            msg: result.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -447,7 +447,7 @@ class _OtpScreenState extends State<OtpScreen> {
       if (e.response != null) {
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }

@@ -5,10 +5,10 @@ import 'package:sizer/sizer.dart';
 import 'package:being_pupil/Constants/Const.dart';
 
 class ViewReviewScreen extends StatefulWidget {
-  String image, headline, description;
-  Review review;
-  double rating;
-  ViewReviewScreen({Key key, this.image, this.headline, this.description, this.review, this.rating}) : super(key: key);
+  String? image, headline, description;
+  Review? review;
+  double? rating;
+  ViewReviewScreen({Key? key, this.image, this.headline, this.description, this.review, this.rating}) : super(key: key);
 
   @override
   _ViewReviewScreenState createState() => _ViewReviewScreenState();
@@ -64,7 +64,7 @@ class _ViewReviewScreenState extends State<ViewReviewScreen> {
                   width: 100.0.w,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(widget.image),
+                      image: NetworkImage(widget.image!),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(8.0),
@@ -88,17 +88,17 @@ class _ViewReviewScreenState extends State<ViewReviewScreen> {
               Padding(
                   padding: EdgeInsets.only(top: 0.5.h),
                   child: RatingBar(
-                    initialRating: widget.rating,
+                    initialRating: widget.rating!,
                     direction: Axis.horizontal,
                     allowHalfRating: false,
                     itemCount: 5,
                     ratingWidget: RatingWidget(
                       full: Image.asset('assets/icons/greenStar.png'),
-                      half: null,
+                      half: Container(),
                       empty: Image.asset('assets/icons/star.png'),
                     ),
                     itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                    onRatingUpdate: null,
+                    onRatingUpdate: (double){},
                   )),
               Padding(
                 padding: EdgeInsets.only(top: 0.5.h),
@@ -126,7 +126,7 @@ class _ViewReviewScreenState extends State<ViewReviewScreen> {
                 padding: EdgeInsets.only(top: 2.0.h),
                 child: Center(
                   child: Text(
-                    widget.headline == null ? '' : widget.headline,
+                    widget.headline == null ? '' : widget.headline!,
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 12.0.sp,
@@ -140,7 +140,7 @@ class _ViewReviewScreenState extends State<ViewReviewScreen> {
                 width: 100.0.w,
                 padding: EdgeInsets.only(top: 0.5.h),
                 child: Text(
-                   widget.description == null ? '' : widget.description,
+                   widget.description == null ? '' : widget.description!,
                   style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 10.0.sp,

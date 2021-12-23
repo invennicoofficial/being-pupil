@@ -15,7 +15,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class BookingReviewScreen extends StatefulWidget {
-  final String name,
+  final String? name,
       mobileNumber,
       email,
       checkIn,
@@ -24,14 +24,14 @@ class BookingReviewScreen extends StatefulWidget {
       meal,
       checkInDateFormat,
       checkOutDateFormat;
-  List<dynamic> propertyDetails;
-  int index;
-  final double roomCharge, mealCharge, taxCharge, total;
-  final int roomId, stayMonths;
-  List<int> mealId = [];
+  List<dynamic>? propertyDetails;
+  int? index;
+  final double? roomCharge, mealCharge, taxCharge, total;
+  final int? roomId, stayMonths;
+  List<int?>? mealId = [];
 
   BookingReviewScreen(
-      {Key key,
+      {Key? key,
       this.name,
       this.mobileNumber,
       this.checkIn,
@@ -57,7 +57,7 @@ class BookingReviewScreen extends StatefulWidget {
 }
 
 class _BookingReviewScreenState extends State<BookingReviewScreen> {
-  String authToken;
+  String? authToken;
   var _razorpay = Razorpay();
 
   @override
@@ -111,7 +111,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                   width: 100.0.w,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(widget.propertyDetails[widget.index]['featured_image'][0]
+                      image: NetworkImage(widget.propertyDetails![widget.index!]['featured_image'][0]
                         //widget.propertyDetails.data[widget.index].featuredImage[0]
                         ),
                       fit: BoxFit.cover,
@@ -125,7 +125,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                 child: Row(
                   children: [
                     Text(
-                      widget.propertyDetails[widget.index]['name'],
+                      widget.propertyDetails![widget.index!]['name'],
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 12.0.sp,
@@ -168,7 +168,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                                 color: Constants.bgColor),
                           ),
                           Text(
-                            widget.name,
+                            widget.name!,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -192,7 +192,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                                 color: Constants.bgColor),
                           ),
                           Text(
-                            widget.mobileNumber,
+                            widget.mobileNumber!,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -216,7 +216,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                                 color: Constants.bgColor),
                           ),
                           Text(
-                            widget.checkIn,
+                            widget.checkIn!,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -240,7 +240,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                                 color: Constants.bgColor),
                           ),
                           Text(
-                            widget.checkOut,
+                            widget.checkOut!,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -264,7 +264,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                                 color: Constants.bgColor),
                           ),
                           Text(
-                            widget.roomType,
+                            widget.roomType!,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -288,7 +288,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                                 color: Constants.bgColor),
                           ),
                           Text(
-                            widget.meal.substring(1, widget.meal.length - 1),
+                            widget.meal!.substring(1, widget.meal!.length - 1),
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -374,7 +374,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                                     fontWeight: FontWeight.w400,
                                     color: Constants.bgColor)),
                             TextSpan(
-                                text: '(${widget.meal.substring(1, widget.meal.length - 1)})',
+                                text: '(${widget.meal!.substring(1, widget.meal!.length - 1)})',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 8.0.sp,
@@ -510,13 +510,13 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
   }
 
   Future<void> createRazorPayOrderId() async {
-    Map<String, dynamic> map = {};
+    Map<String, dynamic>? map = {};
     var headers = {
       'Authorization': 'Basic cnpwX3Rlc3RfTXREclBQTFdiVWRzWTc6TlZiWU5VNHRQMVdrQlU4SGlpWlljU21i'
     };
     var request = http.MultipartRequest('POST', Uri.parse('https://api.razorpay.com/v1/orders'));
     request.fields.addAll({
-      'amount': (widget.total * 100).toInt().toString(),
+      'amount': (widget.total! * 100).toInt().toString(),
       'currency': 'INR'
     });
 
@@ -527,14 +527,14 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
     if (response.statusCode == 200) {
       String jsonResponse = await response.stream.bytesToString();
       map = json.decode(jsonResponse);
-      print(map['id']);
+      print(map!['id']);
       //TODO: Change Razorpay Keys
       var options = {
         'key': 'rzp_test_MtDrPPLWbUdsY7',
-        'amount': (widget.total * 100),
+        'amount': (widget.total! * 100),
         'name': widget.name,
         'order_id': map['id'],
-        'description': widget.propertyDetails[widget.index]['name'],//widget.propertyDetails.data[widget.index].name,
+        'description': widget.propertyDetails![widget.index!]['name'],//widget.propertyDetails.data[widget.index].name,
         'prefill': {
           'contact': widget.mobileNumber,
           'email': widget.email
@@ -563,7 +563,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
     try {
       var dio = Dio();
       FormData formData = FormData.fromMap({
-        'property_id': widget.propertyDetails[widget.index]['property_id'],//widget.propertyDetails.data[widget.index].propertyId,
+        'property_id': widget.propertyDetails![widget.index!]['property_id'],//widget.propertyDetails.data[widget.index].propertyId,
         'room_id': widget.roomId,
         'guest_name': widget.name,
         'mobile_number': widget.mobileNumber,
@@ -577,10 +577,10 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
         'signature': signature
       });
       
-        for(int i = 0; i < widget.mealId.length; i++){
-          print(widget.mealId[i]);
+        for(int i = 0; i < widget.mealId!.length; i++){
+          print(widget.mealId![i]);
           formData.fields.addAll([
-            MapEntry('meal_id[$i]', widget.mealId[i].toString())
+            MapEntry('meal_id[$i]', widget.mealId![i].toString())
           ]);
         }
     
@@ -613,9 +613,9 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -625,7 +625,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }

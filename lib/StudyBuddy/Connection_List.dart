@@ -20,15 +20,15 @@ import 'Learner_ProfileView_Screen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class ConnectionList extends StatefulWidget {
-  ConnectionList({Key key}) : super(key: key);
+  ConnectionList({Key? key}) : super(key: key);
 
   @override
   _ConnectionListState createState() => _ConnectionListState();
 }
 
 class _ConnectionListState extends State<ConnectionList> {
-  String registerAs, authToken;
-  int userId;
+  String? registerAs, authToken;
+  int? userId;
   ScrollController _scrollController = ScrollController();
   int page = 1;
   int k = 0;
@@ -36,13 +36,13 @@ class _ConnectionListState extends State<ConnectionList> {
   bool isLoading = true;
   Connection connection = Connection();
 
-  List<int> _userId = [];
-  List<String> _profileImage = [];
-  List<String> _name = [];
-  List<String> _email = [];
-  List<String> _lastDegree = [];
-  List<String> _schoolName = [];
-  List<String> _status = [];
+  List<int?> _userId = [];
+  List<String?> _profileImage = [];
+  List<String?> _name = [];
+  List<String?> _email = [];
+  List<String?> _lastDegree = [];
+  List<String?> _schoolName = [];
+  List<String?> _status = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -71,7 +71,7 @@ class _ConnectionListState extends State<ConnectionList> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if (page > 1) {
-          if (connection.data.length > 0) {
+          if (connection.data!.length > 0) {
             page++;
             getConnectionApi(page);
             print(_name);
@@ -176,7 +176,7 @@ class _ConnectionListState extends State<ConnectionList> {
                                               ),
                                               clipBehavior: Clip.hardEdge,
                                             ),
-                                        imageUrl: _profileImage[index],
+                                        imageUrl: _profileImage[index]!,
                                         width: 40.0,
                                         height: 40.0,
                                         fit: BoxFit.fitWidth,
@@ -191,7 +191,7 @@ class _ConnectionListState extends State<ConnectionList> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      _name[index],
+                                      _name[index]!,
                                       //connection.data[index].name,
                                       style: TextStyle(
                                           fontSize: 9.0.sp,
@@ -253,13 +253,13 @@ class _ConnectionListState extends State<ConnectionList> {
                                   onTap: () async {
                                     displayProgressDialog(context);
                                     SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
-                                    CubeUser user = sharedPrefs.getUser();
+                                    CubeUser? user = sharedPrefs.getUser();
                                     print(_email[index]);
-                                    getUserByEmail(_email[index])
+                                    getUserByEmail(_email[index]!)
                                         .then((cubeUser) {
                                           CubeDialog newDialog = CubeDialog(
                                         CubeDialogType.PRIVATE,
-                                        occupantsIds: [cubeUser.id]);
+                                        occupantsIds: [cubeUser!.id!]);
                                     createDialog(newDialog)
                                         .then((createdDialog) {
                                       closeProgressDialog(context);
@@ -312,18 +312,18 @@ class _ConnectionListState extends State<ConnectionList> {
   Future<void> getUserProfile(id) async {
     // displayProgressDialog(context);
 
-    Map<String, dynamic> map = {};
+    Map<String, dynamic>? map = {};
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        print(map['data']);
+        print(map!['data']);
         //print(mapData);
         if (map['data'] != null || map['data'] != []) {
           setState(() {});
@@ -351,7 +351,7 @@ class _ConnectionListState extends State<ConnectionList> {
         });
       } else {
         print('${response.statusCode} : ${response.data.toString()}');
-        throw response.statusCode;
+        throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
@@ -390,15 +390,15 @@ class _ConnectionListState extends State<ConnectionList> {
         //result = EducatorPost.fromJson(response.data);
         connection = Connection.fromJson(response.data);
         print(response.data);
-        if (connection.data.length > 0) {
-          for (int i = 0; i < connection.data.length; i++) {
-            _userId.add(connection.data[i].userId);
-            _profileImage.add(connection.data[i].profileImage);
-            _name.add(connection.data[i].name);
-            _email.add(connection.data[i].email);
-            _lastDegree.add(connection.data[i].lastDegree);
-            _schoolName.add(connection.data[i].schoolName);
-            _status.add(connection.data[i].status);
+        if (connection.data!.length > 0) {
+          for (int i = 0; i < connection.data!.length; i++) {
+            _userId.add(connection.data![i].userId);
+            _profileImage.add(connection.data![i].profileImage);
+            _name.add(connection.data![i].name);
+            _email.add(connection.data![i].email);
+            _lastDegree.add(connection.data![i].lastDegree);
+            _schoolName.add(connection.data![i].schoolName);
+            _status.add(connection.data![i].status);
             // isSaved.add(true);
             // for (int j = 0; j < map['data'].length; j++) {
             //   imageListMap.putIfAbsent(k, () => map['data'][i]['post_media']);
@@ -423,7 +423,7 @@ class _ConnectionListState extends State<ConnectionList> {
         });
       } else {
         print('${response.statusCode} : ${response.data.toString()}');
-        throw response.statusCode;
+        throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);

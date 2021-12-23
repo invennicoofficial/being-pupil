@@ -6,7 +6,7 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:sizer/sizer.dart';
 
 class MyBookingScreen extends StatefulWidget {
-  MyBookingScreen({Key key}) : super(key: key);
+  MyBookingScreen({Key? key}) : super(key: key);
 
   @override
   _MyBookingScreenState createState() => _MyBookingScreenState();

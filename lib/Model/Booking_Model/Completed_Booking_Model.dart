@@ -18,11 +18,11 @@ class CompletedBooking {
         this.metaParams,
     });
 
-    bool status;
+    bool? status;
     dynamic errorCode;
     dynamic errorMsg;
-    String message;
-    List<Data> data;
+    String? message;
+    List<Data>? data;
     dynamic metaParams;
 
     factory CompletedBooking.fromJson(Map<String, dynamic> json) => CompletedBooking(
@@ -39,7 +39,7 @@ class CompletedBooking {
         "error_code": errorCode,
         "error_msg": errorMsg,
         "message": message,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
         "meta_params": metaParams,
     };
 }
@@ -64,22 +64,22 @@ class Data {
         this.totalAmount,
     });
 
-    String propertyId;
-    String propertyImage;
-    String name;
-    String bookingId;
-    String roomType;
-    bool isReviewed;
-    Review review;
-    String checkInDate;
-    String checkOutDate;
-    String guestName;
-    String mobileNumber;
-    List<String> meal;
-    int roomAmount;
-    double mealAmount;
-    double taxAmount;
-    int totalAmount;
+    String? propertyId;
+    String? propertyImage;
+    String? name;
+    String? bookingId;
+    String? roomType;
+    bool? isReviewed;
+    Review? review;
+    String? checkInDate;
+    String? checkOutDate;
+    String? guestName;
+    String? mobileNumber;
+    List<String>? meal;
+    int? roomAmount;
+    double? mealAmount;
+    double? taxAmount;
+    int? totalAmount;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         propertyId: json["property_id"],
@@ -107,12 +107,12 @@ class Data {
         "booking_id": bookingId,
         "room_type": roomType,
         "isReviewed": isReviewed,
-        "review": review == null ? null : review.toJson(),
+        "review": review == null ? null : review!.toJson(),
         "checkIn_date": checkInDate,
         "checkOut_date": checkOutDate,
         "guest_name": guestName,
         "mobile_number": mobileNumber,
-        "meal": List<dynamic>.from(meal.map((x) => x)),
+        "meal": List<dynamic>.from(meal!.map((x) => x)),
         "room_amount": roomAmount,
         "meal_amount": mealAmount,
         "tax_amount": taxAmount,
@@ -128,10 +128,10 @@ class Review {
         this.descrieption,
     });
 
-    int reviewId;
-    double rating;
-    String headline;
-    String descrieption;
+    int? reviewId;
+    double? rating;
+    String? headline;
+    String? descrieption;
 
     factory Review.fromJson(Map<String, dynamic> json) => Review(
         reviewId: json["review_id"],

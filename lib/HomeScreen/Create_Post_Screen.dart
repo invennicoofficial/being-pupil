@@ -14,20 +14,21 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class CreatePostScreen extends StatefulWidget {
-  CreatePostScreen({Key key}) : super(key: key);
+  CreatePostScreen({Key? key}) : super(key: key);
 
   @override
   _CreatePostScreenState createState() => _CreatePostScreenState();
 }
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
-  File _image, _camImage;
-  String authToken;
+  XFile? _image, _camImage;
+  String? authToken;
   TextEditingController descriptionController = TextEditingController();
   List<String> filePathList = [];
   List<File> fileList = [];
   List<AssetEntity> assets = <AssetEntity>[];
-  String profilePic, name;
+  String? profilePic, name;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
@@ -50,18 +51,18 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   _imageFromCamera() async {
-    File image = (await ImagePicker.pickImage(
+    XFile? image = (await _picker.pickImage(
         source: ImageSource.camera, imageQuality: 50));
 
     setState(() {
       _camImage = image;
-      fileList.add(new File(_camImage.path));
+      fileList.add(new File(_camImage!.path));
     });
     print('LENGTH::: ${fileList.length}');
   }
 
   _imageFromGallery() async {
-    File image = (await ImagePicker.pickImage(
+    XFile? image = (await _picker.pickImage(
         source: ImageSource.gallery, imageQuality: 50));
 
     setState(() {
@@ -70,7 +71,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   getMultipleImage() async {
-    final List<AssetEntity> result = await AssetPicker.pickAssets(
+    final List<AssetEntity> result = await (AssetPicker.pickAssets(
       context,
       maxAssets: 10,
       pageSize: 320,
@@ -85,21 +86,21 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       sortPathDelegate: CommonSortPathDelegate(),
       routeCurve: Curves.easeIn,
       routeDuration: const Duration(milliseconds: 500),
-    );
+    ) as Future<List<AssetEntity>>);
 
     setState(() {
       // _image = result.length.
     });
     print('ASSETS::: $assets');
     for (int i = 0; i < result.length; i++) {
-      print('$i : ' + result[i].title);
-      filePathList.add(result[i].relativePath + result[i].title);
+      print('$i : ' + result[i].title!);
+      filePathList.add(result[i].relativePath! + result[i].title!);
       fileList.add(
           new File('${result[i].relativePath}' + '/' + '${result[i].title}'));
     }
     print(filePathList);
     print(fileList);
-    print(result[0].relativePath + result[0].title);
+    print(result[0].relativePath! + result[0].title!);
 
     final File file =
         File('${result[0].relativePath}' + '/' + '${result[0].title}');
@@ -234,14 +235,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 leading: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
                   child: Image.network(
-                    profilePic,
+                    profilePic!,
                     width: 40.0,
                     height: 40.0,
                     fit: BoxFit.cover,
                   ),
                 ),
                 title: Text(
-                  name,
+                  name!,
                   style: TextStyle(
                       fontSize: 9.0.sp,
                       color: Constants.bgColor,
@@ -426,7 +427,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           //close after successful post creation
           Navigator.of(context).pop();
           Fluttertoast.showToast(
-            msg: result.message,
+            msg: result.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -437,7 +438,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         } else {
           closeProgressDialog(context);
           Fluttertoast.showToast(
-            msg: result.message == null ? result.errorMsg : result.message,
+            msg: result.message == null ? result.errorMsg : result.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -448,7 +449,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         }
       } else {
         Fluttertoast.showToast(
-          msg: result.message,
+          msg: result.message!,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -463,9 +464,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -475,7 +476,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }

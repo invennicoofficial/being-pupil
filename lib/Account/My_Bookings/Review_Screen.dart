@@ -11,10 +11,10 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class ReviewScreen extends StatefulWidget {
-  String image, bookingId;
-  int propertyId;
-  double rating;
-  ReviewScreen({Key key, this.image, this.propertyId, this.bookingId})
+  String? image, bookingId;
+  int? propertyId;
+  double? rating;
+  ReviewScreen({Key? key, this.image, this.propertyId, this.bookingId})
       : super(key: key);
 
   @override
@@ -25,9 +25,9 @@ class _ReviewScreenState extends State<ReviewScreen> {
   double starRating = 1.0;
   TextEditingController _headLineController = TextEditingController();
   TextEditingController _descriptioController = TextEditingController();
-  Map<String, dynamic> map;
-  List<dynamic> mapData;
-  String authToken;
+  Map<String, dynamic>? map;
+  List<dynamic>? mapData;
+  String? authToken;
 
   @override
   void initState() {
@@ -89,7 +89,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   width: 100.0.w,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(widget.image),
+                      image: NetworkImage(widget.image!),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(8.0),
@@ -119,7 +119,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                     itemCount: 5,
                     ratingWidget: RatingWidget(
                       full: Image.asset('assets/icons/greenStar.png'),
-                      half: null,
+                      half: Container(),
                       empty: Image.asset('assets/icons/star.png'),
                     ),
                     itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
@@ -292,21 +292,21 @@ class _ReviewScreenState extends State<ReviewScreen> {
 
       var response = await dio.post(Config.addReviewUrl,
           data: formData,
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
         map = response.data;
         print(map);
         closeProgressDialog(context);
 
-        if (map['status'] == true && map['data']['isReviewed'] == true) {
+        if (map!['status'] == true && map!['data']['isReviewed'] == true) {
           pushNewScreen(context,
               screen: ReviewDoneScreen(),
               withNavBar: false,
               pageTransitionAnimation: PageTransitionAnimation.cupertino);
         } else {
           Fluttertoast.showToast(
-            msg: map['message'] == null ? map['error_msg'] : map['message'],
+            msg: map!['message'] == null ? map!['error_msg'] : map!['message'],
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -318,7 +318,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
       }else{
         closeProgressDialog(context);
          print('${response.statusCode} : ${response.data.toString()}');
-        throw response.statusCode;
+        throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       print(e.response);
@@ -327,7 +327,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
   }
 
   displayProgressDialog(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).push(new PageRouteBuilder(
           opaque: false,
           pageBuilder: (BuildContext context, _, __) {

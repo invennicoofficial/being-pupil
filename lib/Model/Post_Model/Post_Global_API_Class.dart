@@ -10,9 +10,9 @@ import '../Config.dart';
 
 class SavePostAPI {
 
-  Map<String, dynamic> saveMap;
+  Map<String, dynamic>? saveMap;
    //For save, unsave post API
-  Future<void> savePostApi(int postID, String authToken) async {
+  Future<void> savePostApi(int? postID, String authToken) async {
     //var delResult = PostDelete();
 
     try {
@@ -32,12 +32,12 @@ class SavePostAPI {
         // setState(() {
         //   isLoading = false;
         // });
-        if (saveMap['status'] == true) {
+        if (saveMap!['status'] == true) {
           print('true');
           // map.clear();
           // getSavedPostApi(page);
           Fluttertoast.showToast(
-              msg: saveMap['message'],
+              msg: saveMap!['message'],
               backgroundColor: Constants.bgColor,
               gravity: ToastGravity.BOTTOM,
               fontSize: 10.0.sp,
@@ -45,9 +45,9 @@ class SavePostAPI {
               textColor: Colors.white);
         } else {
           print('false');
-          if (saveMap['message'] == null) {
+          if (saveMap!['message'] == null) {
             Fluttertoast.showToast(
-                msg: saveMap['error_msg'],
+                msg: saveMap!['error_msg'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,
@@ -55,7 +55,7 @@ class SavePostAPI {
                 textColor: Colors.white);
           } else {
             Fluttertoast.showToast(
-                msg: saveMap['message'],
+                msg: saveMap!['message'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,
@@ -76,11 +76,11 @@ class SavePostAPI {
 }
 
 class LikePostAPI{
-   Map<String, dynamic> likeMap;
-   bool isLiked;
+   Map<String, dynamic>? likeMap;
+   bool? isLiked;
    //int likeCounter;
    //For save, unsave post API
-  Future<void> likePostApi(int postID, String authToken) async {
+  Future<void> likePostApi(int? postID, String authToken) async {
     //var delResult = PostDelete();
 
     try {
@@ -100,14 +100,14 @@ class LikePostAPI{
         // setState(() {
         //   isLoading = false;
         // });
-        if (likeMap['status'] == true) {
+        if (likeMap!['status'] == true) {
           print('true');
           print(likeMap);
-          if(likeMap['data']['Status'] == 0){
+          if(likeMap!['data']['Status'] == 0){
                 isLiked = false;
                 //likeCounter = likeCounter + 1;
                 //print('LIKE:::' + likeCounter.toString());
-              }else if(likeMap['data']['Status'] == 1){
+              }else if(likeMap!['data']['Status'] == 1){
                 isLiked = true;
                 // likeCounter = likeCounter - 1;
                 // print('LIKE:::' + likeCounter.toString());
@@ -124,9 +124,9 @@ class LikePostAPI{
               
         } else {
           print('false');
-          if (likeMap['message'] == null) {
+          if (likeMap!['message'] == null) {
             Fluttertoast.showToast(
-                msg: likeMap['error_msg'],
+                msg: likeMap!['error_msg'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,
@@ -134,7 +134,7 @@ class LikePostAPI{
                 textColor: Colors.white);
           } else {
             Fluttertoast.showToast(
-                msg: likeMap['message'],
+                msg: likeMap!['message'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,
@@ -157,11 +157,11 @@ class LikePostAPI{
 
 //API for Add Comment on Post
 class CommentAPI{
-   Map<String, dynamic> commentMap;
+   Map<String, dynamic>? commentMap;
    GetCommentList commentList = GetCommentList();
    bool isLoading = true;
 
-  Future<void> addCommentApi(int postID, String comment, String authToken) async {
+  Future<void> addCommentApi(int? postID, String comment, String authToken) async {
     //var delResult = PostDelete();
 
     try {
@@ -176,13 +176,13 @@ class CommentAPI{
 
         commentMap = response.data;
  
-        if (commentMap['status'] == true) {
+        if (commentMap!['status'] == true) {
           print('true');
           print(commentMap);
          
          
           Fluttertoast.showToast(
-              msg: commentMap['message'],
+              msg: commentMap!['message'],
               backgroundColor: Constants.bgColor,
               gravity: ToastGravity.BOTTOM,
               fontSize: 10.0.sp,
@@ -191,9 +191,9 @@ class CommentAPI{
               
         } else {
           print('false');
-          if (commentMap['message'] == null) {
+          if (commentMap!['message'] == null) {
             Fluttertoast.showToast(
-                msg: commentMap['error_msg'],
+                msg: commentMap!['error_msg'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,
@@ -201,7 +201,7 @@ class CommentAPI{
                 textColor: Colors.white);
           } else {
             Fluttertoast.showToast(
-                msg: commentMap['message'],
+                msg: commentMap!['message'],
                 backgroundColor: Constants.bgColor,
                 gravity: ToastGravity.BOTTOM,
                 fontSize: 10.0.sp,

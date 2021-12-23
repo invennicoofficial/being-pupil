@@ -14,14 +14,14 @@ import 'Learner_ProfileView_Screen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class LearnerList extends StatefulWidget {
-  LearnerList({Key key}) : super(key: key);
+  LearnerList({Key? key}) : super(key: key);
 
   @override
   _LearnerListState createState() => _LearnerListState();
 }
 
 class _LearnerListState extends State<LearnerList> {
-  String registerAs, authToken;
+  String? registerAs, authToken;
   ScrollController _scrollController = ScrollController();
   int page = 1;
   int k = 0;
@@ -30,13 +30,13 @@ class _LearnerListState extends State<LearnerList> {
   LearnerListModel learner = LearnerListModel();
   ConnectionAPI connect = ConnectionAPI();
 
-  List<int> _userId = [];
-  List<String> _profileImage = [];
-  List<String> _name = [];
-  List<String> _lastDegree = [];
-  List<String> _schoolName = [];
-  List<String> _date = [];
-  List<String> _distance = [];
+  List<int?> _userId = [];
+  List<String?> _profileImage = [];
+  List<String?> _name = [];
+  List<String?> _lastDegree = [];
+  List<String?> _schoolName = [];
+  List<String?> _date = [];
+  List<String?> _distance = [];
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -63,7 +63,7 @@ class _LearnerListState extends State<LearnerList> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if (page > 1) {
-          if (learner.data.length > 0) {
+          if (learner.data!.length > 0) {
             page++;
             getLearnerListApi(page);
             print(_name);
@@ -151,7 +151,7 @@ class _LearnerListState extends State<LearnerList> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(50),
                                     child: Image.network(
-                                      _profileImage[index],
+                                      _profileImage[index]!,
                                       width: 40.0,
                                       height: 40.0,
                                       fit: BoxFit.cover,
@@ -166,7 +166,7 @@ class _LearnerListState extends State<LearnerList> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      _name[index],
+                                      _name[index]!,
                                       style: TextStyle(
                                           fontSize: 9.0.sp,
                                           color: Constants.bgColor,
@@ -198,7 +198,7 @@ class _LearnerListState extends State<LearnerList> {
                               child: GestureDetector(
                                 onTap: () async{
                                   print('$index is Connected');
-                                  await connect.connectionApi(_userId[index], authToken);
+                                  await connect.connectionApi(_userId[index], authToken!);
                                   setState(() {
                                     isLoading = true;
                                     page = 1;
@@ -248,7 +248,7 @@ class _LearnerListState extends State<LearnerList> {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.getLearnerListUrl}?page=$page',
-          options: Options(headers: {"Authorization": 'Bearer ' + authToken}));
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       print(response.statusCode);
 
       if (response.statusCode == 200) {
@@ -257,15 +257,15 @@ class _LearnerListState extends State<LearnerList> {
         //result = EducatorPost.fromJson(response.data);
         learner = LearnerListModel.fromJson(response.data);
 
-        if (learner.data.length > 0) {
-          for (int i = 0; i < learner.data.length; i++) {
-            _userId.add(learner.data[i].userId);
-            _profileImage.add(learner.data[i].profileImage);
-            _name.add(learner.data[i].name);
-            _lastDegree.add(learner.data[i].lastDegree);
-            _schoolName.add(learner.data[i].schoolName);
-            _date.add(learner.data[i].date);
-            _distance.add(learner.data[i].distance);
+        if (learner.data!.length > 0) {
+          for (int i = 0; i < learner.data!.length; i++) {
+            _userId.add(learner.data![i].userId);
+            _profileImage.add(learner.data![i].profileImage);
+            _name.add(learner.data![i].name);
+            _lastDegree.add(learner.data![i].lastDegree);
+            _schoolName.add(learner.data![i].schoolName);
+            _date.add(learner.data![i].date);
+            _distance.add(learner.data![i].distance);
           }
 
           print(_name);
@@ -282,7 +282,7 @@ class _LearnerListState extends State<LearnerList> {
         });
       } else {
         print('${response.statusCode} : ${response.data.toString()}');
-        throw response.statusCode;
+        throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);

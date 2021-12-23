@@ -18,11 +18,11 @@ class GetEnrolledCourse {
         this.metaParams,
     });
 
-    bool status;
+    bool? status;
     dynamic errorCode;
     dynamic errorMsg;
-    String message;
-    List<Data> data;
+    String? message;
+    List<Data>? data;
     dynamic metaParams;
 
     factory GetEnrolledCourse.fromJson(Map<String, dynamic> json) => GetEnrolledCourse(
@@ -39,7 +39,7 @@ class GetEnrolledCourse {
         "error_code": errorCode,
         "error_msg": errorMsg,
         "message": message,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
         "meta_params": metaParams,
     };
 }
@@ -55,13 +55,13 @@ class Data {
         this.status,
     });
 
-    int courseId;
-    String courseName;
-    String courseDescription;
-    String startDate;
-    String endDate;
-    List<String> courseLink;
-    int status;
+    int? courseId;
+    String? courseName;
+    String? courseDescription;
+    String? startDate;
+    String? endDate;
+    List<String>? courseLink;
+    int? status;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         courseId: json["course_id"],
@@ -79,7 +79,7 @@ class Data {
         "course_description": courseDescription,
         "start_date": startDate,
         "end_date": endDate,
-        "course_link": List<dynamic>.from(courseLink.map((x) => x)),
+        "course_link": List<dynamic>.from(courseLink!.map((x) => x)),
         "status": status,
     };
 }

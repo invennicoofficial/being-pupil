@@ -25,7 +25,7 @@ import 'package:connectycube_sdk/connectycube_sdk.dart';
 
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -36,17 +36,17 @@ class _LoginScreenState extends State<LoginScreen> {
   final storage = new FlutterSecureStorage();
 
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
-  GoogleSignInAccount gUserData;
-  Map<String, dynamic> fbUserData;
+  GoogleSignInAccount? gUserData;
+  Map<String, dynamic>? fbUserData;
   String registrationType = 'M';
-  String socialName;
-  String socialEmail;
-  String socialPhotoUrl;
-  String socialId;
-  String mobileNumberFromAPi;
-   String registerAs;
-  String role;
-  String name;
+  String? socialName;
+  String? socialEmail;
+  String? socialPhotoUrl;
+  String? socialId;
+  String? mobileNumberFromAPi;
+   String? registerAs;
+  String? role;
+  String? name;
   static const String TAG = "_LoginPageState";
 
   void initState() {
@@ -403,8 +403,8 @@ class _LoginScreenState extends State<LoginScreen> {
         print(response.data);
         closeProgressDialog(context);
         result = Login.fromJson(response.data);
-        saveUserData(result.data.userId);
-        print('ID ::: ' + result.data.userId.toString());
+        saveUserData(result.data!.userId!);
+        print('ID ::: ' + result.data!.userId.toString());
         if (result.status == true) {
           Navigator.push(
               context,
@@ -414,7 +414,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mobileNumber: mobileController.text,
                   )));
           Fluttertoast.showToast(
-            msg: result.message,
+            msg: result.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -425,7 +425,7 @@ class _LoginScreenState extends State<LoginScreen> {
         } else {
           if (result.message == null) {
             Fluttertoast.showToast(
-              msg: result.errorMsg,
+              msg: result.errorMsg!,
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
@@ -435,7 +435,7 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           } else {
             Fluttertoast.showToast(
-              msg: result.message,
+              msg: result.message!,
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
@@ -453,9 +453,9 @@ class _LoginScreenState extends State<LoginScreen> {
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -465,7 +465,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }
@@ -490,7 +490,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
         //print('ID ::: ' + result.data.userObject.userId.toString());
         
-        if (result.data.userObject == null) {
+        if (result.data!.userObject == null) {
           // Fluttertoast.showToast(
           //   msg: result.message,
           //   toastLength: Toast.LENGTH_SHORT,
@@ -518,40 +518,40 @@ class _LoginScreenState extends State<LoginScreen> {
           // mobileNumberFromAPi = result.data.userObject.mobileNumber;
           // setState(() {});
           // login(mobileNumberFromAPi);
-          print('ROLE ::' + result.data.userObject.toString());
-          saveToken(result.data.token);
-          role = result.data.userObject.role;
-          name = result.data.userObject.name;
-          mobileNumberFromAPi = result.data.userObject.mobileNumber;
-          preferences.setString('RegisterAs', role);
+          print('ROLE ::' + result.data!.userObject.toString());
+          saveToken(result.data!.token!);
+          role = result.data!.userObject!.role;
+          name = result.data!.userObject!.name;
+          mobileNumberFromAPi = result.data!.userObject!.mobileNumber;
+          preferences.setString('RegisterAs', role!);
           
 
-         if(result.data.userObject.isNew == "true") {
+         if(result.data!.userObject!.isNew == "true") {
 
-           _signInCC(context, CubeUser(fullName: result.data.userObject.name, login: socialEmail, password: '12345678'), result);
+           _signInCC(context, CubeUser(fullName: result.data!.userObject!.name, login: socialEmail, password: '12345678'), result);
 
           } else {
-              preferences.setString("name", result.data.userObject.name);
-              preferences.setString("mobileNumber", result.data.userObject.mobileNumber);
-              preferences.setString("gender", result.data.userObject.gender);
+              preferences.setString("name", result.data!.userObject!.name!);
+              preferences.setString("mobileNumber", result.data!.userObject!.mobileNumber!);
+              preferences.setString("gender", result.data!.userObject!.gender!);
               //result.data.userObject.role == 'E' ? 
-              preferences.setString("imageUrl", result.data.userObject.imageUrl);
+              preferences.setString("imageUrl", result.data!.userObject!.imageUrl!);
               // : preferences.setString("imageUrl", '');
-              result.data.userObject.role == 'E' ? preferences.setString("qualification", result.data.userObject.educationalDetail.qualification) : preferences.setString("qualification", '');
-              result.data.userObject.role == 'E' ? preferences.setString("schoolName", result.data.userObject.educationalDetail.schoolName) : preferences.setString("schoolName",'');
-              result.data.userObject.role == 'E' ? preferences.setString("address1", result.data.userObject.location.addressLine2): preferences.setString("address1", '');
-              result.data.userObject.role == 'E' ? preferences.setString("address2", result.data.userObject.location.city): preferences.setString("address2", '');
-              result.data.userObject.role == 'E' ? preferences.setString("facebookUrl", result.data.userObject.fbUrl) : preferences.setString("facebookUrl",'');
-              result.data.userObject.role == 'E' ? preferences.setString("instaUrl", result.data.userObject.instaUrl) : preferences.setString("instaUrl",'');
-              result.data.userObject.role == 'E' ? preferences.setString("linkedInUrl", result.data.userObject.liUrl) : preferences.setString("linkedInUrl", '');
-              result.data.userObject.role == 'E' ? preferences.setString("otherUrl", result.data.userObject.otherUrl) : preferences.setString("otherUrl", '');
-              result.data.userObject.role == 'E' ? preferences.setString("isNew", result.data.userObject.isNew) : preferences.setString("isNew", '');
+              result.data!.userObject!.role == 'E' ? preferences.setString("qualification", result.data!.userObject!.educationalDetail!.qualification!) : preferences.setString("qualification", '');
+              result.data!.userObject!.role == 'E' ? preferences.setString("schoolName", result.data!.userObject!.educationalDetail!.schoolName!) : preferences.setString("schoolName",'');
+              result.data!.userObject!.role == 'E' ? preferences.setString("address1", result.data!.userObject!.location!.addressLine2!): preferences.setString("address1", '');
+              result.data!.userObject!.role == 'E' ? preferences.setString("address2", result.data!.userObject!.location!.city!): preferences.setString("address2", '');
+              result.data!.userObject!.role == 'E' ? preferences.setString("facebookUrl", result.data!.userObject!.fbUrl!) : preferences.setString("facebookUrl",'');
+              result.data!.userObject!.role == 'E' ? preferences.setString("instaUrl", result.data!.userObject!.instaUrl!) : preferences.setString("instaUrl",'');
+              result.data!.userObject!.role == 'E' ? preferences.setString("linkedInUrl", result.data!.userObject!.liUrl!) : preferences.setString("linkedInUrl", '');
+              result.data!.userObject!.role == 'E' ? preferences.setString("otherUrl", result.data!.userObject!.otherUrl!) : preferences.setString("otherUrl", '');
+              result.data!.userObject!.role == 'E' ? preferences.setString("isNew", result.data!.userObject!.isNew!) : preferences.setString("isNew", '');
               preferences.setBool('isLoggedIn', true);
 
-          print('Gender::: ${result.data.userObject.gender}');
-          print('IMAGE:::' + result.data.userObject.imageUrl);
-              saveUserData(result.data.userObject.userId);
-              signIn(CubeUser(fullName: result.data.userObject.name, login: socialEmail, password: '12345678'))
+          print('Gender::: ${result.data!.userObject!.gender}');
+          print('IMAGE:::' + result.data!.userObject!.imageUrl!);
+              saveUserData(result.data!.userObject!.userId!);
+              signIn(CubeUser(fullName: result.data!.userObject!.name, login: socialEmail, password: '12345678'))
                   .then((cubeUser) async {
                 closeProgressDialog(context);
                 SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
@@ -571,7 +571,7 @@ class _LoginScreenState extends State<LoginScreen> {
           //           mobileNumber: mobileController.text,
           //         )));
           Fluttertoast.showToast(
-            msg: result.message,
+            msg: result.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -581,7 +581,7 @@ class _LoginScreenState extends State<LoginScreen> {
           );
           if (result.message == null) {
             Fluttertoast.showToast(
-              msg: result.message,
+              msg: result.message!,
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
@@ -591,7 +591,7 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           } else {
             Fluttertoast.showToast(
-              msg: result.message,
+              msg: result.message!,
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
@@ -609,9 +609,9 @@ class _LoginScreenState extends State<LoginScreen> {
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response.data['meta']['message']);
+            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
-          msg: e.response.data['meta']['message'],
+          msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -621,7 +621,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.request);
+        //print(e.request);
         print(e.message);
       }
     }
@@ -672,17 +672,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       gUserData = await _googleSignIn.signIn();
-      print('ID:::' + gUserData.id);
-      print('USERNAME:::' + gUserData.displayName);
-      print('EMAIL:::' + gUserData.email);
-      print('PHOTO:::' + gUserData.photoUrl);
-      socialName = gUserData.displayName;
-      socialEmail = gUserData.email;
-      socialPhotoUrl = gUserData.photoUrl;
-      socialId = gUserData.id;
+      print('ID:::' + gUserData!.id);
+      print('USERNAME:::' + gUserData!.displayName!);
+      print('EMAIL:::' + gUserData!.email);
+      print('PHOTO:::' + gUserData!.photoUrl!);
+      socialName = gUserData!.displayName;
+      socialEmail = gUserData!.email;
+      socialPhotoUrl = gUserData!.photoUrl;
+      socialId = gUserData!.id;
       setState(() {});
       if (gUserData != null) {
-        checkLogin(gUserData.id);//'khdbcfioducde99he9hhe'
+        checkLogin(gUserData!.id);//'khdbcfioducde99he9hhe'
       }
     } catch (e) {
       print('Google Error:::$e');
@@ -693,34 +693,39 @@ class _LoginScreenState extends State<LoginScreen> {
     FacebookAuth.instance.logOut();
     try {
       // by default the login method has the next permissions ['email','public_profile']
-      AccessToken accessToken = await FacebookAuth.instance.login();
-      print(accessToken.toJson());
+      //AccessToken accessToken = await FacebookAuth.instance.login();
+      //print(accessToken.toJson());
+
+      FacebookAuth.instance.login();
       // get the user data
       fbUserData = await FacebookAuth.instance.getUserData();
       print(fbUserData);
-      print(fbUserData['email']);
-      socialName = fbUserData['name'];
-      socialEmail = fbUserData['email'];
-      socialPhotoUrl = fbUserData['picture']['data']['url'];
-      socialId = fbUserData['id'].toString();
+      print(fbUserData!['email']);
+      socialName = fbUserData!['name'];
+      socialEmail = fbUserData!['email'];
+      socialPhotoUrl = fbUserData!['picture']['data']['url'];
+      socialId = fbUserData!['id'].toString();
       setState(() {});
       print('FACEBOOK::::$socialEmail');
       if (fbUserData != null) {
-        checkLogin(fbUserData['id'].toString());
+        checkLogin(fbUserData!['id'].toString());
       }
-    } on FacebookAuthException catch (e) {
-      switch (e.errorCode) {
-        case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
-          print("You have a previous login operation in progress");
-          break;
-        case FacebookAuthErrorCode.CANCELLED:
-          print("login cancelled");
-          break;
-        case FacebookAuthErrorCode.FAILED:
-          print("login failed");
-          break;
-      }
+    } catch(e){
+      print(e);
     }
+    // on FacebookAuthException catch (e) {
+    //   switch (e.errorCode) {
+    //     case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
+    //       print("You have a previous login operation in progress");
+    //       break;
+    //     case FacebookAuthErrorCode.CANCELLED:
+    //       print("login cancelled");
+    //       break;
+    //     case FacebookAuthErrorCode.FAILED:
+    //       print("login failed");
+    //       break;
+    //   }
+    // }
   }
 
      void saveToken(String token) async {

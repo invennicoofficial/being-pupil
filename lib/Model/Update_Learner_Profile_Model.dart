@@ -18,11 +18,11 @@ class LearnerProfileUpdate {
         this.metaParams,
     });
 
-    bool status;
+    bool? status;
     dynamic errorCode;
     dynamic errorMsg;
-    String message;
-    Data data;
+    String? message;
+    Data? data;
     dynamic metaParams;
 
     factory LearnerProfileUpdate.fromJson(Map<String, dynamic> json) => LearnerProfileUpdate(
@@ -39,7 +39,7 @@ class LearnerProfileUpdate {
         "error_code": errorCode,
         "error_msg": errorMsg,
         "message": message,
-        "data": data.toJson(),
+        "data": data!.toJson(),
         "meta_params": metaParams,
     };
 }
@@ -73,31 +73,31 @@ class Data {
         this.interestedCategory,
     });
 
-    int userId;
-    String registerAs;
-    String imageFile;
-    String imageUrl;
-    String name;
-    String mobileNumber;
-    String email;
-    String gender;
-    String dob;
-    String documentType;
-    String documentFile;
-    String documentUrl;
-    String identificationDocumentNumber;
-    List<Location> location;
-    String achievements;
-    String skills;
-    String hobbies;
-    String facebookUrl;
-    String instaUrl;
-    String linkedinUrl;
-    String otherUrl;
-    List<dynamic> educationalDetails;
-    String totalWorkExperience;
+    int? userId;
+    String? registerAs;
+    String? imageFile;
+    String? imageUrl;
+    String? name;
+    String? mobileNumber;
+    String? email;
+    String? gender;
+    String? dob;
+    String? documentType;
+    String? documentFile;
+    String? documentUrl;
+    String? identificationDocumentNumber;
+    List<Location>? location;
+    String? achievements;
+    String? skills;
+    String? hobbies;
+    String? facebookUrl;
+    String? instaUrl;
+    String? linkedinUrl;
+    String? otherUrl;
+    List<dynamic>? educationalDetails;
+    String? totalWorkExperience;
     dynamic totalTeachingExperience;
-    List<InterestedCategory> interestedCategory;
+    List<InterestedCategory>? interestedCategory;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         userId: json["user_id"],
@@ -141,7 +141,7 @@ class Data {
         "document_file": documentFile,
         "document_url": documentUrl,
         "identification_document_number": identificationDocumentNumber,
-        "location": List<dynamic>.from(location.map((x) => x.toJson())),
+        "location": List<dynamic>.from(location!.map((x) => x.toJson())),
         "achievements": achievements,
         "skills": skills,
         "hobbies": hobbies,
@@ -149,13 +149,13 @@ class Data {
         "insta_url": instaUrl,
         "linkedin_url": linkedinUrl,
         "other_url": otherUrl,
-        "educational_details": List<dynamic>.from(educationalDetails.map((x) => x)),
+        "educational_details": List<dynamic>.from(educationalDetails!.map((x) => x)),
         "total_work_experience": totalWorkExperience,
         "total_teaching_experience": totalTeachingExperience,
-        "interested_category": List<dynamic>.from(interestedCategory.map((x) => x.toJson())),
+        "interested_category": List<dynamic>.from(interestedCategory!.map((x) => x.toJson())),
     };
 
-    Data.toEmpty(List<dynamic> json) {
+    Data.toEmpty(List<dynamic>? json) {
     return;
   }
 }
@@ -167,9 +167,9 @@ class InterestedCategory {
         this.selected,
     });
 
-    int key;
-    String value;
-    bool selected;
+    int? key;
+    String? value;
+    bool? selected;
 
     factory InterestedCategory.fromJson(Map<String, dynamic> json) => InterestedCategory(
         key: json["key"],
@@ -196,14 +196,14 @@ class Location {
         this.longitude,
     });
 
-    int id;
-    String addressLine1;
-    String addressLine2;
-    String city;
-    String country;
-    String pincode;
-    String latitude;
-    String longitude;
+    int? id;
+    String? addressLine1;
+    String? addressLine2;
+    String? city;
+    String? country;
+    String? pincode;
+    String? latitude;
+    String? longitude;
 
     factory Location.fromJson(Map<String, dynamic> json) => Location(
         id: json["id"],
