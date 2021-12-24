@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:being_pupil/ConnectyCube/api_utils.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
@@ -242,7 +244,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               )),
                             ),
                           ])),
-                      Padding(
+                      Platform.isIOS ? Padding(
                         padding: EdgeInsets.only(
                             left: 10.0.w, right: 10.0.w, top: 3.0.h),
                         child: Row(
@@ -269,6 +271,70 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fit: BoxFit.contain,
                                   )),
                             ),
+                            GestureDetector(
+                              onTap: () {
+                                print('Google Login!!!');
+                                setState(() {
+                                  registrationType = 'G';
+                                });
+                                _handleGoogleSignIn();
+                                // Navigator.push(
+                                //     context,
+                                //     PageTransition(
+                                //         type: PageTransitionType.fade,
+                                //         child: LoginMobileCheckScreen()));
+                              },
+                              child: Container(
+                                  height: 4.0.h,
+                                  width: 8.0.w,
+                                  child: Image.asset(
+                                    'assets/icons/google.png',
+                                    fit: BoxFit.contain,
+                                  )),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                print('Facebook Login!!!');
+                                setState(() {
+                                  registrationType = 'F';
+                                });
+                                _handleFacebookSignIn();
+                                // Navigator.push(
+                                //     context,
+                                //     PageTransition(
+                                //         type: PageTransitionType.fade,
+                                //         child: LoginMobileCheckScreen()));
+                              },
+                              child: Container(
+                                  height: 4.0.h,
+                                  width: 8.0.w,
+                                  child: Image.asset(
+                                    'assets/icons/facebook.png',
+                                    fit: BoxFit.contain,
+                                  )),
+                            ),
+                            // GestureDetector(
+                            //   onTap: (){
+                            //     print('LinkedIn Login!!!');
+                            //   },
+                            //   child: Container(
+                            //       height: 4.0.h,
+                            //       width: 8.0.w,
+                            //       child: Image.asset(
+                            //         'assets/icons/linkedin.png',
+                            //         fit: BoxFit.contain,
+                            //       )),
+                            // ),
+                          ],
+                        ),
+                      ) :
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: 10.0.w, right: 10.0.w, top: 3.0.h),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
                             GestureDetector(
                               onTap: () {
                                 print('Google Login!!!');
@@ -541,10 +607,10 @@ class _LoginScreenState extends State<LoginScreen> {
               result.data!.userObject!.role == 'E' ? preferences.setString("schoolName", result.data!.userObject!.educationalDetail!.schoolName!) : preferences.setString("schoolName",'');
               result.data!.userObject!.role == 'E' ? preferences.setString("address1", result.data!.userObject!.location!.addressLine2!): preferences.setString("address1", '');
               result.data!.userObject!.role == 'E' ? preferences.setString("address2", result.data!.userObject!.location!.city!): preferences.setString("address2", '');
-              result.data!.userObject!.role == 'E' ? preferences.setString("facebookUrl", result.data!.userObject!.fbUrl!) : preferences.setString("facebookUrl",'');
-              result.data!.userObject!.role == 'E' ? preferences.setString("instaUrl", result.data!.userObject!.instaUrl!) : preferences.setString("instaUrl",'');
-              result.data!.userObject!.role == 'E' ? preferences.setString("linkedInUrl", result.data!.userObject!.liUrl!) : preferences.setString("linkedInUrl", '');
-              result.data!.userObject!.role == 'E' ? preferences.setString("otherUrl", result.data!.userObject!.otherUrl!) : preferences.setString("otherUrl", '');
+              result.data!.userObject!.role == 'E' ? preferences.setString("facebookUrl", result.data!.userObject!.fbUrl.toString()) : preferences.setString("facebookUrl",'');
+              result.data!.userObject!.role == 'E' ? preferences.setString("instaUrl", result.data!.userObject!.instaUrl.toString()) : preferences.setString("instaUrl",'');
+              result.data!.userObject!.role == 'E' ? preferences.setString("linkedInUrl", result.data!.userObject!.liUrl.toString()) : preferences.setString("linkedInUrl", '');
+              result.data!.userObject!.role == 'E' ? preferences.setString("otherUrl", result.data!.userObject!.otherUrl.toString()) : preferences.setString("otherUrl", '');
               result.data!.userObject!.role == 'E' ? preferences.setString("isNew", result.data!.userObject!.isNew!) : preferences.setString("isNew", '');
               preferences.setBool('isLoggedIn', true);
 

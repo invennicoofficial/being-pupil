@@ -558,6 +558,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
 
   Future<CreateBooking> createBookingAPI(orderId, paymentId, signature) async {
     // print(widget.mealId);
+    print('creating the booking...');
     displayProgressDialog(context);
     var result = CreateBooking();
     try {
@@ -576,14 +577,14 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
         'payment_id': paymentId,
         'signature': signature
       });
-      
+
         for(int i = 0; i < widget.mealId!.length; i++){
           print(widget.mealId![i]);
           formData.fields.addAll([
             MapEntry('meal_id[$i]', widget.mealId![i].toString())
           ]);
         }
-    
+
       var response = await dio.post(Config.createBookingUrl,
           data: formData,
           options: Options(headers: {"Authorization": 'Bearer $authToken'}));

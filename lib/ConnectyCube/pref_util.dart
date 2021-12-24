@@ -34,10 +34,10 @@ class SharedPrefs {
   }
 
   saveNewUser(CubeUser cubeUser) {
-    prefs.setString(prefUserLogin, cubeUser.login!);
-    prefs.setString(prefUserPsw, cubeUser.password!);
-    prefs.setString(prefUserName, cubeUser.fullName!);
-    prefs.setInt(prefUserId, cubeUser.id!);
+    prefs.setString(prefUserLogin, cubeUser.login.toString());
+    prefs.setString(prefUserPsw, cubeUser.password.toString());
+    prefs.setString(prefUserName, cubeUser.fullName.toString());
+    prefs.setInt(prefUserId, cubeUser.id!.toInt());
     if (cubeUser.avatar != null)
       prefs.setString(prefUserAvatar, cubeUser.avatar!);
   }

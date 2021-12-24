@@ -139,9 +139,9 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                     //   Icons.expand_more,
                     //   color: Constants.bpSkipStyle,
                     // ),
-                    onChange: (int value, int index) async {
+                    onChange: (String value, int index) async {
                       print(value);
-                      if (value == index+1) {
+                      if (int.parse(value) == index+1) {
                         setState(() {
                           isRoomSelected = true;
                           roomType = widget.propData![widget.index!]['room'][index]['room_type'];
@@ -327,13 +327,13 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                     //   Icons.expand_more,
                     //   color: Constants.bpSkipStyle,
                     // ),
-                    onChange: (int value, int index) async {
+                    onChange: (String value, int index) async {
                       print(value);
-                      if (value == 1) {
+                      if (int.parse(value) == 1) {
                         setState(() {
                           selectedMonth = 1;
                         });
-                      } else if (value == 2) {
+                      } else if (int.parse(value) == 2) {
                         setState(() {
                           selectedMonth = 2;
                         });
@@ -739,7 +739,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                       //   Icons.expand_more,
                       //   color: Constants.bpSkipStyle,
                       // ),
-                      onChange: (int value, int index) {
+                      onChange: (String value, int index)async  {
                         print(value);
                         // if (value != 1 ||
                         //     value != 2 ||

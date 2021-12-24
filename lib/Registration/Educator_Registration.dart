@@ -780,18 +780,18 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     //   Icons.expand_more,
                                     //   color: Constants.bpSkipStyle,
                                     // ),
-                                    onChange: (int value, int index) {
+                                    onChange: (String value, int index) async {
                                       print(value);
-                                      if (value != 1 ||
-                                          value != 2 ||
-                                          value != 3) {
+                                      if (value != '1' ||
+                                          value != '2' ||
+                                          value != '3') {
                                         setState(() {
                                           gender = 'GenderSelected';
                                         });
                                       }
-                                      if (value == 1) {
+                                      if (value == '1') {
                                         gender = 'M';
-                                      } else if (value == 2) {
+                                      } else if (value == '2') {
                                         gender = 'F';
                                       } else {
                                         gender = 'O';
@@ -976,13 +976,13 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               //   Icons.expand_more,
                               //   color: Constants.bpSkipStyle,
                               // ),
-                              onChange: (int value, int index) {
+                              onChange: (String value, int index) async {
                                 print(value);
-                                if (value != 1 ||
-                                    value != 2 ||
-                                    value != 3 ||
-                                    value != 4 ||
-                                    value != 5) {
+                                if (value != '1' ||
+                                    value != '2' ||
+                                    value != '3' ||
+                                    value != '4' ||
+                                    value != '5') {
                                   setState(() {
                                     docType = 'DocSelected';
                                   });
@@ -1589,26 +1589,26 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                           //   Icons.expand_more,
                                           //   color: Constants.bpSkipStyle,
                                           // ),
-                                          onChange: (int value, int index) {
+                                          onChange: (String value, int index) async {
                                             print(value);
-                                            if (value > 0) {
+                                            if (int.parse(value) > 0) {
                                               setState(() {
                                                 qualification = '1';
                                               });
                                             }
-                                            if (value == 1) {
+                                            if (value == '1') {
                                               qualification = 'Graduate';
                                               educationDetailMap[index]
                                                       ['qualification'] =
                                                   'Graduate';
                                               print(qualification);
-                                            } else if (value == 2) {
+                                            } else if (value == '2') {
                                               qualification = 'Post-graduate';
                                               educationDetailMap[index]
                                                       ['qualification'] =
                                                   'Post-graduate';
                                               print(qualification);
-                                            } else if (value == 3) {
+                                            } else if (value == '3') {
                                               qualification =
                                                   'Chartered Accountant';
                                               educationDetailMap[index]
@@ -1967,10 +1967,10 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               //   Icons.expand_more,
                               //   color: Constants.bpSkipStyle,
                               // ),
-                              onChange: (int value, int index) {
-                                totalWorkExp = value;
+                              onChange: (String value, int index) async {
+                                totalWorkExp = int.parse(value);
                                 print(value);
-                                if (value > 0) {
+                                if (int.parse(value) > 0) {
                                   setState(() {
                                     workExp = '1';
                                   });
@@ -2074,10 +2074,10 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               //   Icons.expand_more,
                               //   color: Constants.bpSkipStyle,
                               // ),
-                              onChange: (int value, int index) {
-                                totalTeachExp = value;
+                              onChange: (String value, int index) async {
+                                totalTeachExp = int.parse(value);
                                 print(value);
-                                if (value > 0) {
+                                if (int.parse(value) > 0) {
                                   setState(() {
                                     teachExp = '1';
                                   });
@@ -3572,10 +3572,10 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
           preferences.setString("schoolName", result.data!.educationalDetails![0].schoolName.toString());
           preferences.setString("address1", result.data!.location.toString());
           preferences.setString("address2", result.data!.location.toString());
-          preferences.setString("facebookUrl", result.data!.facbookUrl);
-          preferences.setString("instaUrl", result.data!.instaUrl);
-          preferences.setString("linkedInUrl", result.data!.linkedinUrl);
-          preferences.setString("otherUrl", result.data!.otherUrl);
+          preferences.setString("facebookUrl", result.data!.facbookUrl.toString());
+          preferences.setString("instaUrl", result.data!.instaUrl.toString());
+          preferences.setString("linkedInUrl", result.data!.linkedinUrl.toString());
+          preferences.setString("otherUrl", result.data!.otherUrl.toString());
           print('QUALIFICATION:::: ' +
               result.data!.educationalDetails!.last.qualification!);
           print('LOCATION:::: ' + result.data!.location![0].addressLine2!);

@@ -781,11 +781,11 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                     //   Icons.expand_more,
                                     //   color: Constants.bpSkipStyle,
                                     // ),
-                                    onChange: (int value, int index) {
+                                    onChange: (String value, int index) async {
                                       print(value);
-                                      if (value != 1 ||
-                                          value != 2 ||
-                                          value != 3) {
+                                      if (value != '1' ||
+                                          value != '2' ||
+                                          value != '3') {
                                         setState(() {
                                           gender = 'GenderSelected';
                                         });
@@ -968,13 +968,13 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                               //   Icons.expand_more,
                               //   color: Constants.bpSkipStyle,
                               // ),
-                              onChange: (int value, int index) {
+                              onChange: (String value, int index)async  {
                                 print(value);
-                                if (value != 1 ||
-                                    value != 2 ||
-                                    value != 3 ||
-                                    value != 4 ||
-                                    value != 5) {
+                                if (value != '1' ||
+                                    value != '2' ||
+                                    value != '3' ||
+                                    value != '4' ||
+                                    value != '5') {
                                   setState(() {
                                     docType = 'DocSelected';
                                   });
@@ -1566,26 +1566,26 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                           //   Icons.expand_more,
                                           //   color: Constants.bpSkipStyle,
                                           // ),
-                                          onChange: (int value, int index) {
+                                          onChange: (String value, int index)async  {
                                             print(value);
-                                            if (value > 0) {
+                                            if (int.parse(value) > 0) {
                                               setState(() {
                                                 qualification = '1';
                                               });
                                             }
-                                            if (value == 1) {
+                                            if (value == '1') {
                                               qualification = 'Graduate';
                                               educationDetailMap[index]
                                                       ['qualification'] =
                                                   'Graduate';
                                               print(qualification);
-                                            } else if (value == 2) {
+                                            } else if (value == '2') {
                                               qualification = 'Post-graduate';
                                               educationDetailMap[index]
                                                       ['qualification'] =
                                                   'Post-graduate';
                                               print(qualification);
-                                            } else if (value == 3) {
+                                            } else if (value == '3') {
                                               qualification =
                                                   'Chartered Accountant';
                                               educationDetailMap[index]
@@ -1969,10 +1969,10 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                               //   Icons.expand_more,
                               //   color: Constants.bpSkipStyle,
                               // ),
-                              onChange: (int value, int index) {
-                                totalWorkExp = value;
+                              onChange: (String value, int index)async  {
+                                totalWorkExp = int.parse(value);
                                 print(value);
-                                if (value > 0) {
+                                if (int.parse(value) > 0) {
                                   setState(() {
                                     workExp = '1';
                                   });

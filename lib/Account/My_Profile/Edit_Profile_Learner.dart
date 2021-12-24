@@ -776,18 +776,18 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                           //   Icons.expand_more,
                                           //   color: Constants.bpSkipStyle,
                                           // ),
-                                          onChange: (int value, int index) {
+                                          onChange: (String value, int index)async  {
                                             print(value);
-                                            if (value != 1 ||
-                                                value != 2 ||
-                                                value != 3) {
+                                            if (value != '1' ||
+                                                value != '2' ||
+                                                value != '3') {
                                               setState(() {
                                                 gender = 'GenderSelected';
                                               });
                                             }
-                                            if (value == 1) {
+                                            if (value == '1') {
                                         gender = 'M';
-                                      } else if (value == 2) {
+                                      } else if (value == '2') {
                                         gender = 'F';
                                       } else {
                                         gender = 'O';
@@ -998,27 +998,27 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                     //   Icons.expand_more,
                                     //   color: Constants.bpSkipStyle,
                                     // ),
-                                    onChange: (int value, int index) {
+                                    onChange: (String value, int index)async  {
                                       print(value);
-                                      if (value != 1 ||
-                                          value != 2 ||
-                                          value != 3 ||
-                                          value != 4 ||
-                                          value != 5) {
+                                      if (value != '1' ||
+                                          value != '2' ||
+                                          value != '3' ||
+                                          value != '4' ||
+                                          value != '5') {
                                         setState(() {
                                           docType = 'DocSelected';
                                         });
                                       }
-                                       if (value == 1) {
+                                       if (value == '1') {
                                   docType = 'A';
                                   print(docType);
-                                } else if (value == 2) {
+                                } else if (value == '2') {
                                   docType = 'PN';
                                   print(docType);
-                                } else if (value == 3) {
+                                } else if (value == '3') {
                                   docType = 'PAS';
                                   print(docType);
-                                } else if (value == 4) {
+                                } else if (value == '4') {
                                   docType = 'VI';
                                   print(docType);
                                 } else {
@@ -1959,10 +1959,10 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                     //   Icons.expand_more,
                                     //   color: Constants.bpSkipStyle,
                                     // ),
-                                    onChange: (int value, int index) {
-                                      totalWorkExp = value;
+                                    onChange: (String value, int index)async  {
+                                      totalWorkExp = int.parse(value);
                                       print(value);
-                                      if (value > 0) {
+                                      if (int.parse(value) > 0) {
                                         setState(() {
                                           workExp = '1';
                                         });

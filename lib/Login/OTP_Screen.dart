@@ -50,7 +50,7 @@ class _OtpScreenState extends State<OtpScreen> {
     //SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     errorController = StreamController<ErrorAnimationType>();
     getData();
-    otpPinController.text = '1234';
+    // otpPinController.text = '1234';
     newMobNumber = widget.mobileNumber;
     super.initState();
   }
@@ -367,12 +367,6 @@ class _OtpScreenState extends State<OtpScreen> {
           name = result.data!.userObject!.name;
           mobileNumber = result.data!.userObject!.mobileNumber;
           preferences.setString('RegisterAs', role!);
-          print('ROLE ::' + preferences.getString('RegisterAs')!);
-          //print('ROLE ::' + result.data.userObject.location.toString());
-         
-          //print('LOCATION ::' + result.data.userObject.location.addressLine2);
-         // print('EDUCATION ::' + result.data.userObject.educationalDetail.qualification);
-          print('MOBILE ::' + mobileNumber!);
           if(result.data!.userObject!.isNew == "true") {
             closeProgressDialog(context);
             role == 'L'
@@ -387,7 +381,7 @@ class _OtpScreenState extends State<OtpScreen> {
           } else {
               preferences.setString("name", result.data!.userObject!.name!);
               preferences.setString("mobileNumber", result.data!.userObject!.mobileNumber!);
-              preferences.setString("gender", result.data!.userObject!.gender!);
+              preferences.setString("gender", result.data!.userObject!.gender.toString());
               preferences.setString("email", result.data!.userObject!.email!);
               //result.data.userObject.role == 'E' ? 
               preferences.setString("imageUrl", result.data!.userObject!.imageUrl!);
@@ -396,21 +390,17 @@ class _OtpScreenState extends State<OtpScreen> {
               result.data!.userObject!.role == 'E' ? preferences.setString("schoolName", result.data!.userObject!.educationalDetail!.schoolName!) : preferences.setString("schoolName",'');
               result.data!.userObject!.role == 'E' ? preferences.setString("address1", result.data!.userObject!.location!.addressLine2!): preferences.setString("address1", '');
               result.data!.userObject!.role == 'E' ? preferences.setString("address2", result.data!.userObject!.location!.city!): preferences.setString("address2", '');
-              // result.data!.userObject!.role == 'E' ? preferences.setString("facebookUrl", result.data!.userObject!.fbUrl!) : preferences.setString("facebookUrl",'');
-              // result.data!.userObject!.role == 'E' ? preferences.setString("instaUrl", result.data!.userObject!.instaUrl!) : preferences.setString("instaUrl",'');
-              // result.data!.userObject!.role == 'E' ? preferences.setString("linkedInUrl", result.data!.userObject!.liUrl!) : preferences.setString("linkedInUrl", '');
-              // result.data!.userObject!.role == 'E' ? preferences.setString("otherUrl", result.data!.userObject!.otherUrl!) : preferences.setString("otherUrl", '');
+              result.data!.userObject!.role == 'E' ? preferences.setString("facebookUrl", result.data!.userObject!.fbUrl.toString()) : preferences.setString("facebookUrl",'');
+              result.data!.userObject!.role == 'E' ? preferences.setString("instaUrl", result.data!.userObject!.instaUrl.toString()) : preferences.setString("instaUrl",'');
+              result.data!.userObject!.role == 'E' ? preferences.setString("linkedInUrl", result.data!.userObject!.liUrl.toString()) : preferences.setString("linkedInUrl", '');
+              result.data!.userObject!.role == 'E' ? preferences.setString("otherUrl", result.data!.userObject!.otherUrl.toString()) : preferences.setString("otherUrl", '');
               result.data!.userObject!.role == 'E' ? preferences.setString("isNew", result.data!.userObject!.isNew!) : preferences.setString("isNew", '');
               preferences.setBool('isLoggedIn', true);
-
-          print('Gender::: ${result.data!.userObject!.gender}');
-          print('IMAGE:::' + result.data!.userObject!.imageUrl!);
-
               signIn(CubeUser(fullName: result.data!.userObject!.name, login: result.data!.userObject!.email, password: '12345678'))
                   .then((cubeUser) async {
-                closeProgressDialog(context);
                 SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
                 sharedPrefs.saveNewUser(cubeUser);
+                closeProgressDialog(context);
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => bottomNavBar(0)),
                         (Route<dynamic> route) => false);

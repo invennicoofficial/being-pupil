@@ -261,9 +261,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             //   Icons.expand_more,
                             //   color: Constants.bpSkipStyle,
                             // ),
-                            onChange: (int value, int index) async {
+                            onChange: (String value, int index) async {
                               print(value);
-                              if (value == 1) {
+                              if (value == '1') {
                                 setState(() {
                                   registerAs = 'E';
                                 });

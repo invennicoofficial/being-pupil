@@ -8,7 +8,7 @@ class CustomDropdown<T> extends StatefulWidget {
 
   /// onChange is called when the selected option is changed.;
   /// It will pass back the value and the index of the option.
-  final void Function(T, int)? onChange;
+  final  Future<void> Function(String, int) onChange;
 
   /// list of DropdownItems
   final List<DropdownItem<T>> items;
@@ -32,7 +32,7 @@ class CustomDropdown<T> extends StatefulWidget {
     this.dropdownButtonStyle = const DropdownButtonStyle(),
     this.icon,
     this.leadingIcon = false,
-    this.onChange,
+    required this.onChange,
   }) : super(key: key);
 
   @override
@@ -160,7 +160,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T?>>
                             return InkWell(
                               onTap: () {
                                 setState(() => _currentIndex = item.key);
-                                widget.onChange!(item.value.value, item.key);
+                                widget.onChange(item.value.value.toString(), item.key);
                                 _toggleDropdown();
                               },
                               child: item.value,

@@ -847,18 +847,18 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     //   Icons.expand_more,
                                     //   color: Constants.bpSkipStyle,
                                     // ),
-                                    onChange: (int value, int index) {
+                                    onChange: (String value, int index) async {
                                       print(value);
-                                      if (value != 1 ||
-                                          value != 2 ||
-                                          value != 3) {
+                                      if (value != '1' ||
+                                          value != '2' ||
+                                          value != '3') {
                                         setState(() {
                                           gender = 'GenderSelected';
                                         });
                                       }
-                                      if (value == 1) {
+                                      if (value == '1') {
                                         gender = 'M';
-                                      } else if (value == 2) {
+                                      } else if (value == '2') {
                                         gender = 'F';
                                       } else {
                                         gender = 'O';
@@ -1055,13 +1055,13 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                               //   Icons.expand_more,
                               //   color: Constants.bpSkipStyle,
                               // ),
-                              onChange: (int value, int index) {
+                              onChange: (String value, int index)async  {
                                 print(value);
-                                if (value != 1 ||
-                                    value != 2 ||
-                                    value != 3 ||
-                                    value != 4 ||
-                                    value != 5) {
+                                if (value != '1' ||
+                                    value != '2' ||
+                                    value != '3' ||
+                                    value != '4' ||
+                                    value != '5') {
                                   setState(() {
                                     docType = 'DocSelected';
                                   });
@@ -2023,10 +2023,10 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                               //   Icons.expand_more,
                               //   color: Constants.bpSkipStyle,
                               // ),
-                              onChange: (int value, int index) {
-                                totalWorkExp = value;
+                              onChange: (String value, int index)async  {
+                                totalWorkExp = int.parse(value);
                                 print(totalWorkExp);
-                                if (value > 0) {
+                                if (int.parse(value) > 0) {
                                   setState(() {
                                     workExp = '1';
                                   });
@@ -2131,10 +2131,10 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                               //   Icons.expand_more,
                               //   color: Constants.bpSkipStyle,
                               // ),
-                              onChange: (int value, int index) {
-                                totalTeachExp = value;
+                              onChange: (String value, int index)async  {
+                                totalTeachExp = int.parse(value);
                                 print(totalTeachExp);
-                                if (value > 0) {
+                                if (int.parse(value) > 0) {
                                   setState(() {
                                     teachExp = '1';
                                   });

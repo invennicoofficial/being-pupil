@@ -321,7 +321,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
                                 },
                               ).whenComplete(() {
-                                CubeChatConnection.instance.destroy();
+                                // CubeChatConnection.instance.destroy();
                                 SharedPrefs.instance.deleteUser();
                                 pushNewScreen(
                                   context,

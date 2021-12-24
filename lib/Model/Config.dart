@@ -1,6 +1,7 @@
 class Config{
 
-  static const String baseUrl = "http://13.233.57.156/being-pupil-backend/public/api/";
+  // static const String baseUrl = "http://13.233.57.156/being-pupil-backend/public/api/";
+  static const String baseUrl = "http://43.204.0.106/being-pupil-backend/public/api/";
   //TODO replace API Key
   static const String locationKey = "AIzaSyBdxRyXCjoupZOKXtv6_mjTOkpnqcSPstI";
 
