@@ -126,6 +126,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               controller: nameController,
                               decoration: InputDecoration(
                                 labelText: "Name",
+                                labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                 fillColor: Colors.white,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
@@ -167,6 +172,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ],
                               decoration: InputDecoration(
                                 labelText: "Phone Number",
+                                labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                 fillColor: Colors.white,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
@@ -205,6 +215,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
                                 labelText: "Email",
+                                labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                 fillColor: Colors.white,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),

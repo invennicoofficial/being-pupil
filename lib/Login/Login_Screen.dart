@@ -143,6 +143,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               ],
                               decoration: InputDecoration(
                                 labelText: "Phone Number",
+                                labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                 fillColor: Colors.white,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),

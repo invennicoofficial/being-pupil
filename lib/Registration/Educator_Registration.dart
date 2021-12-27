@@ -626,6 +626,11 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 controller: _nameController,
                                 decoration: InputDecoration(
                                   labelText: "Name",
+                                  labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                   fillColor: Colors.white,
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
@@ -680,6 +685,11 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 ],
                                 decoration: InputDecoration(
                                   labelText: "Mobile Number",
+                                  labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                   fillColor: Colors.white,
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
@@ -719,6 +729,11 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 keyboardType: TextInputType.emailAddress,
                                 decoration: InputDecoration(
                                   labelText: "Email",
+                                  labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                   fillColor: Colors.white,
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
@@ -1124,6 +1139,11 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   labelText: "Identification Document Number",
+                                  labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                   fillColor: Colors.white,
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
@@ -1302,6 +1322,11 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                             },
                                             decoration: InputDecoration(
                                               labelText: "Name of School",
+                                              labelStyle: TextStyle(
+                                              color: Constants.bpSkipStyle,
+                                              fontFamily: "Montserrat", 
+                                              fontSize: 10.0.sp
+                                              ),
                                               fillColor: Colors.white,
                                               focusedBorder: OutlineInputBorder(
                                                 borderRadius:
@@ -2756,6 +2781,11 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 controller: _fbLinkController,
                                 decoration: InputDecoration(
                                     labelText: "Facebook",
+                                    labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                     fillColor: Colors.white,
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -2800,6 +2830,11 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 controller: _instagramLinkController,
                                 decoration: InputDecoration(
                                     labelText: "Instagram",
+                                    labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                     fillColor: Colors.white,
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -2845,6 +2880,11 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 controller: _linkedInLinkLinkController,
                                 decoration: InputDecoration(
                                     labelText: "LinkedIn",
+                                    labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                     fillColor: Colors.white,
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -2890,6 +2930,11 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 controller: _otherLinkLinkController,
                                 decoration: InputDecoration(
                                     labelText: "Other",
+                                    labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                     fillColor: Colors.white,
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),

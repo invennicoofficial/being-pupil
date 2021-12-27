@@ -288,8 +288,8 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                               postIdList[index], authToken!);
                                           setState(() {
                                             isLiked[index] == true
-                                                ? likesList[index]! + 1
-                                                : likesList[index]! - 1;
+                                                ? likesList[index] = likesList[index]! + 1
+                                                : likesList[index] = likesList[index]! - 1;
                                           });
                                         },
                                         child: Container(

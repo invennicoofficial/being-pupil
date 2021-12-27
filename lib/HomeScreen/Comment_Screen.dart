@@ -254,8 +254,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                 ),
                                 trailing: IconButton(
                                      icon: Image.asset('assets/icons/issueIcon.png',
-                                      height: 20.0,
-                                      width: 20.0,),
+                                      height: 18.0,
+                                      width: 18.0,),
                                     onPressed: () {
                                       pushNewScreen(context,
                                           withNavBar: false,
@@ -335,8 +335,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                         like.likePostApi(widget.postId, authToken!);
                                         setState(() {
                                           widget.isLiked == true
-                                              ? widget.like! + 1
-                                              : widget.like! + 1;
+                                              ? widget.like = widget.like! + 1
+                                              : widget.like = widget.like! - 1;
                                         });
                                       },
                                       child: Row(

@@ -29,6 +29,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   List<AssetEntity> assets = <AssetEntity>[];
   String? profilePic, name;
   final ImagePicker _picker = ImagePicker();
+  List<AssetEntity>? result;
 
   @override
   void initState() {
@@ -71,7 +72,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   getMultipleImage() async {
-    final List<AssetEntity> result = await (AssetPicker.pickAssets(
+    result = await AssetPicker.pickAssets(
       context,
       maxAssets: 10,
       pageSize: 320,
@@ -86,24 +87,24 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       sortPathDelegate: CommonSortPathDelegate(),
       routeCurve: Curves.easeIn,
       routeDuration: const Duration(milliseconds: 500),
-    ) as Future<List<AssetEntity>>);
+    );
 
     setState(() {
       // _image = result.length.
     });
     print('ASSETS::: $assets');
-    for (int i = 0; i < result.length; i++) {
-      print('$i : ' + result[i].title!);
-      filePathList.add(result[i].relativePath! + result[i].title!);
+    for (int i = 0; i < result!.length; i++) {
+      print('$i : ' + result![i].title!);
+      filePathList.add(result![i].relativePath! + result![i].title!);
       fileList.add(
-          new File('${result[i].relativePath}' + '/' + '${result[i].title}'));
+          new File('${result![i].relativePath}' + '/' + '${result![i].title}'));
     }
     print(filePathList);
     print(fileList);
-    print(result[0].relativePath! + result[0].title!);
+    print(result![0].relativePath! + result![0].title!);
 
     final File file =
-        File('${result[0].relativePath}' + '/' + '${result[0].title}');
+        File('${result![0].relativePath}' + '/' + '${result![0].title}');
     print('FILE:::' + file.path);
 
     AssetPicker.registerObserve();

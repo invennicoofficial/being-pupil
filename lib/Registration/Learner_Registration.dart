@@ -627,6 +627,11 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 controller: _nameController,
                                 decoration: InputDecoration(
                                   labelText: "Name",
+                                  labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                   fillColor: Colors.white,
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
@@ -681,6 +686,11 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 ],
                                 decoration: InputDecoration(
                                   labelText: "Mobile Number",
+                                  labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                   fillColor: Colors.white,
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
@@ -720,6 +730,11 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 keyboardType: TextInputType.emailAddress,
                                 decoration: InputDecoration(
                                   labelText: "Email",
+                                  labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                   fillColor: Colors.white,
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
@@ -1100,6 +1115,11 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   labelText: "Identification Document Number",
+                                  labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                   fillColor: Colors.white,
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
@@ -1275,6 +1295,11 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                             },
                                             decoration: InputDecoration(
                                               labelText: "Name of School",
+                                              labelStyle: TextStyle(
+                                            color: Constants.bpSkipStyle,
+                                            fontFamily: "Montserrat", 
+                                            fontSize: 10.0.sp
+                                              ),
                                               fillColor: Colors.white,
                                               focusedBorder: OutlineInputBorder(
                                                 borderRadius:
@@ -2156,13 +2181,13 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                         Border.all(color: Constants.formBorder),
                                     borderRadius: BorderRadius.circular(5.0)),
                                 child: Center(
-                                  child: Text('gyusguysgysgugs',
-                                  //  selectedSkillList == null ||
-                                  //           selectedSkillList.length == 0
-                                  //       ? "Please mention your skills example #skills1 #skills2..."
-                                  //       : selectedSkillList
-                                  //           .toString().replaceAll('[', '').replaceAll(']', '').
-                                  //           replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                  child: Text(
+                                   selectedSkillList == null ||
+                                            selectedSkillList.length == 0
+                                        ? "Please mention your skills example #skills1 #skills2..."
+                                        : selectedSkillList
+                                            .toString().replaceAll('[', '').replaceAll(']', '').
+                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
                                     style: TextStyle(
                                         fontFamily: "Montserrat",
                                         fontSize: 10.0.sp,
@@ -2381,6 +2406,11 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 controller: _fbLinkController,
                                 decoration: InputDecoration(
                                     labelText: "Facebook",
+                                    labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                     fillColor: Colors.white,
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -2428,6 +2458,11 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 controller: _instagramLinkController,
                                 decoration: InputDecoration(
                                     labelText: "Instagram",
+                                    labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                     fillColor: Colors.white,
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -2476,6 +2511,11 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 controller: _linkedInLinkLinkController,
                                 decoration: InputDecoration(
                                     labelText: "LinkedIn",
+                                    labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                     fillColor: Colors.white,
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -2524,6 +2564,11 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 controller: _otherLinkLinkController,
                                 decoration: InputDecoration(
                                     labelText: "Other",
+                                    labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                     fillColor: Colors.white,
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -3160,10 +3205,10 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
           preferences.setString("schoolName", result.data!.educationalDetails![0].schoolName.toString());
           preferences.setString("address1", result.data!.location.toString());
           preferences.setString("address2", result.data!.location.toString());
-          preferences.setString("facebookUrl", result.data!.facbookUrl);
-          preferences.setString("instaUrl", result.data!.instaUrl);
-          preferences.setString("linkedInUrl", result.data!.linkedinUrl);
-          preferences.setString("otherUrl", result.data!.otherUrl);
+          preferences.setString("facebookUrl", result.data?.facbookUrl ?? '');
+          preferences.setString("instaUrl", result.data?.instaUrl ?? '');
+          preferences.setString("linkedInUrl", result.data?.linkedinUrl ?? '');
+          preferences.setString("otherUrl", result.data?.otherUrl ?? '');
           print('QUALIFICATION:::: ' +
               result.data!.educationalDetails!.last.qualification!);
           print('LOCATION:::: ' + result.data!.location![0].addressLine2!);

@@ -715,8 +715,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                 postIdList[index], authToken!);
                                             setState(() {
                                               isLiked[index] == true
-                                                  ? likesList[index]! + 1
-                                                  : likesList[index]! - 1;
+                                                  ? likesList[index] = likesList[index]! + 1
+                                                  : likesList[index] = likesList[index]! - 1;
                                             });
                                           },
                                           child: Row(

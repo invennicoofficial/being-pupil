@@ -33,6 +33,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
     // TODO: implement initState
     super.initState();
     getPropertyReviewAPI();
+    print('ID:::' + widget.propertyId.toString());
   }
 
   @override
@@ -87,7 +88,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                           child: Column(
                             children: <Widget>[
                               Text(
-                                '${result.data!.rating!.avgRating} / 5',
+                                '${result.data?.rating!.avgRating ?? 0} / 5',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 16.0.sp,
@@ -98,7 +99,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                 height: 3.0.h,
                               ),
                               Text(
-                                '${result.data!.totalRating} Rating',
+                                '${result.data?.totalRating ?? 0} Rating',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 11.0.sp,
@@ -109,7 +110,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                 height: 0.5.h,
                               ),
                               Text(
-                                '${result.data!.totalReview} Review',
+                                '${result.data?.totalReview ?? 0} Review',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 11.0.sp,
@@ -153,7 +154,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   transform: Matrix4.translationValues(
                                       -5.0.w, 0.0, 0.0),
                                   child: Text(
-                                    result.data!.rating!.the5.toString(),
+                                    result.data?.rating!.the5.toString() ?? '0',
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 10.0.sp,
@@ -167,7 +168,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   child: Container(
                                     height: 1.0.h,
                                     child: FAProgressBar(
-                                      currentValue: result.data!.rating!.the5!,
+                                      currentValue: result.data?.rating!.the5! ?? 0,
                                       maxValue: 100,
                                       direction: Axis.horizontal,
                                       backgroundColor: Color(0xFFD3D9E0),
@@ -208,7 +209,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   transform: Matrix4.translationValues(
                                       -5.0.w, 0.0, 0.0),
                                   child: Text(
-                                    result.data!.rating!.the4.toString(),
+                                    result.data?.rating!.the4.toString() ?? '0',
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 10.0.sp,
@@ -222,7 +223,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   child: Container(
                                     height: 1.0.h,
                                     child: FAProgressBar(
-                                      currentValue: result.data!.rating!.the4!,
+                                      currentValue: result.data?.rating!.the4! ?? 0,
                                       maxValue: 100,
                                       direction: Axis.horizontal,
                                       backgroundColor: Color(0xFFD3D9E0),
@@ -263,7 +264,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   transform: Matrix4.translationValues(
                                       -5.0.w, 0.0, 0.0),
                                   child: Text(
-                                    result.data!.rating!.the3.toString(),
+                                    result.data?.rating!.the3.toString() ?? '0',
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 10.0.sp,
@@ -277,7 +278,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   child: Container(
                                     height: 1.0.h,
                                     child: FAProgressBar(
-                                      currentValue: result.data!.rating!.the3!,
+                                      currentValue: result.data?.rating!.the3! ?? 0,
                                       maxValue: 100,
                                       direction: Axis.horizontal,
                                       backgroundColor: Color(0xFFD3D9E0),
@@ -318,7 +319,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   transform: Matrix4.translationValues(
                                       -5.0.w, 0.0, 0.0),
                                   child: Text(
-                                    result.data!.rating!.the2.toString(),
+                                    result.data?.rating!.the2.toString() ?? '0',
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 10.0.sp,
@@ -332,7 +333,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   child: Container(
                                     height: 1.0.h,
                                     child: FAProgressBar(
-                                      currentValue: result.data!.rating!.the2!,
+                                      currentValue: result.data?.rating!.the2! ?? 0,
                                       maxValue: 100,
                                       direction: Axis.horizontal,
                                       backgroundColor: Color(0xFFD3D9E0),
@@ -373,7 +374,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   transform: Matrix4.translationValues(
                                       -5.0.w, 0.0, 0.0),
                                   child: Text(
-                                    result.data!.rating!.the1.toString(),
+                                    result.data?.rating!.the1.toString() ?? '',
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 10.0.sp,
@@ -387,7 +388,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   child: Container(
                                     height: 1.0.h,
                                     child: FAProgressBar(
-                                      currentValue: result.data!.rating!.the1!,
+                                      currentValue: result.data?.rating!.the1! ?? 0,
                                       maxValue: 100,
                                       direction: Axis.horizontal,
                                       backgroundColor: Color(0xFFD3D9E0),
@@ -474,153 +475,159 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                   ),
                   //Reviews
                   Expanded(
+                    flex: 1,
                     child: Padding(
                       padding: EdgeInsets.only(
                           left: 4.0.w, top: 3.0.h, right: 4.0.w, bottom: 1.0.h),
-                      child: SingleChildScrollView(
-                        physics: BouncingScrollPhysics(),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 2.0.h),
-                              child: Text.rich(
-                                TextSpan(children: [
-                                  TextSpan(
-                                      text: 'Review ',
-                                      style: TextStyle(
-                                          fontSize: 11.0.sp,
-                                          color: Constants.bgColor,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w500)),
-                                  TextSpan(
-                                      text: '(${result.data!.review!.length})',
-                                      style: TextStyle(
-                                          fontSize: 11.0.sp,
-                                          color:
-                                              Constants.bpOnBoardSubtitleStyle,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w500)),
-                                ]),
-                                textAlign: TextAlign.start,
-                              ),
-                            ),
-                            Container(
-                              height: 100.0.h,
-                              width: double.infinity,
-                              child: ListView.separated(
-                                itemCount: result.data!.review!.length,
-                                physics: BouncingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return Column(
-                                    children: [
-                                      ListTile(
-                                          contentPadding: EdgeInsets.all(0.0),
-                                          //leading:
-                                          title: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(50),
-                                                child: Image.network(
-                                                  result.data!.review![index]
-                                                      .profileImage!,
-                                                  width: 9.0.w,
-                                                  height: 4.5.h,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 2.0.w,
-                                              ),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                      child: Container(
+                        width: double.infinity,
+                        child: SingleChildScrollView(
+                          //physics: BouncingScrollPhysics(),
+                          child: Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 2.0.h),
+                                  child: Text.rich(
+                                    TextSpan(children: [
+                                      TextSpan(
+                                          text: 'Review ',
+                                          style: TextStyle(
+                                              fontSize: 11.0.sp,
+                                              color: Constants.bgColor,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w500)),
+                                      TextSpan(
+                                          text: '(${result.data?.review!.length ?? 0})',
+                                          style: TextStyle(
+                                              fontSize: 11.0.sp,
+                                              color:
+                                                  Constants.bpOnBoardSubtitleStyle,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w500)),
+                                    ]),
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ),
+                                Container(
+                                  height: 100.0.h,
+                                  width: double.infinity,
+                                  child: ListView.separated(
+                                    itemCount: result.data?.review!.length ?? 0,
+                                    physics: BouncingScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      return Column(
+                                        children: [
+                                          ListTile(
+                                              contentPadding: EdgeInsets.all(0.0),
+                                              //leading:
+                                              title: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
                                                 children: [
-                                                  Text(
-                                                    "Marilyn Brewer",
-                                                    style: TextStyle(
-                                                        fontSize: 9.0.sp,
-                                                        color:
-                                                            Constants.bgColor,
-                                                        fontFamily:
-                                                            'Montserrat',
-                                                        fontWeight:
-                                                            FontWeight.w700),
+                                                  ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(50),
+                                                    child: Image.network(
+                                                      result.data?.review![index]
+                                                          .profileImage! ?? '',
+                                                      width: 9.0.w,
+                                                      height: 4.5.h,
+                                                      fit: BoxFit.cover,
+                                                    ),
                                                   ),
-                                                  Text(
-                                                    result.data!.review![index]
-                                                        .date!,
-                                                    style: TextStyle(
-                                                        fontSize: 6.5.sp,
-                                                        color: Constants
-                                                            .bpOnBoardSubtitleStyle,
-                                                        fontFamily:
-                                                            'Montserrat',
-                                                        fontWeight:
-                                                            FontWeight.w400),
+                                                  SizedBox(
+                                                    width: 2.0.w,
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        "Marilyn Brewer",
+                                                        style: TextStyle(
+                                                            fontSize: 9.0.sp,
+                                                            color:
+                                                                Constants.bgColor,
+                                                            fontFamily:
+                                                                'Montserrat',
+                                                            fontWeight:
+                                                                FontWeight.w700),
+                                                      ),
+                                                      Text(
+                                                        result.data?.review![index]
+                                                            .date! ?? '',
+                                                        style: TextStyle(
+                                                            fontSize: 6.5.sp,
+                                                            color: Constants
+                                                                .bpOnBoardSubtitleStyle,
+                                                            fontFamily:
+                                                                'Montserrat',
+                                                            fontWeight:
+                                                                FontWeight.w400),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
-                                            ],
+                                              trailing:
+                                                  Text.rich(TextSpan(children: [
+                                                TextSpan(
+                                                    text: 'Rated ',
+                                                    style: TextStyle(
+                                                        fontSize: 7.0.sp,
+                                                        color: Constants.bgColor,
+                                                        fontFamily: 'Montserrat',
+                                                        fontWeight:
+                                                            FontWeight.w500)),
+                                                TextSpan(
+                                                    text:
+                                                        '${result.data?.review![index].rating ?? ''}/5',
+                                                    style: TextStyle(
+                                                        fontSize: 7.0.sp,
+                                                        color:
+                                                            Constants.selectedIcon,
+                                                        fontFamily: 'Montserrat',
+                                                        fontWeight:
+                                                            FontWeight.w500)),
+                                              ]))),
+                                          Container(
+                                            child: ReadMoreText(
+                                              result.data?.review![index].descreption! ?? '',
+                                              trimLines: 3,
+                                              colorClickableText:
+                                                  Constants.blueTitle,
+                                              trimMode: TrimMode.Line,
+                                              trimCollapsedText: 'Read More',
+                                              trimExpandedText: 'See Less',
+                                              style: TextStyle(
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 9.0.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Constants
+                                                      .bpOnBoardSubtitleStyle),
+                                              //textAlign: TextAlign.justify,
+                                            ),
                                           ),
-                                          trailing:
-                                              Text.rich(TextSpan(children: [
-                                            TextSpan(
-                                                text: 'Rated ',
-                                                style: TextStyle(
-                                                    fontSize: 7.0.sp,
-                                                    color: Constants.bgColor,
-                                                    fontFamily: 'Montserrat',
-                                                    fontWeight:
-                                                        FontWeight.w500)),
-                                            TextSpan(
-                                                text:
-                                                    '${result.data!.review![index].rating}/5',
-                                                style: TextStyle(
-                                                    fontSize: 7.0.sp,
-                                                    color:
-                                                        Constants.selectedIcon,
-                                                    fontFamily: 'Montserrat',
-                                                    fontWeight:
-                                                        FontWeight.w500)),
-                                          ]))),
-                                      Container(
-                                        child: ReadMoreText(
-                                          result.data!.review![index].descreption!,
-                                          trimLines: 3,
-                                          colorClickableText:
-                                              Constants.blueTitle,
-                                          trimMode: TrimMode.Line,
-                                          trimCollapsedText: 'Read More',
-                                          trimExpandedText: 'See Less',
-                                          style: TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              fontSize: 9.0.sp,
-                                              fontWeight: FontWeight.w400,
-                                              color: Constants
-                                                  .bpOnBoardSubtitleStyle),
-                                          //textAlign: TextAlign.justify,
+                                        ],
+                                      );
+                                    },
+                                    separatorBuilder: (context, inex) {
+                                      return Padding(
+                                        padding: EdgeInsets.only(top: 1.0.h),
+                                        child: Divider(
+                                          height: 1.0.h,
+                                          thickness: 1.5,
+                                          color: Constants.formBorder,
                                         ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                                separatorBuilder: (context, inex) {
-                                  return Padding(
-                                    padding: EdgeInsets.only(top: 1.0.h),
-                                    child: Divider(
-                                      height: 1.0.h,
-                                      thickness: 1.5,
-                                      color: Constants.formBorder,
-                                    ),
-                                  );
-                                },
-                              ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
@@ -631,7 +638,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
 
   //Get Property Review API
   Future<PropertyReview> getPropertyReviewAPI() async {
-    var result;
+    //var result;
     try {
       var dio = Dio();
       var response = await dio

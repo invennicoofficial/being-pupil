@@ -688,6 +688,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 controller: _nameController,
                                 decoration: InputDecoration(
                                   labelText: "Name",
+                                  labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                   fillColor: Colors.white,
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
@@ -742,6 +747,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 ],
                                 decoration: InputDecoration(
                                   labelText: "Mobile Number",
+                                  labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                   fillColor: Colors.white,
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
@@ -781,6 +791,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 keyboardType: TextInputType.emailAddress,
                                 decoration: InputDecoration(
                                   labelText: "Email",
+                                  labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                   fillColor: Colors.white,
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
@@ -1245,6 +1260,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   labelText: "Identification Document Number",
+                                  labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                   fillColor: Colors.white,
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0),
@@ -1438,6 +1458,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                               //     .data
                                               //     .educationalDetails1[index]['school_name'],
                                                    "Name of School",
+                                                   labelStyle: TextStyle(
+                                                color: Constants.bpSkipStyle,
+                                                fontFamily: "Montserrat", 
+                                                fontSize: 10.0.sp
+                                                ),
                                               fillColor: Colors.white,
                                               // hintText: result
                                               //     .data
@@ -2322,7 +2347,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     selectedSkillList == null ||
                                             selectedSkillList.length == 0
                                         ? result.data!
-                                            .skills! //"Please mention your skills example #skills1 #skills2..."
+                                            .skills!.replaceAll('[', '').replaceAll(']', '').
+                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#') //"Please mention your skills example #skills1 #skills2..."
                                         : selectedSkillList
                                             .toString().replaceAll('[', '').replaceAll(']', '').
                                             replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
@@ -2568,7 +2594,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     selectedHobbiesList == null ||
                                             selectedHobbiesList.length == 0
                                         ? result.data!
-                                            .hobbies! //"Please mention your hobbies example #hobbie1 #hobbie2..."
+                                            .hobbies!.replaceAll('[', '').replaceAll(']', '').
+                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#') //"Please mention your hobbies example #hobbie1 #hobbie2..."
                                         : selectedHobbiesList
                                             .toString().replaceAll('[', '').replaceAll(']', '').
                                             replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
@@ -2815,6 +2842,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 controller: _fbLinkController,
                                 decoration: InputDecoration(
                                     labelText: "Facebook",
+                                    labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                     fillColor: Colors.white,
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -2865,6 +2897,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 controller: _instagramLinkController,
                                 decoration: InputDecoration(
                                     labelText: "Instagram",
+                                    labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                     fillColor: Colors.white,
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -2911,6 +2948,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 controller: _linkedInLinkLinkController,
                                 decoration: InputDecoration(
                                     labelText: "LinkedIn",
+                                    labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                     fillColor: Colors.white,
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -3617,10 +3659,10 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
           _achivementController.text = result.data!.achievements!;
           skillList.add(result.data!.skills);
           hobbieList.add(result.data!.hobbies);
-          _fbLinkController.text = result.data!.facebookUrl;
-          _instagramLinkController.text = result.data!.instaUrl!;
-          _linkedInLinkLinkController.text = result.data!.linkedinUrl!;
-          _otherLinkLinkController.text = result.data!.otherUrl!;
+          _fbLinkController.text = result.data!.facebookUrl?? '';
+          _instagramLinkController.text = result.data!.instaUrl?? '';
+          _linkedInLinkLinkController.text = result.data!.linkedinUrl?? '';
+          _otherLinkLinkController.text = result.data!.otherUrl?? '';
         });
         if(result != null){
           isLoading = false;

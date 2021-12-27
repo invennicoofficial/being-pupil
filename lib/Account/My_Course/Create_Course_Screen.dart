@@ -94,6 +94,11 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                       controller: courseNameController,
                       decoration: InputDecoration(
                         labelText: "Course Name",
+                        labelStyle: TextStyle(
+                         color: Constants.bpSkipStyle,
+                         fontFamily: "Montserrat", 
+                         fontSize: 10.0.sp
+                         ),
                         fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
@@ -134,6 +139,11 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                       //maxLength: 100,
                       decoration: InputDecoration(
                         labelText: "Course Description",
+                        labelStyle: TextStyle(
+                         color: Constants.bpSkipStyle,
+                         fontFamily: "Montserrat", 
+                         fontSize: 10.0.sp
+                         ),
                         alignLabelWithHint: true,
                         //counterText: '',
                         fillColor: Colors.white,
@@ -360,6 +370,11 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                             controller: linkControllers[index],
                             decoration: InputDecoration(
                                 labelText: "Link",
+                                labelStyle: TextStyle(
+                                color: Constants.bpSkipStyle,
+                                fontFamily: "Montserrat", 
+                                fontSize: 10.0.sp
+                                ),
                                 fillColor: Colors.white,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),

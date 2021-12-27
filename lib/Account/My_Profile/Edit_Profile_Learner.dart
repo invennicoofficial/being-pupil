@@ -602,6 +602,11 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                       controller: _nameController,
                                       decoration: InputDecoration(
                                         labelText: "Name",
+                                        labelStyle: TextStyle(
+                                          color: Constants.bpSkipStyle,
+                                          fontFamily: "Montserrat", 
+                                           fontSize: 10.0.sp
+                                ),
                                         fillColor: Colors.white,
                                         focusedBorder: OutlineInputBorder(
                                           borderRadius:
@@ -658,6 +663,11 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                       ],
                                       decoration: InputDecoration(
                                         labelText: "Mobile Number",
+                                        labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                         fillColor: Colors.white,
                                         focusedBorder: OutlineInputBorder(
                                           borderRadius:
@@ -699,6 +709,11 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                       keyboardType: TextInputType.emailAddress,
                                       decoration: InputDecoration(
                                         labelText: "Email",
+                                        labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                         fillColor: Colors.white,
                                         focusedBorder: OutlineInputBorder(
                                           borderRadius:
@@ -1208,6 +1223,11 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                       decoration: InputDecoration(
                                         labelText:
                                             "Identification Document Number",
+                                            labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                         fillColor: Colors.white,
                                         focusedBorder: OutlineInputBorder(
                                           borderRadius:
@@ -1416,6 +1436,11 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                               //     .data
                                               //     .educationalDetails1[index]['school_name'],
                                                    "Name of School",
+                                                   labelStyle: TextStyle(
+                                                color: Constants.bpSkipStyle,
+                                               fontFamily: "Montserrat", 
+                                                fontSize: 10.0.sp
+                                                ),
                                               fillColor: Colors.white,
                                               // hintText: result
                                               //     .data
@@ -2493,6 +2518,11 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                       controller: _fbLinkController,
                                       decoration: InputDecoration(
                                           labelText: "Facebook",
+                                          labelStyle: TextStyle(
+                                          color: Constants.bpSkipStyle,
+                                          fontFamily: "Montserrat", 
+                                          fontSize: 10.0.sp
+                                          ),
                                           fillColor: Colors.white,
                                           focusedBorder: OutlineInputBorder(
                                             borderRadius:
@@ -2539,6 +2569,11 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                       controller: _instagramLinkController,
                                       decoration: InputDecoration(
                                           labelText: "Instagram",
+                                          labelStyle: TextStyle(
+                                        color: Constants.bpSkipStyle,
+                                        fontFamily: "Montserrat", 
+                                        fontSize: 10.0.sp
+                                        ),
                                           fillColor: Colors.white,
                                           focusedBorder: OutlineInputBorder(
                                             borderRadius:
@@ -2586,6 +2621,11 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                       controller: _linkedInLinkLinkController,
                                       decoration: InputDecoration(
                                           labelText: "LinkedIn",
+                                          labelStyle: TextStyle(
+                                          color: Constants.bpSkipStyle,
+                                          fontFamily: "Montserrat", 
+                                          fontSize: 10.0.sp
+                                        ),
                                           fillColor: Colors.white,
                                           focusedBorder: OutlineInputBorder(
                                             borderRadius:
@@ -2633,6 +2673,11 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                       controller: _otherLinkLinkController,
                                       decoration: InputDecoration(
                                           labelText: "Other",
+                                          labelStyle: TextStyle(
+                                          color: Constants.bpSkipStyle,
+                                        fontFamily: "Montserrat", 
+                                        fontSize: 10.0.sp
+                                        ),
                                           fillColor: Colors.white,
                                           focusedBorder: OutlineInputBorder(
                                             borderRadius:
@@ -3176,10 +3221,10 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
               //result.data.identificationDocumentNumber == null ? '' :
               result.data!.identificationDocumentNumber!;
           _achivementController.text = result.data!.achievements!;
-          _fbLinkController.text = result.data!.facebookUrl;
-          _instagramLinkController.text = result.data!.instaUrl!;
-          _linkedInLinkLinkController.text = result.data!.linkedinUrl!;
-          _otherLinkLinkController.text = result.data!.otherUrl!;
+          _fbLinkController.text = result.data?.facebookUrl ?? '';
+          _instagramLinkController.text = result.data?.instaUrl ?? '';
+          _linkedInLinkLinkController.text = result.data?.linkedinUrl ?? '';
+          _otherLinkLinkController.text = result.data?.otherUrl ?? '';
          setState(() {});
         } else {
 

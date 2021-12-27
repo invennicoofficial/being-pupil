@@ -618,6 +618,11 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                       readOnly: true,
                       decoration: InputDecoration(
                         labelText: "Name",
+                        labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                         fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
@@ -668,6 +673,11 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                       readOnly: true,
                       decoration: InputDecoration(
                         labelText: "Email",
+                        labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                         fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
@@ -828,6 +838,11 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                       ],
                       decoration: InputDecoration(
                         labelText: "Mobile Number",
+                        labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                         fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),

@@ -311,26 +311,43 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                     ),
                                   ],
                                 ),
-                                trailing: GestureDetector(
-                                  onTap: () {
-                                    pushNewScreen(context,
-                                        withNavBar: false,
-                                        screen: ReportFeed(
-                                          postId: postIdList[index],
-                                        ),
-                                        pageTransitionAnimation:
-                                            PageTransitionAnimation.cupertino);
-                                  },
-                                  child: Container(
-                                      height: 20.0,
-                                      width: 20.0,
-                                      //color: Colors.grey,
-                                      child: Icon(Icons.error_outline_outlined, color: Constants.bpOnBoardSubtitleStyle, size: 20.0,)
-                                      //Image.asset('assets/icons/issueIcon.png',),
-                                      // size: 25.0,
-                                      // color: Constants.bgColor,
-                                          //Icons.report_gmailerrorred_outlined
-                                          )),
+                                trailing: IconButton(
+                                     icon: Image.asset('assets/icons/issueIcon.png',
+                                      height: 18.0,
+                                      width: 18.0,),
+                                    onPressed: () {
+                                      pushNewScreen(context,
+                                          withNavBar: false,
+                                          screen: ReportFeed(
+                                            postId: postIdList[index],
+                                          ),
+                                          pageTransitionAnimation:
+                                              PageTransitionAnimation
+                                                  .cupertino);
+                                    }),
+                                // GestureDetector(
+                                //   onTap: () {
+                                //     pushNewScreen(context,
+                                //         withNavBar: false,
+                                //         screen: ReportFeed(
+                                //           postId: postIdList[index],
+                                //         ),
+                                //         pageTransitionAnimation:
+                                //             PageTransitionAnimation.cupertino);
+                                //   },
+                                //   child: Padding(
+                                //     padding: const EdgeInsets.only(right: 10.0),
+                                //     child: Container(
+                                //         height: 20.0,
+                                //         width: 20.0,
+                                //         //color: Colors.grey,
+                                //         child: Icon(Icons.error_outline_outlined, color: Constants.bpOnBoardSubtitleStyle, size: 20.0,)
+                                //         //Image.asset('assets/icons/issueIcon.png',),
+                                //         // size: 25.0,
+                                //         // color: Constants.bgColor,
+                                //             //Icons.report_gmailerrorred_outlined
+                                //             ),
+                                //   )),
                                 //),
                               ),
                               //Post descriptionText
@@ -464,8 +481,8 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                             postIdList[index], authToken!);
                                         setState(() {
                                           isLiked[index] == true
-                                              ? likesList[index]! + 1
-                                              : likesList[index]! - 1;
+                                              ? likesList[index] = likesList[index]! + 1
+                                              : likesList[index] = likesList[index]! - 1;
                                         });
                                       },
                                       child: Container(
