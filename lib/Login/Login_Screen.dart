@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:being_pupil/ConnectyCube/api_utils.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Login/AuthService.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Login_Model.dart';
 import 'package:being_pupil/Model/Social_Login_Check_Model.dart';
@@ -17,6 +18,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
+import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
 import 'OTP_Screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -244,7 +246,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               )),
                             ),
                           ])),
-                      Platform.isIOS ? Padding(
+                      Platform.isAndroid ? Padding(
                         padding: EdgeInsets.only(
                             left: 10.0.w, right: 10.0.w, top: 3.0.h),
                         child: Row(
@@ -252,8 +254,19 @@ class _LoginScreenState extends State<LoginScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             GestureDetector(
-                              onTap: () {
+                              onTap: () async {
                                 print('Apple Login!!!');
+                                try {
+                                  final AuthService authService = AuthService();
+                                  final user = await authService.signInWithApple(
+                                      scopes: [Scope.email, Scope.fullName]);
+                                  if(user.email != null) {
+                                    print(user);
+                                  }
+                                } catch (e) {
+                                  // TODO: Show alert here
+                                  print(e);
+                                }
                                 setState(() {
                                   registrationType = 'A';
                                 });
