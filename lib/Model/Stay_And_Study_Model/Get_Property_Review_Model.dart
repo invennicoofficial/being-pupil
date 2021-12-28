@@ -117,6 +117,7 @@ class Review {
         this.headline,
         this.descreption,
         this.rating,
+        this.name
     });
 
     int? reviewId;
@@ -126,6 +127,7 @@ class Review {
     String? headline;
     String? descreption;
     String? rating;
+    String? name;
 
     factory Review.fromJson(Map<String, dynamic> json) => Review(
         reviewId: json["review_id"],
@@ -135,6 +137,7 @@ class Review {
         headline: json["headline"],
         descreption: json["descreption"],
         rating: json["rating"],
+        name: json["review_user_name"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -145,6 +148,7 @@ class Review {
         "headline": headline,
         "descreption": descreption,
         "rating": rating,
+        "review_user_name": name,
     };
 }
 

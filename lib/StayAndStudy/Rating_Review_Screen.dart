@@ -518,6 +518,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                     physics: BouncingScrollPhysics(),
                                     itemBuilder: (context, index) {
                                       return Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           ListTile(
                                               contentPadding: EdgeInsets.all(0.0),
@@ -545,7 +546,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                                         CrossAxisAlignment.start,
                                                     children: [
                                                       Text(
-                                                        "Marilyn Brewer",
+                                                        result.data?.review![index].name! ?? '',
                                                         style: TextStyle(
                                                             fontSize: 9.0.sp,
                                                             color:
@@ -590,14 +591,13 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                                             Constants.selectedIcon,
                                                         fontFamily: 'Montserrat',
                                                         fontWeight:
-                                                            FontWeight.w500)),
+                                                            FontWeight.w600)),
                                               ]))),
                                           Container(
                                             child: ReadMoreText(
                                               result.data?.review![index].descreption! ?? '',
                                               trimLines: 3,
-                                              colorClickableText:
-                                                  Constants.blueTitle,
+                                              colorClickableText: Constants.blueTitle,
                                               trimMode: TrimMode.Line,
                                               trimCollapsedText: 'Read More',
                                               trimExpandedText: 'See Less',
@@ -605,15 +605,14 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 9.0.sp,
                                                   fontWeight: FontWeight.w400,
-                                                  color: Constants
-                                                      .bpOnBoardSubtitleStyle),
+                                                  color: Constants.bpOnBoardSubtitleStyle),
                                               //textAlign: TextAlign.justify,
                                             ),
                                           ),
                                         ],
                                       );
                                     },
-                                    separatorBuilder: (context, inex) {
+                                    separatorBuilder: (context, index) {
                                       return Padding(
                                         padding: EdgeInsets.only(top: 1.0.h),
                                         child: Divider(
@@ -645,7 +644,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
           .get('${Config.getReviewUrl}?property_id=${widget.propertyId}');
 
       if (response.statusCode == 200) {
-        print(response.data);
+        print('THIS IS THE REVIEW DATA::' + response.data.toString());
         result = PropertyReview.fromJson(response.data);
 
         if (result.status == true) {

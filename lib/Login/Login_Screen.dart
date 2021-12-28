@@ -251,7 +251,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               )),
                             ),
                           ])),
-                      Platform.isAndroid ? Padding(
+                      Platform.isIOS ? Padding(
                         padding: EdgeInsets.only(
                             left: 10.0.w, right: 10.0.w, top: 3.0.h),
                         child: Row(
@@ -486,10 +486,9 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
         print(response.data);
         closeProgressDialog(context);
-        result = Login.fromJson(response.data);
-        saveUserData(result.data!.userId!);
-        print('ID ::: ' + result.data!.userId.toString());
         if (result.status == true) {
+          result = Login.fromJson(response.data);
+          saveUserData(result.data!.userId!);
           Navigator.push(
               context,
               PageTransition(
@@ -508,8 +507,9 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         } else {
           if (result.message == null) {
+            print('here');
             Fluttertoast.showToast(
-              msg: result.errorMsg!,
+              msg: result.errorMsg.toString(),
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
@@ -519,7 +519,7 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           } else {
             Fluttertoast.showToast(
-              msg: result.message!,
+              msg: result.errorMsg!,
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
