@@ -5,8 +5,8 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'OnBoarding_Screens/OnBoarding_Screen.dart';
@@ -15,7 +15,9 @@ import 'package:sizer/sizer.dart';
 import 'Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/ConnectyCube/configs.dart' as config;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
