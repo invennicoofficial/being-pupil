@@ -124,7 +124,7 @@ class _LearnerListState extends State<LearnerList> {
                   return Card(
                     elevation: 2.0,
                     child: Padding(
-                      padding: EdgeInsets.only(left: 2.0.w),
+                      padding: EdgeInsets.only(left: 1.0.w),
                       child: Container(
                         height: 10.0.h,
                         child: ListTile(

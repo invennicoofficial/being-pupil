@@ -633,6 +633,7 @@ class _LoginScreenState extends State<LoginScreen> {
            preferences.setString("name", result.data!.userObject!.name!);
               preferences.setString("mobileNumber", result.data!.userObject!.mobileNumber!);
               preferences.setString("gender", result.data!.userObject!.gender!);
+              preferences.setString("email", result.data!.userObject!.email!);
               //result.data.userObject.role == 'E' ?
               preferences.setString("imageUrl", result.data!.userObject!.imageUrl!);
               // : preferences.setString("imageUrl", '');
@@ -669,36 +670,16 @@ class _LoginScreenState extends State<LoginScreen> {
           //         child: OtpScreen(
           //           mobileNumber: mobileController.text,
           //         )));
-          Fluttertoast.showToast(
-            msg: result.message!,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Constants.bgColor,
-            textColor: Colors.white,
-            fontSize: 10.0.sp,
-          );
-          if (result.message == null) {
-            Fluttertoast.showToast(
-              msg: result.message!,
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Constants.bgColor,
-              textColor: Colors.white,
-              fontSize: 10.0.sp,
-            );
-          } else {
-            Fluttertoast.showToast(
-              msg: result.message!,
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Constants.bgColor,
-              textColor: Colors.white,
-              fontSize: 10.0.sp,
-            );
-          }
+          // Fluttertoast.showToast(
+          //   msg: result.message!,
+          //   toastLength: Toast.LENGTH_SHORT,
+          //   gravity: ToastGravity.BOTTOM,
+          //   timeInSecForIosWeb: 1,
+          //   backgroundColor: Constants.bgColor,
+          //   textColor: Colors.white,
+          //   fontSize: 10.0.sp,
+          // );
+
         }
         print(result);
       }
@@ -707,17 +688,15 @@ class _LoginScreenState extends State<LoginScreen> {
       print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
-        Fluttertoast.showToast(
-          msg: e.response!.data['meta']['message'],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Constants.bgColor,
-          textColor: Colors.white,
-          fontSize: 10.0.sp,
-        );
+        // Fluttertoast.showToast(
+        //   msg: e.response!.data['meta']['message'],
+        //   toastLength: Toast.LENGTH_SHORT,
+        //   gravity: ToastGravity.BOTTOM,
+        //   timeInSecForIosWeb: 1,
+        //   backgroundColor: Constants.bgColor,
+        //   textColor: Colors.white,
+        //   fontSize: 10.0.sp,
+        // );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);

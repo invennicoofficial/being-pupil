@@ -86,10 +86,12 @@ class _CancelDoneScreenState extends State<CancelDoneScreen> {
       ),
       body: WillPopScope(
         onWillPop: () {
+          Future<bool> booleanVal = true as Future<bool>;
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => bottomNavBar(0)),
               (Route<dynamic> route) => false);
-        } as Future<bool> Function()?,
+          return booleanVal;
+        },
         child: Padding(
           padding: EdgeInsets.only(top: 4.0.h, left: 4.0.w, right: 4.0.w),
           child: Column(

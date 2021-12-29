@@ -297,10 +297,10 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
               role == 'E' ? preferences.setString("schoolName", map!['data']['userObj']['educational_details'].last['school_name']) : preferences.setString("schoolName",'');
               role == 'E' ? preferences.setString("address1", map!['data']['userObj']['location'][0]['address_line1']): preferences.setString("address1", '');
               role == 'E' ? preferences.setString("address2", map!['data']['userObj']['location'][0]['city']): preferences.setString("address2", '');
-              role == 'E' ? preferences.setString("facebookUrl", map!['data']['userObj']['facebook_url']) : preferences.setString("facebookUrl",'');
-              role == 'E' ? preferences.setString("instaUrl", map!['data']['userObj']['insta_url']) : preferences.setString("instaUrl",'');
-              role == 'E' ? preferences.setString("linkedInUrl", map!['data']['userObj']['linkedin_url']) : preferences.setString("linkedInUrl", '');
-              role == 'E' ? preferences.setString("otherUrl", map!['data']['userObj']['other_url']) : preferences.setString("otherUrl", '');
+              // role == 'E' ? preferences.setString("facebookUrl", map!['data']['userObj']['facebook_url']) : preferences.setString("facebookUrl",'');
+              // role == 'E' ? preferences.setString("instaUrl", map!['data']['userObj']['insta_url']) : preferences.setString("instaUrl",'');
+              // role == 'E' ? preferences.setString("linkedInUrl", map!['data']['userObj']['linkedin_url']) : preferences.setString("linkedInUrl", '');
+              // role == 'E' ? preferences.setString("otherUrl", map!['data']['userObj']['other_url']) : preferences.setString("otherUrl", '');
               role == 'E' ? preferences.setString("isNew", map!['data']['userObj']['isNew']) : preferences.setString("isNew", '');
               preferences.setBool('isLoggedIn', true);
               }
