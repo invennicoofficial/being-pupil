@@ -3101,7 +3101,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
       address1 = result.formattedAddress;
       address2 = result.subLocalityLevel1!.name;
       city = result.locality;
-      country = result.country!.name;
+      country = address1!.substring(address1!.lastIndexOf(" ")+1);
       lat = result.latLng!.latitude;
       lng = result.latLng!.longitude;
       pinCode = result.postalCode;

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:being_pupil/ConnectyCube/api_utils.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
+import 'package:being_pupil/Login/Verification_Screen.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -3250,16 +3251,19 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
       address1 = result.formattedAddress;
       address2 = result.subLocalityLevel1!.name;
       city = result.locality;
-      country = result.country!.name;
+      // country = address1!.substring(address1!.lastIndexOf(" ")+1);
+      country = address1!.substring(address1!.lastIndexOf(" ")+1);
       lat = result.latLng!.latitude;
       lng = result.latLng!.longitude;
       pinCode = result.postalCode;
     });
 
-    print('CITY::: $city');
-    print('LATLNG::: ${result.latLng}');
-    print('Country::: $pinCode');
-    print('ADDRESS::: $address1');
+    // print('CITY::: $city');
+    // print('LATLNG::: ${result.latLng}');
+    // print('Country::: ${result.country!.name}');
+    // print('Country::: ${result.country!.shortName}');
+    // print('ADDRESS::: $address1');
+    // print(address1!.substring(address1!.lastIndexOf(" ")+1));
   }
 
   //Tag for Skills
@@ -3610,27 +3614,33 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
         result = ProfileUpdate.fromJson(response.data);
         print(result.data!.name);
         if (result.status == true) {
-          print('TRUE::');
-          preferences.setString("name", result.data!.name!);
-          preferences.setString("imageUrl", result.data!.imageUrl!);
-          preferences.setString("mobileNumber", result.data!.mobileNumber!);
-          preferences.setString("gender", result.data!.gender!);
-          preferences.setString("email", result.data!.email!);
-          preferences.setString("qualification", result.data!.educationalDetails![0].qualification.toString());
-          preferences.setString("schoolName", result.data!.educationalDetails![0].schoolName.toString());
-          preferences.setString("address1", result.data!.location.toString());
-          preferences.setString("address2", result.data!.location.toString());
-          preferences.setString("facebookUrl", result.data!.facbookUrl.toString());
-          preferences.setString("instaUrl", result.data!.instaUrl.toString());
-          preferences.setString("linkedInUrl", result.data!.linkedinUrl.toString());
-          preferences.setString("otherUrl", result.data!.otherUrl.toString());
-          print('QUALIFICATION:::: ' +
-              result.data!.educationalDetails!.last.qualification!);
-          print('LOCATION:::: ' + result.data!.location![0].addressLine2!);
-          print('IMAGE:::: ' + result.data!.imageUrl!);
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => bottomNavBar(4)),
-              (Route<dynamic> route) => false);
+          if(result.data!.isVerified == 'P') {
+            closeProgressDialog(context);
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => VerificationScreen()));
+          } else {
+            print('TRUE::');
+            preferences.setString("name", result.data!.name!);
+            preferences.setString("imageUrl", result.data!.imageUrl!);
+            preferences.setString("mobileNumber", result.data!.mobileNumber!);
+            preferences.setString("gender", result.data!.gender!);
+            preferences.setString("email", result.data!.email!);
+            preferences.setString("qualification", result.data!.educationalDetails![0].qualification.toString());
+            preferences.setString("schoolName", result.data!.educationalDetails![0].schoolName.toString());
+            preferences.setString("address1", result.data!.location.toString());
+            preferences.setString("address2", result.data!.location.toString());
+            preferences.setString("facebookUrl", result.data!.facbookUrl.toString());
+            preferences.setString("instaUrl", result.data!.instaUrl.toString());
+            preferences.setString("linkedInUrl", result.data!.linkedinUrl.toString());
+            preferences.setString("otherUrl", result.data!.otherUrl.toString());
+            print('QUALIFICATION:::: ' +
+                result.data!.educationalDetails!.last.qualification!);
+            print('LOCATION:::: ' + result.data!.location![0].addressLine2!);
+            print('IMAGE:::: ' + result.data!.imageUrl!);
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => bottomNavBar(4)),
+                    (Route<dynamic> route) => false);
+          }
         } else {
           print('FALSE::');
         }

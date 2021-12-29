@@ -27,6 +27,8 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:being_pupil/Registration/Educator_Registration.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 
+import 'Verification_Screen.dart';
+
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -485,8 +487,8 @@ class _LoginScreenState extends State<LoginScreen> {
       var response = await dio.post(Config.loginUrl, data: formData);
       if (response.statusCode == 200) {
         print(response.data);
-        result = Login.fromJson(response.data);
         closeProgressDialog(context);
+        result = Login.fromJson(response.data);
         if (result.status == true) {
           saveUserData(result.data!.userId!);
           Navigator.push(
@@ -507,9 +509,8 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         } else {
           if (result.message == null) {
-            print('here');
             Fluttertoast.showToast(
-              msg: result.errorMsg.toString(),
+              msg: result.message!,
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
@@ -519,7 +520,7 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           } else {
             Fluttertoast.showToast(
-              msg: result.errorMsg!,
+              msg: result.message!,
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
@@ -573,7 +574,7 @@ class _LoginScreenState extends State<LoginScreen> {
         result = SocialLoginCheck.fromJson(response.data);
 
         //print('ID ::: ' + result.data.userObject.userId.toString());
-        
+
         if (result.data!.userObject == null) {
           // Fluttertoast.showToast(
           //   msg: result.message,
@@ -597,29 +598,42 @@ class _LoginScreenState extends State<LoginScreen> {
                     socialPhotoUrl: socialPhotoUrl,
                   )));
         } else {
-          print('API MO::::$mobileNumberFromAPi');
-          // saveUserData(result.data.userObject.userId);
-          // mobileNumberFromAPi = result.data.userObject.mobileNumber;
-          // setState(() {});
-          // login(mobileNumberFromAPi);
-          print('ROLE ::' + result.data!.userObject.toString());
-          saveToken(result.data!.token!);
-          role = result.data!.userObject!.role;
-          name = result.data!.userObject!.name;
-          mobileNumberFromAPi = result.data!.userObject!.mobileNumber;
-          email = result.data!.userObject!.email;
-          preferences.setString('RegisterAs', role!);
-          
-
          if(result.data!.userObject!.isNew == "true") {
+           print('API MO::::$mobileNumberFromAPi');
+           // saveUserData(result.data.userObject.userId);
+           // mobileNumberFromAPi = result.data.userObject.mobileNumber;
+           // setState(() {});
+           // login(mobileNumberFromAPi);
+           print('ROLE ::' + result.data!.userObject.toString());
+           saveToken(result.data!.token!);
+           role = result.data!.userObject!.role;
+           name = result.data!.userObject!.name;
+           mobileNumberFromAPi = result.data!.userObject!.mobileNumber;
+           preferences.setString('RegisterAs', role!);
 
            _signInCC(context, CubeUser(fullName: result.data!.userObject!.name, login: socialEmail, password: '12345678'), result);
 
-          } else {
-              preferences.setString("name", result.data!.userObject!.name!);
+          } else if(result.data!.userObject!.isVerified == "P") {
+           closeProgressDialog(context);
+           Navigator.of(context).push(MaterialPageRoute(
+               builder: (context) => VerificationScreen()));
+         } else {
+           print('API MO::::$mobileNumberFromAPi');
+           // saveUserData(result.data.userObject.userId);
+           // mobileNumberFromAPi = result.data.userObject.mobileNumber;
+           // setState(() {});
+           // login(mobileNumberFromAPi);
+           print('ROLE ::' + result.data!.userObject.toString());
+           saveToken(result.data!.token!);
+           role = result.data!.userObject!.role;
+           name = result.data!.userObject!.name;
+           mobileNumberFromAPi = result.data!.userObject!.mobileNumber;
+           preferences.setString('RegisterAs', role!);
+
+           preferences.setString("name", result.data!.userObject!.name!);
               preferences.setString("mobileNumber", result.data!.userObject!.mobileNumber!);
               preferences.setString("gender", result.data!.userObject!.gender!);
-              //result.data.userObject.role == 'E' ? 
+              //result.data.userObject.role == 'E' ?
               preferences.setString("imageUrl", result.data!.userObject!.imageUrl!);
               // : preferences.setString("imageUrl", '');
               result.data!.userObject!.role == 'E' ? preferences.setString("qualification", result.data!.userObject!.educationalDetail!.qualification!) : preferences.setString("qualification", '');

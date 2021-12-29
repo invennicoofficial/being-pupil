@@ -1,14 +1,16 @@
 class OtpResponse {
   bool? status;
   String? message;
+  String? error_msg;
   OtpData? data;
 
-  OtpResponse({this.status, this.message, this.data});
+  OtpResponse({this.status, this.message, this.data, this.error_msg});
 
   factory OtpResponse.fromJson(Map<String, dynamic> json) {
     return OtpResponse(
       status: json['status'],
       message: json['message'],
+      error_msg: json['error_msg'],
       data: json['status'] == true
           ? new OtpData.fromJson(json['data'])
           : new OtpData.toEmpty(json['data']),
@@ -20,6 +22,7 @@ class OtpResponse {
 
     data['status'] = this.status;
     data['message'] = this.message;
+    data['error_msg'] = this.error_msg;
 
     if (this.data != null) {
       data['data'] = this.data!.toJson();
@@ -70,6 +73,7 @@ class UserObject {
   String? instaUrl;
   String? liUrl;
   String? otherUrl;
+  String? isVerified;
 
   UserObject(
       {this.role,
@@ -84,7 +88,8 @@ class UserObject {
       this.fbUrl,
       this.instaUrl,
       this.liUrl,
-      this.otherUrl
+      this.otherUrl,
+        this.isVerified
       });
 
   factory UserObject.fromJson(Map<String, dynamic> json) {
@@ -106,6 +111,7 @@ class UserObject {
         instaUrl: json['insta_url'],
         liUrl: json['linkedin_url'],
         otherUrl: json['other_url'],
+      isVerified: json['isVerified'],
         );
   }
 
@@ -124,6 +130,7 @@ class UserObject {
     data['insta_url'] = this.instaUrl;
     data['linkedin_url'] = this.liUrl;
     data['other_url'] = this.otherUrl;
+    data['isVerified'] = this.isVerified;
     return data;
   }
 }

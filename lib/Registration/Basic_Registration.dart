@@ -535,7 +535,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         print(response.data);
         closeProgressDialog(context);
         result = SignUp.fromJson(response.data);
-        //print(result.data.name);
         if(result.status == true){
         print('ID ::: ' + result.data!.userId.toString());
         saveUserData(result.data!.userId!);

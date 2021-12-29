@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
+import 'package:being_pupil/Login/Verification_Screen.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -380,6 +381,10 @@ class _OtpScreenState extends State<OtpScreen> {
                   mobileNumber: mobileNumber,
                   email: email,
                 )));
+          } else if(result.data!.userObject!.isVerified == "P") {
+            closeProgressDialog(context);
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => VerificationScreen()));
           } else {
               preferences.setString("name", result.data!.userObject!.name!);
               preferences.setString("mobileNumber", result.data!.userObject!.mobileNumber!);
@@ -420,8 +425,9 @@ class _OtpScreenState extends State<OtpScreen> {
             fontSize: 10.0.sp,
           );
         } else {
+          closeProgressDialog(context);
           Fluttertoast.showToast(
-            msg: result.message!,
+            msg: result.error_msg!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,

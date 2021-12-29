@@ -366,6 +366,7 @@ class Data {
         this.totalWorkExperience,
         this.totalTeachingExperience,
         this.interestedCategory,
+        this.isVerified,
     });
 
     int? userId;
@@ -385,6 +386,7 @@ class Data {
     String? achievements;
     String? skills;
     String? hobbies;
+    String? isVerified;
     dynamic facbookUrl;
     dynamic instaUrl;
     dynamic linkedinUrl;
@@ -414,6 +416,7 @@ class Data {
         hobbies: json["hobbies"],
         facbookUrl: json["facbook_url"],
         instaUrl: json["insta_url"],
+        isVerified: json["isVerified"],
         linkedinUrl: json["linkedin_url"],
         otherUrl: json["other_url"],
         educationalDetails: List<EducationalDetail>.from(json["educational_details"].map((x) => EducationalDetail.fromJson(x))),
@@ -446,6 +449,7 @@ class Data {
         "insta_url": instaUrl,
         "linkedin_url": linkedinUrl,
         "other_url": otherUrl,
+        "isVerified": isVerified,
         "educational_details": List<dynamic>.from(educationalDetails!.map((x) => x.toJson())),
         "total_work_experience": totalWorkExperience,
         "total_teaching_experience": totalTeachingExperience,
