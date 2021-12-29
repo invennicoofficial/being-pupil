@@ -3642,21 +3642,29 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => bottomNavBar(4)),
                     (Route<dynamic> route) => false);
+            Fluttertoast.showToast(
+              msg: result.message!,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Constants.bgColor,
+              textColor: Colors.white,
+              fontSize: 10.0.sp,
+            );
           }
         } else {
           print('FALSE::');
+          Fluttertoast.showToast(
+            msg: result.errorMsg!,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
         }
         // saveUserData(result.data.userId);
-
-        Fluttertoast.showToast(
-          msg: result.message!,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Constants.bgColor,
-          textColor: Colors.white,
-          fontSize: 10.0.sp,
-        );
       } else {
         Fluttertoast.showToast(
           msg: result.message!,
