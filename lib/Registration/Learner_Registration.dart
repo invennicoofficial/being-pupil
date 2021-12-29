@@ -3118,7 +3118,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
         'identification_document_number': idNumber,
         //'location[0][id]': 54,
         'location[0][address_line_1]': addressLine1,
-        'location[0][address_line_2]': addressLine2,
+        // 'location[0][address_line_2]': addressLine2,
         'location[0][city]': city,
         'location[0][country]': country,
         'location[0][pincode]': pinCode,
