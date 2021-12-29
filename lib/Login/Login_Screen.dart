@@ -180,9 +180,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: GestureDetector(
                           onTap: () {
                             print('Logged In!!!');
-                            if (mobileController.text.isEmpty) {
+                            bool mobileValid = RegExp(r"^[6-9]\d{9}$").hasMatch(mobileController.text);
+                            print('VALID:::'+mobileValid.toString());
+                            if (mobileController.text.isEmpty || (mobileValid == false)) {
                               Fluttertoast.showToast(
-                                msg: 'Please Enter Mobile Number',
+                                msg: 'Please Enter Valid Mobile Number',
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.BOTTOM,
                                 timeInSecForIosWeb: 1,
@@ -508,7 +510,7 @@ class _LoginScreenState extends State<LoginScreen> {
             fontSize: 10.0.sp,
           );
         } else {
-          if (result.message == null) {
+          if (result.message != null) {
             Fluttertoast.showToast(
               msg: result.message!,
               toastLength: Toast.LENGTH_SHORT,
@@ -520,7 +522,7 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           } else {
             Fluttertoast.showToast(
-              msg: result.message!,
+              msg: result.errorMsg!,
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,

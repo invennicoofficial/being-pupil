@@ -158,8 +158,9 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
                             left: 3.0.w, right: 3.0.w, top: 6.0.h),
                         child: GestureDetector(
                           onTap: () {
+                            bool mobileValid = RegExp(r"^[6-9]\d{9}$").hasMatch(mobileController.text);
                             print('Logged In!!!');
-                            if (mobileController.text.isEmpty || mobileController.text.length < 10){
+                            if (mobileController.text.isEmpty || (mobileValid == false)){
                               Fluttertoast.showToast(
                                 msg: 'Please Enter Valid Mobile Number',
                                 toastLength: Toast.LENGTH_SHORT,

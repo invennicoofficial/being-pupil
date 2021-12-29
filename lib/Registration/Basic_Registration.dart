@@ -346,6 +346,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9."
                             r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                 .hasMatch(emailController.text.trim());
+                            bool mobileValid = RegExp(r"^[6-9]\d{9}$").hasMatch(mobileController.text);
                             //signUp(nameController.text.trim(), mobileController.text.trim(), registerAs, deviceType, deviceId)
                             if (nameController.text.isEmpty){
                               Fluttertoast.showToast(
@@ -356,9 +357,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   backgroundColor: Constants.bgColor,
                                   textColor: Colors.white,
                                   fontSize: 10.0.sp);
-                            } else if (mobileController.text.isEmpty) {
+                            } else if (mobileController.text.isEmpty || (mobileValid == false)) {
                               Fluttertoast.showToast(
-                                  msg: "Please Enter Mobile Number",
+                                  msg: "Please Enter Valid Mobile Number",
                                   toastLength: Toast.LENGTH_SHORT,
                                   gravity: ToastGravity.BOTTOM,
                                   timeInSecForIosWeb: 1,

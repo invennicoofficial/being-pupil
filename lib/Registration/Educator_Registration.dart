@@ -627,6 +627,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               width: 90.0.w,
                               child: TextFormField(
                                 controller: _nameController,
+                                readOnly: true,
                                 decoration: InputDecoration(
                                   labelText: "Name",
                                   labelStyle: TextStyle(
@@ -682,6 +683,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               width: 90.0.w,
                               child: TextFormField(
                                 controller: _mobileController,
+                                readOnly: true,
                                 keyboardType: TextInputType.phone,
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(10),
@@ -729,6 +731,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               width: 90.0.w,
                               child: TextFormField(
                                 controller: _emailController,
+                                readOnly: true,
                                 keyboardType: TextInputType.emailAddress,
                                 decoration: InputDecoration(
                                   labelText: "Email",
