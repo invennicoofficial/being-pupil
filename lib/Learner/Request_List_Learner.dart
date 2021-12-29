@@ -1,6 +1,8 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Request_Model.dart';
+import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
+import 'package:being_pupil/StudyBuddy/Learner_ProfileView_Screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,18 +11,16 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
-import 'Educator_ProfileView_Screen.dart';
-import 'Learner_ProfileView_Screen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
-class RequestList extends StatefulWidget {
-  RequestList({Key? key}) : super(key: key);
+class RequestListLearner extends StatefulWidget {
+  RequestListLearner({Key? key}) : super(key: key);
 
   @override
-  _RequestListState createState() => _RequestListState();
+  _RequestListLearnerState createState() => _RequestListLearnerState();
 }
 
-class _RequestListState extends State<RequestList> {
+class _RequestListLearnerState extends State<RequestListLearner> {
   String? registerAs, authToken;
   int? userId;
   ScrollController _scrollController = ScrollController();
@@ -269,7 +269,7 @@ class _RequestListState extends State<RequestList> {
     try {
       Dio dio = Dio();
 
-      var response = await dio.get('${Config.getRequestUrl}$userId?page=$page&user_type=$registerAs');
+      var response = await dio.get('${Config.getRequestUrl}$userId?page=$page&user_type=${registerAs == 'E' ? 'L' : 'E'}');
       print(response.statusCode);
 
       if (response.statusCode == 200) {

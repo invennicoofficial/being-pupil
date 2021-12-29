@@ -22,9 +22,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'package:filter_list/filter_list.dart';
 
 class LearnerRegistration extends StatefulWidget {
-  String? name, mobileNumber;
+  String? name, mobileNumber, email;
   LearnerRegistration(
-      {Key? key, required this.name, required this.mobileNumber})
+      {Key? key, required this.name, required this.mobileNumber, required this.email})
       : super(key: key);
 
   @override
@@ -97,6 +97,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
     getData();
     _nameController.text = widget.name!;
     _mobileController.text = widget.mobileNumber!;
+    _emailController.text = widget.email!;
     educationDetailMap.add({
       'school_name': 'MSU',
       'year': 'Year',
@@ -625,6 +626,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                               width: 90.0.w,
                               child: TextFormField(
                                 controller: _nameController,
+                                readOnly: true,
                                 decoration: InputDecoration(
                                   labelText: "Name",
                                   labelStyle: TextStyle(
@@ -680,6 +682,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                               width: 90.0.w,
                               child: TextFormField(
                                 controller: _mobileController,
+                                readOnly: true,
                                 keyboardType: TextInputType.phone,
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(10),
@@ -727,6 +730,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                               width: 90.0.w,
                               child: TextFormField(
                                 controller: _emailController,
+                                readOnly: true,
                                 keyboardType: TextInputType.emailAddress,
                                 decoration: InputDecoration(
                                   labelText: "Email",
@@ -3211,7 +3215,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
           preferences.setString("otherUrl", result.data?.otherUrl ?? '');
           print('QUALIFICATION:::: ' +
               result.data!.educationalDetails!.last.qualification!);
-          print('LOCATION:::: ' + result.data!.location![0].addressLine2!);
+          //print('LOCATION:::: ' + result.data!.location![0].addressLine2!);
           print('IMAGE:::: ' + result.data!.imageUrl!);
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => bottomNavBar(4)),

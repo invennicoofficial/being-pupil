@@ -3637,7 +3637,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
             preferences.setString("otherUrl", result.data!.otherUrl.toString());
             print('QUALIFICATION:::: ' +
                 result.data!.educationalDetails!.last.qualification!);
-            print('LOCATION:::: ' + result.data!.location![0].addressLine2!);
+            //print('LOCATION:::: ' + result.data!.location![0].addressLine2!);
             print('IMAGE:::: ' + result.data!.imageUrl!);
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => bottomNavBar(4)),

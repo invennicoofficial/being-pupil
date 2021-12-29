@@ -3231,6 +3231,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LearnerRegistration(
             name: result.data!.name,
             mobileNumber: result.data!.mobileNumber,
+            email: result.data!.email,
           )));
         }
 
@@ -4126,7 +4127,7 @@ print('MAP:::' + formData.fields.toString());
         } else {
           print('FALSE::');
           Fluttertoast.showToast(
-            msg: update.message!,
+            msg: update.message == null ? update.errorMsg : update.message,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
