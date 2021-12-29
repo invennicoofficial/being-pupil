@@ -312,6 +312,7 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
                 builder: (context) => EducatorRegistration(
                   name: map!['data']['userObj']['name'].toString(),
                   mobileNumber: mobileNumber,
+                  //email: map!['data']['userObj']['email'].toString()
                 )));
               }
             else{ Navigator.of(context).pushAndRemoveUntil(

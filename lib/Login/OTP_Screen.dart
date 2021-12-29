@@ -43,7 +43,7 @@ class _OtpScreenState extends State<OtpScreen> {
   String? registerAs;
   String? role;
   int? userId;
-  String? name, mobileNumber;
+  String? name, mobileNumber, email;
 
   void initState() {
     // TODO: implement initState
@@ -366,6 +366,7 @@ class _OtpScreenState extends State<OtpScreen> {
           role = result.data!.userObject!.role;
           name = result.data!.userObject!.name;
           mobileNumber = result.data!.userObject!.mobileNumber;
+          email = result.data!.userObject!.email;
           preferences.setString('RegisterAs', role!);
           if(result.data!.userObject!.isNew == "true") {
             closeProgressDialog(context);
@@ -377,6 +378,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 builder: (context) => EducatorRegistration(
                   name: name,
                   mobileNumber: mobileNumber,
+                  email: email,
                 )));
           } else {
               preferences.setString("name", result.data!.userObject!.name!);

@@ -27,11 +27,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class EducatorRegistration extends StatefulWidget {
-  String? name, mobileNumber;
+  String? name, mobileNumber, email;
   EducatorRegistration({
     Key? key,
     required this.name,
     required this.mobileNumber,
+    //@required 
+    this.email
   }) : super(key: key);
 
   @override
@@ -101,15 +103,16 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
     itemCount = 1;
     _nameController.text = widget.name!;
     _mobileController.text = widget.mobileNumber!;
+    _emailController.text = widget.email!;
     createControllers();
     getToken();
     getData();
     educationDetailMap.add({
-                                    'school_name': 'MSU',
-                                    'year': 'Year',
-                                    'qualification': 'BCA',
-                                    'certificate': 'Upload Certificate/Degree'
-                                  });
+     'school_name': 'MSU',
+     'year': 'Year',
+     'qualification': 'BCA',
+     'certificate': 'Upload Certificate/Degree'
+      });
     print(educationDetailMap);
     super.initState();
     // _selectedSkills = [];

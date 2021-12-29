@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String? mobileNumberFromAPi;
    String? registerAs;
   String? role;
-  String? name;
+  String? name, email;
   static const String TAG = "_LoginPageState";
 
   void initState() {
@@ -485,9 +485,9 @@ class _LoginScreenState extends State<LoginScreen> {
       var response = await dio.post(Config.loginUrl, data: formData);
       if (response.statusCode == 200) {
         print(response.data);
+        result = Login.fromJson(response.data);
         closeProgressDialog(context);
         if (result.status == true) {
-          result = Login.fromJson(response.data);
           saveUserData(result.data!.userId!);
           Navigator.push(
               context,
@@ -607,6 +607,7 @@ class _LoginScreenState extends State<LoginScreen> {
           role = result.data!.userObject!.role;
           name = result.data!.userObject!.name;
           mobileNumberFromAPi = result.data!.userObject!.mobileNumber;
+          email = result.data!.userObject!.email;
           preferences.setString('RegisterAs', role!);
           
 
@@ -737,6 +738,7 @@ class _LoginScreenState extends State<LoginScreen> {
           builder: (context) => EducatorRegistration(
             name: name,
             mobileNumber: mobileNumberFromAPi,
+            email: email,
           )));
     }).catchError((exception) {
       _processLoginError(exception);

@@ -78,6 +78,7 @@ class UserObject {
   String? isNew;
   String? name;
   String? mobileNumber;
+  String? email;
   String? gender;
   String? imageUrl;
   Location? location;
@@ -93,6 +94,7 @@ class UserObject {
         this.isNew,
         this.name,
         this.mobileNumber,
+        this.email,
         this.gender,
         this.imageUrl,
         this.location,
@@ -110,6 +112,7 @@ class UserObject {
       isNew: json['isNew'],
       name: json['name'],
       mobileNumber: json['mobile_number'],
+      email: json['email'],
       gender: json['gender'],
       imageUrl: json['image_url'],
       location: json['location'].length > 0
@@ -132,6 +135,7 @@ class UserObject {
     data['isNew'] = this.isNew;
     data['name'] = this.name;
     data['mobile_number'] = this.mobileNumber;
+    data['email'] = this.email;
     data['gender'] = this.gender;
     data['location'] = this.location;
     data['educational_details'] = this.educationalDetail;
