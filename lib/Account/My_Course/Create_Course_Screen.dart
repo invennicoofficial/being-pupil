@@ -19,7 +19,8 @@ class CreateCourseScreen extends StatefulWidget {
 
 class _CreateCourseScreenState extends State<CreateCourseScreen> {
   //List<Widget> childeren = [];
-  List<TextEditingController> linkControllers = [];//List<TextEditingController>();
+  List<TextEditingController> linkControllers =
+      []; //List<TextEditingController>();
   int linkCount = 1;
   DateTime? startDate, endDate;
   bool isStartDateSelected = false, isEndDateSelected = false;
@@ -40,10 +41,10 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
   }
 
-  wordCountForDescription(String str){
-    setState((){
+  wordCountForDescription(String str) {
+    setState(() {
       wordCount = str.split(" ").length;
-      print('Total Word Count:::'+wordCount.toString());
+      print('Total Word Count:::' + wordCount.toString());
     });
   }
 
@@ -95,10 +96,9 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                       decoration: InputDecoration(
                         labelText: "Course Name",
                         labelStyle: TextStyle(
-                         color: Constants.bpSkipStyle,
-                         fontFamily: "Montserrat", 
-                         fontSize: 10.0.sp
-                         ),
+                            color: Constants.bpSkipStyle,
+                            fontFamily: "Montserrat",
+                            fontSize: 10.0.sp),
                         fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
@@ -140,10 +140,9 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                       decoration: InputDecoration(
                         labelText: "Course Description",
                         labelStyle: TextStyle(
-                         color: Constants.bpSkipStyle,
-                         fontFamily: "Montserrat", 
-                         fontSize: 10.0.sp
-                         ),
+                            color: Constants.bpSkipStyle,
+                            fontFamily: "Montserrat",
+                            fontSize: 10.0.sp),
                         alignLabelWithHint: true,
                         //counterText: '',
                         fillColor: Colors.white,
@@ -355,56 +354,79 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return Theme(
-                      data: new ThemeData(
-                        primaryColor: Constants.bpSkipStyle,
-                        primaryColorDark: Constants.bpSkipStyle,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            left: 3.0.w, right: 3.0.w, top: 3.0.h),
-                        child: Container(
-                          height: 7.0.h,
-                          width: 90.0.w,
-                          child: TextFormField(
-                            controller: linkControllers[index],
-                            decoration: InputDecoration(
-                                labelText: "Link",
-                                labelStyle: TextStyle(
-                                color: Constants.bpSkipStyle,
-                                fontFamily: "Montserrat", 
-                                fontSize: 10.0.sp
-                                ),
-                                fillColor: Colors.white,
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                    //width: 2.0,
-                                  ),
-                                ),
-                                suffixIconConstraints: BoxConstraints(
-                                  maxHeight: 30.0,
-                                  maxWidth: 30.0,
-                                ),
-                                suffixIcon: Padding(
-                                  padding: EdgeInsets.only(right: 2.0.w),
-                                  child: Image.asset(
-                                    'assets/icons/link.png',
-                                    color: Constants.formBorder,
-                                  ),
-                                )), //keyboardType: TextInputType.emailAddress,
-                            style: new TextStyle(
-                                fontFamily: "Montserrat", fontSize: 10.0.sp),
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Theme(
+                          data: new ThemeData(
+                            primaryColor: Constants.bpSkipStyle,
+                            primaryColorDark: Constants.bpSkipStyle,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: 3.0.w, right: 3.0.w, top: 3.0.h),
+                            child: Container(
+                              height: 7.0.h,
+                              width: 80.0.w,
+                              child: TextFormField(
+                                controller: linkControllers[index],
+                                decoration: InputDecoration(
+                                    labelText: "Link",
+                                    labelStyle: TextStyle(
+                                        color: Constants.bpSkipStyle,
+                                        fontFamily: "Montserrat",
+                                        fontSize: 10.0.sp),
+                                    fillColor: Colors.white,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: BorderSide(
+                                        color: Constants.formBorder,
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderSide: BorderSide(
+                                        color: Constants.formBorder,
+                                        //width: 2.0,
+                                      ),
+                                    ),
+                                    suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 30.0,
+                                      maxWidth: 30.0,
+                                    ),
+                                    suffixIcon: Padding(
+                                      padding: EdgeInsets.only(right: 2.0.w),
+                                      child: Image.asset(
+                                        'assets/icons/link.png',
+                                        color: Constants.formBorder,
+                                      ),
+                                    )), //keyboardType: TextInputType.emailAddress,
+                                style: new TextStyle(
+                                    fontFamily: "Montserrat",
+                                    fontSize: 10.0.sp),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        GestureDetector(
+                            onTap: () {
+                              print('Remove ${index + 1} Link');
+                              if (linkControllers.length > 1) {
+                                setState(() {
+                                  linkControllers.removeAt(index);
+                                });
+                              }
+                              //print(educationDetailMap);
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 2.0.h),
+                              child: ImageIcon(
+                                AssetImage('assets/icons/close_icon.png'),
+                                color: Constants.bpSkipStyle,
+                                size: 22.0,
+                              ),
+                            )),
+                      ],
                     );
                   }),
               Padding(
@@ -494,7 +516,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                         textColor: Colors.white,
                         fontSize: 10.0.sp,
                       );
-                    }else if (linkControllers[0].text.isEmpty) {
+                    } else if (linkControllers[0].text.isEmpty) {
                       Fluttertoast.showToast(
                         msg: 'Please Enter Course Link',
                         toastLength: Toast.LENGTH_SHORT,
@@ -504,7 +526,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                         textColor: Colors.white,
                         fontSize: 10.0.sp,
                       );
-                    }else if (wordCount > 100) {
+                    } else if (wordCount > 100) {
                       Fluttertoast.showToast(
                         msg: 'Please Use 100 Words in Course Description',
                         toastLength: Toast.LENGTH_SHORT,
@@ -514,8 +536,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                         textColor: Colors.white,
                         fontSize: 10.0.sp,
                       );
-                    }
-                     else {
+                    } else {
                       createCourseAPI();
                     }
                   },
@@ -573,7 +594,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
         result = CreateCourse.fromJson(response.data);
         print(response.data);
         if (result.status == true) {
-           Fluttertoast.showToast(
+          Fluttertoast.showToast(
             msg: result.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,

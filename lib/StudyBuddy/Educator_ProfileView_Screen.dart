@@ -14,6 +14,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
+import 'package:url_launcher/url_launcher.dart';
 
 class EducatorProfileViewScreen extends StatefulWidget {
   final id;
@@ -92,6 +93,15 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
       }
     });
   }
+
+  void _launchSocialUrl(String url) async {
+  //final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$long';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -204,7 +214,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                       children: <Widget>[
                         profileMap!['data'] == null || profileMap!['data'] == {} ? Container() : profileMap!['data']['instagram_link'] == null ? Container() : GestureDetector(
                           onTap: () {
-                            print('Google!!!');
+                            print('Instagram!!!');
+                            _launchSocialUrl(profileMap!['data']['instagram_link']);
                           },
                           child: Container(
                               height: 4.0.h,
@@ -220,6 +231,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                         profileMap!['data'] == null || profileMap!['data'] == {} ? Container() : profileMap!['data']['facebook_link'] == null ? Container() : GestureDetector(
                           onTap: () {
                             print('Facebook!!!');
+                            _launchSocialUrl(profileMap!['data']['facebook_link']);
                           },
                           child: Container(
                               height: 4.0.h,
@@ -235,6 +247,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                         profileMap!['data'] == null || profileMap!['data'] == {} ? Container() : profileMap!['data']['linkedin_link'] == null ? Container() : GestureDetector(
                           onTap: () {
                             print('LinkedIn!!!');
+                            _launchSocialUrl(profileMap!['data']['linkedin_link']);
                           },
                           child: Container(
                               height: 4.0.h,

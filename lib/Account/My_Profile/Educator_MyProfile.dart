@@ -13,6 +13,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'Edit_Profile_Learner.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
@@ -62,6 +63,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
   Map<String, dynamic>? myProfileMap;
   bool isProfileLoading = true;
   LikePostAPI like = LikePostAPI();
+  String? socialUrl;
 
   @override
   void initState() {
@@ -103,6 +105,15 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
       }
     });
   }
+
+  void _launchSocialUrl(String url) async {
+  //final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$long';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -247,33 +258,48 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              GestureDetector(
-                                onTap: () {
-                                  // _showDialog();
-                                  print('Apple!!!');
-                                },
-                                child: Container(
-                                    height: 4.0.h,
-                                    width: 8.0.w,
-                                    child: Image.asset(
-                                      'assets/icons/apple.png',
-                                      fit: BoxFit.contain,
-                                    )),
+                              Visibility(
+                                visible: myProfileMap!['data']
+                                            ['other_link'] ==
+                                        null
+                                    ? false
+                                    : true,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print('Other!!!');
+                                    _launchSocialUrl( myProfileMap!['data']['other_link']);
+                                  },
+                                  child: Container(
+                                      height: 4.0.h,
+                                      width: 8.0.w,
+                                      child: Image.asset(
+                                        'assets/icons/apple.png',
+                                        fit: BoxFit.contain,
+                                      )),
+                                ),
                               ),
                               SizedBox(
                                 width: 1.0.w,
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  print('Google!!!');
-                                },
-                                child: Container(
-                                    height: 4.0.h,
-                                    width: 8.0.w,
-                                    child: Image.asset(
-                                      'assets/icons/google.png',
-                                      fit: BoxFit.contain,
-                                    )),
+                              Visibility(
+                                visible: myProfileMap!['data']
+                                            ['instagram_link'] ==
+                                        null
+                                    ? false
+                                    : true,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print('Instagram!!!');
+                                    _launchSocialUrl( myProfileMap!['data']['instagram_link']);
+                                  },
+                                  child: Container(
+                                      height: 4.0.h,
+                                      width: 8.0.w,
+                                      child: Image.asset(
+                                        'assets/icons/google.png',
+                                        fit: BoxFit.contain,
+                                      )),
+                                ),
                               ),
                               SizedBox(
                                 width: 1.0.w,
@@ -287,6 +313,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                 child: GestureDetector(
                                   onTap: () {
                                     print('Facebook!!!');
+                                    _launchSocialUrl( myProfileMap!['data']['facebook_link']);
                                   },
                                   child: Container(
                                       height: 4.0.h,
@@ -316,6 +343,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                 child: GestureDetector(
                                   onTap: () {
                                     print('LinkedIn!!!');
+                                    _launchSocialUrl(myProfileMap!['data']['linkedin_link']);
                                   },
                                   child: Container(
                                       height: 4.0.h,
