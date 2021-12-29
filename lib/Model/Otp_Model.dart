@@ -166,17 +166,17 @@ class EducationalDetails {
 class Location {
   Location({
     this.id,
-    this.addressLine2,
+    this.addressLine1,
     this.city,
   });
 
   int? id;
-  String? addressLine2;
+  String? addressLine1;
   String? city;
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
         id: json["id"],
-        addressLine2: json["address_line2"],
+        addressLine1: json["address_line1"],
         city: json["city"],
       );
 
@@ -184,7 +184,7 @@ class Location {
         final Map<String, dynamic> data = new Map<String, dynamic>();
 
         data['id'] = this.id;
-        data['address_line2'] = this.addressLine2;
+        data['address_line1'] = this.addressLine1;
         data['city'] = this.city;
         return data;
       }

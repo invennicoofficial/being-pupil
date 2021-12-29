@@ -90,6 +90,24 @@ class _CompletedListState extends State<CompletedList> {
               valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
             ),
           )
+          : bookingId.length == 0
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/images/noBooking.png',
+                        height: 300, width: 300, fit: BoxFit.cover),
+                    Text(
+                      'No Booking',
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 16.0.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Constants.bgColor),
+                    ),
+                  ],
+                ),
+              )
         : SmartRefresher(
             controller: _refreshController,
             enablePullDown: false,

@@ -287,7 +287,7 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
               preferences.setString('RegisterAs', role!);
               preferences.setString("name", map!['data']['userObj']['name']);
               preferences.setString("mobileNumber", map!['data']['userObj']['mobile_number']);
-              preferences.setString("gender", map!['data']['userObj']['gender']);
+              preferences.setString("gender", map!['data']['userObj']['gender'] != null ? map!['data']['userObj']['gender'] : '');
              
               preferences.setString("imageUrl", map!['data']['userObj']['image_url']);
 
@@ -312,7 +312,7 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
                 builder: (context) => EducatorRegistration(
                   name: map!['data']['userObj']['name'].toString(),
                   mobileNumber: mobileNumber,
-                  //email: map!['data']['userObj']['email'].toString()
+                  email: map!['data']['userObj']['email'].toString()
                 )));
               }
             else{ Navigator.of(context).pushAndRemoveUntil(

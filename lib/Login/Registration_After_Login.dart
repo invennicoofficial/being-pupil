@@ -415,6 +415,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
                 builder: (context) => EducatorRegistration(
                   name: name,
                   mobileNumber: mobileNumber,
+                  email: widget.socialEmail
                 )));
           } 
           // else {
@@ -460,7 +461,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
           );
         } else {
           Fluttertoast.showToast(
-            msg: result.message!,
+            msg: result.message == null ? result.errorMsg! : result.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,

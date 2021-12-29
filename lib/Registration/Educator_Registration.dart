@@ -33,8 +33,7 @@ class EducatorRegistration extends StatefulWidget {
     Key? key,
     required this.name,
     required this.mobileNumber,
-    //@required 
-    this.email
+    required this.email
   }) : super(key: key);
 
   @override
