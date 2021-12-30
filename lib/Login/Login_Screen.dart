@@ -792,7 +792,7 @@ class _LoginScreenState extends State<LoginScreen> {
         checkLogin(fbUserData!['id'].toString());
       }
     } catch(e){
-      print(e);
+      print('ERR:::'+e.toString());
     }
     // on FacebookAuthException catch (e) {
     //   switch (e.errorCode) {

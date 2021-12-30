@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+//import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class CreatePostScreen extends StatefulWidget {
   CreatePostScreen({Key? key}) : super(key: key);
@@ -22,14 +22,15 @@ class CreatePostScreen extends StatefulWidget {
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
   XFile? _image, _camImage;
+  List<XFile>? multiImages;
   String? authToken;
   TextEditingController descriptionController = TextEditingController();
   List<String> filePathList = [];
   List<File> fileList = [];
-  List<AssetEntity> assets = <AssetEntity>[];
+  //List<AssetEntity> assets = <AssetEntity>[];
   String? profilePic, name;
   final ImagePicker _picker = ImagePicker();
-  List<AssetEntity>? result;
+  //List<AssetEntity>? result;
 
   @override
   void initState() {
@@ -52,8 +53,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   _imageFromCamera() async {
-    XFile? image = (await _picker.pickImage(
-        source: ImageSource.camera, imageQuality: 50));
+    XFile? image =
+        (await _picker.pickImage(source: ImageSource.camera, imageQuality: 50));
 
     setState(() {
       _camImage = image;
@@ -63,52 +64,59 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   _imageFromGallery() async {
-    XFile? image = (await _picker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50));
+    // XFile? image = (await _picker.pickImage(
+    //     source: ImageSource.gallery, imageQuality: 50));
+
+    List<XFile>? images = await _picker.pickMultiImage(imageQuality: 50);
 
     setState(() {
-      _image = image;
+      // _image = image;
+      multiImages = images;
     });
-  }
-
-  getMultipleImage() async {
-    result = await AssetPicker.pickAssets(
-      context,
-      maxAssets: 10,
-      pageSize: 320,
-      pathThumbSize: 80,
-      gridCount: 4,
-      requestType: RequestType.image,
-      selectedAssets: assets,
-      // themeColor: Colors.cyan,
-      // pickerTheme: ThemeData
-      //     .dark(), // This cannot be set when the `themeColor` was provided.
-      textDelegate: EnglishTextDelegate(),
-      sortPathDelegate: CommonSortPathDelegate(),
-      routeCurve: Curves.easeIn,
-      routeDuration: const Duration(milliseconds: 500),
-    );
-
-    setState(() {
-      // _image = result.length.
-    });
-    print('ASSETS::: $assets');
-    for (int i = 0; i < result!.length; i++) {
-      print('$i : ' + result![i].title!);
-      filePathList.add(result![i].relativePath! + result![i].title!);
-      fileList.add(
-          new File('${result![i].relativePath}' + '/' + '${result![i].title}'));
+    for (int i = 0; i < multiImages!.length; i++) {
+      fileList.add(new File(multiImages![i].path));
     }
-    print(filePathList);
-    print(fileList);
-    print(result![0].relativePath! + result![0].title!);
-
-    final File file =
-        File('${result![0].relativePath}' + '/' + '${result![0].title}');
-    print('FILE:::' + file.path);
-
-    AssetPicker.registerObserve();
+    print(multiImages![0].path);
   }
+
+  // getMultipleImage() async {
+  //   result = await AssetPicker.pickAssets(
+  //     context,
+  //     maxAssets: 10,
+  //     pageSize: 320,
+  //     pathThumbSize: 80,
+  //     gridCount: 4,
+  //     requestType: RequestType.image,
+  //     selectedAssets: assets,
+  //     // themeColor: Colors.cyan,
+  //     // pickerTheme: ThemeData
+  //     //     .dark(), // This cannot be set when the `themeColor` was provided.
+  //     textDelegate: EnglishTextDelegate(),
+  //     sortPathDelegate: CommonSortPathDelegate(),
+  //     routeCurve: Curves.easeIn,
+  //     routeDuration: const Duration(milliseconds: 500),
+  //   );
+
+  //   setState(() {
+  //     // _image = result.length.
+  //   });
+  //   print('ASSETS::: $assets');
+  //   for (int i = 0; i < result!.length; i++) {
+  //     print('$i : ' + result![i].title!);
+  //     filePathList.add(result![i].relativePath! + result![i].title!);
+  //     fileList.add(
+  //         new File('${result![i].relativePath}' + '/' + '${result![i].title}'));
+  //   }
+  //   print(filePathList);
+  //   print(fileList);
+  //   print(result![0].relativePath! + result![0].title!);
+
+  //   final File file =
+  //       File('${result![0].relativePath}' + '/' + '${result![0].title}');
+  //   print('FILE:::' + file.path);
+
+  //   AssetPicker.registerObserve();
+  // }
 
   // _videoFile() async {
   //   File image = (await ImagePicker.pickVideo(
@@ -195,22 +203,33 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           Padding(
             padding: EdgeInsets.only(right: 0.0.w),
             child: Center(
-                child: FlatButton(
-              onPressed:
-                  descriptionController.text == '' 
+                child: TextButton(
+              onPressed: descriptionController.text == ''
                   //|| fileList.length == 0
-                      ? null
-                      : () {
-                          createPostApi(descriptionController.text);
-                          //print(_image.path);
-                        },
+                  ? null
+                  : () {
+                      if (fileList.length > 10) {
+                        Fluttertoast.showToast(
+                          msg: 'Media should be less then 10',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Constants.bgColor,
+                          textColor: Colors.white,
+                          fontSize: 10.0.sp,
+                        );
+                        //print(_image.path);
+                      } else {
+                        createPostApi(descriptionController.text);
+                      }
+                    },
               child: Text('Post',
                   style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 12.0.sp,
                       fontWeight: FontWeight.w500,
-                      color: descriptionController.text == '' 
-                            // || fileList.length == 0
+                      color: descriptionController.text == ''
+                          // || fileList.length == 0
                           ? Colors.white.withOpacity(0.6)
                           : Colors.white)),
             )),
@@ -264,7 +283,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   //maxLength: 500,
                   maxLines: 5,
                   controller: descriptionController,
-                  onChanged: (value){
+                  onChanged: (value) {
                     setState(() {
                       //descriptionController.text = value;
                     });
@@ -357,8 +376,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   GestureDetector(
                     onTap: () {
                       print('Gallery');
-                      //_imageFromGallery();
-                      getMultipleImage();
+                      _imageFromGallery();
+                      //getMultipleImage();
                     },
                     child: ImageIcon(
                       AssetImage('assets/icons/galleryIcon.png'),

@@ -107,13 +107,13 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
   }
 
   void _launchSocialUrl(String url) async {
-  //final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$long';
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
+    //final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$long';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -259,15 +259,15 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Visibility(
-                                visible: myProfileMap!['data']
-                                            ['other_link'] ==
-                                        null
-                                    ? false
-                                    : true,
+                                visible:
+                                    myProfileMap!['data']['other_link'] == null
+                                        ? false
+                                        : true,
                                 child: GestureDetector(
                                   onTap: () {
                                     print('Other!!!');
-                                    _launchSocialUrl( myProfileMap!['data']['other_link']);
+                                    _launchSocialUrl(
+                                        myProfileMap!['data']['other_link']);
                                   },
                                   child: Container(
                                       height: 4.0.h,
@@ -290,7 +290,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                 child: GestureDetector(
                                   onTap: () {
                                     print('Instagram!!!');
-                                    _launchSocialUrl( myProfileMap!['data']['instagram_link']);
+                                    _launchSocialUrl(myProfileMap!['data']
+                                        ['instagram_link']);
                                   },
                                   child: Container(
                                       height: 4.0.h,
@@ -313,7 +314,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                 child: GestureDetector(
                                   onTap: () {
                                     print('Facebook!!!');
-                                    _launchSocialUrl( myProfileMap!['data']['facebook_link']);
+                                    _launchSocialUrl(
+                                        myProfileMap!['data']['facebook_link']);
                                   },
                                   child: Container(
                                       height: 4.0.h,
@@ -343,7 +345,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                 child: GestureDetector(
                                   onTap: () {
                                     print('LinkedIn!!!');
-                                    _launchSocialUrl(myProfileMap!['data']['linkedin_link']);
+                                    _launchSocialUrl(
+                                        myProfileMap!['data']['linkedin_link']);
                                   },
                                   child: Container(
                                       height: 4.0.h,
@@ -552,7 +555,9 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                         onSelected: (dynamic value) {
                                           if (value == 2) {
                                             // isProfileLoading = true;
-                                            _showDialog(postIdList[index].toString(), index);
+                                            _showDialog(
+                                                postIdList[index].toString(),
+                                                index);
                                           } else {
                                             pushNewScreen(context,
                                                 screen: imageListMap.length ==
@@ -625,16 +630,20 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                   ),
                                   //Post descriptionText
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
                                     child: Container(
                                       width: 88.0.w,
-                                      child: Text(descriptionList[index]!,
+                                      child: Text(
+                                        descriptionList[index]!,
                                         style: TextStyle(
                                           fontSize: 9.0.sp,
-                                          color: Constants.bpOnBoardSubtitleStyle,
+                                          color:
+                                              Constants.bpOnBoardSubtitleStyle,
                                           fontFamily: 'Montserrat',
                                           height: 1.5,
-                                          fontWeight: FontWeight.w400,),
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                         // textAlign: TextAlign.justify
                                       ),
                                     ),
@@ -729,7 +738,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                   ),
                                   //Row for Like comment and Share
                                   Padding(
-                                    padding: EdgeInsets.only(top: 1.0.h, bottom: 1.0.h),
+                                    padding: EdgeInsets.only(
+                                        top: 1.0.h, bottom: 1.0.h),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -743,8 +753,10 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                 postIdList[index], authToken!);
                                             setState(() {
                                               isLiked[index] == true
-                                                  ? likesList[index] = likesList[index]! + 1
-                                                  : likesList[index] = likesList[index]! - 1;
+                                                  ? likesList[index] =
+                                                      likesList[index]! + 1
+                                                  : likesList[index] =
+                                                      likesList[index]! - 1;
                                             });
                                           },
                                           child: Row(
@@ -768,7 +780,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                               ),
                                               Container(
                                                 padding:
-                                                EdgeInsets.only(top: 1.0.h),
+                                                    EdgeInsets.only(top: 1.0.h),
                                                 child: Text(
                                                   "${likesList[index]} Likes",
                                                   style: TextStyle(
@@ -777,7 +789,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                           .bpOnBoardSubtitleStyle,
                                                       fontFamily: 'Montserrat',
                                                       fontWeight:
-                                                      FontWeight.w400),
+                                                          FontWeight.w400),
                                                 ),
                                               ),
                                             ],
@@ -823,7 +835,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                 width: 2.0.w,
                                               ),
                                               Container(
-                                                padding: EdgeInsets.only(top: 1.0.h),
+                                                padding:
+                                                    EdgeInsets.only(top: 1.0.h),
                                                 child: Text(
                                                   "${totalCommentsList[index]} Comments",
                                                   style: TextStyle(
@@ -831,7 +844,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                       color: Constants
                                                           .bpOnBoardSubtitleStyle,
                                                       fontFamily: 'Montserrat',
-                                                      fontWeight: FontWeight.w400),
+                                                      fontWeight:
+                                                          FontWeight.w400),
                                                 ),
                                               )
                                             ],
@@ -913,21 +927,33 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Delete Post'),
-              IconButton(
-                icon: Icon(Icons.close),
-                iconSize: 20.0,
-                color: Constants.bpOnBoardSubtitleStyle,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
+              Text('Delete Post',
+              style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 15.0.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Constants.bgColor),),
+              // IconButton(
+              //   icon: Icon(Icons.close),
+              //   iconSize: 20.0,
+              //   color: Constants.bpOnBoardSubtitleStyle,
+              //   onPressed: () {
+              //     Navigator.of(context).pop();
+              //   },
+              // )
             ],
           ),
-          actionsPadding: EdgeInsets.symmetric(vertical: 10),
-          content: Text("Are you sure you want to delete this post."),
+          actionsPadding:
+              EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+          content: Text("Are you sure you want to delete this post.",
+              style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 11.0.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Constants.bgColor),
+                  textAlign: TextAlign.center),
           actions: [
             // usually buttons at the bottom of the dialog
 
@@ -940,8 +966,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                   width: 30.0.w,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      border:
-                      Border.all(color: Constants.bgColor, width: 1.0)),
+                      border: Border.all(color: Constants.bgColor, width: 1.0)),
                   child: Center(child: Text('NO'))),
             ),
             GestureDetector(
@@ -955,9 +980,12 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                   decoration: BoxDecoration(
                       color: Constants.bgColor,
                       borderRadius: BorderRadius.circular(20),
-                      border:
-                      Border.all(color: Constants.bgColor, width: 1.0)),
-                  child: Center(child: Text('YES', style: TextStyle(color: Colors.white),))),
+                      border: Border.all(color: Constants.bgColor, width: 1.0)),
+                  child: Center(
+                      child: Text(
+                    'YES',
+                    style: TextStyle(color: Colors.white),
+                  ))),
             ),
           ],
         );
@@ -1001,7 +1029,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
       // var response =
       //     await dio.get('${Config.getEducatorPostUrl}$userId?page=$page');
       //var response = await dio.get(Config.myProfileUrl,options: Options(headers: {"Authorization": 'Bearer $authToken'}));
-      var response = await dio.get('${Config.getEducatorPostUrl}/$userId?page=$page',
+      var response = await dio.get(
+          '${Config.getEducatorPostUrl}/$userId?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       print(response.statusCode);
 
@@ -1091,7 +1120,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
         delMap = response.data;
 
         // getMyPostApi(page);
-      
+
         if (delMap!['status'] == true) {
           isProfileLoading = false;
           print('true');

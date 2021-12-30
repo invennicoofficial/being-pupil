@@ -3,6 +3,7 @@ import 'package:being_pupil/Account/My_Course/Enrolled_Course_Details_Screen.dar
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Course_Model/Get_Enrolled_Course_Model.dart';
+import 'package:being_pupil/Registration/Learner_Registration.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -31,6 +32,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
   String? degreeName = '';
   String? schoolName = '';
   String? location = '';
+  String? mobileNumber, email;
   List<String> dateList = [];
   List<int?> idList = [];
   List<String?> nameList = [];
@@ -75,9 +77,11 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
 
   getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    //setState(() {
+    setState(() {
     registerAs = preferences.getString('RegisterAs');
-    //});
+    mobileNumber = preferences.getString('mobileNumber');
+    email = preferences.getString('email');
+    });
     print(registerAs);
     getMyProfileApi();
   }
@@ -92,7 +96,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
     }
   }
 
-  void _refresh(){
+  void _refresh() {
     setState(() {
       isProfileLoading = true;
       page = 1;
@@ -133,7 +137,11 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                       pageTransitionAnimation:
                           PageTransitionAnimation.cupertino)
                   : pushNewScreen(context,
-                      screen: EditLearnerProfile(),
+                      screen: LearnerRegistration(
+                        name: name,
+                        mobileNumber: mobileNumber,
+                        email: email,
+                      ),
                       withNavBar: false,
                       pageTransitionAnimation:
                           PageTransitionAnimation.cupertino);
@@ -245,7 +253,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                             ],
                           ),
                         ),
-                         //Social Handle
+                        //Social Handle
                         Padding(
                           padding: EdgeInsets.only(top: 1.0.h),
                           child: Row(
@@ -423,86 +431,127 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                   color: Constants.bgColor.withOpacity(0.5),
                 ),
 
-                //Enrolled Course
-                Expanded(
-                  child: ListView.builder(
-                      controller: _scrollController,
-                      itemCount: nameList.length,
-                      //physics: AlwaysScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 1.5.h, horizontal: 1.0.w),
-                          child: ListTile(
-                            onTap: () async{
-                              var isLeaveCourse = await pushNewScreen(context,
-                                  screen: EnrolledCourseDetailScreen(
-                                    courseId: idList[index],
-                                    courseName: nameList[index],
-                                    coursDate: dateList[index],
-                                    courseDescription: descriptionList[index],
-                                    courseLinks: linksList[index] as List<String>?,
-                                  ),
+                myProfileMap!['data']['profile_status'] == 0
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          Image.asset(
+                            'assets/images/completeProfile.png',
+                            height: 150.0,
+                            width: 200.0,
+                            fit: BoxFit.cover,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              pushNewScreen(context,
+                                  screen: EditLearnerProfile(),
                                   withNavBar: false,
                                   pageTransitionAnimation:
                                       PageTransitionAnimation.cupertino);
-                                      print(isLeaveCourse);
-                                      isLeaveCourse == 'leave' ? _refresh() : null;
-
                             },
-                            title: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  height: 10.0.h,
-                                  width: 18.0.w,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              'assets/images/postImage.png'),
-                                          fit: BoxFit.cover)),
-                                ),
-                                SizedBox(
-                                  width: 5.0.w,
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      width: 65.0.w,
-                                      child: Text(
-                                        nameList[index]!,
-                                        //result.data[index].courseName,
-                                        style: TextStyle(
-                                            fontFamily: 'Montserrat',
-                                            fontSize: 11.0.sp,
-                                            fontWeight: FontWeight.w600,
-                                            color: Constants.bgColor),
-                                        overflow: TextOverflow.clip,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 0.5.h,
-                                    ),
-                                    Text(dateList[index],
-                                        //'${result.data[index].startDate} to ${result.data[index].endDate}',
-                                        style: TextStyle(
-                                            fontFamily: 'Montserrat',
-                                            fontSize: 8.0.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: Constants.bgColor)),
-                                  ],
-                                ),
-                              ],
+                            child: Text(
+                              'Complete Profile',
+                              style: TextStyle(
+                                  fontSize: 12.0.sp,
+                                  color: Constants.blueTitle,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: 'Montserrat',
+                                  decoration: TextDecoration.underline),
                             ),
-                          ),
-                        );
-                      }),
-                ),
+                          )
+                        ],
+                      )
+                    //Enrolled Course
+                    : Expanded(
+                        child: ListView.builder(
+                            controller: _scrollController,
+                            itemCount: nameList.length,
+                            //physics: AlwaysScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 1.5.h, horizontal: 1.0.w),
+                                child: ListTile(
+                                  onTap: () async {
+                                    var isLeaveCourse = await pushNewScreen(
+                                        context,
+                                        screen: EnrolledCourseDetailScreen(
+                                          courseId: idList[index],
+                                          courseName: nameList[index],
+                                          coursDate: dateList[index],
+                                          courseDescription:
+                                              descriptionList[index],
+                                          courseLinks:
+                                              linksList[index] as List<String>?,
+                                        ),
+                                        withNavBar: false,
+                                        pageTransitionAnimation:
+                                            PageTransitionAnimation.cupertino);
+                                    print(isLeaveCourse);
+                                    isLeaveCourse == 'leave'
+                                        ? _refresh()
+                                        : null;
+                                  },
+                                  title: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        height: 10.0.h,
+                                        width: 18.0.w,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0),
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                    'assets/images/postImage.png'),
+                                                fit: BoxFit.cover)),
+                                      ),
+                                      SizedBox(
+                                        width: 5.0.w,
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Container(
+                                            width: 65.0.w,
+                                            child: Text(
+                                              nameList[index]!,
+                                              //result.data[index].courseName,
+                                              style: TextStyle(
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 11.0.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Constants.bgColor),
+                                              overflow: TextOverflow.clip,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 0.5.h,
+                                          ),
+                                          Text(dateList[index],
+                                              //'${result.data[index].startDate} to ${result.data[index].endDate}',
+                                              style: TextStyle(
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 8.0.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Constants.bgColor)),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }),
+                      ),
               ],
             ),
     );
@@ -522,20 +571,20 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
         print('PROFILE:::' + myProfileMap.toString());
         if (myProfileMap!['data'] != null) {
           name = myProfileMap!['data']['name'];
-          print('NAME:::'+name!);
+          print('NAME:::' + name!);
           profileImageUrl = myProfileMap!['data']['profile_image'];
           degreeName = myProfileMap!['data']['last_degree'] == null
               ? ''
               : myProfileMap!['data']['last_degree'];
-          print('DEGREE:::'+degreeName!);
+          print('DEGREE:::' + degreeName!);
           schoolName = myProfileMap!['data']['school_name'] == null
               ? ''
               : myProfileMap!['data']['school_name'];
-          print('SCHOOL:::'+schoolName!);
+          print('SCHOOL:::' + schoolName!);
           location = myProfileMap!['data']['City'] == null
               ? ''
               : myProfileMap!['data']['City'];
-          print('LOCATION:::'+location!);
+          print('LOCATION:::' + location!);
           getEnrolledCourseAPI(page);
           isProfileLoading = false;
           setState(() {});

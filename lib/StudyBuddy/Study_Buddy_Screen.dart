@@ -134,14 +134,14 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
                   },
                   tabs: [
                     Tab(
-                      text: 'Connections',
+                      text: registerAs == 'E' ? 'Educators' : 'Learners',
                     ),
                     Tab(
                       text: 'Requests',
                     ),
                     Tab(
-                      text: registerAs == 'E' ? 'Educators' : 'Learners',
-                    )
+                      text: 'Connections',
+                    ),
                   ]),
             ),
           ),
@@ -159,9 +159,9 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
             TabBarView(
               physics: NeverScrollableScrollPhysics(),
               children: <Widget>[
-                ConnectionList(),
+                registerAs == 'E' ? EducatorList() : LearnerList(),      
                 RequestList(),
-                registerAs == 'E' ? EducatorList() : LearnerList()
+                ConnectionList(),
               ],
             ),
           ],

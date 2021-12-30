@@ -1219,7 +1219,6 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                     width: 90.0.w,
                                     child: TextFormField(
                                       controller: _idNumController,
-                                      keyboardType: TextInputType.number,
                                       decoration: InputDecoration(
                                         labelText:
                                             "Identification Document Number",

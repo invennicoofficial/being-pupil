@@ -50,6 +50,79 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
     print(registerAs);
   }
 
+   //Alert Dialog for Delete Post
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Discontinue Course',
+              style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 15.0.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Constants.bgColor),),
+              // IconButton(
+              //   icon: Icon(Icons.close),
+              //   iconSize: 20.0,
+              //   color: Constants.bpOnBoardSubtitleStyle,
+              //   onPressed: () {
+              //     Navigator.of(context).pop();
+              //   },
+              // )
+            ],
+          ),
+          actionsPadding:
+              EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+          content: Text("Are you sure you want to discontinue with the course?",
+              style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 11.0.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Constants.bgColor),
+                  textAlign: TextAlign.center),
+          actions: [
+            // usually buttons at the bottom of the dialog
+
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                  height: 40.0,
+                  width: 30.0.w,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Constants.bgColor, width: 1.0)),
+                  child: Center(child: Text('NO'))),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+                leaveCourseAPI();
+              },
+              child: Container(
+                  height: 40.0,
+                  width: 30.0.w,
+                  decoration: BoxDecoration(
+                      color: Constants.bgColor,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Constants.bgColor, width: 1.0)),
+                  child: Center(
+                      child: Text(
+                    'YES',
+                    style: TextStyle(color: Colors.white),
+                  ))),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,7 +179,7 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
         padding: EdgeInsets.only(bottom: 2.0.h),
         child: GestureDetector(
           onTap: () {
-            leaveCourseAPI();
+            _showDialog();
           },
           child: Container(
             height: 7.0.h,

@@ -8,7 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+//import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
@@ -34,15 +34,16 @@ class UpdatePostScreen extends StatefulWidget {
 
 class _UpdatePostScreenState extends State<UpdatePostScreen> {
   XFile? _image, _camImage;
+  List<XFile>? multiImages;
   String? authToken;
   TextEditingController descriptionController = TextEditingController();
   List<String> filePathList = [];
   List<File> fileList = [];
-  List<AssetEntity> assets = <AssetEntity>[];
+  //List<AssetEntity> assets = <AssetEntity>[];
   String? profilePic, name;
   List<int?> delMedia = [];
   final ImagePicker _picker = ImagePicker();
-  List<AssetEntity>? result;
+  //List<AssetEntity>? result;
 
   @override
   void initState() {
@@ -76,53 +77,60 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
     print('LENGTH::: ${fileList.length}');
   }
 
-  _imageFromGallery() async {
-    XFile? image = (await _picker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50));
+ _imageFromGallery() async {
+    // XFile? image = (await _picker.pickImage(
+    //     source: ImageSource.gallery, imageQuality: 50));
+
+    List<XFile>? images = await _picker.pickMultiImage(imageQuality: 50);
 
     setState(() {
-      _image = image;
+      // _image = image;
+      multiImages = images;
     });
-  }
-
-  getMultipleImage() async {
-  result = await AssetPicker.pickAssets(
-      context,
-      maxAssets: 10,
-      pageSize: 320,
-      pathThumbSize: 80,
-      gridCount: 4,
-      requestType: RequestType.image,
-      selectedAssets: assets,
-      // themeColor: Colors.cyan,
-      // pickerTheme: ThemeData
-      //     .dark(), // This cannot be set when the `themeColor` was provided.
-      textDelegate: EnglishTextDelegate(),
-      sortPathDelegate: CommonSortPathDelegate(),
-      routeCurve: Curves.easeIn,
-      routeDuration: const Duration(milliseconds: 500),
-    );
-
-    setState(() {
-      // _image = result.length.
-    });
-  print('ASSETS::: $assets');
-    for (int i = 0; i < result!.length; i++) {
-      print('$i : ' + result![i].title!);
-      filePathList.add(result![i].relativePath! + result![i].title!);
-      fileList.add(
-          new File('${result![i].relativePath}' + '/' + '${result![i].title}'));
+    for (int i = 0; i < multiImages!.length; i++) {
+      fileList.add(new File(multiImages![i].path));
     }
-    print(filePathList);
-    print(fileList);
-    print(result![0].relativePath! + result![0].title!);
-
-    final File file =
-        File('${result![0].relativePath}' + '/' + '${result![0].title}');
-    print('FILE:::' + file.path);
-
-    AssetPicker.registerObserve();
+    print(multiImages![0].path);
   }
+
+  //getMultipleImage() async {
+  // result = await AssetPicker.pickAssets(
+  //     context,
+  //     maxAssets: 10,
+  //     pageSize: 320,
+  //     pathThumbSize: 80,
+  //     gridCount: 4,
+  //     requestType: RequestType.image,
+  //     selectedAssets: assets,
+  //     // themeColor: Colors.cyan,
+  //     // pickerTheme: ThemeData
+  //     //     .dark(), // This cannot be set when the `themeColor` was provided.
+  //     textDelegate: EnglishTextDelegate(),
+  //     sortPathDelegate: CommonSortPathDelegate(),
+  //     routeCurve: Curves.easeIn,
+  //     routeDuration: const Duration(milliseconds: 500),
+  //   );
+
+  //   setState(() {
+  //     // _image = result.length.
+  //   });
+  // print('ASSETS::: $assets');
+  //   for (int i = 0; i < result!.length; i++) {
+  //     print('$i : ' + result![i].title!);
+  //     filePathList.add(result![i].relativePath! + result![i].title!);
+  //     fileList.add(
+  //         new File('${result![i].relativePath}' + '/' + '${result![i].title}'));
+  //   }
+  //   print(filePathList);
+  //   print(fileList);
+  //   print(result![0].relativePath! + result![0].title!);
+
+  //   final File file =
+  //       File('${result![0].relativePath}' + '/' + '${result![0].title}');
+  //   print('FILE:::' + file.path);
+
+  //   AssetPicker.registerObserve();
+  // }
 
   // _videoFile() async {
   //   File image = (await ImagePicker.pickVideo(
@@ -418,8 +426,8 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                   GestureDetector(
                     onTap: () {
                       print('Gallery');
-                      //_imageFromGallery();
-                      getMultipleImage();
+                      _imageFromGallery();
+                      //getMultipleImage();
                     },
                     child: ImageIcon(
                       AssetImage('assets/icons/galleryIcon.png'),
