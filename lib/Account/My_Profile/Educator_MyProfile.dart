@@ -622,7 +622,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       color:
-                                                          Constants.formBorder),
+                                                          Constants.bgColor),
                                                 ),
                                                 value: 2,
                                               )

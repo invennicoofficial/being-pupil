@@ -796,7 +796,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 12.0.sp,
                                                   fontWeight: FontWeight.w500,
-                                                  color: Constants.formBorder)),
+                                                  color: Constants.bgColor)),
                                         ),
                                       ),
                                       counterText: '',
@@ -809,7 +809,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                   style: new TextStyle(
                                       fontFamily: "Montserrat",
                                       fontSize: 10.0.sp,
-                                      color: Constants.formBorder)),
+                                      color: Constants.bgColor)),
                             ))
                       ],
                     ),
