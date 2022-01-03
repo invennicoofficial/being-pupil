@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
+import 'package:url_launcher/url_launcher.dart';
 
 class LearnerProfileViewScreen extends StatefulWidget {
   final id;
@@ -30,6 +31,15 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
     print(authToken);
     getUserProfile();
   }
+
+    void _launchSocialUrl(String url) async {
+  //final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$long';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +131,7 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
                             ),
                           ),
                           //Location
-                          map!['data']['city'] == null ? Container() : Padding(
+                          map!['data']['City'] == null ? Container() : Padding(
                             padding: EdgeInsets.only(top: 2.0.h),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -135,7 +145,7 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
                                   width: 0.5.w,
                                 ),
                                 Text(
-                                  map!['data']['city'] == null ? '' : map!['data']['city'],
+                                  map!['data']['City'] != null ? map!['data']['City'] : '',
                                   style: TextStyle(
                                       fontSize: 10.0.sp,
                                       fontFamily: 'Montserrat',
@@ -148,72 +158,60 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
 
 
 
-                          // //Social Handle
-                          // Padding(
-                          //   padding: EdgeInsets.only(top: 2.0.h),
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.center,
-                          //     children: <Widget>[
-                          //       GestureDetector(
-                          //         onTap: () {
-                          //           print('Apple!!!');
-                          //         },
-                          //         child: Container(
-                          //             height: 4.0.h,
-                          //             width: 8.0.w,
-                          //             child: Image.asset(
-                          //               'assets/icons/apple.png',
-                          //               fit: BoxFit.contain,
-                          //             )),
-                          //       ),
-                          //       SizedBox(
-                          //         width: 1.0.w,
-                          //       ),
-                          //       GestureDetector(
-                          //         onTap: () {
-                          //           print('Google!!!');
-                          //         },
-                          //         child: Container(
-                          //             height: 4.0.h,
-                          //             width: 8.0.w,
-                          //             child: Image.asset(
-                          //               'assets/icons/google.png',
-                          //               fit: BoxFit.contain,
-                          //             )),
-                          //       ),
-                          //       SizedBox(
-                          //         width: 1.0.w,
-                          //       ),
-                          //       GestureDetector(
-                          //         onTap: () {
-                          //           print('Facebook!!!');
-                          //         },
-                          //         child: Container(
-                          //             height: 4.0.h,
-                          //             width: 8.0.w,
-                          //             child: Image.asset(
-                          //               'assets/icons/facebook.png',
-                          //               fit: BoxFit.contain,
-                          //             )),
-                          //       ),
-                          //       SizedBox(
-                          //         width: 1.0.w,
-                          //       ),
-                          //       GestureDetector(
-                          //         onTap: () {
-                          //           print('LinkedIn!!!');
-                          //         },
-                          //         child: Container(
-                          //             height: 4.0.h,
-                          //             width: 8.0.w,
-                          //             child: Image.asset(
-                          //               'assets/icons/linkedin.png',
-                          //               fit: BoxFit.contain,
-                          //             )),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
+                          //Social Handle
+                  Padding(
+                    padding: EdgeInsets.only(top: 1.0.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        map!['data'] == null || map!['data'] == {} ? Container() : map!['data']['instagram_link'] == null ? Container() : GestureDetector(
+                          onTap: () {
+                            print('Instagram!!!');
+                            _launchSocialUrl(map!['data']['instagram_link']);
+                          },
+                          child: Container(
+                              height: 4.0.h,
+                              width: 8.0.w,
+                              child: Image.asset(
+                                'assets/icons/google.png',
+                                fit: BoxFit.contain,
+                              )),
+                        ),
+                        SizedBox(
+                          width: 1.0.w,
+                        ),
+                        map!['data'] == null || map!['data'] == {} ? Container() : map!['data']['facebook_link'] == null ? Container() : GestureDetector(
+                          onTap: () {
+                            print('Facebook!!!');
+                            _launchSocialUrl(map!['data']['facebook_link']);
+                          },
+                          child: Container(
+                              height: 4.0.h,
+                              width: 8.0.w,
+                              child: Image.asset(
+                                'assets/icons/facebook.png',
+                                fit: BoxFit.contain,
+                              )),
+                        ),
+                        SizedBox(
+                          width: 1.0.w,
+                        ),
+                        map!['data'] == null || map!['data'] == {} ? Container() : map!['data']['linkedin_link'] == null ? Container() : GestureDetector(
+                          onTap: () {
+                            print('LinkedIn!!!');
+                            _launchSocialUrl(map!['data']['linkedin_link']);
+                          },
+                          child: Container(
+                              height: 4.0.h,
+                              width: 8.0.w,
+                              child: Image.asset(
+                                'assets/icons/linkedin.png',
+                                fit: BoxFit.contain,
+                              )),
+                        ),
+                      ],
+                    ),
+                  ),
                         ],
                       ),
                     ),

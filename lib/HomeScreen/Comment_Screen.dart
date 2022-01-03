@@ -2,6 +2,8 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Report_Feed.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
+import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
+import 'package:being_pupil/StudyBuddy/Learner_ProfileView_Screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -13,12 +15,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class CommentScreen extends StatefulWidget {
   String? name, profileImage, degree, schoolName, date, description;
-  int? postId, like, comment, index;
+  int? postId, like, comment, index, userId;
   bool? isLiked, isSaved;
   Map<int, dynamic>? imageListMap;
   CommentScreen(
       {Key? key,
       this.postId,
+      this.userId,
       this.name,
       this.profileImage,
       this.degree,
@@ -205,13 +208,18 @@ class _CommentScreenState extends State<CommentScreen> {
                                 title: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: Image.network(
-                                        widget.profileImage!,
-                                        width: 8.5.w,
-                                        height: 5.0.h,
-                                        fit: BoxFit.cover,
+                                    GestureDetector(
+                                      onTap: (){
+                                        getUserProfile(widget.userId!);
+                                      },
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: Image.network(
+                                          widget.profileImage!,
+                                          width: 8.5.w,
+                                          height: 5.0.h,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
                                     SizedBox(
@@ -536,14 +544,19 @@ class _CommentScreenState extends State<CommentScreen> {
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(bottom: 28.0),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          child: Image.network(
-                                            profileImages[index]!,
-                                            height: 4.5.h,
-                                            width: 7.5.w,
-                                            fit: BoxFit.cover,
+                                        child: GestureDetector(
+                                          onTap: (){
+                                            getUserProfile(commentUserId[index]);
+                                          },
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            child: Image.network(
+                                              profileImages[index]!,
+                                              height: 4.5.h,
+                                              width: 7.5.w,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -921,7 +934,7 @@ class _CommentScreenState extends State<CommentScreen> {
       //commentList = GetCommentList.fromJson(response.data);
       commentMap = response.data;
       commentMapData = commentMap!['data'];
-
+      
       if (response.statusCode == 200) {
         if (commentMap!['status'] == true) {
           setState(() {
@@ -1137,6 +1150,57 @@ class _CommentScreenState extends State<CommentScreen> {
         print(response.statusCode);
       }
     } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+    }
+  }
+
+  //get User Profile
+  Future<void> getUserProfile(id) async {
+    // displayProgressDialog(context);
+
+    Map<String, dynamic>? map = {};
+    try {
+      Dio dio = Dio();
+
+      var response = await dio.get('${Config.myProfileUrl}/$id',
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        map = response.data;
+
+        print(map!['data']);
+        //print(mapData);
+        if (map['data'] != null || map['data'] != []) {
+          setState(() {});
+          map['data']['role'] == 'E'
+              ? pushNewScreen(context,
+              screen: EducatorProfileViewScreen(id: id,),
+              withNavBar: false,
+              pageTransitionAnimation:
+              PageTransitionAnimation.cupertino)
+              : pushNewScreen(context,
+              screen: LearnerProfileViewScreen(id: id,),
+              withNavBar: false,
+              pageTransitionAnimation:
+              PageTransitionAnimation
+                  .cupertino);
+        } else {
+          isLoading = false;
+          setState(() {});
+        }
+        //print(result.data);
+        //return result;
+        setState(() {
+          isLoading = false;
+        });
+      } else {
+        print('${response.statusCode} : ${response.data.toString()}');
+        throw response.statusCode!;
+      }
+    } on DioError catch (e, stack) {
+      // closeProgressDialog(context);
       print(e.response);
       print(stack);
     }

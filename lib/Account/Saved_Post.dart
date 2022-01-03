@@ -3,6 +3,7 @@ import 'package:being_pupil/HomeScreen/Comment_Screen.dart';
 import 'package:being_pupil/HomeScreen/Report_Feed.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
+import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -39,6 +40,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
   int k = 0;
 
   List<String?> nameList = [];
+  List<int?> userIdList = [];
   List<String?> profileImageList = [];
   List<String?> degreeList = [];
   List<String?> schoolList = [];
@@ -176,13 +178,18 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                   title: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(50),
-                                        child: Image.network(
-                                          profileImageList[index]!,
-                                          width: 40.0,
-                                          height: 40.0,
-                                          fit: BoxFit.cover,
+                                      GestureDetector(
+                                        onTap: (){
+                                          getUserProfile(userIdList[index]);
+                                        },
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(50),
+                                          child: Image.network(
+                                            profileImageList[index]!,
+                                            width: 40.0,
+                                            height: 40.0,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
                                       SizedBox(
@@ -362,6 +369,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                               withNavBar: false,
                                               screen: CommentScreen(
                                                 postId: postIdList[index],
+                                                userId: userIdList[index],
                                                 name: nameList[index],
                                                 profileImage: profileImageList[index],
                                                 degree: degreeList[index],
@@ -522,6 +530,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
 
           for (int i = 0; i < map!['data'].length; i++) {
             postIdList.add(map!['data'][i]['post_id']);
+            userIdList.add(map!['data'][i]['post_user_id']);
             nameList.add(map!['data'][i]['name']);
             profileImageList.add(map!['data'][i]['profile_image']);
             degreeList.add(map!['data'][i]['last_degree']);
@@ -599,6 +608,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
           likesList = [];
           totalCommentsList = [];
           nameList = [];
+          userIdList = [];
           profileImageList = [];
           degreeList = [];
           schoolList = [];
@@ -674,4 +684,59 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
       print(stack);
     }
   }
+
+  
+//get User Profile
+  Future<void> getUserProfile(id) async {
+    // displayProgressDialog(context);
+
+    Map<String, dynamic>? map = {};
+    try {
+      Dio dio = Dio();
+
+      var response = await dio.get('${Config.myProfileUrl}/$id',
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        map = response.data;
+
+        print(map!['data']);
+        //print(mapData);
+        if (map['data'] != null || map['data'] != []) {
+          setState(() {});
+          // map['data']['role'] == 'E'
+          //     ? 
+              pushNewScreen(context,
+              screen: EducatorProfileViewScreen(id: id,),
+              withNavBar: false,
+              pageTransitionAnimation:
+              PageTransitionAnimation.cupertino);
+          //     :
+          // pushNewScreen(context,
+          //     screen: LearnerProfileViewScreen(id: id,),
+          //     withNavBar: false,
+          //     pageTransitionAnimation:
+          //     PageTransitionAnimation
+          //         .cupertino);
+        } else {
+          isLoading = false;
+          setState(() {});
+        }
+        //print(result.data);
+        //return result;
+        setState(() {
+          isLoading = false;
+        });
+      } else {
+        print('${response.statusCode} : ${response.data.toString()}');
+        throw response.statusCode!;
+      }
+    } on DioError catch (e, stack) {
+      // closeProgressDialog(context);
+      print(e.response);
+      print(stack);
+    }
+  }
+  
 }

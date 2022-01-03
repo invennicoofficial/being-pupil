@@ -9,6 +9,7 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
+import 'package:url_launcher/url_launcher.dart';
 import 'Update_Course_Screen.dart';
 
 class CourseDetailScreen extends StatefulWidget {
@@ -48,6 +49,14 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
     });
     print(registerAs);
   }
+
+   void _launchUrl(String url) async {
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -195,52 +204,57 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     itemCount: widget.courseLinks!.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 2.0.h),
-                        child: Container(
-                          height: 7.0.h,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Constants.formBorder),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                height: 7.0.h,
-                                width: 20.0.w,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/postImage.png'),
-                                    fit: BoxFit.cover,
+                      return GestureDetector(
+                        onTap: (){
+                          _launchUrl(widget.courseLinks![index]);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 2.0.h),
+                          child: Container(
+                            height: 7.0.h,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Constants.formBorder),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  height: 7.0.h,
+                                  width: 20.0.w,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/images/postImage.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                  borderRadius: BorderRadius.circular(10.0),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 2.0.w,
-                              ),
-                              Expanded(
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Container(
-                                    height: 5.0.h,
-                                    //width: 70.0.w,
-                                    child: Center(
-                                      child: Text(
-                                        widget.courseLinks![index],
-                                        style: TextStyle(
-                                            fontFamily: 'Montserrat',
-                                            fontSize: 10.0.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: Constants.bgColor),
+                                SizedBox(
+                                  width: 2.0.w,
+                                ),
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Container(
+                                      height: 5.0.h,
+                                      //width: 70.0.w,
+                                      child: Center(
+                                        child: Text(
+                                          widget.courseLinks![index],
+                                          style: TextStyle(
+                                              fontFamily: 'Montserrat',
+                                              fontSize: 10.0.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: Constants.bgColor),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       );

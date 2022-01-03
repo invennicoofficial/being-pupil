@@ -4,6 +4,8 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Create_Post_Screen.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
+import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
+import 'package:being_pupil/StudyBuddy/Learner_ProfileView_Screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
@@ -49,6 +51,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
   int k = 0;
 
   List<int?> postIdList = [];
+  List<int?> userIdList = [];
   List<String?> dateList = [];
   List<String?> nameList = [];
   List<String?> profileImageList = [];
@@ -134,6 +137,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
       map = {};
       mapData = [];
       postIdList = [];
+      userIdList = [];
       dateList = [];
       descriptionList = [];
       //imageListMap.removeWhere((key, value) => key == index);
@@ -264,13 +268,18 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                 title: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: Image.network(
-                                        profileImageList[index]!,
-                                        width: 40.0,
-                                        height: 40.0,
-                                        fit: BoxFit.cover,
+                                    GestureDetector(
+                                      onTap: (){
+                                        getUserProfile(userIdList[index]);
+                                      },
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: Image.network(
+                                          profileImageList[index]!,
+                                          width: 40.0,
+                                          height: 40.0,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
                                     SizedBox(
@@ -537,6 +546,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                             withNavBar: false,
                                             screen: CommentScreen(
                                               postId: postIdList[index],
+                                              userId: userIdList[index],
                                               name: nameList[index],
                                               profileImage: profileImageList[index],
                                               degree: degreeList[index],
@@ -723,6 +733,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
             degreeList.add(map!['data'][i]['last_degree']);
             schoolList.add(map!['data'][i]['school_name']);
             postIdList.add(map!['data'][i]['post_id']);
+            userIdList.add(map!['data'][i]['post_user_id']);
             dateList.add(map!['data'][i]['date']);
             descriptionList.add(map!['data'][i]['description']);
             isLiked.add(map!['data'][i]['isLiked']);
@@ -829,6 +840,59 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
         print(response.statusCode);
       }
     } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+    }
+  }
+
+//get User Profile
+  Future<void> getUserProfile(id) async {
+    // displayProgressDialog(context);
+
+    Map<String, dynamic>? map = {};
+    try {
+      Dio dio = Dio();
+
+      var response = await dio.get('${Config.myProfileUrl}/$id',
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        map = response.data;
+
+        print(map!['data']);
+        //print(mapData);
+        if (map['data'] != null || map['data'] != []) {
+          setState(() {});
+          // map['data']['role'] == 'E'
+          //     ? 
+              pushNewScreen(context,
+              screen: EducatorProfileViewScreen(id: id,),
+              withNavBar: false,
+              pageTransitionAnimation:
+              PageTransitionAnimation.cupertino);
+          //     :
+          // pushNewScreen(context,
+          //     screen: LearnerProfileViewScreen(id: id,),
+          //     withNavBar: false,
+          //     pageTransitionAnimation:
+          //     PageTransitionAnimation
+          //         .cupertino);
+        } else {
+          isLoading = false;
+          setState(() {});
+        }
+        //print(result.data);
+        //return result;
+        setState(() {
+          isLoading = false;
+        });
+      } else {
+        print('${response.statusCode} : ${response.data.toString()}');
+        throw response.statusCode!;
+      }
+    } on DioError catch (e, stack) {
+      // closeProgressDialog(context);
       print(e.response);
       print(stack);
     }
