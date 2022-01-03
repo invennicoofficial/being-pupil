@@ -871,7 +871,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 child: GestureDetector(
                                   onTap: () async {
                                     print('Date Picker!!!');
-                                    int year = DateTime.now().year - 12;
+                                    int year = DateTime.now().year - 15;
                                     final datePick = await showDatePicker(
                                         context: context,
                                         initialDate: new DateTime.now(),

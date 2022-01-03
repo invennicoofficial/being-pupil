@@ -12,7 +12,16 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class UpdateCourseScreen extends StatefulWidget {
-  const UpdateCourseScreen({Key? key}) : super(key: key);
+  String? courseName, courseDescription, startDate, endDate;
+  List<String>? linkList;
+  int? courseId;
+  UpdateCourseScreen({Key? key, 
+  this.courseId,
+  this.courseName, 
+  this.courseDescription, 
+  this.startDate, 
+  this.endDate, 
+  this.linkList}) : super(key: key);
 
   @override
   _UpdateCourseScreenState createState() => _UpdateCourseScreenState();
@@ -33,8 +42,15 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    linkControllers.add(TextEditingController());
     getToken();
+    //linkControllers.add(TextEditingController());
+    courseNameController.text = widget.courseName!;
+    courseDescController.text = widget.courseDescription!;
+    startDateInString = widget.startDate!;
+    //endDateInString = widget.endDate!;
+    for(int i = 0; i < widget.linkList!.length; i++){
+      linkControllers.add(TextEditingController(text: widget.linkList![i]));
+    }
   }
 
   void getToken() async {
@@ -541,7 +557,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
     try {
       Dio dio = Dio();
       FormData formData = FormData.fromMap({
-        'course_id': 16,
+        'course_id': widget.courseId!,
         'course_name': courseNameController.text,
         'course_description': courseDescController.text,
         'start_date': startDateInString,

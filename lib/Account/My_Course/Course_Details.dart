@@ -13,14 +13,15 @@ import 'package:url_launcher/url_launcher.dart';
 import 'Update_Course_Screen.dart';
 
 class CourseDetailScreen extends StatefulWidget {
-  String? courseName, coursDate, courseDescription;
+  String? courseName, courseStartDate, courseEndDate, courseDescription;
   List<String>? courseLinks;
   int? courseId;
   CourseDetailScreen(
       {Key? key,
       this.courseId,
       this.courseName,
-      this.coursDate,
+      this.courseStartDate,
+      this.courseEndDate,
       this.courseDescription,
       this.courseLinks})
       : super(key: key);
@@ -40,6 +41,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
 
   getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+    getData();
   }
 
   getData() async {
@@ -84,7 +86,14 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     onPressed: () {
                       print('EDIT!!!');
                       pushNewScreen(context,
-                          screen: UpdateCourseScreen(),
+                          screen: UpdateCourseScreen(
+                            courseId: widget.courseId!,
+                            courseName: widget.courseName!,
+                            courseDescription: widget.courseDescription!,
+                            startDate: widget.courseStartDate!,
+                            endDate: widget.courseEndDate!,
+                            linkList: widget.courseLinks
+                          ),
                           withNavBar: false,
                           pageTransitionAnimation:
                               PageTransitionAnimation.cupertino);
@@ -174,7 +183,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     SizedBox(
                       width: 2.0.w,
                     ),
-                    Text(widget.coursDate!,
+                    Text('${widget.courseStartDate!} to ${widget.courseStartDate!}',
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 10.0.sp,

@@ -27,7 +27,8 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
   ScrollController _scrollController = ScrollController();
   bool isLoading = true;
   int page = 1;
-  List<String> dateList = [];
+  List<String> startDateList = [];
+  List<String> endDateList = [];
   List<int?> idList = [];
   List<String?> nameList = [];
   List<String?> descriptionList = [];
@@ -128,7 +129,8 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
                               screen: CourseDetailScreen(
                                 courseId: idList[index],
                                 courseName: nameList[index],
-                                coursDate: dateList[index],
+                                courseStartDate: startDateList[index],
+                                courseEndDate: endDateList[index],
                                 courseDescription: descriptionList[index],
                                 courseLinks: linksList[index] as List<String>?,
                               ),
@@ -173,7 +175,7 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
                                 SizedBox(
                                   height: 0.5.h,
                                 ),
-                                Text(dateList[index],
+                                Text('${startDateList[index]} to ${endDateList[index]}',
                                     //'${result.data[index].startDate} to ${result.data[index].endDate}',
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
@@ -213,8 +215,8 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
           for (int i = 0; i < courseLength; i++) {
             idList.add(result.data![i].courseId);
             nameList.add(result.data![i].courseName);
-            dateList.add(
-                '${result.data![i].startDate} to ${result.data![i].endDate}');
+            startDateList.add(result.data![i].startDate!);
+            endDateList.add(result.data![i].endDate!);
             descriptionList.add(result.data![i].courseDescription);
             linksList.add(result.data![i].courseLink);
           }

@@ -944,7 +944,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 child: GestureDetector(
                                   onTap: () async {
                                     print('Date Picker!!!');
-                                    int year = DateTime.now().year - 12;
+                                    int year = DateTime.now().year - 15;
                                     final datePick = await showDatePicker(
                                         context: context,
                                         initialDate: new DateTime(1960),
