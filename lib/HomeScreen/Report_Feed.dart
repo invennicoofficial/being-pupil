@@ -21,21 +21,22 @@ class _ReportFeedState extends State<ReportFeed> {
   bool isOther = false;
   TextEditingController _detailController = TextEditingController();
   Map<String, dynamic>? reportMap = Map<String, dynamic>();
-  List<dynamic>? reportMapData = [];//List<dynamic>();
+  List<dynamic>? reportMapData = []; //List<dynamic>();
   int? selectedIssue;
   String? authToken;
   int? issueId;
+  bool isLoading = true;
 
   @override
   void initState() {
     getToken();
-    getReportIssueList();
     super.initState();
   }
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     print(authToken);
+    getReportIssueList();
   }
 
   Widget detailedBox() {
@@ -103,42 +104,6 @@ class _ReportFeedState extends State<ReportFeed> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: InkWell(
-        onTap: () {
-          if (selectedIssue == null) {
-            Fluttertoast.showToast(
-              msg: "Select Issue for Report",
-              fontSize: 10.0.sp,
-              backgroundColor: Constants.bgColor,
-              textColor: Colors.white,
-              toastLength: Toast.LENGTH_SHORT,
-            );
-          }else{
-            reportIssueOnPost(widget.postId, issueId);
-          }
-        },
-        child: Container(
-          height: 7.0.h,
-          width: 90.0.w,
-          decoration: BoxDecoration(
-              border: Border.all(
-                color: Constants.bgColor,
-              ),
-              color: Constants.bgColor,
-              borderRadius: BorderRadius.circular(5.0)),
-          child: Center(
-            child: Text(
-              'Submit',
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 11.0.sp,
-                  color: Colors.white),
-            ),
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Constants.bgColor,
@@ -163,7 +128,14 @@ class _ReportFeedState extends State<ReportFeed> {
               color: Colors.white),
         ),
       ),
-      body: SingleChildScrollView(
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(
+                valueColor:
+                    new AlwaysStoppedAnimation<Color>(Constants.bgColor),
+              ),
+            )
+          : SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
           children: <Widget>[
@@ -204,9 +176,44 @@ class _ReportFeedState extends State<ReportFeed> {
             //   height: 25.0.h,
             // ),
 
-            // SizedBox(
-            //   height: 3.0.h,
-            // ),
+            SizedBox(
+              height: 3.0.h,
+            ),
+            InkWell(
+              onTap: () {
+                if (selectedIssue == null) {
+                  Fluttertoast.showToast(
+                    msg: "Select Issue for Report",
+                    fontSize: 10.0.sp,
+                    backgroundColor: Constants.bgColor,
+                    textColor: Colors.white,
+                    toastLength: Toast.LENGTH_SHORT,
+                  );
+                } else {
+                  reportIssueOnPost(widget.postId, issueId);
+                }
+              },
+              child: Container(
+                height: 7.0.h,
+                width: 90.0.w,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Constants.bgColor,
+                    ),
+                    color: Constants.bgColor,
+                    borderRadius: BorderRadius.circular(5.0)),
+                child: Center(
+                  child: Text(
+                    'Submit',
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 11.0.sp,
+                        color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -215,7 +222,7 @@ class _ReportFeedState extends State<ReportFeed> {
 
   //get Report issue list API
   getReportIssueList() async {
-    displayProgressDialog(context);
+    //displayProgressDialog(context);
     //var result = ReportIssue();
     try {
       Dio dio = Dio();
@@ -223,13 +230,16 @@ class _ReportFeedState extends State<ReportFeed> {
       print(response.statusCode);
 
       if (response.statusCode == 200) {
-        closeProgressDialog(context);
+        //closeProgressDialog(context);
         //result = reportIssueFromJson(response.data);
         reportMap = response.data;
         setState(() {
           reportMapData = reportMap!['data'];
         });
         print(reportMap);
+
+        isLoading = false;
+        setState(() {});
         //return ReportIssue.fromJson(json.decode(response.data));
       } else {
         print('NOT OK');
@@ -250,7 +260,9 @@ class _ReportFeedState extends State<ReportFeed> {
       FormData formData = FormData.fromMap({
         'post_id': postId,
         'issue_id': issueId,
-        'description':  reportMapData![selectedIssue!]['name'] == 'Others' ? _detailController.text : null
+        'description': reportMapData![selectedIssue!]['name'] == 'Others'
+            ? _detailController.text
+            : null
       });
 
       var response = await dio.post(Config.reportIssueUrl,
@@ -265,30 +277,30 @@ class _ReportFeedState extends State<ReportFeed> {
         // print(result);
         map = response.data;
         //mapData = map['data'];
-        if(map!['status'] == true){
-         Fluttertoast.showToast(
-          msg: map['message'],//map['data']['status'],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Constants.bgColor,
-          textColor: Colors.white,
-          fontSize: 10.0.sp,
-        );
-        print(map);
-        //Go back to HomeScreen
-        Navigator.of(context).pop();
-        }else{
+        if (map!['status'] == true) {
           Fluttertoast.showToast(
-          msg: map['message'] == null ? map['error_msg'] : map['message'],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Constants.bgColor,
-          textColor: Colors.white,
-          fontSize: 10.0.sp,
-        );
-        print(map);
+            msg: map['message'], //map['data']['status'],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+          print(map);
+          //Go back to HomeScreen
+          Navigator.of(context).pop();
+        } else {
+          Fluttertoast.showToast(
+            msg: map['message'] == null ? map['error_msg'] : map['message'],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+          print(map);
         }
       } else {
         // Fluttertoast.showToast(
