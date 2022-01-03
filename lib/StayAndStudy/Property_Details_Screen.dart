@@ -100,33 +100,54 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
             //Images of Property
             Padding(
                 padding: EdgeInsets.only(top: 2.0.h),
-                child: CarouselSlider(
-                    carouselController: _controller,
-                    items: //imgList
-                        //widget.propertyDetails.data[widget.index].featuredImage
-                        widget.propData![widget.index]['featured_image']
-                            .map<Widget>((item) => Container(
-                                  child: Center(
-                                      child: Image.network(item,
-                                          fit: BoxFit.cover, width: 1000)),
-                                ))
-                            .toList(),
-                    options: CarouselOptions(
-                      height: 30.0.h,
-                      aspectRatio: 16 / 9,
-                      viewportFraction: 0.85,
-                      initialPage: 0,
-                      enableInfiniteScroll: true,
-                      reverse: false,
-                      //autoPlay: true,
-                      // autoPlayInterval: Duration(seconds: 3),
-                      // autoPlayAnimationDuration: Duration(milliseconds: 800),
-                      // autoPlayCurve: Curves.fastOutSlowIn,
-                      //pauseAutoPlayOnTouch: Duration(seconds: 10),
-                      enlargeCenterPage: true,
-                      //onPageChanged: callbackFunction,
-                      scrollDirection: Axis.horizontal,
-                    ))),
+                child: Stack(
+                  children: [
+                    CarouselSlider(
+                        carouselController: _controller,
+                        items: //imgList
+                            //widget.propertyDetails.data[widget.index].featuredImage
+                            widget.propData![widget.index]['featured_image']
+                                .map<Widget>((item) => Container(
+                                      child: Center(
+                                          child: Image.network(item,
+                                              fit: BoxFit.cover, width: 1000)),
+                                    ))
+                                .toList(),
+                        options: CarouselOptions(
+                          height: 30.0.h,
+                          aspectRatio: 16 / 9,
+                          viewportFraction: 0.9,
+                          initialPage: 0,
+                          enableInfiniteScroll: true,
+                          reverse: false,
+                          //autoPlay: true,
+                          // autoPlayInterval: Duration(seconds: 3),
+                          // autoPlayAnimationDuration: Duration(milliseconds: 800),
+                          // autoPlayCurve: Curves.fastOutSlowIn,
+                          //pauseAutoPlayOnTouch: Duration(seconds: 10),
+                          enlargeCenterPage: true,
+                          //onPageChanged: callbackFunction,
+                          scrollDirection: Axis.horizontal,
+                        )),
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.0.h, left: 0.5.w),
+                      child: IconButton(
+                        onPressed: () => _controller.previousPage(),
+                        icon: Icon(Icons.chevron_left, color: Colors.white, size: 50,),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 12.0.h, right: 4.5.w),
+                        child: IconButton(
+                          onPressed: () => _controller.nextPage(),
+                          icon: Icon(Icons.chevron_right, color: Colors.white, size: 50,),
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
             //small images of Property
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 3.0.w, vertical: 2.0.h),
