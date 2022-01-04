@@ -1,13 +1,18 @@
 import 'dart:convert';
 
 import 'package:being_pupil/Account/My_Course/Get_Educator_Course_Screen.dart';
+import 'package:being_pupil/ConnectyCube/chat_dialog_screen.dart';
+import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Comment_Screen.dart';
 import 'package:being_pupil/HomeScreen/Report_Feed.dart';
+import 'package:being_pupil/Learner/Connection_API.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Educator_Post_Model.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:connectycube_sdk/connectycube_core.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -61,6 +66,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
 
   Map<String, dynamic>? saveMap;
   String? authToken;
+  ConnectionAPI connect = ConnectionAPI();
 
 
   @override
@@ -266,10 +272,11 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            print('MESSAGE!!!');
-                          },
+                        profileMap!['data']['is_connected'] == 0 
+                        ? GestureDetector(
+                          onTap: () async {
+                            await connect.connectionApi(profileMap!['data']['user_id'], authToken!);
+                                  },
                           child: Container(
                             height: 4.5.h,
                             width: 35.0.w,
@@ -278,7 +285,56 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                 borderRadius: BorderRadius.circular(25.0)),
                             child: Center(
                               child: Text(
-                                'MESSAGE',
+                                //  connect.status == true
+                                // ? 'Request Sent' : 
+                                'CONNECT', 
+                                style: TextStyle(
+                                    fontSize: 10.0.sp,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        )
+                        : GestureDetector(
+                          onTap: () async {
+                                    displayProgressDialog(context);
+                                    SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+                                    CubeUser? user = sharedPrefs.getUser();
+                                    print(profileMap!['data']['email']);
+                                    getUserByEmail(profileMap!['data']['email'])
+                                        .then((cubeUser) {
+                                          CubeDialog newDialog = CubeDialog(
+                                        CubeDialogType.PRIVATE,
+                                        occupantsIds: [cubeUser!.id!]);
+                                    createDialog(newDialog)
+                                        .then((createdDialog) {
+                                      closeProgressDialog(context);
+                                      pushNewScreen(context,
+                                          screen: ChatDialogScreen(user, createdDialog, profileImageUrl),
+                                          withNavBar: false,
+                                          pageTransitionAnimation:
+                                          PageTransitionAnimation
+                                              .cupertino);
+                                    })
+                                        .catchError((error) {
+                                      displayProgressDialog(context);
+                                    });
+                                    })
+                                        .catchError((error) {
+                                      displayProgressDialog(context);
+                                    });
+
+                                  },
+                          child: Container(
+                            height: 4.5.h,
+                            width: 35.0.w,
+                            decoration: BoxDecoration(
+                                color: Constants.bgColor,
+                                borderRadius: BorderRadius.circular(25.0)),
+                            child: Center(
+                              child: Text('CHAT',
                                 style: TextStyle(
                                     fontSize: 10.0.sp,
                                     fontFamily: 'Montserrat',

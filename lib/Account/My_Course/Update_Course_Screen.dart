@@ -9,6 +9,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sizer/sizer.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class UpdateCourseScreen extends StatefulWidget {
@@ -37,6 +38,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
   TextEditingController courseNameController = TextEditingController();
   TextEditingController courseDescController = TextEditingController();
   int wordCount = 0;
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
   @override
   void initState() {
@@ -46,7 +48,8 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
     //linkControllers.add(TextEditingController());
     courseNameController.text = widget.courseName!;
     courseDescController.text = widget.courseDescription!;
-    startDateInString = widget.startDate!;
+    // startDateInString = dateFormat.parse(widget.startDate!) as String?;
+    // print(startDateInString);
     //endDateInString = widget.endDate!;
     for(int i = 0; i < widget.linkList!.length; i++){
       linkControllers.add(TextEditingController(text: widget.linkList![i]));

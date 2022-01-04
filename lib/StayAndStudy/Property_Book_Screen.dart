@@ -664,61 +664,6 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                 ),
                 child: Padding(
                   padding:
-                      EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 4.0.h),
-                  child: Container(
-                    height: 7.0.h,
-                    //width: 90.0.w,
-                    child: TextFormField(
-                      controller: _emailController,
-                      readOnly: true,
-                      decoration: InputDecoration(
-                        labelText: "Email",
-                        labelStyle: TextStyle(
-                                  color: Constants.bpSkipStyle,
-                                  fontFamily: "Montserrat", 
-                                  fontSize: 10.0.sp
-                                ),
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: BorderSide(
-                            color: Constants.formBorder,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: BorderSide(
-                            color: Constants.formBorder,
-                            //width: 2.0,
-                          ),
-                        ),
-                      ),
-                      //keyboardType: TextInputType.emailAddress,
-                      style: new TextStyle(
-                          fontFamily: "Montserrat", fontSize: 10.0.sp),
-                      // validator: (value) {
-                      //   if (value.isEmpty) {
-                      //     Fluttertoast.showToast(
-                      //         msg: "Please Enter Name",
-                      //         toastLength: Toast.LENGTH_SHORT,
-                      //         gravity: ToastGravity.BOTTOM,
-                      //         timeInSecForIosWeb: 1,
-                      //         backgroundColor: Colors.red,
-                      //         textColor: Colors.white,
-                      //         fontSize: 16.0);
-                      //   }
-                      // },
-                    ),
-                  ),
-                ),
-              ),
-              Theme(
-                data: new ThemeData(
-                  primaryColor: Constants.bpSkipStyle,
-                  primaryColorDark: Constants.bpSkipStyle,
-                ),
-                child: Padding(
-                  padding:
                       EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 3.0.h),
                   child: Container(
                     height: 7.0.h,
@@ -814,6 +759,61 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                             ),
                           )
                           .toList(),
+                    ),
+                  ),
+                ),
+              ),
+              Theme(
+                data: new ThemeData(
+                  primaryColor: Constants.bpSkipStyle,
+                  primaryColorDark: Constants.bpSkipStyle,
+                ),
+                child: Padding(
+                  padding:
+                      EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 4.0.h),
+                  child: Container(
+                    height: 7.0.h,
+                    //width: 90.0.w,
+                    child: TextFormField(
+                      controller: _emailController,
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        labelText: "Email",
+                        labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
+                        fillColor: Colors.white,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: BorderSide(
+                            color: Constants.formBorder,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: BorderSide(
+                            color: Constants.formBorder,
+                            //width: 2.0,
+                          ),
+                        ),
+                      ),
+                      //keyboardType: TextInputType.emailAddress,
+                      style: new TextStyle(
+                          fontFamily: "Montserrat", fontSize: 10.0.sp),
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     Fluttertoast.showToast(
+                      //         msg: "Please Enter Name",
+                      //         toastLength: Toast.LENGTH_SHORT,
+                      //         gravity: ToastGravity.BOTTOM,
+                      //         timeInSecForIosWeb: 1,
+                      //         backgroundColor: Colors.red,
+                      //         textColor: Colors.white,
+                      //         fontSize: 16.0);
+                      //   }
+                      // },
                     ),
                   ),
                 ),
