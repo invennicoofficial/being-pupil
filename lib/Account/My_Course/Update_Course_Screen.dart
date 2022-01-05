@@ -4,6 +4,7 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Course_Model/Create_Course_Model.dart';
 import 'package:being_pupil/Model/Course_Model/Update_Course_Model.dart';
+import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
+import 'package:jiffy/jiffy.dart';
 
 class UpdateCourseScreen extends StatefulWidget {
   String? courseName, courseDescription, startDate, endDate;
@@ -38,7 +40,10 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
   TextEditingController courseNameController = TextEditingController();
   TextEditingController courseDescController = TextEditingController();
   int wordCount = 0;
-  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+  // DateFormat dateFormat1 = DateFormat("dd MMMyyyy");
+  // DateFormat dateFormat2 = DateFormat("dd/MM/yyyy");
+  // var dateCheck = DateFormat.jm(DateTime.now());
+  var startNewDate, endNewDate;
 
   @override
   void initState() {
@@ -46,11 +51,12 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
     super.initState();
     getToken();
     //linkControllers.add(TextEditingController());
+    startNewDate = Jiffy(widget.startDate!, 'dd MMM yyyy').format('dd/MM/yyyy');
+    endNewDate = Jiffy(widget.endDate!, 'dd MMM yyyy').format('dd/MM/yyyy');
     courseNameController.text = widget.courseName!;
     courseDescController.text = widget.courseDescription!;
-    // startDateInString = dateFormat.parse(widget.startDate!) as String?;
-    // print(startDateInString);
-    //endDateInString = widget.endDate!;
+    startDateInString = startNewDate;
+    endDateInString = endNewDate;
     for(int i = 0; i < widget.linkList!.length; i++){
       linkControllers.add(TextEditingController(text: widget.linkList![i]));
     }
@@ -114,6 +120,11 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                       controller: courseNameController,
                       decoration: InputDecoration(
                         labelText: "Course Name",
+                        labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                         fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
@@ -154,6 +165,11 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                       //maxLength: 100,
                       decoration: InputDecoration(
                         labelText: "Course Description",
+                        labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                         alignLabelWithHint: true,
                         //counterText: '',
                         fillColor: Colors.white,
@@ -209,8 +225,8 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                       print('Date Picker!!!');
                       final datePick = await showDatePicker(
                           context: context,
-                          initialDate: new DateTime.now(),
-                          firstDate: new DateTime(1900),
+                          initialDate: DateTime.now(),
+                          firstDate: new DateTime.now(),
                           lastDate: new DateTime(2100),
                           helpText: 'Select Birth Date');
                       if (datePick != null && datePick != startDate) {
@@ -254,9 +270,10 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            isStartDateSelected
-                                ? startDateInString!
-                                : 'Starting Date',
+                            // isStartDateSelected
+                            //     ? 
+                                startDateInString!,
+                                // : 'Starting Date',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -285,7 +302,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                       final datePick = await showDatePicker(
                           context: context,
                           initialDate: new DateTime.now(),
-                          firstDate: new DateTime(1900),
+                          firstDate: new DateTime.now(),
                           lastDate: new DateTime(2100),
                           helpText: 'Select Birth Date');
                       if (datePick != null && datePick != endDate) {
@@ -329,7 +346,8 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            isEndDateSelected ? endDateInString! : 'End Date',
+                            //isEndDateSelected ? 
+                            endDateInString!, //: 'End Date',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 10.0.sp,
@@ -380,6 +398,11 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                             controller: linkControllers[index],
                             decoration: InputDecoration(
                                 labelText: "Link",
+                                labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                 fillColor: Colors.white,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
@@ -479,7 +502,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                         textColor: Colors.white,
                         fontSize: 10.0.sp,
                       );
-                    } else if (startDate == null) {
+                    } else if (startNewDate == null) {
                       Fluttertoast.showToast(
                         msg: 'Please Select Start Date',
                         toastLength: Toast.LENGTH_SHORT,
@@ -489,7 +512,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                         textColor: Colors.white,
                         fontSize: 10.0.sp,
                       );
-                    } else if (endDate == null) {
+                    } else if (endNewDate == null) {
                       Fluttertoast.showToast(
                         msg: 'Please Select End Date',
                         toastLength: Toast.LENGTH_SHORT,
@@ -535,7 +558,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                         borderRadius: BorderRadius.circular(5.0)),
                     child: Center(
                       child: Text(
-                        'Add course'.toUpperCase(),
+                        'Update course'.toUpperCase(),
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.w500,
@@ -575,7 +598,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
-        closeProgressDialog(context);
+        //closeProgressDialog(context);
         result = UpdateCourse.fromJson(response.data);
         print(response.data);
         if (result.status == true) {
@@ -588,7 +611,14 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-          Navigator.of(context).pop();
+          Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return bottomNavBar(4);
+              },
+             ),
+             (_) => false,
+            );
         } else {
           Fluttertoast.showToast(
             msg: result.message!,
