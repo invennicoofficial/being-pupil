@@ -620,6 +620,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
              (_) => false,
             );
         } else {
+          closeProgressDialog(context);
           Fluttertoast.showToast(
             msg: result.message!,
             toastLength: Toast.LENGTH_SHORT,

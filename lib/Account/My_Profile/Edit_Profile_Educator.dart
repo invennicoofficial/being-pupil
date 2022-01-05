@@ -2122,6 +2122,24 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                           ),
                         ),
 
+                        //Teach Experience
+                        Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 4.0.h, left: 3.0.w, right: 3.0.w),
+                              child: Text(
+                                'Teaching Experience',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 12.0.sp,
+                                    color: Constants.bgColor,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ],
+                        ),
+
                         Theme(
                           data: new ThemeData(
                             primaryColor: Constants.bpSkipStyle,
