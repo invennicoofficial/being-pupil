@@ -2369,7 +2369,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                             selectedSkillList.length == 0
                                         ? result.data!
                                             .skills!.replaceAll('[', '').replaceAll(']', '').
-                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#') //"Please mention your skills example #skills1 #skills2..."
+                                            replaceAll(new RegExp(r', '), ' #')//.replaceFirst('', '#') //"Please mention your skills example #skills1 #skills2..."
                                         : selectedSkillList
                                             .toString().replaceAll('[', '').replaceAll(']', '').
                                             replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
@@ -2616,7 +2616,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                             selectedHobbiesList.length == 0
                                         ? result.data!
                                             .hobbies!.replaceAll('[', '').replaceAll(']', '').
-                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#') //"Please mention your hobbies example #hobbie1 #hobbie2..."
+                                            replaceAll(new RegExp(r', '), ' #')//.replaceFirst('', '#') //"Please mention your hobbies example #hobbie1 #hobbie2..."
                                         : selectedHobbiesList
                                             .toString().replaceAll('[', '').replaceAll(']', '').
                                             replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
