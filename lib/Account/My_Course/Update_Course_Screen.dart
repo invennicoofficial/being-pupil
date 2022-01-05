@@ -90,7 +90,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
           padding: EdgeInsets.zero,
         ),
         title: Text(
-          'Create Course',
+          'Update Course',
           style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 12.0.sp,

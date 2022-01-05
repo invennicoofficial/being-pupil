@@ -340,14 +340,17 @@ class _AccountScreenState extends State<AccountScreen> {
                               //     pageBuilder: (_, __, ____) =>
                               //         EducatorHomeScreen()));
                             },
-                            child: ProfileList(
-                              txt: "Logout",
-                              image: "assets/icons/logout.png",
-                              sizeImage: 20.0,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 3.0),
+                              child: ProfileList(
+                                txt: "Logout",
+                                image: "assets/icons/logout.png",
+                                sizeImage: 20.0,
+                              ),
                             ),
                           ),
                           SizedBox(
-                            height: 6.0.h,
+                            height: 3.0.h,
                           ),
                         ],
                       ),

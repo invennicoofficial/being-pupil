@@ -2,6 +2,7 @@ import 'package:being_pupil/ConnectyCube/api_utils.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Create_Post_Screen.dart';
+import 'package:being_pupil/HomeScreen/Fulll_Screen_Image_Screen.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
@@ -64,6 +65,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
 
   String? authToken, registerAs;
   Map<String, dynamic>? saveMap;
+  Map<String, dynamic>? refreshTokenMap;
   LikePostAPI like = LikePostAPI();
   static const String TAG = "_LoginPageState";
   CubeUser? user;
@@ -394,20 +396,56 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                           return imageListMap[index].length == 1
                                           ? Padding(
                                             padding: EdgeInsets.symmetric(horizontal: 15.0.w),
-                                            child: Image.network(
-                                              imageListMap[index][imageIndex]['file'],
-                                              height: 100,
-                                              width: 250,
-                                              fit: BoxFit.contain,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                List<String> imgList = [];
+                                                for(int i = 0; i<imageListMap[index].length; i++) {
+                                                  imgList.add(imageListMap[index][i]['file']);
+                                                }
+                                                pushNewScreen(context,
+                                                    withNavBar: false,
+                                                    screen: FullScreenSlider(
+                                                      imageList: imgList,
+                                                      index: imageIndex,
+                                                      name: nameList[index]!
+                                                    ),
+                                                    pageTransitionAnimation:
+                                                    PageTransitionAnimation
+                                                        .cupertino);
+                                              },
+                                              child: Image.network(
+                                                imageListMap[index][imageIndex]['file'],
+                                                height: 100,
+                                                width: 250,
+                                                fit: BoxFit.contain,
+                                              ),
                                             ),
                                           )
                                           : Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: Image.network(
-                                              imageListMap[index][imageIndex]['file'],
-                                              height: 100,
-                                              width: 250,
-                                              fit: BoxFit.cover,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                List<String> imgList = [];
+                                                for(int i = 0; i<imageListMap[index].length; i++) {
+                                                  imgList.add(imageListMap[index][i]['file']);
+                                                }
+                                                pushNewScreen(context,
+                                                    withNavBar: false,
+                                                    screen: FullScreenSlider(
+                                                      imageList: imgList,
+                                                      index: imageIndex,
+                                                      name: nameList[index]!
+                                                    ),
+                                                    pageTransitionAnimation:
+                                                    PageTransitionAnimation
+                                                        .cupertino);
+                                              },
+                                              child: Image.network(
+                                                imageListMap[index][imageIndex]['file'],
+                                                height: 100,
+                                                width: 250,
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
                                           );
                                         },
@@ -764,14 +802,8 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
 
         if (map!['status'] == true) {
           print('TRUE');
-        } else {
-          Fluttertoast.showToast(
-              msg: map!['error_msg'],
-              backgroundColor: Constants.bgColor,
-              gravity: ToastGravity.BOTTOM,
-              fontSize: 10.0.sp,
-              toastLength: Toast.LENGTH_SHORT,
-              textColor: Colors.white);
+        } else if(map!['status'] == false && map!['error_code'] == 'ERR302') {
+          refreshToken();
         }
       } else {
         print('${response.statusCode} : ${response.data.toString()}');
@@ -779,6 +811,35 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
+      print(e.response);
+      print(stack);
+    }
+  }
+
+  void saveToken(String token) async {
+    // Write value
+    await storage.FlutterSecureStorage().write(key: 'access_token', value: token);
+    setState(() {
+      authToken = token;
+    });
+    getAllPostApi(0);
+  }
+
+  Future<void> refreshToken() async {
+    print(authToken);
+    try {
+      Dio dio = Dio();
+      var response = await dio.get(Config.refreshTokenUrl,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
+      if (response.statusCode == 200) {
+        refreshTokenMap = response.data;
+        if (refreshTokenMap!.length > 1) {
+          saveToken(refreshTokenMap!['access_token']);
+        }
+      } else {
+        print(response.statusCode);
+      }
+    } on DioError catch (e, stack) {
       print(e.response);
       print(stack);
     }

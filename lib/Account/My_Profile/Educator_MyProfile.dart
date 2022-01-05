@@ -1,6 +1,7 @@
 import 'package:being_pupil/Account/My_Profile/Edit_Profile_Educator.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Comment_Screen.dart';
+import 'package:being_pupil/HomeScreen/Fulll_Screen_Image_Screen.dart';
 import 'package:being_pupil/HomeScreen/Update_Post_Screen.dart';
 import 'package:being_pupil/HomeScreen/Report_Feed.dart';
 import 'package:being_pupil/Model/Config.dart';
@@ -667,12 +668,29 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                               return Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
-                                                child: Image.network(
-                                                  imageListMap[index]
-                                                      [imageIndex]['file'],
-                                                  height: 100,
-                                                  width: 250,
-                                                  fit: BoxFit.cover,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    List<String> imgList = [];
+                                                    for(int i = 0; i<imageListMap[index].length; i++) {
+                                                      imgList.add(imageListMap[index][i]['file']);
+                                                    }
+                                                    pushNewScreen(context,
+                                                        withNavBar: false,
+                                                        screen: FullScreenSlider(
+                                                            imageList: imgList,
+                                                            index: imageIndex,
+                                                            name: name!
+                                                        ),
+                                                        pageTransitionAnimation:
+                                                        PageTransitionAnimation
+                                                            .cupertino);
+                                                  },
+                                                  child: Image.network(
+                                                    imageListMap[index][imageIndex]['file'],
+                                                    height: 100,
+                                                    width: 250,
+                                                    fit: BoxFit.cover,
+                                                  ),
                                                 ),
                                               );
                                             },

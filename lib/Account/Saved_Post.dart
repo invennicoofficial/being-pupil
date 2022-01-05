@@ -1,5 +1,6 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Comment_Screen.dart';
+import 'package:being_pupil/HomeScreen/Fulll_Screen_Image_Screen.dart';
 import 'package:being_pupil/HomeScreen/Report_Feed.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
@@ -280,12 +281,29 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                             return Padding(
                                               padding:
                                                   const EdgeInsets.all(8.0),
-                                              child: Image.network(
-                                                imageListMap[index][imageIndex]
-                                                    ['file'],
-                                                height: 100,
-                                                width: 250,
-                                                fit: BoxFit.cover,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  List<String> imgList = [];
+                                                  for(int i = 0; i<imageListMap[index].length; i++) {
+                                                    imgList.add(imageListMap[index][i]['file']);
+                                                  }
+                                                  pushNewScreen(context,
+                                                      withNavBar: false,
+                                                      screen: FullScreenSlider(
+                                                          imageList: imgList,
+                                                          index: imageIndex,
+                                                          name: nameList[index]!
+                                                      ),
+                                                      pageTransitionAnimation:
+                                                      PageTransitionAnimation
+                                                          .cupertino);
+                                                },
+                                                child: Image.network(
+                                                  imageListMap[index][imageIndex]['file'],
+                                                  height: 100,
+                                                  width: 250,
+                                                  fit: BoxFit.cover,
+                                                ),
                                               ),
                                             );
                                           },

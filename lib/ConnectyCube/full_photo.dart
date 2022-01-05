@@ -18,6 +18,7 @@ class FullPhoto extends StatelessWidget {
           style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+        backgroundColor: Colors.black,
       ),
       body: FullPhotoScreen(url: url),
     );

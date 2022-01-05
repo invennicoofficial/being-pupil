@@ -13,6 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
+import 'Fulll_Screen_Image_Screen.dart';
+
 class CommentScreen extends StatefulWidget {
   String? name, profileImage, degree, schoolName, date, description;
   int? postId, like, comment, index, userId;
@@ -308,14 +310,30 @@ class _CommentScreenState extends State<CommentScreen> {
                                         itemCount: widget
                                             .imageListMap![widget.index!].length,
                                         itemBuilder: (context, imageIndex) {
-                                          return Padding(
-                                            padding: const EdgeInsets.all(8.0),
+                                          return GestureDetector(
+                                            onTap: () {
+                                              List<String> imgList = [];
+                                              for(int i = 0; i<widget
+                                                  .imageListMap![widget.index!].length; i++) {
+                                                imgList.add(widget
+                                                    .imageListMap![widget.index!][i]['file']);
+                                              }
+                                              pushNewScreen(context,
+                                                  withNavBar: false,
+                                                  screen: FullScreenSlider(
+                                                      imageList: imgList,
+                                                      index: imageIndex,
+                                                      name: widget.name!
+                                                  ),
+                                                  pageTransitionAnimation:
+                                                  PageTransitionAnimation
+                                                      .cupertino);
+                                            },
                                             child: Image.network(
-                                              widget.imageListMap![widget.index!]
-                                                  [imageIndex]['file'],
+                                              widget.imageListMap![widget.index!][imageIndex]['file'],
                                               height: 100,
                                               width: 250,
-                                              fit: BoxFit.cover,
+                                              fit: BoxFit.contain,
                                             ),
                                           );
                                         },
@@ -688,7 +706,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                                           fontWeight: FontWeight
                                                                               .w400,
                                                                           color:
-                                                                              Constants.formBorder),
+                                                                              Constants.bgColor),
                                                                     ),
                                                                     value: 2,
                                                                   )
@@ -804,7 +822,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                             });
                                             getCommentListApi(page);
                                           },
-                                          child: Text('Edit',
+                                          child: Text('Post',
                                               style: TextStyle(
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 12.0.sp,
@@ -900,7 +918,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 12.0.sp,
                                                   fontWeight: FontWeight.w500,
-                                                  color: Constants.formBorder)),
+                                                  color: Constants.bgColor)),
                                         ),
                                       ),
                                       counterText: '',
@@ -913,7 +931,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                   style: new TextStyle(
                                       fontFamily: "Montserrat",
                                       fontSize: 10.0.sp,
-                                      color: Constants.formBorder)),
+                                      color: Constants.bgColor)),
                             ))
                       ],
                     ),

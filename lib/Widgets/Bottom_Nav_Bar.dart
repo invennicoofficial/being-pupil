@@ -132,7 +132,7 @@ class _bottomNavBarState extends State<bottomNavBar> {
       PersistentBottomNavBarItem(
         //icon: ImageIcon(AssetImage('assets/icons/support2.png'),size: 25),
         icon: Image.asset('assets/icons/supportGreen.png', height: 25, width: 25,),
-        title: ("Study Buddy"),
+        title: (registerAs == 'E' ? "Fellow Educator" : "Study Buddy"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
         inactiveIcon: Image.asset('assets/icons/support.png', height: 25, width: 25, ),

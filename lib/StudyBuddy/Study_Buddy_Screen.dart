@@ -29,7 +29,6 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
   void initState() {
     super.initState();
     getData();
-    print('INIT::: ' + searchIn);
   }
 
   getData() async {
@@ -65,7 +64,7 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
           //   },
           //   padding: EdgeInsets.zero,
           // ),
-          title: Text('Study Buddy',
+          title: Text(registerAs == 'L' ? 'Study Buddy' : 'Fellow Educator',
               style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 12.0.sp,

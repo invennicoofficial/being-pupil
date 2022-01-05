@@ -116,6 +116,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ),
       ),
+      backgroundColor: Colors.black,
       leading:IconButton(
           icon: Icon(
             Icons.west_rounded,

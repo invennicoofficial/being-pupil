@@ -578,27 +578,27 @@ class _LoginScreenState extends State<LoginScreen> {
         //print('ID ::: ' + result.data.userObject.userId.toString());
 
         if (result.data!.userObject == null) {
-          // Fluttertoast.showToast(
-          //   msg: result.message,
-          //   toastLength: Toast.LENGTH_SHORT,
-          //   gravity: ToastGravity.BOTTOM,
-          //   timeInSecForIosWeb: 1,
-          //   backgroundColor: Constants.bgColor,
-          //   textColor: Colors.white,
-          //   fontSize: 10.0.sp,
-          // );
+          Fluttertoast.showToast(
+            msg: result.message == null ? result.errorMsg! : result.message!,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
           closeProgressDialog(context);
-          Navigator.push(
-              context,
-              PageTransition(
-                  type: PageTransitionType.fade,
-                  child: LoginMobileCheckScreen(
-                    socialId: socialId,
-                    registrationType: registrationType,
-                    socialDisplayName: socialName,
-                    socialEmail: socialEmail,
-                    socialPhotoUrl: socialPhotoUrl,
-                  )));
+          // Navigator.push(
+          //     context,
+          //     PageTransition(
+          //         type: PageTransitionType.fade,
+          //         child: LoginMobileCheckScreen(
+          //           socialId: socialId,
+          //           registrationType: registrationType,
+          //           socialDisplayName: socialName,
+          //           socialEmail: socialEmail,
+          //           socialPhotoUrl: socialPhotoUrl,
+          //         )));
         } else {
          if(result.data!.userObject!.isNew == "true") {
            print('API MO::::$mobileNumberFromAPi');
@@ -634,7 +634,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
            preferences.setString("name", result.data!.userObject!.name!);
               preferences.setString("mobileNumber", result.data!.userObject!.mobileNumber!);
-              preferences.setString("gender", result.data!.userObject!.gender!);
+              preferences.setString("gender", result.data!.userObject!.gender.toString());
               preferences.setString("email", result.data!.userObject!.email!);
               //result.data.userObject.role == 'E' ?
               preferences.setString("imageUrl", result.data!.userObject!.imageUrl!);
@@ -772,14 +772,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _handleFacebookSignIn() async {
     FacebookAuth.instance.logOut();
-    try {
-      // by default the login method has the next permissions ['email','public_profile']
-      //AccessToken accessToken = await FacebookAuth.instance.login();
-      //print(accessToken.toJson());
-
-      FacebookAuth.instance.login();
+    final LoginResult result = await FacebookAuth.instance.login(
+      permissions: ['public_profile', 'email'],
+      loginBehavior: LoginBehavior.webOnly,
+    );// by default we request the email and the public profile
+// or FacebookAuth.i.login()
+    if (result.status == LoginStatus.success) {
+      // you are logged
+      final AccessToken accessToken = result.accessToken!;
       // get the user data
-      fbUserData = await FacebookAuth.instance.getUserData();
+      fbUserData = await FacebookAuth.i.getUserData(
+        fields: "name,email,picture.width(200)",
+      );
       print(fbUserData);
       print(fbUserData!['email']);
       socialName = fbUserData!['name'];
@@ -791,22 +795,10 @@ class _LoginScreenState extends State<LoginScreen> {
       if (fbUserData != null) {
         checkLogin(fbUserData!['id'].toString());
       }
-    } catch(e){
-      print('ERR:::'+e.toString());
+    } else {
+      print(result.status);
+      print(result.message);
     }
-    // on FacebookAuthException catch (e) {
-    //   switch (e.errorCode) {
-    //     case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
-    //       print("You have a previous login operation in progress");
-    //       break;
-    //     case FacebookAuthErrorCode.CANCELLED:
-    //       print("login cancelled");
-    //       break;
-    //     case FacebookAuthErrorCode.FAILED:
-    //       print("login failed");
-    //       break;
-    //   }
-    // }
   }
 
      void saveToken(String token) async {

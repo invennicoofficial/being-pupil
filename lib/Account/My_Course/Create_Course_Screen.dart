@@ -488,7 +488,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                       );
                     } else if (courseDescController.text.isEmpty) {
                       Fluttertoast.showToast(
-                        msg: 'Please Enter Course Name',
+                        msg: 'Please Enter Description',
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.BOTTOM,
                         timeInSecForIosWeb: 1,

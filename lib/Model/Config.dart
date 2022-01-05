@@ -55,6 +55,7 @@ class Config{
   static const String submitCancelReason = baseUrl + "property/booking/cancel";
   static const String addReviewUrl = baseUrl + "property/addReview";
   static const String getReviewUrl = baseUrl + "property/getReview";
+  static const String refreshTokenUrl = baseUrl + "user/refreshToken";
 }
 
 
