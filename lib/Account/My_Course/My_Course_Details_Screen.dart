@@ -12,11 +12,11 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'package:url_launcher/url_launcher.dart';
 import 'Update_Course_Screen.dart';
 
-class CourseDetailScreen extends StatefulWidget {
+class MyCourseDetailScreen extends StatefulWidget {
   String? courseName, courseStartDate, courseEndDate, courseDescription;
   List<String>? courseLinks;
   int? courseId;
-  CourseDetailScreen(
+  MyCourseDetailScreen(
       {Key? key,
       this.courseId,
       this.courseName,
@@ -27,10 +27,10 @@ class CourseDetailScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _CourseDetailScreenState createState() => _CourseDetailScreenState();
+  _MyCourseDetailScreenState createState() => _MyCourseDetailScreenState();
 }
 
-class _CourseDetailScreenState extends State<CourseDetailScreen> {
+class _MyCourseDetailScreenState extends State<MyCourseDetailScreen> {
   String? registerAs, authToken;
 
   @override
@@ -77,39 +77,39 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
           },
           padding: EdgeInsets.zero,
         ),
-        // actions: <Widget>[
-        //   registerAs == 'E'
-        //       ? Padding(
-        //           padding: EdgeInsets.only(right: 0.0.w),
-        //           child: Center(
-        //               child: FlatButton(
-        //             onPressed: () {
-        //               print('EDIT!!!');
-        //               pushNewScreen(context,
-        //                   screen: UpdateCourseScreen(
-        //                     courseId: widget.courseId!,
-        //                     courseName: widget.courseName!,
-        //                     courseDescription: widget.courseDescription!,
-        //                     startDate: widget.courseStartDate!,
-        //                     endDate: widget.courseEndDate!,
-        //                     linkList: widget.courseLinks
-        //                   ),
-        //                   withNavBar: false,
-        //                   pageTransitionAnimation:
-        //                       PageTransitionAnimation.cupertino);
-        //             },
-        //             child: Text(
-        //               'Edit',
-        //               style: TextStyle(
-        //                   fontFamily: 'Montserrat',
-        //                   fontSize: 12.0.sp,
-        //                   fontWeight: FontWeight.w500,
-        //                   color: Colors.white.withOpacity(0.6)),
-        //             ),
-        //           )),
-        //         )
-        //       : Container(),
-        // ],
+        actions: <Widget>[
+          registerAs == 'E'
+              ? Padding(
+                  padding: EdgeInsets.only(right: 0.0.w),
+                  child: Center(
+                      child: FlatButton(
+                    onPressed: () {
+                      print('EDIT!!!');
+                      pushNewScreen(context,
+                          screen: UpdateCourseScreen(
+                            courseId: widget.courseId!,
+                            courseName: widget.courseName!,
+                            courseDescription: widget.courseDescription!,
+                            startDate: widget.courseStartDate!,
+                            endDate: widget.courseEndDate!,
+                            linkList: widget.courseLinks
+                          ),
+                          withNavBar: false,
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.cupertino);
+                    },
+                    child: Text(
+                      'Edit',
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 12.0.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white.withOpacity(0.6)),
+                    ),
+                  )),
+                )
+              : Container(),
+        ],
         title: Text(
           'Course Details',
           style: TextStyle(
@@ -119,38 +119,38 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               color: Colors.white),
         ),
       ),
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 2.0.h),
-        child: GestureDetector(
-          onTap: () {
-            enrollCourseAPI();
-          },
-          child: Container(
-            height: 7.0.h,
-            width: 90.0.w,
-            padding: const EdgeInsets.all(1.0),
-            decoration: BoxDecoration(
-              color: Constants.bpOnBoardTitleStyle,
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              border: Border.all(
-                color: Constants.formBorder,
-                width: 0.15,
-              ),
-            ),
-            child: Center(
-              child: Text(
-                'Enroll'.toUpperCase(),
-                style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 11.0.sp),
-              ),
-            ),
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: Padding(
+      //   padding: EdgeInsets.only(bottom: 2.0.h),
+      //   child: GestureDetector(
+      //     onTap: () {
+      //       enrollCourseAPI();
+      //     },
+      //     child: Container(
+      //       height: 7.0.h,
+      //       width: 90.0.w,
+      //       padding: const EdgeInsets.all(1.0),
+      //       decoration: BoxDecoration(
+      //         color: Constants.bpOnBoardTitleStyle,
+      //         borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      //         border: Border.all(
+      //           color: Constants.formBorder,
+      //           width: 0.15,
+      //         ),
+      //       ),
+      //       child: Center(
+      //         child: Text(
+      //           'Enroll'.toUpperCase(),
+      //           style: TextStyle(
+      //               color: Colors.white,
+      //               fontFamily: 'Montserrat',
+      //               fontWeight: FontWeight.w700,
+      //               fontSize: 11.0.sp),
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Center(

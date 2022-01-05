@@ -13,6 +13,8 @@ import 'package:sizer/sizer.dart';
 import 'Create_Course_Screen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
+import 'My_Course_Details_Screen.dart';
+
 class EducatorMyCourseScreen extends StatefulWidget {
   EducatorMyCourseScreen({Key? key}) : super(key: key);
 
@@ -159,7 +161,7 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
                       child: ListTile(
                         onTap: () {
                           pushNewScreen(context,
-                              screen: CourseDetailScreen(
+                              screen: MyCourseDetailScreen(
                                 courseId: idList[index],
                                 courseName: nameList[index],
                                 courseStartDate: startDateList[index],
