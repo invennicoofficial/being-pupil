@@ -153,13 +153,13 @@ class _OtpScreenState extends State<OtpScreen> {
                         key: formKey,
                         child: Padding(
                           padding: EdgeInsets.only(
-                              left: 20.0.w, right: 20.0.w, top: 4.0.h),
+                              left: 20.0, right: 20.0, top: 4.0.h),
                           child: Container(
                               height: 7.0.h,
                               width: 90.0.w,
                               child: PinCodeTextField(
                                 appContext: context,
-                                length: 4,
+                                length: 6,
                                 obscureText: false,
                                 animationType: AnimationType.fade,
                                 keyboardType: TextInputType.number,
@@ -278,7 +278,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         child: GestureDetector(
                           onTap: () {
                             print('Verify!!!');
-                            if (currentText.length != 4) {
+                            if (currentText.length != 6) {
                               errorController!.add(ErrorAnimationType
                                   .shake); // Triggering error shake animation
                               setState(() {

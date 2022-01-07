@@ -136,13 +136,19 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                       withNavBar: false,
                       pageTransitionAnimation:
                           PageTransitionAnimation.cupertino)
-                  : pushNewScreen(context,
+                  : myProfileMap!['data']['profile_status'] == 0
+                  ? pushNewScreen(context,
                       screen: LearnerRegistration(
                         name: name,
                         mobileNumber: mobileNumber,
                         email: email,
                       ),
                       withNavBar: false,
+                      pageTransitionAnimation:
+                          PageTransitionAnimation.cupertino)
+                  : pushNewScreen(context, 
+                  screen: EditLearnerProfile(),
+                  withNavBar: false,
                       pageTransitionAnimation:
                           PageTransitionAnimation.cupertino);
             },

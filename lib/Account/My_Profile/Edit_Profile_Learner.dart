@@ -1220,6 +1220,9 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                     width: 90.0.w,
                                     child: TextFormField(
                                       controller: _idNumController,
+                                      inputFormatters: [
+                                  LengthLimitingTextInputFormatter(15),
+                                ],
                                       decoration: InputDecoration(
                                         labelText:
                                             "Identification Document Number",
@@ -2726,6 +2729,14 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                             r"^[a-zA-Z0-9.a-zA-Z0-9."
                                             r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                         .hasMatch(_emailController.text.trim());
+                                    bool fbLinkCheck = RegExp(r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")
+                                                .hasMatch(_fbLinkController.text.trim());
+                                    bool instaLinkCheck = RegExp(r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")
+                                                .hasMatch(_instagramLinkController.text.trim());
+                                    bool liLinkCheck = RegExp(r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")
+                                                .hasMatch(_linkedInLinkLinkController.text.trim());
+                                    bool otLinkCheck = RegExp(r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")
+                                                .hasMatch(_otherLinkLinkController.text.trim());
                                     if (_nameController.text.trim().isEmpty) {
                                       Fluttertoast.showToast(
                                           msg: "Please Enter Name",
@@ -2816,7 +2827,44 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                           backgroundColor: Constants.bgColor,
                                           textColor: Colors.white,
                                           fontSize: 10.0.sp);
-                                    } else {
+                                    } else if (_fbLinkController.text.isNotEmpty && fbLinkCheck == false) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter Valid Facebook Link",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp); 
+                              } else if (_instagramLinkController.text.isNotEmpty && instaLinkCheck == false) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter Valid Instagram Link",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp); 
+                              } else if (_linkedInLinkLinkController.text.isNotEmpty && liLinkCheck == false) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter Valid LinkedIn Link",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp); 
+                              } else if (_otherLinkLinkController.text.isNotEmpty && otLinkCheck == false) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter Valid Other Link",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp); 
+                              }
+                                    else {
                                       _image != null
                                     //&& _document == null
                                     ? updateProfileWithImage(

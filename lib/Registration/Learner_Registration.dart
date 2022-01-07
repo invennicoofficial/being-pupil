@@ -8,6 +8,7 @@ import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'package:flutter_tagging/flutter_tagging.dart';
@@ -783,7 +784,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                       children: [
                                         Padding(
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: 3.0.w),
+                                              horizontal: 1.0.w),
                                           child: Text(
                                             'Gender',
                                             style: TextStyle(
@@ -971,7 +972,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 children: [
                                   Padding(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 3.0.w),
+                                        EdgeInsets.symmetric(horizontal: 1.0.w),
                                     child: Text(
                                       'Select Document Type',
                                       style: TextStyle(
@@ -1074,8 +1075,8 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                   color: Colors.transparent,
                                   child: Center(
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
                                       children: [
                                         ImageIcon(
                                             AssetImage(
@@ -1083,7 +1084,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                             size: 25,
                                             color: Constants.formBorder),
                                         SizedBox(
-                                          width: 1.0.w,
+                                          width: 2.0.w,
                                         ),
                                         Text(
                                           (fileName == null || fileName == '')
@@ -1117,6 +1118,9 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                               width: 90.0.w,
                               child: TextFormField(
                                 controller: _idNumController,
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(15),
+                                ],
                                 decoration: InputDecoration(
                                   labelText: "Identification Document Number",
                                   labelStyle: TextStyle(
@@ -1212,6 +1216,60 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 ),
                               )),
                         ),
+
+                        Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 4.0.h, left: 3.0.w, right: 3.0.w),
+                              child: Text(
+                                'Interested Categories',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 12.0.sp,
+                                    color: Constants.bgColor,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        GridView.builder(
+                            shrinkWrap: true,
+                            padding: EdgeInsets.all(0.0),
+                            itemCount: categoryMapData!.length,
+                            physics: NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2, childAspectRatio: 5),
+                            itemBuilder: (context, index) {
+                              return CheckboxListTile(
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  title: Text(categoryMapData![index]['value'],
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 10.0.sp,
+                                          color: Color(0xFF6B737C),
+                                          fontWeight: FontWeight.w400)),
+                                  activeColor: Constants.bgColor,
+                                  value: intrestedCat[index],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      intrestedCat[index] =
+                                          !intrestedCat[index]!;
+                                      if (intrestedCat[index] == true) {
+                                        intrestedCatKey.add(index + 1);
+                                        intrestedCatKey.sort();
+                                      } else {
+                                        intrestedCatKey.remove(index + 1);
+                                      }
+                                      intrestedCatKey.sort();
+                                      print(intrestedCatKey);
+                                    });
+                                  });
+                            }),
+
 
                         Row(
                           children: [
@@ -1576,7 +1634,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                             children: [
                                               Padding(
                                                 padding: EdgeInsets.symmetric(
-                                                    horizontal: 3.0.w),
+                                                    horizontal: 1.0.w),
                                                 child: Text(
                                                   'Qualification',
                                                   style: TextStyle(
@@ -1724,82 +1782,80 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                                     ? EdgeInsets.only(
                                                         left: 20.0)
                                                     : EdgeInsets.zero,
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    educationDetailMap[index][
-                                                                    'certificate'] ==
-                                                                'path' ||
-                                                            educationDetailMap[
-                                                                        index][
-                                                                    'certificate'] ==
-                                                                'Upload Certificate/Degree'
-                                                        ? ImageIcon(
-                                                            AssetImage(
-                                                                'assets/icons/upload.png'),
-                                                            size: 25,
-                                                            color: Constants
-                                                                .formBorder)
-                                                        : Container(
-                                                            //height: 5.0.h,
-                                                            width: 15.0.w,
-                                                            decoration: BoxDecoration(
-                                                                image: DecorationImage(
-                                                                    image: AssetImage(
-                                                                        educationDetailMap[index]
-                                                                            [
-                                                                            'certificate']),
-                                                                    fit: BoxFit
-                                                                        .fill)),
-                                                          ),
-                                                    SizedBox(width: 2.0.w),
-                                                    // ImageIcon(
-                                                    //     AssetImage(
-                                                    //       _certificate == null
-                                                    //       ?  'assets/icons/upload.png'
-                                                    //       :  educationDetailMap[index]['certificate']),
-                                                    //     size: 25,
-                                                    //     color: Constants
-                                                    //         .formBorder),
-                                                    // SizedBox(
-                                                    //   width: 1.0.w,
-                                                    // ),
-                                                    Expanded(
-                                                      child:
-                                                          SingleChildScrollView(
-                                                        scrollDirection:
-                                                            Axis.horizontal,
-                                                        child: Container(
-                                                          height: 3.0.h,
-                                                          child: Text(
-                                                            _certiName != null
-                                                                ? educationDetailMap[
-                                                                            index]
-                                                                        [
-                                                                        'certificate']
-                                                                    .toString()
-                                                                    .split('/')
-                                                                    .last //_certiName
-                                                                : 'Upload Certificate/Degree',
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    'Montserrat',
-                                                                fontSize:
-                                                                    10.0.sp,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                color: Constants
-                                                                    .bpSkipStyle),
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .clip,
+                                                child: Center(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.center,
+                                                    crossAxisAlignment: _certiName != null ? CrossAxisAlignment.center : CrossAxisAlignment.end,
+                                                    children: [
+                                                      educationDetailMap[index][
+                                                                      'certificate'] ==
+                                                                  'path' ||
+                                                              educationDetailMap[
+                                                                          index][
+                                                                      'certificate'] ==
+                                                                  'Upload Certificate/Degree'
+                                                          ? ImageIcon(
+                                                              AssetImage(
+                                                                  'assets/icons/upload.png'),
+                                                              size: 25,
+                                                              color: Constants
+                                                                  .formBorder)
+                                                          : Container(
+                                                              //height: 5.0.h,
+                                                              width: 15.0.w,
+                                                              decoration: BoxDecoration(
+                                                                  image: DecorationImage(
+                                                                      image: FileImage(File(
+                                                                          educationDetailMap[index]['certificate'])),
+                                                                      fit: BoxFit
+                                                                          .fill)),
+                                                            ),
+                                                      SizedBox(width: 2.0.w),
+                                                      // ImageIcon(
+                                                      //     AssetImage(
+                                                      //       _certificate == null
+                                                      //       ?  'assets/icons/upload.png'
+                                                      //       :  educationDetailMap[index]['certificate']),
+                                                      //     size: 25,
+                                                      //     color: Constants
+                                                      //         .formBorder),
+                                                      // SizedBox(
+                                                      //   width: 1.0.w,
+                                                      // ),
+                                                      Expanded(
+                                                        child:
+                                                            SingleChildScrollView(
+                                                          scrollDirection:
+                                                              Axis.horizontal,
+                                                          child: Container(
+                                                            //height: 3.0.h,
+                                                            child: Text(
+                                                              _certiName != null
+                                                                  ? educationDetailMap[index]['certificate']
+                                                                      .toString()
+                                                                      .split('/')
+                                                                      .last //_certiName
+                                                                  : 'Upload Certificate/Degree',
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      'Montserrat',
+                                                                  fontSize:
+                                                                      10.0.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                  color: Constants
+                                                                      .bpSkipStyle),
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .clip,
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    )
-                                                  ],
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -1890,59 +1946,6 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 ),
                               )),
                         ),
-
-                        Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  top: 4.0.h, left: 3.0.w, right: 3.0.w),
-                              child: Text(
-                                'Interested Categories',
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 12.0.sp,
-                                    color: Constants.bgColor,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        GridView.builder(
-                            shrinkWrap: true,
-                            padding: EdgeInsets.all(0.0),
-                            itemCount: categoryMapData!.length,
-                            physics: NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2, childAspectRatio: 5),
-                            itemBuilder: (context, index) {
-                              return CheckboxListTile(
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  title: Text(categoryMapData![index]['value'],
-                                      style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 10.0.sp,
-                                          color: Color(0xFF6B737C),
-                                          fontWeight: FontWeight.w400)),
-                                  activeColor: Constants.bgColor,
-                                  value: intrestedCat[index],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      intrestedCat[index] =
-                                          !intrestedCat[index]!;
-                                      if (intrestedCat[index] == true) {
-                                        intrestedCatKey.add(index + 1);
-                                        intrestedCatKey.sort();
-                                      } else {
-                                        intrestedCatKey.remove(index + 1);
-                                      }
-                                      intrestedCatKey.sort();
-                                      print(intrestedCatKey);
-                                    });
-                                  });
-                            }),
 
                         //Work Experience
                         Row(
@@ -2179,23 +2182,26 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 height: 13.0.h,
                                 width: 90.0.w,
                                 padding:
-                                    EdgeInsets.symmetric(horizontal: 2.0.w),
+                                    EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.5.h),
                                 decoration: BoxDecoration(
                                     border:
                                         Border.all(color: Constants.formBorder),
                                     borderRadius: BorderRadius.circular(5.0)),
                                 child: Center(
-                                  child: Text(
-                                   selectedSkillList == null ||
-                                            selectedSkillList.length == 0
-                                        ? "Please mention your skills example #skills1 #skills2..."
-                                        : selectedSkillList
-                                            .toString().replaceAll('[', '').replaceAll(']', '').
-                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    style: TextStyle(
-                                        fontFamily: "Montserrat",
-                                        fontSize: 10.0.sp,
-                                        color: Constants.bpSkipStyle),
+                                  child: Align(
+                                    alignment: Alignment.topCenter,
+                                    child: Text(
+                                     selectedSkillList == null ||
+                                              selectedSkillList.length == 0
+                                          ? "Please mention your skills example #skills1 #skills2..."
+                                          : selectedSkillList
+                                              .toString().replaceAll('[', '').replaceAll(']', '').
+                                              replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                      style: TextStyle(
+                                          fontFamily: "Montserrat",
+                                          fontSize: 10.0.sp,
+                                          color: Constants.bpSkipStyle),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -2236,23 +2242,26 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                   height: 13.0.h,
                                   width: 90.0.w,
                                   padding:
-                                      EdgeInsets.symmetric(horizontal: 2.0.w),
+                                      EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.5.h),
                                   decoration: BoxDecoration(
                                       border: Border.all(
                                           color: Constants.formBorder),
                                       borderRadius: BorderRadius.circular(5.0)),
                                   child: Center(
-                                    child: Text(
-                                     selectedHobbiesList == null ||
-                                            selectedHobbiesList.length == 0
-                                        ? "Please mention your hobbies example #hobbie1 #hobbie2..."
-                                        : selectedHobbiesList
-                                            .toString().replaceAll('[', '').replaceAll(']', '').
-                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                      style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          fontSize: 10.0.sp,
-                                          color: Constants.bpSkipStyle),
+                                    child: Align(
+                                      alignment: Alignment.topCenter,
+                                      child: Text(
+                                       selectedHobbiesList == null ||
+                                              selectedHobbiesList.length == 0
+                                          ? "Please mention your hobbies example #hobbie1 #hobbie2..."
+                                          : selectedHobbiesList
+                                              .toString().replaceAll('[', '').replaceAll(']', '').
+                                              replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                        style: TextStyle(
+                                            fontFamily: "Montserrat",
+                                            fontSize: 10.0.sp,
+                                            color: Constants.bpSkipStyle),
+                                      ),
                                     ),
                                   ),
                                 )
@@ -2619,6 +2628,14 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                               bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9."
                                       r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                   .hasMatch(_emailController.text.trim());
+                              bool fbLinkCheck = RegExp(r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")
+                                                .hasMatch(_fbLinkController.text.trim());
+                              bool instaLinkCheck = RegExp(r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")
+                                                .hasMatch(_instagramLinkController.text.trim());
+                              bool liLinkCheck = RegExp(r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")
+                                                .hasMatch(_linkedInLinkLinkController.text.trim());
+                              bool otLinkCheck = RegExp(r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")
+                                                .hasMatch(_otherLinkLinkController.text.trim());
                               if (_nameController.text.trim().isEmpty) {
                                 Fluttertoast.showToast(
                                     msg: "Please Enter Name",
@@ -2714,7 +2731,44 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                              } else {
+                              } else if (_fbLinkController.text.isNotEmpty && fbLinkCheck == false) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter Valid Facebook Link",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp); 
+                              } else if (_instagramLinkController.text.isNotEmpty && instaLinkCheck == false) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter Valid Instagram Link",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp); 
+                              } else if (_linkedInLinkLinkController.text.isNotEmpty && liLinkCheck == false) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter Valid LinkedIn Link",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp); 
+                              } else if (_otherLinkLinkController.text.isNotEmpty && otLinkCheck == false) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter Valid Other Link",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp); 
+                              }
+                              else {
                                 addLearnerProfile(
                                   //userId,
                                     registerAs,

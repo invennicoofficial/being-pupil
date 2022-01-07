@@ -392,7 +392,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                         padding: EdgeInsets.only(
                             left: 3.0.w, right: 3.0.w, top: 3.0.h),
                         child: Container(
-                          height: 7.0.h,
+                          //height: 8.0.h,
                           width: 90.0.w,
                           child: TextFormField(
                             controller: linkControllers[index],

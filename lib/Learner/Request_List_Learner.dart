@@ -130,15 +130,15 @@ class _RequestListLearnerState extends State<RequestListLearner> {
                         child: ListTile(
                           contentPadding: EdgeInsets.all(0.0),
                           //leading:
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            //crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  getUserProfile(_userId[index]);
-                                },
-                                child: ClipRRect(
+                          title: GestureDetector(
+                             onTap: () {
+                                    getUserProfile(_userId[index]);
+                                  },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
                                   child: Image.network(
                                     _profileImage[index]!,
@@ -147,112 +147,112 @@ class _RequestListLearnerState extends State<RequestListLearner> {
                                     fit: BoxFit.cover,
                                   ),
                                 ),
-                              ),
-                              // SizedBox(
-                              //   width: 2.0.w,
-                              // ),
-                              Padding(
-                                padding: EdgeInsets.only(right: 10.0.w),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: 30.0.w,
-                                      child: Text(
-                                        _name[index]!,
-                                        style: TextStyle(
-                                            fontSize: 9.0.sp,
-                                            color: Constants.bgColor,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w700),
+                                // SizedBox(
+                                //   width: 2.0.w,
+                                // ),
+                                Padding(
+                                  padding: EdgeInsets.only(right: 10.0.w),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: 30.0.w,
+                                        child: Text(
+                                          _name[index]!,
+                                          style: TextStyle(
+                                              fontSize: 9.0.sp,
+                                              color: Constants.bgColor,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w700),
+                                        ),
                                       ),
-                                    ),
-                                    Container(
-                                      //color: Colors.grey,
-                                      width: 25.0.w,
-                                      child: Text(
-                                        _lastDegree[index] != null &&
-                                                _schoolName[index] != null
-                                            ? '${_lastDegree[index]} | ${_schoolName[index]}'
-                                            : '',
-                                        style: TextStyle(
-                                            fontSize: 6.5.sp,
-                                            color: Constants.bgColor,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w400),
-                                            overflow: TextOverflow.clip,
+                                      Container(
+                                        //color: Colors.grey,
+                                        width: 25.0.w,
+                                        child: Text(
+                                          _lastDegree[index] != null &&
+                                                  _schoolName[index] != null
+                                              ? '${_lastDegree[index]} | ${_schoolName[index]}'
+                                              : '',
+                                          style: TextStyle(
+                                              fontSize: 6.5.sp,
+                                              color: Constants.bgColor,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w400),
+                                              overflow: TextOverflow.clip,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-
-                              //Buttons
-                              Padding(
-                                padding: EdgeInsets.only(right: 2.0.w),
-                                child: Row(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        print('$index is Rejected');
-                                        requestActionApi(_userId[index], 'R');
-                                      },
-                                      child: Container(
-                                        height: 3.5.h,
-                                        width: 16.0.w,
-                                        decoration: BoxDecoration(
-                                            color: Constants.bgColor,
-                                            border: Border.all(
-                                                color: Constants.bgColor,
-                                                width: 0.5),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8.0))),
-                                        child: Center(
-                                          child: Text(
-                                            'Reject',
-                                            style: TextStyle(
-                                                fontSize: 8.0.sp,
-                                                color: Colors.white,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w400),
+                          
+                                //Buttons
+                                Padding(
+                                  padding: EdgeInsets.only(right: 2.0.w),
+                                  child: Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          print('$index is Rejected');
+                                          requestActionApi(_userId[index], 'R');
+                                        },
+                                        child: Container(
+                                          height: 3.5.h,
+                                          width: 16.0.w,
+                                          decoration: BoxDecoration(
+                                              color: Constants.bgColor,
+                                              border: Border.all(
+                                                  color: Constants.bgColor,
+                                                  width: 0.5),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8.0))),
+                                          child: Center(
+                                            child: Text(
+                                              'Reject',
+                                              style: TextStyle(
+                                                  fontSize: 8.0.sp,
+                                                  color: Colors.white,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w400),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 2.0.w,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        print('$index is Connected');
-                                        requestActionApi(_userId[index], 'A');
-                                      },
-                                      child: Container(
-                                        height: 3.5.h,
-                                        width: 16.0.w,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Constants.bgColor,
-                                                width: 0.5),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8.0))),
-                                        child: Center(
-                                          child: Text(
-                                            'Connect',
-                                            style: TextStyle(
-                                                fontSize: 8.0.sp,
-                                                color: Constants.bgColor,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w500),
+                                      SizedBox(
+                                        width: 2.0.w,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          print('$index is Connected');
+                                          requestActionApi(_userId[index], 'A');
+                                        },
+                                        child: Container(
+                                          height: 3.5.h,
+                                          width: 16.0.w,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Constants.bgColor,
+                                                  width: 0.5),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8.0))),
+                                          child: Center(
+                                            child: Text(
+                                              'Connect',
+                                              style: TextStyle(
+                                                  fontSize: 8.0.sp,
+                                                  color: Constants.bgColor,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w500),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),

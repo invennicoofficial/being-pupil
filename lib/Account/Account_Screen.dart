@@ -182,6 +182,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             child: ProfileList(
                               txt: "My Profile",
                               image: "assets/icons/myProfile.png",
+                              forwordIcon: true,
                               sizeImage: 20.0,
                             ),
                           ),
@@ -207,6 +208,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               child: ProfileList(
                                 txt: "My Courses",
                                 image: "assets/icons/myCourse.png",
+                                forwordIcon: true,
                                 sizeImage: 20.0,
                               ),
                             ),
@@ -225,6 +227,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             child: ProfileList(
                               txt: "My Bookings",
                               image: "assets/icons/myBooking.png",
+                              forwordIcon: true,
                               sizeImage: 20.0,
                             ),
                           ),
@@ -244,6 +247,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             child: ProfileList(
                               txt: "Saved Posts",
                               image: "assets/icons/savedPost.png",
+                              forwordIcon: true,
                               sizeImage: 20.0,
                             ),
                           ),
@@ -259,6 +263,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             child: ProfileList(
                               txt: "About",
                               image: "assets/icons/about.png",
+                              forwordIcon: true,
                               sizeImage: 20.0,
                             ),
                           ),
@@ -273,6 +278,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             child: ProfileList(
                               txt: "FAQs",
                               image: "assets/icons/faq.png",
+                              forwordIcon: true,
                               sizeImage: 20.0,
                             ),
                           ),
@@ -288,6 +294,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             child: ProfileList(
                               txt: "Terms & Policy",
                               image: "assets/icons/termPolicy2.png",
+                              forwordIcon: true,
                               sizeImage: 20.0,
                             ),
                           ),
@@ -303,6 +310,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             child: ProfileList(
                               txt: "Share",
                               image: "assets/icons/share.png",
+                              forwordIcon: true,
                               sizeImage: 20.0,
                             ),
                           ),
@@ -345,6 +353,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               child: ProfileList(
                                 txt: "Logout",
                                 image: "assets/icons/logout.png",
+                                forwordIcon: false,
                                 sizeImage: 20.0,
                               ),
                             ),
@@ -375,8 +384,9 @@ class ProfileList extends StatelessWidget {
   String? txt, image;
   GestureTapCallback? tap;
   double? padding, sizeImage;
+  bool? forwordIcon;
 
-  ProfileList({this.txt, this.image, this.tap, this.padding, this.sizeImage});
+  ProfileList({this.txt, this.image, this.tap, this.padding, this.sizeImage, this.forwordIcon});
 
   Widget build(BuildContext context) {
     return InkWell(
@@ -408,14 +418,16 @@ class ProfileList extends StatelessWidget {
                     ),
                   ],
                 ),
-                Padding(
+                forwordIcon == true
+                ? Padding(
                   padding: const EdgeInsets.only(right: 0.0),
                   child: Icon(
                     Icons.arrow_forward_ios,
                     color: Constants.bgColor,
                     size: 15.0,
                   ),
-                )
+                ) 
+                : Container()
               ],
             ),
           ],

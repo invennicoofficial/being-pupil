@@ -366,7 +366,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                             padding: EdgeInsets.only(
                                 left: 3.0.w, right: 3.0.w, top: 3.0.h),
                             child: Container(
-                              height: 7.0.h,
+                              //height: 7.0.h,
                               width: 80.0.w,
                               child: TextFormField(
                                 controller: linkControllers[index],

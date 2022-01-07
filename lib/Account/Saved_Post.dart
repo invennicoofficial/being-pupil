@@ -176,14 +176,14 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                 ListTile(
                                   contentPadding: EdgeInsets.all(0.0),
                                   //leading:
-                                  title: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: (){
+                                  title: GestureDetector(
+                                    onTap: (){
                                           getUserProfile(userIdList[index]);
                                         },
-                                        child: ClipRRect(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        ClipRRect(
                                           borderRadius: BorderRadius.circular(50),
                                           child: Image.network(
                                             profileImageList[index]!,
@@ -192,44 +192,44 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                             fit: BoxFit.cover,
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        width: 2.0.w,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 1.0.h),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              nameList[index]!,
-                                              style: TextStyle(
-                                                  fontSize: 9.0.sp,
-                                                  color: Constants.bgColor,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                            Text(
-                                              '${degreeList[index]} | ${schoolList[index]}',
-                                              style: TextStyle(
-                                                  fontSize: 6.5.sp,
-                                                  color: Constants.bgColor,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                            Text(
-                                              dateList[index]!,
-                                              style: TextStyle(
-                                                  fontSize: 6.5.sp,
-                                                  color: Constants.bgColor,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          ],
+                                        SizedBox(
+                                          width: 2.0.w,
                                         ),
-                                      ),
-                                    ],
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 1.0.h),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                nameList[index]!,
+                                                style: TextStyle(
+                                                    fontSize: 9.0.sp,
+                                                    color: Constants.bgColor,
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: FontWeight.w700),
+                                              ),
+                                              Text(
+                                                '${degreeList[index]} | ${schoolList[index]}',
+                                                style: TextStyle(
+                                                    fontSize: 6.5.sp,
+                                                    color: Constants.bgColor,
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: FontWeight.w400),
+                                              ),
+                                              Text(
+                                                dateList[index]!,
+                                                style: TextStyle(
+                                                    fontSize: 6.5.sp,
+                                                    color: Constants.bgColor,
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: FontWeight.w400),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   trailing: IconButton(
                                       icon: Image.asset('assets/icons/issueIcon.png',
@@ -249,9 +249,9 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                 ),
                                 //Post descriptionText
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 2.0),
                                   child: Container(
-                                    width: 88.0.w,
+                                    width: 100.0.w,
                                     child: Text(descriptionList[index]!,
                                       style: TextStyle(
                                         fontSize: 9.0.sp,

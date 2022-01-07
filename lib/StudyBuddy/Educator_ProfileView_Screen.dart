@@ -560,9 +560,9 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                             ),
                             //Post descriptionText
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 2.0),
                               child: Container(
-                                width: 88.0.w,
+                                width: 100.0.w,
                                 child: Text(descriptionList[index]!,
                                   style: TextStyle(
                                     fontSize: 9.0.sp,

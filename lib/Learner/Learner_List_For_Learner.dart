@@ -129,11 +129,8 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
                         height: 10.0.h,
                         child: ListTile(
                             contentPadding: EdgeInsets.zero,
-                            title: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
+                            title: GestureDetector(
+                              onTap: () {
                                     registerAs == 'E'
                                         ? pushNewScreen(context,
                                             screen: EducatorProfileViewScreen(),
@@ -148,7 +145,10 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
                                                 PageTransitionAnimation
                                                     .cupertino);
                                   },
-                                  child: GestureDetector(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  GestureDetector(
                                     onTap: (){
                                       getUserProfile(_userId[index]);
                                     },
@@ -162,40 +162,40 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
                                       ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 2.0.w,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      _name[index]!,
-                                      style: TextStyle(
-                                          fontSize: 9.0.sp,
-                                          color: Constants.bgColor,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                    Container(
-                                      width: 55.0.w,
-                                      child: Text(
-                                        _lastDegree[index] != null &&
-                                                _schoolName[index] != null
-                                            ? '${_lastDegree[index]} | ${_schoolName[index]}'
-                                            : '',
+                                  SizedBox(
+                                    width: 2.0.w,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        _name[index]!,
                                         style: TextStyle(
-                                            fontSize: 6.5.sp,
+                                            fontSize: 9.0.sp,
                                             color: Constants.bgColor,
                                             fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w400),
-                                            overflow: TextOverflow.clip,
+                                            fontWeight: FontWeight.w700),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                      Container(
+                                        width: 55.0.w,
+                                        child: Text(
+                                          _lastDegree[index] != null &&
+                                                  _schoolName[index] != null
+                                              ? '${_lastDegree[index]} | ${_schoolName[index]}'
+                                              : '',
+                                          style: TextStyle(
+                                              fontSize: 6.5.sp,
+                                              color: Constants.bgColor,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w400),
+                                              overflow: TextOverflow.clip,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                             trailing: Padding(
                               padding:

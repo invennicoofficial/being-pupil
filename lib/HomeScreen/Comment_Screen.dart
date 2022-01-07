@@ -207,14 +207,14 @@ class _CommentScreenState extends State<CommentScreen> {
                               ListTile(
                                 contentPadding: EdgeInsets.all(0.0),
                                 //leading:
-                                title: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: (){
+                                title: GestureDetector(
+                                   onTap: (){
                                         getUserProfile(widget.userId!);
                                       },
-                                      child: ClipRRect(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      ClipRRect(
                                         borderRadius: BorderRadius.circular(50),
                                         child: Image.network(
                                           widget.profileImage!,
@@ -223,44 +223,44 @@ class _CommentScreenState extends State<CommentScreen> {
                                           fit: BoxFit.cover,
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 2.0.w,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 1.0.h),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            widget.name!,
-                                            style: TextStyle(
-                                                fontSize: 9.0.sp,
-                                                color: Constants.bgColor,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                          Text(
-                                            '${widget.degree} | ${widget.schoolName}',
-                                            style: TextStyle(
-                                                fontSize: 6.5.sp,
-                                                color: Constants.bgColor,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                          Text(
-                                            widget.date!,
-                                            style: TextStyle(
-                                                fontSize: 6.5.sp,
-                                                color: Constants.bgColor,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ],
+                                      SizedBox(
+                                        width: 2.0.w,
                                       ),
-                                    ),
-                                  ],
+                                      Padding(
+                                        padding: EdgeInsets.only(top: 1.0.h),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              widget.name!,
+                                              style: TextStyle(
+                                                  fontSize: 9.0.sp,
+                                                  color: Constants.bgColor,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            Text(
+                                              '${widget.degree} | ${widget.schoolName}',
+                                              style: TextStyle(
+                                                  fontSize: 6.5.sp,
+                                                  color: Constants.bgColor,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                            Text(
+                                              widget.date!,
+                                              style: TextStyle(
+                                                  fontSize: 6.5.sp,
+                                                  color: Constants.bgColor,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 trailing: IconButton(
                                      icon: Image.asset('assets/icons/issueIcon.png',
@@ -280,9 +280,9 @@ class _CommentScreenState extends State<CommentScreen> {
                               ),
                               //Post descriptionText
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 2.0),
                                 child: Container(
-                                  width: 88.0.w,
+                                  width: 100.0.w,
                                   child: Text(widget.description!,
                                     style: TextStyle(
                                       fontSize: 9.0.sp,

@@ -1261,6 +1261,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                               width: 90.0.w,
                               child: TextFormField(
                                 controller: _idNumController,
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(15),
+                                ],
                                 decoration: InputDecoration(
                                   labelText: "Identification Document Number",
                                   labelStyle: TextStyle(
@@ -2358,25 +2361,28 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 height: 13.0.h,
                                 width: 90.0.w,
                                 padding:
-                                    EdgeInsets.symmetric(horizontal: 2.0.w),
+                                    EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.5.h),
                                 decoration: BoxDecoration(
                                     border:
                                         Border.all(color: Constants.formBorder),
                                     borderRadius: BorderRadius.circular(5.0)),
                                 child: Center(
-                                  child: Text(
-                                    selectedSkillList == null ||
-                                            selectedSkillList.length == 0
-                                        ? result.data!
-                                            .skills!.replaceAll('[', '').replaceAll(']', '').
-                                            replaceAll(new RegExp(r', '), ' #')//.replaceFirst('', '#') //"Please mention your skills example #skills1 #skills2..."
-                                        : selectedSkillList
-                                            .toString().replaceAll('[', '').replaceAll(']', '').
-                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    style: TextStyle(
-                                        fontFamily: "Montserrat",
-                                        fontSize: 10.0.sp,
-                                        color: Constants.bpSkipStyle),
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      selectedSkillList == null ||
+                                              selectedSkillList.length == 0
+                                          ? result.data!
+                                              .skills!.replaceAll('[', '').replaceAll(']', '').
+                                              replaceAll(new RegExp(r', '), ' #')//.replaceFirst('', '#') //"Please mention your skills example #skills1 #skills2..."
+                                          : selectedSkillList
+                                              .toString().replaceAll('[', '').replaceAll(']', '').
+                                              replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                      style: TextStyle(
+                                          fontFamily: "Montserrat",
+                                          fontSize: 10.0.sp,
+                                          color: Constants.bpSkipStyle),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -3019,6 +3025,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 controller: _otherLinkLinkController,
                                 decoration: InputDecoration(
                                     labelText: "Other",
+                                     labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
+                                ),
                                     fillColor: Colors.white,
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -3062,6 +3073,14 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                               bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9."
                                       r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                   .hasMatch(_emailController.text.trim());
+                              bool fbLinkCheck = RegExp(r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")
+                                                .hasMatch(_fbLinkController.text.trim());
+                              bool instaLinkCheck = RegExp(r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")
+                                                .hasMatch(_instagramLinkController.text.trim());
+                              bool liLinkCheck = RegExp(r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")
+                                                .hasMatch(_linkedInLinkLinkController.text.trim());
+                              bool otLinkCheck = RegExp(r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")
+                                                .hasMatch(_otherLinkLinkController.text.trim());
                               if (_nameController.text.trim().isEmpty) {
                                 Fluttertoast.showToast(
                                     msg: "Please Enter Name",
@@ -3189,7 +3208,44 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                              } else {
+                              } else if (_fbLinkController.text.isNotEmpty && fbLinkCheck == false) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter Valid Facebook Link",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp); 
+                              } else if (_instagramLinkController.text.isNotEmpty && instaLinkCheck == false) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter Valid Instagram Link",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp); 
+                              } else if (_linkedInLinkLinkController.text.isNotEmpty && liLinkCheck == false) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter Valid LinkedIn Link",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp); 
+                              } else if (_otherLinkLinkController.text.isNotEmpty && otLinkCheck == false) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter Valid Other Link",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp); 
+                              }
+                              else {
                                 // if (_document != null &&
                                 //     _image != null &&
                                 //     _certificate != null) {

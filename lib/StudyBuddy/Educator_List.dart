@@ -131,14 +131,14 @@ class _EducatorListState extends State<EducatorList> {
                         //height: 10.0.h,
                         child: ListTile(
                             contentPadding: EdgeInsets.zero,
-                            title: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
+                            title: GestureDetector(
+                               onTap: () {
                                     getUserProfile(_userId[index]);
                                   },
-                                  child: ClipRRect(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
                                       borderRadius: BorderRadius.circular(50),
                                       child: CachedNetworkImage(
                                         placeholder: (context, url) => Container(
@@ -176,37 +176,37 @@ class _EducatorListState extends State<EducatorList> {
                                         fit: BoxFit.fitWidth,
                                       )
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 2.0.w,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      _name[index]!,
-                                      style: TextStyle(
-                                          fontSize: 9.0.sp,
-                                          color: Constants.bgColor,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                    Container(
-                                      width: 52.0.w,
-                                      //color: Colors.grey,
-                                      child: Text(
-                                          '${_lastDegree[index]} | ${_schoolName[index]}',
-                                          style: TextStyle(
-                                              fontSize: 6.5.sp,
-                                              color: Constants.bgColor,
-                                              fontFamily: 'Montserrat',
-                                              fontWeight: FontWeight.w400),
-                                          overflow: TextOverflow.clip),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                  SizedBox(
+                                    width: 2.0.w,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        _name[index]!,
+                                        style: TextStyle(
+                                            fontSize: 9.0.sp,
+                                            color: Constants.bgColor,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      Container(
+                                        width: 52.0.w,
+                                        //color: Colors.grey,
+                                        child: Text(
+                                            '${_lastDegree[index]} | ${_schoolName[index]}',
+                                            style: TextStyle(
+                                                fontSize: 6.5.sp,
+                                                color: Constants.bgColor,
+                                                fontFamily: 'Montserrat',
+                                                fontWeight: FontWeight.w400),
+                                            overflow: TextOverflow.clip),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                             trailing: Padding(
                               padding:
