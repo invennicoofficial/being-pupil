@@ -1241,7 +1241,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                             physics: NeverScrollableScrollPhysics(),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2, childAspectRatio: 5),
+                                    crossAxisCount: 2, childAspectRatio: 4),
                             itemBuilder: (context, index) {
                               return CheckboxListTile(
                                   controlAffinity:

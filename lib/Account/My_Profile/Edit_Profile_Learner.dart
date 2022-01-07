@@ -1900,7 +1900,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                           crossAxisCount: 2,
-                                          childAspectRatio: 5),
+                                          childAspectRatio: 4),
                                   itemBuilder: (context, index) {
                                     return CheckboxListTile(
                                         controlAffinity:
