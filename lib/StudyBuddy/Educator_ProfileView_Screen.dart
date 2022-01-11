@@ -216,58 +216,106 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                   ),
                   //Social Handle
                   Padding(
-                    padding: EdgeInsets.only(top: 1.0.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        profileMap!['data'] == null || profileMap!['data'] == {} ? Container() : profileMap!['data']['instagram_link'] == null ? Container() : GestureDetector(
-                          onTap: () {
-                            print('Instagram!!!');
-                            _launchSocialUrl(profileMap!['data']['instagram_link']);
-                          },
-                          child: Container(
-                              height: 4.0.h,
-                              width: 8.0.w,
-                              child: Image.asset(
-                                'assets/icons/google.png',
-                                fit: BoxFit.contain,
-                              )),
+                          padding: EdgeInsets.only(top: 1.0.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Visibility(
+                                visible: profileMap!['data']
+                                            ['facebook_link'] ==
+                                        null
+                                    ? false
+                                    : true,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print('Facebook!!!');
+                                    _launchSocialUrl(
+                                        profileMap!['data']['facebook_link']);
+                                  },
+                                  child: Container(
+                                      height: 4.0.h,
+                                      width: 8.0.w,
+                                      child: Image.asset(
+                                        'assets/icons/facebook.png',
+                                        fit: BoxFit.contain,
+                                      )),
+                                ),
+                              ),
+                               SizedBox(
+                                width: 1.0.w,
+                              ),
+                              Visibility(
+                                visible: profileMap!['data']
+                                            ['instagram_link'] ==
+                                        null
+                                    ? false
+                                    : true,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print('Instagram!!!');
+                                    _launchSocialUrl(profileMap!['data']
+                                        ['instagram_link']);
+                                  },
+                                  child: Container(
+                                      height: 4.0.h,
+                                      width: 8.0.w,
+                                      child: Image.asset(
+                                        'assets/icons/instagram.png',
+                                        fit: BoxFit.contain,
+                                      )),
+                                ),
+                              ),
+                               SizedBox(
+                                width: 1.0.w,
+                              ),
+
+                              Visibility(
+                                visible: profileMap!['data']
+                                            ['linkedin_link'] ==
+                                        null
+                                    ? false
+                                    : true,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print('LinkedIn!!!');
+                                    _launchSocialUrl(
+                                        profileMap!['data']['linkedin_link']);
+                                  },
+                                  child: Container(
+                                      height: 4.0.h,
+                                      width: 8.0.w,
+                                      child: Image.asset(
+                                        'assets/icons/linkedin.png',
+                                        fit: BoxFit.contain,
+                                      )),
+                                ),
+                              ),        
+                              SizedBox(
+                                width: 1.0.w,
+                              ),
+                              Visibility(
+                                visible:
+                                    profileMap!['data']['other_link'] == null
+                                        ? false
+                                        : true,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print('Other!!!');
+                                    _launchSocialUrl(
+                                        profileMap!['data']['other_link']);
+                                  },
+                                  child: Container(
+                                      height: 4.0.h,
+                                      width: 8.0.w,
+                                      child: Image.asset(
+                                        'assets/icons/other_link.png',
+                                        fit: BoxFit.contain,
+                                      )),
+                                ),
+                              ),                  
+                            ],
+                          ),
                         ),
-                        SizedBox(
-                          width: 1.0.w,
-                        ),
-                        profileMap!['data'] == null || profileMap!['data'] == {} ? Container() : profileMap!['data']['facebook_link'] == null ? Container() : GestureDetector(
-                          onTap: () {
-                            print('Facebook!!!');
-                            _launchSocialUrl(profileMap!['data']['facebook_link']);
-                          },
-                          child: Container(
-                              height: 4.0.h,
-                              width: 8.0.w,
-                              child: Image.asset(
-                                'assets/icons/facebook.png',
-                                fit: BoxFit.contain,
-                              )),
-                        ),
-                        SizedBox(
-                          width: 1.0.w,
-                        ),
-                        profileMap!['data'] == null || profileMap!['data'] == {} ? Container() : profileMap!['data']['linkedin_link'] == null ? Container() : GestureDetector(
-                          onTap: () {
-                            print('LinkedIn!!!');
-                            _launchSocialUrl(profileMap!['data']['linkedin_link']);
-                          },
-                          child: Container(
-                              height: 4.0.h,
-                              width: 8.0.w,
-                              child: Image.asset(
-                                'assets/icons/linkedin.png',
-                                fit: BoxFit.contain,
-                              )),
-                        ),
-                      ],
-                    ),
-                  ),
                   //Buttons
                   Padding(
                     padding: EdgeInsets.only(top: 2.0.h),

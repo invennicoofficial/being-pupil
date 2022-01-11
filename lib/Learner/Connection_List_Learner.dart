@@ -199,7 +199,7 @@ class _ConnectionListLearnerState extends State<ConnectionListLearner> {
                                             fontWeight: FontWeight.w700),
                                       ),
                                       Container(
-                                        width: 45.0.w,
+                                        width: 40.0.w,
                                         //color: Colors.grey,
                                         child: Text(
                                           _lastDegree[index] != null &&

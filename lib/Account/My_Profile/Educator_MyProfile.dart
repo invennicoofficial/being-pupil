@@ -260,53 +260,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Visibility(
-                                visible:
-                                    myProfileMap!['data']['other_link'] == null
-                                        ? false
-                                        : true,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    print('Other!!!');
-                                    _launchSocialUrl(
-                                        myProfileMap!['data']['other_link']);
-                                  },
-                                  child: Container(
-                                      height: 4.0.h,
-                                      width: 8.0.w,
-                                      child: Image.asset(
-                                        'assets/icons/apple.png',
-                                        fit: BoxFit.contain,
-                                      )),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 1.0.w,
-                              ),
-                              Visibility(
-                                visible: myProfileMap!['data']
-                                            ['instagram_link'] ==
-                                        null
-                                    ? false
-                                    : true,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    print('Instagram!!!');
-                                    _launchSocialUrl(myProfileMap!['data']
-                                        ['instagram_link']);
-                                  },
-                                  child: Container(
-                                      height: 4.0.h,
-                                      width: 8.0.w,
-                                      child: Image.asset(
-                                        'assets/icons/google.png',
-                                        fit: BoxFit.contain,
-                                      )),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 1.0.w,
-                              ),
-                              Visibility(
                                 visible: myProfileMap!['data']
                                             ['facebook_link'] ==
                                         null
@@ -327,16 +280,34 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                       )),
                                 ),
                               ),
+                               SizedBox(
+                                width: 1.0.w,
+                              ),
                               Visibility(
                                 visible: myProfileMap!['data']
-                                            ['facebook_link'] ==
+                                            ['instagram_link'] ==
                                         null
                                     ? false
                                     : true,
-                                child: SizedBox(
-                                  width: 1.0.w,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print('Instagram!!!');
+                                    _launchSocialUrl(myProfileMap!['data']
+                                        ['instagram_link']);
+                                  },
+                                  child: Container(
+                                      height: 4.0.h,
+                                      width: 8.0.w,
+                                      child: Image.asset(
+                                        'assets/icons/instagram.png',
+                                        fit: BoxFit.contain,
+                                      )),
                                 ),
                               ),
+                               SizedBox(
+                                width: 1.0.w,
+                              ),
+
                               Visibility(
                                 visible: myProfileMap!['data']
                                             ['linkedin_link'] ==
@@ -357,7 +328,30 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                         fit: BoxFit.contain,
                                       )),
                                 ),
+                              ),        
+                              SizedBox(
+                                width: 1.0.w,
                               ),
+                              Visibility(
+                                visible:
+                                    myProfileMap!['data']['other_link'] == null
+                                        ? false
+                                        : true,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print('Other!!!');
+                                    _launchSocialUrl(
+                                        myProfileMap!['data']['other_link']);
+                                  },
+                                  child: Container(
+                                      height: 4.0.h,
+                                      width: 8.0.w,
+                                      child: Image.asset(
+                                        'assets/icons/other_link.png',
+                                        fit: BoxFit.contain,
+                                      )),
+                                ),
+                              ),                  
                             ],
                           ),
                         ),

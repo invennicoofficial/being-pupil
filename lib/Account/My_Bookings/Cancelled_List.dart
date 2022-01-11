@@ -93,7 +93,7 @@ class _CancelledListState extends State<CancelledList> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset('assets/images/noBooking.png',
-                          height: 300, width: 300, fit: BoxFit.cover),
+                          height: 300, width: 300, fit: BoxFit.contain),
                       Text(
                         'No Booking',
                         style: TextStyle(

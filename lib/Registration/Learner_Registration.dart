@@ -573,9 +573,9 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                                         ],
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                      height: 0.5.h,
-                                                    ),
+                                                    // SizedBox(
+                                                    //   height: 0.5.h,
+                                                    // ),
                                                   ],
                                                 ),
                                               ),

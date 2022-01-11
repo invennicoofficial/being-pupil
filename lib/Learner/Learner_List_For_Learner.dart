@@ -178,7 +178,7 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
                                             fontWeight: FontWeight.w700),
                                       ),
                                       Container(
-                                        width: 55.0.w,
+                                        width: 50.0.w,
                                         child: Text(
                                           _lastDegree[index] != null &&
                                                   _schoolName[index] != null

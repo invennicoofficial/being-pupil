@@ -57,13 +57,14 @@ class ReviewDoneScreen extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
+            SizedBox(height: 2.0.h,),
             Container(
               height: 40.0.h,
               child: Center(
                   child: Image.asset(
-                'assets/icons/reviews.png',
+                'assets/images/reviewDone.png',
                 height: 40.0.h,
-                width: 60.0.w,
+                width: 50.0.w,
               )),
             ),
             Text(
