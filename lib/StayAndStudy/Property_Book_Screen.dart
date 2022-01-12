@@ -41,13 +41,15 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
   List<bool> isMeal = [false, false, false];
 
   String? userName, userGender, userNumber, userEmail;
-  int roomCharge = 0, mealCharge = 0, taxCharge = 500, total = 500;
+  double roomCharge = 0.0, mealCharge = 0.0, taxCharge = 500.0, total = 500.0;
+  List<double> roomChargeList = [], mealChargeList = [];
 
   int selectedMonth = 0;
   bool isRoomSelected = false;
 
   String? authToken;
   int? roomId;
+  int totalMonths = 1;
 
   // List<String> sharingList = ['Single Sharing', 'Double Sharing'];
   // List<String> sharingPriceList = ['₹4000/mth', '₹6000/mth'];
@@ -57,6 +59,14 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
     // TODO: implement initState
     super.initState();
     getToken();
+    for(int i = 0; i < widget.propData![widget.index!]['room'].length; i++){
+      roomChargeList.add(double.parse(widget.propData![widget.index!]['room'][i]['room_amount']));
+    }
+    for(int j = 0; j < widget.propData![widget.index!]['meal'].length; j++){
+      mealChargeList.add(double.parse(widget.propData![widget.index!]['meal'][j]['meal_amount']));
+    }
+  print(roomChargeList.toString());
+  print(mealChargeList.toString());
   }
 
   void getToken() async {
@@ -74,6 +84,14 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
       _nameController.text = userName!;
       _mobileController.text = '+91$userNumber';
       _emailController.text = userEmail!;
+    });
+  }
+
+  totalAmount(){
+    setState(() {
+      roomCharge = roomCharge * totalMonths;
+      mealCharge = mealCharge * totalMonths;
+      total = roomCharge + mealCharge + taxCharge;
     });
   }
 
@@ -147,10 +165,13 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                           roomType = widget.propData![widget.index!]['room'][index]['room_type'];
                           //widget.propertyDetails.data[widget.index].room[0].roomType;
                           roomId = 1;
-                          roomCharge = int.parse(widget.propData![widget.index!]['room'][index]['room_amount']);
+                          ///roomCharge = (int.parse(widget.propData![widget.index!]['room'][index]['room_amount']) * totalMonths);
+                          roomCharge = roomChargeList[index];
+                          print('ROOM:::'+ roomCharge.toString());
                           //int.parse(widget.propertyDetails.data[widget.index].room[0].roomAmount);
                           total = roomCharge + mealCharge + taxCharge;
                         });
+                        //totalAmount();
                       } 
                       // else {
                       //   setState(() {
@@ -275,7 +296,9 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                 print(isMeal);
                                 if (isMeal[index] == true) {
                                   setState(() {
-                                    mealCharge = mealCharge + int.parse(widget.propData![widget.index!]['meal'][index]['meal_amount']);
+                                    ///mealCharge = mealCharge + (int.parse(widget.propData![widget.index!]['meal'][index]['meal_amount']) * totalMonths);
+                                    mealCharge = mealCharge + mealChargeList[index] * totalMonths;
+                                    print('MEAL:::'+mealCharge.toString());
                                         //mealCharge + int.parse(widget.propertyDetails.data[widget.index].meal[index].mealAmount);
                                     total = mealCharge + taxCharge + roomCharge;
                                     selectedMeal.add(widget.propData![widget.index!]['meal'][index]['meal_type']);
@@ -283,101 +306,131 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                     selectedMealId.add(widget.propData![widget.index!]['meal'][index]['meal_id']);
                                     //selectedMealId.add(widget.propertyDetails.data[widget.index].meal[index].mealId);
                                   });
+                                  //totalAmount();
                                 } else {
                                   setState(() {
-                                    mealCharge = mealCharge - int.parse(widget.propData![widget.index!]['meal'][index]['meal_amount']);
+                                    ///mealCharge = mealCharge - (int.parse(widget.propData![widget.index!]['meal'][index]['meal_amount']) * totalMonths);
+                                    mealCharge = mealCharge - mealChargeList[index] * totalMonths;
+                                    print('MEAL:::'+mealCharge.toString());
                                         //mealCharge - int.parse(widget.propertyDetails.data[widget.index].meal[index].mealAmount);
-                                    total = total - int.parse(widget.propData![widget.index!]['meal'][index]['meal_amount']);
+                                    total = total - (int.parse(widget.propData![widget.index!]['meal'][index]['meal_amount']) * totalMonths);
                                     selectedMeal.remove(widget.propData![widget.index!]['meal'][index]['meal_type']);
                                     // selectedMeal.remove(widget.propertyDetails.data[widget.index].meal[index].mealType);
                                     selectedMealId.remove(widget.propData![widget.index!]['meal'][index]['meal_id']);
                                     //selectedMealId.remove(widget.propertyDetails.data[widget.index].meal[index].mealId);
                                   });
+                                  //totalAmount();
                                 }
                               });
                         })),
               ),
-              Theme(
-                data: new ThemeData(
-                  primaryColor: Constants.bpSkipStyle,
-                  primaryColorDark: Constants.bpSkipStyle,
-                ),
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 3.0.h),
-                  child: CustomDropdown<int>(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 3.0.w),
-                          child: Text(
-                            'Select Number of Months',
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 10.0.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Constants.bpSkipStyle),
-                          ),
-                        ),
-                        //SizedBox(width: 50.0.w)
-                      ],
-                    ),
-                    // icon: Icon(
-                    //   Icons.expand_more,
-                    //   color: Constants.bpSkipStyle,
-                    // ),
-                    onChange: (String value, int index) async {
-                      print(value);
-                      if (int.parse(value) == 1) {
-                        setState(() {
-                          selectedMonth = 1;
-                        });
-                      } else if (int.parse(value) == 2) {
-                        setState(() {
-                          selectedMonth = 2;
-                        });
-                      } else {
-                        setState(() {
-                          selectedMonth = 3;
-                        });
-                      }
-                    },
-                    dropdownButtonStyle: DropdownButtonStyle(
-                      height: 7.0.h,
-                      width: 90.0.w,
-                      //padding: EdgeInsets.only(left: 2.0.w),
-                      elevation: 0,
-                      backgroundColor: Colors.white,
-                      primaryColor: Constants.bpSkipStyle,
-                      side: BorderSide(color: Constants.formBorder),
-                    ),
-                    dropdownStyle: DropdownStyle(
-                      borderRadius: BorderRadius.circular(10.0),
-                      elevation: 6,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 2.0.w, vertical: 1.5.h),
-                    ),
-                    items: ['1', '2', '3']
-                        .asMap()
-                        .entries
-                        .map(
-                          (item) => DropdownItem<int>(
-                            value: item.key + 1,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                item.value,
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 10.0.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Constants.bgColor),
-                              ),
+              Visibility(
+                visible: isRoomSelected ? true : false,
+                child: Theme(
+                  data: new ThemeData(
+                    primaryColor: Constants.bpSkipStyle,
+                    primaryColorDark: Constants.bpSkipStyle,
+                  ),
+                  child: Padding(
+                    padding:
+                        EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 3.0.h),
+                    child: CustomDropdown<int>(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 3.0.w),
+                            child: Text(
+                              'Select Number of Months',
+                              style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 10.0.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: Constants.bpSkipStyle),
                             ),
                           ),
-                        )
-                        .toList(),
+                          //SizedBox(width: 50.0.w)
+                        ],
+                      ),
+                      // icon: Icon(
+                      //   Icons.expand_more,
+                      //   color: Constants.bpSkipStyle,
+                      // ),
+                      onChange: (String value, int index) async {
+                         roomCharge = roomCharge / totalMonths;
+                            mealCharge = mealCharge / totalMonths;
+                            total = 0.0;
+                             //taxCharge = taxCharge * totalMonths;
+                            total = roomCharge + mealCharge + taxCharge;
+                        print(value);
+                        if (int.parse(value) == 1) {
+                          setState(() {
+                            selectedMonth = 1;
+                            totalMonths = 1;
+                            roomCharge = roomCharge * totalMonths;
+                            mealCharge = mealCharge * totalMonths;
+                             //taxCharge = taxCharge * totalMonths;
+                            total = roomCharge + mealCharge + taxCharge;
+                          });
+                          //totalAmount();
+                        } else if (int.parse(value) == 2) {
+                          setState(() {
+                            selectedMonth = 2;
+                            totalMonths = 2;
+                            roomCharge = roomCharge * totalMonths;
+                            mealCharge = mealCharge * totalMonths;
+                             //taxCharge = taxCharge * totalMonths;
+                            total = roomCharge + mealCharge + taxCharge;
+                          });
+                          //totalAmount();
+                        } else {
+                          setState(() {
+                            selectedMonth = 3;
+                            totalMonths = 3;
+                            roomCharge = roomCharge * totalMonths;
+                            mealCharge = mealCharge * totalMonths;
+                             //taxCharge = taxCharge * totalMonths;
+                            total = roomCharge + mealCharge + taxCharge;
+                          });
+                          //totalAmount();
+                        }
+                      },
+                      dropdownButtonStyle: DropdownButtonStyle(
+                        height: 7.0.h,
+                        width: 90.0.w,
+                        //padding: EdgeInsets.only(left: 2.0.w),
+                        elevation: 0,
+                        backgroundColor: Colors.white,
+                        primaryColor: Constants.bpSkipStyle,
+                        side: BorderSide(color: Constants.formBorder),
+                      ),
+                      dropdownStyle: DropdownStyle(
+                        borderRadius: BorderRadius.circular(10.0),
+                        elevation: 6,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 2.0.w, vertical: 1.5.h),
+                      ),
+                      items: ['1', '2', '3']
+                          .asMap()
+                          .entries
+                          .map(
+                            (item) => DropdownItem<int>(
+                              value: item.key + 1,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  item.value,
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 10.0.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Constants.bgColor),
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
                   ),
                 ),
               ),

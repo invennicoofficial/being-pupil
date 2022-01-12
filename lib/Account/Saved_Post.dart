@@ -136,7 +136,8 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset('assets/images/noBooking.png',
-                        height: 300, width: 300, fit: BoxFit.cover),
+                        height: 250, width: 250, fit: BoxFit.contain),
+                    SizedBox(height: 5.0,),
                     Text(
                       'No Saved Post',
                       style: TextStyle(

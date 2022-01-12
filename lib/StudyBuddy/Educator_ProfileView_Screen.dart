@@ -12,6 +12,7 @@ import 'package:being_pupil/Learner/Connection_List_Learner.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Educator_Post_Model.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
+import 'package:being_pupil/Widgets/Custom_Button.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
@@ -39,6 +40,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
   Map<String, dynamic>? map;
   List<dynamic>? mapData;
 
+  int? userId;
   String? name = '';
   String? profileImageUrl = '';
   String? degreeName = '';
@@ -69,6 +71,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
   Map<String, dynamic>? saveMap;
   String? authToken;
   ConnectionAPI connect = ConnectionAPI();
+  Map<String, dynamic>? unfollowMap;
 
 
   @override
@@ -347,8 +350,14 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                             ),
                           ),
                         )
-                        : GestureDetector(
-                          onTap: () async {
+                        : Container(
+                          height: 4.5.h,
+                          width: 35.0.w,
+                          decoration: BoxDecoration(
+                              color: Constants.bgColor,
+                              borderRadius: BorderRadius.circular(25.0)),
+                          child: GestureDetector(
+                            onTap: () async {
                                     displayProgressDialog(context);
                                     SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
                                     CubeUser? user = sharedPrefs.getUser();
@@ -376,20 +385,43 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                       // displayProgressDialog(context);
                                     });
                                   },
-                          child: Container(
-                            height: 4.5.h,
-                            width: 35.0.w,
-                            decoration: BoxDecoration(
-                                color: Constants.bgColor,
-                                borderRadius: BorderRadius.circular(25.0)),
-                            child: Center(
-                              child: Text('CHAT',
-                                style: TextStyle(
-                                    fontSize: 10.0.sp,
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white),
-                              ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 20.0.w,
+                                  height: 3.5.h,
+                                  child: Center(
+                                    child: Text('CHAT',
+                                      style: TextStyle(
+                                          fontSize: 10.0.sp,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                                SimpleAccountMenu(
+                              text: [
+                                Text('Unfollow',
+                                      style: TextStyle(
+                                          fontSize: 11.0.sp,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white),
+                                    ),
+                          ],
+                        iconColor: Colors.white,
+                        onChange: (index) {
+                        print(index);
+                        unfollowUser(userId!);
+                       },
+                    ),
+                                // IconButton(
+                                // onPressed: (){
+
+                                // }, 
+                                // icon: Icon(Icons.expand_more_outlined, color: Colors.white, size: 22.0,))
+                              ],
                             ),
                           ),
                         ),
@@ -941,6 +973,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
         print(profileMap!['data']);
         //print(mapData);
         if (profileMap!['data'] != null) {
+          userId = int.parse(profileMap!['data']['user_id'].toString());
           name = profileMap!['data']['name'];
           profileImageUrl = profileMap!['data']['profile_image'];
           degreeName = profileMap!['data']['last_degree'];
@@ -1027,6 +1060,48 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
         print(response.statusCode);
       }
     } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+    }
+  }
+
+  //Unfollow user API
+  Future<void> unfollowUser(int userId) async{
+
+    try{
+      Dio dio = Dio();
+
+      FormData formData = FormData.fromMap({'disconnect_user_id': userId});
+
+      var response = await dio.post(Config.unfollowUserUrl, data: formData,
+      options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
+
+      if(response.statusCode == 200){
+        unfollowMap = response.data;
+        print(unfollowMap);
+
+        if (unfollowMap!['status'] == true) {
+          profileMap!['data']['is_connected'] = 0;
+          setState(() { }); 
+          Fluttertoast.showToast(
+              msg: unfollowMap!['message'],
+              backgroundColor: Constants.bgColor,
+              gravity: ToastGravity.BOTTOM,
+              fontSize: 10.0.sp,
+              toastLength: Toast.LENGTH_SHORT,
+              textColor: Colors.white);
+        }else{
+          Fluttertoast.showToast(
+              msg: unfollowMap!['message'] == null ? unfollowMap!['err_msg'] : unfollowMap!['message'],
+              backgroundColor: Constants.bgColor,
+              gravity: ToastGravity.BOTTOM,
+              fontSize: 10.0.sp,
+              toastLength: Toast.LENGTH_SHORT,
+              textColor: Colors.white);
+        }
+      }
+
+    }on DioError catch (e, stack) {
       print(e.response);
       print(stack);
     }

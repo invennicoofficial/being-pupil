@@ -56,6 +56,7 @@ class Config{
   static const String addReviewUrl = baseUrl + "property/addReview";
   static const String getReviewUrl = baseUrl + "property/getReview";
   static const String refreshTokenUrl = baseUrl + "user/refreshToken";
+  static const String unfollowUserUrl = baseUrl + "user/unfollow";
 }
 
 

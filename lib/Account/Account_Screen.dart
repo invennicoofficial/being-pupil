@@ -331,14 +331,14 @@ class _AccountScreenState extends State<AccountScreen> {
                               ).whenComplete(() {
                                 // CubeChatConnection.instance.destroy();
                                 SharedPrefs.instance.deleteUser();
-                                pushNewScreen(
-                                  context,
-                                  screen: LoginScreen(),
-                                  withNavBar: false,
-                                  pageTransitionAnimation:
-                                  PageTransitionAnimation.cupertino,
-                                );
-                                Navigator.of(context).pushAndRemoveUntil(
+                                // pushNewScreen(
+                                //   context,
+                                //   screen: LoginScreen(),
+                                //   withNavBar: false,
+                                //   pageTransitionAnimation:
+                                //   PageTransitionAnimation.cupertino,
+                                // );
+                                Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                                     MaterialPageRoute(
                                         builder: (context) => LoginScreen()),
                                         (Route<dynamic> route) => false);

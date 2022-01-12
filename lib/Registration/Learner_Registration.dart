@@ -1073,30 +1073,44 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                   height: 6.0.h,
                                   width: 90.0.w,
                                   color: Colors.transparent,
-                                  child: Center(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: [
-                                        ImageIcon(
-                                            AssetImage(
-                                                'assets/icons/upload.png'),
-                                            size: 25,
-                                            color: Constants.formBorder),
-                                        SizedBox(
-                                          width: 2.0.w,
-                                        ),
-                                        Text(
-                                          (fileName == null || fileName == '')
-                                              ? 'Upload the file'
-                                              : fileName!,
-                                          style: TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              fontSize: 10.0.sp,
-                                              fontWeight: FontWeight.w400,
-                                              color: Constants.bpSkipStyle),
-                                        )
-                                      ],
+                                  child: Padding(
+                                     padding: fileName == null ? EdgeInsets.only(left: 20.0) : EdgeInsets.zero,
+                                    child: Center(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          ImageIcon(
+                                              AssetImage(
+                                                  'assets/icons/upload.png'),
+                                              size: 25,
+                                              color: Constants.formBorder),
+                                          SizedBox(
+                                            width: 2.0.w,
+                                          ),
+                                          Expanded(
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Container(
+                                                height: 2.5.h,
+                                                child: Text(
+                                                  (fileName == null || fileName == '')
+                                                      ? 'Upload the file'
+                                                      : fileName!,
+                                                  style: TextStyle(
+                                                      fontFamily: 'Montserrat',
+                                                      fontSize: 10.0.sp,
+                                                      fontWeight: FontWeight.w400,
+                                                      color: Constants.bpSkipStyle),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                           SizedBox(width: 5.0,),
+                                          fileName != null 
+                                          ?Icon(Icons.close, size: 22.0, color: Constants.formBorder,) : SizedBox()
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
