@@ -208,8 +208,8 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                           borderRadius: BorderRadius.circular(100),
                           child: Image.network(
                             profileImageUrl!,
-                            width: 150,
-                            height: 150,
+                            width: 130,
+                            height: 130,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -297,7 +297,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                 ),
                               ),
                                SizedBox(
-                                width: 1.0.w,
+                                width: myProfileMap!['data']['facebook_link'] == null ? 0.0 : 2.0.w,
                               ),
                               Visibility(
                                 visible: myProfileMap!['data']
@@ -321,7 +321,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                 ),
                               ),
                                SizedBox(
-                                width: 1.0.w,
+                                width: myProfileMap!['data']['instagram_link'] == null ? 0.0 : 2.0.w,
                               ),
 
                               Visibility(
@@ -346,7 +346,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                 ),
                               ),        
                               SizedBox(
-                                width: 1.0.w,
+                                width: myProfileMap!['data']['linkedin_link'] == null ? 0.0 : 2.0.w,
                               ),
                               Visibility(
                                 visible:
@@ -534,8 +534,8 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Container(
-                                        height: 10.0.h,
-                                        width: 18.0.w,
+                                        height: 70.0,
+                                        width: 70.0,
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(5.0),
@@ -553,17 +553,20 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Container(
-                                            width: 65.0.w,
-                                            child: Text(
-                                              nameList[index]!,
-                                              //result.data[index].courseName,
-                                              style: TextStyle(
-                                                  fontFamily: 'Montserrat',
-                                                  fontSize: 11.0.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Constants.bgColor),
-                                              overflow: TextOverflow.clip,
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 10.0),
+                                            child: Container(
+                                              width: 63.0.w,
+                                              child: Text(
+                                                nameList[index]!,
+                                                //result.data[index].courseName,
+                                                style: TextStyle(
+                                                    fontFamily: 'Montserrat',
+                                                    fontSize: 11.0.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Constants.bgColor),
+                                                overflow: TextOverflow.clip,
+                                              ),
                                             ),
                                           ),
                                           SizedBox(

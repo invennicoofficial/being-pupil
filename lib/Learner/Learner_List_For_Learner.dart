@@ -126,7 +126,7 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 1.0.w),
                       child: Container(
-                        height: 10.0.h,
+                        //height: 10.0.h,
                         child: ListTile(
                             contentPadding: EdgeInsets.zero,
                             title: GestureDetector(
@@ -217,22 +217,25 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
                                   });         
                                   getLearnerListApi(page);
                                 },
-                                child: Container(
-                                  height: 3.5.h,
-                                  width: 16.0.w,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Constants.bgColor, width: 0.5),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(8.0))),
-                                  child: Center(
-                                    child: Text(
-                                      'Connect',
-                                      style: TextStyle(
-                                          fontSize: 8.0.sp,
-                                          color: Constants.bgColor,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w500),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 10.0),
+                                  child: Container(
+                                    height: 3.5.h,
+                                    width: 16.0.w,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Constants.bgColor, width: 0.5),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0))),
+                                    child: Center(
+                                      child: Text(
+                                        'Connect',
+                                        style: TextStyle(
+                                            fontSize: 8.0.sp,
+                                            color: Constants.bgColor,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w500),
+                                      ),
                                     ),
                                   ),
                                 ),

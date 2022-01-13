@@ -178,8 +178,8 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Container(
-                              height: 10.0.h,
-                              width: 18.0.w,
+                              height: 70.0,
+                              width: 70.0,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5.0),
                                   image: DecorationImage(
@@ -194,17 +194,20 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Container(
-                                  width: 65.0.w,
-                                  child: Text(
-                                    nameList[index]!,
-                                    //result.data[index].courseName,
-                                    style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 11.0.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Constants.bgColor),
-                                    overflow: TextOverflow.clip,
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10.0),
+                                  child: Container(
+                                    width: 63.0.w,
+                                    child: Text(
+                                      nameList[index]!,
+                                      //result.data[index].courseName,
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 11.0.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: Constants.bgColor),
+                                      overflow: TextOverflow.clip,
+                                    ),
                                   ),
                                 ),
                                 SizedBox(

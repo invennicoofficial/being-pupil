@@ -149,8 +149,8 @@ class _UpComingListState extends State<UpComingList> {
                                 Padding(
                                   padding: EdgeInsets.only(right: 4.0.w),
                                   child: Container(
-                                    height: 12.0.h,
-                                    width: 22.0.w,
+                                    height: 75.0,
+                                    width: 75.0,
                                     decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
@@ -162,7 +162,8 @@ class _UpComingListState extends State<UpComingList> {
                                 ),
                                 //Other booking details
                                 Container(
-                                  width: 65.0.w,
+                                  width: 63.0.w,
+                                  padding: const EdgeInsets.only(top: 10.0),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,

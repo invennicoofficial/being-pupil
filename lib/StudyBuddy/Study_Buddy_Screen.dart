@@ -151,6 +151,7 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
               height: 100.0.h,
               width: 100.0.w,
               decoration: BoxDecoration(
+                color: Colors.white10,
                   image: DecorationImage(
                       image: AssetImage('assets/images/studyBudyBg.png'),
                       fit: BoxFit.cover)),

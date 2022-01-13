@@ -126,7 +126,7 @@ class _LearnerListState extends State<LearnerList> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 1.0.w),
                       child: Container(
-                        height: 10.0.h,
+                        //height: 10.0.h,
                         child: ListTile(
                             contentPadding: EdgeInsets.zero,
                             title: GestureDetector(
@@ -173,7 +173,7 @@ class _LearnerListState extends State<LearnerList> {
                                             fontWeight: FontWeight.w700),
                                       ),
                                       Container(
-                                        width: 55.0.w,
+                                        width: 52.0.w,
                                         child: Text(
                                           _lastDegree[index] != null &&
                                                   _schoolName[index] != null

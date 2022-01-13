@@ -5,6 +5,7 @@ import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Learner_ProfileView_Screen.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -192,7 +193,7 @@ class _CommentScreenState extends State<CommentScreen> {
                     children: <Widget>[
                       //main horizontal paddingF
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 4.0.w),
+                        padding: EdgeInsets.symmetric(horizontal: 5.0.w),
                         //Container for one post
                         child: Container(
                           width: 100.0.w,
@@ -214,13 +215,16 @@ class _CommentScreenState extends State<CommentScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(50),
-                                        child: Image.network(
-                                          widget.profileImage!,
-                                          width: 8.5.w,
-                                          height: 5.0.h,
-                                          fit: BoxFit.cover,
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 5.0),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(50),
+                                          child: Image.network(
+                                            widget.profileImage!,
+                                            width: 35.0,
+                                            height: 35.0,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
                                       SizedBox(
@@ -240,6 +244,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                   fontFamily: 'Montserrat',
                                                   fontWeight: FontWeight.w700),
                                             ),
+                                            SizedBox(height: 1.0,),
                                             Text(
                                               '${widget.degree} | ${widget.schoolName}',
                                               style: TextStyle(
@@ -248,6 +253,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                   fontFamily: 'Montserrat',
                                                   fontWeight: FontWeight.w400),
                                             ),
+                                            SizedBox(height: 1.0,),
                                             Text(
                                               widget.date!,
                                               style: TextStyle(
@@ -348,7 +354,7 @@ class _CommentScreenState extends State<CommentScreen> {
                               ),
                               //Row for Like comment and Share
                               Padding(
-                                padding: EdgeInsets.only(top: 1.0.h, bottom: 1.0.h),
+                                padding: EdgeInsets.only(top: 0.5.h, bottom: 0.5.h),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -376,7 +382,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                               color: widget.isLiked!
                                                   ? Constants.selectedIcon
                                                   : Constants.bpOnBoardSubtitleStyle,
-                                              size: 30.0,
+                                              size: 25.0,
                                             ),
                                           SizedBox(
                                             width: 2.0.w,
@@ -402,7 +408,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                       children: [
                                         ImageIcon(
                                               AssetImage('assets/icons/commentNew.png'),
-                                              size: 25.0,
+                                              size: 21.0,
                                               color: Constants.bpOnBoardSubtitleStyle,
                                             ),
                                         SizedBox(
@@ -440,7 +446,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                               color: widget.isSaved!
                                                   ? Constants.selectedIcon
                                                   : Constants.bpOnBoardSubtitleStyle,
-                                              size: 25.0,
+                                              size: 21.0,
                                             ),
                                           SizedBox(
                                             width: 1.0.w,
@@ -556,6 +562,7 @@ class _CommentScreenState extends State<CommentScreen> {
                               padding:
                                   EdgeInsets.only(bottom: 2.0.h, top: 1.0.h),
                               child: ListTile(
+                                contentPadding: EdgeInsets.symmetric(horizontal: 3.0.w),
                                 title: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
@@ -571,8 +578,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                                 BorderRadius.circular(50),
                                             child: Image.network(
                                               profileImages[index]!,
-                                              height: 4.5.h,
-                                              width: 7.5.w,
+                                              height: 35.0,
+                                              width: 35.0,
                                               fit: BoxFit.cover,
                                             ),
                                           ),
@@ -619,7 +626,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                               .bgColor),
                                                     ),
                                                     Text(
-                                                      date[index]!,
+                                                      date[index]!.substring(0, 9),
                                                       style: TextStyle(
                                                           fontFamily:
                                                               'Montserrat',

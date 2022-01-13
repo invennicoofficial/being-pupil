@@ -173,7 +173,7 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
                                         imageUrl: _profileImage[index]!,
                                         width: 40.0,
                                         height: 40.0,
-                                        fit: BoxFit.fitWidth,
+                                        fit: BoxFit.cover,
                                       )
                                   ),
                                   SizedBox(

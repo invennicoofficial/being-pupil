@@ -163,7 +163,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
               width: 100.0.w,
               //color: Colors.grey,
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 2.0.h, horizontal: 4.0.w),
+                padding: EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 4.0.w),
                 child: Column(
                   children: <Widget>[
                     //Profile DP
@@ -171,8 +171,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                       borderRadius: BorderRadius.circular(100),
                       child:Image.network(
                         profileImageUrl!,
-                        width: 150,
-                        height: 150,
+                        width: 130,
+                        height: 130,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -253,7 +253,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                   ),
                                 ),
                                  SizedBox(
-                                  width: 1.0.w,
+                                  width: profileMap!['data']['facebook_link'] == null ? 0.0 :  2.0.w,
                                 ),
                                 Visibility(
                                   visible: profileMap!['data']
@@ -277,7 +277,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                   ),
                                 ),
                                  SizedBox(
-                                  width: 1.0.w,
+                                  width: profileMap!['data']['instagram_link'] == null ? 0.0 :  2.0.w,
                                 ),
         
                                 Visibility(
@@ -302,7 +302,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                   ),
                                 ),        
                                 SizedBox(
-                                  width: 1.0.w,
+                                  width: profileMap!['data']['linkedin_link'] == null ? 0.0 :  2.0.w,
                                 ),
                                 Visibility(
                                   visible:
@@ -595,7 +595,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                   child: ListView.separated(
                     physics: BouncingScrollPhysics(),
                     padding:
-                        EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 2.0.w),
+                        EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 5.0.w),
                     shrinkWrap: true,
                     itemCount: postIdList != null ? postIdList.length : 0,
                     // controller: _scrollController,
@@ -619,13 +619,16 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                 title: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: Image.network(
-                                        profileImageUrl!,
-                                        width: 8.5.w,
-                                        height: 5.0.h,
-                                        fit: BoxFit.cover,
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 5.0),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: Image.network(
+                                          profileImageUrl!,
+                                          width: 35.0,
+                                          height: 35.0,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
                                     SizedBox(
@@ -645,6 +648,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                                 fontFamily: 'Montserrat',
                                                 fontWeight: FontWeight.w700),
                                           ),
+                                          SizedBox(height: 1.0),
                                           Text(
                                             '$degreeName | $schoolName',
                                             style: TextStyle(
@@ -653,8 +657,9 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                                 fontFamily: 'Montserrat',
                                                 fontWeight: FontWeight.w400),
                                           ),
+                                          SizedBox(height: 1.0),
                                           Text(
-                                            dateList[index]!,
+                                            dateList[index]!.substring(0, 11),
                                             style: TextStyle(
                                                 fontSize: 6.5.sp,
                                                 color: Constants.bgColor,
@@ -700,43 +705,77 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                               SizedBox(
                                 height: 1.0.h,
                               ),
-                              // Container for image or video
-                              imageListMap[index].length == 0 ? Container() :
-                              Container(
-                                height: 25.0.h,
-                                width: 15.0.w,
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: BouncingScrollPhysics(),
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: imageListMap[index].length,
-                                  itemBuilder: (context, imageIndex) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      List<String> imgList = [];
-                                      for(int i = 0; i<imageListMap[index].length; i++) {
-                                        imgList.add(imageListMap[index][i]['file']);
-                                      }
-                                      pushNewScreen(context,
-                                          withNavBar: false,
-                                          screen: FullScreenSlider(
-                                              imageList: imgList,
-                                              index: imageIndex,
-                                              name: nameList[index]!
-                                          ),
-                                          pageTransitionAnimation:
-                                          PageTransitionAnimation
-                                              .cupertino);
-                                    },
-                                    child: Image.network(
-                                      imageListMap[index][imageIndex]['file'],
-                                      height: 100,
-                                      width: 250,
-                                      fit: BoxFit.cover,
+                             // Container for image or video
+                              imageListMap[index].length == 0
+                                  ? Container()
+                                  : Container(
+                                      height: 25.0.h,
+                                      width: 100.0.w,
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: BouncingScrollPhysics(),
+                                        scrollDirection: Axis.horizontal,
+                                        //itemExtent: MediaQuery.of(context).size.width / imageListMap[index].length,
+                                        itemCount: imageListMap[index].length,
+                                        itemBuilder: (context, imageIndex) {
+                                          return imageListMap[index].length == 1
+                                          ? Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 15.0.w),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                List<String> imgList = [];
+                                                for(int i = 0; i<imageListMap[index].length; i++) {
+                                                  imgList.add(imageListMap[index][i]['file']);
+                                                }
+                                                pushNewScreen(context,
+                                                    withNavBar: false,
+                                                    screen: FullScreenSlider(
+                                                      imageList: imgList,
+                                                      index: imageIndex,
+                                                      name: nameList[index]!
+                                                    ),
+                                                    pageTransitionAnimation:
+                                                    PageTransitionAnimation
+                                                        .cupertino);
+                                              },
+                                              child: Image.network(
+                                                imageListMap[index][imageIndex]['file'],
+                                                height: 100,
+                                                width: 250,
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                          )
+                                          : Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                List<String> imgList = [];
+                                                for(int i = 0; i<imageListMap[index].length; i++) {
+                                                  imgList.add(imageListMap[index][i]['file']);
+                                                }
+                                                pushNewScreen(context,
+                                                    withNavBar: false,
+                                                    screen: FullScreenSlider(
+                                                      imageList: imgList,
+                                                      index: imageIndex,
+                                                      name: nameList[index]!
+                                                    ),
+                                                    pageTransitionAnimation:
+                                                    PageTransitionAnimation
+                                                        .cupertino);
+                                              },
+                                              child: Image.network(
+                                                imageListMap[index][imageIndex]['file'],
+                                                height: 100,
+                                                width: 250,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ),
-                                  );
-                                },),
-                              ),
         
                               //divider
                               Divider(
@@ -747,7 +786,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                               ),
                               //Row for Like comment and Share
                               Padding(
-                                padding: EdgeInsets.only(top: 1.0.h, bottom: 1.0.h),
+                                padding: EdgeInsets.only(top: 0.5.h, bottom: 0.5.h),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -776,7 +815,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                             color: isLiked[index]!
                                                 ? Constants.selectedIcon
                                                 : Constants.bpOnBoardSubtitleStyle,
-                                            size: 30.0,
+                                            size: 25.0,
                                           ),
                                           SizedBox(
                                             width: 1.0.w,
@@ -826,7 +865,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                           children: [
                                             ImageIcon(
                                               AssetImage('assets/icons/commentNew.png'),
-                                              size: 25.0,
+                                              size: 21.0,
                                               color: Constants.bpOnBoardSubtitleStyle,
                                             ),
                                             // Icon(
@@ -886,7 +925,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                               color: isSaved[index]!
                                                   ? Constants.selectedIcon
                                                   : Constants.bpOnBoardSubtitleStyle,
-                                              size: 25.0,
+                                              size: 21.0,
                                             ),
                                             SizedBox(
                                               width: 1.0.w,

@@ -177,7 +177,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
         actions: <Widget>[
           registerAs == 'E'
               ? Padding(
-                padding: const EdgeInsets.only(right: 8.0),
+                padding: EdgeInsets.only(right: 5.0.w),
                 child: IconButton(
                     icon: Icon(Icons.add_box_outlined),
                     onPressed: () {
@@ -251,7 +251,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                     children: <Widget>[
                       //main horizontal padding
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        padding: EdgeInsets.symmetric(horizontal: 5.0.w),
                         //Container for one post
                         child: Container(
                           // height: index == 0 ? 27.5.h : 57.5.h,
@@ -274,13 +274,16 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(50),
-                                        child: Image.network(
-                                          profileImageList[index]!,
-                                          width: 40.0,
-                                          height: 40.0,
-                                          fit: BoxFit.cover,
+                                      Padding(
+                                        padding: EdgeInsets.only(top: 5.0),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(50),
+                                          child: Image.network(
+                                            profileImageList[index]!,
+                                            width: 35.0,
+                                            height: 35.0,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
                                       SizedBox(
@@ -300,6 +303,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                                   fontFamily: 'Montserrat',
                                                   fontWeight: FontWeight.w700),
                                             ),
+                                            SizedBox(height: 1.0),
                                             Text(
                                               '${degreeList[index]} | ${schoolList[index]}',
                                               style: TextStyle(
@@ -308,8 +312,9 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                                   fontFamily: 'Montserrat',
                                                   fontWeight: FontWeight.w400),
                                             ),
+                                            SizedBox(height: 1.0),
                                             Text(
-                                              dateList[index]!,
+                                              dateList[index]!.substring(0, 11),
                                               style: TextStyle(
                                                   fontSize: 6.5.sp,
                                                   color: Constants.bpOnBoardSubtitleStyle,
@@ -514,7 +519,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
 
                               //Row for Like comment and Share
                               Padding(
-                                padding: EdgeInsets.only(top: 1.0.h, bottom: 1.0.h),
+                                padding: EdgeInsets.only(top: 0.3.h, bottom: 0.3.h),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -544,7 +549,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                               color: isLiked[index]!
                                                   ? Constants.selectedIcon
                                                   : Constants.bpOnBoardSubtitleStyle,
-                                              size: 30.0,
+                                              size: 25.0,
                                             ),
                                             SizedBox(
                                               width: 2.0.w,
@@ -609,7 +614,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                           children: [
                                             ImageIcon(
                                               AssetImage('assets/icons/commentNew.png'),
-                                              size: 25.0,
+                                              size: 21.0,
                                               color: Constants.bpOnBoardSubtitleStyle,
                                             ),
                                             // Icon(
@@ -669,7 +674,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                               color: isSaved[index]!
                                                   ? Constants.selectedIcon
                                                   : Constants.bpOnBoardSubtitleStyle,
-                                              size: 25.0,
+                                              size: 21.0,
                                             ),
                                             SizedBox(
                                               width: 1.0.w,

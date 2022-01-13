@@ -134,7 +134,7 @@ class _ConnectionListState extends State<ConnectionList> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 2.0.w),
                       child: Container(
-                        height: 10.0.h,
+                        //height: 10.0.h,
                         child: ListTile(
                             contentPadding: EdgeInsets.zero,
                             title: GestureDetector(
@@ -229,26 +229,29 @@ class _ConnectionListState extends State<ConnectionList> {
                                 },
                                 child: _status[index] == '0'
                                     //connection.data[index].status == '0'
-                                    ? Container(
-                                        height: 3.5.h,
-                                        width: 25.0.w,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Constants.bgColor,
-                                                width: 0.5),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8.0))),
-                                        child: Center(
-                                          child: Text(
-                                            'Request Sent',
-                                            style: TextStyle(
-                                                fontSize: 8.0.sp,
-                                                color: Constants.bgColor,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w500),
+                                    ? Padding(
+                                      padding: const EdgeInsets.only(bottom: 10.0),
+                                      child: Container(
+                                          height: 3.5.h,
+                                          width: 25.0.w,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Constants.bgColor,
+                                                  width: 0.5),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8.0))),
+                                          child: Center(
+                                            child: Text(
+                                              'Request Sent',
+                                              style: TextStyle(
+                                                  fontSize: 8.0.sp,
+                                                  color: Constants.bgColor,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w500),
+                                            ),
                                           ),
                                         ),
-                                      )
+                                    )
                                     : GestureDetector(
                                   onTap: () async {
                                     displayProgressDialog(context);
@@ -279,26 +282,29 @@ class _ConnectionListState extends State<ConnectionList> {
                                     });
 
                                   },
-                                      child: Container(
-                                          height: 3.5.h,
-                                          width: 16.0.w,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Constants.bgColor,
-                                                  width: 0.5),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8.0))),
-                                          child: Center(
-                                            child: Text(
-                                              'Chat',
-                                              style: TextStyle(
-                                                  fontSize: 8.0.sp,
-                                                  color: Constants.bgColor,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w500),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(bottom: 10.0),
+                                        child: Container(
+                                            height: 3.5.h,
+                                            width: 16.0.w,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Constants.bgColor,
+                                                    width: 0.5),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(8.0))),
+                                            child: Center(
+                                              child: Text(
+                                                'Chat',
+                                                style: TextStyle(
+                                                    fontSize: 8.0.sp,
+                                                    color: Constants.bgColor,
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: FontWeight.w500),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                      ),
                                     ),
                               ),
                             )),

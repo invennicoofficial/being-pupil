@@ -143,8 +143,8 @@ class _CancelledListState extends State<CancelledList> {
                             Padding(
                               padding: EdgeInsets.only(right: 4.0.w),
                               child: Container(
-                                height: 12.0.h,
-                                width: 22.0.w,
+                                height: 70.0,
+                                width:70.0,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.0),
                                     image: DecorationImage(
@@ -155,6 +155,7 @@ class _CancelledListState extends State<CancelledList> {
                             ),
                             //Other booking details
                             Container(
+                              padding: const EdgeInsets.only(top: 10.0),
                               width: 65.0.w,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,42 +207,45 @@ class _CancelledListState extends State<CancelledList> {
                           ],
                         ),
                         //Foe cancel and view details
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                print(bookingMeal[index].toString());
-                                pushNewScreen(context,
-                                    screen: ViewBookingScreen(
-                                      image: bookingImage[index],
-                                      name: bookingName[index],
-                                      index: index,
-                                      guestName: bookingGuestName[index],
-                                      mobileNumber: bookingMobileNumber[index],
-                                      checkIn: bookingCheckIn[index],
-                                      checkOut: bookingCheckOut[index],
-                                      roomType: bookingRoomType[index],
-                                      meal: bookingMeal[index].toString(),
-                                      roomAmount: bookingRoomAmount[index],
-                                      mealAmount: bookingMealAmount[index],
-                                      taxAmount: bookingTaxAmount[index],
-                                      totalAmount: bookingTotalAmount[index],
-                                    ),
-                                    withNavBar: false,
-                                    pageTransitionAnimation:
-                                        PageTransitionAnimation.cupertino);
-                              },
-                              child: Text(
-                                'View Details',
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 9.0.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xFF1F7DE9)),
-                              ),
-                            )
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  print(bookingMeal[index].toString());
+                                  pushNewScreen(context,
+                                      screen: ViewBookingScreen(
+                                        image: bookingImage[index],
+                                        name: bookingName[index],
+                                        index: index,
+                                        guestName: bookingGuestName[index],
+                                        mobileNumber: bookingMobileNumber[index],
+                                        checkIn: bookingCheckIn[index],
+                                        checkOut: bookingCheckOut[index],
+                                        roomType: bookingRoomType[index],
+                                        meal: bookingMeal[index].toString(),
+                                        roomAmount: bookingRoomAmount[index],
+                                        mealAmount: bookingMealAmount[index],
+                                        taxAmount: bookingTaxAmount[index],
+                                        totalAmount: bookingTotalAmount[index],
+                                      ),
+                                      withNavBar: false,
+                                      pageTransitionAnimation:
+                                          PageTransitionAnimation.cupertino);
+                                },
+                                child: Text(
+                                  'View Details',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 9.0.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFF1F7DE9)),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     ),

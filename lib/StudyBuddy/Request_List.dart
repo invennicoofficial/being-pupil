@@ -126,7 +126,7 @@ class _RequestListState extends State<RequestList> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 2.0.w),
                       child: Container(
-                        height: 10.0.h,
+                        //height: 10.0.h, 
                         child: ListTile(
                           contentPadding: EdgeInsets.all(0.0),
                           //leading:

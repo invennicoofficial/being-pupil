@@ -281,7 +281,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                 ),
                               ),
                                SizedBox(
-                                width: 1.0.w,
+                                width: myProfileMap!['data']['facebook_link'] == null ? 0.0 :  2.0.w,
                               ),
                               Visibility(
                                 visible: myProfileMap!['data']
@@ -305,7 +305,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                 ),
                               ),
                                SizedBox(
-                                width: 1.0.w,
+                                width: myProfileMap!['data']['instagram_link'] == null ? 0.0 :  2.0.w,
                               ),
 
                               Visibility(
@@ -330,7 +330,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                 ),
                               ),        
                               SizedBox(
-                                width: 1.0.w,
+                                width: myProfileMap!['data']['linkedin_link'] == null ? 0.0 :  2.0.w,
                               ),
                               Visibility(
                                 visible:
@@ -475,14 +475,17 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          child: Image.network(
-                                            profileImageUrl!,
-                                            width: 8.5.w,
-                                            height: 5.0.h,
-                                            fit: BoxFit.cover,
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 5.0),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            child: Image.network(
+                                              profileImageUrl!,
+                                              width: 35.0,
+                                              height: 35.0,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                         SizedBox(
@@ -503,6 +506,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                     fontWeight:
                                                         FontWeight.w700),
                                               ),
+                                              SizedBox(height: 1.0,),
                                               Text(
                                                 '$degreeName | $schoolName',
                                                 style: TextStyle(
@@ -512,8 +516,9 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                     fontWeight:
                                                         FontWeight.w400),
                                               ),
+                                              SizedBox(height: 1.0,),
                                               Text(
-                                                dateList[index]!,
+                                                dateList[index]!.substring(0, 11),
                                                 style: TextStyle(
                                                     fontSize: 6.5.sp,
                                                     color: Constants.bgColor,
@@ -647,49 +652,76 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                     height: 1.0.h,
                                   ),
                                   // Container for image or video
-                                  imageListMap[index].length == 0
-                                      ? Container()
-                                      : Container(
-                                          height: 30.0.h,
-                                          width: 100.0.w,
-                                          child: ListView.builder(
-                                            shrinkWrap: true,
-                                            physics: BouncingScrollPhysics(),
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount:
-                                                imageListMap[index].length,
-                                            itemBuilder: (context, imageIndex) {
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    List<String> imgList = [];
-                                                    for(int i = 0; i<imageListMap[index].length; i++) {
-                                                      imgList.add(imageListMap[index][i]['file']);
-                                                    }
-                                                    pushNewScreen(context,
-                                                        withNavBar: false,
-                                                        screen: FullScreenSlider(
-                                                            imageList: imgList,
-                                                            index: imageIndex,
-                                                            name: name!
-                                                        ),
-                                                        pageTransitionAnimation:
-                                                        PageTransitionAnimation
-                                                            .cupertino);
-                                                  },
-                                                  child: Image.network(
-                                                    imageListMap[index][imageIndex]['file'],
-                                                    height: 100,
-                                                    width: 250,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
+                              imageListMap[index].length == 0
+                                  ? Container()
+                                  : Container(
+                                      height: 25.0.h,
+                                      width: 100.0.w,
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: BouncingScrollPhysics(),
+                                        scrollDirection: Axis.horizontal,
+                                        //itemExtent: MediaQuery.of(context).size.width / imageListMap[index].length,
+                                        itemCount: imageListMap[index].length,
+                                        itemBuilder: (context, imageIndex) {
+                                          return imageListMap[index].length == 1
+                                          ? Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 15.0.w),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                List<String> imgList = [];
+                                                for(int i = 0; i<imageListMap[index].length; i++) {
+                                                  imgList.add(imageListMap[index][i]['file']);
+                                                }
+                                                pushNewScreen(context,
+                                                    withNavBar: false,
+                                                    screen: FullScreenSlider(
+                                                      imageList: imgList,
+                                                      index: imageIndex,
+                                                      name: name!
+                                                    ),
+                                                    pageTransitionAnimation:
+                                                    PageTransitionAnimation
+                                                        .cupertino);
+                                              },
+                                              child: Image.network(
+                                                imageListMap[index][imageIndex]['file'],
+                                                height: 100,
+                                                width: 250,
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                          )
+                                          : Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                List<String> imgList = [];
+                                                for(int i = 0; i<imageListMap[index].length; i++) {
+                                                  imgList.add(imageListMap[index][i]['file']);
+                                                }
+                                                pushNewScreen(context,
+                                                    withNavBar: false,
+                                                    screen: FullScreenSlider(
+                                                      imageList: imgList,
+                                                      index: imageIndex,
+                                                      name: name!
+                                                    ),
+                                                    pageTransitionAnimation:
+                                                    PageTransitionAnimation
+                                                        .cupertino);
+                                              },
+                                              child: Image.network(
+                                                imageListMap[index][imageIndex]['file'],
+                                                height: 100,
+                                                width: 250,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
 
                                   // //Row for Liked, commented, shared
                                   // Padding(
@@ -751,7 +783,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                   //Row for Like comment and Share
                                   Padding(
                                     padding: EdgeInsets.only(
-                                        top: 1.0.h, bottom: 1.0.h),
+                                        top: 0.5.h, bottom: 0.5.h),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -785,7 +817,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                     ? Constants.selectedIcon
                                                     : Constants
                                                         .bpOnBoardSubtitleStyle,
-                                                size: 30.0,
+                                                size: 25.0,
                                               ),
                                               SizedBox(
                                                 width: 2.0.w,
@@ -839,7 +871,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                               ImageIcon(
                                                 AssetImage(
                                                     'assets/icons/commentNew.png'),
-                                                size: 25.0,
+                                                size: 21.0,
                                                 color: Constants
                                                     .bpOnBoardSubtitleStyle,
                                               ),
@@ -886,7 +918,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                     ? Constants.selectedIcon
                                                     : Constants
                                                         .bpOnBoardSubtitleStyle,
-                                                size: 25.0,
+                                                size: 21.0,
                                               ),
                                               SizedBox(
                                                 width: 1.0.w,

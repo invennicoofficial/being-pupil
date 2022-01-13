@@ -119,7 +119,7 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
               )
             : Padding(
               padding:
-                  EdgeInsets.only(left: 4.0.w, right: 4.0.w),
+                  EdgeInsets.symmetric(horizontal: 5.0.w),
               // child: SmartRefresher(
               // controller: _refreshController,
               // enablePullDown: true,
@@ -162,12 +162,12 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Padding(
-                              padding: EdgeInsets.symmetric(vertical: 2.0.h),
+                              padding: EdgeInsets.only(top: 2.0.h, bottom: 0.5.h),
                               //Image and Rating
                               child: Stack(
                                 children: <Widget>[
                                   Container(
-                                    height: 20.0.h,
+                                    height: 18.0.h,
                                     width: 100.0.w,
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
@@ -182,8 +182,8 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                                   Align(
                                     alignment: Alignment.topRight,
                                     child: Container(
-                                      height: 4.0.h,
-                                      width: 15.0.w,
+                                      height: 3.5.h,
+                                      width: 18.0.w,
                                       decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius: BorderRadius.only(
@@ -227,7 +227,7 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 10.0.sp,
-                                        fontWeight: FontWeight.w500,
+                                        fontWeight: FontWeight.w600,
                                         color: Constants.bgColor),
                                   ),
                                 ),
@@ -254,12 +254,13 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                                     ),
                                     Container(
                                       //height: 20,
-                                      width: 88.0.w,
+                                      width: 85.0.w,
                                       child: Text(
                                         propertyLocation[index]!,
                                         style: TextStyle(
                                             fontFamily: 'Montserrat',
                                             fontSize: 8.0.sp,
+                                            height: 1.5,
                                             fontWeight: FontWeight.w400,
                                             color: Constants
                                                 .bpOnBoardSubtitleStyle),
