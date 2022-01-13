@@ -72,6 +72,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
   String? authToken;
   ConnectionAPI connect = ConnectionAPI();
   Map<String, dynamic>? unfollowMap;
+ //SimpleAccountMenu menu = SimpleAccountMenu();
+ bool isSelected = false;
 
 
   @override
@@ -146,713 +148,644 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
           valueColor:
           new AlwaysStoppedAnimation<Color>(Constants.bgColor),
         ),
-      ) : Column(
-        //shrinkWrap: true,
-        //physics: AlwaysScrollableScrollPhysics(),
-        children: <Widget>[
-          Container(
-            // height: 80.0.h,
-            width: 100.0.w,
-            //color: Colors.grey,
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 2.0.h, horizontal: 4.0.w),
-              child: Column(
-                children: <Widget>[
-                  //Profile DP
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child:Image.network(
-                      profileImageUrl!,
-                      width: 150,
-                      height: 150,
-                      fit: BoxFit.cover,
+      ) : GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: (){
+          setState(() {
+            isSelected = false;
+          });
+        },
+        child: Column(
+          //shrinkWrap: true,
+          //physics: AlwaysScrollableScrollPhysics(),
+          children: <Widget>[
+            Container(
+              // height: 80.0.h,
+              width: 100.0.w,
+              //color: Colors.grey,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 2.0.h, horizontal: 4.0.w),
+                child: Column(
+                  children: <Widget>[
+                    //Profile DP
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child:Image.network(
+                        profileImageUrl!,
+                        width: 150,
+                        height: 150,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
-                  //Name of Educator
-                  Padding(
-                    padding: EdgeInsets.only(top: 1.0.h),
-                    child: Text(
-                      name!,
-                      style: TextStyle(
-                          fontSize: 10.0.sp,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.bold,
-                          color: Constants.bgColor),
+                    //Name of Educator
+                    Padding(
+                      padding: EdgeInsets.only(top: 1.0.h),
+                      child: Text(
+                        name!,
+                        style: TextStyle(
+                            fontSize: 10.0.sp,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.bold,
+                            color: Constants.bgColor),
+                      ),
                     ),
-                  ),
-                  //Degree
-                  Padding(
-                    padding: EdgeInsets.only(top: 1.0.h),
-                    child: Text(
-                      '$degreeName | $schoolName',
-                      style: TextStyle(
-                          fontSize: 8.0.sp,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w400,
-                          color: Constants.bgColor),
+                    //Degree
+                    Padding(
+                      padding: EdgeInsets.only(top: 1.0.h),
+                      child: Text(
+                        '$degreeName | $schoolName',
+                        style: TextStyle(
+                            fontSize: 8.0.sp,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w400,
+                            color: Constants.bgColor),
+                      ),
                     ),
-                  ),
-                  //Location
-                  Padding(
-                    padding: EdgeInsets.only(top: 1.0.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        ImageIcon(
-                          AssetImage('assets/icons/locationPin.png'),
-                          color: Constants.bgColor,
-                          size: 15.0,
-                        ),
-                        SizedBox(
-                          width: 0.5.w,
-                        ),
-                        Text(
-                          location!,
-                          style: TextStyle(
-                              fontSize: 8.0.sp,
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.w400,
-                              color: Constants.bgColor),
-                        ),
-                      ],
-                    ),
-                  ),
-                  //Social Handle
-                  Padding(
-                          padding: EdgeInsets.only(top: 1.0.h),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Visibility(
-                                visible: profileMap!['data']
-                                            ['facebook_link'] ==
-                                        null
-                                    ? false
-                                    : true,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    print('Facebook!!!');
-                                    _launchSocialUrl(
-                                        profileMap!['data']['facebook_link']);
-                                  },
-                                  child: Container(
-                                      height: 4.0.h,
-                                      width: 8.0.w,
-                                      child: Image.asset(
-                                        'assets/icons/facebook.png',
-                                        fit: BoxFit.contain,
-                                      )),
-                                ),
-                              ),
-                               SizedBox(
-                                width: 1.0.w,
-                              ),
-                              Visibility(
-                                visible: profileMap!['data']
-                                            ['instagram_link'] ==
-                                        null
-                                    ? false
-                                    : true,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    print('Instagram!!!');
-                                    _launchSocialUrl(profileMap!['data']
-                                        ['instagram_link']);
-                                  },
-                                  child: Container(
-                                      height: 4.0.h,
-                                      width: 8.0.w,
-                                      child: Image.asset(
-                                        'assets/icons/instagram.png',
-                                        fit: BoxFit.contain,
-                                      )),
-                                ),
-                              ),
-                               SizedBox(
-                                width: 1.0.w,
-                              ),
-
-                              Visibility(
-                                visible: profileMap!['data']
-                                            ['linkedin_link'] ==
-                                        null
-                                    ? false
-                                    : true,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    print('LinkedIn!!!');
-                                    _launchSocialUrl(
-                                        profileMap!['data']['linkedin_link']);
-                                  },
-                                  child: Container(
-                                      height: 4.0.h,
-                                      width: 8.0.w,
-                                      child: Image.asset(
-                                        'assets/icons/linkedin.png',
-                                        fit: BoxFit.contain,
-                                      )),
-                                ),
-                              ),        
-                              SizedBox(
-                                width: 1.0.w,
-                              ),
-                              Visibility(
-                                visible:
-                                    profileMap!['data']['other_link'] == null
-                                        ? false
-                                        : true,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    print('Other!!!');
-                                    _launchSocialUrl(
-                                        profileMap!['data']['other_link']);
-                                  },
-                                  child: Container(
-                                      height: 4.0.h,
-                                      width: 8.0.w,
-                                      child: Image.asset(
-                                        'assets/icons/other_link.png',
-                                        fit: BoxFit.contain,
-                                      )),
-                                ),
-                              ),                  
-                            ],
+                    //Location
+                    Padding(
+                      padding: EdgeInsets.only(top: 1.0.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          ImageIcon(
+                            AssetImage('assets/icons/locationPin.png'),
+                            color: Constants.bgColor,
+                            size: 15.0,
                           ),
-                        ),
-                  //Buttons
-                  Padding(
-                    padding: EdgeInsets.only(top: 2.0.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        profileMap!['data']['is_connected'] == 0 
-                        ? GestureDetector(
-                          onTap: () async {
-                            await connect.connectionApi(profileMap!['data']['user_id'], authToken!);
-                                  },
-                          child: Container(
-                            height: 4.5.h,
-                            width: 35.0.w,
-                            decoration: BoxDecoration(
-                                color: Constants.bgColor,
-                                borderRadius: BorderRadius.circular(25.0)),
-                            child: Center(
-                              child: Text(
-                                //  connect.status == true
-                                // ? 'Request Sent' : 
-                                'CONNECT', 
-                                style: TextStyle(
-                                    fontSize: 10.0.sp,
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white),
-                              ),
-                            ),
+                          SizedBox(
+                            width: 0.5.w,
                           ),
-                        )
-                        : Container(
-                          height: 4.5.h,
-                          width: 35.0.w,
-                          decoration: BoxDecoration(
-                              color: Constants.bgColor,
-                              borderRadius: BorderRadius.circular(25.0)),
-                          child: GestureDetector(
-                            onTap: () async {
-                                    displayProgressDialog(context);
-                                    SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
-                                    CubeUser? user = sharedPrefs.getUser();
-                                    print(profileMap!['data']['email']);
-                                    getUserByEmail(profileMap!['data']['email'])
-                                        .then((cubeUser) {
-                                          CubeDialog newDialog = CubeDialog(
-                                        CubeDialogType.PRIVATE,
-                                        occupantsIds: [cubeUser!.id!]);
-                                    createDialog(newDialog)
-                                        .then((createdDialog) {
-                                      closeProgressDialog(context);
-                                      pushNewScreen(context,
-                                          screen: ChatDialogScreen(user, createdDialog, profileImageUrl),
-                                          withNavBar: false,
-                                          pageTransitionAnimation:
-                                          PageTransitionAnimation
-                                              .cupertino);
-                                    })
-                                        .catchError((error) {
-                                      // displayProgressDialog(context);
-                                    });
-                                    })
-                                        .catchError((error) {
-                                      // displayProgressDialog(context);
-                                    });
-                                  },
+                          Text(
+                            location!,
+                            style: TextStyle(
+                                fontSize: 8.0.sp,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w400,
+                                color: Constants.bgColor),
+                          ),
+                        ],
+                      ),
+                    ),
+                    //Social Handle
+                    Padding(
+                            padding: EdgeInsets.only(top: 1.0.h),
                             child: Row(
-                              children: [
-                                Container(
-                                  width: 20.0.w,
-                                  height: 3.5.h,
-                                  child: Center(
-                                    child: Text('CHAT',
-                                      style: TextStyle(
-                                          fontSize: 10.0.sp,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.white),
-                                    ),
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Visibility(
+                                  visible: profileMap!['data']
+                                              ['facebook_link'] ==
+                                          null
+                                      ? false
+                                      : true,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      print('Facebook!!!');
+                                      _launchSocialUrl(
+                                          profileMap!['data']['facebook_link']);
+                                    },
+                                    child: Container(
+                                        height: 4.0.h,
+                                        width: 8.0.w,
+                                        child: Image.asset(
+                                          'assets/icons/facebook.png',
+                                          fit: BoxFit.contain,
+                                        )),
                                   ),
                                 ),
-                                SimpleAccountMenu(
-                              text: [
-                                Text('Unfollow',
-                                      style: TextStyle(
-                                          fontSize: 11.0.sp,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white),
-                                    ),
-                          ],
-                        iconColor: Colors.white,
-                        onChange: (index) {
-                        print(index);
-                        unfollowUser(userId!);
-                       },
-                    ),
-                                // IconButton(
-                                // onPressed: (){
-
-                                // }, 
-                                // icon: Icon(Icons.expand_more_outlined, color: Colors.white, size: 22.0,))
+                                 SizedBox(
+                                  width: 1.0.w,
+                                ),
+                                Visibility(
+                                  visible: profileMap!['data']
+                                              ['instagram_link'] ==
+                                          null
+                                      ? false
+                                      : true,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      print('Instagram!!!');
+                                      _launchSocialUrl(profileMap!['data']
+                                          ['instagram_link']);
+                                    },
+                                    child: Container(
+                                        height: 4.0.h,
+                                        width: 8.0.w,
+                                        child: Image.asset(
+                                          'assets/icons/instagram.png',
+                                          fit: BoxFit.contain,
+                                        )),
+                                  ),
+                                ),
+                                 SizedBox(
+                                  width: 1.0.w,
+                                ),
+        
+                                Visibility(
+                                  visible: profileMap!['data']
+                                              ['linkedin_link'] ==
+                                          null
+                                      ? false
+                                      : true,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      print('LinkedIn!!!');
+                                      _launchSocialUrl(
+                                          profileMap!['data']['linkedin_link']);
+                                    },
+                                    child: Container(
+                                        height: 4.0.h,
+                                        width: 8.0.w,
+                                        child: Image.asset(
+                                          'assets/icons/linkedin.png',
+                                          fit: BoxFit.contain,
+                                        )),
+                                  ),
+                                ),        
+                                SizedBox(
+                                  width: 1.0.w,
+                                ),
+                                Visibility(
+                                  visible:
+                                      profileMap!['data']['other_link'] == null
+                                          ? false
+                                          : true,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      print('Other!!!');
+                                      _launchSocialUrl(
+                                          profileMap!['data']['other_link']);
+                                    },
+                                    child: Container(
+                                        height: 4.0.h,
+                                        width: 8.0.w,
+                                        child: Image.asset(
+                                          'assets/icons/other_link.png',
+                                          fit: BoxFit.contain,
+                                        )),
+                                  ),
+                                ),                  
                               ],
                             ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            print('COURSES!!!');
-                            pushNewScreen(context, screen: GetEducatorCourseScreen(userId: widget.id,),
-                            withNavBar: false, pageTransitionAnimation: PageTransitionAnimation.cupertino);
-                          },
-                          child: Container(
+                    //Buttons
+                    Padding(
+                      padding: EdgeInsets.only(top: 2.0.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          profileMap!['data']['is_connected'] == 0 
+                          ? GestureDetector(
+                            onTap: () async {
+                              await connect.connectionApi(profileMap!['data']['user_id'], authToken!);
+                                    },
+                            child: Container(
+                              height: 4.5.h,
+                              width: 35.0.w,
+                              decoration: BoxDecoration(
+                                  color: Constants.bgColor,
+                                  borderRadius: BorderRadius.circular(25.0)),
+                              child: Center(
+                                child: Text(
+                                  //  connect.status == true
+                                  // ? 'Request Sent' : 
+                                  'CONNECT', 
+                                  style: TextStyle(
+                                      fontSize: 10.0.sp,
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          )
+                          : Container(
                             height: 4.5.h,
                             width: 35.0.w,
                             decoration: BoxDecoration(
                                 color: Constants.bgColor,
                                 borderRadius: BorderRadius.circular(25.0)),
-                            child: Center(
-                              child: Text(
-                                'COURSES',
-                                style: TextStyle(
-                                    fontSize: 10.0.sp,
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white),
+                            child: GestureDetector(
+                              onTap: () async {
+                                      displayProgressDialog(context);
+                                      SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+                                      CubeUser? user = sharedPrefs.getUser();
+                                      print(profileMap!['data']['email']);
+                                      getUserByEmail(profileMap!['data']['email'])
+                                          .then((cubeUser) {
+                                            CubeDialog newDialog = CubeDialog(
+                                          CubeDialogType.PRIVATE,
+                                          occupantsIds: [cubeUser!.id!]);
+                                      createDialog(newDialog)
+                                          .then((createdDialog) {
+                                        closeProgressDialog(context);
+                                        pushNewScreen(context,
+                                            screen: ChatDialogScreen(user, createdDialog, profileImageUrl),
+                                            withNavBar: false,
+                                            pageTransitionAnimation:
+                                            PageTransitionAnimation
+                                                .cupertino);
+                                      })
+                                          .catchError((error) {
+                                        // displayProgressDialog(context);
+                                      });
+                                      })
+                                          .catchError((error) {
+                                        // displayProgressDialog(context);
+                                      });
+                                    },
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 20.0.w,
+                                    height: 3.5.h,
+                                    child: Center(
+                                      child: Text('CHAT',
+                                        style: TextStyle(
+                                            fontSize: 10.0.sp,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                      //             SimpleAccountMenu(
+                      //           text: [
+                      //             Text('Unfollow',
+                      //                   style: TextStyle(
+                      //                       fontSize: 11.0.sp,
+                      //                       fontFamily: 'Montserrat',
+                      //                       fontWeight: FontWeight.w400,
+                      //                       color: Constants.bgColor),
+                      //                 ),
+                      //       ],
+                      //     iconColor: Colors.white,
+                      //     onChange: (index) {
+                      //     print(index);
+                      //     unfollowUser(userId!);
+                      //    },
+                      //),
+                                  IconButton(
+                                    padding: const EdgeInsets.only(bottom: 2.0),
+                                  onPressed: (){
+                                    //unfollowUser(userId!);
+                                    setState(() {
+                                      isSelected = !isSelected;
+                                    });
+                                  }, 
+                                  icon: Icon(isSelected ? Icons.expand_less_outlined :Icons.expand_more_outlined, color: Colors.white, size: 25.0,))
+                                ],
                               ),
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-                  //Other Details
-                  profileMap!['data'] == null || profileMap!['data'] == {} ? Container() : Padding(
-                    padding: EdgeInsets.symmetric(vertical: 2.0.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Column>[
-                        Column(
-                          children: <Widget>[
-                            Text(
-                              profileMap!['data']['total_experience'].toString(),
-                              style: TextStyle(
-                                  fontSize: 10.0.sp,
+                          GestureDetector(
+                            onTap: () {
+                              print('COURSES!!!');
+                              pushNewScreen(context, screen: GetEducatorCourseScreen(userId: widget.id,),
+                              withNavBar: false, pageTransitionAnimation: PageTransitionAnimation.cupertino);
+                            },
+                            child: Container(
+                              height: 4.5.h,
+                              width: 35.0.w,
+                              decoration: BoxDecoration(
                                   color: Constants.bgColor,
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: 'Montserrat'),
-                            ),
-                            SizedBox(
-                              height: 1.0.h,
-                            ),
-                            Text(
-                              'Experience',
-                              style: TextStyle(
-                                  fontSize: 8.0.sp,
-                                  color: Constants.bgColor,
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily: 'Montserrat'),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Text(
-                              profileMap!['data']['total_post'].toString(),
-                              style: TextStyle(
-                                  fontSize: 10.0.sp,
-                                  color: Constants.bgColor,
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: 'Montserrat'),
-                            ),
-                            SizedBox(
-                              height: 1.0.h,
-                            ),
-                            Text(
-                              'Posts',
-                              style: TextStyle(
-                                  fontSize: 8.0.sp,
-                                  color: Constants.bgColor,
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily: 'Montserrat'),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Text(
-                              profileMap!['data']['total_connections'].toString(),
-                              style: TextStyle(
-                                  fontSize: 10.0.sp,
-                                  color: Constants.bgColor,
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: 'Montserrat'),
-                            ),
-                            SizedBox(
-                              height: 1.0.h,
-                            ),
-                            Text(
-                              'Connections',
-                              style: TextStyle(
-                                  fontSize: 8.0.sp,
-                                  color: Constants.bgColor,
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily: 'Montserrat'),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          //Profile Divider
-          Divider(
-            height: 1.0.h,
-            color: Constants.bgColor.withOpacity(0.5),
-          ),
-          //Educator Post
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                physics: BouncingScrollPhysics(),
-                child: ListView.separated(
-                  physics: BouncingScrollPhysics(),
-                  padding:
-                      EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 2.0.w),
-                  shrinkWrap: true,
-                  itemCount: postIdList != null ? postIdList.length : 0,
-                  // controller: _scrollController,
-                  itemBuilder: (context, index) {
-                    return ListView(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      children: <Widget>[
-                        //main horizontal padding
-                        ListView(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          children: <Widget>[
-                            SizedBox(
-                              height: 1.0.h,
-                            ),
-                            //ListTile for educator details
-                            ListTile(
-                              contentPadding: EdgeInsets.all(0.0),
-                              //leading:
-                              title: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child: Image.network(
-                                      profileImageUrl!,
-                                      width: 8.5.w,
-                                      height: 5.0.h,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 2.0.w,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 1.0.h),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          name!,
-                                          style: TextStyle(
-                                              fontSize: 9.0.sp,
-                                              color: Constants.bgColor,
-                                              fontFamily: 'Montserrat',
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                        Text(
-                                          '$degreeName | $schoolName',
-                                          style: TextStyle(
-                                              fontSize: 6.5.sp,
-                                              color: Constants.bgColor,
-                                              fontFamily: 'Montserrat',
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                        Text(
-                                          dateList[index]!,
-                                          style: TextStyle(
-                                              fontSize: 6.5.sp,
-                                              color: Constants.bgColor,
-                                              fontFamily: 'Montserrat',
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              trailing: GestureDetector(
-                                onTap: () {
-                                  pushNewScreen(context,
-                                      withNavBar: false,
-                                      screen: ReportFeed(
-                                        postId: postIdList[index],
-                                      ),
-                                      pageTransitionAnimation:
-                                          PageTransitionAnimation.cupertino);
-                                },
-                                child: Container(
-                                    height: 4.0.h,
-                                    width: 6.0.w,
-                                    //color: Colors.grey,
-                                    child: Icon(
-                                        Icons.report_gmailerrorred_outlined)),
-                              ),
-                            ),
-                            //Post descriptionText
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 2.0),
-                              child: Container(
-                                width: 100.0.w,
-                                child: Text(descriptionList[index]!,
+                                  borderRadius: BorderRadius.circular(25.0)),
+                              child: Center(
+                                child: Text(
+                                  'COURSES',
                                   style: TextStyle(
-                                    fontSize: 9.0.sp,
-                                    color: Constants.bpOnBoardSubtitleStyle,
-                                    fontFamily: 'Montserrat',
-                                    height: 1.5,
-                                    fontWeight: FontWeight.w400,),
-                                  // textAlign: TextAlign.justify
+                                      fontSize: 10.0.sp,
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: 1.0.h,
-                            ),
-                            // Container for image or video
-                            imageListMap[index].length == 0 ? Container() :
-                            Container(
-                              height: 25.0.h,
-                              width: 15.0.w,
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                physics: BouncingScrollPhysics(),
-                                scrollDirection: Axis.horizontal,
-                                itemCount: imageListMap[index].length,
-                                itemBuilder: (context, imageIndex) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    List<String> imgList = [];
-                                    for(int i = 0; i<imageListMap[index].length; i++) {
-                                      imgList.add(imageListMap[index][i]['file']);
-                                    }
-                                    pushNewScreen(context,
-                                        withNavBar: false,
-                                        screen: FullScreenSlider(
-                                            imageList: imgList,
-                                            index: imageIndex,
-                                            name: nameList[index]!
-                                        ),
-                                        pageTransitionAnimation:
-                                        PageTransitionAnimation
-                                            .cupertino);
-                                  },
-                                  child: Image.network(
-                                    imageListMap[index][imageIndex]['file'],
-                                    height: 100,
-                                    width: 250,
-                                    fit: BoxFit.cover,
+                          )
+                        ],
+                      ),
+                    ),
+                    //Other Details
+                    profileMap!['data'] == null || profileMap!['data'] == {} ? Container() : Padding(
+                      padding: EdgeInsets.symmetric(vertical: 2.0.h),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          isSelected
+                          ? Padding(
+                            padding: const EdgeInsets.only(left: 25.0,bottom: 10.0),
+                            child: GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                  isSelected = false;
+                                });
+                                unfollowUser(userId!);
+                              },
+                              child: Card(
+                                child: Container(
+                                  height: 4.0.h,
+                                  width: 30.0.w,
+                                  child: Center(
+                                    child: Text('Unfollow',
+                                      style: TextStyle(
+                                      fontSize: 11.0.sp,
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.w400,
+                                      color: Constants.bgColor),
+                                    ),
                                   ),
-                                );
-                              },),
+                                ),
+                              ),
                             ),
-
-                            //divider
-                            Divider(
-                              height: 1.0.h,
-                              color: Constants.bpOnBoardSubtitleStyle
-                                  .withOpacity(0.5),
-                              thickness: 1.0,
-                            ),
-                            //Row for Like comment and Share
-                            Padding(
-                              padding: EdgeInsets.only(top: 1.0.h, bottom: 1.0.h),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                          )
+                          : SizedBox(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Column(
                                 children: <Widget>[
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        isLiked[index] = !isLiked[index]!;
-                                      });
-                                      like.likePostApi(
-                                          postIdList[index], authToken!);
-                                      setState(() {
-                                        isLiked[index] == true
-                                            ? likesList[index]! + 1
-                                            : likesList[index]! - 1;
-                                      });
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        ImageIcon(
-                                          isLiked[index]!
-                                              ? AssetImage('assets/icons/likeNew.png')
-                                              : AssetImage('assets/icons/likeThumb.png'),
-                                          color: isLiked[index]!
-                                              ? Constants.selectedIcon
-                                              : Constants.bpOnBoardSubtitleStyle,
-                                          size: 30.0,
-                                        ),
-                                        SizedBox(
-                                          width: 1.0.w,
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.only(top: 1.0.h),
-                                          child: Text(
-                                            "${likesList[index]} Likes",
+                                  Text(
+                                    profileMap!['data']['total_experience'].toString(),
+                                    style: TextStyle(
+                                        fontSize: 10.0.sp,
+                                        color: Constants.bgColor,
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: 'Montserrat'),
+                                  ),
+                                  SizedBox(
+                                    height: 1.0.h,
+                                  ),
+                                  Text(
+                                    'Experience',
+                                    style: TextStyle(
+                                        fontSize: 8.0.sp,
+                                        color: Constants.bgColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: 'Montserrat'),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  Text(
+                                    profileMap!['data']['total_post'].toString(),
+                                    style: TextStyle(
+                                        fontSize: 10.0.sp,
+                                        color: Constants.bgColor,
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: 'Montserrat'),
+                                  ),
+                                  SizedBox(
+                                    height: 1.0.h,
+                                  ),
+                                  Text(
+                                    'Posts',
+                                    style: TextStyle(
+                                        fontSize: 8.0.sp,
+                                        color: Constants.bgColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: 'Montserrat'),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  Text(
+                                    profileMap!['data']['total_connections'].toString(),
+                                    style: TextStyle(
+                                        fontSize: 10.0.sp,
+                                        color: Constants.bgColor,
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: 'Montserrat'),
+                                  ),
+                                  SizedBox(
+                                    height: 1.0.h,
+                                  ),
+                                  Text(
+                                    'Connections',
+                                    style: TextStyle(
+                                        fontSize: 8.0.sp,
+                                        color: Constants.bgColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: 'Montserrat'),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            //Profile Divider
+            Divider(
+              height: 1.0.h,
+              color: Constants.bgColor.withOpacity(0.5),
+            ),
+            //Educator Post
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  physics: BouncingScrollPhysics(),
+                  child: ListView.separated(
+                    physics: BouncingScrollPhysics(),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 2.0.w),
+                    shrinkWrap: true,
+                    itemCount: postIdList != null ? postIdList.length : 0,
+                    // controller: _scrollController,
+                    itemBuilder: (context, index) {
+                      return ListView(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        children: <Widget>[
+                          //main horizontal padding
+                          ListView(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            children: <Widget>[
+                              SizedBox(
+                                height: 1.0.h,
+                              ),
+                              //ListTile for educator details
+                              ListTile(
+                                contentPadding: EdgeInsets.all(0.0),
+                                //leading:
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: Image.network(
+                                        profileImageUrl!,
+                                        width: 8.5.w,
+                                        height: 5.0.h,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 2.0.w,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 1.0.h),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            name!,
+                                            style: TextStyle(
+                                                fontSize: 9.0.sp,
+                                                color: Constants.bgColor,
+                                                fontFamily: 'Montserrat',
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                          Text(
+                                            '$degreeName | $schoolName',
                                             style: TextStyle(
                                                 fontSize: 6.5.sp,
-                                                color: Constants
-                                                    .bpOnBoardSubtitleStyle,
+                                                color: Constants.bgColor,
                                                 fontFamily: 'Montserrat',
                                                 fontWeight: FontWeight.w400),
                                           ),
-                                        ),
-                                      ],
+                                          Text(
+                                            dateList[index]!,
+                                            style: TextStyle(
+                                                fontSize: 6.5.sp,
+                                                color: Constants.bgColor,
+                                                fontFamily: 'Montserrat',
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ],
+                                      ),
                                     ),
+                                  ],
+                                ),
+                                trailing: IconButton(
+                                       icon: Image.asset('assets/icons/issueIcon.png',
+                                        height: 18.0,
+                                        width: 18.0,),
+                                      onPressed: () {
+                                        pushNewScreen(context,
+                                            withNavBar: false,
+                                            screen: ReportFeed(
+                                              postId: postIdList[index],
+                                            ),
+                                            pageTransitionAnimation:
+                                                PageTransitionAnimation
+                                                    .cupertino);
+                                      })
+                              ),
+                              //Post descriptionText
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 2.0),
+                                child: Container(
+                                  width: 100.0.w,
+                                  child: Text(descriptionList[index]!,
+                                    style: TextStyle(
+                                      fontSize: 9.0.sp,
+                                      color: Constants.bpOnBoardSubtitleStyle,
+                                      fontFamily: 'Montserrat',
+                                      height: 1.5,
+                                      fontWeight: FontWeight.w400,),
+                                    // textAlign: TextAlign.justify
                                   ),
-                                  GestureDetector(
+                                ),
+                              ),
+                              SizedBox(
+                                height: 1.0.h,
+                              ),
+                              // Container for image or video
+                              imageListMap[index].length == 0 ? Container() :
+                              Container(
+                                height: 25.0.h,
+                                width: 15.0.w,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: BouncingScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: imageListMap[index].length,
+                                  itemBuilder: (context, imageIndex) {
+                                  return GestureDetector(
                                     onTap: () {
+                                      List<String> imgList = [];
+                                      for(int i = 0; i<imageListMap[index].length; i++) {
+                                        imgList.add(imageListMap[index][i]['file']);
+                                      }
                                       pushNewScreen(context,
                                           withNavBar: false,
-                                          screen: CommentScreen(
-                                            postId: postIdList[index],
-                                            name: nameList[index],
-                                            profileImage: profileImageList[index],
-                                            degree: degreeList[index],
-                                            schoolName: schoolList[index],
-                                            date: dateList[index],
-                                            description: descriptionList[index],
-                                            like: likesList[index],
-                                            comment: totalCommentsList[index],
-                                            isLiked: isLiked[index],
-                                            isSaved: isSaved[index],
-                                            imageListMap: imageListMap,
-                                            index: index,
+                                          screen: FullScreenSlider(
+                                              imageList: imgList,
+                                              index: imageIndex,
+                                              name: nameList[index]!
                                           ),
                                           pageTransitionAnimation:
                                           PageTransitionAnimation
                                               .cupertino);
                                     },
-                                    child: Container(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.start,
-                                        children: [
-                                          ImageIcon(
-                                            AssetImage('assets/icons/commentNew.png'),
-                                            size: 25.0,
-                                            color: Constants.bpOnBoardSubtitleStyle,
-                                          ),
-                                          // Icon(
-                                          //   Icons.comment_outlined,
-                                          //   color: Constants
-                                          //       .bpOnBoardSubtitleStyle,
-                                          //   size: 30.0,
-                                          // ),
-                                          SizedBox(
-                                            width: 2.0.w,
-                                          ),
-                                          Container(
-                                            padding: EdgeInsets.only(top: 1.0.h),
-                                            child: Text(
-                                              "${totalCommentsList[index]} Comments",
-                                              style: TextStyle(
-                                                  fontSize: 6.5.sp,
-                                                  color: Constants
-                                                      .bpOnBoardSubtitleStyle,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          )
-                                          // Container(
-                                          //   padding:
-                                          //       EdgeInsets.only(top: 1.0.h),
-                                          //   child: Text(
-                                          //     "Comment",
-                                          //     style: TextStyle(
-                                          //         fontSize: 6.5.sp,
-                                          //         color: Constants
-                                          //             .bpOnBoardSubtitleStyle,
-                                          //         fontFamily: 'Montserrat',
-                                          //         fontWeight: FontWeight.w400),
-                                          //   ),
-                                          // ),
-                                        ],
-                                      ),
+                                    child: Image.network(
+                                      imageListMap[index][imageIndex]['file'],
+                                      height: 100,
+                                      width: 250,
+                                      fit: BoxFit.cover,
                                     ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        isSaved[index] = !isSaved[index]!;
-                                      });
-                                      savePostApi(postIdList[index]);
-                                    },
-                                    child: Container(
+                                  );
+                                },),
+                              ),
+        
+                              //divider
+                              Divider(
+                                height: 1.0.h,
+                                color: Constants.bpOnBoardSubtitleStyle
+                                    .withOpacity(0.5),
+                                thickness: 1.0,
+                              ),
+                              //Row for Like comment and Share
+                              Padding(
+                                padding: EdgeInsets.only(top: 1.0.h, bottom: 1.0.h),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          isLiked[index] = !isLiked[index]!;
+                                        });
+                                        like.likePostApi(
+                                            postIdList[index], authToken!);
+                                        setState(() {
+                                          isLiked[index] == true
+                                              ? likesList[index]! + 1
+                                              : likesList[index]! - 1;
+                                        });
+                                      },
                                       child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.start,
+                                            MainAxisAlignment.start,
                                         children: [
                                           ImageIcon(
-                                            isSaved[index]!
-                                                ? AssetImage('assets/icons/saveGreen.png')
-                                                : AssetImage('assets/icons/saveNew.png'),
-                                            color: isSaved[index]!
+                                            isLiked[index]!
+                                                ? AssetImage('assets/icons/likeNew.png')
+                                                : AssetImage('assets/icons/likeThumb.png'),
+                                            color: isLiked[index]!
                                                 ? Constants.selectedIcon
                                                 : Constants.bpOnBoardSubtitleStyle,
-                                            size: 25.0,
+                                            size: 30.0,
                                           ),
                                           SizedBox(
                                             width: 1.0.w,
                                           ),
                                           Container(
-                                            padding:
-                                            EdgeInsets.only(top: 1.0.h),
+                                            padding: EdgeInsets.only(top: 1.0.h),
                                             child: Text(
-                                              "Save",
+                                              "${likesList[index]} Likes",
                                               style: TextStyle(
                                                   fontSize: 6.5.sp,
                                                   color: Constants
@@ -864,27 +797,139 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                         ],
                                       ),
                                     ),
-                                  ),
-                                ],
+                                    GestureDetector(
+                                      onTap: () {
+                                        pushNewScreen(context,
+                                            withNavBar: false,
+                                            screen: CommentScreen(
+                                              postId: postIdList[index],
+                                              name: nameList[index],
+                                              profileImage: profileImageList[index],
+                                              degree: degreeList[index],
+                                              schoolName: schoolList[index],
+                                              date: dateList[index],
+                                              description: descriptionList[index],
+                                              like: likesList[index],
+                                              comment: totalCommentsList[index],
+                                              isLiked: isLiked[index],
+                                              isSaved: isSaved[index],
+                                              imageListMap: imageListMap,
+                                              index: index,
+                                            ),
+                                            pageTransitionAnimation:
+                                            PageTransitionAnimation
+                                                .cupertino);
+                                      },
+                                      child: Container(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                          children: [
+                                            ImageIcon(
+                                              AssetImage('assets/icons/commentNew.png'),
+                                              size: 25.0,
+                                              color: Constants.bpOnBoardSubtitleStyle,
+                                            ),
+                                            // Icon(
+                                            //   Icons.comment_outlined,
+                                            //   color: Constants
+                                            //       .bpOnBoardSubtitleStyle,
+                                            //   size: 30.0,
+                                            // ),
+                                            SizedBox(
+                                              width: 2.0.w,
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.only(top: 1.0.h),
+                                              child: Text(
+                                                "${totalCommentsList[index]} Comments",
+                                                style: TextStyle(
+                                                    fontSize: 6.5.sp,
+                                                    color: Constants
+                                                        .bpOnBoardSubtitleStyle,
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: FontWeight.w400),
+                                              ),
+                                            )
+                                            // Container(
+                                            //   padding:
+                                            //       EdgeInsets.only(top: 1.0.h),
+                                            //   child: Text(
+                                            //     "Comment",
+                                            //     style: TextStyle(
+                                            //         fontSize: 6.5.sp,
+                                            //         color: Constants
+                                            //             .bpOnBoardSubtitleStyle,
+                                            //         fontFamily: 'Montserrat',
+                                            //         fontWeight: FontWeight.w400),
+                                            //   ),
+                                            // ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          isSaved[index] = !isSaved[index]!;
+                                        });
+                                        savePostApi(postIdList[index]);
+                                      },
+                                      child: Container(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                          children: [
+                                            ImageIcon(
+                                              isSaved[index]!
+                                                  ? AssetImage('assets/icons/saveGreen.png')
+                                                  : AssetImage('assets/icons/saveNew.png'),
+                                              color: isSaved[index]!
+                                                  ? Constants.selectedIcon
+                                                  : Constants.bpOnBoardSubtitleStyle,
+                                              size: 25.0,
+                                            ),
+                                            SizedBox(
+                                              width: 1.0.w,
+                                            ),
+                                            Container(
+                                              padding:
+                                              EdgeInsets.only(top: 1.0.h),
+                                              child: Text(
+                                                "Save",
+                                                style: TextStyle(
+                                                    fontSize: 6.5.sp,
+                                                    color: Constants
+                                                        .bpOnBoardSubtitleStyle,
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: FontWeight.w400),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        )
-                      ],
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return Divider(
-                      //height: 2.0.h,
-                      thickness: 5.0,
-                      color: Color(0xFFD3D9E0),
-                    );
-                  },
+                            ],
+                          )
+                        ],
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return Divider(
+                        //height: 2.0.h,
+                        thickness: 5.0,
+                        color: Color(0xFFD3D9E0),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
