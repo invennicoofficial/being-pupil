@@ -13,6 +13,7 @@ import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -328,9 +329,10 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                   ),
                                 ),
                                 trailing: IconButton(
-                                     icon: Image.asset('assets/icons/issueIcon.png',
-                                      height: 18.0,
-                                      width: 18.0,),
+                                     icon: SvgPicture.asset('assets/icons/reportSvg.svg'),
+                                    //  Image.asset('assets/icons/issueIcon.png',
+                                    //   height: 18.0,
+                                    //   width: 18.0,),
                                     onPressed: () {
                                       pushNewScreen(context,
                                           withNavBar: false,

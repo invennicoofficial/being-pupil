@@ -17,6 +17,7 @@ import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:sizer/sizer.dart';
@@ -246,10 +247,12 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                     child: Container(
                                         height: 4.0.h,
                                         width: 8.0.w,
-                                        child: Image.asset(
-                                          'assets/icons/facebook.png',
-                                          fit: BoxFit.contain,
-                                        )),
+                                        child: SvgPicture.asset('assets/icons/fbSvg.svg')
+                                        // Image.asset(
+                                        //   'assets/icons/facebook.png',
+                                        //   fit: BoxFit.contain,
+                                        // )
+                                        ),
                                   ),
                                 ),
                                  SizedBox(
@@ -270,10 +273,12 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                     child: Container(
                                         height: 4.0.h,
                                         width: 8.0.w,
-                                        child: Image.asset(
-                                          'assets/icons/instagram.png',
-                                          fit: BoxFit.contain,
-                                        )),
+                                        child: SvgPicture.asset('assets/icons/instaSvg.svg')
+                                        // Image.asset(
+                                        //   'assets/icons/instagram.png',
+                                        //   fit: BoxFit.contain,
+                                        // )
+                                        ),
                                   ),
                                 ),
                                  SizedBox(
@@ -295,10 +300,12 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                     child: Container(
                                         height: 4.0.h,
                                         width: 8.0.w,
-                                        child: Image.asset(
-                                          'assets/icons/linkedin.png',
-                                          fit: BoxFit.contain,
-                                        )),
+                                        child: SvgPicture.asset('assets/icons/linkedinSvg.svg')
+                                        // Image.asset(
+                                        //   'assets/icons/linkedin.png',
+                                        //   fit: BoxFit.contain,
+                                        // )
+                                        ),
                                   ),
                                 ),        
                                 SizedBox(
@@ -318,10 +325,12 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                     child: Container(
                                         height: 4.0.h,
                                         width: 8.0.w,
-                                        child: Image.asset(
-                                          'assets/icons/other_link.png',
-                                          fit: BoxFit.contain,
-                                        )),
+                                        child: SvgPicture.asset('assets/icons/otherSvg.svg')
+                                        // Image.asset(
+                                        //   'assets/icons/other_link.png',
+                                        //   fit: BoxFit.contain,
+                                        // )
+                                        ),
                                   ),
                                 ),                  
                               ],
@@ -672,9 +681,10 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                   ],
                                 ),
                                 trailing: IconButton(
-                                       icon: Image.asset('assets/icons/issueIcon.png',
-                                        height: 18.0,
-                                        width: 18.0,),
+                                       icon: SvgPicture.asset('assets/icons/reportSvg.svg'),
+                                      //  Image.asset('assets/icons/issueIcon.png',
+                                      //   height: 18.0,
+                                      //   width: 18.0,),
                                       onPressed: () {
                                         pushNewScreen(context,
                                             withNavBar: false,

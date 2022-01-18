@@ -144,6 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               keyboardType: TextInputType.phone,
                               inputFormatters: [
                                 LengthLimitingTextInputFormatter(10),
+                                FilteringTextInputFormatter.digitsOnly
                               ],
                               decoration: InputDecoration(
                                 labelText: "Phone Number",

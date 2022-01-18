@@ -7,6 +7,7 @@ import 'package:being_pupil/StudyBuddy/Learner_ProfileView_Screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -269,9 +270,10 @@ class _CommentScreenState extends State<CommentScreen> {
                                   ),
                                 ),
                                 trailing: IconButton(
-                                     icon: Image.asset('assets/icons/issueIcon.png',
-                                      height: 18.0,
-                                      width: 18.0,),
+                                     icon: SvgPicture.asset('assets/icons/reportSvg.svg'),
+                                    //  Image.asset('assets/icons/issueIcon.png',
+                                    //   height: 18.0,
+                                    //   width: 18.0,),
                                     onPressed: () {
                                       pushNewScreen(context,
                                           withNavBar: false,
@@ -864,7 +866,7 @@ class _CommentScreenState extends State<CommentScreen> {
                       //crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                            height: 7.0.h,
+                            //height: 7.0.h,
                             width: 100.0.w,
                             decoration: BoxDecoration(
                                 color: Colors.white,
@@ -881,7 +883,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                   keyboardType: TextInputType.multiline,
                                   maxLength: 140,
                                   cursorColor: Constants.bgColor,
-                                  cursorHeight: 25.0,
+                                  //cursorHeight: 25.0,
                                   decoration: InputDecoration(
                                       //labelText: "Please mention your achivements...",
                                       prefixIcon: Padding(

@@ -687,6 +687,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 keyboardType: TextInputType.phone,
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(10),
+                                  FilteringTextInputFormatter.digitsOnly
                                 ],
                                 decoration: InputDecoration(
                                   labelText: "Mobile Number",

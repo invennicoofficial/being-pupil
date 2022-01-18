@@ -184,6 +184,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               image: "assets/icons/myProfile.png",
                               forwordIcon: true,
                               sizeImage: 20.0,
+                              padding: 18.0,
                             ),
                           ),
                           SizedBox(
@@ -210,6 +211,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 image: "assets/icons/myCourse.png",
                                 forwordIcon: true,
                                 sizeImage: 20.0,
+                                padding: 20.0,
                               ),
                             ),
                           ),
@@ -229,6 +231,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               image: "assets/icons/myBooking.png",
                               forwordIcon: true,
                               sizeImage: 20.0,
+                              padding: 18.0,
                             ),
                           ),
                           SizedBox(
@@ -249,6 +252,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               image: "assets/icons/savedPost.png",
                               forwordIcon: true,
                               sizeImage: 20.0,
+                              padding: 20.0,
                             ),
                           ),
                           SizedBox(
@@ -265,6 +269,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               image: "assets/icons/about.png",
                               forwordIcon: true,
                               sizeImage: 20.0,
+                              padding: 17.0,
                             ),
                           ),
                           SizedBox(
@@ -280,6 +285,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               image: "assets/icons/faq.png",
                               forwordIcon: true,
                               sizeImage: 20.0,
+                              padding: 17.0,
                             ),
                           ),
                           SizedBox(
@@ -296,6 +302,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               image: "assets/icons/termPolicy2.png",
                               forwordIcon: true,
                               sizeImage: 20.0,
+                              padding: 20.0,
                             ),
                           ),
                           SizedBox(
@@ -312,6 +319,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               image: "assets/icons/share.png",
                               forwordIcon: true,
                               sizeImage: 20.0,
+                              padding: 19.0,
                             ),
                           ),
                           SizedBox(
@@ -355,6 +363,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 image: "assets/icons/logout.png",
                                 forwordIcon: false,
                                 sizeImage: 20.0,
+                                padding: 17.0,
                               ),
                             ),
                           ),
@@ -401,7 +410,7 @@ class ProfileList extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(right: 4.0.w),
+                      padding: EdgeInsets.only(right: padding!),
                       child: Image.asset(
                         image!,
                         height: sizeImage,

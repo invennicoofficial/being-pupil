@@ -7,6 +7,7 @@ import 'package:being_pupil/Learner/Learner_Tab_Screen.dart';
 import 'package:being_pupil/StayAndStudy/Stay_And_Study_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Study_Buddy_Screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
@@ -107,45 +108,57 @@ class _bottomNavBarState extends State<bottomNavBar> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon:  Image.asset('assets/icons/home.png', height: 25, width: 25, color: Constants.selectedIcon,),
-        title: ("Home"),
+        icon:  SvgPicture.asset('assets/icons/selectedHome.svg'),
+        //Image.asset('assets/icons/home.png', height: 25, width: 25, color: Constants.selectedIcon,),
+        //title: ("Home"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
-        inactiveIcon: Image.asset('assets/icons/home.png', height: 25, width: 25, color: Constants.bgColor,)
+        inactiveIcon: SvgPicture.asset('assets/icons/homeSvg.svg')
+        //Image.asset('assets/icons/home.png', height: 25, width: 25, color: Constants.bgColor,)
         ),
       PersistentBottomNavBarItem(
-        icon: Image.asset('assets/icons/stayStudy.png', height: MediaQuery.of(context).size.height * 0.02, width: MediaQuery.of(context).size.width * 0.04, color: Constants.selectedIcon,),
-        title: ("Stay Study"),
+        icon: SvgPicture.asset('assets/icons/selectedSS.svg'),
+        //Image.asset('assets/icons/stayStudy.png', height: MediaQuery.of(context).size.height * 0.02, width: MediaQuery.of(context).size.width * 0.04, color: Constants.selectedIcon,),
+        //title: ("Stay Study"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
-        inactiveIcon: Image.asset('assets/icons/stayStudy.png', height: MediaQuery.of(context).size.height * 0.02, width: MediaQuery.of(context).size.width * 0.04, color: Constants.bgColor,),
+        inactiveIcon: SvgPicture.asset('assets/icons/ssSvg.svg'),
+        //Image.asset('assets/icons/stayStudy.png', height: MediaQuery.of(context).size.height * 0.02, width: MediaQuery.of(context).size.width * 0.04, color: Constants.bgColor,),
       ),
       PersistentBottomNavBarItem(
-        icon: registerAs == 'E' ? Image.asset('assets/icons/educator.png', height: 25, width: 25, color: Constants.selectedIcon,)
-        : Image.asset('assets/icons/educatorGreen.png', height: 25, width: 25, color: Constants.selectedIcon,),
-        title: (registerAs == 'E' ? "Learner" : "Educator"),
+        icon: registerAs == 'E' ? SvgPicture.asset('assets/icons/selectedLearner.svg')
+        //Image.asset('assets/icons/educator.png', height: 25, width: 25, color: Constants.selectedIcon,)
+        : SvgPicture.asset('assets/icons/selectedEducator.svg'),
+        //Image.asset('assets/icons/educatorGreen.png', height: 25, width: 25, color: Constants.selectedIcon,),
+        //title: (registerAs == 'E' ? "Learner" : "Educator"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
-        inactiveIcon: registerAs == 'E' ? Image.asset('assets/icons/educator.png', height: 25, width: 25, color: Constants.bgColor,)
-        : Image.asset('assets/icons/educatorBlack.png', height: 25, width: 25, color: Constants.bgColor,),
+        inactiveIcon: registerAs == 'E' ? SvgPicture.asset('assets/icons/learnerSvg.svg')
+        //Image.asset('assets/icons/educator.png', height: 25, width: 25, color: Constants.bgColor,)
+        : SvgPicture.asset('assets/icons/educatorSvg.svg')
+        //Image.asset('assets/icons/educatorBlack.png', height: 25, width: 25, color: Constants.bgColor,),
       ),
       PersistentBottomNavBarItem(
         //icon: ImageIcon(AssetImage('assets/icons/support2.png'),size: 25),
-        icon: Image.asset('assets/icons/supportGreen.png', height: 25, width: 25,),
-        title: (registerAs == 'E' ? "Fellow Educator" : "Study Buddy"),
+        icon: SvgPicture.asset('assets/icons/selectedSBsvg.svg'),
+        //Image.asset('assets/icons/supportGreen.png', height: 25, width: 25,),
+        //title: (registerAs == 'E' ? "Fellow Educator" : "Study Buddy"),
         activeColorPrimary: Constants.selectedIcon,
-        inactiveColorPrimary: Constants.bgColor,
-        inactiveIcon: Image.asset('assets/icons/support.png', height: 25, width: 25, ),
+        // inactiveColorPrimary: Constants.bgColor,
+         inactiveIcon: SvgPicture.asset('assets/icons/studybuddySvg.svg')
+        //Image.asset('assets/icons/support.png', height: 25, width: 25, ),
       ),
       PersistentBottomNavBarItem(
         //icon: SvgPicture.asset('assets/icons/ff.svg'),
-        icon: Image.asset('assets/icons/accountGreen.png', height: 25, width: 25,),
+        icon: SvgPicture.asset('assets/icons/selectedAccount.svg'),
+        //Image.asset('assets/icons/accountGreen.png', height: 25, width: 25,),
         // icon: Icon(Icons.account_circle_rounded),
-        iconSize: 25.0,
-        title: ("Account"),
+        //iconSize: 25.0,
+        //title: ("Account"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
-        inactiveIcon: Image.asset('assets/icons/account2.png', height: 25, width: 25,),
+        inactiveIcon: SvgPicture.asset('assets/icons/account.svg'),
+        //Image.asset('assets/icons/account2.png', height: 25, width: 25,),
       ),
     ];
   }
@@ -179,7 +192,7 @@ class _bottomNavBarState extends State<bottomNavBar> {
         curve: Curves.ease,
         duration: Duration(milliseconds: 200),
       ),
-      navBarHeight: 8.0.h,
+      //navBarHeight: 8.0.h,
       navBarStyle: NavBarStyle.style3,
       // padding: NavBarPadding.symmetric(vertical: 0.0, horizontal: 1.0.w),
       //margin: EdgeInsets.symmetric(vertical: 0.0),

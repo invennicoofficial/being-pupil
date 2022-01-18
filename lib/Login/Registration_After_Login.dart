@@ -138,6 +138,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
                               keyboardType: TextInputType.phone,
                               inputFormatters: [
                                 LengthLimitingTextInputFormatter(10),
+                                FilteringTextInputFormatter.digitsOnly
                               ],
                               decoration: InputDecoration(
                                 labelText: "Phone Number",

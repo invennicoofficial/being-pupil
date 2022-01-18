@@ -6,6 +6,7 @@ import 'package:being_pupil/Model/Course_Model/Get_Enrolled_Course_Model.dart';
 import 'package:being_pupil/Registration/Learner_Registration.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -290,10 +291,12 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                   child: Container(
                                       height: 4.0.h,
                                       width: 8.0.w,
-                                      child: Image.asset(
-                                        'assets/icons/facebook.png',
-                                        fit: BoxFit.contain,
-                                      )),
+                                      child: SvgPicture.asset('assets/icons/fbSvg.svg')
+                                      // Image.asset(
+                                      //   'assets/icons/facebook.png',
+                                      //   fit: BoxFit.contain,
+                                      // )
+                                      ),
                                 ),
                               ),
                                SizedBox(
@@ -314,10 +317,12 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                   child: Container(
                                       height: 4.0.h,
                                       width: 8.0.w,
-                                      child: Image.asset(
-                                        'assets/icons/instagram.png',
-                                        fit: BoxFit.contain,
-                                      )),
+                                      child: SvgPicture.asset('assets/icons/instaSvg.svg')
+                                      // Image.asset(
+                                      //   'assets/icons/instagram.png',
+                                      //   fit: BoxFit.contain,
+                                      // )
+                                      ),
                                 ),
                               ),
                                SizedBox(
@@ -339,10 +344,12 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                   child: Container(
                                       height: 4.0.h,
                                       width: 8.0.w,
-                                      child: Image.asset(
-                                        'assets/icons/linkedin.png',
-                                        fit: BoxFit.contain,
-                                      )),
+                                      child: SvgPicture.asset('assets/icons/linkedinSvg.svg')
+                                      // Image.asset(
+                                      //   'assets/icons/linkedin.png',
+                                      //   fit: BoxFit.contain,
+                                      // )
+                                      ),
                                 ),
                               ),        
                               SizedBox(
@@ -362,10 +369,12 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                   child: Container(
                                       height: 4.0.h,
                                       width: 8.0.w,
-                                      child: Image.asset(
-                                        'assets/icons/other_link.png',
-                                        fit: BoxFit.contain,
-                                      )),
+                                      child: SvgPicture.asset('assets/icons/otherSvg.svg')
+                                      // Image.asset(
+                                      //   'assets/icons/other_link.png',
+                                      //   fit: BoxFit.contain,
+                                      // )
+                                      ),
                                 ),
                               ),
                              

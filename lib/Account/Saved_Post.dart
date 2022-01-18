@@ -7,6 +7,7 @@ import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -238,9 +239,10 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                     ),
                                   ),
                                   trailing: IconButton(
-                                      icon: Image.asset('assets/icons/issueIcon.png',
-                                      height: 20.0,
-                                      width: 20.0,),
+                                      icon: SvgPicture.asset('assets/icons/reportSvg.svg'),
+                                      // Image.asset('assets/icons/issueIcon.png',
+                                      // height: 20.0,
+                                      // width: 20.0,),
                                       onPressed: () {
                                         pushNewScreen(context,
                                             withNavBar: false,

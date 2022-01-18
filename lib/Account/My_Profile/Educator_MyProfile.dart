@@ -10,6 +10,7 @@ import 'package:being_pupil/Model/Post_Model/Educator_Post_Model.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -274,10 +275,12 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                   child: Container(
                                       height: 4.0.h,
                                       width: 8.0.w,
-                                      child: Image.asset(
-                                        'assets/icons/facebook.png',
-                                        fit: BoxFit.contain,
-                                      )),
+                                      child: SvgPicture.asset('assets/icons/fbSvg.svg')
+                                      // Image.asset(
+                                      //   'assets/icons/facebook.png',
+                                      //   fit: BoxFit.contain,
+                                      // )
+                                      ),
                                 ),
                               ),
                                SizedBox(
@@ -298,10 +301,12 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                   child: Container(
                                       height: 4.0.h,
                                       width: 8.0.w,
-                                      child: Image.asset(
-                                        'assets/icons/instagram.png',
-                                        fit: BoxFit.contain,
-                                      )),
+                                      child: SvgPicture.asset('assets/icons/instaSvg.svg')
+                                      // Image.asset(
+                                      //   'assets/icons/instagram.png',
+                                      //   fit: BoxFit.contain,
+                                      // )
+                                      ),
                                 ),
                               ),
                                SizedBox(
@@ -323,10 +328,12 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                   child: Container(
                                       height: 4.0.h,
                                       width: 8.0.w,
-                                      child: Image.asset(
-                                        'assets/icons/linkedin.png',
-                                        fit: BoxFit.contain,
-                                      )),
+                                      child: SvgPicture.asset('assets/icons/linkedinSvg.svg')
+                                      // Image.asset(
+                                      //   'assets/icons/linkedin.png',
+                                      //   fit: BoxFit.contain,
+                                      // )
+                                      ),
                                 ),
                               ),        
                               SizedBox(
@@ -346,10 +353,12 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                   child: Container(
                                       height: 4.0.h,
                                       width: 8.0.w,
-                                      child: Image.asset(
-                                        'assets/icons/other_link.png',
-                                        fit: BoxFit.contain,
-                                      )),
+                                      child: SvgPicture.asset('assets/icons/otherSvg.svg')
+                                      // Image.asset(
+                                      //   'assets/icons/other_link.png',
+                                      //   fit: BoxFit.contain,
+                                      // )
+                                      ),
                                 ),
                               ),                  
                             ],

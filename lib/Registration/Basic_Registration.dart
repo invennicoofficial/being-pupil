@@ -169,6 +169,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               keyboardType: TextInputType.phone,
                               inputFormatters: [
                                 LengthLimitingTextInputFormatter(10),
+                                FilteringTextInputFormatter.digitsOnly
                               ],
                               decoration: InputDecoration(
                                 labelText: "Phone Number",
