@@ -875,7 +875,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                     int year = DateTime.now().year - 15;
                                     final datePick = await showDatePicker(
                                         context: context,
-                                        initialDate: new DateTime.now(),
+                                        initialDate: new DateTime(1960),
                                         firstDate: new DateTime(1900),
                                         lastDate: new DateTime(year),
                                         helpText: 'Select Birth Date');

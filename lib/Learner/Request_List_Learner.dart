@@ -116,7 +116,7 @@ class _RequestListLearnerState extends State<RequestListLearner> {
             child: ListView.builder(
                 controller: _scrollController,
                 padding:
-                    EdgeInsets.symmetric(horizontal: 2.0.w, vertical: 2.0.h),
+                    EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
                 //physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: _userId.length == 0 ? 0 : _userId.length,
