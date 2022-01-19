@@ -23,7 +23,7 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
   String? registerAs;
   //TabController _tabController;
   //int selectedIndex = 0;
-  String searchIn = 'C';
+  String? searchIn;
 
   @override
   void initState() {
@@ -35,6 +35,7 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       registerAs = preferences.getString('RegisterAs');
+      searchIn = registerAs == 'E' ? 'E' : 'L';
     });
     print(registerAs);
     // _tabController = TabController(length: 3, vsync: this);
@@ -111,14 +112,6 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
                   isScrollable: false,
                   onTap: (index) {
                     if (index == 0) {
-                      setState(() {
-                        searchIn = 'C';
-                      });
-                    } else if (index == 1) {
-                      setState(() {
-                        searchIn = 'R';
-                      });
-                    } else {
                       if (registerAs == 'E') {
                         setState(() {
                           searchIn = 'E';
@@ -128,8 +121,16 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
                           searchIn = 'L';
                         });
                       }
+                    } else if (index == 1) {
+                      setState(() {
+                        searchIn = 'R';
+                      });
+                    } else {
+                       setState(() {
+                          searchIn = 'C';
+                        });
                     }
-                    print('Selected Index::: ' + searchIn);
+                    print('Selected Index::: ' + searchIn!);
                   },
                   tabs: [
                     Tab(

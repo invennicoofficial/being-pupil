@@ -1075,7 +1075,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                   width: 90.0.w,
                                   color: Colors.transparent,
                                   child: Padding(
-                                     padding: fileName == null ? EdgeInsets.only(left: 20.0) : EdgeInsets.zero,
+                                     padding: fileName == null ? EdgeInsets.only(left: 22.0.w) : EdgeInsets.zero,
                                     child: Center(
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
@@ -1795,7 +1795,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                                                 'certificate'] ==
                                                             'Upload Certificate/Degree'
                                                     ? EdgeInsets.only(
-                                                        left: 20.0)
+                                                        left: 30.0)
                                                     : EdgeInsets.zero,
                                                 child: Center(
                                                   child: Row(

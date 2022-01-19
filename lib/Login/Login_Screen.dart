@@ -11,9 +11,11 @@ import 'package:being_pupil/Registration/Basic_Registration.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:page_transition/page_transition.dart';
@@ -54,12 +56,32 @@ class _LoginScreenState extends State<LoginScreen> {
   String? role;
   String? name, email;
   static const String TAG = "_LoginPageState";
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   void initState() {
     // TODO: implement initState
     // //SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    generateFirebaseToken();
     super.initState();
   }
+
+//Generate firebase token
+  generateFirebaseToken() async {
+  _firebaseMessaging.requestPermission(sound: true, alert: true, badge: true);
+  _firebaseMessaging.getToken().then((token) {
+    var firebaseToken = token!;
+    print('token::: ' + token);
+    saveFirebaseToken(token);
+  });
+}
+
+saveFirebaseToken(String token) async {
+  // Create storage
+  final storage = new FlutterSecureStorage();
+
+  // Write value
+  await storage.write(key: 'firebaseToken', value: token);
+}
 
   @override
   Widget build(BuildContext context) {
@@ -289,10 +311,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: Container(
                                   height: 4.0.h,
                                   width: 8.0.w,
-                                  child: Image.asset(
-                                    'assets/icons/apple.png',
-                                    fit: BoxFit.contain,
-                                  )),
+                                  child: SvgPicture.asset('assets/icons/googleSvg.svg')
+                                  // Image.asset(
+                                  //   'assets/icons/apple.png',
+                                  //   fit: BoxFit.contain,
+                                  // )
+                                  ),
                             ),
                             GestureDetector(
                               onTap: () {
@@ -331,10 +355,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: Container(
                                   height: 4.0.h,
                                   width: 8.0.w,
-                                  child: Image.asset(
-                                    'assets/icons/facebook.png',
-                                    fit: BoxFit.contain,
-                                  )),
+                                  child: SvgPicture.asset('assets/icons/fbSvg.svg')
+                                  // Image.asset(
+                                  //   'assets/icons/facebook.png',
+                                  //   fit: BoxFit.contain,
+                                  // )
+                                  ),
                             ),
                             // GestureDetector(
                             //   onTap: (){

@@ -1100,7 +1100,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                   width: 90.0.w,
                                   color: Colors.transparent,
                                   child: Padding(
-                                    padding: fileName == null ? EdgeInsets.only(left: 20.0) : EdgeInsets.zero,
+                                    padding: fileName == null ? EdgeInsets.only(left: 22.0.w) : EdgeInsets.zero,
                                     child: Center(
                                       child: Row(
                                         mainAxisAlignment:
@@ -1771,7 +1771,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                               child: Padding(
                                                 padding: educationDetailMap[index]['certificate'] == 'path' || 
                                                     educationDetailMap[index]['certificate'] == 'Upload Certificate/Degree'
-                                                    ? EdgeInsets.only(left: 20.0) : EdgeInsets.zero,
+                                                    ? EdgeInsets.only(left: 30.0) : EdgeInsets.zero,
                                                 child: Center(
                                                   child: Row(
                                                     mainAxisAlignment:

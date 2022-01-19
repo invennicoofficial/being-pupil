@@ -128,24 +128,24 @@ class _bottomNavBarState extends State<bottomNavBar> {
       PersistentBottomNavBarItem(
         icon: registerAs == 'E' ? SvgPicture.asset('assets/icons/selectedLearner.svg')
         //Image.asset('assets/icons/educator.png', height: 25, width: 25, color: Constants.selectedIcon,)
-        : SvgPicture.asset('assets/icons/selectedEducator.svg'),
+        : SvgPicture.asset('assets/icons/newSelEduSvg.svg'),
         //Image.asset('assets/icons/educatorGreen.png', height: 25, width: 25, color: Constants.selectedIcon,),
         //title: (registerAs == 'E' ? "Learner" : "Educator"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
         inactiveIcon: registerAs == 'E' ? SvgPicture.asset('assets/icons/learnerSvg.svg')
         //Image.asset('assets/icons/educator.png', height: 25, width: 25, color: Constants.bgColor,)
-        : SvgPicture.asset('assets/icons/educatorSvg.svg')
+        : SvgPicture.asset('assets/icons/newEduSvg.svg')
         //Image.asset('assets/icons/educatorBlack.png', height: 25, width: 25, color: Constants.bgColor,),
       ),
       PersistentBottomNavBarItem(
         //icon: ImageIcon(AssetImage('assets/icons/support2.png'),size: 25),
-        icon: SvgPicture.asset('assets/icons/selectedSBsvg.svg'),
+        icon: registerAs == 'E' ? SvgPicture.asset('assets/icons/newSelSbSvg.svg') : SvgPicture.asset('assets/icons/selectedSBsvg.svg'),
         //Image.asset('assets/icons/supportGreen.png', height: 25, width: 25,),
         //title: (registerAs == 'E' ? "Fellow Educator" : "Study Buddy"),
         activeColorPrimary: Constants.selectedIcon,
         // inactiveColorPrimary: Constants.bgColor,
-         inactiveIcon: SvgPicture.asset('assets/icons/studybuddySvg.svg')
+         inactiveIcon: registerAs == 'E' ? SvgPicture.asset('assets/icons/newSbSvg.svg') : SvgPicture.asset('assets/icons/studybuddySvg.svg')
         //Image.asset('assets/icons/support.png', height: 25, width: 25, ),
       ),
       PersistentBottomNavBarItem(

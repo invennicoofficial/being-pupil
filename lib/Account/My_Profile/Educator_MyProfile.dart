@@ -31,7 +31,7 @@ class EducatorMyProfileScreen extends StatefulWidget {
 class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
   List<bool?> isLiked = [];
   List<bool?> isSaved = [];
-  String? registerAs;
+  String? registerAs, qualification, school;
   var result = EducatorPost();
   Map<String, dynamic>? map;
   List<dynamic>? mapData;
@@ -85,6 +85,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
     setState(() {
       registerAs = preferences.getString('RegisterAs');
       userId = preferences.getInt('userId');
+      qualification = preferences.getString('qualification');
+      school = preferences.getString('schoolName');
     });
     print(registerAs);
     print('ID::::::' + userId.toString());
@@ -221,7 +223,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                         Padding(
                           padding: EdgeInsets.only(top: 1.0.h),
                           child: Text(
-                            '${myProfileMap!['data']['last_degree']} | ${myProfileMap!['data']['school_name']}',
+                            '$qualification | $school ',
+                            //'${myProfileMap!['data']['last_degree']} | ${myProfileMap!['data']['school_name']}',
                             style: TextStyle(
                                 fontSize: 8.0.sp,
                                 fontFamily: 'Montserrat',

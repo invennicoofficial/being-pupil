@@ -4,9 +4,14 @@ import 'package:being_pupil/Model/Config.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
+
+import 'Educator_ProfileView_Screen.dart';
+import 'Learner_ProfileView_Screen.dart';
 
 class SearchScreen extends StatefulWidget {
   String? searchIn;
@@ -25,7 +30,7 @@ class _SearchScreenState extends State<SearchScreen> {
   int page = 1;
   int k = 0;
   bool isLoading = false;
-  String? authToken;
+  String? registerAs, authToken;
 
   List<int?> _userId = [];
   List<String?> _profileImage = [];
@@ -44,10 +49,12 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     super.initState();
     getToken();
+    print('WIDGET:::${widget.searchIn}');
   }
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+    getData();
     print(authToken);
     // getLearnerListApi(page);
     // _scrollController.addListener(() {
@@ -68,6 +75,13 @@ class _SearchScreenState extends State<SearchScreen> {
     //     }
     //   }
     // });
+  }
+
+  getData() async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      registerAs = preferences.getString('RegisterAs');
+    });
   }
 
  void _onLoading() async {
@@ -164,165 +178,17 @@ class _SearchScreenState extends State<SearchScreen> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 2.0.w),
                       child: Container(
-                        height: 10.0.h,
-                        child: ListTile(
-                          contentPadding: EdgeInsets.all(0.0),
-                          //leading:
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            //crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  // registerAs == 'E'
-                                  //     ? pushNewScreen(context,
-                                  //         screen: EducatorProfileViewScreen(),
-                                  //         withNavBar: false,
-                                  //         pageTransitionAnimation:
-                                  //             PageTransitionAnimation.cupertino)
-                                  //     : pushNewScreen(context,
-                                  //         screen: LearnerProfileViewScreen(),
-                                  //         withNavBar: false,
-                                  //         pageTransitionAnimation:
-                                  //             PageTransitionAnimation
-                                  //                 .cupertino);
-                                },
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: Image.network(
-                                    _profileImage[index]!,
-                                    width: 8.5.w,
-                                    height: 5.0.h,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              // SizedBox(
-                              //   width: 2.0.w,
-                              // ),
-                              Padding(
-                                padding: EdgeInsets.only(right: 13.0.w),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      _name[index]!,
-                                      style: TextStyle(
-                                          fontSize: 9.0.sp,
-                                          color: Constants.bgColor,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                    Container(
-                                      //color: Colors.grey,
-                                      width: 25.0.w,
-                                      child: Text(
-                                        _lastDegree[index] != null &&
-                                                _schoolName[index] != null
-                                            ? '${_lastDegree[index]} | ${_schoolName[index]}'
-                                            : '',
-                                        style: TextStyle(
-                                            fontSize: 6.5.sp,
-                                            color: Constants.bgColor,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w400),
-                                            overflow: TextOverflow.clip,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              //Buttons
-                              Padding(
-                                padding: EdgeInsets.only(right: 2.0.w),
-                                child: Row(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        print('$index is Rejected');
-                                        requestActionApi(_userId[index], 'R');
-                                      },
-                                      child: Container(
-                                        height: 3.5.h,
-                                        width: 16.0.w,
-                                        decoration: BoxDecoration(
-                                            color: Constants.bgColor,
-                                            border: Border.all(
-                                                color: Constants.bgColor,
-                                                width: 0.5),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8.0))),
-                                        child: Center(
-                                          child: Text(
-                                            'Reject',
-                                            style: TextStyle(
-                                                fontSize: 8.0.sp,
-                                                color: Colors.white,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 2.0.w,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        print('$index is Connected');
-                                        requestActionApi(_userId[index], 'A');
-                                      },
-                                      child: Container(
-                                        height: 3.5.h,
-                                        width: 16.0.w,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Constants.bgColor,
-                                                width: 0.5),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8.0))),
-                                        child: Center(
-                                          child: Text(
-                                            'Connect',
-                                            style: TextStyle(
-                                                fontSize: 8.0.sp,
-                                                color: Constants.bgColor,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                })
-             : ListView.builder(
-              controller: _scrollController,
-                padding:
-                    EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
-                //physics: BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: _userId.length == 0 ? 0 : _userId.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 2.0,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 2.0.w),
-                      child: Container(
-                        height: 10.0.h,
-                        child: ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title:  Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                        //height: 10.0.h,
+                        child: GestureDetector(
+                          onTap: (){
+                            getUserProfile(_userId[index]);
+                          },
+                          child: ListTile(
+                            contentPadding: EdgeInsets.all(0.0),
+                            //leading:
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 GestureDetector(
                                   onTap: () {
@@ -343,147 +209,305 @@ class _SearchScreenState extends State<SearchScreen> {
                                     borderRadius: BorderRadius.circular(50),
                                     child: Image.network(
                                       _profileImage[index]!,
-                                      //connection.data[index].profileImage,
                                       width: 40.0,
                                       height: 40.0,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 2.0.w,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      _name[index]!,
-                                      //connection.data[index].name,
-                                      style: TextStyle(
-                                          fontSize: 9.0.sp,
-                                          color: Constants.bgColor,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                    Container(
-                                      width: 45.0.w,
-                                      //color: Colors.grey,
-                                      child: Text(
-                                        _lastDegree[index] != null &&
-                                                _schoolName[index] != null
-                                            ? '${_lastDegree[index]} | ${_schoolName[index]}'
-                                            : '',
-                                        // connection.data[index].lastDegree != null && connection.data[index].schoolName != null
-                                        // ? "${connection.data[index].lastDegree} | ${connection.data[index].schoolName}" : '',
+                                // SizedBox(
+                                //   width: 2.0.w,
+                                // ),
+                                Padding(
+                                  padding: EdgeInsets.only(right: 13.0.w),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        _name[index]!,
                                         style: TextStyle(
-                                            fontSize: 6.5.sp,
+                                            fontSize: 9.0.sp,
                                             color: Constants.bgColor,
                                             fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w400),
-                                            overflow: TextOverflow.clip
+                                            fontWeight: FontWeight.w700),
                                       ),
-                                    ),
-                                  ],
+                                      Container(
+                                        //color: Colors.grey,
+                                        width: 25.0.w,
+                                        child: Text(
+                                          _lastDegree[index] != null &&
+                                                  _schoolName[index] != null
+                                              ? '${_lastDegree[index]} | ${_schoolName[index]}'
+                                              : '',
+                                          style: TextStyle(
+                                              fontSize: 6.5.sp,
+                                              color: Constants.bgColor,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w400),
+                                              overflow: TextOverflow.clip,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                //for request list
-                                
+                        
+                                //Buttons
+                                Padding(
+                                  padding: EdgeInsets.only(right: 2.0.w),
+                                  child: Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          print('$index is Rejected');
+                                          requestActionApi(_userId[index], 'R');
+                                        },
+                                        child: Container(
+                                          height: 3.5.h,
+                                          width: 16.0.w,
+                                          decoration: BoxDecoration(
+                                              color: Constants.bgColor,
+                                              border: Border.all(
+                                                  color: Constants.bgColor,
+                                                  width: 0.5),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8.0))),
+                                          child: Center(
+                                            child: Text(
+                                              'Reject',
+                                              style: TextStyle(
+                                                  fontSize: 8.0.sp,
+                                                  color: Colors.white,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 2.0.w,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          print('$index is Connected');
+                                          requestActionApi(_userId[index], 'A');
+                                        },
+                                        child: Container(
+                                          height: 3.5.h,
+                                          width: 16.0.w,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Constants.bgColor,
+                                                  width: 0.5),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8.0))),
+                                          child: Center(
+                                            child: Text(
+                                              'Connect',
+                                              style: TextStyle(
+                                                  fontSize: 8.0.sp,
+                                                  color: Constants.bgColor,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
-                            trailing: widget.searchIn == 'C'
-                            ? Padding(
-                              padding: EdgeInsets.only(right: 2.0.w, top: 2.0.h),
-                              child: GestureDetector(
-                                onTap: () {
-                                  print('$index is Connected');
-                                },
-                                child: _status[index] == '0'
-                                    //connection.data[index].status == '0'
-                                    ? Container(
-                                        height: 3.5.h,
-                                        width: 25.0.w,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Constants.bgColor,
-                                                width: 0.5),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8.0))),
-                                        child: Center(
-                                          child: Text(
-                                            'Request Sent',
-                                            style: TextStyle(
-                                                fontSize: 8.0.sp,
-                                                color: Constants.bgColor,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
-                                      )
-                                    : Container(
-                                        height: 3.5.h,
-                                        width: 16.0.w,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Constants.bgColor,
-                                                width: 0.5),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8.0))),
-                                        child: Center(
-                                          child: Text(
-                                            'Chat',
-                                            style: TextStyle(
-                                                fontSize: 8.0.sp,
-                                                color: Constants.bgColor,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w500),
-                                          ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                })
+             : ListView.builder(
+              controller: _scrollController,
+                padding:
+                    EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
+                //physics: BouncingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: _userId.length == 0 ? 0 : _userId.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    elevation: 2.0,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 2.0.w),
+                      child: Container(
+                        //height: 10.0.h,
+                        child: GestureDetector(
+                          onTap: (){
+                            getUserProfile(_userId[index]);
+                          },
+                          child: ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              title:  Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      // registerAs == 'E'
+                                      //     ? pushNewScreen(context,
+                                      //         screen: EducatorProfileViewScreen(),
+                                      //         withNavBar: false,
+                                      //         pageTransitionAnimation:
+                                      //             PageTransitionAnimation.cupertino)
+                                      //     : pushNewScreen(context,
+                                      //         screen: LearnerProfileViewScreen(),
+                                      //         withNavBar: false,
+                                      //         pageTransitionAnimation:
+                                      //             PageTransitionAnimation
+                                      //                 .cupertino);
+                                    },
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: Image.network(
+                                        _profileImage[index]!,
+                                        //connection.data[index].profileImage,
+                                        width: 40.0,
+                                        height: 40.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 2.0.w,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        _name[index]!,
+                                        //connection.data[index].name,
+                                        style: TextStyle(
+                                            fontSize: 9.0.sp,
+                                            color: Constants.bgColor,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      Container(
+                                        width: 50.0.w,
+                                        //color: Colors.grey,
+                                        child: Text(
+                                          _lastDegree[index] != null &&
+                                                  _schoolName[index] != null
+                                              ? '${_lastDegree[index]} | ${_schoolName[index]}'
+                                              : '',
+                                          // connection.data[index].lastDegree != null && connection.data[index].schoolName != null
+                                          // ? "${connection.data[index].lastDegree} | ${connection.data[index].schoolName}" : '',
+                                          style: TextStyle(
+                                              fontSize: 6.5.sp,
+                                              color: Constants.bgColor,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w400),
+                                              overflow: TextOverflow.clip
                                         ),
                                       ),
+                                    ],
+                                  ),
+                                  //for request list
+                                  
+                                ],
                               ),
-                            )
-                            : widget.searchIn == 'E' || widget.searchIn == 'L'
-                            ? Padding(
-                              padding:
-                                  EdgeInsets.only(right: 2.0.w, top: 2.0.h),
-                              child: GestureDetector(
-                                onTap: () async{
-                                  print('$index is Connected');
-                                  await connect.connectionApi(_userId[index], authToken!);
-                                  // setState(() {
-                                  //   isLoading = true;
-                                  //   page = 1;
-                                  //   _userId = [];
-                                  //   _profileImage = [];
-                                  //   _name = [];
-                                  //   _lastDegree = [];
-                                  //   _schoolName = [];
-                                  //   _date = [];
-                                  //   _distance = [];
-                                  // });         
-                                 // getEducatorListApi(page);
-                                },
-                                child: Container(
-                                  height: 3.5.h,
-                                  width: 16.0.w,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Constants.bgColor, width: 0.5),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(8.0))),
-                                  child: Center(
-                                    child: Text(
-                                      'Connect',
-                                      style: TextStyle(
-                                          fontSize: 8.0.sp,
-                                          color: Constants.bgColor,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w500),
+                              trailing: widget.searchIn == 'C'
+                              ? Padding(
+                                padding: EdgeInsets.only(right: 2.0.w, top: 2.0.h),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    print('$index is Connected');
+                                  },
+                                  child: _status[index] == '0'
+                                      //connection.data[index].status == '0'
+                                      ? Container(
+                                          height: 3.5.h,
+                                          width: 25.0.w,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Constants.bgColor,
+                                                  width: 0.5),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8.0))),
+                                          child: Center(
+                                            child: Text(
+                                              'Request Sent',
+                                              style: TextStyle(
+                                                  fontSize: 8.0.sp,
+                                                  color: Constants.bgColor,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ),
+                                        )
+                                      : Container(
+                                          height: 3.5.h,
+                                          width: 16.0.w,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Constants.bgColor,
+                                                  width: 0.5),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8.0))),
+                                          child: Center(
+                                            child: Text(
+                                              'Chat',
+                                              style: TextStyle(
+                                                  fontSize: 8.0.sp,
+                                                  color: Constants.bgColor,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ),
+                                        ),
+                                ),
+                              )
+                              : widget.searchIn == 'E' || widget.searchIn == 'L'
+                              ? Padding(
+                                padding:
+                                    EdgeInsets.only(right: 2.0.w, top: 2.0.h),
+                                child: GestureDetector(
+                                  onTap: () async{
+                                    print('$index is Connected');
+                                    await connect.connectionApi(_userId[index], authToken!);
+                                    // setState(() {
+                                    //   isLoading = true;
+                                    //   page = 1;
+                                    //   _userId = [];
+                                    //   _profileImage = [];
+                                    //   _name = [];
+                                    //   _lastDegree = [];
+                                    //   _schoolName = [];
+                                    //   _date = [];
+                                    //   _distance = [];
+                                    // });         
+                                   // getEducatorListApi(page);
+                                  },
+                                  child: Container(
+                                    height: 3.5.h,
+                                    width: 16.0.w,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Constants.bgColor, width: 0.5),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0))),
+                                    child: Center(
+                                      child: Text(
+                                        'Connect',
+                                        style: TextStyle(
+                                            fontSize: 8.0.sp,
+                                            color: Constants.bgColor,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w500),
+                                      ),
                                     ),
                                   ),
                                 ),
+                              ) : Container()
                               ),
-                            ) : Container()
-                            ),
+                        ),
                       ),
                     ),
                   );
@@ -503,7 +527,7 @@ class _SearchScreenState extends State<SearchScreen> {
       Dio dio = Dio();
 
       //FormData formData = FormData.fromMap({'search_in': widget.searchIn, 'search': searchController.text});
-      var response = await dio.get('${Config.searchUserUrl}?search_in=${widget.searchIn}&search=$search',
+      var response = await dio.get('${Config.searchUserUrl}?search_in=${widget.searchIn}&search=$search&user_type=$registerAs',
           //data: formData,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
@@ -710,6 +734,57 @@ class _SearchScreenState extends State<SearchScreen> {
         print(response.statusCode);
       }
     } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+    }
+  }
+
+   Future<void> getUserProfile(id) async {
+    // displayProgressDialog(context);
+
+    Map<String, dynamic>? map = {};
+    try {
+      Dio dio = Dio();
+
+      var response = await dio.get('${Config.myProfileUrl}/$id',
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        map = response.data;
+
+        print(map!['data']);
+        //print(mapData);
+        if (map['data'] != null) {
+          setState(() {});
+          map['data']['role'] == 'E'
+              ? pushNewScreen(context,
+              screen: EducatorProfileViewScreen(id: id,),
+              withNavBar: false,
+              pageTransitionAnimation:
+              PageTransitionAnimation.cupertino)
+              :
+          pushNewScreen(context,
+              screen: LearnerProfileViewScreen(id: id,),
+              withNavBar: false,
+              pageTransitionAnimation:
+              PageTransitionAnimation
+                  .cupertino);
+        } else {
+          isLoading = false;
+          setState(() {});
+        }
+        //print(result.data);
+        //return result;
+        setState(() {
+          isLoading = false;
+        });
+      } else {
+        print('${response.statusCode} : ${response.data.toString()}');
+        throw response.statusCode!;
+      }
+    } on DioError catch (e, stack) {
+      // closeProgressDialog(context);
       print(e.response);
       print(stack);
     }
