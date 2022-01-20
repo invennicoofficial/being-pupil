@@ -183,13 +183,16 @@ class _EducatorListState extends State<EducatorList> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        _name[index]!,
-                                        style: TextStyle(
-                                            fontSize: 9.0.sp,
-                                            color: Constants.bgColor,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w700),
+                                      Container(
+                                        width: 52.0.w,
+                                        child: Text(
+                                          _name[index]!,
+                                          style: TextStyle(
+                                              fontSize: 9.0.sp,
+                                              color: Constants.bgColor,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w700),
+                                        ),
                                       ),
                                       Container(
                                         width: 52.0.w,
@@ -210,7 +213,7 @@ class _EducatorListState extends State<EducatorList> {
                             ),
                             trailing: Padding(
                               padding:
-                                  EdgeInsets.only(right: 2.0.w, top: 0.0.h),
+                                  EdgeInsets.only(right: 2.0.w,),
                               child: GestureDetector(
                                 onTap: () async{
                                   print('$index is Connected');

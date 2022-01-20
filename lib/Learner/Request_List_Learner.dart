@@ -151,13 +151,13 @@ class _RequestListLearnerState extends State<RequestListLearner> {
                                 //   width: 2.0.w,
                                 // ),
                                 Padding(
-                                  padding: EdgeInsets.only(right: 10.0.w),
+                                  padding: EdgeInsets.only(right: 0.0.w),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        width: 30.0.w,
+                                        width: 40.0.w,
                                         child: Text(
                                           _name[index]!,
                                           style: TextStyle(
@@ -169,7 +169,7 @@ class _RequestListLearnerState extends State<RequestListLearner> {
                                       ),
                                       Container(
                                         //color: Colors.grey,
-                                        width: 25.0.w,
+                                        width: 40.0.w,
                                         child: Text(
                                           _lastDegree[index] != null &&
                                                   _schoolName[index] != null

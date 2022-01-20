@@ -3,11 +3,12 @@ import 'package:being_pupil/Learner/Connection_List_Learner.dart';
 import 'package:being_pupil/Learner/Educator_List_For_Learner.dart';
 import 'package:being_pupil/Learner/Learner_List_For_Learner.dart';
 import 'package:being_pupil/Learner/Request_List_Learner.dart';
-import 'package:being_pupil/StudyBuddy/Search_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+
+import 'Search_Learner_Screen.dart';
 
 class LearnerStudyBuddyScreen extends StatefulWidget {
   LearnerStudyBuddyScreen({Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen>
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       registerAs = preferences.getString('RegisterAs');
-      searchIn = registerAs == 'E' ? 'E' : 'L';
+      searchIn = registerAs == 'E' ? 'L' : 'E';
     });
     print(registerAs);
     // _tabController = TabController(length: 3, vsync: this);
@@ -78,7 +79,7 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen>
                     icon: Image.asset('assets/icons/searchNew.png', height: 20.0, width: 20.0, color: Colors.white),
                     onPressed: () {
                       pushNewScreen(context,
-                          screen: SearchScreen(
+                          screen: SearchForLearnerScreen(
                             searchIn: searchIn,
                           ),
                           withNavBar: false,
@@ -114,11 +115,11 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen>
                     if (index == 0) {
                       if (registerAs == 'E') {
                         setState(() {
-                          searchIn = 'E';
+                          searchIn = 'L';
                         });
                       } else {
                         setState(() {
-                          searchIn = 'L';
+                          searchIn = 'E';
                         });
                       }
                     } else if (index == 1) {

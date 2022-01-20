@@ -182,7 +182,7 @@ class _LearnerListState extends State<LearnerList> {
                             ),
                             trailing: Padding(
                               padding:
-                                  EdgeInsets.only(right: 2.0.w, top: 2.0.h),
+                                  EdgeInsets.only(right: 2.0.w,),
                               child: GestureDetector(
                                 onTap: () async{
                                   print('$index is Connected');

@@ -2,7 +2,10 @@ import 'package:being_pupil/ConnectyCube/chat_dialog_screen.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Learner/Connection_API.dart';
+import 'package:being_pupil/Learner/Connection_List_Learner.dart';
 import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
+import 'package:being_pupil/StudyBuddy/Learner_ProfileView_Screen.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
@@ -14,19 +17,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
-import 'Connection_List.dart';
-import 'Educator_ProfileView_Screen.dart';
-import 'Learner_ProfileView_Screen.dart';
-
-class SearchScreen extends StatefulWidget {
+class SearchForLearnerScreen extends StatefulWidget {
   String? searchIn;
-  SearchScreen({Key? key, this.searchIn}) : super(key: key);
+  SearchForLearnerScreen({Key? key, this.searchIn}) : super(key: key);
 
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  _SearchForLearnerScreenState createState() => _SearchForLearnerScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchForLearnerScreenState extends State<SearchForLearnerScreen> {
   TextEditingController searchController = TextEditingController();
   Map<String, dynamic>? map;
   List<dynamic>? mapData;
@@ -229,7 +228,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      width: 40.0.w,
+                                      width: 35.0.w,
                                       //color: Colors.grey,
                                       child: Text(
                                         _name[index]!,
@@ -242,7 +241,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                     ),
                                     Container(
                                       //color: Colors.grey,
-                                      width: 40.0.w,
+                                       width: 35.0.w,
                                       child: Text(
                                         _lastDegree[index] != null &&
                                                 _schoolName[index] != null
@@ -388,8 +387,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
-                                         width: 45.0.w,
-                                         //color: Colors.grey,
+                                        //color: Colors.grey,
+                                        width: 45.0.w,
                                         child: Text(
                                           _name[index]!,
                                           //connection.data[index].name,
@@ -401,8 +400,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                         ),
                                       ),
                                       Container(
-                                        width: 45.0.w,
                                         //color: Colors.grey,
+                                        width: 45.0.w,
                                         child: Text(
                                           _lastDegree[index] != null &&
                                                   _schoolName[index] != null
@@ -454,35 +453,35 @@ class _SearchScreenState extends State<SearchScreen> {
                                           ),
                                         )
                                       : GestureDetector(
-                                        onTap: () async {
-                                    displayProgressDialog(context);
-                                    SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
-                                    CubeUser? user = sharedPrefs.getUser();
-                                    print(_email[index]);
-                                    getUserByEmail(_email[index]!)
-                                        .then((cubeUser) {
-                                          CubeDialog newDialog = CubeDialog(
-                                        CubeDialogType.PRIVATE,
-                                        occupantsIds: [cubeUser!.id!]);
-                                    createDialog(newDialog)
-                                        .then((createdDialog) {
-                                      closeProgressDialog(context);
-                                      pushNewScreen(context,
-                                          screen: ChatDialogScreen(user, createdDialog, _profileImage[index]),
-                                          withNavBar: false,
-                                          pageTransitionAnimation:
-                                          PageTransitionAnimation
-                                              .cupertino);
-                                    })
-                                        .catchError((error) {
-                                      displayProgressDialog(context);
-                                    });
-                                    })
-                                        .catchError((error) {
-                                      displayProgressDialog(context);
-                                    });
+                                  //       onTap: () async {
+                                  //   displayProgressDialog(context);
+                                  //   SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+                                  //   CubeUser? user = sharedPrefs.getUser();
+                                  //   print(_email[index]);
+                                  //   getUserByEmail(_email[index]!)
+                                  //       .then((cubeUser) {
+                                  //         CubeDialog newDialog = CubeDialog(
+                                  //       CubeDialogType.PRIVATE,
+                                  //       occupantsIds: [cubeUser!.id!]);
+                                  //   createDialog(newDialog)
+                                  //       .then((createdDialog) {
+                                  //     closeProgressDialog(context);
+                                  //     pushNewScreen(context,
+                                  //         screen: ChatDialogScreen(user, createdDialog, _profileImage[index]),
+                                  //         withNavBar: false,
+                                  //         pageTransitionAnimation:
+                                  //         PageTransitionAnimation
+                                  //             .cupertino);
+                                  //   })
+                                  //       .catchError((error) {
+                                  //     displayProgressDialog(context);
+                                  //   });
+                                  //   })
+                                  //       .catchError((error) {
+                                  //     displayProgressDialog(context);
+                                  //   });
 
-                                  },
+                                  // },
                                         child: Container(
                                             height: 3.5.h,
                                             width: 16.0.w,
@@ -564,6 +563,7 @@ class _SearchScreenState extends State<SearchScreen> {
   
   setState(() {
     isLoading =true;
+    registerAs = registerAs == 'E' ? 'L' : 'E';
   });
     try {
       Dio dio = Dio();
@@ -601,7 +601,7 @@ class _SearchScreenState extends State<SearchScreen> {
             _lastDegree.add(mapData![i]['last_degree']);
             _schoolName.add(mapData![i]['school_name']);
             _date.add(mapData![i]['date']);
-            _email.add(mapData![i]['email']);
+            //_email.add(mapData![i]['email']);
             if(widget.searchIn == 'C' || widget.searchIn == 'R'){
                _status.add(mapData![i]['status']);
             } else //if(widget.searchIn == 'E' || widget.searchIn == 'L')

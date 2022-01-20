@@ -183,13 +183,17 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        _name[index]!,
-                                        style: TextStyle(
-                                            fontSize: 9.0.sp,
-                                            color: Constants.bgColor,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w700),
+                                      Container(
+                                        width: 52.0.w,
+                                        //color: Colors.grey,
+                                        child: Text(
+                                          _name[index]!,
+                                          style: TextStyle(
+                                              fontSize: 9.0.sp,
+                                              color: Constants.bgColor,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w700),
+                                        ),
                                       ),
                                       Container(
                                         width: 52.0.w,
