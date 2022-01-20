@@ -84,6 +84,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
 
   List<String> selectedSkillList = [];
   List<String> selectedHobbiesList = [];
+  List<String> selectedSubjectList = [];
 
   Map<String, dynamic>? skillMap = Map<String, dynamic>();
   List<dynamic>? skillMapData = [];//List();
@@ -2251,6 +2252,83 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                           ),
                         ),
 
+                          //Subject of Experties
+                        Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 4.0.h, left: 3.0.w, right: 3.0.w),
+                              child: Text(
+                                'Subjects of Expertise',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 12.0.sp,
+                                    color: Constants.bgColor,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Theme(
+                          data: new ThemeData(
+                            primaryColor: Constants.bpSkipStyle,
+                            primaryColorDark: Constants.bpSkipStyle,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: 3.0.w, right: 3.0.w, top: 3.0.h),
+                            child: GestureDetector(
+                              onTap: () {
+                                _openFilterSubjectDialog();
+                              },
+                              child: Container(
+                                height: 13.0.h,
+                                width: 90.0.w,
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.5.h),
+                                decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: Constants.formBorder),
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                child: Center(
+                                  child: Align(
+                                    alignment: Alignment.topCenter,
+                                    child: Text(
+                                      selectedSubjectList == null ||
+                                              selectedSubjectList.length == 0
+                                          ? "Please mention your skills example #skills1 #skills2..."
+                                          : selectedSubjectList
+                                              .toString().replaceAll('[', '').replaceAll(']', '').
+                                              replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                      style: TextStyle(
+                                          fontFamily: "Montserrat",
+                                          fontSize: 10.0.sp,
+                                          color: Constants.bpSkipStyle),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: 3.0.w, right: 3.0.w, top: 0.5.h),
+                              child: Text(
+                                'Maximum 25 subjects',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 8.0.sp,
+                                    color: Constants.bpSkipStyle,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ],
+                        ),
+
                         Row(
                           children: [
                             Padding(
@@ -3528,6 +3606,72 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   //   );
   //   educationList.add(newList);
   // }
+
+  //Tag for Subject Experties
+  void _openFilterSubjectDialog() async {
+    await FilterListDialog.display(context,
+        listData: skillMapData!,
+        selectedListData: selectedSubjectList,
+        height: 480,
+        headlineText: "Select or Search Subjects",
+        searchFieldHintText: "Search Subjects Here",
+        searchFieldTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 10.0.sp,
+            color: Constants.bgColor),
+        headerTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 12.0.sp,
+            color: Constants.bgColor),
+        choiceChipLabel: (dynamic item) {
+          return item;
+        },
+        validateSelectedItem: (list, dynamic val) {
+          return list!.contains(val);
+        },
+        applyButonTextBackgroundColor: Constants.bgColor,
+        applyButtonTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 12.0.sp,
+            color: Colors.white),
+        selectedChipTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w400,
+            fontSize: 10.0.sp,
+            color: Colors.white),
+        controlButtonTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500,
+            fontSize: 11.0.sp,
+            color: Constants.bgColor),
+        unselectedChipTextStyle: TextStyle(
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w400,
+            fontSize: 10.0.sp,
+            color: Constants.bgColor),
+        //useSafeArea: true,
+        onItemSearch: (list, text) {
+          if (list!.any((element) =>
+              element.toString().toLowerCase().contains(text.toLowerCase()))) {
+            return list
+                .where((element) =>
+                    element.toString().toLowerCase().contains(text.toLowerCase()))
+                .toList();
+          }
+          return list;
+        },
+        onApplyButtonClick: (list) {
+          if (list != null) {
+            setState(() {
+              selectedSubjectList = List.from(list);
+            });
+          }
+          Navigator.pop(context);
+        });
+  }
 
   //Tag for Skills
   void _openFilterSkillsDialog() async {
