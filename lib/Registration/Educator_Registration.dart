@@ -76,8 +76,21 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
   String? registerAs;
   List<String> skillList = [];
   List<String> hobbieList = [];
-  List<String> subjectList = ['Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Information Technology Department',
-  'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework'];
+  List<String> subjectList = ['Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
+  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
+  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
+  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
+  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
+  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
+  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
+  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
+  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
+  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
+  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
+  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
+  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
+  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
+  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', ];
   int? totalWorkExp, totalTeachExp;
 
   List<String> selectedSkillList = [];
@@ -895,6 +908,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                         datePick != birthDate) {
                                       setState(() {
                                         birthDate = datePick;
+                                        print(birthDate);
                                         isDateSelected = true;
 
                                         if (birthDate!.day.toString().length ==
@@ -2256,17 +2270,19 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 child: Center(
                                   child: Align(
                                     alignment: Alignment.topCenter,
-                                    child: Text(
-                                      selectedSubjectList == null ||
-                                              selectedSubjectList.length == 0
-                                          ? "Please mention your skills example #skills1 #skills2..."
-                                          : selectedSubjectList
-                                              .toString().replaceAll('[', '').replaceAll(']', '').
-                                              replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                      style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          fontSize: 10.0.sp,
-                                          color: Constants.bpSkipStyle),
+                                    child: SingleChildScrollView(
+                                      child: Text(
+                                        selectedSubjectList == null ||
+                                                selectedSubjectList.length == 0
+                                            ? "Please mention your skills example #subject1 #subject2..."
+                                            : selectedSubjectList
+                                                .toString().replaceAll('[', '').replaceAll(']', '').
+                                                replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                        style: TextStyle(
+                                            fontFamily: "Montserrat",
+                                            fontSize: 10.0.sp,
+                                            color: Constants.bpSkipStyle),
+                                      ),
                                     ),
                                   ),
                                 ),
