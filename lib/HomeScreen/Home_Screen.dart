@@ -7,6 +7,7 @@ import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Learner_ProfileView_Screen.dart';
+import 'package:being_pupil/Subscription/Successful_Payment_Screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
@@ -183,7 +184,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                     icon: Icon(Icons.add_box_outlined),
                     onPressed: () {
                       pushNewScreen(context,
-                          screen: CreatePostScreen(),
+                          screen: PaymentSucessScreen(),//CreatePostScreen(),
                           withNavBar: false,
                           pageTransitionAnimation:
                               PageTransitionAnimation.cupertino);
