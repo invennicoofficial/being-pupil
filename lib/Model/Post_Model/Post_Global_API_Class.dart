@@ -160,6 +160,7 @@ class CommentAPI{
    Map<String, dynamic>? commentMap;
    GetCommentList commentList = GetCommentList();
    bool isLoading = true;
+   int commentCount = 0;
 
   Future<void> addCommentApi(int? postID, String comment, String authToken) async {
     //var delResult = PostDelete();
@@ -179,8 +180,8 @@ class CommentAPI{
         if (commentMap!['status'] == true) {
           print('true');
           print(commentMap);
-         
-         
+         commentCount = commentMap!['data']['total_comments'];
+          print('COUNT###'+commentCount.toString());
           Fluttertoast.showToast(
               msg: commentMap!['message'],
               backgroundColor: Constants.bgColor,

@@ -4,6 +4,7 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Create_Post_Screen.dart';
 import 'package:being_pupil/HomeScreen/Fulll_Screen_Image_Screen.dart';
 import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/Device_Token_Model.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Learner_ProfileView_Screen.dart';
@@ -12,8 +13,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -75,6 +78,9 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
+
   @override
   void initState() {
     getToken();
@@ -85,7 +91,28 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     print(authToken);
     getData();
+    generateFirebaseToken();
   }
+
+  //Generate firebase token
+  generateFirebaseToken() async {
+  _firebaseMessaging.requestPermission(sound: true, alert: true, badge: true);
+  _firebaseMessaging.getToken().then((token) {
+    var firebaseToken = token!;
+    print('token::: ' + token);
+    saveFirebaseToken(token);
+    setState(() {});
+    deviceTokenAPi(token);
+  });
+}
+
+saveFirebaseToken(String token) async {
+  // Create storage
+  final storage = new FlutterSecureStorage();
+
+  // Write value
+  await storage.write(key: 'firebaseToken', value: token);
+}
 
   getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -184,7 +211,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                     icon: Icon(Icons.add_box_outlined),
                     onPressed: () {
                       pushNewScreen(context,
-                          screen: PaymentSucessScreen(),//CreatePostScreen(),
+                          screen: CreatePostScreen(),
                           withNavBar: false,
                           pageTransitionAnimation:
                               PageTransitionAnimation.cupertino);
@@ -962,6 +989,46 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
+      print(e.response);
+      print(stack);
+    }
+  }
+
+  Future<void> deviceTokenAPi(String token) async{
+    var result = DeviceToken();
+
+    try{
+      var dio = Dio();
+      FormData formData = FormData.fromMap({
+        "deviceToken": token,
+        "deviceType": 'A'
+      });
+
+      var response = await dio.post(Config.deviceTokenUrl, data: formData,
+      options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
+
+      if(response.statusCode == 200){
+        result = DeviceToken.fromJson(response.data);
+        print(response.data);
+        if(result.status == true){
+          Fluttertoast.showToast(
+              msg: saveMap!['message'],
+              backgroundColor: Constants.bgColor,
+              gravity: ToastGravity.BOTTOM,
+              fontSize: 10.0.sp,
+              toastLength: Toast.LENGTH_SHORT,
+              textColor: Colors.white);
+        } else{
+          Fluttertoast.showToast(
+              msg: saveMap!['message'],
+              backgroundColor: Constants.bgColor,
+              gravity: ToastGravity.BOTTOM,
+              fontSize: 10.0.sp,
+              toastLength: Toast.LENGTH_SHORT,
+              textColor: Colors.white);
+          }
+      }
+    }on DioError catch (e, stack) {
       print(e.response);
       print(stack);
     }

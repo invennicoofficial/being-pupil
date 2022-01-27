@@ -73,6 +73,7 @@ class _CommentScreenState extends State<CommentScreen> {
   int? idForEdit;
   LikePostAPI like = LikePostAPI();
   Map<String, dynamic>? saveMap;
+  int? commentCount;
 
   @override
   void initState() {
@@ -419,7 +420,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                         Container(
                                           padding: EdgeInsets.only(top: 1.0.h),
                                           child: Text(
-                                            "${widget.comment} Comments",
+                                            //"${widget.comment} Comments",
+                                            "${commentCount == 0 || commentCount == null ? 0 : commentCount} Comments",
                                             style: TextStyle(
                                                 fontSize: 6.5.sp,
                                                 color: Constants
@@ -909,6 +911,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                 commentController.text,
                                                 authToken!);
                                             setState(() {
+                                              commentCount = comment.commentCount;
                                               focusNode.unfocus();
                                               commentController.text = '';
                                               isLoading = true;

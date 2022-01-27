@@ -57,6 +57,7 @@ class Config{
   static const String getReviewUrl = baseUrl + "property/getReview";
   static const String refreshTokenUrl = baseUrl + "user/refreshToken";
   static const String unfollowUserUrl = baseUrl + "user/unfollow";
+  static const String deviceTokenUrl = baseUrl + "user/send-device-token";
 }
 
 
