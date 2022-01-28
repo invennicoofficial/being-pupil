@@ -60,6 +60,8 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
   LikePostAPI like = LikePostAPI();
   CommentAPI comment = CommentAPI();
 
+  Map<String, dynamic> resultComment = {};
+
   @override
   void initState() {
     getToken();
@@ -461,28 +463,31 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                         ),
                                       ),
                                       GestureDetector(
-                                        onTap: () {
-                                          pushNewScreen(context,
-                                              withNavBar: false,
-                                              screen: CommentScreen(
-                                                postId: postIdList[index],
-                                                userId: userIdList[index],
-                                                name: nameList[index],
-                                                profileImage: profileImageList[index],
-                                                degree: degreeList[index],
-                                                schoolName: schoolList[index],
-                                                date: dateList[index],
-                                                description: descriptionList[index],
-                                                like: likesList[index],
-                                                comment: totalCommentsList[index],
-                                                isLiked: isLiked[index],
-                                                isSaved: isSaved[index],
-                                                imageListMap: imageListMap,
-                                                index: index,
-                                              ),
-                                              pageTransitionAnimation:
-                                              PageTransitionAnimation
-                                                  .cupertino);
+                                        onTap: () async{
+                                           resultComment = await
+                                          Navigator.of(context, rootNavigator: true).push(
+                                            MaterialPageRoute(builder: (context)=> CommentScreen(
+                                              postId: postIdList[index],
+                                              name: nameList[index],
+                                              profileImage: profileImageList[index],
+                                              degree: degreeList[index],
+                                              schoolName: schoolList[index],
+                                              date: dateList[index],
+                                              description: descriptionList[index],
+                                              like: likesList[index],
+                                              comment: totalCommentsList[index],
+                                              isLiked: isLiked[index],
+                                              isSaved: isSaved[index],
+                                              imageListMap: imageListMap,
+                                              index: index,
+                                            ))
+                                          );
+
+                                          setState(() {});
+
+                                           totalCommentsList[resultComment['index']] = resultComment['count'];
+                                          print('TC###'+totalCommentsList[resultComment['index']].toString());
+                                        setState(() {});
                                         },
                                         child: Container(
                                           child: Row(

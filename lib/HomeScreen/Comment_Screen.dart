@@ -74,6 +74,7 @@ class _CommentScreenState extends State<CommentScreen> {
   LikePostAPI like = LikePostAPI();
   Map<String, dynamic>? saveMap;
   int? commentCount;
+  Map<String, dynamic>? resultMap;
 
   @override
   void initState() {
@@ -97,6 +98,10 @@ class _CommentScreenState extends State<CommentScreen> {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     print(authToken);
     getData();
+    setState(() {
+      commentCount = widget.comment;
+      resultMap = {"count": widget.comment, "index": widget.index};
+    });
   }
 
   getData() async {
@@ -138,131 +143,338 @@ class _CommentScreenState extends State<CommentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Constants.bgColor,
-        leading: IconButton(
-          icon: Icon(
-            Icons.west_rounded,
-            color: Colors.white,
-            size: 35.0,
+    return WillPopScope(
+      onWillPop: _willPopCallback,
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Constants.bgColor,
+          leading: IconButton(
+            icon: Icon(
+              Icons.west_rounded,
+              color: Colors.white,
+              size: 35.0,
+            ),
+            onPressed: () {
+              Navigator.pop(context, resultMap);
+              print('CCC###'+resultMap.toString());
+            },
+            padding: EdgeInsets.zero,
           ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          padding: EdgeInsets.zero,
+          title: Text(
+            'Comments',
+            style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 12.0.sp,
+                fontWeight: FontWeight.w500,
+                color: Colors.white),
+          ),
         ),
-        title: Text(
-          'Comments',
-          style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 12.0.sp,
-              fontWeight: FontWeight.w500,
-              color: Colors.white),
-        ),
-      ),
-      body: isLoading
-          ? Center(
-              child: CircularProgressIndicator(
-                valueColor:
-                    new AlwaysStoppedAnimation<Color>(Constants.bgColor),
-              ),
-            )
-          : Stack(
-              children: <Widget>[
-                // ListView.builder(
-                //     shrinkWrap: true,
-                //     itemCount: 5,
-                //     itemBuilder: (context, index) {
-                //       return
-                SmartRefresher(
-                  controller: _refreshController,
-                  enablePullDown: false,
-                  enablePullUp: true,
-                  footer: ClassicFooter(
-                    loadStyle: LoadStyle.ShowWhenLoading,
-                    noDataText: 'No More Comments',
-                    //noMoreIcon: Icon(Icons.refresh_outlined),
-                  ),
-                  onLoading: _onLoading,
-                  child: ListView(
-                    controller: _scrollController,
-                    //physics: BouncingScrollPhysics(),
-                    //mainAxisSize: MainAxisSize.min,
-                    shrinkWrap: true,
-                    children: <Widget>[
-                      //main horizontal paddingF
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0.w),
-                        //Container for one post
-                        child: Container(
-                          width: 100.0.w,
-                          //color: Colors.grey[300],
-                          //column for post content
-                          child: Column(
-                            children: <Widget>[
-                              SizedBox(
-                                height: 1.0.h,
-                              ),
-                              //ListTile for educator details
-                              ListTile(
-                                contentPadding: EdgeInsets.all(0.0),
-                                //leading:
-                                title: GestureDetector(
-                                   onTap: (){
-                                        getUserProfile(widget.userId!);
-                                      },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 5.0),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(50),
-                                          child: Image.network(
-                                            widget.profileImage!,
-                                            width: 35.0,
-                                            height: 35.0,
-                                            fit: BoxFit.cover,
+        body: isLoading
+            ? Center(
+                child: CircularProgressIndicator(
+                  valueColor:
+                      new AlwaysStoppedAnimation<Color>(Constants.bgColor),
+                ),
+              )
+            : Stack(
+                children: <Widget>[
+                  // ListView.builder(
+                  //     shrinkWrap: true,
+                  //     itemCount: 5,
+                  //     itemBuilder: (context, index) {
+                  //       return
+                  SmartRefresher(
+                    controller: _refreshController,
+                    enablePullDown: false,
+                    enablePullUp: true,
+                    footer: ClassicFooter(
+                      loadStyle: LoadStyle.ShowWhenLoading,
+                      noDataText: 'No More Comments',
+                      //noMoreIcon: Icon(Icons.refresh_outlined),
+                    ),
+                    onLoading: _onLoading,
+                    child: ListView(
+                      controller: _scrollController,
+                      //physics: BouncingScrollPhysics(),
+                      //mainAxisSize: MainAxisSize.min,
+                      shrinkWrap: true,
+                      children: <Widget>[
+                        //main horizontal paddingF
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5.0.w),
+                          //Container for one post
+                          child: Container(
+                            width: 100.0.w,
+                            //color: Colors.grey[300],
+                            //column for post content
+                            child: Column(
+                              children: <Widget>[
+                                SizedBox(
+                                  height: 1.0.h,
+                                ),
+                                //ListTile for educator details
+                                ListTile(
+                                  contentPadding: EdgeInsets.all(0.0),
+                                  //leading:
+                                  title: GestureDetector(
+                                     onTap: (){
+                                          getUserProfile(widget.userId!);
+                                        },
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 5.0),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(50),
+                                            child: Image.network(
+                                              widget.profileImage!,
+                                              width: 35.0,
+                                              height: 35.0,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
+                                        SizedBox(
+                                          width: 2.0.w,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 1.0.h),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                widget.name!,
+                                                style: TextStyle(
+                                                    fontSize: 9.0.sp,
+                                                    color: Constants.bgColor,
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: FontWeight.w700),
+                                              ),
+                                              SizedBox(height: 1.0,),
+                                              Text(
+                                                '${widget.degree} | ${widget.schoolName}',
+                                                style: TextStyle(
+                                                    fontSize: 6.5.sp,
+                                                    color: Constants.bgColor,
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: FontWeight.w400),
+                                              ),
+                                              SizedBox(height: 1.0,),
+                                              Text(
+                                                widget.date!,
+                                                style: TextStyle(
+                                                    fontSize: 6.5.sp,
+                                                    color: Constants.bgColor,
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: FontWeight.w400),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  trailing: IconButton(
+                                       icon: SvgPicture.asset('assets/icons/reportSvg.svg'),
+                                      //  Image.asset('assets/icons/issueIcon.png',
+                                      //   height: 18.0,
+                                      //   width: 18.0,),
+                                      onPressed: () {
+                                        pushNewScreen(context,
+                                            withNavBar: false,
+                                            screen: ReportFeed(
+                                              postId: widget.postId,
+                                            ),
+                                            pageTransitionAnimation:
+                                                PageTransitionAnimation
+                                                    .cupertino);
+                                      }),
+                                  //ImageIcon(AssetImage('assets/icons/report.png'),)
+                                ),
+                                //Post descriptionText
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 2.0),
+                                  child: Container(
+                                    width: 100.0.w,
+                                    child: Text(widget.description!,
+                                      style: TextStyle(
+                                        fontSize: 9.0.sp,
+                                        color: Constants.bpOnBoardSubtitleStyle,
+                                        fontFamily: 'Montserrat',
+                                        height: 1.5,
+                                        fontWeight: FontWeight.w400,),
+                                      // textAlign: TextAlign.justify
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 1.0.h,
+                                ),
+                                // Container for image or video
+                                widget.imageListMap![widget.index!].length == 0
+                                    ? Container()
+                                    : Container(
+                                        height: 25.0.h,
+                                        width: 100.0.w,
+                                        child: ListView.builder(
+                                          shrinkWrap: true,
+                                          physics: BouncingScrollPhysics(),
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: widget
+                                              .imageListMap![widget.index!].length,
+                                          itemBuilder: (context, imageIndex) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                List<String> imgList = [];
+                                                for(int i = 0; i<widget
+                                                    .imageListMap![widget.index!].length; i++) {
+                                                  imgList.add(widget
+                                                      .imageListMap![widget.index!][i]['file']);
+                                                }
+                                                pushNewScreen(context,
+                                                    withNavBar: false,
+                                                    screen: FullScreenSlider(
+                                                        imageList: imgList,
+                                                        index: imageIndex,
+                                                        name: widget.name!
+                                                    ),
+                                                    pageTransitionAnimation:
+                                                    PageTransitionAnimation
+                                                        .cupertino);
+                                              },
+                                              child: Image.network(
+                                                widget.imageListMap![widget.index!][imageIndex]['file'],
+                                                height: 100,
+                                                width: 250,
+                                                fit: BoxFit.contain,
+                                              ),
+                                            );
+                                          },
+                                        ),
                                       ),
-                                      SizedBox(
-                                        width: 2.0.w,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 1.0.h),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                //divider
+                                Divider(
+                                  height: 1.0.h,
+                                  color: Constants.bpOnBoardSubtitleStyle
+                                      .withOpacity(0.5),
+                                  thickness: 1.0,
+                                ),
+                                //Row for Like comment and Share
+                                Padding(
+                                  padding: EdgeInsets.only(top: 0.5.h, bottom: 0.5.h),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            widget.isLiked = !widget.isLiked!;
+                                          });
+                                          like.likePostApi(widget.postId, authToken!);
+                                          setState(() {
+                                            widget.isLiked == true
+                                                ? widget.like = widget.like! + 1
+                                                : widget.like = widget.like! - 1;
+                                          });
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              widget.name!,
-                                              style: TextStyle(
-                                                  fontSize: 9.0.sp,
-                                                  color: Constants.bgColor,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w700),
+                                           ImageIcon(
+                                                widget.isLiked!
+                                                    ? AssetImage('assets/icons/likeNew.png')
+                                                    : AssetImage('assets/icons/likeThumb.png'),
+                                                color: widget.isLiked!
+                                                    ? Constants.selectedIcon
+                                                    : Constants.bpOnBoardSubtitleStyle,
+                                                size: 25.0,
+                                              ),
+                                            SizedBox(
+                                              width: 2.0.w,
                                             ),
-                                            SizedBox(height: 1.0,),
-                                            Text(
-                                              '${widget.degree} | ${widget.schoolName}',
+                                            Container(
+                                              padding: EdgeInsets.only(top: 1.0.h),
+                                              child: Text(
+                                                "${widget.like} Likes",
+                                                style: TextStyle(
+                                                    fontSize: 6.5.sp,
+                                                    color: Constants
+                                                        .bpOnBoardSubtitleStyle,
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: FontWeight.w400),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          ImageIcon(
+                                                AssetImage('assets/icons/commentNew.png'),
+                                                size: 21.0,
+                                                color: Constants.bpOnBoardSubtitleStyle,
+                                              ),
+                                          SizedBox(
+                                            width: 2.0.w,
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.only(top: 1.0.h),
+                                            child: Text(commentCount == 0 || commentCount == null
+                                              ? "${widget.comment} Comments"
+                                              : "$commentCount Comments",
                                               style: TextStyle(
                                                   fontSize: 6.5.sp,
-                                                  color: Constants.bgColor,
+                                                  color: Constants
+                                                      .bpOnBoardSubtitleStyle,
                                                   fontFamily: 'Montserrat',
                                                   fontWeight: FontWeight.w400),
                                             ),
-                                            SizedBox(height: 1.0,),
-                                            Text(
-                                              widget.date!,
-                                              style: TextStyle(
-                                                  fontSize: 6.5.sp,
-                                                  color: Constants.bgColor,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w400),
+                                          )
+                                        ],
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            widget.isSaved = !widget.isSaved!;
+                                          });
+                                          savePostApi(widget.postId);
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            ImageIcon(
+                                                widget.isSaved!
+                                                    ? AssetImage('assets/icons/saveGreen.png')
+                                                    : AssetImage('assets/icons/saveNew.png'),
+                                                color: widget.isSaved!
+                                                    ? Constants.selectedIcon
+                                                    : Constants.bpOnBoardSubtitleStyle,
+                                                size: 21.0,
+                                              ),
+                                            SizedBox(
+                                              width: 1.0.w,
+                                            ),
+                                            Container(
+                                              padding:
+                                                  EdgeInsets.only(top: 1.0.h),
+                                              child: Text(
+                                                "Save",
+                                                style: TextStyle(
+                                                    fontSize: 6.5.sp,
+                                                    color: Constants
+                                                        .bpOnBoardSubtitleStyle,
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: FontWeight.w400),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -270,687 +482,485 @@ class _CommentScreenState extends State<CommentScreen> {
                                     ],
                                   ),
                                 ),
-                                trailing: IconButton(
-                                     icon: SvgPicture.asset('assets/icons/reportSvg.svg'),
-                                    //  Image.asset('assets/icons/issueIcon.png',
-                                    //   height: 18.0,
-                                    //   width: 18.0,),
-                                    onPressed: () {
-                                      pushNewScreen(context,
-                                          withNavBar: false,
-                                          screen: ReportFeed(
-                                            postId: widget.postId,
-                                          ),
-                                          pageTransitionAnimation:
-                                              PageTransitionAnimation
-                                                  .cupertino);
-                                    }),
-                                //ImageIcon(AssetImage('assets/icons/report.png'),)
-                              ),
-                              //Post descriptionText
-                              Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 2.0),
-                                child: Container(
-                                  width: 100.0.w,
-                                  child: Text(widget.description!,
-                                    style: TextStyle(
-                                      fontSize: 9.0.sp,
-                                      color: Constants.bpOnBoardSubtitleStyle,
-                                      fontFamily: 'Montserrat',
-                                      height: 1.5,
-                                      fontWeight: FontWeight.w400,),
-                                    // textAlign: TextAlign.justify
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 1.0.h,
-                              ),
-                              // Container for image or video
-                              widget.imageListMap![widget.index!].length == 0
-                                  ? Container()
-                                  : Container(
-                                      height: 25.0.h,
-                                      width: 100.0.w,
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        physics: BouncingScrollPhysics(),
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: widget
-                                            .imageListMap![widget.index!].length,
-                                        itemBuilder: (context, imageIndex) {
-                                          return GestureDetector(
-                                            onTap: () {
-                                              List<String> imgList = [];
-                                              for(int i = 0; i<widget
-                                                  .imageListMap![widget.index!].length; i++) {
-                                                imgList.add(widget
-                                                    .imageListMap![widget.index!][i]['file']);
-                                              }
-                                              pushNewScreen(context,
-                                                  withNavBar: false,
-                                                  screen: FullScreenSlider(
-                                                      imageList: imgList,
-                                                      index: imageIndex,
-                                                      name: widget.name!
-                                                  ),
-                                                  pageTransitionAnimation:
-                                                  PageTransitionAnimation
-                                                      .cupertino);
-                                            },
-                                            child: Image.network(
-                                              widget.imageListMap![widget.index!][imageIndex]['file'],
-                                              height: 100,
-                                              width: 250,
-                                              fit: BoxFit.contain,
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                              //divider
-                              Divider(
-                                height: 1.0.h,
-                                color: Constants.bpOnBoardSubtitleStyle
-                                    .withOpacity(0.5),
-                                thickness: 1.0,
-                              ),
-                              //Row for Like comment and Share
-                              Padding(
-                                padding: EdgeInsets.only(top: 0.5.h, bottom: 0.5.h),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          widget.isLiked = !widget.isLiked!;
-                                        });
-                                        like.likePostApi(widget.postId, authToken!);
-                                        setState(() {
-                                          widget.isLiked == true
-                                              ? widget.like = widget.like! + 1
-                                              : widget.like = widget.like! - 1;
-                                        });
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                         ImageIcon(
-                                              widget.isLiked!
-                                                  ? AssetImage('assets/icons/likeNew.png')
-                                                  : AssetImage('assets/icons/likeThumb.png'),
-                                              color: widget.isLiked!
-                                                  ? Constants.selectedIcon
-                                                  : Constants.bpOnBoardSubtitleStyle,
-                                              size: 25.0,
-                                            ),
-                                          SizedBox(
-                                            width: 2.0.w,
-                                          ),
-                                          Container(
-                                            padding: EdgeInsets.only(top: 1.0.h),
-                                            child: Text(
-                                              "${widget.like} Likes",
-                                              style: TextStyle(
-                                                  fontSize: 6.5.sp,
-                                                  color: Constants
-                                                      .bpOnBoardSubtitleStyle,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        ImageIcon(
-                                              AssetImage('assets/icons/commentNew.png'),
-                                              size: 21.0,
-                                              color: Constants.bpOnBoardSubtitleStyle,
-                                            ),
-                                        SizedBox(
-                                          width: 2.0.w,
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.only(top: 1.0.h),
-                                          child: Text(
-                                            //"${widget.comment} Comments",
-                                            "${commentCount == 0 || commentCount == null ? 0 : commentCount} Comments",
-                                            style: TextStyle(
-                                                fontSize: 6.5.sp,
-                                                color: Constants
-                                                    .bpOnBoardSubtitleStyle,
-                                                fontFamily: 'Montserrat',
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          widget.isSaved = !widget.isSaved!;
-                                        });
-                                        savePostApi(widget.postId);
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          ImageIcon(
-                                              widget.isSaved!
-                                                  ? AssetImage('assets/icons/saveGreen.png')
-                                                  : AssetImage('assets/icons/saveNew.png'),
-                                              color: widget.isSaved!
-                                                  ? Constants.selectedIcon
-                                                  : Constants.bpOnBoardSubtitleStyle,
-                                              size: 21.0,
-                                            ),
-                                          SizedBox(
-                                            width: 1.0.w,
-                                          ),
-                                          Container(
-                                            padding:
-                                                EdgeInsets.only(top: 1.0.h),
-                                            child: Text(
-                                              "Save",
-                                              style: TextStyle(
-                                                  fontSize: 6.5.sp,
-                                                  color: Constants
-                                                      .bpOnBoardSubtitleStyle,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        //Reaction dp
+                        // Padding(
+                        //   padding: EdgeInsets.only(
+                        //     top: 3.0.h,
+                        //     right: 4.0.w,
+                        //     left: 4.0.w,
+                        //   ),
+                        //   child:
+                        //       //Column(
+                        //       //children: <Widget>[
+                        //       Row(
+                        //     children: [
+                        //       Text(
+                        //         'Reactions',
+                        //         style: TextStyle(
+                        //             fontSize: 12.0.sp,
+                        //             color: Constants.bgColor,
+                        //             fontFamily: 'Montserrat',
+                        //             fontWeight: FontWeight.w500),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        // Padding(
+                        //   padding: EdgeInsets.only(
+                        //       top: 0.0.h, right: 4.0.w, left: 4.0.w),
+                        //   child: Row(
+                        //     children: [
+                        //       Expanded(
+                        //         child: Container(
+                        //           height: 7.0.h,
+                        //           child: ListView.builder(
+                        //               physics: BouncingScrollPhysics(),
+                        //               scrollDirection: Axis.horizontal,
+                        //               itemCount: dpImages.length,
+                        //               shrinkWrap: true,
+                        //               itemBuilder: (context, index) {
+                        //                 return Padding(
+                        //                   padding: EdgeInsets.only(right: 3.0.w),
+                        //                   child: ClipRRect(
+                        //                     borderRadius:
+                        //                         BorderRadius.circular(65),
+                        //                     child: Image.asset(
+                        //                       // index == 8
+                        //                       // ? 'assets/icons/menu.png'
+                        //                       // :
+                        //                       dpImages[index],
+                        //                       height: 4.5.h,
+                        //                       width: 7.5.w,
+                        //                       fit: BoxFit.contain,
+                        //                     ),
+                        //                   ),
+                        //                 );
+                        //               }),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+    
+                        //comment list
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 2.0.h, right: 4.0.w, left: 4.0.w),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Comments',
+                                style: TextStyle(
+                                    fontSize: 12.0.sp,
+                                    color: Constants.bgColor,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w500),
                               ),
                             ],
                           ),
                         ),
+                        ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            //scrollDirection: Axis.horizontal,
+                            itemCount:
+                                commentId.length == 0 ? 0 : commentId.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding:
+                                    EdgeInsets.only(bottom: 2.0.h, top: 1.0.h),
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 3.0.w),
+                                  title: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 28.0),
+                                          child: GestureDetector(
+                                            onTap: (){
+                                              getUserProfile(commentUserId[index]);
+                                            },
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              child: Image.network(
+                                                profileImages[index]!,
+                                                height: 35.0,
+                                                width: 35.0,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 2.0.w,
+                                        ),
+                                        Container(
+                                          //height: 7.0.h,
+                                          width: 82.0.w,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 2.0.w, vertical: 1.0.h),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Constants.formBorder
+                                                    .withOpacity(0.6),
+                                                width: 0.6,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0)),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      Text(
+                                                        name[index]!,
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'Montserrat',
+                                                            fontSize: 10.0.sp,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color: Constants
+                                                                .bgColor),
+                                                      ),
+                                                      Text(
+                                                        date[index]!.substring(0, 9),
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'Montserrat',
+                                                            fontSize: 7.0.sp,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            color: Constants
+                                                                .bgColor),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  // Image.asset(
+                                                  //   'assets/icons/menu.png',
+                                                  //   height: 2.0.h,
+                                                  //   width: 2.0.w,
+                                                  //   fit: BoxFit.contain,
+                                                  // )
+                                                  userId.toString() ==
+                                                          commentUserId[index]
+                                                      ? PopupMenuButton(
+                                                          color:
+                                                              Color(0xFFF0F2F4),
+                                                          elevation: 2.0,
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 8.0.w),
+                                                          icon: Icon(
+                                                            Icons.more_vert,
+                                                            color: Constants
+                                                                .bpSkipStyle,
+                                                            size: 20.0,
+                                                          ),
+                                                          onSelected:
+                                                              (dynamic value) async {
+                                                            if (value == 1) {
+                                                              //Edit Comment API
+                                                              setState(() {
+                                                                isEdit = true;
+                                                                idForEdit = commentId[index];
+                                                                commentController.text = comments[index]!;
+                                                                focusNode.requestFocus();
+                                                              });
+                                                            } else {
+                                                              //Delete comment APi
+                                                              await deleteCommentApi(commentId[index]);
+                                                              setState(() {
+                                                                isLoading = true;
+                                                                page = 1;
+                                                                commentId = [];
+                                                                commentUserId = [];
+                                                                profileImages = [];
+                                                                name = [];
+                                                                date = [];
+                                                                comments = [];
+                                                              });
+                                                              getCommentListApi(page);
+                                                            }
+                                                          },
+                                                          itemBuilder:
+                                                              (context) => [
+                                                                    PopupMenuItem(
+                                                                      child: Text(
+                                                                        "Edit",
+                                                                        style: TextStyle(
+                                                                            fontFamily:
+                                                                                'Montserrat',
+                                                                            fontSize: 10.0
+                                                                                .sp,
+                                                                            fontWeight: FontWeight
+                                                                                .w400,
+                                                                            color:
+                                                                                Constants.bgColor),
+                                                                      ),
+                                                                      value: 1,
+                                                                    ),
+                                                                    PopupMenuItem(
+                                                                      child: Text(
+                                                                        "Delete",
+                                                                        style: TextStyle(
+                                                                            fontFamily:
+                                                                                'Montserrat',
+                                                                            fontSize: 10.0
+                                                                                .sp,
+                                                                            fontWeight: FontWeight
+                                                                                .w400,
+                                                                            color:
+                                                                                Constants.bgColor),
+                                                                      ),
+                                                                      value: 2,
+                                                                    )
+                                                                  ])
+                                                      : Container(),
+                                                ],
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 0.5.h),
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      //color: Colors.grey,
+                                                      width: 77.0.w,
+                                                      child: Text(
+                                                        comments[index]!,
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'Montserrat',
+                                                            fontSize: 10.0.sp,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            color: Constants
+                                                                .bpOnBoardSubtitleStyle),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ]),
+                                ),
+                              );
+                            }),
+                        //   ],
+                        // ),
+                        //),
+                        SizedBox(
+                          height: 5.0.h,
+                        )
+                      ],
+                    ),
+                  ),
+                  //}),
+    
+                  //add comments
+                  isEdit
+                  ? Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 4.0.h,
                       ),
-                      //Reaction dp
-                      // Padding(
-                      //   padding: EdgeInsets.only(
-                      //     top: 3.0.h,
-                      //     right: 4.0.w,
-                      //     left: 4.0.w,
-                      //   ),
-                      //   child:
-                      //       //Column(
-                      //       //children: <Widget>[
-                      //       Row(
-                      //     children: [
-                      //       Text(
-                      //         'Reactions',
-                      //         style: TextStyle(
-                      //             fontSize: 12.0.sp,
-                      //             color: Constants.bgColor,
-                      //             fontFamily: 'Montserrat',
-                      //             fontWeight: FontWeight.w500),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                      // Padding(
-                      //   padding: EdgeInsets.only(
-                      //       top: 0.0.h, right: 4.0.w, left: 4.0.w),
-                      //   child: Row(
-                      //     children: [
-                      //       Expanded(
-                      //         child: Container(
-                      //           height: 7.0.h,
-                      //           child: ListView.builder(
-                      //               physics: BouncingScrollPhysics(),
-                      //               scrollDirection: Axis.horizontal,
-                      //               itemCount: dpImages.length,
-                      //               shrinkWrap: true,
-                      //               itemBuilder: (context, index) {
-                      //                 return Padding(
-                      //                   padding: EdgeInsets.only(right: 3.0.w),
-                      //                   child: ClipRRect(
-                      //                     borderRadius:
-                      //                         BorderRadius.circular(65),
-                      //                     child: Image.asset(
-                      //                       // index == 8
-                      //                       // ? 'assets/icons/menu.png'
-                      //                       // :
-                      //                       dpImages[index],
-                      //                       height: 4.5.h,
-                      //                       width: 7.5.w,
-                      //                       fit: BoxFit.contain,
-                      //                     ),
-                      //                   ),
-                      //                 );
-                      //               }),
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-
-                      //comment list
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: 2.0.h, right: 4.0.w, left: 4.0.w),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Comments',
-                              style: TextStyle(
-                                  fontSize: 12.0.sp,
-                                  color: Constants.bgColor,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                      ),
-                      ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          //scrollDirection: Axis.horizontal,
-                          itemCount:
-                              commentId.length == 0 ? 0 : commentId.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding:
-                                  EdgeInsets.only(bottom: 2.0.h, top: 1.0.h),
-                              child: ListTile(
-                                contentPadding: EdgeInsets.symmetric(horizontal: 3.0.w),
-                                title: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 28.0),
-                                        child: GestureDetector(
-                                          onTap: (){
-                                            getUserProfile(commentUserId[index]);
-                                          },
+                      Row(
+                        //mainAxisAlignment: MainAxisAlignment.end,
+                        //crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                              //height: 7.0.h,
+                              width: 100.0.w,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    color: Constants.formBorder.withOpacity(0.2),
+                                    width: 3.0,
+                                  )),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 4.0.w,
+                                ),
+                                child: TextFormField(
+                                    controller: commentController,
+                                    focusNode: focusNode,
+                                    keyboardType: TextInputType.multiline,
+                                    maxLength: 140,
+                                    cursorColor: Constants.bgColor,
+                                    cursorHeight: 25.0,
+                                    decoration: InputDecoration(
+                                        //labelText: "Please mention your achivements...",
+                                        prefixIcon: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 2.0.w, vertical: 1.0.h),
                                           child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(50),
+                                            borderRadius: BorderRadius.circular(50),
                                             child: Image.network(
-                                              profileImages[index]!,
-                                              height: 35.0,
-                                              width: 35.0,
+                                              imageUrl!,
+                                              width: 3.0.w,
+                                              height: 1.0.h,
                                               fit: BoxFit.cover,
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        width: 2.0.w,
-                                      ),
-                                      Container(
-                                        //height: 7.0.h,
-                                        width: 82.0.w,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 2.0.w, vertical: 1.0.h),
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Constants.formBorder
-                                                  .withOpacity(0.6),
-                                              width: 0.6,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(5.0)),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    Text(
-                                                      name[index]!,
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'Montserrat',
-                                                          fontSize: 10.0.sp,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          color: Constants
-                                                              .bgColor),
-                                                    ),
-                                                    Text(
-                                                      date[index]!.substring(0, 9),
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'Montserrat',
-                                                          fontSize: 7.0.sp,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          color: Constants
-                                                              .bgColor),
-                                                    ),
-                                                  ],
-                                                ),
-                                                // Image.asset(
-                                                //   'assets/icons/menu.png',
-                                                //   height: 2.0.h,
-                                                //   width: 2.0.w,
-                                                //   fit: BoxFit.contain,
-                                                // )
-                                                userId.toString() ==
-                                                        commentUserId[index]
-                                                    ? PopupMenuButton(
-                                                        color:
-                                                            Color(0xFFF0F2F4),
-                                                        elevation: 2.0,
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 8.0.w),
-                                                        icon: Icon(
-                                                          Icons.more_vert,
-                                                          color: Constants
-                                                              .bpSkipStyle,
-                                                          size: 20.0,
-                                                        ),
-                                                        onSelected:
-                                                            (dynamic value) async {
-                                                          if (value == 1) {
-                                                            //Edit Comment API
-                                                            setState(() {
-                                                              isEdit = true;
-                                                              idForEdit = commentId[index];
-                                                              commentController.text = comments[index]!;
-                                                              focusNode.requestFocus();
-                                                            });
-                                                          } else {
-                                                            //Delete comment APi
-                                                            await deleteCommentApi(commentId[index]);
-                                                            setState(() {
-                                                              isLoading = true;
-                                                              page = 1;
-                                                              commentId = [];
-                                                              commentUserId = [];
-                                                              profileImages = [];
-                                                              name = [];
-                                                              date = [];
-                                                              comments = [];
-                                                            });
-                                                            getCommentListApi(page);
-                                                          }
-                                                        },
-                                                        itemBuilder:
-                                                            (context) => [
-                                                                  PopupMenuItem(
-                                                                    child: Text(
-                                                                      "Edit",
-                                                                      style: TextStyle(
-                                                                          fontFamily:
-                                                                              'Montserrat',
-                                                                          fontSize: 10.0
-                                                                              .sp,
-                                                                          fontWeight: FontWeight
-                                                                              .w400,
-                                                                          color:
-                                                                              Constants.bgColor),
-                                                                    ),
-                                                                    value: 1,
-                                                                  ),
-                                                                  PopupMenuItem(
-                                                                    child: Text(
-                                                                      "Delete",
-                                                                      style: TextStyle(
-                                                                          fontFamily:
-                                                                              'Montserrat',
-                                                                          fontSize: 10.0
-                                                                              .sp,
-                                                                          fontWeight: FontWeight
-                                                                              .w400,
-                                                                          color:
-                                                                              Constants.bgColor),
-                                                                    ),
-                                                                    value: 2,
-                                                                  )
-                                                                ])
-                                                    : Container(),
-                                              ],
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 0.5.h),
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    //color: Colors.grey,
-                                                    width: 77.0.w,
-                                                    child: Text(
-                                                      comments[index]!,
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'Montserrat',
-                                                          fontSize: 10.0.sp,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          color: Constants
-                                                              .bpOnBoardSubtitleStyle),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
+                                        suffixIcon: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 1.0.w),
+                                          child: TextButton(
+                                            onPressed: () async{
+                                              await editCommentApi(idForEdit);
+                                              setState(() {
+                                                FocusScope.of(context).unfocus();
+                                                commentController.text = '';
+                                                isLoading = true;
+                                                page = 1;
+                                                commentId = [];
+                                                commentUserId = [];
+                                                profileImages = [];
+                                                name = [];
+                                                date = [];
+                                                comments = [];
+                                              });
+                                              getCommentListApi(page);
+                                            },
+                                            child: Text('Post',
+                                                style: TextStyle(
+                                                    fontFamily: 'Montserrat',
+                                                    fontSize: 12.0.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Constants.bgColor)),
+                                          ),
                                         ),
-                                      ),
-                                    ]),
-                              ),
-                            );
-                          }),
-                      //   ],
-                      // ),
-                      //),
-                      SizedBox(
-                        height: 5.0.h,
-                      )
+                                        counterText: '',
+                                        fillColor: Colors.white,
+                                        hintText: "Leave your thoughts here...",
+                                        border: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none),
+                                    style: new TextStyle(
+                                        fontFamily: "Montserrat",
+                                        fontSize: 10.0.sp,
+                                        color: Constants.bgColor)),
+                              ))
+                        ],
+                      ),
+                    ],
+                  )
+                  : Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 4.0.h,
+                      ),
+                      Row(
+                        //mainAxisAlignment: MainAxisAlignment.end,
+                        //crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                              //height: 7.0.h,
+                              width: 100.0.w,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    color: Constants.formBorder.withOpacity(0.2),
+                                    width: 3.0,
+                                  )),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 4.0.w,
+                                ),
+                                child: TextFormField(
+                                    controller: commentController,
+                                    keyboardType: TextInputType.multiline,
+                                    maxLength: 140,
+                                    cursorColor: Constants.bgColor,
+                                    //cursorHeight: 25.0,
+                                    decoration: InputDecoration(
+                                        //labelText: "Please mention your achivements...",
+                                        prefixIcon: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 2.0.w, vertical: 1.0.h),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(50),
+                                            child: Image.network(
+                                              imageUrl!,
+                                              width: 3.0.w,
+                                              height: 1.0.h,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        suffixIcon: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 1.0.w),
+                                          child: TextButton(
+                                            onPressed: () async{
+                                              await comment.addCommentApi(
+                                                  widget.postId,
+                                                  commentController.text,
+                                                  authToken!);
+                                              setState(() {
+                                                commentCount = comment.commentCount;
+                                                resultMap = {"count": commentCount, "index": widget.index};
+                                                focusNode.unfocus();
+                                                commentController.text = '';
+                                                isLoading = true;
+                                                page = 1;
+                                                commentId = [];
+                                                commentUserId = [];
+                                                profileImages = [];
+                                                name = [];
+                                                date = [];
+                                                comments = [];
+                                              });
+                                              getCommentListApi(page);
+                                            },
+                                            child: Text('Post',
+                                                style: TextStyle(
+                                                    fontFamily: 'Montserrat',
+                                                    fontSize: 12.0.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Constants.bgColor)),
+                                          ),
+                                        ),
+                                        counterText: '',
+                                        fillColor: Colors.white,
+                                        hintText: "Leave your thoughts here...",
+                                        border: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none),
+                                    style: new TextStyle(
+                                        fontFamily: "Montserrat",
+                                        fontSize: 10.0.sp,
+                                        color: Constants.bgColor)),
+                              ))
+                        ],
+                      ),
                     ],
                   ),
-                ),
-                //}),
-
-                //add comments
-                isEdit
-                ? Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      height: 4.0.h,
-                    ),
-                    Row(
-                      //mainAxisAlignment: MainAxisAlignment.end,
-                      //crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                            //height: 7.0.h,
-                            width: 100.0.w,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                  color: Constants.formBorder.withOpacity(0.2),
-                                  width: 3.0,
-                                )),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 4.0.w,
-                              ),
-                              child: TextFormField(
-                                  controller: commentController,
-                                  focusNode: focusNode,
-                                  keyboardType: TextInputType.multiline,
-                                  maxLength: 140,
-                                  cursorColor: Constants.bgColor,
-                                  cursorHeight: 25.0,
-                                  decoration: InputDecoration(
-                                      //labelText: "Please mention your achivements...",
-                                      prefixIcon: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 2.0.w, vertical: 1.0.h),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(50),
-                                          child: Image.network(
-                                            imageUrl!,
-                                            width: 3.0.w,
-                                            height: 1.0.h,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                      suffixIcon: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 1.0.w),
-                                        child: TextButton(
-                                          onPressed: () async{
-                                            await editCommentApi(idForEdit);
-                                            setState(() {
-                                              FocusScope.of(context).unfocus();
-                                              commentController.text = '';
-                                              isLoading = true;
-                                              page = 1;
-                                              commentId = [];
-                                              commentUserId = [];
-                                              profileImages = [];
-                                              name = [];
-                                              date = [];
-                                              comments = [];
-                                            });
-                                            getCommentListApi(page);
-                                          },
-                                          child: Text('Post',
-                                              style: TextStyle(
-                                                  fontFamily: 'Montserrat',
-                                                  fontSize: 12.0.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Constants.bgColor)),
-                                        ),
-                                      ),
-                                      counterText: '',
-                                      fillColor: Colors.white,
-                                      hintText: "Leave your thoughts here...",
-                                      border: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      disabledBorder: InputBorder.none),
-                                  style: new TextStyle(
-                                      fontFamily: "Montserrat",
-                                      fontSize: 10.0.sp,
-                                      color: Constants.bgColor)),
-                            ))
-                      ],
-                    ),
-                  ],
-                )
-                : Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      height: 4.0.h,
-                    ),
-                    Row(
-                      //mainAxisAlignment: MainAxisAlignment.end,
-                      //crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                            //height: 7.0.h,
-                            width: 100.0.w,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                  color: Constants.formBorder.withOpacity(0.2),
-                                  width: 3.0,
-                                )),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 4.0.w,
-                              ),
-                              child: TextFormField(
-                                  controller: commentController,
-                                  keyboardType: TextInputType.multiline,
-                                  maxLength: 140,
-                                  cursorColor: Constants.bgColor,
-                                  //cursorHeight: 25.0,
-                                  decoration: InputDecoration(
-                                      //labelText: "Please mention your achivements...",
-                                      prefixIcon: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 2.0.w, vertical: 1.0.h),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(50),
-                                          child: Image.network(
-                                            imageUrl!,
-                                            width: 3.0.w,
-                                            height: 1.0.h,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                      suffixIcon: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 1.0.w),
-                                        child: TextButton(
-                                          onPressed: () async{
-                                            await comment.addCommentApi(
-                                                widget.postId,
-                                                commentController.text,
-                                                authToken!);
-                                            setState(() {
-                                              commentCount = comment.commentCount;
-                                              focusNode.unfocus();
-                                              commentController.text = '';
-                                              isLoading = true;
-                                              page = 1;
-                                              commentId = [];
-                                              commentUserId = [];
-                                              profileImages = [];
-                                              name = [];
-                                              date = [];
-                                              comments = [];
-                                            });
-                                            getCommentListApi(page);
-                                          },
-                                          child: Text('Post',
-                                              style: TextStyle(
-                                                  fontFamily: 'Montserrat',
-                                                  fontSize: 12.0.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Constants.bgColor)),
-                                        ),
-                                      ),
-                                      counterText: '',
-                                      fillColor: Colors.white,
-                                      hintText: "Leave your thoughts here...",
-                                      border: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      disabledBorder: InputBorder.none),
-                                  style: new TextStyle(
-                                      fontFamily: "Montserrat",
-                                      fontSize: 10.0.sp,
-                                      color: Constants.bgColor)),
-                            ))
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                ],
+              ),
+      ),
     );
   }
 
@@ -1235,4 +1245,12 @@ class _CommentScreenState extends State<CommentScreen> {
       print(stack);
     }
   }
+
+  Future<bool> _willPopCallback() async {
+    // await showDialog or Show add banners or whatever
+    Navigator.pop(context, resultMap);
+    print('CCC###'+resultMap.toString());
+    // then
+    return true; // return true if the route to be popped
+}
 }

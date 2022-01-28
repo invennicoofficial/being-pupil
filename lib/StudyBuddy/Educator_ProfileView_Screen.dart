@@ -74,6 +74,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
   Map<String, dynamic>? unfollowMap;
  //SimpleAccountMenu menu = SimpleAccountMenu();
  bool isSelected = false;
+  Map<String, dynamic> resultComment = {};
 
 
   @override
@@ -846,10 +847,10 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                       ),
                                     ),
                                     GestureDetector(
-                                      onTap: () {
-                                        pushNewScreen(context,
-                                            withNavBar: false,
-                                            screen: CommentScreen(
+                                      onTap: () async{
+                                         resultComment = await
+                                          Navigator.of(context, rootNavigator: true).push(
+                                            MaterialPageRoute(builder: (context)=> CommentScreen(
                                               postId: postIdList[index],
                                               name: nameList[index],
                                               profileImage: profileImageList[index],
@@ -863,10 +864,35 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                               isSaved: isSaved[index],
                                               imageListMap: imageListMap,
                                               index: index,
-                                            ),
-                                            pageTransitionAnimation:
-                                            PageTransitionAnimation
-                                                .cupertino);
+                                            ))
+                                          );
+
+                                          setState(() {});
+
+                                           totalCommentsList[resultComment['index']] = resultComment['count'];
+                                          print('TC###'+totalCommentsList[resultComment['index']].toString());
+                                        setState(() {});
+
+                                        // pushNewScreen(context,
+                                        //     withNavBar: false,
+                                        //     screen: CommentScreen(
+                                        //       postId: postIdList[index],
+                                        //       name: nameList[index],
+                                        //       profileImage: profileImageList[index],
+                                        //       degree: degreeList[index],
+                                        //       schoolName: schoolList[index],
+                                        //       date: dateList[index],
+                                        //       description: descriptionList[index],
+                                        //       like: likesList[index],
+                                        //       comment: totalCommentsList[index],
+                                        //       isLiked: isLiked[index],
+                                        //       isSaved: isSaved[index],
+                                        //       imageListMap: imageListMap,
+                                        //       index: index,
+                                        //     ),
+                                        //     pageTransitionAnimation:
+                                        //     PageTransitionAnimation
+                                        //         .cupertino);
                                       },
                                       child: Container(
                                         child: Row(
@@ -890,6 +916,9 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                             Container(
                                               padding: EdgeInsets.only(top: 1.0.h),
                                               child: Text(
+                                                //  resultComment['index'] == index 
+                                                // ? "${resultComment['count']} Comments"
+                                                // : 
                                                 "${totalCommentsList[index]} Comments",
                                                 style: TextStyle(
                                                     fontSize: 6.5.sp,

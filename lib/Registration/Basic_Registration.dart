@@ -543,7 +543,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _signInCC(context, CubeUser(fullName: name, login: email, password: '12345678', email: email), result);
         } else {
           Fluttertoast.showToast(
-          msg: result.message!,
+          msg: result.message == null ? result.errorMsg! : result.message!,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
