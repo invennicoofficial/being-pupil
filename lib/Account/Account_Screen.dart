@@ -10,6 +10,7 @@ import 'package:being_pupil/Account/Terms_And_Policy_Screen.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Login/Login_Screen.dart';
+import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:flutter/material.dart';
@@ -249,6 +250,25 @@ class _AccountScreenState extends State<AccountScreen> {
                             },
                             child: ProfileList(
                               txt: "Saved Posts",
+                              image: "assets/icons/savedPost.png",
+                              forwordIcon: true,
+                              sizeImage: 20.0,
+                              padding: 20.0,
+                            ),
+                          ),
+                           SizedBox(
+                            height: 1.0.h,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              pushNewScreen(context,
+                                  withNavBar: false,
+                                  screen: SubscriptionPlanScreen(),
+                                  pageTransitionAnimation:
+                                      PageTransitionAnimation.cupertino);
+                            },
+                            child: ProfileList(
+                              txt: "Subscription",
                               image: "assets/icons/savedPost.png",
                               forwordIcon: true,
                               sizeImage: 20.0,
