@@ -76,21 +76,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
   String? registerAs;
   List<String> skillList = [];
   List<String> hobbieList = [];
-  List<String> subjectList = ['Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
-  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
-  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
-  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
-  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
-  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
-  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
-  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
-  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
-  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
-  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
-  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
-  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
-  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', 
-  'Organic Chemestry', 'Data Sceince', 'Physics Stream', 'Master Arts', 'Computer Sceince', 'BCA', 'Logistic', 'Flutter Development', 'IOS', 'Android', 'Mathematics', 'React Native', 'Core PHP', 'Laravel Framework', ];
+  
   int? totalWorkExp, totalTeachExp;
 
   List<String> selectedSkillList = [];
@@ -102,7 +88,11 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
 
   Map<String, dynamic>? hobbieMap = Map<String, dynamic>();
   List<dynamic>? hobbieMapData = [];//List();
-    final ImagePicker _picker = ImagePicker();
+
+  Map<String, dynamic>? subjectMap = Map<String, dynamic>();
+  List<dynamic>? subjectMapData = [];//List();
+
+  final ImagePicker _picker = ImagePicker();
 
 
   static const String TAG = "_LoginPageState";
@@ -3289,6 +3279,24 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp); 
+                              }  else if (selectedSubjectList.length == 0) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Select Subject Expertise",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp); 
+                              } else if (selectedSubjectList.length > 25) {
+                                Fluttertoast.showToast(
+                                    msg: "You Can Select Only 25 Subjects",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp); 
                               }
                                else {
                                 // _signInCC(context, CubeUser(fullName:  _nameController.text, login: _emailController.text, password: '12345678'));
@@ -3314,6 +3322,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     _achivementController.text,
                                     selectedSkillList.toString(),
                                     selectedHobbiesList.toString(),
+                                    selectedSubjectList.toString(),
                                     _fbLinkController.text,
                                     _instagramLinkController.text,
                                     _linkedInLinkLinkController.text,
@@ -3393,6 +3402,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
           _achivementController.text,
           selectedSkillList.toString(),
           selectedHobbiesList.toString(),
+          selectedSubjectList.toString(),
           _fbLinkController.text,
           _instagramLinkController.text,
           _linkedInLinkLinkController.text,
@@ -3453,7 +3463,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
   //Tag for Subject Experties
   void _openFilterSubjectDialog() async {
     await FilterListDialog.display(context,
-        listData: subjectList,//skillMapData!,
+        listData: subjectMapData!,
         selectedListData: selectedSubjectList,
         height: 480,
         headlineText: "Select or Search Subjects",
@@ -3655,20 +3665,26 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
 
     try {
       Dio dio = Dio();
+      var option = Options(headers: {"Authorization": 'Bearer ' + authToken!});
       var response = await Future.wait(
-          [dio.get(Config.skillListUrl), dio.get(Config.hobbieListUrl)]);
+          [dio.get(Config.skillListUrl, options:option), 
+          dio.get(Config.hobbieListUrl, options: option), 
+          dio.get(Config.getAllSubjectUrl, options: option)]);
 
-      if (response[0].statusCode == 200 && response[1].statusCode == 200) {
+      if (response[0].statusCode == 200 && response[1].statusCode == 200 && response[2].statusCode == 200) {
         closeProgressDialog(context);
         skillMap = response[0].data;
         hobbieMap = response[1].data;
+        subjectMap = response[2].data;
         setState(() {
           skillMapData = skillMap!['data'];
           hobbieMapData = hobbieMap!['data'];
+          subjectMapData = subjectMap!['data'];
         });
 
         print(skillMap);
         print(hobbieMap);
+        print(subjectMap);
         //closeProgressDialog(context);
       } else {
         closeProgressDialog(context);
@@ -3692,26 +3708,37 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
+        } else if (subjectMap!['error_msg'] != null) {
+          Fluttertoast.showToast(
+            msg: subjectMap!['error_msg'],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
         }
       }
     } on DioError catch (e, stack) {
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
-        Fluttertoast.showToast(
-          msg: e.response!.data['meta']['message'],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Constants.bgColor,
-          textColor: Colors.white,
-          fontSize: 10.0.sp,
-        );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
         print(e.message);
+      //   print("This is the error message::::" +
+      //       e.response!.data['meta']['message'].toString());
+      //   Fluttertoast.showToast(
+      //     msg: e.response!.data['meta']['message'],
+      //     toastLength: Toast.LENGTH_SHORT,
+      //     gravity: ToastGravity.BOTTOM,
+      //     timeInSecForIosWeb: 1,
+      //     backgroundColor: Constants.bgColor,
+      //     textColor: Colors.white,
+      //     fontSize: 10.0.sp,
+      //   );
+      // } else {
+      //   // Something happened in setting up or sending the request that triggered an Error
+      //   //print(e.request);
+      //   print(e.message);
       }
     }
     //return result;
@@ -3744,6 +3771,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
     String achievements,
     String skills,
     String hobbies,
+    String subjects,
     String facbookUrl,
     String instaUrl,
     String linkedinUrl,
@@ -3803,6 +3831,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
         'achievements': achievements,
         'skills': skills,
         'hobbies': hobbies,
+        'subjects': subjects,
         //'educational_details[0][id]': 25,
         // 'educational_details[0][school_name]': myControllers[0].text.toString(),
         // 'educational_details[0][year]': selectedYear.year,

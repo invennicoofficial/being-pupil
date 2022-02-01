@@ -44,6 +44,8 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
+  String? result;
+
   @override
   void initState() {
     super.initState();
@@ -107,10 +109,11 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
         //     physics: BouncingScrollPhysics(),
         //     child:
         Stack(
-          //mainAxisAlignment: MainAxisAlignment.center,
+            //mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 2.0.h, horizontal: 4.0.w),
+                padding:
+                    EdgeInsets.symmetric(vertical: 2.0.h, horizontal: 4.0.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -123,12 +126,22 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
                           fontWeight: FontWeight.w400),
                     ),
                     GestureDetector(
-                      onTap: (){
-                        pushNewScreen(context, screen: SubjectSelectionScreen(), withNavBar: false,
-     pageTransitionAnimation: PageTransitionAnimation.cupertino);
+                      onTap: () async{
+                        result = await Navigator.of(context, rootNavigator: true).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    SubjectSelectionScreen()));
+
+                        setState(() {});
+                        print("STATUS::: $result");
+                        if(result == 'true'){
+                          getEducatorListApi(0);
+                        }
+                        //                     pushNewScreen(context, screen: SubjectSelectionScreen(), withNavBar: false,
+                        //  pageTransitionAnimation: PageTransitionAnimation.cupertino);
                       },
                       child: Container(
-                        height: 20.0,
+                        height: 2.5.h,
                         width: 15.0.w,
                         //color: Colors.grey,
                         child: Center(
@@ -179,7 +192,8 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
                                       getUserProfile(_userId[index]);
                                     },
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         ClipRRect(
                                             borderRadius:
@@ -187,7 +201,8 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
                                             child: CachedNetworkImage(
                                               placeholder: (context, url) =>
                                                   Container(
-                                                child: CircularProgressIndicator(
+                                                child:
+                                                    CircularProgressIndicator(
                                                   valueColor:
                                                       AlwaysStoppedAnimation<
                                                           Color>(Colors.black),
@@ -197,7 +212,8 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
                                                 padding: EdgeInsets.all(70.0),
                                                 decoration: BoxDecoration(
                                                   color: greyColor2,
-                                                  borderRadius: BorderRadius.all(
+                                                  borderRadius:
+                                                      BorderRadius.all(
                                                     Radius.circular(8.0),
                                                   ),
                                                 ),
@@ -239,7 +255,8 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
                                                     fontSize: 9.0.sp,
                                                     color: Constants.bgColor,
                                                     fontFamily: 'Montserrat',
-                                                    fontWeight: FontWeight.w700),
+                                                    fontWeight:
+                                                        FontWeight.w700),
                                               ),
                                             ),
                                             Container(
@@ -261,8 +278,8 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
                                     ),
                                   ),
                                   trailing: Padding(
-                                    padding:
-                                        EdgeInsets.only(right: 2.0.w, top: 0.0.h),
+                                    padding: EdgeInsets.only(
+                                        right: 2.0.w, top: 0.0.h),
                                     child: GestureDetector(
                                       onTap: () async {
                                         print('$index is Connected');

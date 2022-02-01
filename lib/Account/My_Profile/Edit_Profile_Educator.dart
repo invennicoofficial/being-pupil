@@ -95,6 +95,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   Map<String, dynamic>? profileMap;
   List<dynamic> profileMapData = [];//List();
 
+  Map<String, dynamic>? subjectMap = Map<String, dynamic>();
+  List<dynamic>? subjectMapData = [];//List();
+
   var result = EducatorProfileDetails();
 
   bool isLoading = true;
@@ -2452,7 +2455,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                               selectedSkillList.length == 0
                                           ? result.data!
                                               .skills!.replaceAll('[', '').replaceAll(']', '').
-                                              replaceAll(new RegExp(r', '), ' #')//.replaceFirst('', '#') //"Please mention your skills example #skills1 #skills2..."
+                                              replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#') //"Please mention your skills example #skills1 #skills2..."
                                           : selectedSkillList
                                               .toString().replaceAll('[', '').replaceAll(']', '').
                                               replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
@@ -2700,7 +2703,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                             selectedHobbiesList.length == 0
                                         ? result.data!
                                             .hobbies!.replaceAll('[', '').replaceAll(']', '').
-                                            replaceAll(new RegExp(r', '), ' #')//.replaceFirst('', '#') //"Please mention your hobbies example #hobbie1 #hobbie2..."
+                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#') //"Please mention your hobbies example #hobbie1 #hobbie2..."
                                         : selectedHobbiesList
                                             .toString().replaceAll('[', '').replaceAll(']', '').
                                             replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
@@ -3431,10 +3434,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     _achivementController.text,
                                     // selectedSkillList == [] ? result.data.skills : selectedSkillList.toString(),
                                     // selectedHobbiesList == [] ? result.data.hobbies : selectedHobbiesList.toString(),
-                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')
-                                            .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '')
-                                           .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', ''),
+                                            //.replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', ''),
+                                           //.replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    selectedSubjectList.length == 0 ? result.data!.subjects : selectedSubjectList.toString().replaceAll('[', '').replaceAll(']', ''),
                                     _fbLinkController.text,
                                     _instagramLinkController.text,
                                     _linkedInLinkLinkController.text,
@@ -3496,10 +3500,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     lat,
                                     lng,
                                     _achivementController.text,
-                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')
-                                            .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '')
-                                           .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', ''),
+                                            //.replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', ''),
+                                           //.replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    selectedSubjectList.length == 0 ? result.data!.subjects : selectedSubjectList.toString().replaceAll('[', '').replaceAll(']', ''),
                                     _fbLinkController.text,
                                     _instagramLinkController.text,
                                     _linkedInLinkLinkController.text,
@@ -3610,7 +3615,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   //Tag for Subject Experties
   void _openFilterSubjectDialog() async {
     await FilterListDialog.display(context,
-        listData: skillMapData!,
+        listData: subjectMapData!,
         selectedListData: selectedSubjectList,
         height: 480,
         headlineText: "Select or Search Subjects",
@@ -3810,23 +3815,24 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
     //displayProgressDialog(context);
     try {
       Dio dio = Dio();
+      var option = Options(headers: {"Authorization": 'Bearer $authToken'});
       var response = await Future.wait([
-        dio.get(Config.profileDetailsUrl,
-            options: Options(headers: {
-              "Authorization": 'Bearer $authToken',
-            })),
-        dio.get(Config.skillListUrl),
-        dio.get(Config.hobbieListUrl)
+        dio.get(Config.profileDetailsUrl, options: option),
+        dio.get(Config.skillListUrl, options: option),
+        dio.get(Config.hobbieListUrl, options: option),
+        dio.get(Config.getAllSubjectUrl, options: option),
       ]);
 
       if (response[0].statusCode == 200 &&
           response[1].statusCode == 200 &&
-          response[2].statusCode == 200) {
+          response[2].statusCode == 200 &&
+          response[3].statusCode == 200) {
         //closeProgressDialog(context);
         result = EducatorProfileDetails.fromJson(response[0].data);
         //profileMap = json.decode(response[0].data.toString());//new Map<String, dynamic>.from(json.decode(response[0].data.toString()));
         skillMap = response[1].data;
         hobbieMap = response[2].data;
+        subjectMap = response[3].data;
         
         //saveImage();
         print('SKILLDATA::: ${result.data!.skills}');
@@ -3839,6 +3845,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
           //profileMapData = profileMap['data'];
           skillMapData = skillMap!['data'];
           hobbieMapData = hobbieMap!['data'];
+          subjectMapData = subjectMap!['data'];
           _nameController.text = result.data!.name!;
           _mobileController.text = result.data!.mobileNumber!;
           _emailController.text = result.data!.email!;
@@ -3922,16 +3929,16 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
       //closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response!.data['meta']['message']);
-        Fluttertoast.showToast(
-          msg: e.response!.data['meta']['message'],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Constants.bgColor,
-          textColor: Colors.white,
-          fontSize: 10.0.sp,
-        );
+            e.message);
+        // Fluttertoast.showToast(
+        //   msg: e.response!.data['meta']['message'],
+        //   toastLength: Toast.LENGTH_SHORT,
+        //   gravity: ToastGravity.BOTTOM,
+        //   timeInSecForIosWeb: 1,
+        //   backgroundColor: Constants.bgColor,
+        //   textColor: Colors.white,
+        //   fontSize: 10.0.sp,
+        // );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
@@ -4014,6 +4021,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
     String achievements,
     String? skills,
     String? hobbies,
+    String? subjects,
     String facbookUrl,
     String instaUrl,
     String linkedinUrl,
@@ -4071,6 +4079,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         'achievements': achievements,
         'skills': skills,
         'hobbies': hobbies,
+        'subjects': subjects,
         'facebook_url': facbookUrl,
         'insta_url': instaUrl,
         'linkedin_url': linkedinUrl,
@@ -4469,6 +4478,7 @@ print('MAP:::' + formData.fields.toString());
     String achievements,
     String? skills,
     String? hobbies,
+    String? subjects,
     String facbookUrl,
     String instaUrl,
     String linkedinUrl,
@@ -4527,6 +4537,7 @@ print('MAP:::' + formData.fields.toString());
         'achievements': achievements,
         'skills': skills,
         'hobbies': hobbies,
+        'subjects': subjects,
         'facebook_url': facbookUrl,
         'insta_url': instaUrl,
         'linkedin_url': linkedinUrl,

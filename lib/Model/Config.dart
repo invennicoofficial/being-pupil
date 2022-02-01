@@ -58,6 +58,9 @@ class Config{
   static const String refreshTokenUrl = baseUrl + "user/refreshToken";
   static const String unfollowUserUrl = baseUrl + "user/unfollow";
   static const String deviceTokenUrl = baseUrl + "user/send-device-token";
+  static const String getAllSubjectUrl = baseUrl + "user/subjects/get";
+  static const String getFilteredListUrl = baseUrl + "user/subjects/filter/get";
+  static const String postFilteredListUrl = baseUrl + "user/subjects/select";
 }
 
 

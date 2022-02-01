@@ -66,6 +66,7 @@ class Data {
         this.achievements,
         this.skills,
         this.hobbies,
+        this.subjects,
         this.facebookUrl,
         this.instaUrl,
         this.linkedinUrl,
@@ -95,6 +96,7 @@ class Data {
     String? achievements;
     String? skills;
     String? hobbies;
+    String? subjects;
     dynamic facebookUrl;
     String? instaUrl;
     String? linkedinUrl;
@@ -124,6 +126,7 @@ class Data {
         achievements: json["achievements"],
         skills: json["skills"],
         hobbies: json["hobbies"],
+        subjects: json["subjects"],
         facebookUrl: json["facebook_url"],
         instaUrl: json["insta_url"],
         linkedinUrl: json["linkedin_url"],
@@ -155,6 +158,7 @@ class Data {
         "achievements": achievements,
         "skills": skills,
         "hobbies": hobbies,
+        "subjects": subjects,
         "facebook_url": facebookUrl,
         "insta_url": instaUrl,
         "linkedin_url": linkedinUrl,
