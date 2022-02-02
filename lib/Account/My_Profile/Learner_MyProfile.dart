@@ -488,7 +488,11 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                           TextButton(
                             onPressed: () {
                               pushNewScreen(context,
-                                  screen: EditLearnerProfile(),
+                                  screen: LearnerRegistration(
+                                    name: name,
+                                    mobileNumber: mobileNumber,
+                                    email: email,
+                                  ),
                                   withNavBar: false,
                                   pageTransitionAnimation:
                                       PageTransitionAnimation.cupertino);

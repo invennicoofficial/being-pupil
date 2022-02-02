@@ -269,7 +269,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             },
                             child: ProfileList(
                               txt: "Subscription",
-                              image: "assets/icons/savedPost.png",
+                              image: "assets/icons/subscriptionIcon.png",
                               forwordIcon: true,
                               sizeImage: 20.0,
                               padding: 20.0,

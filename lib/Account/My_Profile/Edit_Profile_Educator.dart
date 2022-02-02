@@ -76,6 +76,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   List<String> education_details = [];
   List<String?> skillList = [];
   List<String?> hobbieList = [];
+  List<String?> subjectList = [];
   int? totalWorkExp, totalTeachExp;
   Map<String, dynamic>? responseMap;
   String? address1, address2, city, country, pinCode;
@@ -2298,9 +2299,12 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                   child: Align(
                                     alignment: Alignment.topCenter,
                                     child: Text(
-                                      selectedSubjectList == null ||
+                                       selectedSubjectList == null ||
                                               selectedSubjectList.length == 0
-                                          ? "Please mention your skills example #skills1 #skills2..."
+                                          ? result.data!.subjects!
+                                              // .replaceAll('[', '').replaceAll(']', '').
+                                              // replaceAll(new RegExp(r', '), ' #').replaceAll(',', ' #').replaceFirst('', '#')
+                                              //.replaceFirst('', '#') //"Please mention your skills example #skills1 #skills2..."
                                           : selectedSubjectList
                                               .toString().replaceAll('[', '').replaceAll(']', '').
                                               replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
@@ -2453,9 +2457,10 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     child: Text(
                                       selectedSkillList == null ||
                                               selectedSkillList.length == 0
-                                          ? result.data!
-                                              .skills!.replaceAll('[', '').replaceAll(']', '').
-                                              replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#') //"Please mention your skills example #skills1 #skills2..."
+                                          ? result.data!.skills!
+                                          // .replaceAll('[', '').replaceAll(']', '').
+                                          //     replaceAll(new RegExp(r', '), ' #')
+                                              //.replaceFirst('', '#') //"Please mention your skills example #skills1 #skills2..."
                                           : selectedSkillList
                                               .toString().replaceAll('[', '').replaceAll(']', '').
                                               replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
@@ -2701,9 +2706,10 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                   child: Text(
                                     selectedHobbiesList == null ||
                                             selectedHobbiesList.length == 0
-                                        ? result.data!
-                                            .hobbies!.replaceAll('[', '').replaceAll(']', '').
-                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#') //"Please mention your hobbies example #hobbie1 #hobbie2..."
+                                        ? result.data!.hobbies!
+                                        // .replaceAll('[', '').replaceAll(']', '').
+                                        //     replaceAll(new RegExp(r', '), ' #')
+                                            //.replaceFirst('', '#') //"Please mention your hobbies example #hobbie1 #hobbie2..."
                                         : selectedHobbiesList
                                             .toString().replaceAll('[', '').replaceAll(']', '').
                                             replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
@@ -3434,11 +3440,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     _achivementController.text,
                                     // selectedSkillList == [] ? result.data.skills : selectedSkillList.toString(),
                                     // selectedHobbiesList == [] ? result.data.hobbies : selectedHobbiesList.toString(),
-                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', ''),
+                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString(),
                                             //.replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', ''),
+                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString(),
                                            //.replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedSubjectList.length == 0 ? result.data!.subjects : selectedSubjectList.toString().replaceAll('[', '').replaceAll(']', ''),
+                                    selectedSubjectList.length == 0 ? result.data!.subjects : selectedSubjectList.toString(),
                                     _fbLinkController.text,
                                     _instagramLinkController.text,
                                     _linkedInLinkLinkController.text,
@@ -3500,11 +3506,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     lat,
                                     lng,
                                     _achivementController.text,
-                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', ''),
+                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString(),
                                             //.replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', ''),
+                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString(),
                                            //.replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedSubjectList.length == 0 ? result.data!.subjects : selectedSubjectList.toString().replaceAll('[', '').replaceAll(']', ''),
+                                    selectedSubjectList.length == 0 ? result.data!.subjects : selectedSubjectList.toString(),
                                     _fbLinkController.text,
                                     _instagramLinkController.text,
                                     _linkedInLinkLinkController.text,
@@ -3512,7 +3518,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     totalWorkExp,
                                     totalTeachExp);
                                     print('SKILL1 '+ result.data!.skills!);
-                                    print('SKILL2 '+ selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'));
+                                    print('SKILL2 '+ selectedSubjectList.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'));
                                     print('SKILL3 '+ selectedSkillList.toString());
                                 //}
                                 // else {
@@ -3887,6 +3893,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
           _achivementController.text = result.data!.achievements!;
           skillList.add(result.data!.skills);
           hobbieList.add(result.data!.hobbies);
+          subjectList.add(result.data!.subjects);
           _fbLinkController.text = result.data!.facebookUrl?? '';
           _instagramLinkController.text = result.data!.instaUrl?? '';
           _linkedInLinkLinkController.text = result.data!.linkedinUrl?? '';
@@ -3897,8 +3904,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         }
         print(result.data!.name);
         print(skillMap);
-        print(hobbieMap);
-        print(schoolNameList);
+        print(result.data!.skills);
+        print(result.data!.subjects.toString().replaceAll(',', ' #').replaceFirst('', '#'));
         print('URL::: '+result.data!.imageUrl!);
         //closeProgressDialog(context);
       } else {
@@ -4077,9 +4084,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         'location[0][longitude]': longitude == null ?  result.data!.location![0].longitude : longitude,
         'location[0][location_type]': 'work',
         'achievements': achievements,
-        'skills': skills,
-        'hobbies': hobbies,
-        'subjects': subjects,
+        'skills': skills.toString().replaceAll('[', '').replaceAll(']', ''),
+        'hobbies': hobbies.toString().replaceAll('[', '').replaceAll(']', ''),
+        'subjects': subjects.toString().replaceAll('[', '').replaceAll(']', ''),
         'facebook_url': facbookUrl,
         'insta_url': instaUrl,
         'linkedin_url': linkedinUrl,
@@ -4147,7 +4154,7 @@ print('MAP:::' + formData.fields.toString());
       //print(educationList);
 
       print('FORMDATA::: ${result.data!.skills}');
-      print('FORMDATA::: ${selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')}');
+      print('FORMDATA::: ${selectedSubjectList.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}');
 
       var response = await dio.post(
         Config.updateProfileUrl,
@@ -4197,7 +4204,7 @@ print('MAP:::' + formData.fields.toString());
         } else {
           print('FALSE::');
           Fluttertoast.showToast(
-            msg: update.message!,
+            msg: update.message == null ? update.errorMsg : update.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -4224,9 +4231,9 @@ print('MAP:::' + formData.fields.toString());
       closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::"  +
-            e.response!.data['meta']['message']);
+            e.message);
         Fluttertoast.showToast(
-          msg: e.response!.data['meta']['message'],
+          msg: e.message,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -4535,9 +4542,9 @@ print('MAP:::' + formData.fields.toString());
         'location[0][longitude]': longitude == null ?  result.data!.location![0].longitude : longitude,
         'location[0][location_type]': 'work',
         'achievements': achievements,
-        'skills': skills,
-        'hobbies': hobbies,
-        'subjects': subjects,
+        'skills': skills.toString().replaceAll('[', '').replaceAll(']', ''),
+        'hobbies': hobbies.toString().replaceAll('[', '').replaceAll(']', ''),
+        'subjects': subjects.toString().replaceAll('[', '').replaceAll(']', ''),
         'facebook_url': facbookUrl,
         'insta_url': instaUrl,
         'linkedin_url': linkedinUrl,

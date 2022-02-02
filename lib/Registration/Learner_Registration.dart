@@ -810,6 +810,13 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                         setState(() {
                                           gender = 'GenderSelected';
                                         });
+                                        if (value == '1') {
+                                        gender = 'M';
+                                      } else if (value == '2') {
+                                        gender = 'F';
+                                      } else {
+                                        gender = 'O';
+                                      }
                                       }
                                     },
                                     dropdownButtonStyle: DropdownButtonStyle(
@@ -2804,10 +2811,8 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                     lat,
                                     lng,
                                     _achivementController.text,
-                                    selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')
-                                            .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '')
-                                           .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    selectedSkillList.toString(),
+                                    selectedHobbiesList.toString(),
                                     _fbLinkController.text,
                                     _instagramLinkController.text,
                                     _linkedInLinkLinkController.text,
@@ -3014,13 +3019,11 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
     //var result = CategoryList();
     try {
       Dio dio = Dio();
+      var option = Options(headers: {"Authorization": 'Bearer $authToken'});
       var response = await Future.wait([
-        dio.get(Config.categoryListUrl,
-            options: Options(headers: {
-              "Authorization": 'Bearer $authToken',
-            })),
-        dio.get(Config.skillListUrl),
-        dio.get(Config.hobbieListUrl)
+        dio.get(Config.categoryListUrl, options: option),
+        dio.get(Config.skillListUrl, options: option),
+        dio.get(Config.hobbieListUrl, options: option)
       ]);
 
       if (response[0].statusCode == 200 &&
@@ -3199,8 +3202,8 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
         'location[0][longitude]': longitude,
         'location[0][location_type]': 'work',
         'achievements': achievements,
-        'skills': skills,
-        'hobbies': hobbies,
+        'skills': skills.replaceAll('[', '').replaceAll(']', ''),
+        'hobbies': hobbies.replaceAll('[', '').replaceAll(']', ''),
         //'educational_details[0][id]': 25,
         // 'educational_details[0][school_name]': myControllers[0].text.toString(),
         // 'educational_details[0][year]': selectedYear.year,
@@ -3295,7 +3298,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
         // saveUserData(result.data.userId);
 
         Fluttertoast.showToast(
-          msg: result.message!,
+          msg: result.message == null ? result.errorMsg : result.message,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,

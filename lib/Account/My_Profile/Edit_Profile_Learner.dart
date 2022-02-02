@@ -2892,10 +2892,8 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                     _achivementController.text,
                                     // selectedSkillList == [] ? result.data.skills : selectedSkillList.toString(),
                                     // selectedHobbiesList == [] ? result.data.hobbies : selectedHobbiesList.toString(),
-                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')
-                                            .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '')
-                                           .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString(),
+                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString(),
                                     _fbLinkController.text,
                                     _instagramLinkController.text,
                                     _linkedInLinkLinkController.text,
@@ -2925,10 +2923,8 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                     lat,
                                     lng,
                                     _achivementController.text,
-                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '')
-                                            .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString().replaceAll('[', '').replaceAll(']', '')
-                                           .replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString(),
+                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString(),
                                     _fbLinkController.text,
                                     _instagramLinkController.text,
                                     _linkedInLinkLinkController.text,
@@ -3199,17 +3195,12 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
     //var result = CategoryList();
     try {
       Dio dio = Dio();
+      var option = Options(headers: {"Authorization": 'Bearer $authToken'});
       var response = await Future.wait([
-        dio.get(Config.profileDetailsUrl,
-            options: Options(headers: {
-              "Authorization": 'Bearer $authToken',
-            })),
-        dio.get(Config.categoryListUrl,
-            options: Options(headers: {
-              "Authorization": 'Bearer $authToken',
-            })),
-        dio.get(Config.skillListUrl),
-        dio.get(Config.hobbieListUrl)
+        dio.get(Config.profileDetailsUrl, options: option),
+        dio.get(Config.categoryListUrl, options: option),
+        dio.get(Config.skillListUrl, options: option),
+        dio.get(Config.hobbieListUrl, options: option)
       ]);
 
       if (response[0].statusCode == 200 &&
@@ -3343,9 +3334,9 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
       //closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+            e.message);
         Fluttertoast.showToast(
-          msg: e.response!.data['meta']['message'],
+          msg: e.message,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -3833,8 +3824,8 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
         'location[0][longitude]': longitude == null ?  result.data!.location![0].longitude : longitude,
         'location[0][location_type]': 'work',
         'achievements': achievements,
-        'skills': skills,
-        'hobbies': hobbies,
+        'skills': skills.toString().replaceAll('[', '').replaceAll(']', ''),
+        'hobbies': hobbies.toString().replaceAll('[', '').replaceAll(']', ''),
         'facebook_url': facbookUrl,
         'insta_url': instaUrl,
         'linkedin_url': linkedinUrl,

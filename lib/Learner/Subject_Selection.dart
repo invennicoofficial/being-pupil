@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
@@ -289,11 +290,12 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
                   Padding(
                     padding: EdgeInsets.only(top: 15.0.h),
                     child: GestureDetector(
-                      onTap: () {
+                      onTap: () async{
+                        SharedPreferences preff = await SharedPreferences.getInstance();
+                        preff.setBool("isSubjectSelected", true);
+                        //setState(() {});
                         postSubjectForLearner(
-                                _selectedItem.toString().replaceAll('[', ''))
-                            .toString()
-                            .replaceAll(']', '');
+                                _selectedItem.toString());
                       },
                       child: Container(
                         height: 7.0.h,
@@ -487,17 +489,37 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
 
     try {
       var dio = Dio();
-      FormData formData = FormData.fromMap({"subjects": subjects});
+      FormData formData = FormData.fromMap({"subjects": subjects.replaceAll('[', '').replaceAll(']', '')});
 
       var response = await dio.post(Config.postFilteredListUrl, data: formData,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
         selectedSubMap = response.data;
+        print(response.data);
         closeProgressDialog(context);
 
         if (selectedSubMap!['status'] == true) {
           Navigator.pop(context, 'true');
+           Fluttertoast.showToast(
+            msg: selectedSubMap!['message'],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        }else {
+          Fluttertoast.showToast(
+            msg: selectedSubMap!['message'] == null ? selectedSubMap!['error_msg'] : selectedSubMap!['message'],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
         }
       }
     } on DioError catch (e, stack) {
