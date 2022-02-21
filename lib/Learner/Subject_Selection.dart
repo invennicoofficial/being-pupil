@@ -71,6 +71,8 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
   List<dynamic>? subjectMapData = []; //List();
   bool isLoading = true;
   Map<String, dynamic>? selectedSubMap = Map<String, dynamic>();
+  Map<String, dynamic>? selectedSubjectMap = Map<String, dynamic>();
+  List<dynamic> selectedSubjectMapData = [];
 
   @override
   void initState() {
@@ -81,6 +83,7 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+    await getSelectedSubjectListForLearner();
     getFilteredSubjectListForLearner();
   }
 
@@ -166,7 +169,7 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
                               )), //keyboardType: TextInputType.emailAddress,
                           style: new TextStyle(
                               fontFamily: "Montserrat", fontSize: 10.0.sp),
-                          onChanged: (value){
+                          onChanged: (value) {
                             Future.delayed(Duration(seconds: 2));
                             searchSubjects(value);
                             setState(() {});
@@ -290,12 +293,12 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
                   Padding(
                     padding: EdgeInsets.only(top: 15.0.h),
                     child: GestureDetector(
-                      onTap: () async{
-                        SharedPreferences preff = await SharedPreferences.getInstance();
+                      onTap: () async {
+                        SharedPreferences preff =
+                            await SharedPreferences.getInstance();
                         preff.setBool("isSubjectSelected", true);
                         //setState(() {});
-                        postSubjectForLearner(
-                                _selectedItem.toString());
+                        postSubjectForLearner(_selectedItem.toString());
                       },
                       child: Container(
                         height: 7.0.h,
@@ -439,14 +442,15 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
   }
 
   //Search in subjects
-   searchSubjects(String search) async {
+  searchSubjects(String search) async {
     //displayProgressDialog(context);
     //var result = CategoryList();
 
     try {
       Dio dio = Dio();
       var option = Options(headers: {"Authorization": 'Bearer ' + authToken!});
-      var response = await dio.get('${Config.getFilteredListUrl}?search=$search', options: option);
+      var response = await dio
+          .get('${Config.getFilteredListUrl}?search=$search', options: option);
 
       if (response.statusCode == 200) {
         //closeProgressDialog(context);
@@ -482,6 +486,64 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
     }
   }
 
+  //Get Selected subject list for learner
+  getSelectedSubjectListForLearner() async {
+    //displayProgressDialog(context);
+    //var result = CategoryList();
+
+    try {
+      Dio dio = Dio();
+      var option = Options(headers: {"Authorization": 'Bearer ' + authToken!});
+      var response =
+          await dio.get(Config.getSelectedSubjectUrl, options: option);
+
+      if (response.statusCode == 200) {
+        //closeProgressDialog(context);
+        selectedSubjectMap = response.data;
+        debugPrint('SELECTED:::' + selectedSubjectMap.toString());
+        if (selectedSubjectMap!['status'] == true) {
+          setState(() {
+            selectedSubjectMapData = selectedSubjectMap!['data'];
+            _selectedItem.addAll(selectedSubjectMapData);
+          });
+
+          isLoading = false;
+          setState(() {});
+
+          //closeProgressDialog(context);
+        } else {
+          Fluttertoast.showToast(
+            msg: selectedSubjectMap!['error_msg'],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        }
+      } else {
+        //closeProgressDialog(context);
+        if (selectedSubjectMap!['error_msg'] != null) {
+          Fluttertoast.showToast(
+            msg: selectedSubjectMap!['error_msg'],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        }
+      }
+    } on DioError catch (e, stack) {
+      //closeProgressDialog(context);
+      if (e.response != null) {
+        print(e.message);
+        print(stack);
+      }
+    }
+  }
 
   //post subject for learner
   postSubjectForLearner(String subjects) async {
@@ -489,9 +551,11 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
 
     try {
       var dio = Dio();
-      FormData formData = FormData.fromMap({"subjects": subjects.replaceAll('[', '').replaceAll(']', '')});
+      FormData formData = FormData.fromMap(
+          {"subjects": subjects.replaceAll('[', '').replaceAll(']', '')});
 
-      var response = await dio.post(Config.postFilteredListUrl, data: formData,
+      var response = await dio.post(Config.postFilteredListUrl,
+          data: formData,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
@@ -501,7 +565,7 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
 
         if (selectedSubMap!['status'] == true) {
           Navigator.pop(context, 'true');
-           Fluttertoast.showToast(
+          Fluttertoast.showToast(
             msg: selectedSubMap!['message'],
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
@@ -510,9 +574,11 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-        }else {
+        } else {
           Fluttertoast.showToast(
-            msg: selectedSubMap!['message'] == null ? selectedSubMap!['error_msg'] : selectedSubMap!['message'],
+            msg: selectedSubMap!['message'] == null
+                ? selectedSubMap!['error_msg']
+                : selectedSubMap!['message'],
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,

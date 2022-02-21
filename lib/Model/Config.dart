@@ -62,6 +62,7 @@ class Config{
   static const String getFilteredListUrl = baseUrl + "user/subjects/filter/get";
   static const String postFilteredListUrl = baseUrl + "user/subjects/select";
   static const String getAllPlanUrl = baseUrl + "user/plans/get";
+  static const String getSelectedSubjectUrl = baseUrl + "user/subjects/selected/get";
 }
 
 
