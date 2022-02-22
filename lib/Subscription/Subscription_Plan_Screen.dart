@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/Subscription_Model/Create_Subscription_Model.dart';
 import 'package:being_pupil/Model/Subscription_Model/Get_All_Plan_List_Model.dart';
 import 'package:being_pupil/Subscription/Current_Subscription_Screen.dart';
+import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -34,13 +36,14 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
   List<String> planList = [];
   //'One Month', 'Monthly Recuring', 'Yearly Recuring'];
 
-  List<String> planPrice = [];
+  List<double> planPrice = [];
+  List<String> planId = [];
   //501, 301, 2001];
 
   var result = GetAllPlanList();
   bool isLoading = true;
   String? authToken;
-  String? mobileNumber, email;
+  String? mobileNumber, email, userName, subscriptionId;
   var _razorpay = Razorpay();
 
   @override
@@ -63,8 +66,8 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       registerAs = preferences.getString('RegisterAs');
-      mobileNumber = preferences.getString('mobileNumber');
-      email = preferences.getString('email');
+      // mobileNumber = preferences.getString('mobileNumber');
+      // email = preferences.getString('email');
     });
   }
 
@@ -215,7 +218,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                                   trailing: IconButton(
                                     onPressed: () {
                                       _showDialog(planList[index],
-                                          planPrice[index].toString());
+                                          planPrice[index].toInt(), planId[index]);
                                     },
                                     icon: Icon(
                                       Icons.chevron_right_rounded,
@@ -246,7 +249,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
   }
 
   //Alert Dialog
-  void _showDialog(String planName, String amount) {
+  void _showDialog(String planName, int amount, String planId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -305,8 +308,9 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
             ),
             GestureDetector(
               onTap: () {
-                createRazorPayOrderId(amount, planName);
-                //Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                createSubscriptionIdAPI(planId, amount, planName);
+                //createRazorPaySubscriptionId(amount, planName);
                 // pushNewScreen(context,
                 //     screen: CurrentSubscriptionScreen(),
                 //     withNavBar: false,
@@ -346,7 +350,8 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
         if (result.status == true) {
           for (int i = 0; i < result.data!.plan!.length; i++) {
             planList.add(result.data!.plan![i].planName!);
-            planPrice.add(result.data!.plan![i].planPrice!);
+            planPrice.add(double.parse(result.data!.plan![i].planPrice!));
+            planId.add(result.data!.plan![i].planId.toString());
           }
           for (int i = 0; i < result.data!.feature!.length; i++) {
             content.add(result.data!.feature![i]);
@@ -361,10 +366,61 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
     }
   }
 
+  //Create SubscriptionId
+  Future<CreateSubscription> createSubscriptionIdAPI(String planId, int price, String name) async {
+    displayProgressDialog(context);
+    var result = CreateSubscription();
+    var dio = Dio();
+    FormData formData = FormData.fromMap({'plan_id': planId});
+    try {
+      var response = await dio.post(Config.createSubscription,
+          data: formData,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
+      if (response.statusCode == 200) {
+        closeProgressDialog(context);
+        result = CreateSubscription.fromJson(response.data);
+        print(response);
+        if (result.status == true) {
+          setState(() {
+            subscriptionId = result.data!.subscriptionId;
+            userName = result.data!.userName;
+            mobileNumber = result.data!.userMobile;
+            email = result.data!.userEmail;
+          });
+          Fluttertoast.showToast(
+            msg: result.message!,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+          createRazorPaySubscriptionId(price, name, subscriptionId!);
+        }
+      }else{
+        Fluttertoast.showToast(
+        msg: result.errorMsg == null ? result.message : result.errorMsg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Constants.bgColor,
+        textColor: Colors.white,
+        fontSize: 10.0.sp,
+      );
+      }
+    } on DioError catch (e, stack) {
+      closeProgressDialog(context);
+      print(e.message);
+      print(stack);
+    }
+    return result;
+  }
+
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // Do something when payment succeeds
     print('kama liyaa!');
-    print(response.orderId);
+    print(subscriptionId);
     print(response.paymentId);
     print(response.signature);
     //createBookingAPI(response.orderId, response.paymentId, response.signature);
@@ -379,7 +435,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
     // Do something when an external wallet was selected
   }
 
-  Future<void> createRazorPayOrderId(String price, String name) async {
+  Future<void> createRazorPaySubscriptionId(int price, String name, String subId) async {
     Map<String, dynamic>? map = {};
     var headers = {
       'Authorization':
@@ -387,8 +443,8 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
     };
     var request = http.MultipartRequest(
         'POST', Uri.parse('https://api.razorpay.com/v1/orders'));
-    request.fields.addAll(
-        {'amount': (price * 100).toString(), 'currency': 'INR'});
+    request.fields
+        .addAll({'amount': (price * 100).toString(), 'currency': 'INR'});
 
     request.headers.addAll(headers);
 
@@ -398,12 +454,13 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
       String jsonResponse = await response.stream.bytesToString();
       map = json.decode(jsonResponse);
       print(map!['id']);
+      print('MAP:::::'+map.toString());
       //TODO: Change Razorpay Keys
       var options = {
         'key': 'rzp_test_MtDrPPLWbUdsY7',
         'amount': (price * 100),
         'name': name,
-        'order_id': map['id'],
+        'subscription_id': subId,
         //'description': widget.propertyDetails![widget.index!]['name'],//widget.propertyDetails.data[widget.index].name,
         'prefill': {'contact': mobileNumber, 'email': email}
       };
@@ -419,5 +476,17 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
         fontSize: 10.0.sp,
       );
     }
+  }
+
+  displayProgressDialog(BuildContext context) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new ProgressDialog();
+        }));
+  }
+
+  closeProgressDialog(BuildContext context) {
+    Navigator.of(context).pop();
   }
 }
