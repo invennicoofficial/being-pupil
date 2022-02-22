@@ -10,6 +10,7 @@ import 'package:being_pupil/Account/Terms_And_Policy_Screen.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Login/Login_Screen.dart';
+import 'package:being_pupil/Subscription/Current_Subscription_Screen.dart';
 import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
@@ -263,7 +264,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             onTap: () {
                               pushNewScreen(context,
                                   withNavBar: false,
-                                  screen: SubscriptionPlanScreen(),
+                                  screen: CurrentSubscriptionScreen(),//SubscriptionPlanScreen(),
                                   pageTransitionAnimation:
                                       PageTransitionAnimation.cupertino);
                             },

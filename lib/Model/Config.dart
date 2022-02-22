@@ -65,6 +65,7 @@ class Config{
   static const String getSelectedSubjectUrl = baseUrl + "user/subjects/selected/get";
   static const String createSubscription = baseUrl + "user/subscription/create";
   static const String verifySubscription = baseUrl + "user/subscription/verify-payment";
+  static const String cencelSubscription = baseUrl + "user/plans/cancel-subscription";
 }
 
 

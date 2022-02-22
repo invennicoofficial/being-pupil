@@ -1,6 +1,15 @@
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Model/Subscription_Model/Cancel_Subscription_Model.dart';
+import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
+import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
+import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class CurrentSubscriptionScreen extends StatefulWidget {
   CurrentSubscriptionScreen({Key? key}) : super(key: key);
@@ -11,6 +20,20 @@ class CurrentSubscriptionScreen extends StatefulWidget {
 }
 
 class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
+  bool isLoading = true;
+  String? authToken;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getToken();
+  }
+
+  void getToken() async {
+    authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,28 +168,35 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
             Row(
               children: [
                 TextButton(
-                onPressed: (){}, 
-                child: Text(
-                      'Switch Plan',
-                      style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 10.0.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Constants.selectedIcon),
-                    ),),
-                SizedBox(width: 2.0.w,),
+                  onPressed: () {
+                    pushNewScreen(context, screen: SubscriptionPlanScreen(), withNavBar: false,
+                    pageTransitionAnimation: PageTransitionAnimation.cupertino);
+                  },
+                  child: Text(
+                    'Switch Plan',
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 10.0.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Constants.selectedIcon),
+                  ),
+                ),
+                SizedBox(
+                  width: 2.0.w,
+                ),
                 TextButton(
-                onPressed: (){
-                  _showDialog();
-                }, 
-                child: Text(
-                      'Cancel Plan',
-                      style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 10.0.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Constants.selectedIcon),
-                    ),),
+                  onPressed: () {
+                    _showDialog();
+                  },
+                  child: Text(
+                    'Cancel Plan',
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 10.0.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Constants.selectedIcon),
+                  ),
+                ),
               ],
             )
           ],
@@ -184,7 +214,8 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Cancel Plan',
+              Text(
+                'Cancel Plan',
                 style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 15.0.sp,
@@ -203,7 +234,8 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
           ),
           actionsPadding:
               EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          content: Text("Are You sure you want to cancel the one month subscription plan.",
+          content: Text(
+              "Are You sure you want to cancel the one month subscription plan.",
               style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 11.0.sp,
@@ -235,6 +267,7 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pop();
+                cancelSubscriptionAPI();
                 // deletePostApi(id, index);
               },
               child: Container(
@@ -245,16 +278,73 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: Constants.bgColor, width: 1.0)),
                   child: Center(
-                      child: Text("Confirm",
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 11.0.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white)),)),
+                    child: Text("Confirm",
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 11.0.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white)),
+                  )),
             ),
           ],
         );
       },
     );
+  }
+
+  //Cancel Subscription
+  Future<void> cancelSubscriptionAPI() async {
+    displayProgressDialog(context);
+    var dio = Dio();
+    var result = CancelSubscription();
+    try {
+      var response = await dio.post(Config.cencelSubscription,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
+      if (response.statusCode == 200) {
+        result = CancelSubscription.fromJson(response.data);
+        closeProgressDialog(context);
+        print(response);
+        if (result.status == true) {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => bottomNavBar(4)),
+              (Route<dynamic> route) => false);
+          Fluttertoast.showToast(
+            msg: result.message!,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        } else {
+          Fluttertoast.showToast(
+            msg: result.errorMsg == null ? result.message : result.errorMsg,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        }
+      }
+    } on DioError catch (e, stack) {
+      closeProgressDialog(context);
+      print(e.message);
+      print(stack);
+    }
+  }
+
+  displayProgressDialog(BuildContext context) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new ProgressDialog();
+        }));
+  }
+
+  closeProgressDialog(BuildContext context) {
+    Navigator.of(context).pop();
   }
 }
