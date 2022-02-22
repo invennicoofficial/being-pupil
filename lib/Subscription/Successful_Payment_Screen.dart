@@ -66,6 +66,7 @@ class _PaymentSucessScreenState extends State<PaymentSucessScreen> {
                     color: Constants.bgColor,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400),
+                    textAlign: TextAlign.center
               ),
             ),
           ),

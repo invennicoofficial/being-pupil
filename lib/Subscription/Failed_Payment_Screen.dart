@@ -76,10 +76,10 @@ class _PaymentFailedScreenState extends State<PaymentFailedScreen> {
                 padding: EdgeInsets.only(top: 4.0.h),
                 child: GestureDetector(
                   onTap: () {
-                    // Navigator.of(context).pushAndRemoveUntil(
-                    //     MaterialPageRoute(
-                    //         builder: (context) => bottomNavBar(0)),
-                    //     (Route<dynamic> route) => false);
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => bottomNavBar(4)),
+                        (Route<dynamic> route) => false);
                   },
                   child: Container(
                     height: 7.0.h,

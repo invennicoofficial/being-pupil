@@ -4,7 +4,10 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Subscription_Model/Create_Subscription_Model.dart';
 import 'package:being_pupil/Model/Subscription_Model/Get_All_Plan_List_Model.dart';
+import 'package:being_pupil/Model/Subscription_Model/Verify_Subscription_Model.dart';
 import 'package:being_pupil/Subscription/Current_Subscription_Screen.dart';
+import 'package:being_pupil/Subscription/Failed_Payment_Screen.dart';
+import 'package:being_pupil/Subscription/Successful_Payment_Screen.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -217,8 +220,10 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                                           fontWeight: FontWeight.w400)),
                                   trailing: IconButton(
                                     onPressed: () {
-                                      _showDialog(planList[index],
-                                          planPrice[index].toInt(), planId[index]);
+                                      _showDialog(
+                                          planList[index],
+                                          planPrice[index].toInt(),
+                                          planId[index]);
                                     },
                                     icon: Icon(
                                       Icons.chevron_right_rounded,
@@ -367,7 +372,8 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
   }
 
   //Create SubscriptionId
-  Future<CreateSubscription> createSubscriptionIdAPI(String planId, int price, String name) async {
+  Future<CreateSubscription> createSubscriptionIdAPI(
+      String planId, int price, String name) async {
     displayProgressDialog(context);
     var result = CreateSubscription();
     var dio = Dio();
@@ -398,16 +404,84 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
           );
           createRazorPaySubscriptionId(price, name, subscriptionId!);
         }
-      }else{
+      } else {
         Fluttertoast.showToast(
-        msg: result.errorMsg == null ? result.message : result.errorMsg,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Constants.bgColor,
-        textColor: Colors.white,
-        fontSize: 10.0.sp,
-      );
+          msg: result.errorMsg == null ? result.message : result.errorMsg,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
+    } on DioError catch (e, stack) {
+      closeProgressDialog(context);
+      print(e.message);
+      print(stack);
+    }
+    return result;
+  }
+
+  //Verify Subscription
+  Future<VerifySubscription> verifySubscriptionAPI(
+      String paymentId, String subscriptioId, String signature) async {
+    displayProgressDialog(context);
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var result = VerifySubscription();
+    var dio = Dio();
+    FormData formData = FormData.fromMap({
+      'razorpay_payment_id': paymentId,
+      'razorpay_subscription_id': subscriptioId,
+      'razorpay_signature': signature
+    });
+    try {
+      var response = await dio.post(Config.verifySubscription,
+          data: formData,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
+      if (response.statusCode == 200) {
+        closeProgressDialog(context);
+        result = VerifySubscription.fromJson(response.data);
+        print(response);
+        if (result.status == true) {
+          setState(() {
+            preferences.setString('razorpayLink', result.data!.razorpayLink!);
+          });
+          debugPrint('LINK:::${preferences.getString('razorpayLink')}');
+          Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => PaymentSucessScreen()),
+              (Route<dynamic> route) => false);
+          Fluttertoast.showToast(
+            msg: result.message!,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        }else{
+          
+          Fluttertoast.showToast(
+            msg: result.errorMsg == null ? result.message : result.errorMsg,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        }
+      } else {
+        Fluttertoast.showToast(
+          msg: result.errorMsg == null ? result.message : result.errorMsg,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
       }
     } on DioError catch (e, stack) {
       closeProgressDialog(context);
@@ -424,18 +498,24 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
     print(response.paymentId);
     print(response.signature);
     //createBookingAPI(response.orderId, response.paymentId, response.signature);
+    verifySubscriptionAPI(
+        response.paymentId!, subscriptionId!, response.signature!);
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
     // Do something when payment fails
     Fluttertoast.showToast(msg: 'Payment Failed! Please try again');
+    Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => PaymentFailedScreen()),
+              (Route<dynamic> route) => false);
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
     // Do something when an external wallet was selected
   }
 
-  Future<void> createRazorPaySubscriptionId(int price, String name, String subId) async {
+  Future<void> createRazorPaySubscriptionId(
+      int price, String name, String subId) async {
     Map<String, dynamic>? map = {};
     var headers = {
       'Authorization':
@@ -454,7 +534,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
       String jsonResponse = await response.stream.bytesToString();
       map = json.decode(jsonResponse);
       print(map!['id']);
-      print('MAP:::::'+map.toString());
+      print('MAP:::::' + map.toString());
       //TODO: Change Razorpay Keys
       var options = {
         'key': 'rzp_test_MtDrPPLWbUdsY7',
