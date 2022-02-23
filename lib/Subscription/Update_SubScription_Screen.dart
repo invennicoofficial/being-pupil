@@ -4,6 +4,7 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Subscription_Model/Create_Subscription_Model.dart';
 import 'package:being_pupil/Model/Subscription_Model/Get_All_Plan_List_Model.dart';
+import 'package:being_pupil/Model/Subscription_Model/Update_Subscription_Model.dart';
 import 'package:being_pupil/Model/Subscription_Model/Verify_Subscription_Model.dart';
 import 'package:being_pupil/Subscription/Current_Subscription_Screen.dart';
 import 'package:being_pupil/Subscription/Failed_Payment_Screen.dart';
@@ -20,14 +21,14 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'package:http/http.dart' as http;
 
-class SubscriptionPlanScreen extends StatefulWidget {
-  SubscriptionPlanScreen({Key? key}) : super(key: key);
+class UpdateSubscriptionPlanScreen extends StatefulWidget {
+  UpdateSubscriptionPlanScreen({Key? key}) : super(key: key);
 
   @override
-  State<SubscriptionPlanScreen> createState() => _SubscriptionPlanScreenState();
+  State<UpdateSubscriptionPlanScreen> createState() => _UpdateSubscriptionPlanScreen();
 }
 
-class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
+class _UpdateSubscriptionPlanScreen extends State<UpdateSubscriptionPlanScreen> {
   String? registerAs;
   List<String> content = [
     // 'Live Stream',
@@ -314,7 +315,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pop();
-                createSubscriptionIdAPI(planId, amount, planName);
+                updateSubscriptionIdAPI(planId, amount, planName);
                 //createRazorPaySubscriptionId(amount, planName);
                 // pushNewScreen(context,
                 //     screen: CurrentSubscriptionScreen(),
@@ -372,23 +373,23 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
   }
 
   //Create SubscriptionId
-  Future<CreateSubscription> createSubscriptionIdAPI(
+  Future<UpdateSubscription> updateSubscriptionIdAPI(
       String planId, int price, String name) async {
     displayProgressDialog(context);
-    var result = CreateSubscription();
+    var result = UpdateSubscription();
     var dio = Dio();
     FormData formData = FormData.fromMap({'plan_id': planId});
     try {
-      var response = await dio.post(Config.createSubscription,
+      var response = await dio.post(Config.updateSubscription,
           data: formData,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         closeProgressDialog(context);
-        result = CreateSubscription.fromJson(response.data);
+        result = UpdateSubscription.fromJson(response.data);
         print(response);
         if (result.status == true) {
           setState(() {
-            subscriptionId = result.data!.subscriptionId;
+            subscriptionId = result.data!.updatedPlanSubscriptionId;
             userName = result.data!.userName;
             mobileNumber = result.data!.userMobile;
             email = result.data!.userEmail;
@@ -406,7 +407,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
         }
       } else {
         Fluttertoast.showToast(
-          msg: result.errorMsg == null ? result.message : result.errorMsg,
+          msg: result.errorMsg,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,

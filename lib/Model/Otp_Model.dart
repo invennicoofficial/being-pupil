@@ -74,6 +74,7 @@ class UserObject {
   String? liUrl;
   String? otherUrl;
   String? isVerified;
+  int? isSubscribed;
 
   UserObject(
       {this.role,
@@ -89,7 +90,8 @@ class UserObject {
       this.instaUrl,
       this.liUrl,
       this.otherUrl,
-        this.isVerified
+      this.isVerified,
+      this.isSubscribed
       });
 
   factory UserObject.fromJson(Map<String, dynamic> json) {
@@ -111,7 +113,8 @@ class UserObject {
         instaUrl: json['insta_url'],
         liUrl: json['linkedin_url'],
         otherUrl: json['other_url'],
-      isVerified: json['isVerified'],
+        isVerified: json['isVerified'],
+        isSubscribed: json['is_subscribed']
         );
   }
 
@@ -131,6 +134,7 @@ class UserObject {
     data['linkedin_url'] = this.liUrl;
     data['other_url'] = this.otherUrl;
     data['isVerified'] = this.isVerified;
+    data['is_subscribed'] = this.isSubscribed;
     return data;
   }
 }

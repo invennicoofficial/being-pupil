@@ -402,6 +402,7 @@ class _OtpScreenState extends State<OtpScreen> {
               result.data!.userObject!.role == 'E' ? preferences.setString("linkedInUrl", result.data!.userObject!.liUrl.toString()) : preferences.setString("linkedInUrl", '');
               result.data!.userObject!.role == 'E' ? preferences.setString("otherUrl", result.data!.userObject!.otherUrl.toString()) : preferences.setString("otherUrl", '');
               result.data!.userObject!.role == 'E' ? preferences.setString("isNew", result.data!.userObject!.isNew!) : preferences.setString("isNew", '');
+              preferences.setInt('isSubscribed', result.data!.userObject!.isSubscribed!);
               preferences.setBool('isLoggedIn', true);
               signIn(CubeUser(fullName: result.data!.userObject!.name, login: result.data!.userObject!.email, password: '12345678'))
                   .then((cubeUser) async {

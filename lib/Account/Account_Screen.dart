@@ -38,6 +38,7 @@ class _AccountScreenState extends State<AccountScreen> {
   String? mobileNumber;
   String? degreeName;
   String? schoolName;
+  int? isSubscribed;
 
   @override
   void initState() {
@@ -55,6 +56,7 @@ class _AccountScreenState extends State<AccountScreen> {
     profilePicUrl = preferences.getString('imageUrl');
     degreeName = preferences.getString("qualification");
     schoolName = preferences.getString("schoolName");
+    isSubscribed = preferences.getInt('isSubscribed');
     setState(() {});
     print(registerAs);
     print(degreeName);
@@ -190,7 +192,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: registerAs == 'E' ?  1.0.h : 0.0,
+                            height: registerAs == 'E' ? 1.0.h : 0.0,
                           ),
                           InkWell(
                             onTap: () {
@@ -257,14 +259,16 @@ class _AccountScreenState extends State<AccountScreen> {
                               padding: 20.0,
                             ),
                           ),
-                           SizedBox(
+                          SizedBox(
                             height: 1.0.h,
                           ),
                           InkWell(
                             onTap: () {
                               pushNewScreen(context,
                                   withNavBar: false,
-                                  screen: CurrentSubscriptionScreen(),//SubscriptionPlanScreen(),
+                                  screen: isSubscribed == 0
+                                      ? SubscriptionPlanScreen()
+                                      : CurrentSubscriptionScreen(),
                                   pageTransitionAnimation:
                                       PageTransitionAnimation.cupertino);
                             },
@@ -349,15 +353,14 @@ class _AccountScreenState extends State<AccountScreen> {
                           InkWell(
                             onTap: () {
                               logout();
-                              signOut().then(
-                                    (voidValue) {
-
-                                },
-                              ).catchError(
-                                    (onError) {
-
-                                },
-                              ).whenComplete(() {
+                              signOut()
+                                  .then(
+                                    (voidValue) {},
+                                  )
+                                  .catchError(
+                                    (onError) {},
+                                  )
+                                  .whenComplete(() {
                                 // CubeChatConnection.instance.destroy();
                                 SharedPrefs.instance.deleteUser();
                                 // pushNewScreen(
@@ -367,9 +370,11 @@ class _AccountScreenState extends State<AccountScreen> {
                                 //   pageTransitionAnimation:
                                 //   PageTransitionAnimation.cupertino,
                                 // );
-                                Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginScreen()),
+                                Navigator.of(context, rootNavigator: true)
+                                    .pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                LoginScreen()),
                                         (Route<dynamic> route) => false);
                               });
 
@@ -416,7 +421,13 @@ class ProfileList extends StatelessWidget {
   double? padding, sizeImage;
   bool? forwordIcon;
 
-  ProfileList({this.txt, this.image, this.tap, this.padding, this.sizeImage, this.forwordIcon});
+  ProfileList(
+      {this.txt,
+      this.image,
+      this.tap,
+      this.padding,
+      this.sizeImage,
+      this.forwordIcon});
 
   Widget build(BuildContext context) {
     return InkWell(
@@ -449,15 +460,15 @@ class ProfileList extends StatelessWidget {
                   ],
                 ),
                 forwordIcon == true
-                ? Padding(
-                  padding: const EdgeInsets.only(right: 0.0),
-                  child: Icon(
-                    Icons.arrow_forward_ios,
-                    color: Constants.bgColor,
-                    size: 15.0,
-                  ),
-                ) 
-                : Container()
+                    ? Padding(
+                        padding: const EdgeInsets.only(right: 0.0),
+                        child: Icon(
+                          Icons.arrow_forward_ios,
+                          color: Constants.bgColor,
+                          size: 15.0,
+                        ),
+                      )
+                    : Container()
               ],
             ),
           ],

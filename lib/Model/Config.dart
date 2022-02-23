@@ -66,6 +66,8 @@ class Config{
   static const String createSubscription = baseUrl + "user/subscription/create";
   static const String verifySubscription = baseUrl + "user/subscription/verify-payment";
   static const String cencelSubscription = baseUrl + "user/plans/cancel-subscription";
+  static const String currentSubscription = baseUrl + "user/plans/get/current";
+  static const String updateSubscription = baseUrl + "user/subscription/update";
 }
 
 

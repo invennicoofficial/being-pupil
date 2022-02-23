@@ -1,6 +1,7 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Subscription_Model/Cancel_Subscription_Model.dart';
+import 'package:being_pupil/Model/Subscription_Model/Current_Subscription_Model.dart';
 import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
@@ -8,8 +9,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
+import 'package:webview_flutter/webview_flutter.dart';
+import 'dart:developer' as developer;
+
+import 'Update_SubScription_Screen.dart';
 
 class CurrentSubscriptionScreen extends StatefulWidget {
   CurrentSubscriptionScreen({Key? key}) : super(key: key);
@@ -21,7 +27,8 @@ class CurrentSubscriptionScreen extends StatefulWidget {
 
 class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
   bool isLoading = true;
-  String? authToken;
+  String? authToken, razorpayLink;
+  var result;
 
   @override
   void initState() {
@@ -32,6 +39,23 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+    getData();
+    getCurrentSubscriptionAPI();
+  }
+
+  void getData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      razorpayLink = preferences.getString('razorpayLink');
+    });
+    print(razorpayLink);
+  }
+
+  Widget urlLauncher() {
+    debugPrint(razorpayLink);
+    return WebView(
+      initialUrl: razorpayLink,
+    );
   }
 
   @override
@@ -61,147 +85,176 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
               color: Colors.white),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 3.0.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'One Month Subscription Plan',
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 14.0.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Constants.bgColor),
-            ),
-            SizedBox(
-              height: 0.5.h,
-            ),
-            Text(
-              'See your billing information and cancel the Plan',
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 12.0.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Constants.bpOnBoardSubtitleStyle),
-            ),
-            SizedBox(
-              height: 4.0.h,
-            ),
-            Text(
-              'Billing information',
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 12.0.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Constants.bgColor),
-            ),
-            SizedBox(
-              height: 0.5.h,
-            ),
-            Text(
-              'Your next payment of ₹501* for One Month Subscription is scheduled for 2/2/2022.',
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 12.0.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Constants.bpOnBoardSubtitleStyle),
-            ),
-            SizedBox(
-              height: 1.0.h,
-            ),
-            Text(
-              '*Sales tax not included',
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 10.0.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Constants.bpOnBoardSubtitleStyle),
-            ),
-            SizedBox(
-              height: 1.0.h,
-            ),
-            Text(
-              'Manage payment methods',
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 10.0.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Constants.selectedIcon),
-            ),
-            SizedBox(
-              height: 4.0.h,
-            ),
-            Text(
-              'Manage subscription',
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 12.0.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Constants.bgColor),
-            ),
-            SizedBox(
-              height: 0.5.h,
-            ),
-            Text(
-              'You’re currently subscribed to One Month plan.',
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 12.0.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Constants.bpOnBoardSubtitleStyle),
-            ),
-            SizedBox(
-              height: 1.0.h,
-            ),
-            Text(
-              '*Sales tax not included',
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 10.0.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Constants.bpOnBoardSubtitleStyle),
-            ),
-            SizedBox(
-              height: 1.0.h,
-            ),
-            Row(
-              children: [
-                TextButton(
-                  onPressed: () {
-                    pushNewScreen(context, screen: SubscriptionPlanScreen(), withNavBar: false,
-                    pageTransitionAnimation: PageTransitionAnimation.cupertino);
-                  },
-                  child: Text(
-                    'Switch Plan',
-                    style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 10.0.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Constants.selectedIcon),
-                  ),
-                ),
-                SizedBox(
-                  width: 2.0.w,
-                ),
-                TextButton(
-                  onPressed: () {
-                    _showDialog();
-                  },
-                  child: Text(
-                    'Cancel Plan',
-                    style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 10.0.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Constants.selectedIcon),
-                  ),
-                ),
-              ],
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(
+                valueColor:
+                    new AlwaysStoppedAnimation<Color>(Constants.bgColor),
+              ),
             )
-          ],
-        ),
-      ),
+          : Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 3.0.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${result.data!.planName} Subscription Plan',
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 14.0.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Constants.bgColor),
+                  ),
+                  SizedBox(
+                    height: 0.5.h,
+                  ),
+                  Text(
+                    'See your billing information and cancel the Plan',
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 12.0.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Constants.bpOnBoardSubtitleStyle),
+                  ),
+                  SizedBox(
+                    height: 4.0.h,
+                  ),
+                  Text(
+                    'Billing information',
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 12.0.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Constants.bgColor),
+                  ),
+                  SizedBox(
+                    height: 0.5.h,
+                  ),
+                  Text(
+                    result.data!.planType == 'O'
+                        ? 'Your payment of ₹${result.data!.planId}* for ${result.data!.planName} Subscription valid till ${result.data!.subscriptionEndDate}.'
+                        : 'Your next payment of ₹${result.data!.planId}* for ${result.data!.planName} Subscription is scheduled for ${result.data!.nextBillDate}.',
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 12.0.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Constants.bpOnBoardSubtitleStyle),
+                  ),
+                  SizedBox(
+                    height: 1.0.h,
+                  ),
+                  Text(
+                    '*Sales tax not included',
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 10.0.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Constants.bpOnBoardSubtitleStyle),
+                  ),
+                  SizedBox(
+                    height: 1.0.h,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      urlLauncher();
+                    },
+                    child: Container(
+                      child: Text(
+                        'Manage payment methods',
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 10.0.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Constants.selectedIcon),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 4.0.h,
+                  ),
+                  Text(
+                    'Manage subscription',
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 12.0.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Constants.bgColor),
+                  ),
+                  SizedBox(
+                    height: 0.5.h,
+                  ),
+                  Text(
+                    'You’re currently subscribed to ${result.data!.planName} plan.',
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 12.0.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Constants.bpOnBoardSubtitleStyle),
+                  ),
+                  SizedBox(
+                    height: 1.0.h,
+                  ),
+                  Text(
+                    '*Sales tax not included',
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 10.0.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Constants.bpOnBoardSubtitleStyle),
+                  ),
+                  SizedBox(
+                    height: 1.0.h,
+                  ),
+                  Row(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          pushNewScreen(context,
+                              screen: UpdateSubscriptionPlanScreen(),
+                              withNavBar: false,
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino);
+                        },
+                        child: Text(
+                          'Switch Plan',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 10.0.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Constants.selectedIcon),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 2.0.w,
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          result.data!.planType == 'O'
+                              ? Fluttertoast.showToast(
+                                  msg: 'One time plan could not be cancelled.',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Constants.bgColor,
+                                  textColor: Colors.white,
+                                  fontSize: 10.0.sp,
+                                )
+                              : _showDialog();
+                        },
+                        child: Text(
+                          'Cancel Plan',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 10.0.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Constants.selectedIcon),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
     );
   }
 
@@ -292,9 +345,45 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
     );
   }
 
+  //Get Current Subscription
+  Future<void> getCurrentSubscriptionAPI() async {
+    var dio = Dio();
+    result = CurrentSubscription();
+    try {
+      var response = await dio.get(Config.currentSubscription,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
+      if (response.statusCode == 200) {
+        result = CurrentSubscription.fromJson(response.data);
+        print(response);
+        if (result.status == true) {
+          isLoading = false;
+          setState(() {});
+        } else {
+          // isLoading = false;
+          // setState(() {});
+          Fluttertoast.showToast(
+            msg: result.errorMsg == null ? result.message : result.errorMsg,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        }
+      }
+    } on DioError catch (e, stack) {
+      isLoading = false;
+      setState(() {});
+      print(e.message);
+      print(stack);
+    }
+  }
+
   //Cancel Subscription
   Future<void> cancelSubscriptionAPI() async {
     displayProgressDialog(context);
+    SharedPreferences preff = await SharedPreferences.getInstance();
     var dio = Dio();
     var result = CancelSubscription();
     try {
@@ -305,6 +394,8 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
         closeProgressDialog(context);
         print(response);
         if (result.status == true) {
+          preff.setInt('isSubscribed', 0);
+          setState(() {});
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => bottomNavBar(4)),
               (Route<dynamic> route) => false);
