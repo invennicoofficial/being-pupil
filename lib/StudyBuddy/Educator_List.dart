@@ -3,6 +3,7 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Learner/Connection_API.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Educator_List_Model.dart';
+import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,9 @@ class _EducatorListState extends State<EducatorList> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       registerAs = preferences.getString('RegisterAs');
+      isSubscribed = preferences.getInt('isSubscribed');
     });
+    debugPrint('SUB:::' + isSubscribed.toString());
     getEducatorListApi(page);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -219,23 +222,32 @@ class _EducatorListState extends State<EducatorList> {
                                 right: 2.0.w,
                               ),
                               child: GestureDetector(
-                                onTap: () async {
-                                  print('$index is Connected');
-                                  await connect.connectionApi(
-                                      _userId[index], authToken!);
-                                  setState(() {
-                                    isLoading = true;
-                                    page = 1;
-                                    _userId = [];
-                                    _profileImage = [];
-                                    _name = [];
-                                    _lastDegree = [];
-                                    _schoolName = [];
-                                    _date = [];
-                                    _distance = [];
-                                  });
-                                  getEducatorListApi(page);
-                                },
+                                onTap: isSubscribed == 1
+                                    ? () async {
+                                        print('$index is Connected');
+                                        await connect.connectionApi(
+                                            _userId[index], authToken!);
+                                        setState(() {
+                                          isLoading = true;
+                                          page = 1;
+                                          _userId = [];
+                                          _profileImage = [];
+                                          _name = [];
+                                          _lastDegree = [];
+                                          _schoolName = [];
+                                          _date = [];
+                                          _distance = [];
+                                        });
+                                        getEducatorListApi(page);
+                                      }
+                                    : () {
+                                        pushNewScreen(context,
+                                            screen: SubscriptionPlanScreen(),
+                                            withNavBar: false,
+                                            pageTransitionAnimation:
+                                                PageTransitionAnimation
+                                                    .cupertino);
+                                      },
                                 child: Container(
                                   height: 3.5.h,
                                   width: 16.0.w,

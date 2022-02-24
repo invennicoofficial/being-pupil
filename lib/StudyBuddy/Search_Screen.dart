@@ -3,6 +3,7 @@ import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Learner/Connection_API.dart';
 import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
@@ -50,8 +51,9 @@ class _SearchScreenState extends State<SearchScreen> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   Map<String, dynamic>? actionMap;
-  
-   @override
+  int? isSubscribed;
+
+  @override
   void initState() {
     super.initState();
     getToken();
@@ -83,14 +85,15 @@ class _SearchScreenState extends State<SearchScreen> {
     // });
   }
 
-  getData() async{
+  getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       registerAs = preferences.getString('RegisterAs');
+      isSubscribed = preferences.getInt('isSubscribed');
     });
   }
 
- void _onLoading() async {
+  void _onLoading() async {
     //if (mounted) setState(() {});
     // if (request.data.length > 0) {
     //   //_refreshController.loadComplete();
@@ -104,472 +107,578 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Container(
-        width: double.infinity,
-        height: 40,
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(20.0)),
-        child: Center(
-          child: TextField(
-            controller: searchController,
-            decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search),
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: () {
-                    searchController.text = '';
-                    FocusScope.of(context).unfocus();
-                  },
-                ),
-                hintText: 'Search by name and city...',
-                border: InputBorder.none),
-                onChanged: (value){
+        appBar: AppBar(
+          title: Container(
+            width: double.infinity,
+            height: 40,
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(20.0)),
+            child: Center(
+              child: TextField(
+                controller: searchController,
+                decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        searchController.text = '';
+                        FocusScope.of(context).unfocus();
+                      },
+                    ),
+                    hintText: 'Search by name and city...',
+                    border: InputBorder.none),
+                onChanged: (value) {
                   Future.delayed(Duration(seconds: 2));
                   // if(widget.searchIn == 'C' || widget.searchIn == 'R'){
-                    searchApi(value);
+                  searchApi(value);
                   // } else if(widget.searchIn == 'E' || widget.searchIn == 'L'){
                   //   searchApiTwo(value);
                   // }
-                  setState((){});
+                  setState(() {});
                 },
+              ),
+            ),
+          ),
+          backgroundColor: Colors.black,
+          leading: IconButton(
+            icon: Icon(
+              Icons.west_rounded,
+              color: Colors.white,
+              size: 35.0,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            padding: EdgeInsets.zero,
           ),
         ),
-      ),
-      backgroundColor: Colors.black,
-      leading:IconButton(
-          icon: Icon(
-            Icons.west_rounded,
-            color: Colors.white,
-            size: 35.0,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          padding: EdgeInsets.zero,
-        ),
-      ),
-      body: isLoading
-        ? Center(
-            child: CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
-            ),
-          )
-        :
-        // SingleChildScrollView(
-        //     controller: _scrollController,
-        //     physics: BouncingScrollPhysics(),
-        //     child:
-        SmartRefresher(
-            controller: _refreshController,
-            enablePullDown: false,
-            enablePullUp: true,
-            footer: ClassicFooter(
-              loadStyle: LoadStyle.ShowWhenLoading,
-              noDataText: 'No More Connection',
-              //noMoreIcon: Icon(Icons.refresh_outlined),
-            ),
-            onLoading: _onLoading,
-            child: widget.searchIn == 'R'
-            ? ListView.builder(
-                controller: _scrollController,
-                padding:
-                    EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
-                //physics: BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: _userId.length == 0 ? 0 : _userId.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 2.0,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 2.0.w),
-                      child: Container(
-                        //height: 10.0.h,
-                        child: GestureDetector(
-                          onTap: (){
-                            getUserProfile(_userId[index]);
-                          },
-                          child: ListTile(
-                            contentPadding: EdgeInsets.all(0.0),
-                            //leading:
-                            title: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    // registerAs == 'E'
-                                    //     ? pushNewScreen(context,
-                                    //         screen: EducatorProfileViewScreen(),
-                                    //         withNavBar: false,
-                                    //         pageTransitionAnimation:
-                                    //             PageTransitionAnimation.cupertino)
-                                    //     : pushNewScreen(context,
-                                    //         screen: LearnerProfileViewScreen(),
-                                    //         withNavBar: false,
-                                    //         pageTransitionAnimation:
-                                    //             PageTransitionAnimation
-                                    //                 .cupertino);
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child: Image.network(
-                                      _profileImage[index]!,
-                                      width: 40.0,
-                                      height: 40.0,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                // SizedBox(
-                                //   width: 2.0.w,
-                                // ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: 40.0.w,
-                                      //color: Colors.grey,
-                                      child: Text(
-                                        _name[index]!,
-                                        style: TextStyle(
-                                            fontSize: 9.0.sp,
-                                            color: Constants.bgColor,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ),
-                                    Container(
-                                      //color: Colors.grey,
-                                      width: 40.0.w,
-                                      child: Text(
-                                        _lastDegree[index] != null &&
-                                                _schoolName[index] != null
-                                            ? '${_lastDegree[index]} | ${_schoolName[index]}'
-                                            : '',
-                                        style: TextStyle(
-                                            fontSize: 6.5.sp,
-                                            color: Constants.bgColor,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w400),
-                                            overflow: TextOverflow.clip,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                        
-                                //Buttons
-                                Padding(
-                                  padding: EdgeInsets.only(right: 2.0.w),
-                                  child: Row(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          print('$index is Rejected');
-                                          requestActionApi(_userId[index], 'R');
-                                        },
-                                        child: Container(
-                                          height: 3.5.h,
-                                          width: 16.0.w,
-                                          decoration: BoxDecoration(
-                                              color: Constants.bgColor,
-                                              border: Border.all(
-                                                  color: Constants.bgColor,
-                                                  width: 0.5),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8.0))),
-                                          child: Center(
-                                            child: Text(
-                                              'Reject',
-                                              style: TextStyle(
-                                                  fontSize: 8.0.sp,
-                                                  color: Colors.white,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 2.0.w,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          print('$index is Connected');
-                                          requestActionApi(_userId[index], 'A');
-                                        },
-                                        child: Container(
-                                          height: 3.5.h,
-                                          width: 16.0.w,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Constants.bgColor,
-                                                  width: 0.5),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8.0))),
-                                          child: Center(
-                                            child: Text(
-                                              'Connect',
-                                              style: TextStyle(
-                                                  fontSize: 8.0.sp,
-                                                  color: Constants.bgColor,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                })
-             : ListView.builder(
-              controller: _scrollController,
-                padding:
-                    EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
-                //physics: BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: _userId.length == 0 ? 0 : _userId.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 2.0,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 2.0.w),
-                      child: Container(
-                        //height: 10.0.h,
-                        child: GestureDetector(
-                          onTap: (){
-                            getUserProfile(_userId[index]);
-                          },
-                          child: ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              title:  Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      // registerAs == 'E'
-                                      //     ? pushNewScreen(context,
-                                      //         screen: EducatorProfileViewScreen(),
-                                      //         withNavBar: false,
-                                      //         pageTransitionAnimation:
-                                      //             PageTransitionAnimation.cupertino)
-                                      //     : pushNewScreen(context,
-                                      //         screen: LearnerProfileViewScreen(),
-                                      //         withNavBar: false,
-                                      //         pageTransitionAnimation:
-                                      //             PageTransitionAnimation
-                                      //                 .cupertino);
-                                    },
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: Image.network(
-                                        _profileImage[index]!,
-                                        //connection.data[index].profileImage,
-                                        width: 40.0,
-                                        height: 40.0,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 2.0.w,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                         width: 45.0.w,
-                                         //color: Colors.grey,
-                                        child: Text(
-                                          _name[index]!,
-                                          //connection.data[index].name,
-                                          style: TextStyle(
-                                              fontSize: 9.0.sp,
-                                              color: Constants.bgColor,
-                                              fontFamily: 'Montserrat',
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 45.0.w,
-                                        //color: Colors.grey,
-                                        child: Text(
-                                          _lastDegree[index] != null &&
-                                                  _schoolName[index] != null
-                                              ? '${_lastDegree[index]} | ${_schoolName[index]}'
-                                              : '',
-                                          // connection.data[index].lastDegree != null && connection.data[index].schoolName != null
-                                          // ? "${connection.data[index].lastDegree} | ${connection.data[index].schoolName}" : '',
-                                          style: TextStyle(
-                                              fontSize: 6.5.sp,
-                                              color: Constants.bgColor,
-                                              fontFamily: 'Montserrat',
-                                              fontWeight: FontWeight.w400),
-                                              overflow: TextOverflow.clip
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  //for request list
-                                  
-                                ],
-                              ),
-                              trailing: widget.searchIn == 'C'
-                              ? Padding(
-                                padding: EdgeInsets.only(right: 2.0.w,),
+        body: isLoading
+            ? Center(
+                child: CircularProgressIndicator(
+                  valueColor:
+                      new AlwaysStoppedAnimation<Color>(Constants.bgColor),
+                ),
+              )
+            :
+            // SingleChildScrollView(
+            //     controller: _scrollController,
+            //     physics: BouncingScrollPhysics(),
+            //     child:
+            SmartRefresher(
+                controller: _refreshController,
+                enablePullDown: false,
+                enablePullUp: true,
+                footer: ClassicFooter(
+                  loadStyle: LoadStyle.ShowWhenLoading,
+                  noDataText: 'No More Connection',
+                  //noMoreIcon: Icon(Icons.refresh_outlined),
+                ),
+                onLoading: _onLoading,
+                child: widget.searchIn == 'R'
+                    ? ListView.builder(
+                        controller: _scrollController,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 4.0.w, vertical: 1.0.h),
+                        //physics: BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: _userId.length == 0 ? 0 : _userId.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            elevation: 2.0,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 2.0.w),
+                              child: Container(
+                                //height: 10.0.h,
                                 child: GestureDetector(
                                   onTap: () {
-                                    print('$index is Connected');
+                                    getUserProfile(_userId[index]);
                                   },
-                                  child: _status[index] == '0'
-                                      //connection.data[index].status == '0'
-                                      ? Container(
-                                          height: 3.5.h,
-                                          width: 25.0.w,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Constants.bgColor,
-                                                  width: 0.5),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8.0))),
-                                          child: Center(
-                                            child: Text(
-                                              'Request Sent',
-                                              style: TextStyle(
-                                                  fontSize: 8.0.sp,
-                                                  color: Constants.bgColor,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w500),
+                                  child: ListTile(
+                                    contentPadding: EdgeInsets.all(0.0),
+                                    //leading:
+                                    title: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      //crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            // registerAs == 'E'
+                                            //     ? pushNewScreen(context,
+                                            //         screen: EducatorProfileViewScreen(),
+                                            //         withNavBar: false,
+                                            //         pageTransitionAnimation:
+                                            //             PageTransitionAnimation.cupertino)
+                                            //     : pushNewScreen(context,
+                                            //         screen: LearnerProfileViewScreen(),
+                                            //         withNavBar: false,
+                                            //         pageTransitionAnimation:
+                                            //             PageTransitionAnimation
+                                            //                 .cupertino);
+                                          },
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            child: Image.network(
+                                              _profileImage[index]!,
+                                              width: 40.0,
+                                              height: 40.0,
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
-                                        )
-                                      : GestureDetector(
-                                        onTap: () async {
-                                    displayProgressDialog(context);
-                                    SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
-                                    CubeUser? user = sharedPrefs.getUser();
-                                    print(_email[index]);
-                                    getUserByEmail(_email[index]!)
-                                        .then((cubeUser) {
-                                          CubeDialog newDialog = CubeDialog(
-                                        CubeDialogType.PRIVATE,
-                                        occupantsIds: [cubeUser!.id!]);
-                                    createDialog(newDialog)
-                                        .then((createdDialog) {
-                                      closeProgressDialog(context);
-                                      pushNewScreen(context,
-                                          screen: ChatDialogScreen(user, createdDialog, _profileImage[index]),
-                                          withNavBar: false,
-                                          pageTransitionAnimation:
-                                          PageTransitionAnimation
-                                              .cupertino);
-                                    })
-                                        .catchError((error) {
-                                      displayProgressDialog(context);
-                                    });
-                                    })
-                                        .catchError((error) {
-                                      displayProgressDialog(context);
-                                    });
-
-                                  },
-                                        child: Container(
-                                            height: 3.5.h,
-                                            width: 16.0.w,
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Constants.bgColor,
-                                                    width: 0.5),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(8.0))),
-                                            child: Center(
+                                        ),
+                                        // SizedBox(
+                                        //   width: 2.0.w,
+                                        // ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: 40.0.w,
+                                              //color: Colors.grey,
                                               child: Text(
-                                                'Chat',
+                                                _name[index]!,
                                                 style: TextStyle(
-                                                    fontSize: 8.0.sp,
+                                                    fontSize: 9.0.sp,
                                                     color: Constants.bgColor,
                                                     fontFamily: 'Montserrat',
-                                                    fontWeight: FontWeight.w500),
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                            ),
+                                            Container(
+                                              //color: Colors.grey,
+                                              width: 40.0.w,
+                                              child: Text(
+                                                _lastDegree[index] != null &&
+                                                        _schoolName[index] !=
+                                                            null
+                                                    ? '${_lastDegree[index]} | ${_schoolName[index]}'
+                                                    : '',
+                                                style: TextStyle(
+                                                    fontSize: 6.5.sp,
+                                                    color: Constants.bgColor,
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                                overflow: TextOverflow.clip,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+
+                                        //Buttons
+                                        Padding(
+                                          padding:
+                                              EdgeInsets.only(right: 2.0.w),
+                                          child: Row(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  print('$index is Rejected');
+                                                  requestActionApi(
+                                                      _userId[index], 'R');
+                                                },
+                                                child: Container(
+                                                  height: 3.5.h,
+                                                  width: 16.0.w,
+                                                  decoration: BoxDecoration(
+                                                      color: Constants.bgColor,
+                                                      border: Border.all(
+                                                          color:
+                                                              Constants.bgColor,
+                                                          width: 0.5),
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  8.0))),
+                                                  child: Center(
+                                                    child: Text(
+                                                      'Reject',
+                                                      style: TextStyle(
+                                                          fontSize: 8.0.sp,
+                                                          color: Colors.white,
+                                                          fontFamily:
+                                                              'Montserrat',
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 2.0.w,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  print('$index is Connected');
+                                                  isSubscribed == 1
+                                                      ? requestActionApi(
+                                                          _userId[index], 'A')
+                                                      : pushNewScreen(context,
+                                                          screen:
+                                                              SubscriptionPlanScreen(),
+                                                          withNavBar: false,
+                                                          pageTransitionAnimation:
+                                                              PageTransitionAnimation
+                                                                  .cupertino);
+                                                },
+                                                child: Container(
+                                                  height: 3.5.h,
+                                                  width: 16.0.w,
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color:
+                                                              Constants.bgColor,
+                                                          width: 0.5),
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  8.0))),
+                                                  child: Center(
+                                                    child: Text(
+                                                      'Connect',
+                                                      style: TextStyle(
+                                                          fontSize: 8.0.sp,
+                                                          color:
+                                                              Constants.bgColor,
+                                                          fontFamily:
+                                                              'Montserrat',
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        })
+                    : ListView.builder(
+                        controller: _scrollController,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 4.0.w, vertical: 1.0.h),
+                        //physics: BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: _userId.length == 0 ? 0 : _userId.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            elevation: 2.0,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 2.0.w),
+                              child: Container(
+                                //height: 10.0.h,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    getUserProfile(_userId[index]);
+                                  },
+                                  child: ListTile(
+                                      contentPadding: EdgeInsets.zero,
+                                      title: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              // registerAs == 'E'
+                                              //     ? pushNewScreen(context,
+                                              //         screen: EducatorProfileViewScreen(),
+                                              //         withNavBar: false,
+                                              //         pageTransitionAnimation:
+                                              //             PageTransitionAnimation.cupertino)
+                                              //     : pushNewScreen(context,
+                                              //         screen: LearnerProfileViewScreen(),
+                                              //         withNavBar: false,
+                                              //         pageTransitionAnimation:
+                                              //             PageTransitionAnimation
+                                              //                 .cupertino);
+                                            },
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              child: Image.network(
+                                                _profileImage[index]!,
+                                                //connection.data[index].profileImage,
+                                                width: 40.0,
+                                                height: 40.0,
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
                                           ),
+                                          SizedBox(
+                                            width: 2.0.w,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 45.0.w,
+                                                //color: Colors.grey,
+                                                child: Text(
+                                                  _name[index]!,
+                                                  //connection.data[index].name,
+                                                  style: TextStyle(
+                                                      fontSize: 9.0.sp,
+                                                      color: Constants.bgColor,
+                                                      fontFamily: 'Montserrat',
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 45.0.w,
+                                                //color: Colors.grey,
+                                                child: Text(
+                                                    _lastDegree[index] !=
+                                                                null &&
+                                                            _schoolName[
+                                                                    index] !=
+                                                                null
+                                                        ? '${_lastDegree[index]} | ${_schoolName[index]}'
+                                                        : '',
+                                                    // connection.data[index].lastDegree != null && connection.data[index].schoolName != null
+                                                    // ? "${connection.data[index].lastDegree} | ${connection.data[index].schoolName}" : '',
+                                                    style: TextStyle(
+                                                        fontSize: 6.5.sp,
+                                                        color:
+                                                            Constants.bgColor,
+                                                        fontFamily:
+                                                            'Montserrat',
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                    overflow:
+                                                        TextOverflow.clip),
+                                              ),
+                                            ],
+                                          ),
+                                          //for request list
+                                        ],
                                       ),
+                                      trailing: widget.searchIn == 'C'
+                                          ? Padding(
+                                              padding: EdgeInsets.only(
+                                                right: 2.0.w,
+                                              ),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print('$index is Connected');
+                                                },
+                                                child: _status[index] == '0'
+                                                    //connection.data[index].status == '0'
+                                                    ? Container(
+                                                        height: 3.5.h,
+                                                        width: 25.0.w,
+                                                        decoration: BoxDecoration(
+                                                            border: Border.all(
+                                                                color: Constants
+                                                                    .bgColor,
+                                                                width: 0.5),
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        8.0))),
+                                                        child: Center(
+                                                          child: Text(
+                                                            'Request Sent',
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    8.0.sp,
+                                                                color: Constants
+                                                                    .bgColor,
+                                                                fontFamily:
+                                                                    'Montserrat',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : GestureDetector(
+                                                        onTap: () async {
+                                                          displayProgressDialog(
+                                                              context);
+                                                          SharedPrefs
+                                                              sharedPrefs =
+                                                              await SharedPrefs
+                                                                  .instance
+                                                                  .init();
+                                                          CubeUser? user =
+                                                              sharedPrefs
+                                                                  .getUser();
+                                                          print(_email[index]);
+                                                          getUserByEmail(_email[
+                                                                  index]!)
+                                                              .then((cubeUser) {
+                                                            CubeDialog
+                                                                newDialog =
+                                                                CubeDialog(
+                                                                    CubeDialogType
+                                                                        .PRIVATE,
+                                                                    occupantsIds: [
+                                                                  cubeUser!.id!
+                                                                ]);
+                                                            createDialog(
+                                                                    newDialog)
+                                                                .then(
+                                                                    (createdDialog) {
+                                                              closeProgressDialog(
+                                                                  context);
+                                                              pushNewScreen(
+                                                                  context,
+                                                                  screen: ChatDialogScreen(
+                                                                      user,
+                                                                      createdDialog,
+                                                                      _profileImage[
+                                                                          index]),
+                                                                  withNavBar:
+                                                                      false,
+                                                                  pageTransitionAnimation:
+                                                                      PageTransitionAnimation
+                                                                          .cupertino);
+                                                            }).catchError(
+                                                                    (error) {
+                                                              displayProgressDialog(
+                                                                  context);
+                                                            });
+                                                          }).catchError(
+                                                                  (error) {
+                                                            displayProgressDialog(
+                                                                context);
+                                                          });
+                                                        },
+                                                        child: Container(
+                                                          height: 3.5.h,
+                                                          width: 16.0.w,
+                                                          decoration: BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: Constants
+                                                                      .bgColor,
+                                                                  width: 0.5),
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          8.0))),
+                                                          child: Center(
+                                                            child: Text(
+                                                              'Chat',
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      8.0.sp,
+                                                                  color: Constants
+                                                                      .bgColor,
+                                                                  fontFamily:
+                                                                      'Montserrat',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                              ),
+                                            )
+                                          : widget.searchIn == 'E' ||
+                                                  widget.searchIn == 'L'
+                                              ? Padding(
+                                                  padding: EdgeInsets.only(
+                                                    right: 2.0.w,
+                                                  ),
+                                                  child: GestureDetector(
+                                                    onTap: () async {
+                                                      print(
+                                                          '$index is Connected');
+                                                      isSubscribed == 1
+                                                          ? await connect
+                                                              .connectionApi(
+                                                                  _userId[
+                                                                      index],
+                                                                  authToken!)
+                                                          : pushNewScreen(
+                                                              context,
+                                                              screen:
+                                                                  SubscriptionPlanScreen(),
+                                                              withNavBar: false,
+                                                              pageTransitionAnimation:
+                                                                  PageTransitionAnimation
+                                                                      .cupertino);
+                                                      // setState(() {
+                                                      //   isLoading = true;
+                                                      //   page = 1;
+                                                      //   _userId = [];
+                                                      //   _profileImage = [];
+                                                      //   _name = [];
+                                                      //   _lastDegree = [];
+                                                      //   _schoolName = [];
+                                                      //   _date = [];
+                                                      //   _distance = [];
+                                                      // });
+                                                      // getEducatorListApi(page);
+                                                    },
+                                                    child: Container(
+                                                      height: 3.5.h,
+                                                      width: 16.0.w,
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              color: Constants
+                                                                  .bgColor,
+                                                              width: 0.5),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          8.0))),
+                                                      child: Center(
+                                                        child: Text(
+                                                          'Connect',
+                                                          style: TextStyle(
+                                                              fontSize: 8.0.sp,
+                                                              color: Constants
+                                                                  .bgColor,
+                                                              fontFamily:
+                                                                  'Montserrat',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container()),
                                 ),
-                              )
-                              : widget.searchIn == 'E' || widget.searchIn == 'L'
-                              ? Padding(
-                                padding:
-                                    EdgeInsets.only(right: 2.0.w,),
-                                child: GestureDetector(
-                                  onTap: () async{
-                                    print('$index is Connected');
-                                    await connect.connectionApi(_userId[index], authToken!);
-                                    // setState(() {
-                                    //   isLoading = true;
-                                    //   page = 1;
-                                    //   _userId = [];
-                                    //   _profileImage = [];
-                                    //   _name = [];
-                                    //   _lastDegree = [];
-                                    //   _schoolName = [];
-                                    //   _date = [];
-                                    //   _distance = [];
-                                    // });         
-                                   // getEducatorListApi(page);
-                                  },
-                                  child: Container(
-                                    height: 3.5.h,
-                                    width: 16.0.w,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Constants.bgColor, width: 0.5),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8.0))),
-                                    child: Center(
-                                      child: Text(
-                                        'Connect',
-                                        style: TextStyle(
-                                            fontSize: 8.0.sp,
-                                            color: Constants.bgColor,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ) : Container()
                               ),
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-          )
-    );
+                            ),
+                          );
+                        }),
+              ));
   }
- 
- //Search API for connection and Request Tab
- Future<void> searchApi(String search) async {
+
+  //Search API for connection and Request Tab
+  Future<void> searchApi(String search) async {
     //var delResult = PostDelete();
-  
-  setState(() {
-    isLoading =true;
-  });
+
+    setState(() {
+      isLoading = true;
+    });
     try {
       Dio dio = Dio();
 
       //FormData formData = FormData.fromMap({'search_in': widget.searchIn, 'search': searchController.text});
-      var response = await dio.get('${Config.searchUserUrl}?search_in=${widget.searchIn}&search=$search&page=$page&user_type=$registerAs',
+      var response = await dio.get(
+          '${Config.searchUserUrl}?search_in=${widget.searchIn}&search=$search&page=$page&user_type=$registerAs',
           //data: formData,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
@@ -592,7 +701,7 @@ class _SearchScreenState extends State<SearchScreen> {
         _date = [];
         _distance = [];
         _email = [];
-        setState((){});
+        setState(() {});
         if (mapData!.length > 0) {
           for (int i = 0; i < mapData!.length; i++) {
             _userId.add(mapData![i]['user_id']);
@@ -602,14 +711,12 @@ class _SearchScreenState extends State<SearchScreen> {
             _schoolName.add(mapData![i]['school_name']);
             _date.add(mapData![i]['date']);
             _email.add(mapData![i]['email']);
-            if(widget.searchIn == 'C' || widget.searchIn == 'R'){
-               _status.add(mapData![i]['status']);
+            if (widget.searchIn == 'C' || widget.searchIn == 'R') {
+              _status.add(mapData![i]['status']);
             } else //if(widget.searchIn == 'E' || widget.searchIn == 'L')
             {
               _distance.add(mapData![i]['distance']);
             }
-           
-            
           }
           // k++;
           // print(k);
@@ -617,7 +724,7 @@ class _SearchScreenState extends State<SearchScreen> {
           print(_lastDegree);
           print(_schoolName);
           print(_distance);
-          print('EMAIL:::'+_email.toString());
+          print('EMAIL:::' + _email.toString());
 
           isLoading = false;
           setState(() {});
@@ -641,17 +748,18 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   //Search API for Educator List and Learner Tab
- Future<void> searchApiTwo(String search) async {
+  Future<void> searchApiTwo(String search) async {
     //var delResult = PostDelete();
-  
-  setState(() {
-    isLoading =true;
-  });
+
+    setState(() {
+      isLoading = true;
+    });
     try {
       Dio dio = Dio();
 
       //FormData formData = FormData.fromMap({'search_in': widget.searchIn, 'search': searchController.text});
-      var response = await dio.get('${Config.searchUserUrl}?search_in=${widget.searchIn}&search=$search',
+      var response = await dio.get(
+          '${Config.searchUserUrl}?search_in=${widget.searchIn}&search=$search',
           //data: formData,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
@@ -672,7 +780,7 @@ class _SearchScreenState extends State<SearchScreen> {
         _schoolName = [];
         _date = [];
         _distance = [];
-        setState((){});
+        setState(() {});
         if (mapData!.length > 0) {
           for (int i = 0; i < mapData!.length; i++) {
             _userId.add(mapData![i]['user_id']);
@@ -712,7 +820,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
 //For request Action
-   Future<void> requestActionApi(int? reqId, String action) async {
+  Future<void> requestActionApi(int? reqId, String action) async {
     //var delResult = PostDelete();
 
     try {
@@ -784,7 +892,7 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
-   Future<void> getUserProfile(id) async {
+  Future<void> getUserProfile(id) async {
     // displayProgressDialog(context);
 
     Map<String, dynamic>? map = {};
@@ -804,17 +912,17 @@ class _SearchScreenState extends State<SearchScreen> {
           setState(() {});
           map['data']['role'] == 'E'
               ? pushNewScreen(context,
-              screen: EducatorProfileViewScreen(id: id,),
-              withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation.cupertino)
-              :
-          pushNewScreen(context,
-              screen: LearnerProfileViewScreen(id: id,),
-              withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation
-                  .cupertino);
+                  screen: EducatorProfileViewScreen(
+                    id: id,
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino)
+              : pushNewScreen(context,
+                  screen: LearnerProfileViewScreen(
+                    id: id,
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino);
         } else {
           isLoading = false;
           setState(() {});
@@ -835,7 +943,7 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
-    displayProgressDialog(BuildContext context) {
+  displayProgressDialog(BuildContext context) {
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
@@ -846,5 +954,4 @@ class _SearchScreenState extends State<SearchScreen> {
   closeProgressDialog(BuildContext context) {
     Navigator.of(context).pop();
   }
-
 }

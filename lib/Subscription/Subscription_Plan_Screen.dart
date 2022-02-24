@@ -48,7 +48,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
   String? authToken;
   String? mobileNumber, email, userName, subscriptionId;
   var _razorpay = Razorpay();
-  String? payStatus;
+  String? payStatus, paymentID, paySignature;
 
   @override
   void initState() {
@@ -449,14 +449,16 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
           setState(() {
             preferences.setString('razorpayLink', result.data!.razorpayLink!);
             preferences.setInt('isSubscribed', 1);
+            //payStatus = result.errorCode!;
           });
+          debugPrint(payStatus);
           debugPrint('LINK:::${preferences.getString('razorpayLink')}');
-          if (result.data!.status == "authenticate" &&
-              result.errorCode == 'ERR728') {
-            Future.delayed(Duration(seconds: 3), () {
-              verifySubscriptionAPI(paymentId, subscriptionId, signature);
-            });
-          } else {
+          if (result.data!.status == "active") {
+            //   Future.delayed(Duration(seconds: 3), () async {
+            //     await verifySubscriptionAPI(
+            //         paymentID!, subscriptionId, paySignature!);
+            //   });
+            // } else {
             Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => PaymentSucessScreen()),
                 (Route<dynamic> route) => false);
@@ -472,7 +474,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
           );
         } else {
           Fluttertoast.showToast(
-            msg: result.errorMsg == null ? result.message : result.errorMsg,
+            msg: result.errorMsg,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -480,6 +482,16 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
+          if (result.status == false && result.errorCode == 'ERR728') {
+            Future.delayed(Duration(seconds: 2), () async {
+              await verifySubscriptionAPI(
+                  paymentID!, subscriptionId, paySignature!);
+            });
+          } else {
+            Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => PaymentSucessScreen()),
+                (Route<dynamic> route) => false);
+          }
         }
       } else {
         Fluttertoast.showToast(
@@ -506,11 +518,23 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
     print(subscriptionId);
     print(response.paymentId);
     print(response.signature);
-    //createBookingAPI(response.orderId, response.paymentId, response.signature);
-    Future.delayed(Duration(seconds: 2), () async {
-      await verifySubscriptionAPI(
-          response.paymentId!, subscriptionId!, response.signature!);
+    setState(() {
+      paymentID = response.paymentId!;
+      paySignature = response.signature!;
     });
+    verifySubscriptionAPI(
+        response.paymentId!, subscriptionId!, response.signature!);
+    //createBookingAPI(response.orderId, response.paymentId, response.signature);
+    // if (payStatus == 'ERR728') {
+    //   Future.delayed(Duration(seconds: 3), () async {
+    //     await verifySubscriptionAPI(
+    //         response.paymentId!, subscriptionId!, response.signature!);
+    //   });
+    // } else {
+    //   Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+    //       MaterialPageRoute(builder: (context) => PaymentSucessScreen()),
+    //       (Route<dynamic> route) => false);
+    // }
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {

@@ -2,6 +2,7 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Learner/Connection_API.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Learner_List_Model.dart';
+import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -40,6 +41,7 @@ class _LearnerListState extends State<LearnerList> {
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+  int? isSubscribed;
 
   @override
   void initState() {
@@ -57,6 +59,7 @@ class _LearnerListState extends State<LearnerList> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       registerAs = preferences.getString('RegisterAs');
+      isSubscribed = preferences.getInt('isSubscribed');
     });
     getLearnerListApi(page);
     _scrollController.addListener(() {
@@ -114,10 +117,10 @@ class _LearnerListState extends State<LearnerList> {
             ),
             onLoading: _onLoading,
             child: ListView.builder(
-              controller: _scrollController,
+                controller: _scrollController,
                 padding:
                     EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
-               // physics: BouncingScrollPhysics(),
+                // physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: _userId.length == 0 ? 0 : _userId.length,
                 itemBuilder: (context, index) {
@@ -131,8 +134,8 @@ class _LearnerListState extends State<LearnerList> {
                             contentPadding: EdgeInsets.zero,
                             title: GestureDetector(
                               onTap: () {
-                                    getUserProfile(_userId[index]);
-                                  },
+                                getUserProfile(_userId[index]);
+                              },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
@@ -149,7 +152,8 @@ class _LearnerListState extends State<LearnerList> {
                                     width: 2.0.w,
                                   ),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
@@ -172,7 +176,7 @@ class _LearnerListState extends State<LearnerList> {
                                               color: Constants.bgColor,
                                               fontFamily: 'Montserrat',
                                               fontWeight: FontWeight.w400),
-                                              overflow: TextOverflow.clip,
+                                          overflow: TextOverflow.clip,
                                         ),
                                       ),
                                     ],
@@ -181,25 +185,36 @@ class _LearnerListState extends State<LearnerList> {
                               ),
                             ),
                             trailing: Padding(
-                              padding:
-                                  EdgeInsets.only(right: 2.0.w,),
+                              padding: EdgeInsets.only(
+                                right: 2.0.w,
+                              ),
                               child: GestureDetector(
-                                onTap: () async{
-                                  print('$index is Connected');
-                                  await connect.connectionApi(_userId[index], authToken!);
-                                  setState(() {
-                                    isLoading = true;
-                                    page = 1;
-                                    _userId = [];
-                                    _profileImage = [];
-                                    _name = [];
-                                    _lastDegree = [];
-                                    _schoolName = [];
-                                    _date = [];
-                                    _distance = [];
-                                  });         
-                                  getLearnerListApi(page);
-                                },
+                                onTap: isSubscribed == 1
+                                    ? () async {
+                                        print('$index is Connected');
+                                        await connect.connectionApi(
+                                            _userId[index], authToken!);
+                                        setState(() {
+                                          isLoading = true;
+                                          page = 1;
+                                          _userId = [];
+                                          _profileImage = [];
+                                          _name = [];
+                                          _lastDegree = [];
+                                          _schoolName = [];
+                                          _date = [];
+                                          _distance = [];
+                                        });
+                                        getLearnerListApi(page);
+                                      }
+                                    : () {
+                                        pushNewScreen(context,
+                                            screen: SubscriptionPlanScreen(),
+                                            withNavBar: false,
+                                            pageTransitionAnimation:
+                                                PageTransitionAnimation
+                                                    .cupertino);
+                                      },
                                 child: Container(
                                   height: 3.5.h,
                                   width: 16.0.w,
@@ -228,7 +243,7 @@ class _LearnerListState extends State<LearnerList> {
           );
   }
 
-    Future<void> getUserProfile(id) async {
+  Future<void> getUserProfile(id) async {
     // displayProgressDialog(context);
 
     Map<String, dynamic>? map = {};
@@ -248,17 +263,17 @@ class _LearnerListState extends State<LearnerList> {
           setState(() {});
           map['data']['role'] == 'E'
               ? pushNewScreen(context,
-              screen: EducatorProfileViewScreen(id: id,),
-              withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation.cupertino)
-              :
-          pushNewScreen(context,
-              screen: LearnerProfileViewScreen(id: id,),
-              withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation
-                  .cupertino);
+                  screen: EducatorProfileViewScreen(
+                    id: id,
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino)
+              : pushNewScreen(context,
+                  screen: LearnerProfileViewScreen(
+                    id: id,
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino);
         } else {
           isLoading = false;
           setState(() {});

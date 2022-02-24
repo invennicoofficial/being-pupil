@@ -40,6 +40,7 @@ class _RequestListState extends State<RequestList> {
       RefreshController(initialRefresh: false);
 
   Map<String, dynamic>? actionMap;
+  int? isSubscribed;
 
   @override
   void initState() {
@@ -58,6 +59,7 @@ class _RequestListState extends State<RequestList> {
     setState(() {
       registerAs = preferences.getString('RegisterAs');
       userId = preferences.getInt('userId');
+      isSubscribed = preferences.getInt('isSubscribed');
     });
     print('ID::::::' + userId.toString());
     getRequestApi(page);
@@ -126,14 +128,14 @@ class _RequestListState extends State<RequestList> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 2.0.w),
                       child: Container(
-                        //height: 10.0.h, 
+                        //height: 10.0.h,
                         child: ListTile(
                           contentPadding: EdgeInsets.all(0.0),
                           //leading:
                           title: GestureDetector(
                             onTap: () {
-                                  getUserProfile(_userId[index]);
-                                },
+                              getUserProfile(_userId[index]);
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               //crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,7 +156,8 @@ class _RequestListState extends State<RequestList> {
                                   padding: EdgeInsets.only(right: 0.0.w),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         width: 40.0.w,
@@ -181,13 +184,13 @@ class _RequestListState extends State<RequestList> {
                                               color: Constants.bgColor,
                                               fontFamily: 'Montserrat',
                                               fontWeight: FontWeight.w400),
-                                              overflow: TextOverflow.clip,
+                                          overflow: TextOverflow.clip,
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                          
+
                                 //Buttons
                                 Padding(
                                   padding: EdgeInsets.only(right: 2.0.w),
@@ -270,7 +273,8 @@ class _RequestListState extends State<RequestList> {
     try {
       Dio dio = Dio();
 
-      var response = await dio.get('${Config.getRequestUrl}$userId?page=$page&user_type=$registerAs');
+      var response = await dio.get(
+          '${Config.getRequestUrl}$userId?page=$page&user_type=$registerAs');
       print(response.statusCode);
 
       if (response.statusCode == 200) {
@@ -414,17 +418,17 @@ class _RequestListState extends State<RequestList> {
           setState(() {});
           map['data']['role'] == 'E'
               ? pushNewScreen(context,
-              screen: EducatorProfileViewScreen(id: id,),
-              withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation.cupertino)
-              :
-          pushNewScreen(context,
-              screen: LearnerProfileViewScreen(id: id,),
-              withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation
-                  .cupertino);
+                  screen: EducatorProfileViewScreen(
+                    id: id,
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino)
+              : pushNewScreen(context,
+                  screen: LearnerProfileViewScreen(
+                    id: id,
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino);
         } else {
           isLoading = false;
           setState(() {});

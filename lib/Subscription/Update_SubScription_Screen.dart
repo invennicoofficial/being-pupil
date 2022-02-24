@@ -25,10 +25,12 @@ class UpdateSubscriptionPlanScreen extends StatefulWidget {
   UpdateSubscriptionPlanScreen({Key? key}) : super(key: key);
 
   @override
-  State<UpdateSubscriptionPlanScreen> createState() => _UpdateSubscriptionPlanScreen();
+  State<UpdateSubscriptionPlanScreen> createState() =>
+      _UpdateSubscriptionPlanScreen();
 }
 
-class _UpdateSubscriptionPlanScreen extends State<UpdateSubscriptionPlanScreen> {
+class _UpdateSubscriptionPlanScreen
+    extends State<UpdateSubscriptionPlanScreen> {
   String? registerAs;
   List<String> content = [
     // 'Live Stream',
@@ -407,7 +409,7 @@ class _UpdateSubscriptionPlanScreen extends State<UpdateSubscriptionPlanScreen> 
         }
       } else {
         Fluttertoast.showToast(
-          msg: result.errorMsg,
+          msg: result.errorMsg!,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -462,8 +464,7 @@ class _UpdateSubscriptionPlanScreen extends State<UpdateSubscriptionPlanScreen> 
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-        }else{
-          
+        } else {
           Fluttertoast.showToast(
             msg: result.errorMsg == null ? result.message : result.errorMsg,
             toastLength: Toast.LENGTH_SHORT,
@@ -508,8 +509,8 @@ class _UpdateSubscriptionPlanScreen extends State<UpdateSubscriptionPlanScreen> 
     // Do something when payment fails
     Fluttertoast.showToast(msg: 'Payment Failed! Please try again');
     Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => PaymentFailedScreen()),
-              (Route<dynamic> route) => false);
+        MaterialPageRoute(builder: (context) => PaymentFailedScreen()),
+        (Route<dynamic> route) => false);
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
