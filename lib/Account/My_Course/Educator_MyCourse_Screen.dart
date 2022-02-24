@@ -2,12 +2,14 @@ import 'package:being_pupil/Account/My_Course/Course_Details.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Course_Model/Get_My_Course_Model.dart';
+import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import 'Create_Course_Screen.dart';
@@ -29,6 +31,7 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
   ScrollController _scrollController = ScrollController();
   bool isLoading = true;
   int page = 1;
+  int? isSubscribed;
   List<String> startDateList = [];
   List<String> endDateList = [];
   List<String?> nameList = [];
@@ -47,6 +50,7 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+    getData();
     getMyCourseAPI(page);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -65,6 +69,13 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
           print(page);
         }
       }
+    });
+  }
+
+  getData() async {
+    final preferences = await SharedPreferences.getInstance();
+    setState(() {
+      isSubscribed = preferences.getInt('isSubscribed');
     });
   }
 
@@ -120,16 +131,24 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
               padding: EdgeInsets.only(right: 2.0.w),
               child: IconButton(
                   icon: Icon(Icons.add_box_outlined, color: Colors.white),
-                  onPressed: () async {
-                    print('ADD!!!');
-                    var isCreated = await pushNewScreen(context,
-                        screen: CreateCourseScreen(),
-                        withNavBar: false,
-                        pageTransitionAnimation:
-                            PageTransitionAnimation.cupertino);
-                    print(isCreated);
-                    isCreated == 'created' ? _onRefresh() : null;
-                  })),
+                  onPressed: isSubscribed == 0
+                      ? () {
+                          pushNewScreen(context,
+                              screen: SubscriptionPlanScreen(),
+                              withNavBar: false,
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino);
+                        }
+                      : () async {
+                          print('ADD!!!');
+                          var isCreated = await pushNewScreen(context,
+                              screen: CreateCourseScreen(),
+                              withNavBar: false,
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino);
+                          print(isCreated);
+                          isCreated == 'created' ? _onRefresh() : null;
+                        })),
         ],
       ),
       body: isLoading
@@ -213,7 +232,8 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
                                 SizedBox(
                                   height: 0.5.h,
                                 ),
-                                Text('${startDateList[index]} to ${endDateList[index]}',
+                                Text(
+                                    '${startDateList[index]} to ${endDateList[index]}',
                                     //'${result.data[index].startDate} to ${result.data[index].endDate}',
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',

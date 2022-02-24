@@ -48,6 +48,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
   String? authToken;
   String? mobileNumber, email, userName, subscriptionId;
   var _razorpay = Razorpay();
+  String? payStatus;
 
   @override
   void initState() {
@@ -393,6 +394,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
             mobileNumber = result.data!.userMobile;
             email = result.data!.userEmail;
           });
+          debugPrint(subscriptionId);
           Fluttertoast.showToast(
             msg: result.message!,
             toastLength: Toast.LENGTH_SHORT,
@@ -402,7 +404,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-          createRazorPaySubscriptionId(price, name, subscriptionId!);
+          await createRazorPaySubscriptionId(price, name, subscriptionId!);
         }
       } else {
         Fluttertoast.showToast(
@@ -425,14 +427,14 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
 
   //Verify Subscription
   Future<VerifySubscription> verifySubscriptionAPI(
-      String paymentId, String subscriptioId, String signature) async {
+      String paymentId, String subscriptionId, String signature) async {
     displayProgressDialog(context);
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var result = VerifySubscription();
     var dio = Dio();
     FormData formData = FormData.fromMap({
       'razorpay_payment_id': paymentId,
-      'razorpay_subscription_id': subscriptioId,
+      'razorpay_subscription_id': subscriptionId,
       'razorpay_signature': signature
     });
     try {
@@ -449,9 +451,16 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
             preferences.setInt('isSubscribed', 1);
           });
           debugPrint('LINK:::${preferences.getString('razorpayLink')}');
-          Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => PaymentSucessScreen()),
-              (Route<dynamic> route) => false);
+          if (result.data!.status == "authenticate" &&
+              result.errorCode == 'ERR728') {
+            Future.delayed(Duration(seconds: 3), () {
+              verifySubscriptionAPI(paymentId, subscriptionId, signature);
+            });
+          } else {
+            Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => PaymentSucessScreen()),
+                (Route<dynamic> route) => false);
+          }
           Fluttertoast.showToast(
             msg: result.message!,
             toastLength: Toast.LENGTH_SHORT,
@@ -461,8 +470,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-        }else{
-          
+        } else {
           Fluttertoast.showToast(
             msg: result.errorMsg == null ? result.message : result.errorMsg,
             toastLength: Toast.LENGTH_SHORT,
@@ -499,16 +507,18 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
     print(response.paymentId);
     print(response.signature);
     //createBookingAPI(response.orderId, response.paymentId, response.signature);
-    verifySubscriptionAPI(
-        response.paymentId!, subscriptionId!, response.signature!);
+    Future.delayed(Duration(seconds: 2), () async {
+      await verifySubscriptionAPI(
+          response.paymentId!, subscriptionId!, response.signature!);
+    });
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
     // Do something when payment fails
     Fluttertoast.showToast(msg: 'Payment Failed! Please try again');
     Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => PaymentFailedScreen()),
-              (Route<dynamic> route) => false);
+        MaterialPageRoute(builder: (context) => PaymentFailedScreen()),
+        (Route<dynamic> route) => false);
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {

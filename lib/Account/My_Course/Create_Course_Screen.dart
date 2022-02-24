@@ -419,11 +419,11 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                               //print(educationDetailMap);
                             },
                             child: Padding(
-                              padding: EdgeInsets.only(top: 2.0.h),
+                              padding: EdgeInsets.only(top: 2.5.h),
                               child: ImageIcon(
                                 AssetImage('assets/icons/close_icon.png'),
                                 color: Constants.bpSkipStyle,
-                                size: 22.0,
+                                size: 20.0,
                               ),
                             )),
                       ],

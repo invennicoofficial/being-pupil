@@ -43,6 +43,8 @@ class _EducatorListState extends State<EducatorList> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
+  int? isSubscribed;
+
   @override
   void initState() {
     super.initState();
@@ -132,20 +134,21 @@ class _EducatorListState extends State<EducatorList> {
                         child: ListTile(
                             contentPadding: EdgeInsets.zero,
                             title: GestureDetector(
-                               onTap: () {
-                                    getUserProfile(_userId[index]);
-                                  },
+                              onTap: () {
+                                getUserProfile(_userId[index]);
+                              },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   ClipRRect(
                                       borderRadius: BorderRadius.circular(50),
                                       child: CachedNetworkImage(
-                                        placeholder: (context, url) => Container(
+                                        placeholder: (context, url) =>
+                                            Container(
                                           child: CircularProgressIndicator(
                                             valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                                Colors.black),
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.black),
                                           ),
                                           width: 40.0,
                                           height: 40.0,
@@ -159,28 +162,28 @@ class _EducatorListState extends State<EducatorList> {
                                         ),
                                         errorWidget: (context, url, error) =>
                                             Material(
-                                              child: Image.asset(
-                                                'assets/images/studyBudyBg.png',
-                                                width: 40.0,
-                                                height: 40.0,
-                                                fit: BoxFit.cover,
-                                              ),
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(8.0),
-                                              ),
-                                              clipBehavior: Clip.hardEdge,
-                                            ),
+                                          child: Image.asset(
+                                            'assets/images/studyBudyBg.png',
+                                            width: 40.0,
+                                            height: 40.0,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0),
+                                          ),
+                                          clipBehavior: Clip.hardEdge,
+                                        ),
                                         imageUrl: _profileImage[index]!,
                                         width: 40.0,
                                         height: 40.0,
                                         fit: BoxFit.fitWidth,
-                                      )
-                                  ),
+                                      )),
                                   SizedBox(
                                     width: 2.0.w,
                                   ),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
@@ -212,12 +215,14 @@ class _EducatorListState extends State<EducatorList> {
                               ),
                             ),
                             trailing: Padding(
-                              padding:
-                                  EdgeInsets.only(right: 2.0.w,),
+                              padding: EdgeInsets.only(
+                                right: 2.0.w,
+                              ),
                               child: GestureDetector(
-                                onTap: () async{
+                                onTap: () async {
                                   print('$index is Connected');
-                                  await connect.connectionApi(_userId[index], authToken!);
+                                  await connect.connectionApi(
+                                      _userId[index], authToken!);
                                   setState(() {
                                     isLoading = true;
                                     page = 1;
@@ -228,7 +233,7 @@ class _EducatorListState extends State<EducatorList> {
                                     _schoolName = [];
                                     _date = [];
                                     _distance = [];
-                                  });         
+                                  });
                                   getEducatorListApi(page);
                                 },
                                 child: Container(
@@ -310,7 +315,6 @@ class _EducatorListState extends State<EducatorList> {
     }
   }
 
-
   Future<void> getUserProfile(id) async {
     // displayProgressDialog(context);
 
@@ -331,17 +335,17 @@ class _EducatorListState extends State<EducatorList> {
           setState(() {});
           map['data']['role'] == 'E'
               ? pushNewScreen(context,
-              screen: EducatorProfileViewScreen(id: id,),
-              withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation.cupertino)
-              :
-          pushNewScreen(context,
-              screen: LearnerProfileViewScreen(id: id,),
-              withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation
-                  .cupertino);
+                  screen: EducatorProfileViewScreen(
+                    id: id,
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino)
+              : pushNewScreen(context,
+                  screen: LearnerProfileViewScreen(
+                    id: id,
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino);
         } else {
           isLoading = false;
           setState(() {});

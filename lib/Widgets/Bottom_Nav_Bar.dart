@@ -6,6 +6,7 @@ import 'package:being_pupil/Learner/Learner_Screen.dart';
 import 'package:being_pupil/Learner/Learner_Tab_Screen.dart';
 import 'package:being_pupil/StayAndStudy/Stay_And_Study_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Study_Buddy_Screen.dart';
+import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -25,7 +26,7 @@ class _bottomNavBarState extends State<bottomNavBar> {
   bool _color = true;
   PersistentTabController _controller =
       PersistentTabController(initialIndex: 0);
-  bool isSubscribed = false;
+  int? isSubscribed;
   String? authToken;
   String? registerAs;
 
@@ -61,11 +62,11 @@ class _bottomNavBarState extends State<bottomNavBar> {
     }
   }
 
-  
   getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       registerAs = preferences.getString('RegisterAs');
+      isSubscribed = preferences.getInt('isSubscribed');
     });
     print(registerAs);
   }
@@ -74,20 +75,20 @@ class _bottomNavBarState extends State<bottomNavBar> {
     switch (current) {
       case 0:
         return new EducatorHomeScreen();
-        break;
+      //break;
       case 1:
         return new StayAndStudyScreen();
-        //return new MapsScreenT1();
-        break;
+      //return new MapsScreenT1();
+      //break;
       case 2:
         return registerAs == 'E' ? new EducatorScreen() : new LearnerScreen();
-        break;
+      //break;
       case 3:
         return new EducatorStudyBuddyScreen();
-        break;
+      //break;
       case 4:
         return new AccountScreen();
-        break;
+      //break;
       default:
         return new EducatorHomeScreen();
     }
@@ -96,11 +97,12 @@ class _bottomNavBarState extends State<bottomNavBar> {
   List<Widget> _buildScreens() {
     return [
       //registerAs == 'E' ? EducatorHomeScreen() : LearnerHomeScreen(),
-      EducatorHomeScreen() ,
+      EducatorHomeScreen(),
       StayAndStudyScreen(),
       //registerAs == 'E' ? LearnerScreen() : EducatorScreen(),
       LearnerStudyBuddyScreen(),
       EducatorStudyBuddyScreen(),
+      //isSubscribed == 1 ? EducatorStudyBuddyScreen() : SubscriptionPlanScreen(),
       AccountScreen(),
     ];
   }
@@ -108,14 +110,14 @@ class _bottomNavBarState extends State<bottomNavBar> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon:  SvgPicture.asset('assets/icons/selectedHome.svg'),
-        //Image.asset('assets/icons/home.png', height: 25, width: 25, color: Constants.selectedIcon,),
-        //title: ("Home"),
-        activeColorPrimary: Constants.selectedIcon,
-        inactiveColorPrimary: Constants.bgColor,
-        inactiveIcon: SvgPicture.asset('assets/icons/homeSvg.svg')
-        //Image.asset('assets/icons/home.png', height: 25, width: 25, color: Constants.bgColor,)
-        ),
+          icon: SvgPicture.asset('assets/icons/selectedHome.svg'),
+          //Image.asset('assets/icons/home.png', height: 25, width: 25, color: Constants.selectedIcon,),
+          //title: ("Home"),
+          activeColorPrimary: Constants.selectedIcon,
+          inactiveColorPrimary: Constants.bgColor,
+          inactiveIcon: SvgPicture.asset('assets/icons/homeSvg.svg')
+          //Image.asset('assets/icons/home.png', height: 25, width: 25, color: Constants.bgColor,)
+          ),
       PersistentBottomNavBarItem(
         icon: SvgPicture.asset('assets/icons/selectedSS.svg'),
         //Image.asset('assets/icons/stayStudy.png', height: MediaQuery.of(context).size.height * 0.02, width: MediaQuery.of(context).size.width * 0.04, color: Constants.selectedIcon,),
@@ -126,28 +128,34 @@ class _bottomNavBarState extends State<bottomNavBar> {
         //Image.asset('assets/icons/stayStudy.png', height: MediaQuery.of(context).size.height * 0.02, width: MediaQuery.of(context).size.width * 0.04, color: Constants.bgColor,),
       ),
       PersistentBottomNavBarItem(
-        icon: registerAs == 'E' ? SvgPicture.asset('assets/icons/selectedLearner.svg')
-        //Image.asset('assets/icons/educator.png', height: 25, width: 25, color: Constants.selectedIcon,)
-        : SvgPicture.asset('assets/icons/newSelEduSvg.svg'),
-        //Image.asset('assets/icons/educatorGreen.png', height: 25, width: 25, color: Constants.selectedIcon,),
-        //title: (registerAs == 'E' ? "Learner" : "Educator"),
-        activeColorPrimary: Constants.selectedIcon,
-        inactiveColorPrimary: Constants.bgColor,
-        inactiveIcon: registerAs == 'E' ? SvgPicture.asset('assets/icons/learnerSvg.svg')
-        //Image.asset('assets/icons/educator.png', height: 25, width: 25, color: Constants.bgColor,)
-        : SvgPicture.asset('assets/icons/newEduSvg.svg')
-        //Image.asset('assets/icons/educatorBlack.png', height: 25, width: 25, color: Constants.bgColor,),
-      ),
+          icon: registerAs == 'E'
+              ? SvgPicture.asset('assets/icons/selectedLearner.svg')
+              //Image.asset('assets/icons/educator.png', height: 25, width: 25, color: Constants.selectedIcon,)
+              : SvgPicture.asset('assets/icons/newSelEduSvg.svg'),
+          //Image.asset('assets/icons/educatorGreen.png', height: 25, width: 25, color: Constants.selectedIcon,),
+          //title: (registerAs == 'E' ? "Learner" : "Educator"),
+          activeColorPrimary: Constants.selectedIcon,
+          inactiveColorPrimary: Constants.bgColor,
+          inactiveIcon: registerAs == 'E'
+              ? SvgPicture.asset('assets/icons/learnerSvg.svg')
+              //Image.asset('assets/icons/educator.png', height: 25, width: 25, color: Constants.bgColor,)
+              : SvgPicture.asset('assets/icons/newEduSvg.svg')
+          //Image.asset('assets/icons/educatorBlack.png', height: 25, width: 25, color: Constants.bgColor,),
+          ),
       PersistentBottomNavBarItem(
-        //icon: ImageIcon(AssetImage('assets/icons/support2.png'),size: 25),
-        icon: registerAs == 'E' ? SvgPicture.asset('assets/icons/newSelSbSvg.svg') : SvgPicture.asset('assets/icons/selectedSBsvg.svg'),
-        //Image.asset('assets/icons/supportGreen.png', height: 25, width: 25,),
-        //title: (registerAs == 'E' ? "Fellow Educator" : "Study Buddy"),
-        activeColorPrimary: Constants.selectedIcon,
-        // inactiveColorPrimary: Constants.bgColor,
-         inactiveIcon: registerAs == 'E' ? SvgPicture.asset('assets/icons/newSbSvg.svg') : SvgPicture.asset('assets/icons/studybuddySvg.svg')
-        //Image.asset('assets/icons/support.png', height: 25, width: 25, ),
-      ),
+          //icon: ImageIcon(AssetImage('assets/icons/support2.png'),size: 25),
+          icon: registerAs == 'E'
+              ? SvgPicture.asset('assets/icons/newSelSbSvg.svg')
+              : SvgPicture.asset('assets/icons/selectedSBsvg.svg'),
+          //Image.asset('assets/icons/supportGreen.png', height: 25, width: 25,),
+          //title: (registerAs == 'E' ? "Fellow Educator" : "Study Buddy"),
+          activeColorPrimary: Constants.selectedIcon,
+          // inactiveColorPrimary: Constants.bgColor,
+          inactiveIcon: registerAs == 'E'
+              ? SvgPicture.asset('assets/icons/newSbSvg.svg')
+              : SvgPicture.asset('assets/icons/studybuddySvg.svg')
+          //Image.asset('assets/icons/support.png', height: 25, width: 25, ),
+          ),
       PersistentBottomNavBarItem(
         //icon: SvgPicture.asset('assets/icons/ff.svg'),
         icon: SvgPicture.asset('assets/icons/selectedAccount.svg'),

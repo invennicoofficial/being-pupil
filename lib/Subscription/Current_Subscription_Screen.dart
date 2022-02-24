@@ -2,6 +2,7 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Subscription_Model/Cancel_Subscription_Model.dart';
 import 'package:being_pupil/Model/Subscription_Model/Current_Subscription_Model.dart';
+import 'package:being_pupil/Subscription/Manage_Payment_Screen.dart';
 import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
@@ -51,12 +52,14 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
     print(razorpayLink);
   }
 
-  Widget urlLauncher() {
-    debugPrint(razorpayLink);
-    return WebView(
-      initialUrl: razorpayLink,
-    );
-  }
+  // Widget urlLauncher() {
+  //   debugPrint(razorpayLink);
+  //   return WebView(
+  //     initialUrl: razorpayLink,
+  //     javascriptMode: JavascriptMode.unrestricted,
+  //     gestureNavigationEnabled: true,
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -132,8 +135,8 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
                   ),
                   Text(
                     result.data!.planType == 'O'
-                        ? 'Your payment of ₹${result.data!.planId}* for ${result.data!.planName} Subscription valid till ${result.data!.subscriptionEndDate}.'
-                        : 'Your next payment of ₹${result.data!.planId}* for ${result.data!.planName} Subscription is scheduled for ${result.data!.nextBillDate}.',
+                        ? 'Your payment of ₹${result.data!.planAmount}* for ${result.data!.planName} Subscription valid till ${result.data!.subscriptionEndDate}.'
+                        : 'Your next payment of ₹${result.data!.planAmount}* for ${result.data!.planName} Subscription is scheduled for ${result.data!.nextBillDate}.',
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 12.0.sp,
@@ -156,7 +159,12 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      urlLauncher();
+                      pushNewScreen(context,
+                          screen:
+                              ManagePaymentScreen(razorpayLink: razorpayLink!),
+                          withNavBar: false,
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.cupertino);
                     },
                     child: Container(
                       child: Text(
