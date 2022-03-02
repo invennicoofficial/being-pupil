@@ -51,6 +51,8 @@ class _UpdateSubscriptionPlanScreen
   String? authToken;
   String? mobileNumber, email, userName, subscriptionId;
   var _razorpay = Razorpay();
+  String? payStatus, paymentID, paySignature;
+  String? amountPaid;
 
   @override
   void initState() {
@@ -223,6 +225,10 @@ class _UpdateSubscriptionPlanScreen
                                           fontWeight: FontWeight.w400)),
                                   trailing: IconButton(
                                     onPressed: () {
+                                      setState(() {
+                                        amountPaid =
+                                            planPrice[index].toInt().toString();
+                                      });
                                       _showDialog(
                                           planList[index],
                                           planPrice[index].toInt(),
@@ -450,11 +456,24 @@ class _UpdateSubscriptionPlanScreen
           setState(() {
             preferences.setString('razorpayLink', result.data!.razorpayLink!);
             preferences.setInt('isSubscribed', 1);
+            //payStatus = result.errorCode!;
           });
+          debugPrint(payStatus);
           debugPrint('LINK:::${preferences.getString('razorpayLink')}');
-          Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => PaymentSucessScreen()),
-              (Route<dynamic> route) => false);
+          if (result.data!.status == "active" ||
+              result.data!.status == "completed") {
+            //   Future.delayed(Duration(seconds: 3), () async {
+            //     await verifySubscriptionAPI(
+            //         paymentID!, subscriptionId, paySignature!);
+            //   });
+            // } else {
+            Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (context) => PaymentSucessScreen(
+                          amountPaid: amountPaid!,
+                        )),
+                (Route<dynamic> route) => false);
+          }
           Fluttertoast.showToast(
             msg: result.message!,
             toastLength: Toast.LENGTH_SHORT,
@@ -466,7 +485,7 @@ class _UpdateSubscriptionPlanScreen
           );
         } else {
           Fluttertoast.showToast(
-            msg: result.errorMsg == null ? result.message : result.errorMsg,
+            msg: result.errorMsg,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -474,6 +493,19 @@ class _UpdateSubscriptionPlanScreen
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
+          if (result.status == false && result.errorCode == 'ERR728') {
+            Future.delayed(Duration(seconds: 2), () async {
+              await verifySubscriptionAPI(
+                  paymentID!, subscriptionId!, paySignature!);
+            });
+          } else {
+            Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (context) => PaymentSucessScreen(
+                          amountPaid: amountPaid!,
+                        )),
+                (Route<dynamic> route) => false);
+          }
         }
       } else {
         Fluttertoast.showToast(
@@ -500,6 +532,10 @@ class _UpdateSubscriptionPlanScreen
     print(subscriptionId);
     print(response.paymentId);
     print(response.signature);
+    setState(() {
+      paymentID = response.paymentId!;
+      paySignature = response.signature!;
+    });
     //createBookingAPI(response.orderId, response.paymentId, response.signature);
     verifySubscriptionAPI(
         response.paymentId!, subscriptionId!, response.signature!);

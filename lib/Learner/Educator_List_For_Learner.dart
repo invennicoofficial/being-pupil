@@ -9,6 +9,7 @@ import 'package:being_pupil/StudyBuddy/Learner_ProfileView_Screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,6 +46,9 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
       RefreshController(initialRefresh: false);
 
   String? result;
+  Map<String, dynamic>? selectedSubjectMap = Map<String, dynamic>();
+  List<dynamic> selectedSubjectMapData = [];
+  bool isSubjectSelected = false;
 
   @override
   void initState() {
@@ -56,6 +60,7 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     print(authToken);
     getData();
+    getSelectedSubjectListForLearner();
   }
 
   getData() async {
@@ -126,15 +131,17 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
                           fontWeight: FontWeight.w400),
                     ),
                     GestureDetector(
-                      onTap: () async{
-                        result = await Navigator.of(context, rootNavigator: true).push(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    SubjectSelectionScreen()));
+                      onTap: () async {
+                        result = await Navigator.of(context,
+                                rootNavigator: true)
+                            .push(MaterialPageRoute(
+                                builder: (context) => SubjectSelectionScreen(
+                                    //isSubjectSelected: isSubjectSelected,
+                                    )));
 
                         setState(() {});
                         print("STATUS::: $result");
-                        if(result == 'true'){
+                        if (result == 'true') {
                           getEducatorListApi(0);
                         }
                         //                     pushNewScreen(context, screen: SubjectSelectionScreen(), withNavBar: false,
@@ -429,6 +436,83 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
       // closeProgressDialog(context);
       print(e.response);
       print(stack);
+    }
+  }
+
+  //get Selected Subject API
+  getSelectedSubjectListForLearner() async {
+    //displayProgressDialog(context);
+    //var result = CategoryList();
+
+    try {
+      Dio dio = Dio();
+      var option = Options(headers: {"Authorization": 'Bearer ' + authToken!});
+      var response =
+          await dio.get(Config.getSelectedSubjectUrl, options: option);
+
+      if (response.statusCode == 200) {
+        //closeProgressDialog(context);
+        selectedSubjectMap = response.data;
+        debugPrint('SELECTED:::' + selectedSubjectMap.toString());
+        if (selectedSubjectMap!['status'] == true) {
+          // setState(() {
+          //   selectedSubjectMapData = selectedSubjectMap!['data'];
+          // });
+          if (selectedSubjectMap!['data'].isEmpty ||
+              selectedSubjectMap!['data'] == []) {
+            setState(() {
+              isSubjectSelected = false;
+            });
+            pushNewScreen(context,
+                screen: SubjectSelectionScreen(
+                    //isSubjectSelected: isSubjectSelected
+                    ),
+                withNavBar: false,
+                pageTransitionAnimation: PageTransitionAnimation.cupertino);
+            // Navigator.of(context).pushAndRemoveUntil(
+            //     MaterialPageRoute(
+            //         builder: (context) => SubjectSelectionScreen(
+            //             isSubjectSelected: isSubjectSelected)),
+            //     (Route<dynamic> route) => false);
+          } else {
+            setState(() {
+              isSubjectSelected = true;
+            });
+          }
+
+          //closeProgressDialog(context);
+        }
+        // else {
+        //   Fluttertoast.showToast(
+        //     msg: selectedSubjectMap!['error_msg'],
+        //     toastLength: Toast.LENGTH_SHORT,
+        //     gravity: ToastGravity.BOTTOM,
+        //     timeInSecForIosWeb: 1,
+        //     backgroundColor: Constants.bgColor,
+        //     textColor: Colors.white,
+        //     fontSize: 10.0.sp,
+        //   );
+        // }
+      } else {
+        //closeProgressDialog(context);
+        if (selectedSubjectMap!['error_msg'] != null) {
+          Fluttertoast.showToast(
+            msg: selectedSubjectMap!['error_msg'],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+        }
+      }
+    } on DioError catch (e, stack) {
+      //closeProgressDialog(context);
+      if (e.response != null) {
+        print(e.message);
+        print(stack);
+      }
     }
   }
 }

@@ -4,11 +4,14 @@ import 'package:being_pupil/HomeScreen/Home_Screen.dart';
 import 'package:being_pupil/Learner/Educator_Screen.dart';
 import 'package:being_pupil/Learner/Learner_Screen.dart';
 import 'package:being_pupil/Learner/Learner_Tab_Screen.dart';
+import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/StayAndStudy/Stay_And_Study_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Study_Buddy_Screen.dart';
 import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
@@ -69,6 +72,7 @@ class _bottomNavBarState extends State<bottomNavBar> {
       isSubscribed = preferences.getInt('isSubscribed');
     });
     print(registerAs);
+    //getSelectedSubjectListForLearner();
   }
 
   Widget callPage(int current) {

@@ -49,6 +49,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
   String? mobileNumber, email, userName, subscriptionId;
   var _razorpay = Razorpay();
   String? payStatus, paymentID, paySignature;
+  String? amountPaid;
 
   @override
   void initState() {
@@ -221,6 +222,10 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                                           fontWeight: FontWeight.w400)),
                                   trailing: IconButton(
                                     onPressed: () {
+                                      setState(() {
+                                        amountPaid =
+                                            planPrice[index].toInt().toString();
+                                      });
                                       _showDialog(
                                           planList[index],
                                           planPrice[index].toInt(),
@@ -453,14 +458,18 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
           });
           debugPrint(payStatus);
           debugPrint('LINK:::${preferences.getString('razorpayLink')}');
-          if (result.data!.status == "active") {
+          if (result.data!.status == "active" ||
+              result.data!.status == "completed") {
             //   Future.delayed(Duration(seconds: 3), () async {
             //     await verifySubscriptionAPI(
             //         paymentID!, subscriptionId, paySignature!);
             //   });
             // } else {
             Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => PaymentSucessScreen()),
+                MaterialPageRoute(
+                    builder: (context) => PaymentSucessScreen(
+                          amountPaid: amountPaid!,
+                        )),
                 (Route<dynamic> route) => false);
           }
           Fluttertoast.showToast(
@@ -489,7 +498,10 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
             });
           } else {
             Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => PaymentSucessScreen()),
+                MaterialPageRoute(
+                    builder: (context) => PaymentSucessScreen(
+                          amountPaid: amountPaid!,
+                        )),
                 (Route<dynamic> route) => false);
           }
         }
