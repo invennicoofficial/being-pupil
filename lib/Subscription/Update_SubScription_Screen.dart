@@ -402,16 +402,35 @@ class _UpdateSubscriptionPlanScreen
             mobileNumber = result.data!.userMobile;
             email = result.data!.userEmail;
           });
+          Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => PaymentSucessScreen(
+                        amountPaid: amountPaid!,
+                      )),
+              (Route<dynamic> route) => false);
           Fluttertoast.showToast(
             msg: result.message!,
-            toastLength: Toast.LENGTH_SHORT,
+            toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
             backgroundColor: Constants.bgColor,
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-          createRazorPaySubscriptionId(price, name, subscriptionId!);
+          //createRazorPaySubscriptionId(price, name, subscriptionId!);
+        } else {
+          Fluttertoast.showToast(
+            msg: result.errorMsg!,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+          Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => PaymentFailedScreen()),
+              (Route<dynamic> route) => false);
         }
       } else {
         Fluttertoast.showToast(
@@ -537,8 +556,8 @@ class _UpdateSubscriptionPlanScreen
       paySignature = response.signature!;
     });
     //createBookingAPI(response.orderId, response.paymentId, response.signature);
-    verifySubscriptionAPI(
-        response.paymentId!, subscriptionId!, response.signature!);
+    // verifySubscriptionAPI(
+    //     response.paymentId!, subscriptionId!, response.signature!);
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
