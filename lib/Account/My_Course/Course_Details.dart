@@ -31,7 +31,7 @@ class CourseDetailScreen extends StatefulWidget {
 }
 
 class _CourseDetailScreenState extends State<CourseDetailScreen> {
-  String? registerAs, authToken;
+  String? registerAs, authToken, enrollText = 'ENROLL';
 
   @override
   void initState() {
@@ -122,7 +122,9 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 2.0.h),
         child: GestureDetector(
-          onTap: () {
+          onTap: enrollText == 'ENROLLED'
+          ? null
+          : () {
             enrollCourseAPI();
           },
           child: Container(
@@ -139,7 +141,8 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
             ),
             child: Center(
               child: Text(
-                'Enroll'.toUpperCase(),
+                enrollText!,
+                //'Enroll'.toUpperCase(),
                 style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Montserrat',
@@ -290,6 +293,11 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
         print(response.data);
         result = EnrollCourse.fromJson(response.data);
         closeProgressDialog(context);
+        if(result.status == true){
+          setState(() {
+            enrollText = 'ENROLLED';
+          });
+        }else{}
         if (result.message == null) {
           Fluttertoast.showToast(
             msg: result.errorMsg,

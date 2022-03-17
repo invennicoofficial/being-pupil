@@ -61,7 +61,7 @@ class _PaymentSucessScreenState extends State<PaymentSucessScreen> {
               width: 70.0.h,
               padding: EdgeInsets.symmetric(horizontal: 2.0.w),
               child: Text(
-                  'Congratulations your One Month subscription @ ₹501 is activated.',
+                  'Congratulations your One Month subscription @ ₹${widget.amountPaid} is activated.',
                   style: TextStyle(
                       fontSize: 12.0.sp,
                       color: Constants.bgColor,

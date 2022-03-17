@@ -3440,11 +3440,20 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     _achivementController.text,
                                     // selectedSkillList == [] ? result.data.skills : selectedSkillList.toString(),
                                     // selectedHobbiesList == [] ? result.data.hobbies : selectedHobbiesList.toString(),
-                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString(),
+                                    selectedSkillList.length == 0 ? 
+                                    skillList.toString().replaceAll('[', '').replaceAll(']', '')
+                                      .replaceFirst('#', '')
+                                      .replaceAll(' #', ',') : selectedSkillList.toString(),
                                             //.replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString(),
+                                    selectedHobbiesList.length == 0 ? 
+                                    hobbieList.toString().replaceAll('[', '').replaceAll(']', '')
+                                      .replaceFirst('#', '')
+                                      .replaceAll(' #', ',') : selectedHobbiesList.toString(),
                                            //.replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedSubjectList.length == 0 ? result.data!.subjects : selectedSubjectList.toString(),
+                                    selectedSubjectList.length == 0 ? subjectList.toString().replaceAll('[', '').replaceAll(']', '')
+                                      .replaceFirst('#', '')
+                                      .replaceAll(' #', ',')
+                                     : selectedSubjectList.toString(),
                                     _fbLinkController.text,
                                     _instagramLinkController.text,
                                     _linkedInLinkLinkController.text,
@@ -3506,11 +3515,20 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     lat,
                                     lng,
                                     _achivementController.text,
-                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString(),
+                                   selectedSkillList.length == 0 ? 
+                                    skillList.toString().replaceAll('[', '').replaceAll(']', '')
+                                      .replaceFirst('#', '')
+                                      .replaceAll(' #', ',') : selectedSkillList.toString(),
                                             //.replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString(),
+                                    selectedHobbiesList.length == 0 ? 
+                                    hobbieList.toString().replaceAll('[', '').replaceAll(']', '')
+                                      .replaceFirst('#', '')
+                                      .replaceAll(' #', ',') : selectedHobbiesList.toString(),
                                            //.replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedSubjectList.length == 0 ? result.data!.subjects : selectedSubjectList.toString(),
+                                    selectedSubjectList.length == 0 ? subjectList.toString().replaceAll('[', '').replaceAll(']', '')
+                                      .replaceFirst('#', '')
+                                      .replaceAll(' #', ',')
+                                     : selectedSubjectList.toString(),
                                     _fbLinkController.text,
                                     _instagramLinkController.text,
                                     _linkedInLinkLinkController.text,
@@ -3894,6 +3912,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
           skillList.add(result.data!.skills);
           hobbieList.add(result.data!.hobbies);
           subjectList.add(result.data!.subjects);
+          print('SUB:::'+ subjectList.toString().replaceAll('[', '').replaceAll(']', '').replaceFirst('#', '')
+          .replaceAll(' #', ',')//.replaceFirst('', '#')
+                 );
           _fbLinkController.text = result.data!.facebookUrl?? '';
           _instagramLinkController.text = result.data!.instaUrl?? '';
           _linkedInLinkLinkController.text = result.data!.linkedinUrl?? '';
@@ -4495,6 +4516,7 @@ print('MAP:::' + formData.fields.toString());
     int? totalTeachExp,
     //List<InterestedCategory> interestedCategory,
   ) async {
+    print('Image:::'+_image!.path);
     print('PROFILE::: IMAGE');
     displayProgressDialog(context);
     // String docname = documentFile.path.split('/').last;
@@ -4529,7 +4551,7 @@ print('MAP:::' + formData.fields.toString());
         ),
         // : 
         //result.data.imageUrl,
-        //'image_url': null,
+        //'image_url':  result.data!.imageUrl,
         'identification_document_number': idNumber,
         //?TODO: Used dynamic ID at location[0][id]
         'location[0][id]': result.data!.location![0].id,
@@ -4623,7 +4645,7 @@ print('MAP:::' + formData.fields.toString());
         } else {
           print('FALSE::');
           Fluttertoast.showToast(
-            msg: update.message!,
+            msg: update.errorMsg!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,

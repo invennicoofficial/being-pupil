@@ -955,8 +955,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                                   authToken!);
                                               setState(() {
                                                 isLiked[index] == true
-                                                    ? likesList[index]! + 1
-                                                    : likesList[index]! - 1;
+                                                    ? likesList[index] = likesList[index]! + 1
+                                                    : likesList[index] = likesList[index]! - 1;
                                               });
                                             },
                                             child: Row(

@@ -12,10 +12,12 @@ class ManagePaymentScreen extends StatefulWidget {
 class _ManagePaymentScreenState extends State<ManagePaymentScreen> {
   @override
   Widget build(BuildContext context) {
-    return WebView(
-      initialUrl: widget.razorpayLink,
-      javascriptMode: JavascriptMode.unrestricted,
-      //gestureNavigationEnabled: true,
+    return SafeArea(
+      child: WebView(
+        initialUrl: widget.razorpayLink,
+        javascriptMode: JavascriptMode.unrestricted,
+        //gestureNavigationEnabled: true,
+      ),
     );
   }
 }

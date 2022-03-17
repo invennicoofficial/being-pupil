@@ -4,7 +4,8 @@ import 'package:sizer/sizer.dart';
 
 
 class VerificationScreen extends StatefulWidget {
-  const VerificationScreen({Key? key}) : super(key: key);
+  String? verificationStatus;
+  VerificationScreen({Key? key, this.verificationStatus}) : super(key: key);
 
   @override
   _VerificationScreenState createState() => _VerificationScreenState();
@@ -63,18 +64,23 @@ class _VerificationScreenState extends State<VerificationScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/icons/ok.png',
+                widget.verificationStatus == 'R'
+                ? 'assets/icons/failed.png'
+                : 'assets/icons/ok.png',
                 height: 100,
                 width: 100,
                 fit: BoxFit.cover,
               ),
               SizedBox(height: 15,),
-              Text('Your profile is under verification!\nPlease try again after sometime',
+              Text(widget.verificationStatus == 'R'
+                ? 'Your profile is Rejected!\nPlease fill proper details and try again.'
+                : 'Your profile is under verification!\nPlease try again after sometime.',
                 style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 12.0.sp,
                     fontWeight: FontWeight.w500,
                     color: Colors.black),
+                    textAlign: TextAlign.center,
               ),
             ],
           ),

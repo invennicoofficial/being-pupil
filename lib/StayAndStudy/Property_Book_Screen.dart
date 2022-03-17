@@ -28,6 +28,7 @@ class BookPropertyScreen extends StatefulWidget {
 
 class _BookPropertyScreenState extends State<BookPropertyScreen> {
   TextEditingController _nameController = TextEditingController();
+  TextEditingController _genderController = TextEditingController();
   TextEditingController _mobileController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   DateTime? checkInDate, checkOutDate;
@@ -84,6 +85,9 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
       _nameController.text = userName!;
       _mobileController.text = '+91$userNumber';
       _emailController.text = userEmail!;
+      _genderController.text =  userGender == 'M'? 'Male': userGender == 'F'
+                                      ? 'Female'
+                                      : 'Other';
     });
   }
 
@@ -222,6 +226,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                     fontSize: 10.0.sp,
                                     fontWeight: FontWeight.w400,
                                     color: Constants.bgColor),
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
@@ -717,105 +722,160 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                 ),
                 child: Padding(
                   padding:
-                      EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 3.0.h),
+                      EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 4.0.h),
                   child: Container(
                     height: 7.0.h,
                     //width: 90.0.w,
-                    child: CustomDropdown<int>(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 3.0.w),
-                            child: Text(
-                              userGender == 'M'
-                                  ? 'Male'
-                                  : userGender == 'F'
-                                      ? 'Female'
-                                      : 'Other',
-                              style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 10.0.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Constants.bgColor),
-                            ),
-                          ),
-                          //SizedBox(width: 10.0.w)
-                        ],
-                      ),
-                      // icon: Icon(
-                      //   Icons.expand_more,
-                      //   color: Constants.bpSkipStyle,
-                      // ),
-                      onChange: (String value, int index)async  {
-                        print(value);
-                        // if (value != 1 ||
-                        //     value != 2 ||
-                        //     value != 3) {
-                        //   setState(() {
-                        //     gender = 'GenderSelected';
-                        //   });
-                        // }
-                        // if (value == 1) {
-                        //   gender = 'M';
-                        // } else if (value == 2) {
-                        //   gender = 'F';
-                        // } else {
-                        //   gender = 'O';
-                        // }
-                      },
-                      dropdownButtonStyle: DropdownButtonStyle(
-                        height: 7.0.h,
-                        //width: 90.0.w,
-                        //padding: EdgeInsets.only(left: 2.0.w),
-                        elevation: 0,
-                        // backgroundColor:
-                        //     //Color(0xFFA8B4C1).withOpacity(0.5),
-                        //     Colors.white,
-                        primaryColor: Constants.bpSkipStyle,
-                        side: BorderSide(color: Constants.formBorder),
-                      ),
-                      dropdownStyle: DropdownStyle(
-                        borderRadius: BorderRadius.circular(10.0),
-                        elevation: 6,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 2.0.w, vertical: 1.5.h),
-                      ),
-                      items: [
-                        userGender == 'M'
-                            ? 'Male'
-                            : userGender == 'F'
-                                ? 'Female'
-                                : 'Other'
-                      ]
-                          .asMap()
-                          .entries
-                          .map(
-                            (item) => DropdownItem<int>(
-                              value: item.key + 1,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      item.value,
-                                      style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 10.0.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: Constants.bgColor),
-                                    ),
-                                    //SizedBox(width: 10.0.w)
-                                  ],
+                    child: TextFormField(
+                      controller: _genderController,
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        labelText: "Gender",
+                        labelStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat", 
+                                  fontSize: 10.0.sp
                                 ),
-                              ),
-                            ),
-                          )
-                          .toList(),
+                        fillColor: Colors.white,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: BorderSide(
+                            color: Constants.formBorder,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: BorderSide(
+                            color: Constants.formBorder,
+                            //width: 2.0,
+                          ),
+                        ),
+                      ),
+                      //keyboardType: TextInputType.emailAddress,
+                      style: new TextStyle(
+                          fontFamily: "Montserrat", fontSize: 10.0.sp),
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     Fluttertoast.showToast(
+                      //         msg: "Please Enter Name",
+                      //         toastLength: Toast.LENGTH_SHORT,
+                      //         gravity: ToastGravity.BOTTOM,
+                      //         timeInSecForIosWeb: 1,
+                      //         backgroundColor: Colors.red,
+                      //         textColor: Colors.white,
+                      //         fontSize: 16.0);
+                      //   }
+                      // },
                     ),
                   ),
                 ),
               ),
+              // Theme(
+              //   data: new ThemeData(
+              //     primaryColor: Constants.bpSkipStyle,
+              //     primaryColorDark: Constants.bpSkipStyle,
+              //   ),
+              //   child: Padding(
+              //     padding:
+              //         EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 3.0.h),
+              //     child: Container(
+              //       height: 7.0.h,
+              //       //width: 90.0.w,
+              //       child: CustomDropdown<int>(
+              //         child: Row(
+              //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //           children: [
+              //             Padding(
+              //               padding: EdgeInsets.symmetric(horizontal: 3.0.w),
+              //               child: Text(
+              //                 userGender == 'M'
+              //                     ? 'Male'
+              //                     : userGender == 'F'
+              //                         ? 'Female'
+              //                         : 'Other',
+              //                 style: TextStyle(
+              //                     fontFamily: 'Montserrat',
+              //                     fontSize: 10.0.sp,
+              //                     fontWeight: FontWeight.w400,
+              //                     color: Constants.bgColor),
+              //               ),
+              //             ),
+              //             //SizedBox(width: 10.0.w)
+              //           ],
+              //         ),
+              //         // icon: Icon(
+              //         //   Icons.expand_more,
+              //         //   color: Constants.bpSkipStyle,
+              //         // ),
+              //         onChange: (String value, int index)async  {
+              //           print(value);
+              //           // if (value != 1 ||
+              //           //     value != 2 ||
+              //           //     value != 3) {
+              //           //   setState(() {
+              //           //     gender = 'GenderSelected';
+              //           //   });
+              //           // }
+              //           // if (value == 1) {
+              //           //   gender = 'M';
+              //           // } else if (value == 2) {
+              //           //   gender = 'F';
+              //           // } else {
+              //           //   gender = 'O';
+              //           // }
+              //         },
+              //         dropdownButtonStyle: DropdownButtonStyle(
+              //           height: 7.0.h,
+              //           //width: 90.0.w,
+              //           //padding: EdgeInsets.only(left: 2.0.w),
+              //           elevation: 0,
+              //           // backgroundColor:
+              //           //     //Color(0xFFA8B4C1).withOpacity(0.5),
+              //           //     Colors.white,
+              //           primaryColor: Constants.bpSkipStyle,
+              //           side: BorderSide(color: Constants.formBorder),
+              //         ),
+              //         dropdownStyle: DropdownStyle(
+              //           borderRadius: BorderRadius.circular(10.0),
+              //           elevation: 6,
+              //           padding: EdgeInsets.symmetric(
+              //               horizontal: 2.0.w, vertical: 1.5.h),
+              //         ),
+              //         items: [
+              //           userGender == 'M'
+              //               ? 'Male'
+              //               : userGender == 'F'
+              //                   ? 'Female'
+              //                   : 'Other'
+              //         ]
+              //             .asMap()
+              //             .entries
+              //             .map(
+              //               (item) => DropdownItem<int>(
+              //                 value: item.key + 1,
+              //                 child: Padding(
+              //                   padding: const EdgeInsets.all(8.0),
+              //                   child: Row(
+              //                     children: [
+              //                       Text(
+              //                         item.value,
+              //                         style: TextStyle(
+              //                             fontFamily: 'Montserrat',
+              //                             fontSize: 10.0.sp,
+              //                             fontWeight: FontWeight.w400,
+              //                             color: Constants.bgColor),
+              //                       ),
+              //                       //SizedBox(width: 10.0.w)
+              //                     ],
+              //                   ),
+              //                 ),
+              //               ),
+              //             )
+              //             .toList(),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Theme(
                 data: new ThemeData(
                   primaryColor: Constants.bpSkipStyle,
@@ -951,7 +1011,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                         children: [
                           Text.rich(TextSpan(children: [
                             TextSpan(
-                                text: 'Room Charges',
+                                text: 'Room Charges ',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 10.0.sp,

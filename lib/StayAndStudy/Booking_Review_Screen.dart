@@ -335,7 +335,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                         children: <Widget>[
                           Text.rich(TextSpan(children: [
                             TextSpan(
-                                text: 'Room Charges',
+                                text: 'Room Charges ',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 10.0.sp,
@@ -367,7 +367,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                         children: <Widget>[
                           Text.rich(TextSpan(children: [
                             TextSpan(
-                                text: 'Meal Charges',
+                                text: 'Meal Charges ',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 10.0.sp,

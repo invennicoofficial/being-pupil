@@ -130,7 +130,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   @override
   Widget build(BuildContext context) {
     var imageView = Container(
-      height: 25.0.h,
+      height: 22.0.h,
       //width: 100.0.w,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -276,12 +276,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 horizontal: 4.0.w,
               ),
               child: Container(
-                height: 20.0.h,
+                //height: 70.0.h,
                 width: 90.0.w,
                 child: TextFormField(
                   keyboardType: TextInputType.multiline,
                   //maxLength: 500,
-                  maxLines: 5,
+                  maxLines: 25,
                   controller: descriptionController,
                   onChanged: (value) {
                     setState(() {
@@ -334,9 +334,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               //       fontWeight: FontWeight.w400),
               // ),
             ),
-            SizedBox(
-              height: 25.0.h,
-            ),
+            // SizedBox(
+            //   height: 20.0.h,
+            // ),
             imageView,
             //SizedBox(height: 7.0.h),
             Padding(

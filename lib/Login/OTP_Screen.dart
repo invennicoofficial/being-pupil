@@ -381,10 +381,10 @@ class _OtpScreenState extends State<OtpScreen> {
                   mobileNumber: mobileNumber,
                   email: email,
                 )));
-          } else if(result.data!.userObject!.isVerified == "P") {
+          } else if(result.data!.userObject!.isVerified == "P" || result.data!.userObject!.isVerified == "R") {
             closeProgressDialog(context);
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => VerificationScreen()));
+                builder: (context) => VerificationScreen(verificationStatus: result.data!.userObject!.isVerified)));
           } else {
               preferences.setString("name", result.data!.userObject!.name!);
               preferences.setString("mobileNumber", result.data!.userObject!.mobileNumber!);
