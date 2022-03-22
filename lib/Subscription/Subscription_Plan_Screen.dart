@@ -468,7 +468,8 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
             Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                 MaterialPageRoute(
                     builder: (context) => PaymentSucessScreen(
-                          amountPaid: amountPaid!,
+                          amountPaid: result.data!.plan!.planAmount!,//amountPaid!,
+                          planName: result.data!.plan!.planName!,
                         )),
                 (Route<dynamic> route) => false);
           }
@@ -500,7 +501,8 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
             Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                 MaterialPageRoute(
                     builder: (context) => PaymentSucessScreen(
-                          amountPaid: amountPaid!,
+                          amountPaid: result.data!.plan!.planAmount!,//amountPaid!,
+                          planName: result.data!.plan!.planName!,
                         )),
                 (Route<dynamic> route) => false);
           }

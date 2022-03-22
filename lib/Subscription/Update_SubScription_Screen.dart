@@ -397,7 +397,7 @@ class _UpdateSubscriptionPlanScreen
         print(response);
         if (result.status == true) {
           setState(() {
-            subscriptionId = result.data!.updatedPlanSubscriptionId;
+            subscriptionId = result.data!.plan!.planId!.toString();//result.data!.updatedPlanSubscriptionId;
             userName = result.data!.userName;
             mobileNumber = result.data!.userMobile;
             email = result.data!.userEmail;
@@ -405,7 +405,8 @@ class _UpdateSubscriptionPlanScreen
           Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => PaymentSucessScreen(
-                        amountPaid: amountPaid!,
+                       amountPaid: result.data!.plan!.planAmount!,//amountPaid!,
+                       planName: result.data!.plan!.planName!,
                       )),
               (Route<dynamic> route) => false);
           Fluttertoast.showToast(
@@ -489,7 +490,8 @@ class _UpdateSubscriptionPlanScreen
             Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                 MaterialPageRoute(
                     builder: (context) => PaymentSucessScreen(
-                          amountPaid: amountPaid!,
+                          amountPaid: result.data!.plan!.planAmount!,//amountPaid!,
+                          planName: result.data!.plan!.planName!,
                         )),
                 (Route<dynamic> route) => false);
           }
@@ -521,7 +523,8 @@ class _UpdateSubscriptionPlanScreen
             Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                 MaterialPageRoute(
                     builder: (context) => PaymentSucessScreen(
-                          amountPaid: amountPaid!,
+                          amountPaid: result.data!.plan!.planAmount!,//amountPaid!,
+                          planName: result.data!.plan!.planName!,
                         )),
                 (Route<dynamic> route) => false);
           }

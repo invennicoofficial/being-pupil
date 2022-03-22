@@ -8,8 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class PaymentSucessScreen extends StatefulWidget {
-  String amountPaid;
-  PaymentSucessScreen({Key? key, required this.amountPaid}) : super(key: key);
+  String amountPaid, planName;
+  PaymentSucessScreen({Key? key, required this.amountPaid, required this.planName}) : super(key: key);
 
   @override
   State<PaymentSucessScreen> createState() => _PaymentSucessScreenState();
@@ -61,7 +61,7 @@ class _PaymentSucessScreenState extends State<PaymentSucessScreen> {
               width: 70.0.h,
               padding: EdgeInsets.symmetric(horizontal: 2.0.w),
               child: Text(
-                  'Congratulations your One Month subscription @ ₹${widget.amountPaid} is activated.',
+                  'Congratulations your ${widget.planName} @ ₹${widget.amountPaid} is activated.',
                   style: TextStyle(
                       fontSize: 12.0.sp,
                       color: Constants.bgColor,

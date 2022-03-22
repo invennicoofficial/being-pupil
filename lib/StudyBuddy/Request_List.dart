@@ -1,6 +1,7 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Request_Model.dart';
+import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -227,10 +228,37 @@ class _RequestListState extends State<RequestList> {
                                         width: 2.0.w,
                                       ),
                                       GestureDetector(
-                                        onTap: () {
-                                          print('$index is Connected');
-                                          requestActionApi(_userId[index], 'A');
-                                        },
+                                        onTap: isSubscribed == 1
+                                    ? () async {
+                                        print('$index is Connected');
+                                        requestActionApi(_userId[index], 'A');
+                                        // await connect.connectionApi(
+                                        //     _userId[index], authToken!);
+                                        // setState(() {
+                                        //   isLoading = true;
+                                        //   page = 1;
+                                        //   _userId = [];
+                                        //   _profileImage = [];
+                                        //   _name = [];
+                                        //   _lastDegree = [];
+                                        //   _schoolName = [];
+                                        //   _date = [];
+                                        //   _distance = [];
+                                        // });
+                                        // getEducatorListApi(page);
+                                      }
+                                    : () {
+                                        pushNewScreen(context,
+                                            screen: SubscriptionPlanScreen(),
+                                            withNavBar: false,
+                                            pageTransitionAnimation:
+                                                PageTransitionAnimation
+                                                    .cupertino);
+                                      },
+                                        // () {
+                                        //   print('$index is Connected');
+                                        //   requestActionApi(_userId[index], 'A');
+                                        // },
                                         child: Container(
                                           height: 3.5.h,
                                           width: 16.0.w,
