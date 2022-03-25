@@ -2183,14 +2183,14 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                               BorderRadius.circular(5.0)),
                                       child: Center(
                                         child: Text(
-                                            result.data!.identificationDocumentNumber == null ? 'Please mention your hobbies example #skill1 #skill2....' :
+                                            result.data!.identificationDocumentNumber == null ? 'Please mention your skills example #skill1 #skill2....' :
                                           selectedSkillList == null ||
                                             selectedSkillList.length == 0
                                               ? result.data!.skills!
                                               : selectedSkillList.length > 0
                                                   ? selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '').
                                             replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#')
-                                                  : "Please mention your hobbies example #skill1 #skill2....",
+                                                  : "Please mention your skills example #skill1 #skill2....",
                                           //: '',
                                           //.replaceAll(new RegExp(r', '), '# '),
                                           style: TextStyle(
@@ -3215,6 +3215,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
         //saveImage();
 
           print('SKILLDATA::: ${result.data!.skills}');
+          print('SKILLDATA::: ${result.data!.hobbies}');
         print(response[0].data);
         eduMap = response[0].data;
         eduMapData = eduMap!['data']['educational_details'];

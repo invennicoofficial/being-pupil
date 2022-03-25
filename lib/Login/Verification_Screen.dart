@@ -73,7 +73,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
               ),
               SizedBox(height: 15,),
               Text(widget.verificationStatus == 'R'
-                ? 'Your profile is Rejected!\nPlease fill proper details and try again.'
+                ? 'Your profile is Rejected!\nPlease contact to BeingPupil admin at beingpupil@gmail.com.'
                 : 'Your profile is under verification!\nPlease try again after sometime.',
                 style: TextStyle(
                     fontFamily: 'Montserrat',

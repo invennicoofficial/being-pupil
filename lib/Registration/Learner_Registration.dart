@@ -1905,12 +1905,9 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 //bottom: 3.0.h
                               ),
                               child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (itemCount < 5) {
-                                      itemCount = itemCount + 1;
-                                    } else {
-                                      Fluttertoast.showToast(
+                                onTap: itemCount >= 5
+                                ? (){
+                                  Fluttertoast.showToast(
                                           msg: "You can add only 5 degree",
                                           toastLength: Toast.LENGTH_SHORT,
                                           gravity: ToastGravity.BOTTOM,
@@ -1918,8 +1915,25 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                           backgroundColor: Constants.bgColor,
                                           textColor: Colors.white,
                                           fontSize: 10.0.sp);
-                                    }
+                                }
+                                : () {
+                                  setState(() {
+                                    itemCount = itemCount + 1;
                                   });
+                                  // setState(() {
+                                  //   if (itemCount < 5) {
+                                  //     itemCount = itemCount + 1;
+                                  //   } else {
+                                  //     Fluttertoast.showToast(
+                                  //         msg: "You can add only 5 degree",
+                                  //         toastLength: Toast.LENGTH_SHORT,
+                                  //         gravity: ToastGravity.BOTTOM,
+                                  //         timeInSecForIosWeb: 1,
+                                  //         backgroundColor: Constants.bgColor,
+                                  //         textColor: Colors.white,
+                                  //         fontSize: 10.0.sp);
+                                  //   }
+                                  // });
                                   //print(myControllers[1].text.toString());
                                   print('Add more!!!');
                                   setState(() {

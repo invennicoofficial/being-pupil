@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Stay_And_Study_Model/Get_All_Property_Model.dart';
 import 'package:being_pupil/StayAndStudy/Property_Book_Screen.dart';
@@ -59,12 +61,34 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
   double lat = 0.0, long = 0.0;
 
  void _launchMapsUrl(double lat, double long) async {
-  final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$long';
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
-  }
+  // final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$long';
+  // if (await canLaunch(url)) {
+  //   await launch(url);
+  // } else {
+  //   throw 'Could not launch $url';
+  // }
+
+  var url = '';
+    var urlAppleMaps = '';
+    if (Platform.isAndroid) {
+      url = "https://www.google.com/maps/search/?api=1&query=$lat,$long";
+    } else {
+      urlAppleMaps = 'https://maps.apple.com/?q=$lat,$long';
+      url = "comgooglemaps://?saddr=&daddr=$lat,$long&directionsmode=driving";
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    }
+
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else if (await canLaunch(urlAppleMaps)) {
+      await launch(urlAppleMaps);
+    } else {
+       throw 'Could not launch $url';
+    }
 }
 
   @override

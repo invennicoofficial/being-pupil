@@ -268,7 +268,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             GestureDetector(
                               onTap: () async {
                                 print('Apple Login!!!');
+                                setState(() {
+                                  registrationType = 'A';
+                                });
                                 try {
+                                  if (!await TheAppleSignIn.isAvailable()) {
+                                    print('APPLe not available');
+                                    return null; //Break from the program
+                                    }
+                                  print('APPLe available');
                                   final AuthService authService = AuthService();
                                   final user = await authService.signInWithApple(
                                       scopes: [Scope.email, Scope.fullName]);
@@ -279,9 +287,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   // TODO: Show alert here
                                   print(e);
                                 }
-                                setState(() {
-                                  registrationType = 'A';
-                                });
+                                
                                 // Navigator.push(
                                 //     context,
                                 //     PageTransition(
@@ -291,7 +297,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: Container(
                                   height: 4.0.h,
                                   width: 8.0.w,
-                                  child: SvgPicture.asset('assets/icons/googleSvg.svg')
+                                  child: SvgPicture.asset('assets/icons/appleSvg.svg')
                                   // Image.asset(
                                   //   'assets/icons/apple.png',
                                   //   fit: BoxFit.contain,
@@ -582,7 +588,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
         result = SocialLoginCheck.fromJson(response.data);
 
-        //print('ID ::: ' + result.data.userObject.userId.toString());
+        //print('ID ::: ' + result.data!.userObject!.userId.toString());
 
         if (result.data!.userObject == null) {
           Fluttertoast.showToast(
@@ -595,17 +601,17 @@ class _LoginScreenState extends State<LoginScreen> {
             fontSize: 10.0.sp,
           );
           closeProgressDialog(context);
-          // Navigator.push(
-          //     context,
-          //     PageTransition(
-          //         type: PageTransitionType.fade,
-          //         child: LoginMobileCheckScreen(
-          //           socialId: socialId,
-          //           registrationType: registrationType,
-          //           socialDisplayName: socialName,
-          //           socialEmail: socialEmail,
-          //           socialPhotoUrl: socialPhotoUrl,
-          //         )));
+          Navigator.push(
+              context,
+              PageTransition(
+                  type: PageTransitionType.fade,
+                  child: LoginMobileCheckScreen(
+                    socialId: socialId,
+                    registrationType: registrationType,
+                    socialDisplayName: socialName,
+                    socialEmail: socialEmail,
+                    socialPhotoUrl: socialPhotoUrl,
+                  )));
         } else {
          if(result.data!.userObject!.isNew == "true") {
            print('API MO::::$mobileNumberFromAPi');
@@ -618,14 +624,16 @@ class _LoginScreenState extends State<LoginScreen> {
            role = result.data!.userObject!.role;
            name = result.data!.userObject!.name;
            mobileNumberFromAPi = result.data!.userObject!.mobileNumber;
+           email = result.data!.userObject!.email;
            preferences.setString('RegisterAs', role!);
+           
 
            _signInCC(context, CubeUser(fullName: result.data!.userObject!.name, login: socialEmail, password: '12345678'), result);
 
-          } else if(result.data!.userObject!.isVerified == "P") {
+          } else if(result.data!.userObject!.isVerified == "P" || result.data!.userObject!.isVerified == "R") {
            closeProgressDialog(context);
            Navigator.of(context).push(MaterialPageRoute(
-               builder: (context) => VerificationScreen()));
+               builder: (context) => VerificationScreen(verificationStatus: result.data!.userObject!.isVerified,)));
          } else {
            print('API MO::::$mobileNumberFromAPi');
            // saveUserData(result.data.userObject.userId);
@@ -637,6 +645,7 @@ class _LoginScreenState extends State<LoginScreen> {
            role = result.data!.userObject!.role;
            name = result.data!.userObject!.name;
            mobileNumberFromAPi = result.data!.userObject!.mobileNumber;
+           email = result.data!.userObject!.email;
            preferences.setString('RegisterAs', role!);
 
            preferences.setString("name", result.data!.userObject!.name!);
@@ -656,6 +665,7 @@ class _LoginScreenState extends State<LoginScreen> {
               result.data!.userObject!.role == 'E' ? preferences.setString("otherUrl", result.data!.userObject!.otherUrl.toString()) : preferences.setString("otherUrl", '');
               result.data!.userObject!.role == 'E' ? preferences.setString("isNew", result.data!.userObject!.isNew!) : preferences.setString("isNew", '');
               preferences.setBool('isLoggedIn', true);
+              preferences.setInt('isSubscribed', result.data!.userObject!.isSubscribed!);
 
           print('Gender::: ${result.data!.userObject!.gender}');
           print('IMAGE:::' + result.data!.userObject!.imageUrl!);

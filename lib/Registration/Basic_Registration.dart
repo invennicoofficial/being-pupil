@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:being_pupil/Account/Terms_And_Policy_Screen.dart';
 import 'package:being_pupil/ConnectyCube/api_utils.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
@@ -36,6 +37,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailController = TextEditingController();
 
   static const String TAG = "_LoginPageState";
+  bool checkboxValue = false;
 
   @override
   void initState() {
@@ -127,10 +129,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               decoration: InputDecoration(
                                 labelText: "Name",
                                 labelStyle: TextStyle(
-                                  color: Constants.bpSkipStyle,
-                                  fontFamily: "Montserrat", 
-                                  fontSize: 10.0.sp
-                                ),
+                                    color: Constants.bpSkipStyle,
+                                    fontFamily: "Montserrat",
+                                    fontSize: 10.0.sp),
                                 fillColor: Colors.white,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
@@ -174,10 +175,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               decoration: InputDecoration(
                                 labelText: "Phone Number",
                                 labelStyle: TextStyle(
-                                  color: Constants.bpSkipStyle,
-                                  fontFamily: "Montserrat", 
-                                  fontSize: 10.0.sp
-                                ),
+                                    color: Constants.bpSkipStyle,
+                                    fontFamily: "Montserrat",
+                                    fontSize: 10.0.sp),
                                 fillColor: Colors.white,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
@@ -217,10 +217,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               decoration: InputDecoration(
                                 labelText: "Email",
                                 labelStyle: TextStyle(
-                                  color: Constants.bpSkipStyle,
-                                  fontFamily: "Montserrat", 
-                                  fontSize: 10.0.sp
-                                ),
+                                    color: Constants.bpSkipStyle,
+                                    fontFamily: "Montserrat",
+                                    fontSize: 10.0.sp),
                                 fillColor: Colors.white,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
@@ -253,7 +252,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               left: 3.0.w,
                               right: 3.0.w,
                               top: 3.0.h,
-                              bottom: 3.0.h),
+                              bottom: 0.0.h),
                           child: CustomDropdown<int>(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -339,17 +338,89 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       Padding(
+                        padding: EdgeInsets.symmetric(vertical: 1.0.h),
+                        child: CheckboxListTile(
+                          value: checkboxValue,
+                          onChanged: (val) {
+                            setState(() {
+                              checkboxValue = !checkboxValue;
+                            });
+                          },
+                          subtitle: !checkboxValue
+                              ? Text(
+                                  'Required.',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 11.0.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.red),
+                                )
+                              : null,
+                          title: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                      return TermsAndPolicyScreen(url: 'http://beingpupil.com/terms-and-conditions',);
+                                    },
+                                  ),
+                                );
+                              },
+                              child: Text.rich(TextSpan(children: [
+                                TextSpan(
+                                  text: 'I agree to the ',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 11.0.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Constants.bgColor),
+                                ),
+                                TextSpan(
+                                  text: 'Terms & Conditions',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 11.0.sp,
+                                      fontWeight: FontWeight.w400,
+                                      decoration: TextDecoration.underline,
+                                      color: Constants.blueTitle),
+                                )
+                              ]))
+                              // Text(
+                              //   'I agree to the Terms & Conditions.',
+                              //   style: TextStyle(
+                              //       fontFamily: 'Montserrat',
+                              //       fontSize: 11.0.sp,
+                              //       fontWeight: FontWeight.w400,
+                              //       color: Constants.bgColor),
+                              // ),
+                              ),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          activeColor: Constants.bgColor,
+                          contentPadding: EdgeInsets.only(left: 2.0.w),
+                        ),
+                      ),
+                      Padding(
                         padding: EdgeInsets.only(
                             left: 3.0.w, right: 3.0.w, top: 0.0.h),
                         child: GestureDetector(
                           onTap: () {
                             print('Sign Up!!!');
                             bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9."
-                            r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                    r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                 .hasMatch(emailController.text.trim());
-                            bool mobileValid = RegExp(r"^[6-9]\d{9}$").hasMatch(mobileController.text);
+                            bool mobileValid = RegExp(r"^[6-9]\d{9}$")
+                                .hasMatch(mobileController.text);
                             //signUp(nameController.text.trim(), mobileController.text.trim(), registerAs, deviceType, deviceId)
-                            if (nameController.text.isEmpty){
+                            if(checkboxValue == false){
+                              Fluttertoast.showToast(
+                                  msg: "Please Accept Tearms & Condition",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Constants.bgColor,
+                                  textColor: Colors.white,
+                                  fontSize: 10.0.sp);
+                            }else if (nameController.text.isEmpty) {
                               Fluttertoast.showToast(
                                   msg: "Please Enter Name",
                                   toastLength: Toast.LENGTH_SHORT,
@@ -358,7 +429,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   backgroundColor: Constants.bgColor,
                                   textColor: Colors.white,
                                   fontSize: 10.0.sp);
-                            } else if (mobileController.text.isEmpty || (mobileValid == false)) {
+                            } else if (mobileController.text.isEmpty ||
+                                (mobileValid == false)) {
                               Fluttertoast.showToast(
                                   msg: "Please Enter Valid Mobile Number",
                                   toastLength: Toast.LENGTH_SHORT,
@@ -367,8 +439,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   backgroundColor: Constants.bgColor,
                                   textColor: Colors.white,
                                   fontSize: 10.0.sp);
-                            }
-                            else if (emailController.text.trim().isEmpty ||
+                            } else if (emailController.text.trim().isEmpty ||
                                 (emailValid == false)) {
                               Fluttertoast.showToast(
                                   msg: "Please Enter Valid Email Id",
@@ -378,8 +449,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   backgroundColor: Constants.bgColor,
                                   textColor: Colors.white,
                                   fontSize: 10.0.sp);
-                            }
-                            else if (registerAs == 'notSelected') {
+                            } else if (registerAs == 'notSelected') {
                               Fluttertoast.showToast(
                                   msg: "Please Select Register As",
                                   toastLength: Toast.LENGTH_SHORT,
@@ -425,7 +495,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 15.0.h,//20.0.h
+                        height: 10.0.h, //20.0.h
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -474,7 +544,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-
   //ConnectyCube
 
   _signInCC(BuildContext context, CubeUser user, result) async {
@@ -493,9 +562,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       Navigator.push(
           context,
           PageTransition(
-              type: PageTransitionType.fade, child: OtpScreen(
-            mobileNumber: mobileController.text,
-          )));
+              type: PageTransitionType.fade,
+              child: OtpScreen(
+                mobileNumber: mobileController.text,
+              )));
       Fluttertoast.showToast(
         msg: result.message,
         toastLength: Toast.LENGTH_SHORT,
@@ -512,14 +582,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void _processLoginError(exception) {
     log("Login error $exception", TAG);
-    setState(() {
-
-    });
+    setState(() {});
     showDialogError(exception, context);
   }
 
-  Future<SignUp> register(String name, String mobileNumber, String email, String registerAs,
-      String deviceType, String deviceId) async {
+  Future<SignUp> register(String name, String mobileNumber, String email,
+      String registerAs, String deviceType, String deviceId) async {
     displayProgressDialog(context);
     var result = SignUp();
     try {
@@ -537,28 +605,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
         print(response.data);
         closeProgressDialog(context);
         result = SignUp.fromJson(response.data);
-        if(result.status == true){
-        print('ID ::: ' + result.data!.userId.toString());
-        saveUserData(result.data!.userId!);
-        _signInCC(context, CubeUser(fullName: name, login: email, password: '12345678', email: email), result);
+        if (result.status == true) {
+          print('ID ::: ' + result.data!.userId.toString());
+          saveUserData(result.data!.userId!);
+          _signInCC(
+              context,
+              CubeUser(
+                  fullName: name,
+                  login: email,
+                  password: '12345678',
+                  email: email),
+              result);
         } else {
           Fluttertoast.showToast(
-          msg: result.message == null ? result.errorMsg! : result.message!,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Constants.bgColor,
-          textColor: Colors.white,
-          fontSize: 10.0.sp,
-        );
+            msg: result.message == null ? result.errorMsg! : result.message!,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
         }
         print(result);
-        
       }
     } on DioError catch (e, stack) {
       print(e.response);
       print(stack);
-       closeProgressDialog(context);
+      closeProgressDialog(context);
       if (e.response != null) {
         print("This is the error message::::" +
             e.response!.data['meta']['message']);
@@ -580,7 +654,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return result;
   }
 
-    void saveUserData(int userId) async {
+  void saveUserData(int userId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setInt('userId', userId);
     print(userId);
