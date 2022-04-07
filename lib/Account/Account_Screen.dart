@@ -320,7 +320,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             onTap: () {
                               Navigator.of(context).push(PageRouteBuilder(
                                   pageBuilder: (_, __, ____) =>
-                                      TermsAndPolicyScreen(url: 'http://beingpupil.com/terms-and-conditions',)));
+                                      TermsAndPolicyScreen()));
                             },
                             child: ProfileList(
                               txt: "Terms & Policy",

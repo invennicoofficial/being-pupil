@@ -591,15 +591,15 @@ class _LoginScreenState extends State<LoginScreen> {
         //print('ID ::: ' + result.data!.userObject!.userId.toString());
 
         if (result.data!.userObject == null) {
-          Fluttertoast.showToast(
-            msg: result.message == null ? result.errorMsg! : result.message!,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Constants.bgColor,
-            textColor: Colors.white,
-            fontSize: 10.0.sp,
-          );
+          // Fluttertoast.showToast(
+          //   msg: result.message == null ? result.errorMsg! : result.message!,
+          //   toastLength: Toast.LENGTH_SHORT,
+          //   gravity: ToastGravity.BOTTOM,
+          //   timeInSecForIosWeb: 1,
+          //   backgroundColor: Constants.bgColor,
+          //   textColor: Colors.white,
+          //   fontSize: 10.0.sp,
+          // );
           closeProgressDialog(context);
           Navigator.push(
               context,

@@ -69,6 +69,10 @@ class Config{
   static const String cencelSubscription = baseUrl + "user/plans/cancel-subscription";
   static const String currentSubscription = baseUrl + "user/plans/get/current";
   static const String updateSubscription = baseUrl + "user/subscription/update";
+  static const String tearmsUrl = baseUrl + "terms";
+  static const String faqUrl = baseUrl + "faqs";
+  static const String privacyUrl = baseUrl + "privacy";
+  static const String aboutUsUrl = baseUrl + "about-us";
 }
 
 

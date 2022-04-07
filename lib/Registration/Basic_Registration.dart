@@ -361,7 +361,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                      return TermsAndPolicyScreen(url: 'http://beingpupil.com/terms-and-conditions',);
+                                      return TermsAndPolicyScreen();
                                     },
                                   ),
                                 );
