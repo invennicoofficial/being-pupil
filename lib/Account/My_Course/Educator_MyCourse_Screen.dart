@@ -158,6 +158,25 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
                     new AlwaysStoppedAnimation<Color>(Constants.bgColor),
               ),
             )
+          : courseLength == 0
+          ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/images/noBooking.png',
+                        height: 250, width: 250, fit: BoxFit.contain),
+                    SizedBox(height: 5.0,),
+                    Text(
+                      'No Course Created',
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 16.0.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Constants.bgColor),
+                    ),
+                  ],
+                ),
+              )
           : SmartRefresher(
               controller: _refreshController,
               enablePullDown: true,

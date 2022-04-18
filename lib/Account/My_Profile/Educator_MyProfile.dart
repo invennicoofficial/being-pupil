@@ -457,7 +457,27 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                   color: Constants.bgColor.withOpacity(0.5),
                 ),
                 //Educator Post
-                Expanded(
+                postIdList.length == 0
+                ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 50.0,),
+                    Image.asset('assets/images/noBooking.png',
+                        height: 200, width: 200, fit: BoxFit.contain),
+                    SizedBox(height: 5.0,),
+                    Text(
+                      'Post Not Created',
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 16.0.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Constants.bgColor),
+                    ),
+                  ],
+                ),
+              )
+                :Expanded(
                   child: SingleChildScrollView(
                     physics: BouncingScrollPhysics(),
                     controller: _scrollController,

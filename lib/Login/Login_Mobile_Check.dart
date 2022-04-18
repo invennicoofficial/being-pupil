@@ -269,7 +269,15 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
                     socialEmail: widget.socialEmail,
                     socialPhotoUrl: widget.socialPhotoUrl,
                     socialId: widget.socialId,
-                  )));          
+                  )));     
+          // Fluttertoast.showToast(
+          //   msg: map!['message'],//result.message,
+          //   toastLength: Toast.LENGTH_SHORT,
+          //   gravity: ToastGravity.BOTTOM,
+          //   timeInSecForIosWeb: 1,
+          //   backgroundColor: Constants.bgColor,
+          //   textColor: Colors.white,
+          //   fontSize: 10.0.sp,);     
           }else{
             Fluttertoast.showToast(
             msg: map!['message'],//result.message,
@@ -323,6 +331,7 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
             
           }
         } else {
+          print(map);
           if(map!['message'] == null){
           Fluttertoast.showToast(
             msg: map!['error_msg'],
@@ -345,7 +354,6 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
           );
           }
         }
-        print(map);
       }
     } on DioError catch (e, stack) {
       print(e.response);

@@ -12,6 +12,7 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Login/Login_Screen.dart';
 import 'package:being_pupil/Subscription/Current_Subscription_Screen.dart';
 import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
+import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:flutter/material.dart';
@@ -352,6 +353,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           InkWell(
                             onTap: () {
+                              displayProgressDialog(context);
                               logout();
                               signOut()
                                   .then(
@@ -363,6 +365,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   .whenComplete(() {
                                 // CubeChatConnection.instance.destroy();
                                 SharedPrefs.instance.deleteUser();
+                                closeProgressDialog(context);
                                 // pushNewScreen(
                                 //   context,
                                 //   screen: LoginScreen(),
@@ -410,6 +413,18 @@ class _AccountScreenState extends State<AccountScreen> {
   void logout() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.clear();
+  }
+
+   displayProgressDialog(BuildContext context) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new ProgressDialog();
+        }));
+  }
+
+  closeProgressDialog(BuildContext context) {
+    Navigator.of(context).pop();
   }
 }
 

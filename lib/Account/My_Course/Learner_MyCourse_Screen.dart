@@ -57,7 +57,26 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
                 fontWeight: FontWeight.w400,
                 color: Colors.white)),
       ),
-      body: SingleChildScrollView(
+      body: courseLength == 0
+      ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/images/noBooking.png',
+                        height: 250, width: 250, fit: BoxFit.contain),
+                    SizedBox(height: 5.0,),
+                    Text(
+                      'Course Not Enrolled',
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 16.0.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Constants.bgColor),
+                    ),
+                  ],
+                ),
+              )
+       : SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: ListView.builder(
             itemCount: courseLength,

@@ -1,3 +1,5 @@
+import 'package:being_pupil/ConnectyCube/api_utils.dart';
+import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Model_Class.dart';
@@ -15,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:being_pupil/Registration/Educator_Registration.dart';
-
+import 'package:connectycube_sdk/connectycube_core.dart';
 
 import 'OTP_Screen.dart';
 
@@ -33,6 +35,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
   TextEditingController nameController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
   final storage = new FlutterSecureStorage();
+  static const String TAG = "_LoginPageState";
 
   @override
   void initState() {
@@ -142,6 +145,10 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
                               ],
                               decoration: InputDecoration(
                                 labelText: "Phone Number",
+                                labelStyle: TextStyle(
+                                    color: Constants.bpSkipStyle,
+                                    fontFamily: "Montserrat",
+                                    fontSize: 10.0.sp),
                                 fillColor: Colors.white,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
@@ -171,7 +178,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
                         ),
                         child: Padding(
                           padding: EdgeInsets.only(
-                              left: 3.0.w, right: 3.0.w, top: 4.0.h),
+                              left: 3.0.w, right: 3.0.w, top: 3.0.h),
                           child: Container(
                             height: 7.0.h,
                             width: 90.0.w,
@@ -179,6 +186,10 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
                               controller: nameController,
                               decoration: InputDecoration(
                                 labelText: "Name",
+                                labelStyle: TextStyle(
+                                    color: Constants.bpSkipStyle,
+                                    fontFamily: "Montserrat",
+                                    fontSize: 10.0.sp),
                                 fillColor: Colors.white,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
@@ -376,6 +387,49 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
     );
   }
 
+  //ConnectyCube
+
+  _signInCC(BuildContext context, CubeUser user, result) async {
+    if (!CubeSessionManager.instance.isActiveSessionValid()) {
+      try {
+        await createSession();
+      } catch (error) {
+        _processLoginError(error);
+      }
+    }
+    signUp(user).then((newUser) async {
+      print("signUp newUser $newUser");
+      user.id = newUser.id;
+      SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+      sharedPrefs.saveNewUser(user);
+      // Navigator.push(
+      //     context,
+      //     PageTransition(
+      //         type: PageTransitionType.fade,
+      //         child: OtpScreen(
+      //           mobileNumber: mobileController.text,
+      //         )));
+      Fluttertoast.showToast(
+        msg: result.message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Constants.bgColor,
+        textColor: Colors.white,
+        fontSize: 10.0.sp,
+      );
+    }).catchError((exception) {
+      _processLoginError(exception);
+    });
+  }
+
+  void _processLoginError(exception) {
+    log("Login error $exception", TAG);
+    setState(() {});
+    showDialogError(exception, context);
+  }
+
+
   Future<SocialLogin> login(String name, String? mobileNumber,
       String registerAs, String deviceType, String deviceId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -400,14 +454,22 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
         print(response.data);
         closeProgressDialog(context);
         result = SocialLogin.fromJson(response.data);
-        //print(result.data.name);
+        print(result.toString());
         if (result.status == true) {
           // print('ID ::: ' + result.data.userObject.userId.toString());
-          // saveUserData(result.data.userObject.userId);
+           saveUserData(result.data!.userObject!.userId!);
+            _signInCC(
+              context,
+              CubeUser(
+                  fullName: name,
+                  login: widget.socialEmail,
+                  password: '12345678',
+                  email: widget.socialEmail),
+              result);
           print('ROLE ::' + result.data!.userObject!.role.toString());
           saveToken(result.data!.token!);
           preferences.setString('RegisterAs', result.data!.userObject!.role!);
-          if(result.data!.userObject!.isNew == "true") {
+          //if(result.data!.userObject!.isNew == "true") {
             result.data!.userObject!.role == 'L'
                 ? Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => bottomNavBar(0)),
@@ -418,24 +480,26 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
                   mobileNumber: mobileNumber,
                   email: widget.socialEmail
                 )));
-          } 
+          //} 
           // else {
-          //     preferences.setString("name", result.data.userObject.name);
-          //     preferences.setString("mobileNumber", result.data.userObject.mobileNumber);
-          //     preferences.setString("gender", result.data.userObject.gender);
+              preferences.setString("name", result.data!.userObject!.name!);
+              preferences.setString("mobileNumber", result.data!.userObject!.mobileNumber!);
+              preferences.setString("email", widget.socialEmail!);
+              //preferences.setString("gender", result.data!.userObject!.gender!);
           //     //result.data.userObject.role == 'E' ? 
-          //     preferences.setString("imageUrl", result.data.userObject.imageUrl);
+               preferences.setString("imageUrl", result.data!.userObject!.imageUrl!);
           //     // : preferences.setString("imageUrl", '');
-          //     result.data.userObject.role == 'E' ? preferences.setString("qualification", result.data.userObject.educationalDetail.qualification) : preferences.setString("qualification", '');
-          //     result.data.userObject.role == 'E' ? preferences.setString("schoolName", result.data.userObject.educationalDetail.schoolName) : preferences.setString("schoolName",'');
-          //     result.data.userObject.role == 'E' ? preferences.setString("address1", result.data.userObject.location.addressLine2): preferences.setString("address1", '');
-          //     result.data.userObject.role == 'E' ? preferences.setString("address2", result.data.userObject.location.city): preferences.setString("address2", '');
-          //     result.data.userObject.role == 'E' ? preferences.setString("facebookUrl", result.data.userObject.fbUrl) : preferences.setString("facebookUrl",'');
-          //     result.data.userObject.role == 'E' ? preferences.setString("instaUrl", result.data.userObject.instaUrl) : preferences.setString("instaUrl",'');
-          //     result.data.userObject.role == 'E' ? preferences.setString("linkedInUrl", result.data.userObject.liUrl) : preferences.setString("linkedInUrl", '');
-          //     result.data.userObject.role == 'E' ? preferences.setString("otherUrl", result.data.userObject.otherUrl) : preferences.setString("otherUrl", '');
-          //     result.data.userObject.role == 'E' ? preferences.setString("isNew", result.data.userObject.isNew) : preferences.setString("isNew", '');
-          //     preferences.setBool('isLoggedIn', true);
+              // result.data.userObject.role == 'E' ? preferences.setString("qualification", result.data.userObject.educationalDetail.qualification) : preferences.setString("qualification", '');
+              // result.data.userObject.role == 'E' ? preferences.setString("schoolName", result.data.userObject.educationalDetail.schoolName) : preferences.setString("schoolName",'');
+              // result.data.userObject.role == 'E' ? preferences.setString("address1", result.data.userObject.location.addressLine2): preferences.setString("address1", '');
+              // result.data.userObject.role == 'E' ? preferences.setString("address2", result.data.userObject.location.city): preferences.setString("address2", '');
+              // result.data.userObject.role == 'E' ? preferences.setString("facebookUrl", result.data.userObject.fbUrl) : preferences.setString("facebookUrl",'');
+              // result.data.userObject.role == 'E' ? preferences.setString("instaUrl", result.data.userObject.instaUrl) : preferences.setString("instaUrl",'');
+              // result.data.userObject.role == 'E' ? preferences.setString("linkedInUrl", result.data.userObject.liUrl) : preferences.setString("linkedInUrl", '');
+              // result.data.userObject.role == 'E' ? preferences.setString("otherUrl", result.data.userObject.otherUrl) : preferences.setString("otherUrl", '');
+              // result.data.userObject.role == 'E' ? preferences.setString("isNew", result.data.userObject.isNew) : preferences.setString("isNew", '');
+              preferences.setBool('isLoggedIn', true);
+              preferences.setInt('isSubscribed', 0);
 
           // print('Gender::: ${result.data.userObject.gender}');
           // print('IMAGE:::' + result.data.userObject.imageUrl);
@@ -451,18 +515,21 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
           //         child: OtpScreen(
           //           mobileNumber: mobileController.text,
                  // )));
-          Fluttertoast.showToast(
-            msg: result.message!,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Constants.bgColor,
-            textColor: Colors.white,
-            fontSize: 10.0.sp,
-          );
+          // Fluttertoast.showToast(
+          //   msg: result.message!,
+          //   toastLength: Toast.LENGTH_SHORT,
+          //   gravity: ToastGravity.BOTTOM,
+          //   timeInSecForIosWeb: 1,
+          //   backgroundColor: Constants.bgColor,
+          //   textColor: Colors.white,
+          //   fontSize: 10.0.sp,
+          // );
         } else {
           Fluttertoast.showToast(
-            msg: result.message == null ? result.errorMsg! : result.message!,
+            msg: 
+            //result.message == null ?
+             result.errorMsg!,
+            // : result.message!,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
