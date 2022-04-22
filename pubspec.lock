@@ -85,6 +85,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  cloud_firestore_platform_interface:
+    dependency: "direct overridden"
+    description:
+      name: cloud_firestore_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.4.13"
+  cloud_functions_platform_interface:
+    dependency: "direct overridden"
+    description:
+      name: cloud_functions_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.0.21"
   collection:
     dependency: transitive
     description:
@@ -253,6 +267,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  firebase_analytics_platform_interface:
+    dependency: "direct overridden"
+    description:
+      name: firebase_analytics_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.5"
+  firebase_app_installations_platform_interface:
+    dependency: "direct overridden"
+    description:
+      name: firebase_app_installations_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0+6"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -261,12 +289,12 @@ packages:
     source: hosted
     version: "3.3.4"
   firebase_auth_platform_interface:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: firebase_auth_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.1.9"
+    version: "6.1.11"
   firebase_auth_web:
     dependency: transitive
     description:
@@ -295,6 +323,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.5.3"
+  firebase_crashlytics_platform_interface:
+    dependency: "direct overridden"
+    description:
+      name: firebase_crashlytics_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.13"
   firebase_dynamic_links:
     dependency: "direct main"
     description:
@@ -303,12 +338,12 @@ packages:
     source: hosted
     version: "4.0.7"
   firebase_dynamic_links_platform_interface:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: firebase_dynamic_links_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.1"
+    version: "0.2.0+5"
   firebase_messaging:
     dependency: "direct main"
     description:
@@ -317,12 +352,12 @@ packages:
     source: hosted
     version: "11.2.5"
   firebase_messaging_platform_interface:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: firebase_messaging_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.5"
+    version: "3.1.6"
   firebase_messaging_web:
     dependency: transitive
     description:
@@ -330,6 +365,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.6"
+  firebase_performance_platform_interface:
+    dependency: "direct overridden"
+    description:
+      name: firebase_performance_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0+5"
+  firebase_remote_config_platform_interface:
+    dependency: "direct overridden"
+    description:
+      name: firebase_remote_config_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.5"
+  firebase_storage_platform_interface:
+    dependency: "direct overridden"
+    description:
+      name: firebase_storage_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.14"
   flutter:
     dependency: "direct main"
     description: flutter

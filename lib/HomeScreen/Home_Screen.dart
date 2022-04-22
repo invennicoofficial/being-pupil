@@ -6,13 +6,17 @@ import 'package:being_pupil/HomeScreen/Fulll_Screen_Image_Screen.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Device_Token_Model.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
+import 'package:being_pupil/Model/Stay_And_Study_Model/Get_All_Property_Model.dart';
+import 'package:being_pupil/StayAndStudy/Property_Details_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Learner_ProfileView_Screen.dart';
 import 'package:being_pupil/Subscription/Successful_Payment_Screen.dart';
+import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -82,9 +86,16 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
   int? commentResult;
   Map<String, dynamic> resultComment = {};
 
+  FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
+  GetAllProperty propertyDetails = GetAllProperty();
+  Map<String, dynamic>? propMap;
+  List<dynamic> propDataList = [];
+  //List<dynamic>? mapData;
+
   @override
   void initState() {
     getToken();
+    initDynamicLinks();
     super.initState();
   }
 
@@ -196,6 +207,31 @@ saveFirebaseToken(String token) async {
     } else{
       _refreshController.requestLoading();
     }
+  }
+
+  //init dynamic link
+  Future<void> initDynamicLinks() async {
+    final PendingDynamicLinkData? data = await dynamicLinks.getInitialLink();
+         final Uri? deepLink = data?.link;
+
+         if (deepLink != null) {
+           print('DL:::::::$deepLink');
+         // ignore: unawaited_futures
+         //Future.delayed(const Duration(milliseconds: 1000), () {
+           getPropertyAPI(deepLink.toString().substring(0, 51));
+           //setState(() {});
+      //});
+         //Navigator.pushNamed(context, deepLink.path);
+       }
+    dynamicLinks.onLink.listen((dynamicLinkData) {
+      print('DL:::'+ dynamicLinkData.link.toString());
+      getPropertyAPI(dynamicLinkData.link.toString().substring(0, 51));
+      //Navigator.pushNamed(context, dynamicLinkData.link.path);
+    }).onError((error) {
+      print('onLink error');
+      print(error.message);
+    });
+    
   }
 
   @override
@@ -1063,5 +1099,111 @@ saveFirebaseToken(String token) async {
       print(e.response);
       print(stack);
     }
+  }
+
+  //Future<GetAllProperty> 
+  getPropertyAPI(String url) async {
+    //displayProgressDialog(context);
+    //await getToken();
+    isLoading = true;
+    propDataList.clear();
+    setState(() {});
+    try {
+      var dio = Dio();
+      var response = await dio.get(url,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
+      if (response.statusCode == 200) {
+        //propertyDetails = GetAllProperty.fromJson(response.data);
+        propMap = response.data;
+        propDataList.add(propMap!['data'][0]);
+        //mapData = map!['data'];
+        print('PROP:::'+propMap.toString());
+        print('PROPDATA:::'+propDataList.toString());
+        //closeProgressDialog(context);
+
+        if (propMap!['status'] == true) {
+
+          isLoading = false;
+          setState(() {});
+          // if(mounted){
+           
+          // } else{
+            // print('NOT MOUNTED:::');
+            // Navigator.of(context).pushAndRemoveUntil(PageRouteBuilder(
+            // pageBuilder: (_, __, ___) => new bottomNavBar(1),), (Route<dynamic> route) => false);
+            
+            pushNewScreen(context, screen: PropertyDetailScreen(propertyDetails: propertyDetails, 
+            propData: propDataList,
+            index: 0),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino);
+          //}
+          
+         // propertyLength = 0;
+          // propertyLength = result.data == [] ? 0 : result.data.length;
+          // setState(() {});
+          // print('PROP:::' + propertyLength.toString());
+          // print('PROP:::' + page.toString());
+          // if (page > 0) {
+          //   for (int i = 0; i < mapData!.length; i++) {
+          //     propertyId.add(mapData![i]['property_id']);
+          //     propertyName.add(mapData![i]['name']);
+          //     propertyLocation.add(mapData![i]['location']['address']);
+          //     propertyImage.add(mapData![i]['featured_image'][0]);
+          //     //propertyPrice.add('${int.parse(result.data[i].room[0].roomAmount)}');
+          //     propertyRating.add(mapData![i]['rating'].toDouble());
+          //     //allImage.add(result.data[i].featuredImage);
+          //     propDataList.add(mapData![i]);
+          //   }
+          //   print('DATAPROP:::'+ propDataList.toString());
+            // isLoading = false;
+            // setState(() {});
+          //} else {
+            // isLoading = false;
+            // setState(() {});
+          //}
+        //} else {
+          // isLoading = false;
+          // setState(() {});
+          // Fluttertoast.showToast(
+          //   msg: result.message,
+          //   toastLength: Toast.LENGTH_SHORT,
+          //   gravity: ToastGravity.BOTTOM,
+          //   timeInSecForIosWeb: 1,
+          //   backgroundColor: Constants.bgColor,
+          //   textColor: Colors.white,
+          //   fontSize: 10.0.sp,
+          // );
+        }
+        else{
+          isLoading = false;
+          setState(() {});
+        }
+      }
+    } on DioError catch (e, stack) {
+      print(e.response);
+      print(stack);
+      isLoading = false;
+      setState(() {});
+      //closeProgressDialog(context);
+      if (e.response != null) {
+        print("This is the error message::::" +
+            e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        //print(e.request);
+        print(e.message);
+      }
+    }
+    //return propertyDetails;
   }
 }

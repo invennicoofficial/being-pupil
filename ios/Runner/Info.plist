@@ -27,6 +27,10 @@
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
+		<key>FirebaseDynamicLinksCustomDomains</key>
+		<array>
+    		<string>https://bepshare.page.link</string>
+		</array>
 <key>CFBundleURLTypes</key>
 <array>
   <dict>

@@ -1,10 +1,13 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Stay_And_Study_Model/Get_All_Property_Model.dart';
 import 'package:being_pupil/StayAndStudy/Property_Book_Screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:readmore/readmore.dart';
 import 'package:share/share.dart';
@@ -60,6 +63,19 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
 
   double lat = 0.0, long = 0.0;
 
+  String? _linkMessage;
+  bool _isCreatingLink = false;
+
+  FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
+  final String _testString =
+      'To test: long press link and then copy and click from a non-browser '
+      "app. Make sure this isn't being tested on iOS simulator and iOS xcode "
+      'is properly setup. Look at firebase_dynamic_links/README.md for more '
+      'details.';
+
+  final String dynamicLink = 'https://beingpupil.com/public/api/property';
+  final String link = 'https://bepshare.page.link/property';
+
  void _launchMapsUrl(double lat, double long) async {
   // final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$long';
   // if (await canLaunch(url)) {
@@ -89,6 +105,61 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
     } else {
        throw 'Could not launch $url';
     }
+}
+
+//compress image
+// Future<Uint8List> testCompressFile(File file) async {
+//     var result = await FlutterImageCompress.compressAssetImage(
+//       file.absolute.path,
+//       minWidth: 300,
+//       minHeight: 200,
+//       quality: 94,
+//       rotate: 90,
+//     );
+//     print(file.lengthSync());
+//     print(result!.length);
+//     return result;
+//   }
+
+//create dynamic link
+Future<void> _createDynamicLink(bool short, String id) async {
+    setState(() {
+      _isCreatingLink = true;
+    });
+print('create DL::: ${widget.propData![widget.index]['featured_image'][0].toString()}');
+    final DynamicLinkParameters parameters = DynamicLinkParameters(
+      uriPrefix: 'https://bepshare.page.link',
+      link: Uri.parse("https://beingpupil.com/public/api/property/get?id=$id}"),
+      androidParameters: const AndroidParameters(
+        packageName: 'com.beingPupil',
+        minimumVersion: 0,
+      ),
+      iosParameters: const IOSParameters(
+        bundleId: 'com.beingpupil',
+        minimumVersion: '0',
+      ),
+      socialMetaTagParameters: SocialMetaTagParameters(
+        title: widget.propData![widget.index]['name'].toString(),
+        description: widget.propData![widget.index]['location']['address'].toString(),
+        imageUrl: Uri.parse(widget.propData![widget.index]['featured_image'][0].toString()),
+      )
+    );
+    Uri url;
+    if (short) {
+      final ShortDynamicLink shortLink =
+          await dynamicLinks.buildShortLink(parameters);
+       url = shortLink.shortUrl;
+    } else {
+      url = await dynamicLinks.buildLink(parameters);
+    }
+    setState(() {
+      _linkMessage = url.toString();
+      _isCreatingLink = false;
+    });
+
+    Share.share(
+      'Check out this property on Being Pupil App! $_linkMessage',
+       subject: 'Download Being Pupil App!');
 }
 
   @override
@@ -244,11 +315,15 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
                         color: Constants.bgColor),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Share.share(
-                          'check out Being Pupil App! https://google.com',
-                          subject: 'Download Being Pupil App!');
-                    },
+                    onTap: !_isCreatingLink 
+                    ? () {
+                      // Share.share(
+                      //     'check out Being Pupil App! https://google.com',
+                      //     subject: 'Download Being Pupil App!');
+                      _createDynamicLink(true, widget.propData![widget.index]['property_id'].toString());
+                            
+                    }
+                    : null,
                     child: Container(
                       height: 4.0.h,
                       width: 8.0.w,

@@ -2,22 +2,40 @@ import 'dart:async';
 
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/StayAndStudy/Property_Details_Screen.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'Model/Config.dart';
+import 'Model/Stay_And_Study_Model/Get_All_Property_Model.dart';
 import 'OnBoarding_Screens/OnBoarding_Screen.dart';
 import 'package:sizer/sizer.dart';
 
 import 'Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/ConnectyCube/configs.dart' as config;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    // options: const FirebaseOptions(
+    //   apiKey: 'AIzaSyCOc_EWntBuVdxSnXNMdeHNTNVCaOvopZE',
+    //   appId: '1:105158486640:ios:3fa0f8720b7ecc004be2b5',
+    //   messagingSenderId: '105158486640',
+    //   projectId: 'being-pupil-aca7f',
+    //   authDomain: 'beingpupil.com',
+    //   iosClientId:
+    //       '448618578101-4km55qmv55tguvnivgjdiegb3r0jquv5.apps.googleusercontent.com',
+    // ),
+  );
   runApp(MyApp());
 }
 
@@ -54,7 +72,9 @@ class _SplashScreenState extends State<SplashScreen> {
   late StreamSubscription<ConnectivityResult> connectivityStateSubscription;
   AppLifecycleState? appState;
 
-
+  
+  //String? authToken;
+  
   @override
   void initState() {
     // TODO: implement initState
@@ -130,6 +150,8 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
+  
+
   getLoginStatus() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     registerAs = preferences.getString('RegisterAs');
@@ -197,6 +219,12 @@ class _SplashScreenState extends State<SplashScreen> {
   _timer() async {
     return Timer(Duration(milliseconds: 3000), _navigator);
   }
+
+  // getToken() async {
+  //   authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
+  // }
+
+  
 
   @override
   Widget build(BuildContext context) {
