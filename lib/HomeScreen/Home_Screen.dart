@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:being_pupil/ConnectyCube/api_utils.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
+import 'package:being_pupil/ConnectyCube/select_dialog_screen.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Create_Post_Screen.dart';
 import 'package:being_pupil/HomeScreen/Fulll_Screen_Image_Screen.dart';
@@ -19,6 +22,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -109,6 +113,10 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
   //Generate firebase token
   generateFirebaseToken() async {
   _firebaseMessaging.requestPermission(sound: true, alert: true, badge: true);
+   //FirebaseMessaging.onMessage.listen((remoteMessage) {
+     //   log('[onMessage] message: $remoteMessage');
+        //showNotification(remoteMessage);
+    //});
   _firebaseMessaging.getToken().then((token) {
     var firebaseToken = token!;
     print('token::: ' + token);
@@ -125,6 +133,55 @@ saveFirebaseToken(String token) async {
   // Write value
   await storage.write(key: 'firebaseToken', value: token);
 }
+
+//   pushNotificationOnMsg() async{
+//     FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+// String? token;
+// if (Platform.isAndroid || kIsWeb) {
+//     token = (await firebaseMessaging.getToken())!;
+// } else if (Platform.isIOS || Platform.isMacOS) {
+//     token = (await firebaseMessaging.getAPNSToken())!;
+// }
+
+// if (!isEmpty(token)) {
+//     subscribe(token!);
+// }
+
+// firebaseMessaging.onTokenRefresh.listen((newToken) {
+//     subscribe(newToken);
+// });
+//   }
+
+
+//   subscribe(String token) async {
+//     log('[subscribe] token: $token');
+
+//     bool isProduction = bool.fromEnvironment('dart.vm.product');
+
+//     CreateSubscriptionParameters parameters = CreateSubscriptionParameters();
+//     parameters.environment =
+//         isProduction ? CubeEnvironment.PRODUCTION : CubeEnvironment.DEVELOPMENT;
+
+//     if (Platform.isAndroid) {
+//       parameters.channel = NotificationsChannels.GCM;
+//       parameters.platform = CubePlatform.ANDROID;
+//       parameters.bundleIdentifier = "com.connectycube.flutter.chat_sample";
+//     } else if (Platform.isIOS) {
+//       parameters.channel = NotificationsChannels.APNS;
+//       parameters.platform = CubePlatform.IOS;
+//       parameters.bundleIdentifier = Platform.isIOS
+//           ? "com.connectycube.flutter.chatSample.app"
+//           : "com.connectycube.flutter.chatSample.macOS"; 
+//     }
+
+//     String deviceId = await DeviceId.getID;
+//     parameters.udid = deviceId;
+//     parameters.pushToken = token;
+
+//     createSubscription(parameters.getRequestParameters())
+//         .then((cubeSubscription) {})
+//         .catchError((error) {});
+// }
 
   getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -241,21 +298,36 @@ saveFirebaseToken(String token) async {
         automaticallyImplyLeading: false,
         backgroundColor: Constants.bgColor,
         actions: <Widget>[
-          registerAs == 'E'
-              ? Padding(
+          Padding(
                 padding: EdgeInsets.only(right: 5.0.w),
-                child: IconButton(
-                    icon: Icon(Icons.add_box_outlined),
-                    onPressed: () {
-                      pushNewScreen(context,
-                          screen: CreatePostScreen(),
-                          withNavBar: false,
-                          pageTransitionAnimation:
-                              PageTransitionAnimation.cupertino);
-                    },
-                  ),
+                child: Row(
+                  children: [
+                    IconButton(
+                        icon: Icon(Icons.message_outlined),
+                        onPressed: () {
+                          pushNewScreen(context,
+                              screen: SelectDialogScreen(user!),
+                              withNavBar: false,
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino);
+                        },
+                      ),
+                      registerAs == 'E'
+                     ? IconButton(
+                        icon: Icon(Icons.add_box_outlined),
+                        onPressed: () {
+                          pushNewScreen(context,
+                              screen: CreatePostScreen(),
+                              withNavBar: false,
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino);
+                        },
+                      )
+                      : Container()
+                  ],
+                ),
               )
-              : Container()
+              
         ],
         title: Container(
             height: 8.0.h,

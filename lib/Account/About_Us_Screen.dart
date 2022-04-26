@@ -14,6 +14,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   Map<String, dynamic> map = Map<String, dynamic>();
   String? link;
   bool isLinkLoading = true;
+  final _key = UniqueKey();
 
   @override
   void initState() {
@@ -51,13 +52,16 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
               color: Colors.white),
         ),
       ),
-      body: isLinkLoading
-          ? Center(
-              child: CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
-            ))
-          :  WebView(
-       initialUrl: link,
+      body: 
+      // isLinkLoading
+      //     ? Center(
+      //         child: CircularProgressIndicator(
+      //         valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
+      //       ))
+      //     : 
+           WebView(
+            key: _key,
+       initialUrl: 'https://beingpupil.com/about-us',
        javascriptMode: JavascriptMode.unrestricted,
       )
       // Container(

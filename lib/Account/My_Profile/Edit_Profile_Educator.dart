@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:being_pupil/Account/My_Profile/Educator_MyProfile.dart';
+import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/EducationListItemModel.dart';
@@ -11,6 +12,7 @@ import 'package:being_pupil/Model/UpdateProfile_Model.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
@@ -3413,9 +3415,85 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     // totalWorkExp,
                                     // totalTeachExp)
                                    // :
-                                     _image != null
+                                     _image == null
                                     //&& _document == null
-                                    ? updateProfileWithImage(
+                                    ? updateProfile(
+                                    //userId,
+                                    registerAs,
+                                    _nameController.text,
+                                    _mobileController.text,
+                                    _emailController.text,
+                                    gender,
+                                    birthDateInString,
+                                    docType,
+                                    //_document != null ? _document : result.data.documentUrl,
+                                    //_document.uri.path,
+                                    //_image != null ? _image : result.data.imageUrl,
+                                    //_image.uri.path,
+                                    //certiFile,
+                                    _idNumController.text,
+                                    address1,
+                                    address2,
+                                    city,
+                                    country,
+                                    pinCode,
+                                    lat,
+                                    lng,
+                                    _achivementController.text,
+                                   selectedSkillList.length == 0 ? 
+                                    skillList.toString().replaceAll('[', '').replaceAll(']', '')
+                                      .replaceFirst('#', '')
+                                      .replaceAll(' #', ',') : selectedSkillList.toString(),
+                                            //.replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    selectedHobbiesList.length == 0 ? 
+                                    hobbieList.toString().replaceAll('[', '').replaceAll(']', '')
+                                      .replaceFirst('#', '')
+                                      .replaceAll(' #', ',') : selectedHobbiesList.toString(),
+                                           //.replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                    selectedSubjectList.length == 0 ? subjectList.toString().replaceAll('[', '').replaceAll(']', '')
+                                      .replaceFirst('#', '')
+                                      .replaceAll(' #', ',')
+                                     : selectedSubjectList.toString(),
+                                    _fbLinkController.text,
+                                    _instagramLinkController.text,
+                                    _linkedInLinkLinkController.text,
+                                    _otherLinkLinkController.text,
+                                    totalWorkExp,
+                                    totalTeachExp)
+                                    
+                                    // : _image != null && _document != null
+                                    // ? updateProfileWithBoth(
+                                    // //userId,
+                                    // registerAs,
+                                    // _nameController.text,
+                                    // _mobileController.text,
+                                    // _emailController.text,
+                                    // gender,
+                                    // birthDateInString,
+                                    // docType,
+                                    // //_document != null ? _document : result.data.documentUrl,
+                                    // //_document.uri.path,
+                                    // //_image != null ? _image : result.data.imageUrl,
+                                    // //_image.uri.path,
+                                    // //certiFile,
+                                    // _idNumController.text,
+                                    // address1,
+                                    // address2,
+                                    // city,
+                                    // country,
+                                    // pinCode,
+                                    // lat,
+                                    // lng,
+                                    // _achivementController.text,
+                                    // selectedSkillList == null ? result.data.skills : selectedSkillList.toString(),
+                                    // selectedHobbiesList == null ? result.data.hobbies : selectedHobbiesList.toString(),
+                                    // _fbLinkController.text,
+                                    // _instagramLinkController.text,
+                                    // _linkedInLinkLinkController.text,
+                                    // _otherLinkLinkController.text,
+                                    // totalWorkExp,
+                                    // totalTeachExp)
+                                    : updateProfileWithImage(
                                     //userId,
                                     registerAs,
                                     _nameController.text,
@@ -3459,85 +3537,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     _linkedInLinkLinkController.text,
                                     _otherLinkLinkController.text,
                                     totalWorkExp,
-                                    totalTeachExp)
-                                    // : _image != null && _document != null
-                                    // ? updateProfileWithBoth(
-                                    // //userId,
-                                    // registerAs,
-                                    // _nameController.text,
-                                    // _mobileController.text,
-                                    // _emailController.text,
-                                    // gender,
-                                    // birthDateInString,
-                                    // docType,
-                                    // //_document != null ? _document : result.data.documentUrl,
-                                    // //_document.uri.path,
-                                    // //_image != null ? _image : result.data.imageUrl,
-                                    // //_image.uri.path,
-                                    // //certiFile,
-                                    // _idNumController.text,
-                                    // address1,
-                                    // address2,
-                                    // city,
-                                    // country,
-                                    // pinCode,
-                                    // lat,
-                                    // lng,
-                                    // _achivementController.text,
-                                    // selectedSkillList == null ? result.data.skills : selectedSkillList.toString(),
-                                    // selectedHobbiesList == null ? result.data.hobbies : selectedHobbiesList.toString(),
-                                    // _fbLinkController.text,
-                                    // _instagramLinkController.text,
-                                    // _linkedInLinkLinkController.text,
-                                    // _otherLinkLinkController.text,
-                                    // totalWorkExp,
-                                    // totalTeachExp)
-                                    : updateProfile(
-                                    //userId,
-                                    registerAs,
-                                    _nameController.text,
-                                    _mobileController.text,
-                                    _emailController.text,
-                                    gender,
-                                    birthDateInString,
-                                    docType,
-                                    //_document != null ? _document : result.data.documentUrl,
-                                    //_document.uri.path,
-                                    //_image != null ? _image : result.data.imageUrl,
-                                    //_image.uri.path,
-                                    //certiFile,
-                                    _idNumController.text,
-                                    address1,
-                                    address2,
-                                    city,
-                                    country,
-                                    pinCode,
-                                    lat,
-                                    lng,
-                                    _achivementController.text,
-                                   selectedSkillList.length == 0 ? 
-                                    skillList.toString().replaceAll('[', '').replaceAll(']', '')
-                                      .replaceFirst('#', '')
-                                      .replaceAll(' #', ',') : selectedSkillList.toString(),
-                                            //.replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedHobbiesList.length == 0 ? 
-                                    hobbieList.toString().replaceAll('[', '').replaceAll(']', '')
-                                      .replaceFirst('#', '')
-                                      .replaceAll(' #', ',') : selectedHobbiesList.toString(),
-                                           //.replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    selectedSubjectList.length == 0 ? subjectList.toString().replaceAll('[', '').replaceAll(']', '')
-                                      .replaceFirst('#', '')
-                                      .replaceAll(' #', ',')
-                                     : selectedSubjectList.toString(),
-                                    _fbLinkController.text,
-                                    _instagramLinkController.text,
-                                    _linkedInLinkLinkController.text,
-                                    _otherLinkLinkController.text,
-                                    totalWorkExp,
                                     totalTeachExp);
                                     print('SKILL1 '+ result.data!.skills!);
                                     print('SKILL2 '+ selectedSubjectList.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'));
                                     print('SKILL3 '+ selectedSkillList.toString());
+                                    updateUserPicCC();
                                 //}
                                 // else {
                                 // updateProfileWithoutMedia(
@@ -3598,6 +3602,27 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
             ),
           ),
         ));
+  }
+
+  updateUserPicCC() async{
+     //some file from device storage
+     SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+     //sharedPrefs.getUser();
+     File file = File(_image!.path);
+    CubeUser? user = sharedPrefs.getUser(); 
+    user!.password = '12345678';
+print('CCU::'+user.fullName.toString());  
+uploadFile(file, isPublic: false)
+  .then((cubeFile) {
+    user.avatar = cubeFile.uid;
+    return updateUser(user);
+  })
+  .catchError((error) {
+    print('CCERR:::.'+error.toString());
+  });
+  print('CCPIC:::.'+user.avatar.toString());
+  String? avatarUrl = getPrivateUrlForUid(user.avatar);
+  print('CCAV:::.'+avatarUrl!);
   }
 
   //Location Picker

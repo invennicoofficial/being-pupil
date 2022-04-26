@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/UpdateProfile_Model.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -2832,6 +2834,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                     _linkedInLinkLinkController.text,
                                     _otherLinkLinkController.text,
                                     totalWorkExp);
+                                    updateUserPicCC();
                                 // Navigator.of(context).push
                                 //     //pushAndRemoveUntil
                                 //     (MaterialPageRoute(
@@ -2869,6 +2872,28 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
             ),
           ),
         ));
+  }
+
+//CC user profile pic
+  updateUserPicCC() async{
+     //some file from device storage
+     SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+     //sharedPrefs.getUser();
+     File file = File(_image!.path);
+    CubeUser? user = sharedPrefs.getUser(); 
+    user!.password = '12345678';
+print('CCU::'+user.fullName.toString());  
+uploadFile(file, isPublic: false)
+  .then((cubeFile) {
+    user.avatar = cubeFile.uid;
+    return updateUser(user);
+  })
+  .catchError((error) {
+    print('CCERR:::.'+error.toString());
+  });
+  print('CCPIC:::.'+user.avatar.toString());
+  String? avatarUrl = getPrivateUrlForUid(user.avatar);
+  print('CCAV:::.'+avatarUrl!);
   }
 
    //Tag for Skills

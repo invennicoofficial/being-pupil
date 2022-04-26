@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Learner_ProfileDetails_Model.dart';
@@ -9,6 +10,7 @@ import 'package:being_pupil/Model/Update_Learner_Profile_Model.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
@@ -2865,9 +2867,40 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                     fontSize: 10.0.sp); 
                               }
                                     else {
-                                      _image != null
+                                      _image == null
                                     //&& _document == null
-                                    ? updateProfileWithImage(
+                                    ? updateProfile(
+                                    //userId,
+                                    registerAs,
+                                    _nameController.text,
+                                    _mobileController.text,
+                                    _emailController.text,
+                                    gender,
+                                    birthDateInString,
+                                    docType,
+                                    //_document != null ? _document : result.data.documentUrl,
+                                    //_document.uri.path,
+                                    //_image != null ? _image : result.data.imageUrl,
+                                    //_image.uri.path,
+                                    //certiFile,
+                                    _idNumController.text,
+                                    address1,
+                                    address2,
+                                    city,
+                                    country,
+                                    pinCode,
+                                    lat,
+                                    lng,
+                                    _achivementController.text,
+                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString(),
+                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString(),
+                                    _fbLinkController.text,
+                                    _instagramLinkController.text,
+                                    _linkedInLinkLinkController.text,
+                                    _otherLinkLinkController.text,
+                                    totalWorkExp,
+                                    totalWorkExp)
+                                    : updateProfileWithImage(
                                     //userId,
                                     registerAs,
                                     _nameController.text,
@@ -2899,38 +2932,8 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                     _linkedInLinkLinkController.text,
                                     _otherLinkLinkController.text,
                                     totalWorkExp,
-                                    totalWorkExp)
-                                    : updateProfile(
-                                    //userId,
-                                    registerAs,
-                                    _nameController.text,
-                                    _mobileController.text,
-                                    _emailController.text,
-                                    gender,
-                                    birthDateInString,
-                                    docType,
-                                    //_document != null ? _document : result.data.documentUrl,
-                                    //_document.uri.path,
-                                    //_image != null ? _image : result.data.imageUrl,
-                                    //_image.uri.path,
-                                    //certiFile,
-                                    _idNumController.text,
-                                    address1,
-                                    address2,
-                                    city,
-                                    country,
-                                    pinCode,
-                                    lat,
-                                    lng,
-                                    _achivementController.text,
-                                    selectedSkillList.length == 0 ? result.data!.skills : selectedSkillList.toString(),
-                                    selectedHobbiesList.length == 0 ? result.data!.hobbies : selectedHobbiesList.toString(),
-                                    _fbLinkController.text,
-                                    _instagramLinkController.text,
-                                    _linkedInLinkLinkController.text,
-                                    _otherLinkLinkController.text,
-                                    totalWorkExp,
                                     totalWorkExp);
+                                    updateUserPicCC();
                                     print('SKILL1 '+ result.data!.skills!);
                                     print('SKILL2 '+ selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'));
                                     print('SKILL3 '+ selectedSkillList.toString());
@@ -2999,6 +3002,28 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                   ),
                 ),
               ));
+  }
+
+  //CC profile pic update
+  updateUserPicCC() async{
+     //some file from device storage
+     SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+     //sharedPrefs.getUser();
+     File file = File(_image!.path);
+    CubeUser? user = sharedPrefs.getUser(); 
+    user!.password = '12345678';
+print('CCU::'+user.fullName.toString());  
+uploadFile(file, isPublic: false)
+  .then((cubeFile) {
+    user.avatar = cubeFile.uid;
+    return updateUser(user);
+  })
+  .catchError((error) {
+    print('CCERR:::.'+error.toString());
+  });
+  print('CCPIC:::.'+user.avatar.toString());
+  String? avatarUrl = getPrivateUrlForUid(user.avatar);
+  print('CCAV:::.'+avatarUrl!);
   }
 
   //Tag for Skills

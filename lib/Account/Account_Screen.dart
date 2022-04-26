@@ -286,9 +286,11 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.of(context).push(PageRouteBuilder(
-                                  pageBuilder: (_, __, ____) =>
-                                      AboutUsScreen()));
+                              // Navigator.of(context).push(PageRouteBuilder(
+                              //     pageBuilder: (_, __, ____) =>
+                              //         AboutUsScreen()));
+                              pushNewScreen(context, screen: AboutUsScreen(),
+                              withNavBar: false, pageTransitionAnimation: PageTransitionAnimation.cupertino);
                             },
                             child: ProfileList(
                               txt: "About",
@@ -303,8 +305,10 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.of(context).push(PageRouteBuilder(
-                                  pageBuilder: (_, __, ____) => FAQScreen()));
+                              // Navigator.of(context).push(PageRouteBuilder(
+                              //     pageBuilder: (_, __, ____) => FAQScreen()));
+                              pushNewScreen(context, screen: FAQScreen(),
+                              withNavBar: false, pageTransitionAnimation: PageTransitionAnimation.cupertino);
                             },
                             child: ProfileList(
                               txt: "FAQs",
@@ -319,9 +323,11 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.of(context).push(PageRouteBuilder(
-                                  pageBuilder: (_, __, ____) =>
-                                      TermsAndPolicyScreen()));
+                              // Navigator.of(context).push(PageRouteBuilder(
+                              //     pageBuilder: (_, __, ____) =>
+                              //         TermsAndPolicyScreen()));
+                              pushNewScreen(context, screen: TermsAndPolicyScreen(),
+                              withNavBar: false, pageTransitionAnimation: PageTransitionAnimation.cupertino);
                             },
                             child: ProfileList(
                               txt: "Terms & Policy",

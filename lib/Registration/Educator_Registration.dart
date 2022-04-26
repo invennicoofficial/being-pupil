@@ -4,6 +4,7 @@ import 'package:being_pupil/ConnectyCube/api_utils.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Login/Verification_Screen.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
@@ -42,6 +43,7 @@ class EducatorRegistration extends StatefulWidget {
 
 class _EducatorRegistrationState extends State<EducatorRegistration> {
   XFile? _image, _certificate, _document;
+  File? ccFile;
   String? birthDateInString, selectedYearString;
   DateTime? birthDate, selectedYear;
   bool isDateSelected = false;
@@ -103,6 +105,8 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
 
   // List<Hobbies> _selectedHobbies;
   // String _selectedHobbiesJson = 'Nothing to show';
+  File? ccfile; //some file from device storage
+  CubeUser ccuser = CubeUser(); // some user to set avatar
 
   @override
   void initState() {
@@ -161,6 +165,8 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
     setState(() {
       _image = image;
     });
+    ccfile = File(image!.path);
+    print('CCCAM:::'+ccFile!.path.toString());
   }
 
   _imageFromGallery() async {
@@ -170,6 +176,8 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
     setState(() {
       _image = image;
     });
+     ccfile = File(image!.path);
+    print('CCGAL:::'+ccFile!.path.toString());
   }
 
   void _showPicker(context) {
@@ -3343,6 +3351,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     _otherLinkLinkController.text,
                                     totalWorkExp,
                                     totalTeachExp);
+                                    updateUserPicCC();
                               }
                             },
                             child: Container(
@@ -3426,6 +3435,27 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
     }).catchError((exception) {
       _processLoginError(exception);
     });
+  }
+
+  updateUserPicCC() async{
+     //some file from device storage
+     SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+     //sharedPrefs.getUser();
+     File file = File(_image!.path);
+    CubeUser? user = sharedPrefs.getUser(); 
+    user!.password = '12345678';
+print('CCU::'+user.fullName.toString());  
+uploadFile(file, isPublic: false)
+  .then((cubeFile) {
+    user.avatar = cubeFile.uid;
+    return updateUser(user);
+  })
+  .catchError((error) {
+    print('CCERR:::.'+error.toString());
+  });
+  print('CCPIC:::.'+user.avatar.toString());
+  String? avatarUrl = getPrivateUrlForUid(user.avatar);
+  print('CCAV:::.'+avatarUrl!);
   }
 
   void _processLoginError(exception) {
