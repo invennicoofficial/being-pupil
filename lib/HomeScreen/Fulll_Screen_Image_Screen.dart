@@ -87,10 +87,10 @@ class _FullScreenSliderState extends State<FullScreenSlider> {
                     resetDuration: const Duration(milliseconds: 150),
                     maxScale: 2.5,
                     onZoomStart: () {
-                      print('Start zooming');
+                      //print('Start zooming');
                     },
                     onZoomEnd: () {
-                      print('Stop zooming');
+                      //print('Stop zooming');
                     },
                   ),
                 ),

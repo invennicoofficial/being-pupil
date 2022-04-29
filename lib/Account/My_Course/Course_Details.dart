@@ -5,12 +5,10 @@ import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'package:url_launcher/url_launcher.dart';
-import 'Update_Course_Screen.dart';
 
 class CourseDetailScreen extends StatefulWidget {
   String? courseName, courseStartDate, courseEndDate, courseDescription;
@@ -49,7 +47,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
     setState(() {
       registerAs = preferences.getString('RegisterAs');
     });
-    print(registerAs);
+   //print(registerAs);
   }
 
    void _launchUrl(String url) async {
@@ -290,7 +288,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
           data: formData,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
-        print(response.data);
+        //print(response.data);
         result = EnrollCourse.fromJson(response.data);
         closeProgressDialog(context);
         if(result.status == true){
@@ -331,12 +329,12 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
         );
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        // print("This is the error message::::" +
+        //     e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -349,7 +347,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+        //print(e.message);
       }
     }
     return result;

@@ -37,7 +37,7 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
       registerAs = preferences.getString('RegisterAs');
       searchIn = registerAs == 'E' ? 'E' : 'L';
     });
-    print(registerAs);
+    //print(registerAs);
     // _tabController = TabController(length: 3, vsync: this);
     // _tabController.addListener(() {
     //   setState(() {
@@ -130,7 +130,7 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
                           searchIn = 'C';
                         });
                     }
-                    print('Selected Index::: ' + searchIn!);
+                    //print('Selected Index::: ' + searchIn!);
                   },
                   tabs: [
                     Tab(

@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
@@ -230,7 +229,7 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
                                 setState(() {
                                   _selectedItem.removeAt(index);
                                 });
-                                print('NEWLLLL' + _selectedItem.toString());
+                                //print('NEWLLLL' + _selectedItem.toString());
                               },
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -318,7 +317,7 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
                                 }
                               }
 
-                              print('LLLLL' + _selectedItem.toString());
+                              //print('LLLLL' + _selectedItem.toString());
                             },
                           );
                         },
@@ -417,8 +416,8 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
                 //           return true;
                 //         },
                 //       ), // OR null,
-                //       onPressed: (item) => print(item),
-                //       onLongPressed: (item) => print(item),
+                //       onPressed: (item) => //print(item),
+                //       onLongPressed: (item) => //print(item),
                 //     );
                 //   },
                 // ),
@@ -473,8 +472,17 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
     } on DioError catch (e, stack) {
       //closeProgressDialog(context);
       if (e.response != null) {
-        print(e.message);
-        print(stack);
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
       }
     }
   }
@@ -518,8 +526,8 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
     } on DioError catch (e, stack) {
       //closeProgressDialog(context);
       if (e.response != null) {
-        print(e.message);
-        print(stack);
+        //print(e.message);
+        //print(stack);
       }
     }
   }
@@ -538,7 +546,7 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
       if (response.statusCode == 200) {
         //closeProgressDialog(context);
         selectedSubjectMap = response.data;
-        debugPrint('SELECTED:::' + selectedSubjectMap.toString());
+        //debugPrint('SELECTED:::' + selectedSubjectMap.toString());
         if (selectedSubjectMap!['status'] == true) {
           setState(() {
             selectedSubjectMapData = selectedSubjectMap!['data'];
@@ -577,8 +585,8 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
     } on DioError catch (e, stack) {
       //closeProgressDialog(context);
       if (e.response != null) {
-        print(e.message);
-        print(stack);
+        //print(e.message);
+        //print(stack);
       }
     }
   }
@@ -598,7 +606,7 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
 
       if (response.statusCode == 200) {
         selectedSubMap = response.data;
-        print(response.data);
+        //print(response.data);
         closeProgressDialog(context);
 
         if (selectedSubMap!['status'] == true) {
@@ -630,8 +638,8 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
         }
       }
     } on DioError catch (e, stack) {
-      print(e.message);
-      print(stack);
+      //print(e.message);
+      //print(stack);
     }
   }
 

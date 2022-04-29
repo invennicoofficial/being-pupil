@@ -156,7 +156,7 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         result = GetMyCourse.fromJson(response.data);
-        print(response.data);
+       // print(response.data);
         courseLength = result.data == [] ? 0 : result.data!.length;
         setState((){});
         closeProgressDialog(context);
@@ -172,13 +172,13 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
         );
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
-      closeProgressDialog(context);
+     // print(e.response);
+     // print(stack);
+      //closeProgressDialog(context);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        // print("This is the error message::::" +
+        //     e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -191,7 +191,7 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+        //print(e.message);
       }
     }
     return result;

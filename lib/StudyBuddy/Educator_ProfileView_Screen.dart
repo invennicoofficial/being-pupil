@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:being_pupil/Account/My_Course/Get_Educator_Course_Screen.dart';
 import 'package:being_pupil/ConnectyCube/chat_dialog_screen.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
@@ -13,7 +11,6 @@ import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Educator_Post_Model.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
-import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
@@ -81,14 +78,14 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
 
   @override
   void initState() {
-    print(widget.id);
+    //print(widget.id);
     getToken();
     super.initState();
   }
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
+    //print(authToken);
     getData();
     getUserProfile(widget.id);
 
@@ -99,12 +96,12 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
           if (map!['data'].length > 0) {
             page++;
             getEducatorPostApi(page);
-            print(page);
+            //print(page);
           }
         } else {
           page++;
           getEducatorPostApi(page);
-          print(page);
+          //print(page);
         }
       }
     });
@@ -253,7 +250,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                       : true,
                                   child: GestureDetector(
                                     onTap: () {
-                                      print('Facebook!!!');
+                                      //print('Facebook!!!');
                                       _launchSocialUrl(
                                           profileMap!['data']['facebook_link']);
                                     },
@@ -283,7 +280,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                       : true,
                                   child: GestureDetector(
                                     onTap: () {
-                                      print('Instagram!!!');
+                                      //print('Instagram!!!');
                                       _launchSocialUrl(profileMap!['data']
                                           ['instagram_link']);
                                     },
@@ -314,7 +311,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                       : true,
                                   child: GestureDetector(
                                     onTap: () {
-                                      print('LinkedIn!!!');
+                                      //print('LinkedIn!!!');
                                       _launchSocialUrl(
                                           profileMap!['data']['linkedin_link']);
                                     },
@@ -343,7 +340,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                           : true,
                                   child: GestureDetector(
                                     onTap: () {
-                                      print('Other!!!');
+                                      //print('Other!!!');
                                       _launchSocialUrl(
                                           profileMap!['data']['other_link']);
                                     },
@@ -421,7 +418,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                                     .init();
                                             CubeUser? user =
                                                 sharedPrefs.getUser();
-                                            print(profileMap!['data']['email']);
+                                            //print(profileMap!['data']['email']);
                                             getUserByEmail(profileMap!['data']
                                                     ['email'])
                                                 .then((cubeUser) {
@@ -479,7 +476,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                               //       ],
                                               //     iconColor: Colors.white,
                                               //     onChange: (index) {
-                                              //     print(index);
+                                              //     //print(index);
                                               //     unfollowUser(userId!);
                                               //    },
                                               //),
@@ -508,7 +505,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                       ),
                                 GestureDetector(
                                   onTap: () {
-                                    print('COURSES!!!');
+                                    //print('COURSES!!!');
                                     pushNewScreen(context,
                                         screen: GetEducatorCourseScreen(
                                           userId: widget.id,
@@ -1040,11 +1037,11 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                               totalCommentsList[
                                                       resultComment['index']] =
                                                   resultComment['count'];
-                                              print('TC###' +
-                                                  totalCommentsList[
-                                                          resultComment[
-                                                              'index']]
-                                                      .toString());
+                                              //print('TC###' +
+                                                  // totalCommentsList[
+                                                  //         resultComment[
+                                                  //             'index']]
+                                                  //     .toString());
                                               setState(() {});
 
                                               // pushNewScreen(context,
@@ -1206,7 +1203,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
       var response = await dio.get(
           '${Config.getEducatorPostUrl}/${widget.id}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      print(response.statusCode);
+      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         // closeProgressDialog(context);
@@ -1215,8 +1212,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
         map = response.data;
         mapData = map!['data'];
 
-        print(map);
-        print(mapData);
+        //print(map);
+        //print(mapData);
         if (map!['data'].length > 0) {
           for (int i = 0; i < map!['data'].length; i++) {
             nameList.add(map!['data'][i]['name']);
@@ -1234,9 +1231,9 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
               imageListMap.putIfAbsent(k, () => map!['data'][i]['post_media']);
             }
             k++;
-            print(k);
+            //print(k);
           }
-          print(imageListMap);
+          //print(imageListMap);
           isLoading = false;
           isPostLoading = false;
           setState(() {});
@@ -1245,20 +1242,20 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
           isPostLoading = false;
           setState(() {});
         }
-        //print(result.data);
+        ////print(result.data);
         //return result;
         setState(() {
           isLoading = false;
           isPostLoading = false;
         });
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
     }
   }
 
@@ -1270,13 +1267,13 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      print(response.statusCode);
+      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         profileMap = response.data;
 
-        print(profileMap!['data']);
-        //print(mapData);
+        //print(profileMap!['data']);
+        ////print(mapData);
         if (profileMap!['data'] != null) {
           userId = int.parse(profileMap!['data']['user_id'].toString());
           name = profileMap!['data']['name'];
@@ -1292,19 +1289,19 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
           isLoading = false;
           setState(() {});
         }
-        //print(result.data);
+        ////print(result.data);
         //return result;
         setState(() {
           isLoading = false;
         });
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
     }
   }
 
@@ -1325,12 +1322,12 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
         saveMap = response.data;
         //saveMapData = map['data']['status'];
 
-        print(saveMap);
+        //print(saveMap);
         // setState(() {
         //   isLoading = false;
         // });
         if (saveMap!['status'] == true) {
-          print('true');
+          //print('true');
           //getEducatorPostApi(page);
           Fluttertoast.showToast(
               msg: saveMap!['message'],
@@ -1340,7 +1337,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          print('false');
+          //print('false');
           if (saveMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: saveMap!['error_msg'],
@@ -1360,13 +1357,26 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
           }
         }
         //getEducatorPostApi(page);
-        print(saveMap);
+        //print(saveMap);
       } else {
-        print(response.statusCode);
+        //print(response.statusCode);
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -1383,7 +1393,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
 
       if (response.statusCode == 200) {
         unfollowMap = response.data;
-        print(unfollowMap);
+        //print(unfollowMap);
 
         if (unfollowMap!['status'] == true) {
           profileMap!['data']['is_connected'] = 0;
@@ -1408,8 +1418,21 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
         }
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 

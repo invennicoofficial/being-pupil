@@ -58,14 +58,14 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
             //print(propertyLength);
             page++;
             getAllPropertyAPI(page);
-            print(page);
+            //print(page);
           } else {
            _refreshController.loadComplete();
           }
         } else {
           page++;
           getAllPropertyAPI(page);
-          print(page);
+          //print(page);
         }
       }
     });
@@ -148,8 +148,8 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          print('Select $index Property!!!');
-                          print(propDataList[index]);
+                          //print('Select $index Property!!!');
+                          //print(propDataList[index]);
                           pushNewScreen(context,
                               withNavBar: false,
                               screen: PropertyDetailScreen(propertyDetails: result,
@@ -300,7 +300,7 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
         //result = GetAllProperty.fromJson(response.data);
         map = response.data;
         mapData = map!['data'];
-        print(mapData);
+        //print(mapData);
         //closeProgressDialog(context);
 
         if (map!['status'] == true) {
@@ -320,7 +320,7 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
               //allImage.add(result.data[i].featuredImage);
               propDataList.add(mapData![i]);
             }
-            print('DATAPROP:::'+ propDataList.toString());
+            //print('DATAPROP:::'+ propDataList.toString());
             isLoading = false;
             setState(() {});
           } else {
@@ -342,12 +342,12 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
         }
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -360,7 +360,7 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+        //print(e.message);
       }
     }
     return result;

@@ -54,7 +54,7 @@ class _EducatorListState extends State<EducatorList> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
+    //print(authToken);
     getData();
   }
 
@@ -73,14 +73,14 @@ class _EducatorListState extends State<EducatorList> {
           if (educator.data!.length > 0) {
             page++;
             getEducatorListApi(page);
-            print(_name);
-            print(page);
+            //print(_name);
+            //print(page);
           }
         } else {
           page++;
           getEducatorListApi(page);
-          print(_name);
-          print(page);
+          //print(_name);
+          //print(page);
         }
       }
     });
@@ -224,7 +224,7 @@ class _EducatorListState extends State<EducatorList> {
                               child: GestureDetector(
                                 onTap: isSubscribed == 1
                                     ? () async {
-                                        print('$index is Connected');
+                                        //print('$index is Connected');
                                         await connect.connectionApi(
                                             _userId[index], authToken!);
                                         setState(() {
@@ -285,7 +285,7 @@ class _EducatorListState extends State<EducatorList> {
 
       var response = await dio.get('${Config.getEducatorListUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      print(response.statusCode);
+      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         // closeProgressDialog(context);
@@ -304,7 +304,7 @@ class _EducatorListState extends State<EducatorList> {
             _distance.add(educator.data![i].distance);
           }
 
-          print(_name);
+          //print(_name);
 
           isLoading = false;
           setState(() {});
@@ -317,13 +317,13 @@ class _EducatorListState extends State<EducatorList> {
           isLoading = false;
         });
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
     }
   }
 
@@ -336,14 +336,14 @@ class _EducatorListState extends State<EducatorList> {
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      print(response.statusCode);
+      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        print(map!['data']);
-        //print(mapData);
-        if (map['data'] != null || map['data'] != []) {
+        //print(map!['data']);
+        ////print(mapData);
+        if (map!['data'] != null || map['data'] != []) {
           setState(() {});
           map['data']['role'] == 'E'
               ? pushNewScreen(context,
@@ -362,19 +362,19 @@ class _EducatorListState extends State<EducatorList> {
           isLoading = false;
           setState(() {});
         }
-        //print(result.data);
+        ////print(result.data);
         //return result;
         setState(() {
           isLoading = false;
         });
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
     }
   }
 }

@@ -6,7 +6,6 @@ import 'package:being_pupil/ConnectyCube/full_photo.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -264,7 +263,7 @@ class ChatScreenState extends State<ChatScreen> {
 
   void onSendChatAttachment(CubeFile cubeFile, imageData) async {
     final attachment = CubeAttachment();
-    print('THIS IS THE CUBEFILE::' + cubeFile.toString());
+    //print('THIS IS THE CUBEFILE::' + cubeFile.toString());
     attachment.id = cubeFile.uid;
     attachment.uid = cubeFile.uid;
     attachment.type = CubeAttachmentType.IMAGE_TYPE;
@@ -289,7 +288,7 @@ class ChatScreenState extends State<ChatScreen> {
     log("onSendMessage message= $message");
     textEditingController.clear();
     await _cubeDialog.sendMessage(message);
-    print('THIS IS THE SENDER ID' + message.senderId.toString());
+    //print('THIS IS THE SENDER ID' + message.senderId.toString());
     message.senderId = _cubeUser!.id;
     addMessageToListView(message);
     listScrollController.animateTo(0.0,
@@ -353,12 +352,12 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   Widget buildItem(int index, CubeMessage message) {
-    print('THIS IS THE ATTACHMENT' + message.attachments.toString());
+    //print('THIS IS THE ATTACHMENT' + message.attachments.toString());
     markAsReadIfNeed() {
       var isOpponentMsgRead =
           message.readIds != null && message.readIds!.contains(_cubeUser!.id);
-      print(
-          "markAsReadIfNeed message= $message, isOpponentMsgRead= $isOpponentMsgRead");
+      //print(
+         // "markAsReadIfNeed message= $message, isOpponentMsgRead= $isOpponentMsgRead");
       if (message.senderId != _cubeUser!.id && !isOpponentMsgRead) {
         if (message.readIds == null) {
           message.readIds = [_cubeUser!.id!];

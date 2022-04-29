@@ -38,13 +38,13 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen>
       registerAs = preferences.getString('RegisterAs');
       searchIn = registerAs == 'E' ? 'L' : 'E';
     });
-    print(registerAs);
+    //print(registerAs);
     // _tabController = TabController(length: 3, vsync: this);
     // _tabController.addListener(() {
     //   setState(() {
     //     selectedIndex = _tabController.index;
     //   });
-    //   print('Selected Index::: ' +selectedIndex.toString());
+    //   //print('Selected Index::: ' +selectedIndex.toString());
     // });
   }
 
@@ -131,7 +131,7 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen>
                         searchIn = 'C';
                       });
                     }
-                    print('Selected Index::: ' + searchIn!);
+                    //print('Selected Index::: ' + searchIn!);
                   },
                   tabs: [
                     Tab(

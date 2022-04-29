@@ -183,9 +183,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             left: 3.0.w, right: 3.0.w, top: 6.0.h),
                         child: GestureDetector(
                           onTap: () {
-                            print('Logged In!!!');
+                            //print('Logged In!!!');
                             bool mobileValid = RegExp(r"^[6-9]\d{9}$").hasMatch(mobileController.text);
-                            print('VALID:::'+mobileValid.toString());
+                            //print('VALID:::'+mobileValid.toString());
                             if (mobileController.text.isEmpty || (mobileValid == false)) {
                               Fluttertoast.showToast(
                                 msg: 'Please Enter Valid Mobile Number',
@@ -268,25 +268,25 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: <Widget>[
                             GestureDetector(
                               onTap: () async {
-                                print('Apple Login!!!');
+                                //print('Apple Login!!!');
                                 setState(() {
                                   registrationType = 'A';
                                 });
                                 try {
                                   if (!await TheAppleSignIn.isAvailable()) {
-                                    print('APPLe not available');
+                                    //print('APPLe not available');
                                     return null; //Break from the program
                                     }
-                                  print('APPLe available');
+                                  //print('APPLe available');
                                   final AuthService authService = AuthService();
                                   final user = await authService.signInWithApple(
                                       scopes: [Scope.email, Scope.fullName]);
                                   if(user.email != null) {
-                                    print(user);
+                                    //print(user);
                                   }
                                 } catch (e) {
                                   // TODO: Show alert here
-                                  print(e);
+                                  //print(e);
                                 }
                                 
                                 // Navigator.push(
@@ -307,7 +307,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                print('Google Login!!!');
+                                //print('Google Login!!!');
                                 setState(() {
                                   registrationType = 'G';
                                 });
@@ -328,7 +328,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                print('Facebook Login!!!');
+                                //print('Facebook Login!!!');
                                 setState(() {
                                   registrationType = 'F';
                                 });
@@ -351,7 +351,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             // GestureDetector(
                             //   onTap: (){
-                            //     print('LinkedIn Login!!!');
+                            //     //print('LinkedIn Login!!!');
                             //   },
                             //   child: Container(
                             //       height: 4.0.h,
@@ -373,7 +373,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: <Widget>[
                             GestureDetector(
                               onTap: () {
-                                print('Google Login!!!');
+                                //print('Google Login!!!');
                                 setState(() {
                                   registrationType = 'G';
                                 });
@@ -394,7 +394,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                print('Facebook Login!!!');
+                                //print('Facebook Login!!!');
                                 setState(() {
                                   registrationType = 'F';
                                 });
@@ -415,7 +415,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             // GestureDetector(
                             //   onTap: (){
-                            //     print('LinkedIn Login!!!');
+                            //     //print('LinkedIn Login!!!');
                             //   },
                             //   child: Container(
                             //       height: 4.0.h,
@@ -450,7 +450,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   PageTransition(
                                       type: PageTransitionType.fade,
                                       child: SignUpScreen()));
-                              print('Register!!!');
+                              //print('Register!!!');
                             },
                             child: Container(
                               // height: 2.2.h,
@@ -486,7 +486,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return iosDeviceInfo.identifierForVendor; // unique ID on iOS
   } else {
     var androidDeviceInfo = await deviceInfo.androidInfo;
-    print('DID:::'+androidDeviceInfo.androidId.toString());
+    //print('DID:::'+androidDeviceInfo.androidId.toString());
     return androidDeviceInfo.androidId; // unique ID on Android
   }
 }
@@ -515,7 +515,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       var response = await dio.post(Config.loginUrl, data: formData);
       if (response.statusCode == 200) {
-        print(response.data);
+        //print(response.data);
         closeProgressDialog(context);
         result = Login.fromJson(response.data);
         if (result.status == true) {
@@ -559,15 +559,15 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           }
         }
-        print(result);
+        //print(result);
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -579,8 +579,8 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-        print(e.message);
+        ////print(e.request);
+        //print(e.message);
       }
     }
     return result;
@@ -598,11 +598,11 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       var response = await dio.post(Config.checkSocialLogin, data: formData);
       if (response.statusCode == 200) {
-        print(response.data);
+        //print(response.data);
 
         result = SocialLoginCheck.fromJson(response.data);
 
-        //print('ID ::: ' + result.data!.userObject!.userId.toString());
+        ////print('ID ::: ' + result.data!.userObject!.userId.toString());
 
         if (result.data!.userObject == null) {
           // Fluttertoast.showToast(
@@ -628,12 +628,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   )));
         } else {
          if(result.data!.userObject!.isNew == "true") {
-           print('API MO::::$mobileNumberFromAPi');
+           //print('API MO::::$mobileNumberFromAPi');
            // saveUserData(result.data.userObject.userId);
            // mobileNumberFromAPi = result.data.userObject.mobileNumber;
            // setState(() {});
            // login(mobileNumberFromAPi);
-           print('ROLE ::' + result.data!.userObject.toString());
+           //print('ROLE ::' + result.data!.userObject.toString());
            saveToken(result.data!.token!);
            role = result.data!.userObject!.role;
            name = result.data!.userObject!.name;
@@ -649,12 +649,12 @@ class _LoginScreenState extends State<LoginScreen> {
            Navigator.of(context).push(MaterialPageRoute(
                builder: (context) => VerificationScreen(verificationStatus: result.data!.userObject!.isVerified,)));
          } else {
-           print('API MO::::$mobileNumberFromAPi');
+           //print('API MO::::$mobileNumberFromAPi');
            // saveUserData(result.data.userObject.userId);
            // mobileNumberFromAPi = result.data.userObject.mobileNumber;
            // setState(() {});
            // login(mobileNumberFromAPi);
-           print('ROLE ::' + result.data!.userObject.toString());
+           //print('ROLE ::' + result.data!.userObject.toString());
            saveToken(result.data!.token!);
            role = result.data!.userObject!.role;
            name = result.data!.userObject!.name;
@@ -681,8 +681,8 @@ class _LoginScreenState extends State<LoginScreen> {
               preferences.setBool('isLoggedIn', true);
               preferences.setInt('isSubscribed', result.data!.userObject!.isSubscribed!);
 
-          print('Gender::: ${result.data!.userObject!.gender}');
-          print('IMAGE:::' + result.data!.userObject!.imageUrl!);
+          //print('Gender::: ${result.data!.userObject!.gender}');
+          //print('IMAGE:::' + result.data!.userObject!.imageUrl!);
               saveUserData(result.data!.userObject!.userId!);
               //closeProgressDialog(context);
               signIn(CubeUser(fullName: result.data!.userObject!.name, login: socialEmail, password: '12345678'))
@@ -715,26 +715,26 @@ class _LoginScreenState extends State<LoginScreen> {
           // );
 
         }
-        print(result);
+        //print(result);
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        // Fluttertoast.showToast(
-        //   msg: e.response!.data['meta']['message'],
-        //   toastLength: Toast.LENGTH_SHORT,
-        //   gravity: ToastGravity.BOTTOM,
-        //   timeInSecForIosWeb: 1,
-        //   backgroundColor: Constants.bgColor,
-        //   textColor: Colors.white,
-        //   fontSize: 10.0.sp,
-        // );
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-        print(e.message);
+        ////print(e.request);
+        //print(e.message);
       }
     }
     return result;
@@ -752,7 +752,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
     signUp(user).then((newUser) async {
-      print("signUp newUser $newUser");
+      //print("signUp newUser $newUser");
       user.id = newUser.id;
       SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
       sharedPrefs.saveNewUser(user);
@@ -785,10 +785,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       gUserData = await _googleSignIn.signIn();
-      print('ID:::' + gUserData!.id);
-      print('USERNAME:::' + gUserData!.displayName!);
-      print('EMAIL:::' + gUserData!.email);
-      print('PHOTO:::' + gUserData!.photoUrl!);
+      //print('ID:::' + gUserData!.id);
+      //print('USERNAME:::' + gUserData!.displayName!);
+      //print('EMAIL:::' + gUserData!.email);
+      //print('PHOTO:::' + gUserData!.photoUrl!);
       socialName = gUserData!.displayName;
       socialEmail = gUserData!.email;
       socialPhotoUrl = gUserData!.photoUrl;
@@ -798,7 +798,7 @@ class _LoginScreenState extends State<LoginScreen> {
         checkLogin(gUserData!.id);//'khdbcfioducde99he9hhe'
       }
     } catch (e) {
-      print('Google Error:::$e');
+      //print('Google Error:::$e');
     }
   }
 
@@ -816,34 +816,34 @@ class _LoginScreenState extends State<LoginScreen> {
       fbUserData = await FacebookAuth.i.getUserData(
         fields: "name,email,picture.width(200)",
       );
-      print(fbUserData);
-      print(fbUserData!['email']);
+      //print(fbUserData);
+      //print(fbUserData!['email']);
       socialName = fbUserData!['name'];
       socialEmail = fbUserData!['email'];
       socialPhotoUrl = fbUserData!['picture']['data']['url'];
       socialId = fbUserData!['id'].toString();
       setState(() {});
-      print('FACEBOOK::::$socialEmail');
+      //print('FACEBOOK::::$socialEmail');
       if (fbUserData != null) {
         checkLogin(fbUserData!['id'].toString());
       }
     } else {
-      print(result.status);
-      print(result.message);
+      //print(result.status);
+      //print(result.message);
     }
   }
 
      void saveToken(String token) async {
     // Write value
     await storage.write(key: 'access_token', value: token);
-    print('TOKEN ::: ' + token);
+    //print('TOKEN ::: ' + token);
     //closeProgressDialog(context);
   }
 
   void saveUserData(int userId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setInt('userId', userId);
-    print(userId);
+    //print(userId);
   }
 
   displayProgressDialog(BuildContext context) {

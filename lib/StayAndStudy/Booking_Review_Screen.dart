@@ -1,7 +1,6 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Stay_And_Study_Model/Create_Booking_Model.dart';
-import 'package:being_pupil/Model/Stay_And_Study_Model/Get_All_Property_Model.dart';
 import 'package:being_pupil/StayAndStudy/Payment_Confirm_Screen.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
@@ -492,10 +491,10 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // Do something when payment succeeds
-    print('kama liyaa!');
-    print(response.orderId);
-    print(response.paymentId);
-    print(response.signature);
+    //print('kama liyaa!');
+    //print(response.orderId);
+    //print(response.paymentId);
+    //print(response.signature);
     createBookingAPI(response.orderId, response.paymentId, response.signature);
   }
 
@@ -527,13 +526,13 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
     if (response.statusCode == 200) {
       String jsonResponse = await response.stream.bytesToString();
       map = json.decode(jsonResponse);
-      print(map!['id']);
+      //print(map!['id']);
       //TODO: Change Razorpay Keys
       var options = {
         'key': 'rzp_test_MtDrPPLWbUdsY7',
         'amount': (widget.total! * 100),
         'name': widget.name,
-        'order_id': map['id'],
+        'order_id': map!['id'],
         'description': widget.propertyDetails![widget.index!]['name'],//widget.propertyDetails.data[widget.index].name,
         'prefill': {
           'contact': widget.mobileNumber,
@@ -557,8 +556,8 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
   }
 
   Future<CreateBooking> createBookingAPI(orderId, paymentId, signature) async {
-    // print(widget.mealId);
-    print('creating the booking...');
+    // //print(widget.mealId);
+    //print('creating the booking...');
     displayProgressDialog(context);
     var result = CreateBooking();
     try {
@@ -579,7 +578,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
       });
 
         for(int i = 0; i < widget.mealId!.length; i++){
-          print(widget.mealId![i]);
+          //print(widget.mealId![i]);
           formData.fields.addAll([
             MapEntry('meal_id[$i]', widget.mealId![i].toString())
           ]);
@@ -591,7 +590,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
 
       if(response.statusCode == 200){
         closeProgressDialog(context);
-        print(response.data);
+        //print(response.data);
         result = CreateBooking.fromJson(response.data);
         if(result.status == true){
           pushNewScreen(context,
@@ -609,12 +608,12 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
         }
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        //print("This is the error message::::" +
+          //  e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -626,8 +625,8 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-        print(e.message);
+        ////print(e.request);
+        //print(e.message);
       }
     }
     return result;

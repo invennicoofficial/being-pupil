@@ -25,13 +25,13 @@ class ConnectionAPI {
         map = response.data;
         //saveMapData = map['data']['status'];
 
-        //print(saveMapData);
+        ////print(saveMapData);
         // setState(() {
         //   isLoading = false;
         // });
         if (map!['status'] == true) {
-          print('true');
-          print(map);
+          //print('true');
+          //print(map);
           if (map!['data']['Status'] == 1) {
             status = true;
           } else {
@@ -46,7 +46,7 @@ class ConnectionAPI {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          print('false');
+          //print('false');
           if (map!['message'] == null) {
             Fluttertoast.showToast(
                 msg: map!['error_msg'],
@@ -66,13 +66,26 @@ class ConnectionAPI {
           }
         }
         //getEducatorPostApi(page);
-        print(map);
+        //print(map);
       } else {
-        print(response.statusCode);
+        //print(response.statusCode);
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 }

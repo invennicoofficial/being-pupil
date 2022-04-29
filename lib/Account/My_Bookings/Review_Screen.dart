@@ -124,7 +124,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                     ),
                     itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                     onRatingUpdate: (rating) {
-                      print(rating);
+                      //print(rating);
                       setState(() {
                         starRating = rating;
                       });
@@ -296,7 +296,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
 
       if (response.statusCode == 200) {
         map = response.data;
-        print(map);
+        //print(map);
         closeProgressDialog(context);
 
         if (map!['status'] == true && map!['data']['isReviewed'] == true) {
@@ -317,12 +317,25 @@ class _ReviewScreenState extends State<ReviewScreen> {
         }
       }else{
         closeProgressDialog(context);
-         print('${response.statusCode} : ${response.data.toString()}');
+         //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 

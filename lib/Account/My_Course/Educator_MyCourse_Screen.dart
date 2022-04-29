@@ -1,4 +1,3 @@
-import 'package:being_pupil/Account/My_Course/Course_Details.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Course_Model/Get_My_Course_Model.dart';
@@ -59,14 +58,14 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
           if (courseLength > 0) {
             page++;
             getMyCourseAPI(page);
-            print(page);
+            //print(page);
           } else {
             _refreshController.loadComplete();
           }
         } else {
           page++;
           getMyCourseAPI(page);
-          print(page);
+          //print(page);
         }
       }
     });
@@ -140,13 +139,13 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
                                   PageTransitionAnimation.cupertino);
                         }
                       : () async {
-                          print('ADD!!!');
+                          //print('ADD!!!');
                           var isCreated = await pushNewScreen(context,
                               screen: CreateCourseScreen(),
                               withNavBar: false,
                               pageTransitionAnimation:
                                   PageTransitionAnimation.cupertino);
-                          print(isCreated);
+                          //print(isCreated);
                           isCreated == 'created' ? _onRefresh() : null;
                         })),
         ],
@@ -281,7 +280,7 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         result = GetMyCourse.fromJson(response.data);
-        print(response.data);
+       // print(response.data);
         courseLength = 0;
         courseLength = result.data == [] ? 0 : result.data!.length;
         setState(() {});
@@ -315,13 +314,13 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
         );
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+     // print(e.response);
+     // print(stack);
       // closeProgressDialog(context);
       //closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        // print("This is the error message::::" +
+        //     e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -334,7 +333,7 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+       // print(e.message);
       }
     }
     return result;

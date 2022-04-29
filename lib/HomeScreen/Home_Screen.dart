@@ -12,10 +12,6 @@ import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:being_pupil/Model/Stay_And_Study_Model/Get_All_Property_Model.dart';
 import 'package:being_pupil/StayAndStudy/Property_Details_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
-import 'package:being_pupil/StudyBuddy/Learner_ProfileView_Screen.dart';
-import 'package:being_pupil/Subscription/Successful_Payment_Screen.dart';
-import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
@@ -35,7 +31,6 @@ import 'package:sizer/sizer.dart';
 import 'Comment_Screen.dart';
 import 'Report_Feed.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
-import 'package:being_pupil/ConnectyCube/configs.dart' as config;
 
 class EducatorHomeScreen extends StatefulWidget {
   EducatorHomeScreen({Key? key}) : super(key: key);
@@ -105,7 +100,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
+    //print(authToken);
     getData();
     generateFirebaseToken();
   }
@@ -119,7 +114,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
     //});
   _firebaseMessaging.getToken().then((token) {
     var firebaseToken = token!;
-    print('token::: ' + token);
+    //print('token::: ' + token);
     saveFirebaseToken(token);
     setState(() {});
     deviceTokenAPi(token);
@@ -188,7 +183,7 @@ saveFirebaseToken(String token) async {
     setState(() {
       registerAs = preferences.getString('RegisterAs');
     });
-    print('RoLE::::::' + registerAs.toString());
+    //print('RoLE::::::' + registerAs.toString());
     SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
     user = sharedPrefs.getUser();
 
@@ -213,14 +208,14 @@ saveFirebaseToken(String token) async {
           if (map!['data'].length > 0) {
             page++;
             getAllPostApi(page);
-            print(page);
+            //print(page);
           }else{
             _refreshController.loadComplete();
           }
         } else {
           page++;
           getAllPostApi(page);
-          print(page);
+          //print(page);
         }
       }
     });
@@ -272,7 +267,7 @@ saveFirebaseToken(String token) async {
          final Uri? deepLink = data?.link;
 
          if (deepLink != null) {
-           print('DL:::::::$deepLink');
+           //print('DL:::::::$deepLink');
          // ignore: unawaited_futures
          //Future.delayed(const Duration(milliseconds: 1000), () {
            getPropertyAPI(deepLink.toString().substring(0, 51));
@@ -281,12 +276,12 @@ saveFirebaseToken(String token) async {
          //Navigator.pushNamed(context, deepLink.path);
        }
     dynamicLinks.onLink.listen((dynamicLinkData) {
-      print('DL:::'+ dynamicLinkData.link.toString());
+      //print('DL:::'+ dynamicLinkData.link.toString());
       getPropertyAPI(dynamicLinkData.link.toString().substring(0, 51));
       //Navigator.pushNamed(context, dynamicLinkData.link.path);
     }).onError((error) {
-      print('onLink error');
-      print(error.message);
+      //print('onLink error');
+      //print(error.message);
     });
     
   }
@@ -748,7 +743,7 @@ saveFirebaseToken(String token) async {
                                           setState(() {});
 
                                           totalCommentsList[resultComment['index']] = resultComment['count'];
-                                          print('TC###'+totalCommentsList[resultComment['index']].toString());
+                                          //print('TC###'+totalCommentsList[resultComment['index']].toString());
                                         setState(() {});
                                         // pushNewScreen(context,
                                         //     withNavBar: false,
@@ -891,11 +886,11 @@ saveFirebaseToken(String token) async {
   //ConnectyCube
   _loginToCubeChat(BuildContext context, CubeUser user) {
     user.password = '12345678';
-    print("_loginToCubeChat user $user");
+    //print("_loginToCubeChat user $user");
     CubeChatConnectionSettings.instance.totalReconnections = 0;
     CubeChatConnection.instance.login(user).then((cubeUser) {
     }).catchError((error) {
-      print('Came Here!!');
+      //print('Came Here!!');
       _processLoginError(error);
     });
   }
@@ -919,7 +914,7 @@ saveFirebaseToken(String token) async {
 
       var response = await dio.get('${Config.getAllPostUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer $authToken'}));
-      print(response.statusCode);
+      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         // closeProgressDialog(context);
@@ -928,8 +923,8 @@ saveFirebaseToken(String token) async {
         map = response.data;
         mapData = map!['data'];
 
-        print(map);
-        print(mapData);
+        //print(map);
+        //print(mapData);
         if (map!['data'].length > 0) {
           // if (name == '') {
           //   name = map['data'][0]['name'];
@@ -937,7 +932,7 @@ saveFirebaseToken(String token) async {
           //   degreeName = map['data'][0]['last_degree'];
           //   schoolName = map['data'][0]['school_name'];
           // }
-          print("HELLO");
+          //print("HELLO");
 
           for (int i = 0; i < map!['data'].length; i++) {
             nameList.add(map!['data'][i]['name']);
@@ -956,9 +951,9 @@ saveFirebaseToken(String token) async {
               imageListMap.putIfAbsent(k, () => map!['data'][i]['post_media']);
             }
             k++;
-            print(k);
+            //print(k);
           }
-          print(imageListMap);
+          //print(imageListMap);
           isLoading = false;
           isPostLoading = false;
           setState(() {});
@@ -967,7 +962,7 @@ saveFirebaseToken(String token) async {
           isPostLoading = false;
           setState(() {});
         }
-        //print(result.data);
+        ////print(result.data);
         //return result;
         setState(() {
           isLoading = false;
@@ -975,18 +970,18 @@ saveFirebaseToken(String token) async {
         });
 
         if (map!['status'] == true) {
-          print('TRUE');
+          //print('TRUE');
         } else if(map!['status'] == false && map!['error_code'] == 'ERR302') {
           refreshToken();
         }
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
     }
   }
 
@@ -1000,7 +995,7 @@ saveFirebaseToken(String token) async {
   }
 
   Future<void> refreshToken() async {
-    print(authToken);
+    //print(authToken);
     try {
       Dio dio = Dio();
       var response = await dio.get(Config.refreshTokenUrl,
@@ -1011,11 +1006,11 @@ saveFirebaseToken(String token) async {
           saveToken(refreshTokenMap!['access_token']);
         }
       } else {
-        print(response.statusCode);
+        //print(response.statusCode);
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
     }
   }
 
@@ -1035,12 +1030,12 @@ saveFirebaseToken(String token) async {
         saveMap = response.data;
         //saveMapData = map['data']['status'];
 
-        print(saveMap);
+        //print(saveMap);
         // setState(() {
         //   isLoading = false;
         // });
         if (saveMap!['status'] == true) {
-          print('true');
+          //print('true');
           //getEducatorPostApi(page);
           Fluttertoast.showToast(
               msg: saveMap!['message'],
@@ -1050,7 +1045,7 @@ saveFirebaseToken(String token) async {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          print('false');
+          //print('false');
           if (saveMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: saveMap!['error_msg'],
@@ -1070,13 +1065,26 @@ saveFirebaseToken(String token) async {
           }
         }
         //getEducatorPostApi(page);
-        print(saveMap);
+        //print(saveMap);
       } else {
-        print(response.statusCode);
+        //print(response.statusCode);
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -1090,14 +1098,14 @@ saveFirebaseToken(String token) async {
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      print(response.statusCode);
+      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        print(map!['data']);
+        //print(map!['data']);
         //print(mapData);
-        if (map['data'] != null || map['data'] != []) {
+        if (map!['data'] != null || map['data'] != []) {
           setState(() {});
           // map['data']['role'] == 'E'
           //     ? 
@@ -1123,13 +1131,26 @@ saveFirebaseToken(String token) async {
           isLoading = false;
         });
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -1148,7 +1169,7 @@ saveFirebaseToken(String token) async {
 
       if(response.statusCode == 200){
         result = DeviceToken.fromJson(response.data);
-        print(response.data);
+        //print(response.data);
         if(result.status == true){
           Fluttertoast.showToast(
               msg: saveMap!['message'],
@@ -1168,8 +1189,21 @@ saveFirebaseToken(String token) async {
           }
       }
     }on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -1189,8 +1223,8 @@ saveFirebaseToken(String token) async {
         propMap = response.data;
         propDataList.add(propMap!['data'][0]);
         //mapData = map!['data'];
-        print('PROP:::'+propMap.toString());
-        print('PROPDATA:::'+propDataList.toString());
+        //print('PROP:::'+propMap.toString());
+        //print('PROPDATA:::'+propDataList.toString());
         //closeProgressDialog(context);
 
         if (propMap!['status'] == true) {
@@ -1253,14 +1287,14 @@ saveFirebaseToken(String token) async {
         }
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       isLoading = false;
       setState(() {});
       //closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        //print("This is the error message::::" +
+          //  e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -1273,7 +1307,7 @@ saveFirebaseToken(String token) async {
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+        //print(e.message);
       }
     }
     //return propertyDetails;

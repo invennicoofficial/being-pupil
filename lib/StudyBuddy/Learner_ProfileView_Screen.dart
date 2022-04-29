@@ -29,7 +29,7 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
+    //print(authToken);
     getUserProfile();
   }
 
@@ -173,7 +173,7 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
                                     : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    print('Facebook!!!');
+                                    //print('Facebook!!!');
                                     _launchSocialUrl(
                                         map!['data']['facebook_link']);
                                   },
@@ -199,7 +199,7 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
                                     : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    print('Instagram!!!');
+                                    //print('Instagram!!!');
                                     _launchSocialUrl(map!['data']
                                         ['instagram_link']);
                                   },
@@ -226,7 +226,7 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
                                     : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    print('LinkedIn!!!');
+                                    //print('LinkedIn!!!');
                                     _launchSocialUrl(
                                         map!['data']['linkedin_link']);
                                   },
@@ -251,7 +251,7 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
                                         : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    print('Other!!!');
+                                    //print('Other!!!');
                                     _launchSocialUrl(
                                         map!['data']['other_link']);
                                   },
@@ -285,13 +285,13 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
 
       var response = await dio.get('${Config.myProfileUrl}/${widget.id}',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      print(response.statusCode);
+      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        print(map!['data']);
-        //print(mapData);
+        //print(map!['data']);
+        ////print(mapData);
         if (map!['data'] != null) {
           isLoading = false;
           setState(() {});
@@ -299,19 +299,19 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
           isLoading = false;
           setState(() {});
         }
-        //print(result.data);
+        ////print(result.data);
         //return result;
         setState(() {
           isLoading = false;
         });
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
     }
   }
 }

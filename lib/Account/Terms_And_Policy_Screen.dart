@@ -110,8 +110,8 @@ class _TermsAndPolicyScreenState extends State<TermsAndPolicyScreen> {
       isLinkLoading = false;
       link = 'https://beingpupil.com/terms-and-conditions';
       setState(() {});
-      print(e.toString());
-      print(sacktrace.toString());
+      //print(e.toString());
+      //print(sacktrace.toString());
     }
   }
 }

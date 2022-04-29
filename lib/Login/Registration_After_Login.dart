@@ -4,7 +4,6 @@ import 'package:being_pupil/ConnectyCube/api_utils.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
-import 'package:being_pupil/Model/Model_Class.dart';
 import 'package:being_pupil/Model/Social_Login_Model.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
@@ -15,14 +14,12 @@ import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:being_pupil/Registration/Educator_Registration.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 
-import 'OTP_Screen.dart';
 
 class SignUpAfterLoginScreen extends StatefulWidget {
   final String? mobileNumber, name, registrationType, socialDisplayName, socialEmail, socialPhotoUrl, socialId;
@@ -250,7 +247,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
                             //   color: Constants.bpSkipStyle,
                             // ),
                             onChange: (String value, int index) async {
-                              print(value);
+                              //print(value);
                               if (int.parse(value) == 1) {
                                 setState(() {
                                   registerAs = 'E';
@@ -264,8 +261,8 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
                                   await SharedPreferences.getInstance();
                               sharedPreferences.setString(
                                   'RegisterAs', registerAs);
-                              print('Preffff ::: ' +
-                                  sharedPreferences.getString('RegisterAs')!);
+                              //print('Preffff ::: ' +
+                                 // sharedPreferences.getString('RegisterAs')!);
                             },
                             dropdownButtonStyle: DropdownButtonStyle(
                               height: 7.0.h,
@@ -315,7 +312,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
                             left: 3.0.w, right: 3.0.w, top: 30.0.h),
                         child: GestureDetector(
                           onTap: () {
-                            print('Sign Up!!!');
+                            //print('Sign Up!!!');
                             //signUp(nameController.text.trim(), mobileController.text.trim(), registerAs, deviceType, deviceId)
                             if (nameController.text.isEmpty) {
                               Fluttertoast.showToast(
@@ -400,7 +397,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
       }
     }
     signUp(user).then((newUser) async {
-      print("signUp newUser $newUser");
+      //print("signUp newUser $newUser");
       user.id = newUser.id;
       SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
       sharedPrefs.saveNewUser(user);
@@ -438,7 +435,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
     return iosDeviceInfo.identifierForVendor; // unique ID on iOS
   } else {
     var androidDeviceInfo = await deviceInfo.androidInfo;
-    print('DID:::'+androidDeviceInfo.androidId.toString());
+    //print('DID:::'+androidDeviceInfo.androidId.toString());
     return androidDeviceInfo.androidId; // unique ID on Android
   }
 }
@@ -465,10 +462,10 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
       });
       var response = await dio.post(Config.loginUrl, data: formData);
       if (response.statusCode == 200) {
-        print(response.data);
+        //print(response.data);
         closeProgressDialog(context);
         result = SocialLogin.fromJson(response.data);
-        print(result.toString());
+        //print(result.toString());
         if (result.status == true) {
           // print('ID ::: ' + result.data.userObject.userId.toString());
            saveUserData(result.data!.userObject!.userId!);
@@ -480,7 +477,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
                   password: '12345678',
                   email: widget.socialEmail),
               result);
-          print('ROLE ::' + result.data!.userObject!.role.toString());
+          //print('ROLE ::' + result.data!.userObject!.role.toString());
           saveToken(result.data!.token!);
           preferences.setString('RegisterAs', result.data!.userObject!.role!);
           //if(result.data!.userObject!.isNew == "true") {
@@ -552,15 +549,15 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
             fontSize: 10.0.sp,
           );
         }
-        print(result);
+        //print(result);
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -573,7 +570,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+        //print(e.message);
       }
     }
     return result;
@@ -582,14 +579,14 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
   void saveToken(String token) async {
     // Write value
     await storage.write(key: 'access_token', value: token);
-    print('TOKEN ::: ' + token);
+    //print('TOKEN ::: ' + token);
     //closeProgressDialog(context);
   }
 
   void saveUserData(int userId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setInt('userId', userId);
-    print(userId);
+    //print(userId);
   }
 
   displayProgressDialog(BuildContext context) {

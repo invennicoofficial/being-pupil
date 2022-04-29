@@ -108,8 +108,8 @@ class _FAQScreenState extends State<FAQScreen> {
        isLinkLoading = false;
         link = 'hhttps://beingpupil.com/faqss';
         setState(() {});
-      print(e.toString());
-      print(sacktrace.toString());
+      //print(e.toString());
+      //print(sacktrace.toString());
     }
   }
 }

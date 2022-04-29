@@ -66,8 +66,8 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
     for(int j = 0; j < widget.propData![widget.index!]['meal'].length; j++){
       mealChargeList.add(double.parse(widget.propData![widget.index!]['meal'][j]['meal_amount']));
     }
-  print(roomChargeList.toString());
-  print(mealChargeList.toString());
+  //print(roomChargeList.toString());
+  //print(mealChargeList.toString());
   }
 
   void getToken() async {
@@ -162,7 +162,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                     //   color: Constants.bpSkipStyle,
                     // ),
                     onChange: (String value, int index) async {
-                      print(value);
+                      //print(value);
                       if (int.parse(value) == index+1) {
                         setState(() {
                           isRoomSelected = true;
@@ -171,7 +171,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                           roomId = 1;
                           ///roomCharge = (int.parse(widget.propData![widget.index!]['room'][index]['room_amount']) * totalMonths);
                           roomCharge = roomChargeList[index];
-                          print('ROOM:::'+ roomCharge.toString());
+                          //print('ROOM:::'+ roomCharge.toString());
                           //int.parse(widget.propertyDetails.data[widget.index].room[0].roomAmount);
                           total = roomCharge + mealCharge + taxCharge;
                         });
@@ -298,12 +298,12 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                 setState(() {
                                   isMeal[index] = !isMeal[index];
                                 });
-                                print(isMeal);
+                                //print(isMeal);
                                 if (isMeal[index] == true) {
                                   setState(() {
                                     ///mealCharge = mealCharge + (int.parse(widget.propData![widget.index!]['meal'][index]['meal_amount']) * totalMonths);
                                     mealCharge = mealCharge + mealChargeList[index] * totalMonths;
-                                    print('MEAL:::'+mealCharge.toString());
+                                    //print('MEAL:::'+mealCharge.toString());
                                         //mealCharge + int.parse(widget.propertyDetails.data[widget.index].meal[index].mealAmount);
                                     total = mealCharge + taxCharge + roomCharge;
                                     selectedMeal.add(widget.propData![widget.index!]['meal'][index]['meal_type']);
@@ -316,7 +316,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                   setState(() {
                                     ///mealCharge = mealCharge - (int.parse(widget.propData![widget.index!]['meal'][index]['meal_amount']) * totalMonths);
                                     mealCharge = mealCharge - mealChargeList[index] * totalMonths;
-                                    print('MEAL:::'+mealCharge.toString());
+                                    //print('MEAL:::'+mealCharge.toString());
                                         //mealCharge - int.parse(widget.propertyDetails.data[widget.index].meal[index].mealAmount);
                                     total = total - (int.parse(widget.propData![widget.index!]['meal'][index]['meal_amount']) * totalMonths);
                                     selectedMeal.remove(widget.propData![widget.index!]['meal'][index]['meal_type']);
@@ -367,7 +367,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                             total = 0.0;
                              //taxCharge = taxCharge * totalMonths;
                             total = roomCharge + mealCharge + taxCharge;
-                        print(value);
+                        //print(value);
                         if (int.parse(value) == 1) {
                           setState(() {
                             selectedMonth = 1;
@@ -454,7 +454,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                           padding: EdgeInsets.only(top: 3.0.h),
                           child: GestureDetector(
                             onTap: () async {
-                              print('Date Picker!!!');
+                              //print('Date Picker!!!');
                               final datePick = await showDatePicker(
                                   context: context,
                                   initialDate: new DateTime.now(),
@@ -474,7 +474,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                       checkInString = "0${checkInDate!.day.toString()}/0${checkInDate!.month}";
                                       checkInStringDate = "0${checkInDate!.day.toString()}/0${checkInDate!.month}/${checkInDate!.year}";
                                     });
-                                    print('11111');
+                                    //print('11111');
                                   } else if (checkInDate!.day
                                           .toString()
                                           .length ==
@@ -483,7 +483,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                       checkInString = "0${checkInDate!.day}/${checkInDate!.month}";
                                       checkInStringDate = "0${checkInDate!.day.toString()}/${checkInDate!.month}/${checkInDate!.year}";
                                     });
-                                    print('22222');
+                                    //print('22222');
                                   } else if (checkInDate!.month
                                           .toString()
                                           .length ==
@@ -549,7 +549,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                           child: GestureDetector(
                             onTap: () async {
                               if (checkInDate != null) {
-                                print('Date Picker!!!');
+                                //print('Date Picker!!!');
                                 final datePick = await showDatePicker(
                                     context: context,
                                     initialDate: checkInDate!,
@@ -574,7 +574,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                         checkOutString =  "0${checkOutDate!.day.toString()}/0${checkOutDate!.month}";
                                         checkOutStringDate = "0${checkOutDate!.day.toString()}/0${checkOutDate!.month}/${checkOutDate!.year}";
                                       });
-                                      print('11111');
+                                      //print('11111');
                                     } else if (checkOutDate!.day
                                             .toString()
                                             .length ==
@@ -583,7 +583,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                         checkOutString = "0${checkOutDate!.day}/${checkOutDate!.month}";
                                          checkOutStringDate = "0${checkOutDate!.day.toString()}/${checkOutDate!.month}/${checkOutDate!.year}";
                                       });
-                                      print('22222');
+                                      //print('22222');
                                     } else if (checkOutDate!.month
                                             .toString()
                                             .length ==
@@ -808,7 +808,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
               //         //   color: Constants.bpSkipStyle,
               //         // ),
               //         onChange: (String value, int index)async  {
-              //           print(value);
+              //           //print(value);
               //           // if (value != 1 ||
               //           //     value != 2 ||
               //           //     value != 3) {
@@ -1195,8 +1195,8 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
   //Booking Date Check API
   Future<CheckBooking> checkBookingDateAPI() async {
     displayProgressDialog(context);
-    print(checkInStringDate);
-    print(checkOutStringDate);
+    //print(checkInStringDate);
+    //print(checkOutStringDate);
     var result = CheckBooking();
     try {
       var dio = Dio();
@@ -1211,7 +1211,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
       if (response.statusCode == 200) {
         closeProgressDialog(context);
         result = CheckBooking.fromJson(response.data);
-        print(response.data);
+        //print(response.data);
 
         if (result.status == true) {
           //Continue for Payment
@@ -1252,12 +1252,12 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
         }
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        //print("This is the error message::::" +
+          //  e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -1269,8 +1269,8 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-        print(e.message);
+        ////print(e.request);
+        //print(e.message);
       }
     }
     return result;

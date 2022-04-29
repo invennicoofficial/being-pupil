@@ -6,12 +6,12 @@ import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Connection_Model.dart';
 import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Learner_ProfileView_Screen.dart';
-import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,7 +55,7 @@ class _ConnectionListLearnerState extends State<ConnectionListLearner> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
+    //print(authToken);
     getData();
   }
 
@@ -65,7 +65,7 @@ class _ConnectionListLearnerState extends State<ConnectionListLearner> {
       registerAs = preferences.getString('RegisterAs');
       userId = preferences.getInt('userId');
     });
-    print('ID::::::' + userId.toString());
+    //print('ID::::::' + userId.toString());
     getConnectionApi(page);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -74,14 +74,14 @@ class _ConnectionListLearnerState extends State<ConnectionListLearner> {
           if (connection.data!.length > 0) {
             page++;
             getConnectionApi(page);
-            print(_name);
-            print(page);
+            //print(_name);
+            //print(page);
           }
         } else {
           page++;
           getConnectionApi(page);
-          print(_name);
-          print(page);
+          //print(_name);
+          //print(page);
         }
       }
     });
@@ -225,7 +225,7 @@ class _ConnectionListLearnerState extends State<ConnectionListLearner> {
                               padding: EdgeInsets.only(right: 2.0.w, top: 2.0.h),
                               child: GestureDetector(
                                 onTap: () {
-                                  print('$index is Connected');
+                                  //print('$index is Connected');
                                 },
                                 child: _status[index] == '0'
                                     //connection.data[index].status == '0'
@@ -257,7 +257,7 @@ class _ConnectionListLearnerState extends State<ConnectionListLearner> {
                                     displayProgressDialog(context);
                                     SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
                                     CubeUser? user = sharedPrefs.getUser();
-                                    print(_email[index]);
+                                    //print(_email[index]);
                                     getUserByEmail(_email[index]!)
                                         .then((cubeUser) {
                                           CubeDialog newDialog = CubeDialog(
@@ -324,14 +324,14 @@ class _ConnectionListLearnerState extends State<ConnectionListLearner> {
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      print(response.statusCode);
+      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        print(map!['data']);
-        //print(mapData);
-        if (map['data'] != null || map['data'] != []) {
+        //print(map!['data']);
+        ////print(mapData);
+        if (map!['data'] != null || map['data'] != []) {
           setState(() {});
           map['data']['role'] == 'E'
               ? pushNewScreen(context,
@@ -350,19 +350,32 @@ class _ConnectionListLearnerState extends State<ConnectionListLearner> {
           isLoading = false;
           setState(() {});
         }
-        //print(result.data);
+        ////print(result.data);
         //return result;
         setState(() {
           isLoading = false;
         });
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -388,14 +401,14 @@ class _ConnectionListLearnerState extends State<ConnectionListLearner> {
 
       var response =
           await dio.get('${Config.getConnectionUrl}$userId?page=$page&user_type=${registerAs == 'E' ? 'L' : 'E'}');
-      print(response.statusCode);
+      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         // closeProgressDialog(context);
         //return EducatorPost.fromJson(json)
         //result = EducatorPost.fromJson(response.data);
         connection = Connection.fromJson(response.data);
-        print(response.data);
+        //print(response.data);
         if (connection.data!.length > 0) {
           for (int i = 0; i < connection.data!.length; i++) {
             _userId.add(connection.data![i].userId);
@@ -409,13 +422,13 @@ class _ConnectionListLearnerState extends State<ConnectionListLearner> {
             // for (int j = 0; j < map['data'].length; j++) {
             //   imageListMap.putIfAbsent(k, () => map['data'][i]['post_media']);
           //   k++;
-          // print(k);
+          // //print(k);
           }
           // k++;
-          // print(k);
-          print(_profileImage);
-          print(_lastDegree);
-          print(_schoolName);
+          // //print(k);
+          //print(_profileImage);
+          //print(_lastDegree);
+          //print(_schoolName);
 
           isLoading = false;
           setState(() {});
@@ -428,13 +441,26 @@ class _ConnectionListLearnerState extends State<ConnectionListLearner> {
           isLoading = false;
         });
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 }

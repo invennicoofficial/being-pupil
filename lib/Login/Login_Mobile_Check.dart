@@ -162,7 +162,7 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
                         child: GestureDetector(
                           onTap: () {
                             bool mobileValid = RegExp(r"^[6-9]\d{9}$").hasMatch(mobileController.text);
-                            print('Logged In!!!');
+                            //print('Logged In!!!');
                             if (mobileController.text.isEmpty || (mobileValid == false)){
                               Fluttertoast.showToast(
                                 msg: 'Please Enter Valid Mobile Number',
@@ -236,7 +236,7 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
     return iosDeviceInfo.identifierForVendor; // unique ID on iOS
   } else {
     var androidDeviceInfo = await deviceInfo.androidInfo;
-    print('DID:::'+androidDeviceInfo.androidId.toString());
+    //print('DID:::'+androidDeviceInfo.androidId.toString());
     return androidDeviceInfo.androidId; // unique ID on Android
   }
 }
@@ -264,7 +264,7 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
       if (response.statusCode == 200) {
         map = response.data;
         //mapData = map['data'];
-        print(mapData);
+        //print(mapData);
         closeProgressDialog(context);
         //result = MobileCheck.fromJson(response.data);
   
@@ -329,8 +329,8 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
               role == 'E' ? preferences.setString("isNew", map!['data']['userObj']['isNew']) : preferences.setString("isNew", '');
               preferences.setBool('isLoggedIn', true);
               }
-              print('ROLE:::' + preferences.getString('RegisterAs')!);
-              print('ISNEW:::' + map!['data']['userObj']['isNew']);
+              //print('ROLE:::' + preferences.getString('RegisterAs')!);
+              //print('ISNEW:::' + map!['data']['userObj']['isNew']);
 
             if(role == 'E' && map!['data']['userObj']['isNew'] == 'true'){
              Navigator.of(context).push(MaterialPageRoute(
@@ -347,7 +347,7 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
             
           }
         } else {
-          print(map);
+          //print(map);
           if(map!['message'] == null){
           Fluttertoast.showToast(
             msg: map!['error_msg'],
@@ -372,12 +372,12 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
         }
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -389,8 +389,8 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-       // print(e.request);
-        print(e.message);
+       // //print(e.request);
+        //print(e.message);
       }
     }
     //return result;
@@ -399,7 +399,7 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
   void saveToken(String token) async {
     // Write value
     await storage.write(key: 'access_token', value: token);
-    print('TOKEN ::: ' + token);
+    //print('TOKEN ::: ' + token);
     //closeProgressDialog(context);
   }
 

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Stay_And_Study_Model/Get_All_Property_Model.dart';
@@ -7,7 +6,6 @@ import 'package:being_pupil/StayAndStudy/Property_Book_Screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:readmore/readmore.dart';
 import 'package:share/share.dart';
@@ -126,7 +124,7 @@ Future<void> _createDynamicLink(bool short, String id) async {
     setState(() {
       _isCreatingLink = true;
     });
-print('create DL::: ${widget.propData![widget.index]['featured_image'][0].toString()}');
+//print('create DL::: ${widget.propData![widget.index]['featured_image'][0].toString()}');
     final DynamicLinkParameters parameters = DynamicLinkParameters(
       uriPrefix: 'https://bepshare.page.link',
       link: Uri.parse("https://beingpupil.com/public/api/property/get?id=$id}"),
@@ -510,8 +508,8 @@ print('create DL::: ${widget.propData![widget.index]['featured_image'][0].toStri
                 // lat = double.parse(widget.propertyDetails.data[widget.index].location.lat);
                 // long = double.parse(widget.propertyDetails.data[widget.index].location.lng);
               });
-              print(lat);
-              print(long);
+              //print(lat);
+              //print(long);
                 _launchMapsUrl(lat, long);
               },
               child: Container(

@@ -33,7 +33,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
     // TODO: implement initState
     super.initState();
     getPropertyReviewAPI();
-    print('ID:::' + widget.propertyId.toString());
+    //print('ID:::' + widget.propertyId.toString());
   }
 
   @override
@@ -644,7 +644,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
           .get('${Config.getReviewUrl}?property_id=${widget.propertyId}');
 
       if (response.statusCode == 200) {
-        print('THIS IS THE REVIEW DATA::' + response.data.toString());
+        //print('THIS IS THE REVIEW DATA::' + response.data.toString());
         result = PropertyReview.fromJson(response.data);
 
         if (result.status == true) {
@@ -656,8 +656,8 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
         }
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
     }
     return result;
   }

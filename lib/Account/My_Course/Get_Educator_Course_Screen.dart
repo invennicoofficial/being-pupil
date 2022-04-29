@@ -53,14 +53,14 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
           if (courseLength > 0) {
             page++;
             getEducatorCourseAPI(page);
-            print(page);
+           // print(page);
           } else {
             _refreshController.loadComplete();
           }
         } else {
           page++;
           getEducatorCourseAPI(page);
-          print(page);
+          //print(page);
         }
       }
     });
@@ -208,7 +208,7 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         result = GetEducatorCourse.fromJson(response.data);
-        print(response.data);
+       // print(response.data);
         courseLength = 0;
         courseLength = result.data == [] ? 0 : result.data!.length;
 
@@ -243,13 +243,13 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
         );
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+     // print(e.response);
+    //  print(stack);
       // closeProgressDialog(context);
       //closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        // print("This is the error message::::" +
+        //     e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -262,7 +262,7 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+        //print(e.message);
       }
     }
     return result;

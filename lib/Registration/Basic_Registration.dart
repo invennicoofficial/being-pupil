@@ -8,10 +8,7 @@ import 'package:being_pupil/Login/Login_Screen.dart';
 import 'package:being_pupil/Login/OTP_Screen.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Model_Class.dart';
-import 'package:being_pupil/Registration/Educator_Registration.dart';
-import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
-import 'package:being_pupil/Widgets/Preference.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -22,7 +19,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -278,7 +274,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             //   color: Constants.bpSkipStyle,
                             // ),
                             onChange: (String value, int index) async {
-                              print(value);
+                              //print(value);
                               if (value == '1') {
                                 setState(() {
                                   registerAs = 'E';
@@ -292,8 +288,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   await SharedPreferences.getInstance();
                               sharedPreferences.setString(
                                   'RegisterAs', registerAs);
-                              print('Preffff ::: ' +
-                                  sharedPreferences.getString('RegisterAs')!);
+                              //print('Preffff ::: ' +
+                                 // sharedPreferences.getString('RegisterAs')!);
                             },
                             dropdownButtonStyle: DropdownButtonStyle(
                               height: 7.0.h,
@@ -405,7 +401,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             left: 3.0.w, right: 3.0.w, top: 0.0.h),
                         child: GestureDetector(
                           onTap: () {
-                            print('Sign Up!!!');
+                            //print('Sign Up!!!');
                             bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9."
                                     r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                 .hasMatch(emailController.text.trim());
@@ -510,7 +506,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              print('Sign In!!!');
+                              //print('Sign In!!!');
                               Navigator.push(
                                   context,
                                   PageTransition(
@@ -555,7 +551,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
     }
     signUp(user).then((newUser) async {
-      print("signUp newUser $newUser");
+      //print("signUp newUser $newUser");
       user.id = newUser.id;
       SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
       sharedPrefs.saveNewUser(user);
@@ -593,7 +589,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return iosDeviceInfo.identifierForVendor; // unique ID on iOS
   } else {
     var androidDeviceInfo = await deviceInfo.androidInfo;
-    print('DID:::'+androidDeviceInfo.androidId.toString());
+    //print('DID:::'+androidDeviceInfo.androidId.toString());
     return androidDeviceInfo.androidId; // unique ID on Android
   }
 }
@@ -615,11 +611,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
       var response = await dio.post(Config.signupUrl, data: formData);
       if (response.statusCode == 200) {
-        print(response.data);
+        //print(response.data);
         closeProgressDialog(context);
         result = SignUp.fromJson(response.data);
         if (result.status == true) {
-          print('ID ::: ' + result.data!.userId.toString());
+          //print('ID ::: ' + result.data!.userId.toString());
           saveUserData(result.data!.userId!);
           _signInCC(
               context,
@@ -640,15 +636,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
             fontSize: 10.0.sp,
           );
         }
-        print(result);
+        //print(result);
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        //print("This is the error message::::" +
+          //  e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -660,8 +656,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-        print(e.message);
+        ////print(e.request);
+        //print(e.message);
       }
     }
     return result;
@@ -670,7 +666,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void saveUserData(int userId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setInt('userId', userId);
-    print(userId);
+    //print(userId);
   }
 
   displayProgressDialog(BuildContext context) {
@@ -698,8 +694,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 //       Response response = await dio.post(Config.registerUrl, data: formData);
 //       Map<String, dynamic> map;
 //       map = json.decode(response.toString());
-//       print(map);
-//       print(map['data']['profile']);
+//       //print(map);
+//       //print(map['data']['profile']);
 //       saveUserData(
 //           map['data']['name'],
 //           map['data']['email'],
@@ -710,10 +706,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
 //     } on DioError catch (e) {
 //       closeProgressDialog(context);
 //       if (e.response != null) {
-//         print(e.response.data);
-//         print(e.response.headers);
-//         print(e.response.request);
-//         print("This is the error message::::" +
+//         //print(e.response.data);
+//         //print(e.response.headers);
+//         //print(e.response.request);
+//         //print("This is the error message::::" +
 //             e.response.data['meta']['message']);
 //         Fluttertoast.showToast(
 //           msg: e.response.data['meta']['message'],
@@ -726,15 +722,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
 //         );
 //       } else {
 //         // Something happened in setting up or sending the request that triggered an Error
-//         print(e.request);
-//         print(e.message);
+//         //print(e.request);
+//         //print(e.message);
 //       }
 //     }
 //   }
 
 //   void saveUserData(String name, email, mobile, profileUrl, userId) async {
 //     SharedPreferences preferences = await SharedPreferences.getInstance();
-//     print(name);
+//     //print(name);
 //     preferences.setString(Preferences.userName, name);
 //     preferences.setString(Preferences.userEmail, email);
 //     preferences.setString(Preferences.userNumber, mobile);

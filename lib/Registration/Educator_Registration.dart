@@ -123,7 +123,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
      'qualification': 'BCA',
      'certificate': 'Upload Certificate/Degree'
       });
-    print(educationDetailMap);
+    //print(educationDetailMap);
     super.initState();
     // _selectedSkills = [];
     // _selectedHobbies = [];
@@ -138,7 +138,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
+    //print(authToken);
     getCatSkillHobbieList();
   }
 
@@ -148,7 +148,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
       registerAs = preferences.getString('RegisterAs');
       userId = preferences.getInt('userId');
     });
-    print(registerAs);
+    //print(registerAs);
   }
 
   createControllers() {
@@ -166,7 +166,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
       _image = image;
     });
     ccfile = File(image!.path);
-    print('CCCAM:::'+ccFile!.path.toString());
+    //print('CCCAM:::'+ccFile!.path.toString());
   }
 
   _imageFromGallery() async {
@@ -177,7 +177,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
       _image = image;
     });
      ccfile = File(image!.path);
-    print('CCGAL:::'+ccFile!.path.toString());
+    //print('CCGAL:::'+ccFile!.path.toString());
   }
 
   void _showPicker(context) {
@@ -377,11 +377,11 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
         _document = XFile(file.path!);
       });
 
-      print(file.name);
-      print(file.bytes);
-      print(file.size);
-      print(file.extension);
-      print(file.path);
+      //print(file.name);
+      //print(file.bytes);
+      //print(file.size);
+      //print(file.extension);
+      //print(file.path);
     } else {}
   }
 
@@ -404,7 +404,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
       _certificate = doc;
       _certiName = doc!.path.split('/scaled_image_picker').last;
       educationDetailMap[index]['certificate'] = _certificate!.path;
-      print(_certiName);
+      //print(_certiName);
     });
   }
 
@@ -483,7 +483,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           alignment: Alignment.center,
                           child: GestureDetector(
                             onTap: () {
-                              print('Upload Pic!!!');
+                              //print('Upload Pic!!!');
                               _showPicker(context);
                             },
                             child: _image != null
@@ -563,7 +563,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                                       children: [
                                                         GestureDetector(
                                                           onTap: () {
-                                                            print('Upload Pic!!!');
+                                                            //print('Upload Pic!!!');
                                                             _showPicker(context);
                                                           },
                                                           child: ImageIcon(
@@ -817,7 +817,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     //   color: Constants.bpSkipStyle,
                                     // ),
                                     onChange: (String value, int index) async {
-                                      print(value);
+                                      //print(value);
                                       if (value != '1' ||
                                           value != '2' ||
                                           value != '3') {
@@ -894,7 +894,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     left: 3.0.w, right: 3.0.w, top: 3.0.h),
                                 child: GestureDetector(
                                   onTap: () async {
-                                    print('Date Picker!!!');
+                                    //print('Date Picker!!!');
                                     int year = DateTime.now().year - 15;
                                     final datePick = await showDatePicker(
                                         context: context,
@@ -906,7 +906,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                         datePick != birthDate) {
                                       setState(() {
                                         birthDate = datePick;
-                                        print(birthDate);
+                                        //print(birthDate);
                                         isDateSelected = true;
 
                                         if (birthDate!.day.toString().length ==
@@ -917,7 +917,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                             birthDateInString =
                                                 "0${birthDate!.day.toString()}/0${birthDate!.month}/${birthDate!.year}";
                                           });
-                                          print('11111');
+                                          //print('11111');
                                         } else if (birthDate!.day
                                                 .toString()
                                                 .length ==
@@ -926,7 +926,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                             birthDateInString =
                                                 "0${birthDate!.day}/${birthDate!.month}/${birthDate!.year}";
                                           });
-                                          print('22222');
+                                          //print('22222');
                                         } else if (birthDate!.month
                                                 .toString()
                                                 .length ==
@@ -1015,7 +1015,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               //   color: Constants.bpSkipStyle,
                               // ),
                               onChange: (String value, int index) async {
-                                print(value);
+                                //print(value);
                                 if (value != '1' ||
                                     value != '2' ||
                                     value != '3' ||
@@ -1027,19 +1027,19 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 }
                                 if (value == 1) {
                                   docType = 'A';
-                                  print(docType);
+                                  //print(docType);
                                 } else if (value == 2) {
                                   docType = 'PN';
-                                  print(docType);
+                                  //print(docType);
                                 } else if (value == 3) {
                                   docType = 'PAS';
-                                  print(docType);
+                                  //print(docType);
                                 } else if (value == 4) {
                                   docType = 'VI';
-                                  print(docType);
+                                  //print(docType);
                                 } else {
                                   docType = 'DL';
-                                  print(docType);
+                                  //print(docType);
                                 }
                               },
                               dropdownButtonStyle: DropdownButtonStyle(
@@ -1107,7 +1107,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                   BorderRadius.all(Radius.circular(5)),
                               child: GestureDetector(
                                 onTap: () {
-                                  print('Upload!!!');
+                                  //print('Upload!!!');
                                   _uploadDocument();
                                 },
                                 child: Container(
@@ -1234,7 +1234,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               ),
                               child: GestureDetector(
                                 onTap: () {
-                                  print('Location!!!');
+                                  //print('Location!!!');
                                   //_showLocation(context);
                                   showPlacePicker();
                                 },
@@ -1334,14 +1334,14 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                                   EdgeInsets.only(left: 4.0.w),
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  print(
-                                                      'Remove Education ${index + 1} Block');
+                                                  //print(
+                                                     // 'Remove Education ${index + 1} Block');
                                                   setState(() {
                                                     //itemCount = itemCount - 1;
                                                     educationDetailMap
                                                         .removeAt(index);
                                                   });
-                                                  print(educationDetailMap);
+                                                  //print(educationDetailMap);
                                                 },
                                                 child: ImageIcon(
                                                   AssetImage('assets/icons/close_icon.png'),
@@ -1370,8 +1370,8 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                               educationDetailMap[index]
                                                       ['school_name'] =
                                                   value.toString();
-                                              print(
-                                                  'SCHOOL### ${value.toString()}');
+                                              //print(
+                                                 // 'SCHOOL### ${value.toString()}');
                                             },
                                             decoration: InputDecoration(
                                               labelText: "Name of School",
@@ -1418,7 +1418,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                               top: 3.0.h),
                                           child: GestureDetector(
                                             onTap: () async {
-                                              print('Year!!!');
+                                              //print('Year!!!');
                                               showDialog(
                                                 context: context,
                                                 builder:
@@ -1463,8 +1463,8 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                                               selectedYear!.year
                                                                   .toString();
 
-                                                          print(selectedYear!
-                                                              .year);
+                                                          // print(selectedYear!
+                                                          //     .year);
                                                           Navigator.pop(
                                                               context);
                                                           // Do something with the dateTime selected.
@@ -1668,7 +1668,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                           //   color: Constants.bpSkipStyle,
                                           // ),
                                           onChange: (String value, int index) async {
-                                            print(value);
+                                            //print(value);
                                             if (int.parse(value) > 0) {
                                               setState(() {
                                                 qualification = '1';
@@ -1679,25 +1679,25 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                               educationDetailMap[index]
                                                       ['qualification'] =
                                                   'Graduate';
-                                              print(qualification);
+                                              //print(qualification);
                                             } else if (value == '2') {
                                               qualification = 'Post-graduate';
                                               educationDetailMap[index]
                                                       ['qualification'] =
                                                   'Post-graduate';
-                                              print(qualification);
+                                              //print(qualification);
                                             } else if (value == '3') {
                                               qualification =
                                                   'Chartered Accountant';
                                               educationDetailMap[index]
                                                       ['qualification'] =
                                                   'Chartered Accountant';
-                                              print(qualification);
+                                              //print(qualification);
                                             } else {
                                               qualification = 'Others';
                                               educationDetailMap[index]
                                                   ['qualification'] = 'Others';
-                                              print(qualification);
+                                              //print(qualification);
                                             }
                                           },
                                           dropdownButtonStyle:
@@ -1776,7 +1776,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                               Radius.circular(5)),
                                           child: GestureDetector(
                                             onTap: () {
-                                              print('Upload!!!');
+                                              //print('Upload!!!');
                                               _showCertificatePicker(context, index);
                                             },
                                             child: Container(
@@ -1960,7 +1960,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                   //   }
                                   // });
                                   //print(myControllers[1].text.toString());
-                                  print('Add more!!!');
+                                  //print('Add more!!!');
                                   setState(() {
                                     educationId = educationId + 1;
                                   });
@@ -1970,7 +1970,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     'qualification': 'BCA',
                                     'certificate': 'Upload Certificate/Degree'
                                   });
-                                  print(educationDetailMap);
+                                  //print(educationDetailMap);
                                 },
                                 child: Container(
                                   height: 7.0.h,
@@ -2064,7 +2064,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               // ),
                               onChange: (String value, int index) async {
                                 totalWorkExp = int.parse(value);
-                                print(value);
+                                //print(value);
                                 if (int.parse(value) > 0) {
                                   setState(() {
                                     workExp = '1';
@@ -2171,7 +2171,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               // ),
                               onChange: (String value, int index) async {
                                 totalTeachExp = int.parse(value);
-                                print(value);
+                                //print(value);
                                 if (int.parse(value) > 0) {
                                   setState(() {
                                     teachExp = '1';
@@ -3129,7 +3129,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               bottom: 3.0.h),
                           child: GestureDetector(
                             onTap: () {
-                              print('Submit!!!');
+                              //print('Submit!!!');
                               bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9."
                                       r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                   .hasMatch(_emailController.text.trim());
@@ -3399,7 +3399,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
       }
     }
     signUp(user).then((newUser) async {
-      print("signUp newUser $newUser");
+      //print("signUp newUser $newUser");
       user.id = newUser.id;
       SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
       sharedPrefs.saveNewUser(user);
@@ -3444,18 +3444,18 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
      File file = File(_image!.path);
     CubeUser? user = sharedPrefs.getUser(); 
     user!.password = '12345678';
-print('CCU::'+user.fullName.toString());  
+//print('CCU::'+user.fullName.toString());  
 uploadFile(file, isPublic: false)
   .then((cubeFile) {
     user.avatar = cubeFile.uid;
     return updateUser(user);
   })
   .catchError((error) {
-    print('CCERR:::.'+error.toString());
+    //print('CCERR:::.'+error.toString());
   });
-  print('CCPIC:::.'+user.avatar.toString());
+  //print('CCPIC:::.'+user.avatar.toString());
   String? avatarUrl = getPrivateUrlForUid(user.avatar);
-  print('CCAV:::.'+avatarUrl!);
+  //print('CCAV:::.'+avatarUrl!);
   }
 
   void _processLoginError(exception) {
@@ -3726,9 +3726,9 @@ uploadFile(file, isPublic: false)
           subjectMapData = subjectMap!['data'];
         });
 
-        print(skillMap);
-        print(hobbieMap);
-        print(subjectMap);
+        //print(skillMap);
+        //print(hobbieMap);
+        //print(subjectMap);
         //closeProgressDialog(context);
       } else {
         closeProgressDialog(context);
@@ -3767,7 +3767,7 @@ uploadFile(file, isPublic: false)
     } on DioError catch (e, stack) {
       closeProgressDialog(context);
       if (e.response != null) {
-        print(e.message);
+        //print(e.message);
       //   print("This is the error message::::" +
       //       e.response!.data['meta']['message'].toString());
       //   Fluttertoast.showToast(
@@ -3899,7 +3899,7 @@ uploadFile(file, isPublic: false)
       // print('MAP:::' + educationDetailMap[2]['school_name']);
       // print('MAP:::' + educationDetailMap[3]['school_name']);
 
-      print('MAPO:::' + educationDetailMap.length.toString());
+      //print('MAPO:::' + educationDetailMap.length.toString());
 
       for (int i = 0; i < educationDetailMap.length; i++) {
         //formData.fields.addAll(params.entries);
@@ -3919,9 +3919,9 @@ uploadFile(file, isPublic: false)
                   filename: educationDetailMap[i]['certificate'])),
         ]);
       }
-      print('MAP:::' + educationDetailMap.toString());
-      print(educationList);
-      print(formData.fields);
+      //print('MAP:::' + educationDetailMap.toString());
+      //print(educationList);
+      //print(formData.fields);
 
       var response = await dio.post(
         Config.updateProfileUrl,
@@ -3932,17 +3932,17 @@ uploadFile(file, isPublic: false)
         // }
       );
       if (response.statusCode == 200) {
-        print(response.data);
+        //print(response.data);
         closeProgressDialog(context);
         result = ProfileUpdate.fromJson(response.data);
-        print(result.data!.name);
+        //print(result.data!.name);
         if (result.status == true) {
           if(result.data!.isVerified == 'P') {
             closeProgressDialog(context);
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => VerificationScreen()));
           } else {
-            print('TRUE::');
+            //print('TRUE::');
             preferences.setString("name", result.data!.name!);
             preferences.setString("imageUrl", result.data!.imageUrl!);
             preferences.setString("mobileNumber", result.data!.mobileNumber!);
@@ -3956,10 +3956,10 @@ uploadFile(file, isPublic: false)
             preferences.setString("instaUrl", result.data!.instaUrl.toString());
             preferences.setString("linkedInUrl", result.data!.linkedinUrl.toString());
             preferences.setString("otherUrl", result.data!.otherUrl.toString());
-            print('QUALIFICATION:::: ' +
-                result.data!.educationalDetails!.last.qualification!);
+            //print('QUALIFICATION:::: ' +
+            //    result.data!.educationalDetails!.last.qualification!);
             //print('LOCATION:::: ' + result.data!.location![0].addressLine2!);
-            print('IMAGE:::: ' + result.data!.imageUrl!);
+           // print('IMAGE:::: ' + result.data!.imageUrl!);
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => bottomNavBar(4)),
                     (Route<dynamic> route) => false);
@@ -3974,7 +3974,7 @@ uploadFile(file, isPublic: false)
             );
           }
         } else {
-          print('FALSE::');
+          //print('FALSE::');
           Fluttertoast.showToast(
             msg: result.errorMsg!,
             toastLength: Toast.LENGTH_SHORT,
@@ -3997,14 +3997,14 @@ uploadFile(file, isPublic: false)
           fontSize: 10.0.sp,
         );
       }
-      print(result);
+      //print(result);
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        //print("This is the error message::::" +
+           // e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -4017,7 +4017,7 @@ uploadFile(file, isPublic: false)
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+        //print(e.message);
       }
     }
     return result;

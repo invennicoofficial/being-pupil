@@ -1,7 +1,6 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Course_Model/Discontinue_Course_Model.dart';
-import 'package:being_pupil/Model/Course_Model/Enroll_Course_Model.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +46,7 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
     setState(() {
       registerAs = preferences.getString('RegisterAs');
     });
-    print(registerAs);
+    //print(registerAs);
   }
 
    //Alert Dialog for Delete Post
@@ -147,7 +146,7 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
                   child: Center(
                       child: FlatButton(
                     onPressed: () {
-                      print('EDIT!!!');
+                      //print('EDIT!!!');
                       pushNewScreen(context,
                           screen: UpdateCourseScreen(),
                           withNavBar: false,
@@ -338,7 +337,7 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
           data: formData,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
-        print(response.data);
+        //print(response.data);
         result = DiscontinueCourse.fromJson(response.data);
         closeProgressDialog(context);
         if(result.status == true){
@@ -377,12 +376,12 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
         );
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        // print("This is the error message::::" +
+        //     e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -395,7 +394,7 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+        //print(e.message);
       }
     }
     return result;

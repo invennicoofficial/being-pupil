@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Course_Model/Create_Course_Model.dart';
@@ -44,7 +42,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
   wordCountForDescription(String str) {
     setState(() {
       wordCount = str.split(" ").length;
-      print('Total Word Count:::' + wordCount.toString());
+      //print('Total Word Count:::' + wordCount.toString());
     });
   }
 
@@ -195,7 +193,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                       EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 3.0.h),
                   child: GestureDetector(
                     onTap: () async {
-                      print('Date Picker!!!');
+                      //print('Date Picker!!!');
                       final datePick = await showDatePicker(
                           context: context,
                           initialDate: new DateTime.now(),
@@ -212,13 +210,13 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                               startDateInString =
                                   "0${startDate!.day.toString()}/0${startDate!.month}/${startDate!.year}";
                             });
-                            print('11111');
+                            //print('11111');
                           } else if (startDate!.day.toString().length == 1) {
                             setState(() {
                               startDateInString =
                                   "0${startDate!.day}/${startDate!.month}/${startDate!.year}";
                             });
-                            print('22222');
+                            //print('22222');
                           } else if (startDate!.month.toString().length == 1) {
                             startDateInString =
                                 "${startDate!.day}/0${startDate!.month}/${startDate!.year}";
@@ -270,7 +268,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                       EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 3.0.h),
                   child: GestureDetector(
                     onTap: () async {
-                      print('Date Picker!!!');
+                      //print('Date Picker!!!');
                       final datePick = await showDatePicker(
                           context: context,
                           initialDate: new DateTime.now(),
@@ -287,13 +285,13 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                               endDateInString =
                                   "0${endDate!.day.toString()}/0${endDate!.month}/${endDate!.year}";
                             });
-                            print('11111');
+                           // print('11111');
                           } else if (endDate!.day.toString().length == 1) {
                             setState(() {
                               endDateInString =
                                   "0${endDate!.day}/${endDate!.month}/${endDate!.year}";
                             });
-                            print('22222');
+                            //print('22222');
                           } else if (endDate!.month.toString().length == 1) {
                             endDateInString =
                                 "${endDate!.day}/0${endDate!.month}/${endDate!.year}";
@@ -410,7 +408,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                         ),
                         GestureDetector(
                             onTap: () {
-                              print('Remove ${index + 1} Link');
+                             // print('Remove ${index + 1} Link');
                               if (linkControllers.length > 1) {
                                 setState(() {
                                   linkControllers.removeAt(index);
@@ -474,7 +472,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                 padding: EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 3.0.h),
                 child: GestureDetector(
                   onTap: () {
-                    print('ADD!!!!');
+                   // print('ADD!!!!');
                     wordCountForDescription(courseDescController.text);
                     if (courseNameController.text.isEmpty) {
                       Fluttertoast.showToast(
@@ -592,7 +590,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
       if (response.statusCode == 200) {
         closeProgressDialog(context);
         result = CreateCourse.fromJson(response.data);
-        print(response.data);
+        //print(response.data);
         if (result.status == true) {
           Fluttertoast.showToast(
             msg: result.message!,
@@ -627,12 +625,12 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
         );
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+     // print(e.response);
+     // print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        // print("This is the error message::::" +
+        //     e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -645,7 +643,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+       // print(e.message);
       }
     }
     return result;

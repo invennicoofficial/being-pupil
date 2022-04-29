@@ -3,7 +3,6 @@ import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Subscription_Model/Cancel_Subscription_Model.dart';
 import 'package:being_pupil/Model/Subscription_Model/Current_Subscription_Model.dart';
 import 'package:being_pupil/Subscription/Manage_Payment_Screen.dart';
-import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
@@ -13,8 +12,6 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
-import 'package:webview_flutter/webview_flutter.dart';
-import 'dart:developer' as developer;
 
 import 'Update_SubScription_Screen.dart';
 
@@ -49,7 +46,7 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
     setState(() {
       razorpayLink = preferences.getString('razorpayLink');
     });
-    print(razorpayLink);
+    //print(razorpayLink);
   }
 
   // Widget urlLauncher() {
@@ -362,7 +359,7 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         result = CurrentSubscription.fromJson(response.data);
-        print(response);
+        //print(response);
         if (result.status == true) {
           isLoading = false;
           setState(() {});
@@ -383,8 +380,21 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
     } on DioError catch (e, stack) {
       isLoading = false;
       setState(() {});
-      print(e.message);
-      print(stack);
+      //print(e.message);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -400,7 +410,7 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
       if (response.statusCode == 200) {
         result = CancelSubscription.fromJson(response.data);
         closeProgressDialog(context);
-        print(response);
+        //print(response);
         if (result.status == true) {
           preff.setInt('isSubscribed', 0);
           setState(() {});
@@ -430,8 +440,21 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
       }
     } on DioError catch (e, stack) {
       closeProgressDialog(context);
-      print(e.message);
-      print(stack);
+      //print(e.message);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 

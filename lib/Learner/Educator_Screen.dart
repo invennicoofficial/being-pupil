@@ -2,7 +2,6 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Learner/Connection_API.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Educator_List_Model.dart';
-import 'package:being_pupil/Model/Learner_List_Model.dart';
 import 'package:being_pupil/StudyBuddy/Search_Screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +47,7 @@ class _EducatorScreenState extends State<EducatorScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
+    //print(authToken);
     getData();
   }
 
@@ -65,14 +64,14 @@ class _EducatorScreenState extends State<EducatorScreen> {
           if (educator.data!.length > 0) {
             page++;
             getEducatorListApi(page);
-            print(_name);
-            print(page);
+            //print(_name);
+            //print(page);
           }
         } else {
           page++;
           getEducatorListApi(page);
-          print(_name);
-          print(page);
+          //print(_name);
+          //print(page);
         }
       }
     });
@@ -218,7 +217,7 @@ class _EducatorScreenState extends State<EducatorScreen> {
                                     EdgeInsets.only(right: 2.0.w, top: 0.0.h),
                                 child: GestureDetector(
                                   onTap: () async {
-                                    print('$index is Connected');
+                                    //print('$index is Connected');
                                     await connect.connectionApi(
                                         _userId[index], authToken!);
                                     setState(() {
@@ -273,7 +272,7 @@ class _EducatorScreenState extends State<EducatorScreen> {
 
       var response = await dio.get('${Config.getEducatorListUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      print(response.statusCode);
+      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         // closeProgressDialog(context);
@@ -292,7 +291,7 @@ class _EducatorScreenState extends State<EducatorScreen> {
             _distance.add(educator.data![i].distance);
           }
 
-          print(_name);
+          //print(_name);
 
           isLoading = false;
           setState(() {});
@@ -305,13 +304,13 @@ class _EducatorScreenState extends State<EducatorScreen> {
           isLoading = false;
         });
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
     }
   }
 }

@@ -3,7 +3,6 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Comment_Screen.dart';
 import 'package:being_pupil/HomeScreen/Fulll_Screen_Image_Screen.dart';
 import 'package:being_pupil/HomeScreen/Update_Post_Screen.dart';
-import 'package:being_pupil/HomeScreen/Report_Feed.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/MyProfile_Model.dart';
 import 'package:being_pupil/Model/Post_Model/Educator_Post_Model.dart';
@@ -76,7 +75,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
+    //print(authToken);
     getData();
   }
 
@@ -88,8 +87,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
       qualification = preferences.getString('qualification');
       school = preferences.getString('schoolName');
     });
-    print(registerAs);
-    print('ID::::::' + userId.toString());
+    //print(registerAs);
+    //print('ID::::::' + userId.toString());
     getMyProfileApi();
     getMyPostApi(page);
     _scrollController.addListener(() {
@@ -99,12 +98,12 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
           if (map!['data'].length > 0) {
             page++;
             getMyPostApi(page);
-            print(page);
+            //print(page);
           }
         } else {
           page++;
           getMyPostApi(page);
-          print(page);
+          //print(page);
         }
       }
     });
@@ -271,7 +270,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                     : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    print('Facebook!!!');
+                                    //print('Facebook!!!');
                                     _launchSocialUrl(
                                         myProfileMap!['data']['facebook_link']);
                                   },
@@ -297,7 +296,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                     : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    print('Instagram!!!');
+                                    //print('Instagram!!!');
                                     _launchSocialUrl(myProfileMap!['data']
                                         ['instagram_link']);
                                   },
@@ -324,7 +323,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                     : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    print('LinkedIn!!!');
+                                    //print('LinkedIn!!!');
                                     _launchSocialUrl(
                                         myProfileMap!['data']['linkedin_link']);
                                   },
@@ -349,7 +348,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                         : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    print('Other!!!');
+                                    //print('Other!!!');
                                     _launchSocialUrl(
                                         myProfileMap!['data']['other_link']);
                                   },
@@ -1080,7 +1079,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
       if (response.statusCode == 200) {
         myProfileMap = response.data;
 
-        print('PROFILE:::' + myProfileMap.toString());
+        //print('PROFILE:::' + myProfileMap.toString());
         setState(() {
           isProfileLoading = false;
         });
@@ -1090,8 +1089,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
         });
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
     }
   }
 
@@ -1108,7 +1107,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
       var response = await dio.get(
           '${Config.getEducatorPostUrl}/$userId?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      print(response.statusCode);
+      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         // closeProgressDialog(context);
@@ -1119,8 +1118,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
         map = response.data;
         mapData = map!['data'];
 
-        print(map);
-        print('DATA:::' + mapData.toString());
+        //print(map);
+        //print('DATA:::' + mapData.toString());
         if (map!['data'].length > 0) {
           if (name == '') {
             name = map!['data'][0]['name'];
@@ -1128,7 +1127,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
             degreeName = map!['data'][0]['last_degree'];
             schoolName = map!['data'][0]['school_name'];
           }
-          print("HELLO");
+          //print("HELLO");
 
           for (int i = 0; i < map!['data'].length; i++) {
             postIdList.add(map!['data'][i]['post_id']);
@@ -1142,9 +1141,9 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
               imageListMap.putIfAbsent(k, () => map!['data'][i]['post_media']);
             }
             k++;
-            print(k);
+            //print(k);
           }
-          print(imageListMap);
+          //print(imageListMap);
           isLoading = false;
           isPostLoading = false;
           setState(() {});
@@ -1163,16 +1162,29 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
         if (map!['status'] == true) {
           // map = Map<String, dynamic>();
           // mapData = [];
-          print('B MAPPPPPPP:::' + map.toString());
+          //print('B MAPPPPPPP:::' + map.toString());
         }
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -1199,7 +1211,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
 
         if (delMap!['status'] == true) {
           isProfileLoading = false;
-          print('true');
+          //print('true');
           map = {};
           mapData = [];
           postIdList = [];
@@ -1208,7 +1220,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
           imageListMap[index] = [];
           likesList = [];
           totalCommentsList = [];
-          print('A MAPPPPPPP:::' + map.toString());
+          //print('A MAPPPPPPP:::' + map.toString());
           getMyPostApi(1);
           //print('B MAPPPPPPP:::' + map.toString());
           //getData();
@@ -1221,7 +1233,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
               textColor: Colors.white);
           setState(() {});
         } else {
-          print('false');
+          //print('false');
           if (delMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: delMap!['error_msg'],
@@ -1241,13 +1253,26 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
           }
         }
         //getEducatorPostApi(page);
-        print(delMap);
+        //print(delMap);
       } else {
-        print(response.statusCode);
+        //print(response.statusCode);
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -1267,12 +1292,12 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
         saveMap = response.data;
         //saveMapData = map['data']['status'];
 
-        print(saveMapData);
+        //print(saveMapData);
         // setState(() {
         //   isLoading = false;
         // });
         if (saveMap!['status'] == true) {
-          print('true');
+          //print('true');
           //getEducatorPostApi(page);
           Fluttertoast.showToast(
               msg: saveMap!['message'],
@@ -1282,7 +1307,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          print('false');
+          //print('false');
           if (saveMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: saveMap!['error_msg'],
@@ -1302,13 +1327,26 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
           }
         }
         //getEducatorPostApi(page);
-        print(saveMap);
+        //print(saveMap);
       } else {
-        print(response.statusCode);
+        //print(response.statusCode);
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 }

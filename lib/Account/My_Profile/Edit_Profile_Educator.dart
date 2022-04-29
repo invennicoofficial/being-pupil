@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
-import 'package:being_pupil/Account/My_Profile/Educator_MyProfile.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
@@ -147,7 +145,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   }
 
   populateEducationDetails(){
-    print(result.data!.educationalDetails1);
+    //print(result.data!.educationalDetails1);
     if(result.data!.educationalDetails1 != null){
       for(int i = 0; i < result.data!.educationalDetails1!.length; i++){
         controllersList.add(TextEditingController());
@@ -177,7 +175,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
+   // print(authToken);
     getCatSkillHobbieList();
 
   }
@@ -188,7 +186,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
       registerAs = preferences.getString('RegisterAs');
       userId = preferences.getInt('userId');
     });
-    print(registerAs);
+   // print(registerAs);
   }
 
   _imageFromCamera() async {
@@ -409,11 +407,11 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         documentPath = _document!.path;
       });
 
-      print(file.name);
-      print(file.bytes);
-      print(file.size);
-      print(file.extension);
-      print(file.path);
+     // print(file.name);
+     // print(file.bytes);
+     // print(file.size);
+     // print(file.extension);
+     // print(file.path);
     } else {}
   }
 
@@ -427,7 +425,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
       //certificateList.add(doc);
       _certiName = doc!.path.split('/scaled_').last.substring(35);
      // educationDetailMap[educationId]['certificate'] = _certificate.path;
-     print(fileImage);
+    // print(fileImage);
     });
   }
 
@@ -440,7 +438,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
       fileImage[index] =_certificate;
       _certiName = doc!.path.split('/scaled_image_picker').last;
       //educationDetailMap[educationId]['certificate'] = _certificate.path;
-      print(fileImage);
+     // print(fileImage);
     });
   }
 
@@ -526,7 +524,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                           alignment: Alignment.center,
                           child: GestureDetector(
                             onTap: () {
-                              print('Upload Pic!!!');
+                             // print('Upload Pic!!!');
                               _showPicker(context);
                             },
                             child: _image != null
@@ -873,7 +871,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     //   color: Constants.bpSkipStyle,
                                     // ),
                                     onChange: (String value, int index) async {
-                                      print(value);
+                                     // print(value);
                                       if (value != '1' ||
                                           value != '2' ||
                                           value != '3') {
@@ -950,7 +948,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     left: 3.0.w, right: 3.0.w, top: 3.0.h),
                                 child: GestureDetector(
                                   onTap: () async {
-                                    print('Date Picker!!!');
+                                   // print('Date Picker!!!');
                                     int year = DateTime.now().year - 15;
                                     final datePick = await showDatePicker(
                                         context: context,
@@ -971,7 +969,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                             birthDateInString =
                                                 "0${birthDate!.day.toString()}/0${birthDate!.month}/${birthDate!.year}";
                                           });
-                                          print('11111');
+                                         // print('11111');
                                         } else if (birthDate!.day
                                                 .toString()
                                                 .length ==
@@ -980,7 +978,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                             birthDateInString =
                                                 "0${birthDate!.day}/${birthDate!.month}/${birthDate!.year}";
                                           });
-                                          print('22222');
+                                         // print('22222');
                                         } else if (birthDate!.month
                                                 .toString()
                                                 .length ==
@@ -1082,7 +1080,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                               //   color: Constants.bpSkipStyle,
                               // ),
                               onChange: (String value, int index)async  {
-                                print(value);
+                                //print(value);
                                 if (value != '1' ||
                                     value != '2' ||
                                     value != '3' ||
@@ -1094,19 +1092,19 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                 }
                                 if (value == 1) {
                                   docType = 'A';
-                                  print(docType);
+                                  //print(docType);
                                 } else if (value == 2) {
                                   docType = 'PN';
-                                  print(docType);
+                                  //print(docType);
                                 } else if (value == 3) {
                                   docType = 'PAS';
-                                  print(docType);
+                                  //print(docType);
                                 } else if (value == 4) {
                                   docType = 'VI';
-                                  print(docType);
+                                  //print(docType);
                                 } else {
                                   docType = 'DL';
-                                  print(docType);
+                                 // print(docType);
                                 }
                               },
                               dropdownButtonStyle: DropdownButtonStyle(
@@ -1315,7 +1313,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                               ),
                               child: GestureDetector(
                                 onTap: () {
-                                  print('Location!!!');
+                                  //print('Location!!!');
                                   //_showLocation(context);
                                   showPlacePicker();
                                 },
@@ -2063,7 +2061,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                               // ),
                               onChange: (String value, int index)async  {
                                 totalWorkExp = int.parse(value);
-                                print(totalWorkExp);
+                               // print(totalWorkExp);
                                 if (int.parse(value) > 0) {
                                   setState(() {
                                     workExp = '1';
@@ -2189,7 +2187,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                               // ),
                               onChange: (String value, int index)async  {
                                 totalTeachExp = int.parse(value);
-                                print(totalTeachExp);
+                               // print(totalTeachExp);
                                 if (int.parse(value) > 0) {
                                   setState(() {
                                     teachExp = '1';
@@ -3158,7 +3156,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                               bottom: 3.0.h),
                           child: GestureDetector(
                             onTap: () async {
-                              print('Submit!!!');
+                              //print('Submit!!!');
                               bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9."
                                       r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                   .hasMatch(_emailController.text.trim());
@@ -3538,9 +3536,9 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     _otherLinkLinkController.text,
                                     totalWorkExp,
                                     totalTeachExp);
-                                    print('SKILL1 '+ result.data!.skills!);
-                                    print('SKILL2 '+ selectedSubjectList.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'));
-                                    print('SKILL3 '+ selectedSkillList.toString());
+                                    //print('SKILL1 '+ result.data!.skills!);
+                                   // print('SKILL2 '+ selectedSubjectList.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'));
+                                   // print('SKILL3 '+ selectedSkillList.toString());
                                     updateUserPicCC();
                                 //}
                                 // else {
@@ -3611,18 +3609,18 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
      File file = File(_image!.path);
     CubeUser? user = sharedPrefs.getUser(); 
     user!.password = '12345678';
-print('CCU::'+user.fullName.toString());  
+//print('CCU::'+user.fullName.toString());  
 uploadFile(file, isPublic: false)
   .then((cubeFile) {
     user.avatar = cubeFile.uid;
     return updateUser(user);
   })
   .catchError((error) {
-    print('CCERR:::.'+error.toString());
+   // print('CCERR:::.'+error.toString());
   });
-  print('CCPIC:::.'+user.avatar.toString());
+  //print('CCPIC:::.'+user.avatar.toString());
   String? avatarUrl = getPrivateUrlForUid(user.avatar);
-  print('CCAV:::.'+avatarUrl!);
+  //print('CCAV:::.'+avatarUrl!);
   }
 
   //Location Picker
@@ -3644,10 +3642,10 @@ uploadFile(file, isPublic: false)
       pinCode = result.postalCode;
     });
 
-    print('CITY::: $city');
-    print('LATLNG::: ${result.latLng}');
-    print('Country::: $pinCode');
-    print('ADDRESS::: $address1');
+    // print('CITY::: $city');
+    // print('LATLNG::: ${result.latLng}');
+    // print('Country::: $pinCode');
+    // print('ADDRESS::: $address1');
   }
 
   //Save Education Details
@@ -3884,11 +3882,11 @@ uploadFile(file, isPublic: false)
         subjectMap = response[3].data;
         
         //saveImage();
-        print('SKILLDATA::: ${result.data!.skills}');
-        print(response[0].data);
+        //print('SKILLDATA::: ${result.data!.skills}');
+       // print(response[0].data);
         eduMap = response[0].data;
         eduMapData = eduMap!['data']['educational_details'];
-        print('EDU:::' + eduMapData.toString());
+        //print('EDU:::' + eduMapData.toString());
          populateEducationDetails();
         setState(() {
           //profileMapData = profileMap['data'];
@@ -3917,9 +3915,9 @@ uploadFile(file, isPublic: false)
 
            //fileImage.length = netImage.length;
 
-            print('Certi Net:::'+netImage.toString());
-            print('Certi File:::'+fileImage.toString());
-            print('Qual File:::'+qualificationList.toString());
+            // print('Certi Net:::'+netImage.toString());
+            // print('Certi File:::'+fileImage.toString());
+            // print('Qual File:::'+qualificationList.toString());
           
           //result.data.gender == 'M' ? gender = 'Male' : result.data.gender == 'F' ? gender = 'Female' : gender = 'Other';
           //birthDateInString = result.data.dob;
@@ -3937,9 +3935,9 @@ uploadFile(file, isPublic: false)
           skillList.add(result.data!.skills);
           hobbieList.add(result.data!.hobbies);
           subjectList.add(result.data!.subjects);
-          print('SUB:::'+ subjectList.toString().replaceAll('[', '').replaceAll(']', '').replaceFirst('#', '')
-          .replaceAll(' #', ',')//.replaceFirst('', '#')
-                 );
+          // print('SUB:::'+ subjectList.toString().replaceAll('[', '').replaceAll(']', '').replaceFirst('#', '')
+          // .replaceAll(' #', ',')//.replaceFirst('', '#')
+          //        );
           _fbLinkController.text = result.data!.facebookUrl?? '';
           _instagramLinkController.text = result.data!.instaUrl?? '';
           _linkedInLinkLinkController.text = result.data!.linkedinUrl?? '';
@@ -3948,11 +3946,11 @@ uploadFile(file, isPublic: false)
         if(result != null){
           isLoading = false;
         }
-        print(result.data!.name);
-        print(skillMap);
-        print(result.data!.skills);
-        print(result.data!.subjects.toString().replaceAll(',', ' #').replaceFirst('', '#'));
-        print('URL::: '+result.data!.imageUrl!);
+        // print(result.data!.name);
+        // print(skillMap);
+        // print(result.data!.skills);
+        // print(result.data!.subjects.toString().replaceAll(',', ' #').replaceFirst('', '#'));
+        // print('URL::: '+result.data!.imageUrl!);
         //closeProgressDialog(context);
       } else {
         //closeProgressDialog(context);
@@ -3981,21 +3979,21 @@ uploadFile(file, isPublic: false)
     } on DioError catch (e, stack) {
       //closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.message);
-        // Fluttertoast.showToast(
-        //   msg: e.response!.data['meta']['message'],
-        //   toastLength: Toast.LENGTH_SHORT,
-        //   gravity: ToastGravity.BOTTOM,
-        //   timeInSecForIosWeb: 1,
-        //   backgroundColor: Constants.bgColor,
-        //   textColor: Colors.white,
-        //   fontSize: 10.0.sp,
-        // );
+        // print("This is the error message::::" +
+        //     e.message);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+        //print(e.message);
       }
     }
     //return result;
@@ -4141,9 +4139,9 @@ uploadFile(file, isPublic: false)
         'total_teaching_experience': totalTeachExp,
       });
 
-      print('MAPO:::' + eduMap!.length.toString());
-      print('Called:::No');
-      print('RESULT:::'+result.data!.educationalDetails1.toString());
+      // print('MAPO:::' + eduMap!.length.toString());
+      // print('Called:::No');
+      // print('RESULT:::'+result.data!.educationalDetails1.toString());
 
       for (int i = 0; i < result.data!.educationalDetails1!.length; i++) {
         //formData.fields.addAll(params.entries);
@@ -4193,14 +4191,14 @@ uploadFile(file, isPublic: false)
         }
       }
 
-      debugPrint('REQ:::'+formData.files.toString());
-print('MAP:::' + formData.fields.toString());
+      //debugPrint('REQ:::'+formData.files.toString());
+//print('MAP:::' + formData.fields.toString());
       //print('MAP:::' + result.data.educationalDetails1[1].toString());
-      print(fileImage);
+     // print(fileImage);
       //print(educationList);
 
-      print('FORMDATA::: ${result.data!.skills}');
-      print('FORMDATA::: ${selectedSubjectList.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}');
+      // print('FORMDATA::: ${result.data!.skills}');
+      // print('FORMDATA::: ${selectedSubjectList.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(' ', '')}');
 
       var response = await dio.post(
         Config.updateProfileUrl,
@@ -4211,17 +4209,17 @@ print('MAP:::' + formData.fields.toString());
         // }
       );
       if (response.statusCode == 200) {
-        print(response.data);
+        //print(response.data);
         closeProgressDialog(context);
         update = ProfileUpdate.fromJson(response.data);
     
-        print(update.data!.name);
+        //print(update.data!.name);
         //if(result.status == true){
         // print('ID ::: ' + result.data.userId.toString());
         // saveUserData(result.data.userId);
 
         if (update.status == true) {
-          print('TRUE::');
+          //print('TRUE::');
 
           setState(() {
             preferences.setString("name", update.data!.name!);
@@ -4248,7 +4246,7 @@ print('MAP:::' + formData.fields.toString());
              (_) => false,
             );
         } else {
-          print('FALSE::');
+          //print('FALSE::');
           Fluttertoast.showToast(
             msg: update.message == null ? update.errorMsg : update.message!,
             toastLength: Toast.LENGTH_SHORT,
@@ -4270,14 +4268,14 @@ print('MAP:::' + formData.fields.toString());
           fontSize: 10.0.sp,
         );
       }
-      print(update);
+      //print(update);
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      // print(e.response);
+      // print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::"  +
-            e.message);
+        // print("This is the error message::::"  +
+        //     e.message);
         Fluttertoast.showToast(
           msg: e.message,
           toastLength: Toast.LENGTH_SHORT,
@@ -4290,7 +4288,7 @@ print('MAP:::' + formData.fields.toString());
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+        //print(e.message);
       }
     }
     return update;
@@ -4331,7 +4329,7 @@ print('MAP:::' + formData.fields.toString());
     int totalTeachExp,
     //List<InterestedCategory> interestedCategory,
   ) async {
-    print('PROFILE::: DOCUMENT');
+    //print('PROFILE::: DOCUMENT');
     displayProgressDialog(context);
     // String docname = documentFile.path.split('/').last;
     // String imgname = imageFile.path.split('/').last;
@@ -4389,8 +4387,8 @@ print('MAP:::' + formData.fields.toString());
         'total_teaching_experience': totalTeachExp,
       });
 
-      print('MAPO:::' + educationDetailMap.length.toString());
-      print('Called:::Document');
+      // print('MAPO:::' + educationDetailMap.length.toString());
+      // print('Called:::Document');
 
       for (int i = 0; i < result.data!.educationalDetails!.length; i++) {
 
@@ -4407,10 +4405,10 @@ print('MAP:::' + formData.fields.toString());
         ]);
       }
 
-      print('MAP:::' + educationDetailMap.toString());
+      //print('MAP:::' + educationDetailMap.toString());
 
       //print(educationList);
-      print('FORMDATA::: updateProfileWithDocument()');
+     // print('FORMDATA::: updateProfileWithDocument()');
 
       var response = await dio.post(
         Config.updateProfileUrl,
@@ -4422,16 +4420,16 @@ print('MAP:::' + formData.fields.toString());
         // }
       );
       if (response.statusCode == 200) {
-        print(response.data);
+        //response.data);
         closeProgressDialog(context);
         update = ProfileUpdate.fromJson(response.data);
-        print(update.data!.name);
+        //print(update.data!.name);
         //if(result.status == true){
         // print('ID ::: ' + result.data.userId.toString());
         // saveUserData(result.data.userId);
 
         if (update.status == true) {
-          print('TRUE::');
+          //print('TRUE::');
           setState(() {
             preferences.setString("name", update.data!.name!);
             preferences.setString("imageUrl", update.data!.imageUrl!);
@@ -4457,7 +4455,7 @@ print('MAP:::' + formData.fields.toString());
              (_) => false,
             );
         } else {
-          print('FALSE::');
+          //print('FALSE::');
           Fluttertoast.showToast(
             msg: update.message!,
             toastLength: Toast.LENGTH_SHORT,
@@ -4479,14 +4477,14 @@ print('MAP:::' + formData.fields.toString());
           fontSize: 10.0.sp,
         );
       }
-      print(update);
+      //print(update);
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      // print(e.response);
+      // print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::"  +
-            e.response!.data['meta']['message']);
+        // print("This is the error message::::"  +
+        //     e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -4499,7 +4497,7 @@ print('MAP:::' + formData.fields.toString());
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+        //print(e.message);
       }
     }
     return update;
@@ -4541,8 +4539,8 @@ print('MAP:::' + formData.fields.toString());
     int? totalTeachExp,
     //List<InterestedCategory> interestedCategory,
   ) async {
-    print('Image:::'+_image!.path);
-    print('PROFILE::: IMAGE');
+    // print('Image:::'+_image!.path);
+    // print('PROFILE::: IMAGE');
     displayProgressDialog(context);
     // String docname = documentFile.path.split('/').last;
     // String imgname = imageFile.path.split('/').last;
@@ -4601,8 +4599,8 @@ print('MAP:::' + formData.fields.toString());
       });
 
 
-      print('MAPO:::' + educationDetailMap.length.toString());
-      print('Called:::Image');
+      // print('MAPO:::' + educationDetailMap.length.toString());
+      // print('Called:::Image');
 
       for (int i = 0; i < result.data!.educationalDetails!.length; i++) {
 
@@ -4619,8 +4617,8 @@ print('MAP:::' + formData.fields.toString());
         ]);
       }
 
-      print('MAP:::' + educationDetailMap.toString());
-      print('FORMDATA::: updateProfileWithImage()');
+      // print('MAP:::' + educationDetailMap.toString());
+      // print('FORMDATA::: updateProfileWithImage()');
       //print(educationList);
 
       var response = await dio.post(
@@ -4633,16 +4631,16 @@ print('MAP:::' + formData.fields.toString());
         // }
       );
       if (response.statusCode == 200) {
-        print(response.data);
+        //print(response.data);
         closeProgressDialog(context);
         update = ProfileUpdate.fromJson(response.data);
-        print(update.data!.name);
+        //print(update.data!.name);
         //if(result.status == true){
         // print('ID ::: ' + result.data.userId.toString());
         // saveUserData(result.data.userId);
 
         if (update.status == true) {
-          print('TRUE::');
+         // print('TRUE::');
           setState(() {
             preferences.setString("name", update.data!.name!);
             preferences.setString("imageUrl", update.data!.imageUrl!);
@@ -4668,7 +4666,7 @@ print('MAP:::' + formData.fields.toString());
              (_) => false,
             );
         } else {
-          print('FALSE::');
+          //print('FALSE::');
           Fluttertoast.showToast(
             msg: update.errorMsg!,
             toastLength: Toast.LENGTH_SHORT,
@@ -4690,14 +4688,14 @@ print('MAP:::' + formData.fields.toString());
           fontSize: 10.0.sp,
         );
       }
-      print(update);
+      //print(update);
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      // print(e.response);
+      // print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::"  +
-            e.response!.data['meta']['message']);
+        // print("This is the error message::::"  +
+        //     e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -4710,7 +4708,7 @@ print('MAP:::' + formData.fields.toString());
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+        //print(e.message);
       }
     }
     return update;
@@ -4751,7 +4749,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
     int totalTeachExp,
     //List<InterestedCategory> interestedCategory,
   ) async {
-    print('PROFILE::: BOTH');
+    //print('PROFILE::: BOTH');
     displayProgressDialog(context);
     // String docname = documentFile.path.split('/').last;
     // String imgname = imageFile.path.split('/').last;
@@ -4809,8 +4807,8 @@ Future<ProfileUpdate> updateProfileWithBoth(
         'total_teaching_experience': totalTeachExp,
       });
 
-      print('MAPO:::' + educationDetailMap.length.toString());
-      print('Called:::Image');
+      // print('MAPO:::' + educationDetailMap.length.toString());
+      // print('Called:::Image');
 
       for (int i = 0; i < result.data!.educationalDetails!.length; i++) {
 
@@ -4827,8 +4825,8 @@ Future<ProfileUpdate> updateProfileWithBoth(
         ]);
       }
 
-      print('MAP:::' + educationDetailMap.toString());
-      print('FORMDATA::: updateProfileWithBoth()');
+      // print('MAP:::' + educationDetailMap.toString());
+      // print('FORMDATA::: updateProfileWithBoth()');
       //print(educationList);
 
       var response = await dio.post(
@@ -4841,16 +4839,16 @@ Future<ProfileUpdate> updateProfileWithBoth(
         // }
       );
       if (response.statusCode == 200) {
-        print(response.data);
+        //print(response.data);
         closeProgressDialog(context);
         update = ProfileUpdate.fromJson(response.data);
-        print(update.data!.name);
+        //print(update.data!.name);
         //if(result.status == true){
         // print('ID ::: ' + result.data.userId.toString());
         // saveUserData(result.data.userId);
 
         if (update.status == true) {
-          print('TRUE::');
+         // print('TRUE::');
          setState(() {
             preferences.setString("name", update.data!.name!);
             preferences.setString("imageUrl", update.data!.imageUrl!);
@@ -4876,7 +4874,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
              (_) => false,
             );
         } else {
-          print('FALSE::');
+         // print('FALSE::');
           Fluttertoast.showToast(
             msg: update.message!,
             toastLength: Toast.LENGTH_SHORT,
@@ -4898,14 +4896,14 @@ Future<ProfileUpdate> updateProfileWithBoth(
           fontSize: 10.0.sp,
         );
       }
-      print(update);
+      //print(update);
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      // print(e.response);
+      // print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::"  +
-            e.response!.data['meta']['message']);
+        // print("This is the error message::::"  +
+        //     e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -4918,7 +4916,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+        //print(e.message);
       }
     }
     return update;
@@ -4954,7 +4952,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
     int totalTeachExp,
     //List<InterestedCategory> interestedCategory,
   ) async {
-    print('PROFILE::: NO MEDIA');
+    //print('PROFILE::: NO MEDIA');
     displayProgressDialog(context);
     //String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMy4yMzMuNTcuMTU2XC9iZWluZy1wdXBpbC1iYWNrZW5kXC9wdWJsaWNcL2FwaVwvdXNlclwvdmVyaWZ5X290cCIsImlhdCI6MTYzMDMxMTU3OSwiZXhwIjoxNjMwMzE1MTc5LCJuYmYiOjE2MzAzMTE1NzksImp0aSI6IkcxRkJUVG5OWDYyVFhWajUiLCJzdWIiOjQ1LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.ukcztXx2Kq-fsD3hWotr2GNZdIHxICNFT3h_Scjwq1s";
     //String url = "http://13.233.57.156/being-pupil-backend/public/api/user/profile/update";
@@ -4974,7 +4972,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
     Map<String, String> params = new Map<String, String>();
 
     if (educationList.length != 0) {
-      print('educationList if');
+      //print('educationList if');
 
       for (int i = 0; i < educationList.length; i++) {
         params['educational_details[$i][school_name]'] =
@@ -5004,7 +5002,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
         }
       }
     } else {
-      print('educational else');
+      //print('educational else');
       params['educational_details[]'] = '';
     }
 
@@ -5063,26 +5061,26 @@ Future<ProfileUpdate> updateProfileWithBoth(
     //saveEducationDetails();
     // params['name'] = nameController.text.toString();
     // params['mobile_number'] = phonenumberController.text.toString();
-    print(documentFile.path);
-    print(imageFile.path);
+    // print(documentFile.path);
+    // print(imageFile.path);
     request.fields.addAll(params);
     log(jsonEncode(params));
-    print('apiresponse param ${jsonEncode(params)}');
+   // print('apiresponse param ${jsonEncode(params)}');
     //http.Response response = await http.Response.fromStream(await request.send());
     var response = await request.send();
-    print(response.statusCode);
+   // print(response.statusCode);
 
     response.stream.transform(utf8.decoder).listen((event) {
-      print(event);
+     // print(event);
     });
     //  debugger();
     if (response.statusCode == 200) {
       //responseMap = json.decode(response.toString());
       closeProgressDialog(context);
-      print('apiresponse 200 ');
+     // print('apiresponse 200 ');
       var responseData = response.stream.bytesToString();
-      print('CONTENT LENGTH:::: ${response.contentLength}');
-      log('LOG:::' + responseData.toString());
+     // print('CONTENT LENGTH:::: ${response.contentLength}');
+    //  log('LOG:::' + responseData.toString());
       responseMap = jsonDecode(responseData.toString());
       Fluttertoast.showToast(
         msg: responseMap!['message'],
@@ -5104,7 +5102,7 @@ Future<ProfileUpdate> updateProfileWithBoth(
         textColor: Colors.white,
         fontSize: 10.0.sp,
       );
-      print('apiresponse error ${response.reasonPhrase.toString()}');
+      //print('apiresponse error ${response.reasonPhrase.toString()}');
       //return 'Failed';
     }
   }

@@ -2,11 +2,9 @@ import 'dart:convert';
 
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
-import 'package:being_pupil/Model/Subscription_Model/Create_Subscription_Model.dart';
 import 'package:being_pupil/Model/Subscription_Model/Get_All_Plan_List_Model.dart';
 import 'package:being_pupil/Model/Subscription_Model/Update_Subscription_Model.dart';
 import 'package:being_pupil/Model/Subscription_Model/Verify_Subscription_Model.dart';
-import 'package:being_pupil/Subscription/Current_Subscription_Screen.dart';
 import 'package:being_pupil/Subscription/Failed_Payment_Screen.dart';
 import 'package:being_pupil/Subscription/Successful_Payment_Screen.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
@@ -14,7 +12,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
@@ -65,7 +62,7 @@ class _UpdateSubscriptionPlanScreen
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
+    //print(authToken);
     getData();
     getAllPlanList();
   }
@@ -360,7 +357,7 @@ class _UpdateSubscriptionPlanScreen
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         result = GetAllPlanList.fromJson(response.data);
-        print(response);
+        //print(response);
         if (result.status == true) {
           for (int i = 0; i < result.data!.plan!.length; i++) {
             planList.add(result.data!.plan![i].planName!);
@@ -375,8 +372,21 @@ class _UpdateSubscriptionPlanScreen
         }
       }
     } on DioError catch (e, stack) {
-      print(e.message);
-      print(stack);
+      //print(e.message);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -394,7 +404,7 @@ class _UpdateSubscriptionPlanScreen
       if (response.statusCode == 200) {
         closeProgressDialog(context);
         result = UpdateSubscription.fromJson(response.data);
-        print(response);
+        //print(response);
         if (result.status == true) {
           setState(() {
             subscriptionId = result.data!.plan!.planId!.toString();//result.data!.updatedPlanSubscriptionId;
@@ -446,8 +456,21 @@ class _UpdateSubscriptionPlanScreen
       }
     } on DioError catch (e, stack) {
       closeProgressDialog(context);
-      print(e.message);
-      print(stack);
+      //print(e.message);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
     return result;
   }
@@ -471,7 +494,7 @@ class _UpdateSubscriptionPlanScreen
       if (response.statusCode == 200) {
         closeProgressDialog(context);
         result = VerifySubscription.fromJson(response.data);
-        print(response);
+        //print(response);
         if (result.status == true) {
           setState(() {
             preferences.setString('razorpayLink', result.data!.razorpayLink!);
@@ -542,18 +565,18 @@ class _UpdateSubscriptionPlanScreen
       }
     } on DioError catch (e, stack) {
       closeProgressDialog(context);
-      print(e.message);
-      print(stack);
+      //print(e.message);
+      //print(stack);
     }
     return result;
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // Do something when payment succeeds
-    print('kama liyaa!');
-    print(subscriptionId);
-    print(response.paymentId);
-    print(response.signature);
+    //print('kama liyaa!');
+    //print(subscriptionId);
+    //print(response.paymentId);
+    //print(response.signature);
     setState(() {
       paymentID = response.paymentId!;
       paySignature = response.signature!;
@@ -594,8 +617,8 @@ class _UpdateSubscriptionPlanScreen
     if (response.statusCode == 200) {
       String jsonResponse = await response.stream.bytesToString();
       map = json.decode(jsonResponse);
-      print(map!['id']);
-      print('MAP:::::' + map.toString());
+      //print(map!['id']);
+      //print('MAP:::::' + map.toString());
       //TODO: Change Razorpay Keys
       var options = {
         'key': 'rzp_test_MtDrPPLWbUdsY7',

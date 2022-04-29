@@ -40,7 +40,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
+    //print(authToken);
     getData();
   }
 
@@ -60,7 +60,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       _camImage = image;
       fileList.add(new File(_camImage!.path));
     });
-    print('LENGTH::: ${fileList.length}');
+    //print('LENGTH::: ${fileList.length}');
   }
 
   _imageFromGallery() async {
@@ -76,7 +76,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     for (int i = 0; i < multiImages!.length; i++) {
       fileList.add(new File(multiImages![i].path));
     }
-    print(multiImages![0].path);
+    //print(multiImages![0].path);
   }
 
   // getMultipleImage() async {
@@ -162,11 +162,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   padding: EdgeInsets.only(left: 14.0.w, top: 7.0.h),
                   child: GestureDetector(
                     onTap: () {
-                      print('Icon Pressssss.....');
+                      //print('Icon Pressssss.....');
                       //fileList[index].delete();
                       fileList.removeAt(index);
                       setState(() {});
-                      print(fileList);
+                      //print(fileList);
                     },
                     child: CircleAvatar(
                       radius: 10.0,
@@ -347,7 +347,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 children: <Widget>[
                   GestureDetector(
                     onTap: () {
-                      print('Camera');
+                      //print('Camera');
                       _imageFromCamera();
                     },
                     child: ImageIcon(
@@ -375,7 +375,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print('Gallery');
+                      //print('Gallery');
                       _imageFromGallery();
                       //getMultipleImage();
                     },
@@ -440,7 +440,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           options: Options(headers: {"Authorization": 'Bearer $authToken'}));
 
       if (response.statusCode == 200) {
-        print(response.data);
+        //print(response.data);
         result = CreatePost.fromJson(response.data);
         if (result.status == true) {
           closeProgressDialog(context);
@@ -479,12 +479,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         );
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        //print("This is the error message::::" +
+          //  e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -497,7 +497,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+        //print(e.message);
       }
     }
     return result;

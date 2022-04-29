@@ -51,7 +51,7 @@ class _RequestListState extends State<RequestList> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
+    //print(authToken);
     getData();
   }
 
@@ -62,7 +62,7 @@ class _RequestListState extends State<RequestList> {
       userId = preferences.getInt('userId');
       isSubscribed = preferences.getInt('isSubscribed');
     });
-    print('ID::::::' + userId.toString());
+    //print('ID::::::' + userId.toString());
     getRequestApi(page);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -71,14 +71,14 @@ class _RequestListState extends State<RequestList> {
           if (request.data!.length > 0) {
             page++;
             getRequestApi(page);
-            print(_name);
-            print(page);
+            //print(_name);
+            //print(page);
           }
         } else {
           page++;
           getRequestApi(page);
-          print(_name);
-          print(page);
+          //print(_name);
+          //print(page);
         }
       }
     });
@@ -199,7 +199,7 @@ class _RequestListState extends State<RequestList> {
                                     children: [
                                       GestureDetector(
                                         onTap: () {
-                                          print('$index is Rejected');
+                                          //print('$index is Rejected');
                                           requestActionApi(_userId[index], 'R');
                                         },
                                         child: Container(
@@ -230,7 +230,7 @@ class _RequestListState extends State<RequestList> {
                                       GestureDetector(
                                         onTap: isSubscribed == 1
                                     ? () async {
-                                        print('$index is Connected');
+                                        //print('$index is Connected');
                                         requestActionApi(_userId[index], 'A');
                                         // await connect.connectionApi(
                                         //     _userId[index], authToken!);
@@ -256,7 +256,7 @@ class _RequestListState extends State<RequestList> {
                                                     .cupertino);
                                       },
                                         // () {
-                                        //   print('$index is Connected');
+                                        //   //print('$index is Connected');
                                         //   requestActionApi(_userId[index], 'A');
                                         // },
                                         child: Container(
@@ -303,16 +303,16 @@ class _RequestListState extends State<RequestList> {
 
       var response = await dio.get(
           '${Config.getRequestUrl}$userId?page=$page&user_type=$registerAs');
-      print(response.statusCode);
+      //print(response.statusCode);
 
       if (response.statusCode == 200) {
-        print(response.data);
+        //print(response.data);
         // closeProgressDialog(context);
         //return EducatorPost.fromJson(json)
         //result = EducatorPost.fromJson(response.data);
         request = Request.fromJson(response.data);
 
-        print('LENGTH: ' + request.data!.length.toString());
+        //print('LENGTH: ' + request.data!.length.toString());
         if (request.data!.length > 0) {
           for (int i = 0; i < request.data!.length; i++) {
             _userId.add(request.data![i].userId);
@@ -325,13 +325,13 @@ class _RequestListState extends State<RequestList> {
             // for (int j = 0; j < map['data'].length; j++) {
             //   imageListMap.putIfAbsent(k, () => map['data'][i]['post_media']);
             //   k++;
-            // print(k);
+            // //print(k);
           }
           // k++;
-          // print(k);
-          print(_profileImage);
-          print(_lastDegree);
-          print(_schoolName);
+          // //print(k);
+          //print(_profileImage);
+          //print(_lastDegree);
+          //print(_schoolName);
 
           isLoading = false;
           setState(() {});
@@ -344,13 +344,26 @@ class _RequestListState extends State<RequestList> {
           isLoading = false;
         });
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -371,12 +384,12 @@ class _RequestListState extends State<RequestList> {
         actionMap = response.data;
         //saveMapData = map['data']['status'];
 
-        print(actionMap);
+        //print(actionMap);
         // setState(() {
         //   isLoading = false;
         // });
         if (actionMap!['status'] == true) {
-          print('true');
+          //print('true');
           setState(() {
             isLoading = true;
             page = 1;
@@ -396,7 +409,7 @@ class _RequestListState extends State<RequestList> {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          print('false');
+          //print('false');
           if (actionMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: actionMap!['error_msg'],
@@ -416,13 +429,26 @@ class _RequestListState extends State<RequestList> {
           }
         }
         //getEducatorPostApi(page);
-        //print(saveMap);
+        ////print(saveMap);
       } else {
-        print(response.statusCode);
+        //print(response.statusCode);
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -435,14 +461,14 @@ class _RequestListState extends State<RequestList> {
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      print(response.statusCode);
+      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        print(map!['data']);
-        //print(mapData);
-        if (map['data'] != null) {
+        //print(map!['data']);
+        ////print(mapData);
+        if (map!['data'] != null) {
           setState(() {});
           map['data']['role'] == 'E'
               ? pushNewScreen(context,
@@ -461,19 +487,32 @@ class _RequestListState extends State<RequestList> {
           isLoading = false;
           setState(() {});
         }
-        //print(result.data);
+        ////print(result.data);
         //return result;
         setState(() {
           isLoading = false;
         });
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 }

@@ -61,14 +61,14 @@ class _UpComingListState extends State<UpComingList> {
           if (result.data!.length > 0) {
             page++;
             getUpComingBookingAPI(page);
-            print(page);
+            //print(page);
           } else {
             _refreshController.loadComplete();
           }
         } else {
           page++;
           getUpComingBookingAPI(page);
-          print(page);
+          //print(page);
         }
       }
     });
@@ -313,7 +313,7 @@ class _UpComingListState extends State<UpComingList> {
       var response = await dio.get('${Config.upComingBookingUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
-        print(response.data);
+        //response.data);
         result = BookingDetails.fromJson(response.data);
 
         if (result.status == true) {
@@ -336,7 +336,7 @@ class _UpComingListState extends State<UpComingList> {
               bookingMealAmount.add(result.data![i].mealAmount);
               bookingTotalAmount.add(result.data![i].totalAmount);
             }
-            print(bookingId);
+            //print(bookingId);
             isLoading = false;
             setState(() {});
           } else {
@@ -355,12 +355,25 @@ class _UpComingListState extends State<UpComingList> {
           );
         }
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
     return result;
   }

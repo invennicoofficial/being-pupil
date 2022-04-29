@@ -74,8 +74,8 @@ class _OtpScreenState extends State<OtpScreen> {
     //   registerAs = preferences.getString('RegisterAs');
     // });
     userId = preferences.getInt('userId');
-    print(userId);
-    print(registerAs);
+    //print(userId);
+    //print(registerAs);
   }
 
   @override
@@ -187,16 +187,16 @@ class _OtpScreenState extends State<OtpScreen> {
                                 errorAnimationController: errorController,
                                 controller: otpPinController,
                                 onCompleted: (v) {
-                                  print("Completed");
+                                  //print("Completed");
                                 },
                                 onChanged: (value) {
-                                  print(value);
+                                  //print(value);
                                   setState(() {
                                     currentText = value;
                                   });
                                 },
                                 beforeTextPaste: (text) {
-                                  print("Allowing to paste $text");
+                                  //print("Allowing to paste $text");
                                   //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
                                   //but you can show anything you want here, like your pop up saying wrong paste format or etc
                                   return true;
@@ -277,7 +277,7 @@ class _OtpScreenState extends State<OtpScreen> {
                             left: 5.0.w, right: 5.0.w, top: 4.0.h),
                         child: GestureDetector(
                           onTap: () {
-                            print('Verify!!!');
+                            //print('Verify!!!');
                             if (currentText.length != 6) {
                               errorController!.add(ErrorAnimationType
                                   .shake); // Triggering error shake animation
@@ -358,11 +358,11 @@ class _OtpScreenState extends State<OtpScreen> {
       FormData formData = FormData.fromMap({'user_id': userId, 'otp': otp});
       var response = await dio.post(Config.otpUrl, data: formData);
       if (response.statusCode == 200) {
-        print(response.data);
+        //print(response.data);
 
         result = OtpResponse.fromJson(response.data);
         if (result.status == true) {
-          //print('TOKEN ::' + result.data.token);
+          ////print('TOKEN ::' + result.data.token);
           saveToken(result.data!.token!);
           role = result.data!.userObject!.role;
           name = result.data!.userObject!.name;
@@ -437,17 +437,28 @@ class _OtpScreenState extends State<OtpScreen> {
             fontSize: 10.0.sp,
           );
         }
-        print(result);
+        //print(result);
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-        print(e.message);
+        ////print(e.request);
+        //print(e.message);
       }
     }
     return result;
@@ -456,7 +467,7 @@ class _OtpScreenState extends State<OtpScreen> {
       void saveToken(String token) async {
     // Write value
     await storage.write(key: 'access_token', value: token);
-    print('TOKEN ::: ' + token);
+    //print('TOKEN ::: ' + token);
     //closeProgressDialog(context);
   }
 

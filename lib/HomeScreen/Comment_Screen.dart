@@ -96,7 +96,7 @@ class _CommentScreenState extends State<CommentScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
+    //print(authToken);
     getData();
     setState(() {
       commentCount = widget.comment;
@@ -118,14 +118,14 @@ class _CommentScreenState extends State<CommentScreen> {
           if (commentMapData!.length > 0) {
             page++;
             getCommentListApi(page);
-            print(page);
+            //print(page);
           } else {
             _refreshController.loadComplete();
           }
         } else {
           page++;
           getCommentListApi(page);
-          print(page);
+          //print(page);
         }
       }
     });
@@ -158,7 +158,7 @@ class _CommentScreenState extends State<CommentScreen> {
             ),
             onPressed: () {
               Navigator.pop(context, resultMap);
-              print('CCC###'+resultMap.toString());
+              //print('CCC###'+resultMap.toString());
             },
             padding: EdgeInsets.zero,
           ),
@@ -982,7 +982,7 @@ class _CommentScreenState extends State<CommentScreen> {
           });
 
           if (commentMapData!.length > 0) {
-            print(commentMap);
+            //print(commentMap);
             for (int i = 0; i < commentMapData!.length; i++) {
               commentId.add(commentMapData![i]['comment_id']);
               commentUserId.add(commentMapData![i]['comment_user_id']);
@@ -991,7 +991,7 @@ class _CommentScreenState extends State<CommentScreen> {
               date.add(commentMapData![i]['date']);
               comments.add(commentMapData![i]['comment']);
             }
-            print(name);
+            //print(name);
             isLoading = false;
 
             setState(() {});
@@ -1010,12 +1010,25 @@ class _CommentScreenState extends State<CommentScreen> {
               textColor: Colors.white);
         }
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
     //return commentList;
   }
@@ -1036,8 +1049,8 @@ class _CommentScreenState extends State<CommentScreen> {
         delMap = response.data;
 
         if (delMap!['status'] == true) {
-          print('true');
-          print(delMap);
+          //print('true');
+          //print(delMap);
           Fluttertoast.showToast(
               msg: delMap!['message'],
               backgroundColor: Constants.bgColor,
@@ -1046,7 +1059,7 @@ class _CommentScreenState extends State<CommentScreen> {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          print('false');
+          //print('false');
           if (delMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: delMap!['error_msg'],
@@ -1066,13 +1079,26 @@ class _CommentScreenState extends State<CommentScreen> {
           }
         }
         //getEducatorPostApi(page);
-        print(delMap);
+        //print(delMap);
       } else {
-        print(response.statusCode);
+        //print(response.statusCode);
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -1092,8 +1118,8 @@ class _CommentScreenState extends State<CommentScreen> {
         editMap = response.data;
 
         if (editMap!['status'] == true) {
-          print('true');
-          print(editMap);
+          //print('true');
+          //print(editMap);
           isEdit = false;
           setState((){});
           Fluttertoast.showToast(
@@ -1104,7 +1130,7 @@ class _CommentScreenState extends State<CommentScreen> {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          print('false');
+          //print('false');
           if (editMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: editMap!['error_msg'],
@@ -1124,13 +1150,26 @@ class _CommentScreenState extends State<CommentScreen> {
           }
         }
         //getEducatorPostApi(page);
-        print(editMap);
+        //print(editMap);
       } else {
-        print(response.statusCode);
+        //print(response.statusCode);
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -1150,12 +1189,12 @@ class _CommentScreenState extends State<CommentScreen> {
         saveMap = response.data;
         //saveMapData = map['data']['status'];
 
-        print(saveMap);
+        //print(saveMap);
         // setState(() {
         //   isLoading = false;
         // });
         if (saveMap!['status'] == true) {
-          print('true');
+          //print('true');
           //getEducatorPostApi(page);
           Fluttertoast.showToast(
               msg: saveMap!['message'],
@@ -1165,7 +1204,7 @@ class _CommentScreenState extends State<CommentScreen> {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          print('false');
+          //print('false');
           if (saveMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: saveMap!['error_msg'],
@@ -1185,13 +1224,26 @@ class _CommentScreenState extends State<CommentScreen> {
           }
         }
         //getEducatorPostApi(page);
-        print(saveMap);
+        //print(saveMap);
       } else {
-        print(response.statusCode);
+        //print(response.statusCode);
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+     // print(stack);
+     if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -1205,14 +1257,14 @@ class _CommentScreenState extends State<CommentScreen> {
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      print(response.statusCode);
+      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        print(map!['data']);
+        //print(map!['data']);
         //print(mapData);
-        if (map['data'] != null || map['data'] != []) {
+        if (map!['data'] != null || map['data'] != []) {
           setState(() {});
           map['data']['role'] == 'E'
               ? pushNewScreen(context,
@@ -1236,20 +1288,20 @@ class _CommentScreenState extends State<CommentScreen> {
           isLoading = false;
         });
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
     }
   }
 
   Future<bool> _willPopCallback() async {
     // await showDialog or Show add banners or whatever
     Navigator.pop(context, resultMap);
-    print('CCC###'+resultMap.toString());
+    //print('CCC###'+resultMap.toString());
     // then
     return true; // return true if the route to be popped
 }

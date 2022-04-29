@@ -1,7 +1,6 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 // import 'package:being_pupil/Model/Post_Model/Post_Api_Class.dart';
-import 'package:being_pupil/Model/Post_Model/Report_Issue_Model.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +34,7 @@ class _ReportFeedState extends State<ReportFeed> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
+    //print(authToken);
     getReportIssueList();
   }
 
@@ -154,8 +153,8 @@ class _ReportFeedState extends State<ReportFeed> {
                               ? isOther = true
                               : isOther = false;
                         });
-                        print(isOther ? 'Other' : 'NotOther');
-                        print('ISSUE_ID::: $issueId');
+                        //print(isOther ? 'Other' : 'NotOther');
+                        //print('ISSUE_ID::: $issueId');
                       },
                       tileColor: selectedIssue == index
                           ? Constants.bgColor.withOpacity(0.7)
@@ -227,7 +226,7 @@ class _ReportFeedState extends State<ReportFeed> {
     try {
       Dio dio = Dio();
       var response = await dio.get(Config.getReportIssueListUrl);
-      print(response.statusCode);
+      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         //closeProgressDialog(context);
@@ -236,17 +235,30 @@ class _ReportFeedState extends State<ReportFeed> {
         setState(() {
           reportMapData = reportMap!['data'];
         });
-        print(reportMap);
+        //print(reportMap);
 
         isLoading = false;
         setState(() {});
         //return ReportIssue.fromJson(json.decode(response.data));
       } else {
-        print('NOT OK');
+        //print('NOT OK');
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -287,7 +299,7 @@ class _ReportFeedState extends State<ReportFeed> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-          print(map);
+          //print(map);
           //Go back to HomeScreen
           Navigator.of(context).pop();
         } else {
@@ -300,7 +312,7 @@ class _ReportFeedState extends State<ReportFeed> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-          print(map);
+          //print(map);
         }
       } else {
         // Fluttertoast.showToast(
@@ -314,11 +326,11 @@ class _ReportFeedState extends State<ReportFeed> {
         // );
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        //print("This is the error message::::" +
+          //  e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -331,7 +343,7 @@ class _ReportFeedState extends State<ReportFeed> {
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+        //print(e.message);
       }
     }
   }

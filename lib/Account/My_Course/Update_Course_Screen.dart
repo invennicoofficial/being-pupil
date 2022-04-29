@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
-import 'package:being_pupil/Model/Course_Model/Create_Course_Model.dart';
 import 'package:being_pupil/Model/Course_Model/Update_Course_Model.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
@@ -10,7 +7,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sizer/sizer.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'package:jiffy/jiffy.dart';
 
@@ -69,7 +65,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
   wordCountForDescription(String str){
     setState((){
       wordCount = str.split(" ").length;
-      print('Total Word Count:::'+wordCount.toString());
+      //print('Total Word Count:::'+wordCount.toString());
     });
   }
 
@@ -222,7 +218,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                       EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 3.0.h),
                   child: GestureDetector(
                     onTap: () async {
-                      print('Date Picker!!!');
+                     // print('Date Picker!!!');
                       final datePick = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
@@ -239,13 +235,13 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                               startDateInString =
                                   "0${startDate!.day.toString()}/0${startDate!.month}/${startDate!.year}";
                             });
-                            print('11111');
+                            //print('11111');
                           } else if (startDate!.day.toString().length == 1) {
                             setState(() {
                               startDateInString =
                                   "0${startDate!.day}/${startDate!.month}/${startDate!.year}";
                             });
-                            print('22222');
+                            //print('22222');
                           } else if (startDate!.month.toString().length == 1) {
                             startDateInString =
                                 "${startDate!.day}/0${startDate!.month}/${startDate!.year}";
@@ -298,7 +294,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                       EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 3.0.h),
                   child: GestureDetector(
                     onTap: () async {
-                      print('Date Picker!!!');
+                      //print('Date Picker!!!');
                       final datePick = await showDatePicker(
                           context: context,
                           initialDate: new DateTime.now(),
@@ -315,13 +311,13 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                               endDateInString =
                                   "0${endDate!.day.toString()}/0${endDate!.month}/${endDate!.year}";
                             });
-                            print('11111');
+                           // print('11111');
                           } else if (endDate!.day.toString().length == 1) {
                             setState(() {
                               endDateInString =
                                   "0${endDate!.day}/${endDate!.month}/${endDate!.year}";
                             });
-                            print('22222');
+                           // print('22222');
                           } else if (endDate!.month.toString().length == 1) {
                             endDateInString =
                                 "${endDate!.day}/0${endDate!.month}/${endDate!.year}";
@@ -480,7 +476,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                 padding: EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 3.0.h),
                 child: GestureDetector(
                   onTap: () {
-                    print('ADD!!!!');
+                   // print('ADD!!!!');
                     wordCountForDescription(courseDescController.text);
                     if (courseNameController.text.isEmpty) {
                       Fluttertoast.showToast(
@@ -600,7 +596,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
       if (response.statusCode == 200) {
         //closeProgressDialog(context);
         result = UpdateCourse.fromJson(response.data);
-        print(response.data);
+       // print(response.data);
         if (result.status == true) {
            Fluttertoast.showToast(
             msg: result.message!,
@@ -643,9 +639,22 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
         );
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       closeProgressDialog(context);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
     return result;
   }

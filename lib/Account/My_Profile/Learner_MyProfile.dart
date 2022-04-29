@@ -1,4 +1,3 @@
-import 'package:being_pupil/Account/My_Course/Course_Details.dart';
 import 'package:being_pupil/Account/My_Course/Enrolled_Course_Details_Screen.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
@@ -55,7 +54,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
+    //print(authToken);
     getData();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -64,14 +63,14 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
           if (courseLength > 0) {
             page++;
             getEnrolledCourseAPI(page);
-            print(page);
+            //print(page);
           } else {
             _refreshController.loadComplete();
           }
         } else {
           page++;
           getEnrolledCourseAPI(page);
-          print(page);
+          //print(page);
         }
       }
     });
@@ -84,7 +83,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
     mobileNumber = preferences.getString('mobileNumber');
     email = preferences.getString('email');
     });
-    print(registerAs);
+    //print(registerAs);
     getMyProfileApi();
   }
 
@@ -284,7 +283,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                     : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    print('Facebook!!!');
+                                    //print('Facebook!!!');
                                     _launchSocialUrl(
                                         myProfileMap!['data']['facebook_link']);
                                   },
@@ -310,7 +309,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                     : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    print('Instagram!!!');
+                                    //print('Instagram!!!');
                                     _launchSocialUrl(myProfileMap!['data']
                                         ['instagram_link']);
                                   },
@@ -337,7 +336,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                     : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    print('LinkedIn!!!');
+                                    //print('LinkedIn!!!');
                                     _launchSocialUrl(
                                         myProfileMap!['data']['linkedin_link']);
                                   },
@@ -362,7 +361,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                         : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    print('Other!!!');
+                                    //print('Other!!!');
                                     _launchSocialUrl(
                                         myProfileMap!['data']['other_link']);
                                   },
@@ -536,7 +535,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                         withNavBar: false,
                                         pageTransitionAnimation:
                                             PageTransitionAnimation.cupertino);
-                                    print(isLeaveCourse);
+                                    //print(isLeaveCourse);
                                     isLeaveCourse == 'leave'
                                         ? _refresh()
                                         : null;
@@ -616,23 +615,23 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
       if (response.statusCode == 200) {
         myProfileMap = response.data;
 
-        print('PROFILE:::' + myProfileMap.toString());
+        //print('PROFILE:::' + myProfileMap.toString());
         if (myProfileMap!['data'] != null) {
           name = myProfileMap!['data']['name'];
-          print('NAME:::' + name!);
+          //print('NAME:::' + name!);
           profileImageUrl = myProfileMap!['data']['profile_image'];
           degreeName = myProfileMap!['data']['last_degree'] == null
               ? ''
               : myProfileMap!['data']['last_degree'];
-          print('DEGREE:::' + degreeName!);
+          //print('DEGREE:::' + degreeName!);
           schoolName = myProfileMap!['data']['school_name'] == null
               ? ''
               : myProfileMap!['data']['school_name'];
-          print('SCHOOL:::' + schoolName!);
+          //print('SCHOOL:::' + schoolName!);
           location = myProfileMap!['data']['City'] == null
               ? ''
               : myProfileMap!['data']['City'];
-          print('LOCATION:::' + location!);
+          //print('LOCATION:::' + location!);
           getEnrolledCourseAPI(page);
           isProfileLoading = false;
           setState(() {});
@@ -644,8 +643,21 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -658,7 +670,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         result = GetEnrolledCourse.fromJson(response.data);
-        print(response.data);
+        //print(response.data);
         courseLength = 0;
         courseLength = result.data == [] ? 0 : result.data!.length;
 
@@ -693,13 +705,13 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
         );
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       // closeProgressDialog(context);
       //closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        // print("This is the error message::::" +
+        //     e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -712,7 +724,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+       // print(e.message);
       }
     }
     return result;

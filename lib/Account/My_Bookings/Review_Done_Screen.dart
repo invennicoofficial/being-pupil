@@ -1,4 +1,3 @@
-import 'package:being_pupil/Account/My_Bookings/My_Booking_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:being_pupil/Constants/Const.dart';
@@ -12,7 +11,7 @@ class ReviewDoneScreen extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: GestureDetector(
                   onTap: () {
-                    print('GO TO!!!');
+                    //print('GO TO!!!');
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
                   },

@@ -12,7 +12,6 @@ import 'package:sizer/sizer.dart';
 
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
-import 'package:being_pupil/Model/Post_Model/Create_Post_Model.dart';
 import 'package:being_pupil/Model/Post_Model/Update_Post_Model.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 
@@ -53,7 +52,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
+    //print(authToken);
     getData();
   }
 
@@ -74,7 +73,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
       _camImage = image;
       fileList.add(new File(_camImage!.path));
     });
-    print('LENGTH::: ${fileList.length}');
+    //print('LENGTH::: ${fileList.length}');
   }
 
  _imageFromGallery() async {
@@ -90,7 +89,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
     for (int i = 0; i < multiImages!.length; i++) {
       fileList.add(new File(multiImages![i].path));
     }
-    print(multiImages![0].path);
+    //print(multiImages![0].path);
   }
 
   //getMultipleImage() async {
@@ -114,20 +113,20 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
   //   setState(() {
   //     // _image = result.length.
   //   });
-  // print('ASSETS::: $assets');
+  // //print('ASSETS::: $assets');
   //   for (int i = 0; i < result!.length; i++) {
-  //     print('$i : ' + result![i].title!);
+  //     //print('$i : ' + result![i].title!);
   //     filePathList.add(result![i].relativePath! + result![i].title!);
   //     fileList.add(
   //         new File('${result![i].relativePath}' + '/' + '${result![i].title}'));
   //   }
-  //   print(filePathList);
-  //   print(fileList);
-  //   print(result![0].relativePath! + result![0].title!);
+  //   //print(filePathList);
+  //   //print(fileList);
+  //   //print(result![0].relativePath! + result![0].title!);
 
   //   final File file =
   //       File('${result![0].relativePath}' + '/' + '${result![0].title}');
-  //   print('FILE:::' + file.path);
+  //   //print('FILE:::' + file.path);
 
   //   AssetPicker.registerObserve();
   // }
@@ -181,13 +180,13 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                       padding: EdgeInsets.only(left: 14.0.w, top: 7.0.h),
                       child: GestureDetector(
                         onTap: () {
-                          print('Icon Pressssss.....');
+                          //print('Icon Pressssss.....');
                           //fileList[index].delete();
                           delMedia.add(widget.images![widget.index!][index]['id']);
                           widget.images![widget.index!].removeAt(index);
-                          print(widget.images![widget.index!]);               
+                          //print(widget.images![widget.index!]);               
                           setState(() {});
-                          print('DEL:::' + delMedia.toString());
+                          //print('DEL:::' + delMedia.toString());
                         },
                         child: CircleAvatar(
                           radius: 10.0,
@@ -231,11 +230,11 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                       padding: EdgeInsets.only(left: 14.0.w, top: 7.0.h),
                       child: GestureDetector(
                         onTap: () {
-                          print('Icon Pressssss.....');
+                          //print('Icon Pressssss.....');
                           //fileList[index].delete();
                           fileList.removeAt(index);
                           setState(() {});
-                          print(fileList);
+                          //print(fileList);
                         },
                         child: CircleAvatar(
                           radius: 10.0,
@@ -277,7 +276,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                 child: FlatButton(
               onPressed: () {
                 updatePostApi(descriptionController.text);
-                //print(_image.path);
+                ////print(_image.path);
               },
               child: Text(
                 'Save',
@@ -397,7 +396,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                 children: <Widget>[
                   GestureDetector(
                     onTap: () {
-                      print('Camera');
+                      //print('Camera');
                       _imageFromCamera();
                     },
                     child: ImageIcon(
@@ -411,7 +410,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                   // ),
                   // GestureDetector(
                   //   onTap: () {
-                  //     print('Video');
+                  //     //print('Video');
                   //     _videoFile();
                   //   },
                   //   child: ImageIcon(
@@ -425,7 +424,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print('Gallery');
+                      //print('Gallery');
                       _imageFromGallery();
                       //getMultipleImage();
                     },
@@ -474,7 +473,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
           options: Options(headers: {"Authorization": 'Bearer $authToken'}));
 
       if (response.statusCode == 200) {
-        print(response.data);
+        //print(response.data);
         result = UpdatePost.fromJson(response.data);
         if (result.status == true) {
           closeProgressDialog(context);
@@ -520,12 +519,12 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
         );
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        //print("This is the error message::::" +
+          //  e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -537,8 +536,8 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-        print(e.message);
+        ////print(e.request);
+        //print(e.message);
       }
     }
     return result;

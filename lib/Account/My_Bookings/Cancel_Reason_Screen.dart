@@ -191,8 +191,8 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
                                     ? isOther = true
                                     : isOther = false;
                               });
-                              print(isOther ? 'Other' : 'NotOther');
-                              print('ISSUE_ID::: $issueId');
+                              //print(isOther ? 'Other' : 'NotOther');
+                              //print('ISSUE_ID::: $issueId');
                             },
                             tileColor: selectedIssue == index
                                 ? Constants.bgColor.withOpacity(0.7)
@@ -273,29 +273,29 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
     try {
       Dio dio = Dio();
       var response = await dio.get(Config.getCancelReasonList);
-      print(response.statusCode);
+      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         result = CancelBookoingReason.fromJson(response.data);
-        print(response.data);
+        //print(response.data);
         //closeProgressDialog(context);
         isLoading = false;
         setState(() {});
       } else {
-        print('NOT OK');
+        //print('NOT OK');
         isLoading = false;
         setState(() {});
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
     }
     return result;
   }
 
   //submit Cancel Rason API
   submitCancelRason() async {
-    print(result.data![selectedIssue!].cancelId);
+    //print(result.data![selectedIssue!].cancelId);
     displayProgressDialog(context);
     //var result = ReportIssue();
     Map<String, dynamic>? map = Map<String, dynamic>();
@@ -317,7 +317,7 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
       if (response.statusCode == 200) {
         closeProgressDialog(context);
         // result = reportIssueFromJson(response.data.toString());
-        // print(result);
+        // //print(result);
         map = response.data;
         //mapData = map['data'];
         if (map!['status'] == true) {
@@ -351,7 +351,7 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
               withNavBar: false,
               pageTransitionAnimation: PageTransitionAnimation.cupertino);
 
-          print(map);
+          //print(map);
           //Go back to HomeScreen
           //Navigator.of(context).pop();
         } else {
@@ -364,7 +364,7 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-          print(map);
+          //print(map);
         }
       } else {
         // Fluttertoast.showToast(
@@ -378,11 +378,11 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
         // );
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -395,7 +395,7 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         //print(e.request);
-        print(e.message);
+        //print(e.message);
       }
     }
   }

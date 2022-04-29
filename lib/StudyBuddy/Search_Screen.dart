@@ -57,13 +57,13 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     super.initState();
     getToken();
-    print('WIDGET:::${widget.searchIn}');
+    //print('WIDGET:::${widget.searchIn}');
   }
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     getData();
-    print(authToken);
+    //print(authToken);
     // getLearnerListApi(page);
     // _scrollController.addListener(() {
     //   if (_scrollController.position.pixels ==
@@ -72,14 +72,14 @@ class _SearchScreenState extends State<SearchScreen> {
     //       if (learner.data.length > 0) {
     //         page++;
     //         getLearnerListApi(page);
-    //         //print(_name);
-    //         print(page);
+    //         ////print(_name);
+    //         //print(page);
     //       }
     //     } else {
     //       page++;
     //       getLearnerListApi(page);
-    //       print(_name);
-    //       print(page);
+    //       //print(_name);
+    //       //print(page);
     //     }
     //   }
     // });
@@ -278,7 +278,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                             children: [
                                               GestureDetector(
                                                 onTap: () {
-                                                  print('$index is Rejected');
+                                                  //print('$index is Rejected');
                                                   requestActionApi(
                                                       _userId[index], 'R');
                                                 },
@@ -314,7 +314,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                               ),
                                               GestureDetector(
                                                 onTap: () {
-                                                  print('$index is Connected');
+                                                  //print('$index is Connected');
                                                   isSubscribed == 1
                                                       ? requestActionApi(
                                                           _userId[index], 'A')
@@ -474,7 +474,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                               ),
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  print('$index is Connected');
+                                                  //print('$index is Connected');
                                                 },
                                                 child: _status[index] == '0'
                                                     //connection.data[index].status == '0'
@@ -518,7 +518,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                           CubeUser? user =
                                                               sharedPrefs
                                                                   .getUser();
-                                                          print(_email[index]);
+                                                          //print(_email[index]);
                                                           getUserByEmail(_email[
                                                                   index]!)
                                                               .then((cubeUser) {
@@ -598,8 +598,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                                   ),
                                                   child: GestureDetector(
                                                     onTap: () async {
-                                                      print(
-                                                          '$index is Connected');
+                                                      //print(
+                                                         // '$index is Connected');
                                                       isSubscribed == 1
                                                           ? await connect
                                                               .connectionApi(
@@ -687,11 +687,11 @@ class _SearchScreenState extends State<SearchScreen> {
         mapData = map!['data'];
         //saveMapData = map['data']['status'];
 
-        print(mapData);
+        //print(mapData);
         // setState(() {
         //   isLoading = false;
         // });
-        print('LENGTH: ' + mapData!.length.toString());
+        //print('LENGTH: ' + mapData!.length.toString());
         _userId = [];
         _profileImage = [];
         _name = [];
@@ -719,12 +719,12 @@ class _SearchScreenState extends State<SearchScreen> {
             }
           }
           // k++;
-          // print(k);
-          print(_profileImage);
-          print(_lastDegree);
-          print(_schoolName);
-          print(_distance);
-          print('EMAIL:::' + _email.toString());
+          // //print(k);
+          //print(_profileImage);
+          //print(_lastDegree);
+          //print(_schoolName);
+          //print(_distance);
+          //print('EMAIL:::' + _email.toString());
 
           isLoading = false;
           setState(() {});
@@ -737,13 +737,26 @@ class _SearchScreenState extends State<SearchScreen> {
           isLoading = false;
         });
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -768,11 +781,11 @@ class _SearchScreenState extends State<SearchScreen> {
         mapData = map!['data'];
         //saveMapData = map['data']['status'];
 
-        print(mapData);
+        //print(mapData);
         // setState(() {
         //   isLoading = false;
         // });
-        print('LENGTH: ' + mapData!.length.toString());
+        //print('LENGTH: ' + mapData!.length.toString());
         _userId = [];
         _profileImage = [];
         _name = [];
@@ -793,10 +806,10 @@ class _SearchScreenState extends State<SearchScreen> {
             //_distance.add(mapData[i].distance);
           }
           // k++;
-          // print(k);
-          print(_profileImage);
-          print(_lastDegree);
-          print(_schoolName);
+          // //print(k);
+          //print(_profileImage);
+          //print(_lastDegree);
+          //print(_schoolName);
 
           isLoading = false;
           setState(() {});
@@ -809,13 +822,26 @@ class _SearchScreenState extends State<SearchScreen> {
           isLoading = false;
         });
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -837,12 +863,12 @@ class _SearchScreenState extends State<SearchScreen> {
         actionMap = response.data;
         //saveMapData = map['data']['status'];
 
-        print(actionMap);
+        //print(actionMap);
         // setState(() {
         //   isLoading = false;
         // });
         if (actionMap!['status'] == true) {
-          print('true');
+          //print('true');
           // setState(() {
           //   isLoading = true;
           //   page = 1;
@@ -862,7 +888,7 @@ class _SearchScreenState extends State<SearchScreen> {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          print('false');
+          //print('false');
           if (actionMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: actionMap!['error_msg'],
@@ -882,13 +908,26 @@ class _SearchScreenState extends State<SearchScreen> {
           }
         }
         //getEducatorPostApi(page);
-        //print(saveMap);
+        ////print(saveMap);
       } else {
-        print(response.statusCode);
+        //print(response.statusCode);
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
     }
   }
 
@@ -901,14 +940,14 @@ class _SearchScreenState extends State<SearchScreen> {
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      print(response.statusCode);
+      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        print(map!['data']);
-        //print(mapData);
-        if (map['data'] != null) {
+        //print(map!['data']);
+        ////print(mapData);
+        if (map!['data'] != null) {
           setState(() {});
           map['data']['role'] == 'E'
               ? pushNewScreen(context,
@@ -927,19 +966,32 @@ class _SearchScreenState extends State<SearchScreen> {
           isLoading = false;
           setState(() {});
         }
-        //print(result.data);
+        ////print(result.data);
         //return result;
         setState(() {
           isLoading = false;
         });
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      if (e.response != null) {
+        //print("This is the error message::::" +
+            //e.response!.data['meta']['message']);
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      }
+      //print(stack);
     }
   }
 

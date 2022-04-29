@@ -70,7 +70,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    print(authToken);
+    //print(authToken);
     getData();
   }
 
@@ -79,7 +79,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
     setState(() {
       userId = preferences.getInt('userId');
     });
-    print('ID::::::' + userId.toString());
+    //print('ID::::::' + userId.toString());
     getSavedPostApi(page);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -88,12 +88,12 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
           if (map!['data'].length > 0) {
             page++;
             getSavedPostApi(page);
-            print(page);
+            //print(page);
           }
         } else {
           page++;
           getSavedPostApi(page);
-          print(page);
+          //print(page);
         }
       }
     });
@@ -486,7 +486,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                           setState(() {});
 
                                            totalCommentsList[resultComment['index']] = resultComment['count'];
-                                          print('TC###'+totalCommentsList[resultComment['index']].toString());
+                                          //print('TC###'+totalCommentsList[resultComment['index']].toString());
                                         setState(() {});
                                         },
                                         child: Container(
@@ -618,8 +618,8 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
         map = response.data;
         mapData = map!['data'];
 
-        print(map!['data']);
-        //print(mapData);
+        //print(map!['data']);
+        ////print(mapData);
         if (map!['data'].length > 0) {
           // imageListMap = {};
           // if (name == '') {
@@ -628,7 +628,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
           //   degreeName = map['data'][0]['last_degree'];
           //   schoolName = map['data'][0]['school_name'];
           // }
-          print("HELLO");
+          //print("HELLO");
 
           for (int i = 0; i < map!['data'].length; i++) {
             postIdList.add(map!['data'][i]['post_id']);
@@ -649,9 +649,9 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
               imageListMap.putIfAbsent(k, () => map!['data'][i]['post_media']);
             }
             k++;
-            print(k);
+            //print(k);
           }
-          print(nameList);
+          //print(nameList);
           isLoading = false;
           isPostLoading = false;
           setState(() {});
@@ -667,13 +667,13 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
           isPostLoading = false;
         });
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
     }
   }
 
@@ -699,7 +699,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
         //   isLoading = false;
         // });
         if (saveMap!['status'] == true) {
-          print('true');
+          //print('true');
           map!.clear();
           map = {};
           mapData = [];
@@ -757,7 +757,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          print('false');
+          //print('false');
           if (saveMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: saveMap!['error_msg'],
@@ -777,13 +777,13 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
           }
         }
         //getEducatorPostApi(page);
-        print(saveMap);
+        //print(saveMap);
       } else {
-        print(response.statusCode);
+        //print(response.statusCode);
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
     }
   }
 
@@ -798,14 +798,14 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      print(response.statusCode);
+      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        print(map!['data']);
+        //print(map!['data']);
         //print(mapData);
-        if (map['data'] != null || map['data'] != []) {
+        if (map!['data'] != null || map['data'] != []) {
           setState(() {});
           // map['data']['role'] == 'E'
           //     ? 
@@ -831,13 +831,13 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
           isLoading = false;
         });
       } else {
-        print('${response.statusCode} : ${response.data.toString()}');
+        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
       // closeProgressDialog(context);
-      print(e.response);
-      print(stack);
+      //print(e.response);
+      //print(stack);
     }
   }
   
