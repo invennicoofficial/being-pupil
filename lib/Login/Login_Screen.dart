@@ -10,6 +10,7 @@ import 'package:being_pupil/Model/Social_Login_Check_Model.dart';
 import 'package:being_pupil/Registration/Basic_Registration.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -478,17 +479,30 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+   Future<String?> _getId() async {
+  var deviceInfo = DeviceInfoPlugin();
+  if (Platform.isIOS) { // import 'dart:io'
+    var iosDeviceInfo = await deviceInfo.iosInfo;
+    return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+  } else {
+    var androidDeviceInfo = await deviceInfo.androidInfo;
+    print('DID:::'+androidDeviceInfo.androidId.toString());
+    return androidDeviceInfo.androidId; // unique ID on Android
+  }
+}
+
 //Login API
   Future<Login> login(String mobileNumber) async {
     displayProgressDialog(context);
+    String? deviceId = await _getId();
     var result = Login();
     try {
       Dio dio = Dio();
       FormData formData = FormData.fromMap({
         'mobile_number': mobileNumber,
         'country_code': '+91',
-        'deviceType': 'A',
-        'deviceId': '1234567',
+        'deviceType': Platform.isAndroid ? 'A' : 'I',
+        'deviceId': deviceId == null ? '123456' : deviceId,
         'registration_type': 'M',
         'social_login_details[display_name]':
             registrationType == 'M' ? null : socialName,

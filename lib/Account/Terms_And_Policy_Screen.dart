@@ -18,9 +18,10 @@ class _TermsAndPolicyScreenState extends State<TermsAndPolicyScreen> {
   Map<String, dynamic> map = Map<String, dynamic>();
   String? link;
   bool isLinkLoading = true;
+  final _key = UniqueKey();
 
   initState() {
-    getTearmsLink();
+    //getTearmsLink();
     super.initState();
   }
 
@@ -54,14 +55,17 @@ class _TermsAndPolicyScreenState extends State<TermsAndPolicyScreen> {
                 color: Colors.white),
           ),
         ),
-        body: isLinkLoading
-            ? Center(
-                child: CircularProgressIndicator(
-                valueColor:
-                    new AlwaysStoppedAnimation<Color>(Constants.bgColor),
-              ))
-            : WebView(
-                initialUrl: link,
+        body: 
+        // isLinkLoading
+        //     ? Center(
+        //         child: CircularProgressIndicator(
+        //         valueColor:
+        //             new AlwaysStoppedAnimation<Color>(Constants.bgColor),
+        //       ))
+        //     : 
+            WebView(
+              key: _key,
+                initialUrl: 'https://beingpupil.com/terms-and-conditions',//link,
                 javascriptMode: JavascriptMode.unrestricted,
               )
         // Container(

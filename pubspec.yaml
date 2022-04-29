@@ -71,6 +71,7 @@ dependencies:
   url_launcher: ^6.0.17
   webview_flutter: ^3.0.0
   badges: ^2.0.2
+  device_info_plus: ^3.2.3
 
 dependency_overrides:
   firebase_messaging_platform_interface: 3.1.6

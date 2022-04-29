@@ -14,6 +14,7 @@ import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:being_pupil/Widgets/Preference.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -464,8 +465,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   mobileController.text.trim(),
                                   emailController.text.trim(),
                                   registerAs,
-                                  Platform.isAndroid ? 'A' : 'I',
-                                  '1234567');
+                                  Platform.isAndroid ? 'A' : 'I');
                             }
                           },
                           child: Container(
@@ -586,9 +586,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
     showDialogError(exception, context);
   }
 
+  Future<String?> _getId() async {
+  var deviceInfo = DeviceInfoPlugin();
+  if (Platform.isIOS) { // import 'dart:io'
+    var iosDeviceInfo = await deviceInfo.iosInfo;
+    return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+  } else {
+    var androidDeviceInfo = await deviceInfo.androidInfo;
+    print('DID:::'+androidDeviceInfo.androidId.toString());
+    return androidDeviceInfo.androidId; // unique ID on Android
+  }
+}
+
   Future<SignUp> register(String name, String mobileNumber, String email,
-      String registerAs, String deviceType, String deviceId) async {
+      String registerAs, String deviceType) async {
     displayProgressDialog(context);
+     String? deviceId = await _getId();
     var result = SignUp();
     try {
       Dio dio = Dio();
@@ -598,7 +611,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         'email': email,
         'register_as': registerAs,
         'deviceType': deviceType,
-        'deviceId': deviceId,
+        'deviceId': deviceId == null ? '123456' : deviceId,
       });
       var response = await dio.post(Config.signupUrl, data: formData);
       if (response.statusCode == 200) {

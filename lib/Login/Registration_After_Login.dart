@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:being_pupil/ConnectyCube/api_utils.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
@@ -6,6 +8,7 @@ import 'package:being_pupil/Model/Model_Class.dart';
 import 'package:being_pupil/Model/Social_Login_Model.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 
@@ -346,8 +349,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
                                   nameController.text.trim(),
                                   widget.mobileNumber,
                                   registerAs,
-                                  'A',
-                                  '1234567');
+                                  'A');
                             }
                           },
                           child: Container(
@@ -429,11 +431,23 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
     showDialogError(exception, context);
   }
 
+  Future<String?> _getId() async {
+  var deviceInfo = DeviceInfoPlugin();
+  if (Platform.isIOS) { // import 'dart:io'
+    var iosDeviceInfo = await deviceInfo.iosInfo;
+    return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+  } else {
+    var androidDeviceInfo = await deviceInfo.androidInfo;
+    print('DID:::'+androidDeviceInfo.androidId.toString());
+    return androidDeviceInfo.androidId; // unique ID on Android
+  }
+}
 
   Future<SocialLogin> login(String name, String? mobileNumber,
-      String registerAs, String deviceType, String deviceId) async {
+      String registerAs, String deviceType) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     displayProgressDialog(context);
+    String? deviceId = await _getId();
     var result = SocialLogin();
     try {
       Dio dio = Dio();
@@ -442,7 +456,7 @@ class _SignUpAfterLoginScreen extends State<SignUpAfterLoginScreen> {
         'mobile_number': mobileNumber,
         'register_as': registerAs,
         'deviceType': deviceType,
-        'deviceId': deviceId,
+        'deviceId': deviceId == null ? '123456' : deviceId,
         'registration_type': widget.registrationType,
         'social_login_details[display_name]': widget.socialDisplayName,
         'social_login_details[email]': widget.socialEmail,

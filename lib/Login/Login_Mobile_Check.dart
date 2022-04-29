@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Registration/Educator_Registration.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -226,8 +229,21 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
     );
   }
 
+  Future<String?> _getId() async {
+  var deviceInfo = DeviceInfoPlugin();
+  if (Platform.isIOS) { // import 'dart:io'
+    var iosDeviceInfo = await deviceInfo.iosInfo;
+    return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+  } else {
+    var androidDeviceInfo = await deviceInfo.androidInfo;
+    print('DID:::'+androidDeviceInfo.androidId.toString());
+    return androidDeviceInfo.androidId; // unique ID on Android
+  }
+}
+
   Future<void> mobileCheckApi(String mobileNumber) async {
     displayProgressDialog(context);
+     String? deviceId = await _getId();
     SharedPreferences preferences = await SharedPreferences.getInstance();
     //var result = MobileCheck();
     try {
@@ -236,7 +252,7 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
         'mobile_number': mobileNumber,
         //'country_code': '+91',
         'deviceType': 'A',
-        'deviceId': '1234567',
+        'deviceId': deviceId == null ? '123456' : deviceId,
         'registration_type': widget.registrationType,
         'social_login_details[display_name]': widget.socialDisplayName,
         'social_login_details[email]': widget.socialEmail,

@@ -18,7 +18,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
 
   @override
   void initState() {
-    getAboutLink();
+    //getAboutLink();
     // TODO: implement initState
     super.initState();
   }

@@ -36,22 +36,20 @@ class SelectDialogScreen extends StatelessWidget {
           automaticallyImplyLeading: false,
           backgroundColor: Constants.bgColor,
           leading: IconButton(
-          icon: Icon(
-            Icons.west_rounded,
-            color: Colors.white,
-            size: 35.0,
-          ),
-          onPressed: //null,
-              () {
-            Navigator.of(context).pop();
-          },
+            icon: Icon(
+              Icons.west_rounded,
+              color: Colors.white,
+              size: 35.0,
+            ),
+            onPressed: //null,
+                () {
+              Navigator.of(context).pop();
+            },
           ),
           title: Text(
             'Chats',
             style: TextStyle(
-                fontFamily: 'Montserrat',
-                color: Colors.white,
-                fontSize: 20.0),
+                fontFamily: 'Montserrat', color: Colors.white, fontSize: 20.0),
             //'Logged in as ${currentUser.fullName}',
           ),
           // actions: <Widget>[
@@ -106,6 +104,7 @@ class _BodyLayoutState extends State<BodyLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Container(
         padding: EdgeInsets.only(bottom: 16, top: 16),
         child: Column(
@@ -173,9 +172,21 @@ class _BodyLayoutState extends State<BodyLayout> {
     if (_isDialogContinues && dialogList.isEmpty)
       return SizedBox.shrink();
     else if (dialogList.isEmpty)
-      return FittedBox(
-        fit: BoxFit.contain,
-        child: Text("No dialogs yet"),
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Image.asset('assets/images/beginChat.png'),
+          ),
+          SizedBox(height: 25.0,),
+          Text(
+            "No dialogs yet... Begin chat",
+            style: TextStyle(
+                fontFamily: 'Montserrat',
+                color: Constants.bgColor,
+                fontSize: 20.0),
+          ),
+        ],
       );
     else
       return ListView.separated(
@@ -352,10 +363,12 @@ class _BodyLayoutState extends State<BodyLayout> {
     createDialog(newDialog).then((createdDialog) {
       closeProgressDialog(context);
       pushNewScreen(context,
-              screen: ChatDialogScreen(user, createdDialog,
-              dialogList[index].data.photo != null
-                  ? 'https://api.connectycube.com/blobs/${dialogList[index].data.photo!}?token=43ACD3EE6A2FC4B40EA1869E1334B6AEE2B7'
-                  : 'https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/fxj5vmias8fcvuhn627q'),
+              screen: ChatDialogScreen(
+                  user,
+                  createdDialog,
+                  dialogList[index].data.photo != null
+                      ? 'https://api.connectycube.com/blobs/${dialogList[index].data.photo!}?token=43ACD3EE6A2FC4B40EA1869E1334B6AEE2B7'
+                      : 'https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/fxj5vmias8fcvuhn627q'),
               withNavBar: false,
               pageTransitionAnimation: PageTransitionAnimation.cupertino)
           .then((value) => refresh());

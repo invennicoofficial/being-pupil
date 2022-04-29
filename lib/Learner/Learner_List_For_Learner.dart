@@ -131,28 +131,30 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
                             contentPadding: EdgeInsets.zero,
                             title: GestureDetector(
                               onTap: () {
-                                    registerAs == 'E'
-                                        ? pushNewScreen(context,
-                                            screen: EducatorProfileViewScreen(),
-                                            withNavBar: false,
-                                            pageTransitionAnimation:
-                                                PageTransitionAnimation
-                                                    .cupertino)
-                                        : pushNewScreen(context,
-                                            screen: LearnerProfileViewScreen(),
-                                            withNavBar: false,
-                                            pageTransitionAnimation:
-                                                PageTransitionAnimation
-                                                    .cupertino);
+                                    // registerAs == 'E'
+                                    //     ? pushNewScreen(context,
+                                    //         screen: EducatorProfileViewScreen(),
+                                    //         withNavBar: false,
+                                    //         pageTransitionAnimation:
+                                    //             PageTransitionAnimation
+                                    //                 .cupertino)
+                                    //     : pushNewScreen(context,
+                                    //         screen: LearnerProfileViewScreen(),
+                                    //         withNavBar: false,
+                                    //         pageTransitionAnimation:
+                                    //             PageTransitionAnimation
+                                                   // .cupertino);
+                                     getUserProfile(_userId[index]);
                                   },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  GestureDetector(
-                                    onTap: (){
-                                      getUserProfile(_userId[index]);
-                                    },
-                                    child: ClipRRect(
+                                  // GestureDetector(
+                                  //   onTap: (){
+                                  //     getUserProfile(_userId[index]);
+                                  //   },
+                                    //child:
+                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(50),
                                       child: Image.network(
                                         _profileImage[index]!,
@@ -161,7 +163,7 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
                                         fit: BoxFit.cover,
                                       ),
                                     ),
-                                  ),
+                                  //),
                                   SizedBox(
                                     width: 2.0.w,
                                   ),
