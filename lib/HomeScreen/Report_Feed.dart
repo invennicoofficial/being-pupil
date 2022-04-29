@@ -301,7 +301,8 @@ class _ReportFeedState extends State<ReportFeed> {
           );
           //print(map);
           //Go back to HomeScreen
-          Navigator.of(context).pop();
+          //Navigator.pop(context);
+          Navigator.pop(context, true);
         } else {
           Fluttertoast.showToast(
             msg: map['message'] == null ? map['error_msg'] : map['message'],

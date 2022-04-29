@@ -465,7 +465,8 @@ saveFirebaseToken(String token) async {
                                     //  Image.asset('assets/icons/issueIcon.png',
                                     //   height: 18.0,
                                     //   width: 18.0,),
-                                    onPressed: () {
+                                    onPressed: () async{
+                                      var result = await 
                                       pushNewScreen(context,
                                           withNavBar: false,
                                           screen: ReportFeed(
@@ -474,6 +475,9 @@ saveFirebaseToken(String token) async {
                                           pageTransitionAnimation:
                                               PageTransitionAnimation
                                                   .cupertino);
+                                        if(result == true){
+                                          _onRefresh();
+                                        }
                                     }),
                                 // GestureDetector(
                                 //   onTap: () {
@@ -924,7 +928,7 @@ saveFirebaseToken(String token) async {
         mapData = map!['data'];
 
         //print(map);
-        //print(mapData);
+        print(mapData);
         if (map!['data'].length > 0) {
           // if (name == '') {
           //   name = map['data'][0]['name'];
