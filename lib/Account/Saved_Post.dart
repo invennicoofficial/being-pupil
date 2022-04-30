@@ -5,6 +5,7 @@ import 'package:being_pupil/HomeScreen/Report_Feed.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
+import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -245,8 +246,8 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                       // Image.asset('assets/icons/issueIcon.png',
                                       // height: 20.0,
                                       // width: 20.0,),
-                                      onPressed: () {
-                                        pushNewScreen(context,
+                                      onPressed: () async{
+                                       var result = await pushNewScreen(context,
                                             withNavBar: false,
                                             screen: ReportFeed(
                                               postId: postIdList[index],
@@ -254,6 +255,11 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                             pageTransitionAnimation:
                                                 PageTransitionAnimation
                                                     .cupertino);
+
+                                          if(result == true){
+                                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: 
+                                            (context) => bottomNavBar(0)), (route) => false);
+                                          }
                                       }),
                                   //ImageIcon(AssetImage('assets/icons/report.png'),)
                                 ),

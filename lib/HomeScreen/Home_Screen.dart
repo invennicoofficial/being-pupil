@@ -747,7 +747,13 @@ saveFirebaseToken(String token) async {
                                           setState(() {});
 
                                           totalCommentsList[resultComment['index']] = resultComment['count'];
-                                          //print('TC###'+totalCommentsList[resultComment['index']].toString());
+                                          likesList[resultComment['index']] = resultComment['likeCount']; 
+                                          isSaved[resultComment['index']] = resultComment['isSaved'];
+                                          isLiked[resultComment['index']] = resultComment['isLiked'];
+                                          // print('TC###Comm'+totalCommentsList[resultComment['index']].toString());
+                                          // print('TC###Like'+likesList[resultComment['index']].toString());
+                                          // print('TC###IsSa'+isSaved[resultComment['index']].toString());
+                                          // print('TC###IsLa'+isLiked[resultComment['index']].toString());
                                         setState(() {});
                                         // pushNewScreen(context,
                                         //     withNavBar: false,

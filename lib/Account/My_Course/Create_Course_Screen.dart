@@ -193,11 +193,11 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                       EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 3.0.h),
                   child: GestureDetector(
                     onTap: () async {
-                      //print('Date Picker!!!');
+                     // print('Date Picker!!!');
                       final datePick = await showDatePicker(
                           context: context,
-                          initialDate: new DateTime.now(),
-                          firstDate: new DateTime(1900),
+                          initialDate: DateTime.now(),
+                          firstDate: new DateTime.now(),
                           lastDate: new DateTime(2100),
                           helpText: 'Select Birth Date');
                       if (datePick != null && datePick != startDate) {
@@ -227,6 +227,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                           // 08/14/2019
                         });
                       }
+                  
                     },
                     child: Container(
                       height: 7.0.h,
@@ -269,10 +270,11 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                   child: GestureDetector(
                     onTap: () async {
                       //print('Date Picker!!!');
+                      if(startDate != null){
                       final datePick = await showDatePicker(
                           context: context,
-                          initialDate: new DateTime.now(),
-                          firstDate: new DateTime(1900),
+                          initialDate: startDate!,
+                          firstDate: startDate!,
                           lastDate: new DateTime(2100),
                           helpText: 'Select Birth Date');
                       if (datePick != null && datePick != endDate) {
@@ -301,6 +303,16 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                           }
                           // 08/14/2019
                         });
+                      }
+                      }else {
+                        Fluttertoast.showToast(
+                         msg: "Please Select Start Date First",
+                         toastLength: Toast.LENGTH_SHORT,
+                         gravity: ToastGravity.BOTTOM,
+                         timeInSecForIosWeb: 1,
+                         backgroundColor: Constants.bgColor,
+                         textColor: Colors.white,
+                         fontSize: 10.0.sp);
                       }
                     },
                     child: Container(

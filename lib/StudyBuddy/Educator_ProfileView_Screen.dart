@@ -1034,9 +1034,10 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
 
                                               setState(() {});
 
-                                              totalCommentsList[
-                                                      resultComment['index']] =
-                                                  resultComment['count'];
+                                          totalCommentsList[resultComment['index']] = resultComment['count'];
+                                          likesList[resultComment['index']] = resultComment['likeCount']; 
+                                          isSaved[resultComment['index']] = resultComment['isSaved'];
+                                          isLiked[resultComment['index']] = resultComment['isLiked'];
                                               //print('TC###' +
                                                   // totalCommentsList[
                                                   //         resultComment[

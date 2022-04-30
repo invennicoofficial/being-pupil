@@ -64,7 +64,8 @@ class _FullScreenSliderState extends State<FullScreenSlider> {
                   height: height,
                   viewportFraction: 1.0,
                   enlargeCenterPage: false,
-                  initialPage: widget.index
+                  initialPage: widget.index,
+                  enableInfiniteScroll: false
                 // autoPlay: false,
               ),
               items: widget.imageList

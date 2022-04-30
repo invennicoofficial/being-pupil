@@ -143,14 +143,14 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
   @override
   Widget build(BuildContext context) {
     var imageView = Container(
-      height: 25.0.h,
+      height: 22.0.h,
       //width: 100.0.w,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
-      child: ListView(
+      child: ListView( 
         scrollDirection: Axis.horizontal,
-        physics: AlwaysScrollableScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         children: <ListView>[
           ListView.builder(
               physics: NeverScrollableScrollPhysics(),

@@ -78,6 +78,7 @@ class SavePostAPI {
 class LikePostAPI{
    Map<String, dynamic>? likeMap;
    bool? isLiked;
+   int likeCount = 0;
    //int likeCounter;
    //For save, unsave post API
   Future<void> likePostApi(int? postID, String authToken) async {
@@ -103,11 +104,13 @@ class LikePostAPI{
         if (likeMap!['status'] == true) {
           print('true');
           print(likeMap);
-          if(likeMap!['data']['Status'] == 0){
+          likeCount = likeMap!['data']['Status'];
+          print(likeCount);
+          if(likeMap!['data']['message'] == 'post unliked.'){
                 isLiked = false;
                 //likeCounter = likeCounter + 1;
                 //print('LIKE:::' + likeCounter.toString());
-              }else if(likeMap!['data']['Status'] == 1){
+              }else if(likeMap!['data']['message'] == 'post liked.'){
                 isLiked = true;
                 // likeCounter = likeCounter - 1;
                 // print('LIKE:::' + likeCounter.toString());

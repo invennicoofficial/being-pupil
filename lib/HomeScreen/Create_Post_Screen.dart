@@ -135,53 +135,59 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
-      child: ListView.builder(
-          physics: BouncingScrollPhysics(),
-          itemCount: fileList.length,
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            return Stack(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2.0.w),
-                  child: Center(
-                    child: Container(
-                      height: 8.0.h,
-                      width: 15.0.w,
-                      padding: EdgeInsets.zero,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: FileImage(fileList[index]),
-                              //AssetEntityImageProvider(assets[index], isOriginal: false),
-                              fit: BoxFit.fill)),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 14.0.w, top: 7.0.h),
-                  child: GestureDetector(
-                    onTap: () {
-                      //print('Icon Pressssss.....');
-                      //fileList[index].delete();
-                      fileList.removeAt(index);
-                      setState(() {});
-                      //print(fileList);
-                    },
-                    child: CircleAvatar(
-                      radius: 10.0,
-                      backgroundColor: Constants.bgColor,
-                      child: Icon(
-                        Icons.close_rounded,
-                        color: Colors.white,
-                        size: 10.0,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        physics: BouncingScrollPhysics(),
+        children: [
+          ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: fileList.length,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return Stack(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 2.0.w),
+                      child: Center(
+                        child: Container(
+                          height: 8.0.h,
+                          width: 15.0.w,
+                          padding: EdgeInsets.zero,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: FileImage(fileList[index]),
+                                  //AssetEntityImageProvider(assets[index], isOriginal: false),
+                                  fit: BoxFit.fill)),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ],
-            );
-          }),
+                    Padding(
+                      padding: EdgeInsets.only(left: 14.0.w, top: 7.0.h),
+                      child: GestureDetector(
+                        onTap: () {
+                          //print('Icon Pressssss.....');
+                          //fileList[index].delete();
+                          fileList.removeAt(index);
+                          setState(() {});
+                          //print(fileList);
+                        },
+                        child: CircleAvatar(
+                          radius: 10.0,
+                          backgroundColor: Constants.bgColor,
+                          child: Icon(
+                            Icons.close_rounded,
+                            color: Colors.white,
+                            size: 10.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }),
+        ],
+      ),
     );
 
     return Scaffold(

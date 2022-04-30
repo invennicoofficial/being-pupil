@@ -1,9 +1,11 @@
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/HomeScreen/Home_Screen.dart';
 import 'package:being_pupil/HomeScreen/Report_Feed.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Learner_ProfileView_Screen.dart';
+import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +75,7 @@ class _CommentScreenState extends State<CommentScreen> {
   int? idForEdit;
   LikePostAPI like = LikePostAPI();
   Map<String, dynamic>? saveMap;
-  int? commentCount;
+  int? commentCount, likeCount;
   Map<String, dynamic>? resultMap;
 
   @override
@@ -100,7 +102,11 @@ class _CommentScreenState extends State<CommentScreen> {
     getData();
     setState(() {
       commentCount = widget.comment;
-      resultMap = {"count": widget.comment, "index": widget.index};
+      likeCount = widget.like;
+      resultMap = {"count": widget.comment, "isSaved": widget.isSaved,
+      "likeCount": widget.like, 
+      "index": widget.index,
+      "isLiked": widget.isLiked};
     });
   }
 
@@ -283,8 +289,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                       //  Image.asset('assets/icons/issueIcon.png',
                                       //   height: 18.0,
                                       //   width: 18.0,),
-                                      onPressed: () {
-                                        pushNewScreen(context,
+                                      onPressed: () async{
+                                        var result = await pushNewScreen(context,
                                             withNavBar: false,
                                             screen: ReportFeed(
                                               postId: widget.postId,
@@ -292,6 +298,11 @@ class _CommentScreenState extends State<CommentScreen> {
                                             pageTransitionAnimation:
                                                 PageTransitionAnimation
                                                     .cupertino);
+
+                                          if(result == true){
+                                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: 
+                                            (context) => bottomNavBar(0)), (route) => false);
+                                        }
                                       }),
                                   //ImageIcon(AssetImage('assets/icons/report.png'),)
                                 ),
@@ -371,15 +382,19 @@ class _CommentScreenState extends State<CommentScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       GestureDetector(
-                                        onTap: () {
+                                        onTap: () async{
                                           setState(() {
                                             widget.isLiked = !widget.isLiked!;
                                           });
-                                          like.likePostApi(widget.postId, authToken!);
+                                          await like.likePostApi(widget.postId, authToken!);
                                           setState(() {
+                                            likeCount = like.likeCount;
                                             widget.isLiked == true
                                                 ? widget.like = widget.like! + 1
                                                 : widget.like = widget.like! - 1;
+                                             resultMap = {"count": commentCount, 
+                                             "isSaved": widget.isSaved, "likeCount": likeCount,
+                                             "index": widget.index, "isLiked": widget.isLiked};
                                           });
                                         },
                                         child: Row(
@@ -401,6 +416,9 @@ class _CommentScreenState extends State<CommentScreen> {
                                             Container(
                                               padding: EdgeInsets.only(top: 1.0.h),
                                               child: Text(
+                                              //   likeCount == 0 || likeCount == null
+                                              // ? "${widget.like} Likes"
+                                              // : "$likeCount Likes",
                                                 "${widget.like} Likes",
                                                 style: TextStyle(
                                                     fontSize: 6.5.sp,
@@ -446,6 +464,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                             widget.isSaved = !widget.isSaved!;
                                           });
                                           savePostApi(widget.postId);
+                                          resultMap = {"count": commentCount, "isSaved": widget.isSaved, "isLiked": widget.isLiked,
+                                           "likeCount": widget.like, "index": widget.index};
                                         },
                                         child: Row(
                                           mainAxisAlignment:
@@ -920,7 +940,9 @@ class _CommentScreenState extends State<CommentScreen> {
                                                   authToken!);
                                               setState(() {
                                                 commentCount = comment.commentCount;
-                                                resultMap = {"count": commentCount, "index": widget.index};
+                                                resultMap = {"count": commentCount, "index": widget.index, "isLiked": widget.isLiked,
+                                                "isSaved": widget.isSaved, "likeCount": widget.like 
+                                                };
                                                 focusNode.unfocus();
                                                 commentController.text = '';
                                                 isLoading = true;

@@ -65,6 +65,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
   bool isProfileLoading = true;
   LikePostAPI like = LikePostAPI();
   String? socialUrl;
+  Map<String, dynamic> resultComment = {};
 
   @override
   void initState() {
@@ -871,8 +872,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                           ),
                                         ),
                                         GestureDetector(
-                                          onTap: () {
-                                            pushNewScreen(context,
+                                          onTap: () async{
+                                            resultComment = await pushNewScreen(context,
                                                 withNavBar: false,
                                                 screen: CommentScreen(
                                                   postId: postIdList[index],
@@ -894,6 +895,13 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                 pageTransitionAnimation:
                                                     PageTransitionAnimation
                                                         .cupertino);
+
+                                              setState(() {});
+
+                                          totalCommentsList[resultComment['index']] = resultComment['count'];
+                                          likesList[resultComment['index']] = resultComment['likeCount']; 
+                                          isSaved[resultComment['index']] = resultComment['isSaved'];
+                                          isLiked[resultComment['index']] = resultComment['isLiked'];
                                           },
                                           child: Row(
                                             mainAxisAlignment:
