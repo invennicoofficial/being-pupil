@@ -116,6 +116,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
   List<String?> netImage = [];
   List<XFile?> fileImage = [];
     final ImagePicker _picker = ImagePicker();
+    int wordCount = 0;
 
   //List<String> _schoolNameList
 
@@ -187,6 +188,13 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
       userId = preferences.getInt('userId');
     });
    // print(registerAs);
+  }
+
+  wordCountForDescription(String str) {
+    setState(() {
+      wordCount = str.split(" ").length;
+      //print('Total Word Count:::' + wordCount.toString());
+    });
   }
 
   _imageFromCamera() async {
@@ -2297,7 +2305,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     borderRadius: BorderRadius.circular(5.0)),
                                 child: Center(
                                   child: Align(
-                                    alignment: Alignment.topCenter,
+                                    alignment: Alignment.topLeft,
                                     child: Text(
                                        selectedSubjectList == null ||
                                               selectedSubjectList.length == 0
@@ -2451,26 +2459,29 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     border:
                                         Border.all(color: Constants.formBorder),
                                     borderRadius: BorderRadius.circular(5.0)),
-                                child: Center(
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      selectedSkillList == null ||
-                                              selectedSkillList.length == 0
-                                          ? result.data!.skills!
-                                          // .replaceAll('[', '').replaceAll(']', '').
-                                          //     replaceAll(new RegExp(r', '), ' #')
-                                              //.replaceFirst('', '#') //"Please mention your skills example #skills1 #skills2..."
-                                          : selectedSkillList
-                                              .toString().replaceAll('[', '').replaceAll(']', '').
-                                              replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                      style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          fontSize: 10.0.sp,
-                                          color: Constants.bpSkipStyle),
+                                // child: Center(
+                                //   child: Align(
+                                //     alignment: Alignment.center,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        selectedSkillList == null ||
+                                                selectedSkillList.length == 0
+                                            ? result.data!.skills!
+                                            // .replaceAll('[', '').replaceAll(']', '').
+                                            //     replaceAll(new RegExp(r', '), ' #')
+                                                //.replaceFirst('', '#') //"Please mention your skills example #skills1 #skills2..."
+                                            : selectedSkillList
+                                                .toString().replaceAll('[', '').replaceAll(']', '').
+                                                replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                        style: TextStyle(
+                                            fontFamily: "Montserrat",
+                                            fontSize: 10.0.sp,
+                                            color: Constants.bpSkipStyle),
+                                      ),
                                     ),
-                                  ),
-                                ),
+                                //   ),
+                                // ),
                               ),
                             ),
                             // TextFieldTags(
@@ -2702,24 +2713,27 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     border:
                                         Border.all(color: Constants.formBorder),
                                     borderRadius: BorderRadius.circular(5.0)),
-                                child: Center(
-                                  child: Text(
-                                    selectedHobbiesList == null ||
-                                            selectedHobbiesList.length == 0
-                                        ? result.data!.hobbies!
-                                        // .replaceAll('[', '').replaceAll(']', '').
-                                        //     replaceAll(new RegExp(r', '), ' #')
-                                            //.replaceFirst('', '#') //"Please mention your hobbies example #hobbie1 #hobbie2..."
-                                        : selectedHobbiesList
-                                            .toString().replaceAll('[', '').replaceAll(']', '').
-                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    style: TextStyle(
-                                        fontFamily: "Montserrat",
-                                        fontSize: 10.0.sp,
-                                        color: Constants.bpSkipStyle),
+                                //child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      selectedHobbiesList == null ||
+                                              selectedHobbiesList.length == 0
+                                          ? result.data!.hobbies!
+                                          // .replaceAll('[', '').replaceAll(']', '').
+                                          //     replaceAll(new RegExp(r', '), ' #')
+                                              //.replaceFirst('', '#') //"Please mention your hobbies example #hobbie1 #hobbie2..."
+                                          : selectedHobbiesList
+                                              .toString().replaceAll('[', '').replaceAll(']', '').
+                                              replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                      style: TextStyle(
+                                          fontFamily: "Montserrat",
+                                          fontSize: 10.0.sp,
+                                          color: Constants.bpSkipStyle),
+                                    ),
                                   ),
                                 ),
-                              ),
+                             //),
                               //     TextFieldTags(
                               //   //initialTags: ["college"],
                               //   tagsStyler: TagsStyler(
@@ -3157,6 +3171,7 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                           child: GestureDetector(
                             onTap: () async {
                               //print('Submit!!!');
+                              wordCountForDescription(_achivementController.text);
                               bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9."
                                       r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                   .hasMatch(_emailController.text.trim());
@@ -3295,7 +3310,18 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                              } else if (_fbLinkController.text.isNotEmpty && fbLinkCheck == false) {
+                              } else if (wordCount > 100) {
+                              Fluttertoast.showToast(
+                            msg: 'Please Use 100 Words in Achivement Description',
+                             toastLength: Toast.LENGTH_SHORT,
+                             gravity: ToastGravity.BOTTOM,
+                             timeInSecForIosWeb: 1,
+                             backgroundColor: Constants.bgColor,
+                             textColor: Colors.white,
+                             fontSize: 10.0.sp,
+                            );
+                            }
+                               else if (_fbLinkController.text.isNotEmpty && fbLinkCheck == false) {
                                 Fluttertoast.showToast(
                                     msg: "Please Enter Valid Facebook Link",
                                     toastLength: Toast.LENGTH_SHORT,

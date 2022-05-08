@@ -268,6 +268,15 @@ class _OtpScreenState extends State<OtpScreen> {
                                 otpPinController.clear();
                               });
                               //resendOTP();
+                              Fluttertoast.showToast(
+                              msg: 'OTP sent successfully',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Constants.bgColor,
+                              textColor: Colors.white,
+                              fontSize: 10.0.sp,
+                              );
                             }
                           },
                         ),

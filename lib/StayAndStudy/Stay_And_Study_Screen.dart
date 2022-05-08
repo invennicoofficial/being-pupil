@@ -259,7 +259,7 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                                         propertyLocation[index]!,
                                         style: TextStyle(
                                             fontFamily: 'Montserrat',
-                                            fontSize: 8.0.sp,
+                                            fontSize: 9.0.sp,
                                             height: 1.5,
                                             fontWeight: FontWeight.w400,
                                             color: Constants

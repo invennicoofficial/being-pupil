@@ -511,7 +511,7 @@ saveFirebaseToken(String token) async {
                                   width: 100.0.w,
                                   child: Text(descriptionList[index]!,
                                       style: TextStyle(
-                                          fontSize: 9.0.sp,
+                                          fontSize: 12.0.sp,
                                           color: Constants.bpOnBoardSubtitleStyle,
                                           fontFamily: 'Montserrat',
                                           height: 1.5,

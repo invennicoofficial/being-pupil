@@ -590,7 +590,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                               Text(
                                                 profileMap!['data']
                                                         ['total_experience']
-                                                    .toString(),
+                                                    .toString() + ' Yrs',
                                                 style: TextStyle(
                                                     fontSize: 10.0.sp,
                                                     color: Constants.bgColor,
@@ -799,7 +799,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                         child: Text(
                                           descriptionList[index]!,
                                           style: TextStyle(
-                                            fontSize: 9.0.sp,
+                                            fontSize: 12.0.sp,
                                             color: Constants
                                                 .bpOnBoardSubtitleStyle,
                                             fontFamily: 'Montserrat',

@@ -1,7 +1,9 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Booking_Model/Get_Booking_Data_Model.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sizer/sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ViewBookingScreen extends StatefulWidget {
   // BookingDetails bookingDetails;
@@ -407,22 +409,27 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                             color: Constants.bpSkipStyle),
                       ),
                       SizedBox(height: 0.5.h,),
-                      Text.rich(TextSpan(children: [
-                        TextSpan(text: 'Contact Us ',
-                         style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 9.0.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Constants.bgColor),
-                        ),
-                        TextSpan(text: 'for help',
-                         style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 8.0.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Constants.bpSkipStyle),
-                        )
-                      ]))
+                      GestureDetector(
+                        onTap: (){
+                          _showContactUsDialog(context);
+                        },
+                        child: Text.rich(TextSpan(children: [
+                          TextSpan(text: 'Contact Us ',
+                           style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 9.0.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Constants.bgColor),
+                          ),
+                          TextSpan(text: 'for help',
+                           style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 8.0.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Constants.bpSkipStyle),
+                          )
+                        ])),
+                      )
                     ],
                   )
                 ),
@@ -432,5 +439,74 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
         ),
       ),
     );
+  }
+
+  //Contact US Dialog
+  _showContactUsDialog(context){
+    showDialog(context: context, builder: (context){
+      return Dialog(
+        shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0))),
+        //insetPadding: EdgeInsets.only(top: 10.0),
+        elevation: 15.0,
+  child: Container(
+    height: 250.0,
+    width: 350.0,
+    color: Colors.white,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.all(15.0),
+          child: Text('Contact Us On',
+           style: TextStyle(
+               fontFamily: 'Montserrat',
+               fontSize: 18.0.sp,
+               fontWeight: FontWeight.w600,
+               color: Constants.bgColor),
+          ),
+        ),
+        Padding(padding: EdgeInsets.all(15.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+         Text('+918091715227',
+            style: TextStyle(
+               fontFamily: 'Montserrat',
+               fontSize: 16.0.sp,
+               fontWeight: FontWeight.w400,
+               color: Constants.bgColor),
+          ),
+          IconButton(onPressed: (){
+            launch("tel://+918091715227");
+          }, icon: Icon(Icons.call)),
+        ],),),
+        Padding(padding: EdgeInsets.all(15.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+         Container(
+           //color: Colors.grey,
+           width: 200,
+           child: Text('admin@beingpupil.com',
+              style: TextStyle(
+               fontFamily: 'Montserrat',
+               fontSize: 16.0.sp,
+               fontWeight: FontWeight.w400,
+               color: Constants.bgColor),
+              overflow: TextOverflow.ellipsis,
+            ),
+         ),
+          IconButton(onPressed: (){
+            launch('mailto:admin@beingpupil.com?subject=Help me on ${widget.name} property&body=Hello Team,\n');
+          }, icon: Icon(Icons.mail)),
+        ],),)
+      ],
+    ),
+  ),
+);
+  });
   }
 }

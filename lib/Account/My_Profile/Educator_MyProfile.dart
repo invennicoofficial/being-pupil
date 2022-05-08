@@ -669,7 +669,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                       child: Text(
                                         descriptionList[index]!,
                                         style: TextStyle(
-                                          fontSize: 9.0.sp,
+                                          fontSize: 12.0.sp,
                                           color:
                                               Constants.bpOnBoardSubtitleStyle,
                                           fontFamily: 'Montserrat',

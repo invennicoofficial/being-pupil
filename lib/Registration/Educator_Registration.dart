@@ -107,6 +107,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
   // String _selectedHobbiesJson = 'Nothing to show';
   File? ccfile; //some file from device storage
   CubeUser ccuser = CubeUser(); // some user to set avatar
+  int wordCount = 0;
 
   @override
   void initState() {
@@ -149,6 +150,13 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
       userId = preferences.getInt('userId');
     });
     //print(registerAs);
+  }
+
+  wordCountForDescription(String str) {
+    setState(() {
+      wordCount = str.split(" ").length;
+      //print('Total Word Count:::' + wordCount.toString());
+    });
   }
 
   createControllers() {
@@ -2281,7 +2289,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     borderRadius: BorderRadius.circular(5.0)),
                                 child: Center(
                                   child: Align(
-                                    alignment: Alignment.topCenter,
+                                    alignment: Alignment.topLeft,
                                     child: SingleChildScrollView(
                                       child: Text(
                                         selectedSubjectList == null ||
@@ -2434,24 +2442,27 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     border:
                                         Border.all(color: Constants.formBorder),
                                     borderRadius: BorderRadius.circular(5.0)),
-                                child: Center(
-                                  child: Align(
-                                    alignment: Alignment.topCenter,
-                                    child: Text(
-                                      selectedSkillList == null ||
-                                              selectedSkillList.length == 0
-                                          ? "Please mention your skills example #skills1 #skills2..."
-                                          : selectedSkillList
-                                              .toString().replaceAll('[', '').replaceAll(']', '').
-                                              replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                      style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          fontSize: 10.0.sp,
-                                          color: Constants.bpSkipStyle),
+                                // child: Center(
+                                //   child: Align(
+                                //     alignment: Alignment.topCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        selectedSkillList == null ||
+                                                selectedSkillList.length == 0
+                                            ? "Please mention your skills example #skills1 #skills2..."
+                                            : selectedSkillList
+                                                .toString().replaceAll('[', '').replaceAll(']', '').
+                                                replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                        style: TextStyle(
+                                            fontFamily: "Montserrat",
+                                            fontSize: 10.0.sp,
+                                            color: Constants.bpSkipStyle),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
+                              //   ),
+                              // ),
                               // TextFieldTags(
                               //   //initialTags: ["college"],
                               //   tagsStyler: TagsStyler(
@@ -2682,24 +2693,27 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     border:
                                         Border.all(color: Constants.formBorder),
                                     borderRadius: BorderRadius.circular(5.0)),
-                                child: Center(
-                                  child: Align(
-                                    alignment: Alignment.topCenter,
-                                    child: Text(
-                                      selectedHobbiesList == null ||
-                                              selectedHobbiesList.length == 0
-                                          ? "Please mention your hobbies example #hobbie1 #hobbie2..."
-                                          : selectedHobbiesList
-                                              .toString().replaceAll('[', '').replaceAll(']', '').
-                                              replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                      style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          fontSize: 10.0.sp,
-                                          color: Constants.bpSkipStyle),
+                                // child: Center(
+                                //   child: Align(
+                                //     alignment: Alignment.topCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        selectedHobbiesList == null ||
+                                                selectedHobbiesList.length == 0
+                                            ? "Please mention your hobbies example #hobbie1 #hobbie2..."
+                                            : selectedHobbiesList
+                                                .toString().replaceAll('[', '').replaceAll(']', '').
+                                                replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                        style: TextStyle(
+                                            fontFamily: "Montserrat",
+                                            fontSize: 10.0.sp,
+                                            color: Constants.bpSkipStyle),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
+                              //   ),
+                              // ),
                               //     TextFieldTags(
                               //   //initialTags: ["college"],
                               //   tagsStyler: TagsStyler(
@@ -3130,6 +3144,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           child: GestureDetector(
                             onTap: () {
                               //print('Submit!!!');
+                              wordCountForDescription(_achivementController.text);
                               bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9."
                                       r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                   .hasMatch(_emailController.text.trim());
@@ -3265,7 +3280,17 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                              } else if (_fbLinkController.text.isNotEmpty && fbLinkCheck == false) {
+                              } else if (wordCount > 100) {
+                              Fluttertoast.showToast(
+                            msg: 'Please Use 100 Words in Achivement Description',
+                             toastLength: Toast.LENGTH_SHORT,
+                             gravity: ToastGravity.BOTTOM,
+                             timeInSecForIosWeb: 1,
+                             backgroundColor: Constants.bgColor,
+                             textColor: Colors.white,
+                             fontSize: 10.0.sp,
+                            );
+                            } else if (_fbLinkController.text.isNotEmpty && fbLinkCheck == false) {
                                 Fluttertoast.showToast(
                                     msg: "Please Enter Valid Facebook Link",
                                     toastLength: Toast.LENGTH_SHORT,

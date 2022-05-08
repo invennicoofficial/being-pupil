@@ -89,6 +89,8 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
   Map<String, dynamic>? eduMap;
   List<dynamic>? eduMapData;
   final ImagePicker _picker = ImagePicker();
+      int wordCount = 0;
+
 
   @override
   void initState() {
@@ -161,6 +163,13 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
       //userId = preferences.getInt('userId');
     });
    // print(registerAs);
+  }
+
+  wordCountForDescription(String str) {
+    setState(() {
+      wordCount = str.split(" ").length;
+      //print('Total Word Count:::' + wordCount.toString());
+    });
   }
 
   _imageFromCamera() async {
@@ -2178,24 +2187,27 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                               color: Constants.formBorder),
                                           borderRadius:
                                               BorderRadius.circular(5.0)),
-                                      child: Center(
-                                        child: Text(
-                                            result.data!.identificationDocumentNumber == null ? 'Please mention your skills example #skill1 #skill2....' :
-                                          selectedSkillList == null ||
-                                            selectedSkillList.length == 0
-                                              ? result.data!.skills!
-                                              : selectedSkillList.length > 0
-                                                  ? selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '').
-                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#')
-                                                  : "Please mention your skills example #skill1 #skill2....",
-                                          //: '',
-                                          //.replaceAll(new RegExp(r', '), '# '),
-                                          style: TextStyle(
-                                              fontFamily: "Montserrat",
-                                              fontSize: 10.0.sp,
-                                              color: Constants.bpSkipStyle),
+                                      //child: Center(
+                                        child: Padding(
+                                          padding:  EdgeInsets.all(8.0),
+                                          child: Text(
+                                              result.data!.identificationDocumentNumber == null ? 'Please mention your skills example #skill1 #skill2....' :
+                                            selectedSkillList == null ||
+                                              selectedSkillList.length == 0
+                                                ? result.data!.skills!
+                                                : selectedSkillList.length > 0
+                                                    ? selectedSkillList.toString().replaceAll('[', '').replaceAll(']', '').
+                                              replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#')
+                                                    : "Please mention your skills example #skill1 #skill2....",
+                                            //: '',
+                                            //.replaceAll(new RegExp(r', '), '# '),
+                                            style: TextStyle(
+                                                fontFamily: "Montserrat",
+                                                fontSize: 10.0.sp,
+                                                color: Constants.bpSkipStyle),
+                                          ),
                                         ),
-                                      ),
+                                      //),
                                       //TextFieldTags(
                                       //   //initialTags: ["college"],
                                       //   tagsStyler: TagsStyler(
@@ -2343,28 +2355,31 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                               color: Constants.formBorder),
                                           borderRadius:
                                               BorderRadius.circular(5.0)),
-                                      child: Center(
-                                        child: Text(
-                                          result.data!.identificationDocumentNumber == null ? 'Please mention your hobbies example #hobbie1 #hobbie2....' :
-                                          selectedHobbiesList == null ||
-                                            selectedHobbiesList.length == 0
-                                              ? result.data!.hobbies!
-                                              : selectedHobbiesList.length > 0
-                                                  ? selectedHobbiesList
-                                                      .toString().replaceAll('[', '').replaceAll(']', '').
-                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#')
-                                                  : "Please mention your hobbies example #hobbie1 #hobbie2....",
-                                          // selectedHobbiesList == null ||
-                                          //         selectedHobbiesList.length == 0
-                                          //     ? "Please mention your hobbies example #hobbie1 #hobbie2..."
-                                          //     : selectedHobbiesList
-                                          //         .toString(), //.replaceAll(new RegExp(r', '), '# '),
-                                          style: TextStyle(
-                                              fontFamily: "Montserrat",
-                                              fontSize: 10.0.sp,
-                                              color: Constants.bpSkipStyle),
+                                      //child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            result.data!.identificationDocumentNumber == null ? 'Please mention your hobbies example #hobbie1 #hobbie2....' :
+                                            selectedHobbiesList == null ||
+                                              selectedHobbiesList.length == 0
+                                                ? result.data!.hobbies!
+                                                : selectedHobbiesList.length > 0
+                                                    ? selectedHobbiesList
+                                                        .toString().replaceAll('[', '').replaceAll(']', '').
+                                              replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#')
+                                                    : "Please mention your hobbies example #hobbie1 #hobbie2....",
+                                            // selectedHobbiesList == null ||
+                                            //         selectedHobbiesList.length == 0
+                                            //     ? "Please mention your hobbies example #hobbie1 #hobbie2..."
+                                            //     : selectedHobbiesList
+                                            //         .toString(), //.replaceAll(new RegExp(r', '), '# '),
+                                            style: TextStyle(
+                                                fontFamily: "Montserrat",
+                                                fontSize: 10.0.sp,
+                                                color: Constants.bpSkipStyle),
+                                          ),
                                         ),
-                                      ),
+                                      //),
                                       //     TextFieldTags(
                                       //   //initialTags: ["college"],
                                       //   tagsStyler: TagsStyler(
@@ -2722,6 +2737,7 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                     //print(imagePath);
                                     //print(documentPath);
                                     //print('Submit!!!');
+                                    wordCountForDescription(_achivementController.text);
                                     bool emailValid = RegExp(
                                             r"^[a-zA-Z0-9.a-zA-Z0-9."
                                             r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -2824,7 +2840,18 @@ class _EditLearnerProfileState extends State<EditLearnerProfile> {
                                           backgroundColor: Constants.bgColor,
                                           textColor: Colors.white,
                                           fontSize: 10.0.sp);
-                                    } else if (_fbLinkController.text.isNotEmpty && fbLinkCheck == false) {
+                                    } else if (wordCount > 100) {
+                              Fluttertoast.showToast(
+                            msg: 'Please Use 100 Words in Achivement Description',
+                             toastLength: Toast.LENGTH_SHORT,
+                             gravity: ToastGravity.BOTTOM,
+                             timeInSecForIosWeb: 1,
+                             backgroundColor: Constants.bgColor,
+                             textColor: Colors.white,
+                             fontSize: 10.0.sp,
+                            );
+                            }
+                                    else if (_fbLinkController.text.isNotEmpty && fbLinkCheck == false) {
                                 Fluttertoast.showToast(
                                     msg: "Please Enter Valid Facebook Link",
                                     toastLength: Toast.LENGTH_SHORT,

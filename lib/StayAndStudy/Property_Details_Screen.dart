@@ -421,7 +421,7 @@ Future<void> _createDynamicLink(bool short, String id) async {
                   colorClickableText: Constants.blueTitle,
                   style: TextStyle(
                       fontFamily: 'Montserrat',
-                      fontSize: 8.0.sp,
+                      fontSize: 11.0.sp,
                       fontWeight: FontWeight.w400,
                       color: Constants.bpOnBoardSubtitleStyle),
                 ),
@@ -472,6 +472,8 @@ Future<void> _createDynamicLink(bool short, String id) async {
                                     // widget.propertyDetails.data[widget.index]
                                     //     .amenities[index].amenitiesImage,
                                     fit: BoxFit.contain,
+                                    height: 20.0,
+                                    width: 20.0,
                                   ),
                                   // size: 22.0,
                                   //color: Constants.bgColor,
@@ -486,7 +488,7 @@ Future<void> _createDynamicLink(bool short, String id) async {
                                     //     .amenities[index].amenitiesName,
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
-                                        fontSize: 9.0.sp,
+                                        fontSize: 10.0.sp,
                                         fontWeight: FontWeight.w400,
                                         color: Constants.bgColor),
                                   ),

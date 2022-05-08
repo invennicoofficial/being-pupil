@@ -510,94 +510,110 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                       )
                     //Enrolled Course
                     : Expanded(
-                        child: ListView.builder(
-                            controller: _scrollController,
-                            itemCount: nameList.length,
-                            //physics: AlwaysScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 1.5.h, horizontal: 1.0.w),
-                                child: ListTile(
-                                  onTap: () async {
-                                    var isLeaveCourse = await pushNewScreen(
-                                        context,
-                                        screen: EnrolledCourseDetailScreen(
-                                          courseId: idList[index],
-                                          courseName: nameList[index],
-                                          coursDate: dateList[index],
-                                          courseDescription:
-                                              descriptionList[index],
-                                          courseLinks:
-                                              linksList[index] as List<String>?,
-                                        ),
-                                        withNavBar: false,
-                                        pageTransitionAnimation:
-                                            PageTransitionAnimation.cupertino);
-                                    //print(isLeaveCourse);
-                                    isLeaveCourse == 'leave'
-                                        ? _refresh()
-                                        : null;
-                                  },
-                                  title: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        height: 70.0,
-                                        width: 70.0,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                            image: DecorationImage(
-                                                image: AssetImage(
-                                                    'assets/images/postImage.png'),
-                                                fit: BoxFit.cover)),
-                                      ),
-                                      SizedBox(
-                                        width: 5.0.w,
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                        child: Column(
+                         // mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(top: 1.0.h, left: 5.0.w),
+                              child: Text('Course taken',
+                                                    //'${result.data[index].startDate} to ${result.data[index].endDate}',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 12.0.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Constants.bgColor)),
+                            ),
+                            ListView.builder(
+                                controller: _scrollController,
+                                itemCount: nameList.length,
+                                //physics: AlwaysScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 1.5.h, horizontal: 1.0.w),
+                                    child: ListTile(
+                                      onTap: () async {
+                                        var isLeaveCourse = await pushNewScreen(
+                                            context,
+                                            screen: EnrolledCourseDetailScreen(
+                                              courseId: idList[index],
+                                              courseName: nameList[index],
+                                              coursDate: dateList[index],
+                                              courseDescription:
+                                                  descriptionList[index],
+                                              courseLinks:
+                                                  linksList[index] as List<String>?,
+                                            ),
+                                            withNavBar: false,
+                                            pageTransitionAnimation:
+                                                PageTransitionAnimation.cupertino);
+                                        //print(isLeaveCourse);
+                                        isLeaveCourse == 'leave'
+                                            ? _refresh()
+                                            : null;
+                                      },
+                                      title: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 10.0),
-                                            child: Container(
-                                              width: 63.0.w,
-                                              child: Text(
-                                                nameList[index]!,
-                                                //result.data[index].courseName,
-                                                style: TextStyle(
-                                                    fontFamily: 'Montserrat',
-                                                    fontSize: 11.0.sp,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Constants.bgColor),
-                                                overflow: TextOverflow.clip,
-                                              ),
-                                            ),
+                                          Container(
+                                            height: 70.0,
+                                            width: 70.0,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
+                                                image: DecorationImage(
+                                                    image: AssetImage(
+                                                        'assets/images/postImage.png'),
+                                                    fit: BoxFit.cover)),
                                           ),
                                           SizedBox(
-                                            height: 0.5.h,
+                                            width: 5.0.w,
                                           ),
-                                          Text(dateList[index],
-                                              //'${result.data[index].startDate} to ${result.data[index].endDate}',
-                                              style: TextStyle(
-                                                  fontFamily: 'Montserrat',
-                                                  fontSize: 8.0.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Constants.bgColor)),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 10.0),
+                                                child: Container(
+                                                  width: 63.0.w,
+                                                  child: Text(
+                                                    nameList[index]!,
+                                                    //result.data[index].courseName,
+                                                    style: TextStyle(
+                                                        fontFamily: 'Montserrat',
+                                                        fontSize: 11.0.sp,
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Constants.bgColor),
+                                                    overflow: TextOverflow.clip,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 0.5.h,
+                                              ),
+                                              Text(dateList[index],
+                                                  //'${result.data[index].startDate} to ${result.data[index].endDate}',
+                                                  style: TextStyle(
+                                                      fontFamily: 'Montserrat',
+                                                      fontSize: 8.0.sp,
+                                                      fontWeight: FontWeight.w400,
+                                                      color: Constants.bgColor)),
+                                            ],
+                                          ),
                                         ],
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }),
+                                    ),
+                                  );
+                                }),
+                          ],
+                        ),
                       ),
               ],
             ),

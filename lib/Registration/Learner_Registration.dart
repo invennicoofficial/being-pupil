@@ -90,6 +90,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
   String? registerAs;
   int? totalWorkExp;
   final ImagePicker _picker = ImagePicker();
+  int wordCount = 0;
 
   @override
   void initState() {
@@ -140,6 +141,13 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     //print(authToken);
     getCatSkillHobbieList();
+  }
+
+  wordCountForDescription(String str) {
+    setState(() {
+      wordCount = str.split(" ").length;
+      //print('Total Word Count:::' + wordCount.toString());
+    });
   }
 
   _imageFromCamera() async {
@@ -2225,24 +2233,27 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                     border:
                                         Border.all(color: Constants.formBorder),
                                     borderRadius: BorderRadius.circular(5.0)),
-                                child: Center(
-                                  child: Align(
-                                    alignment: Alignment.topCenter,
-                                    child: Text(
-                                     selectedSkillList == null ||
-                                              selectedSkillList.length == 0
-                                          ? "Please mention your skills example #skills1 #skills2..."
-                                          : selectedSkillList
-                                              .toString().replaceAll('[', '').replaceAll(']', '').
-                                              replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                      style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          fontSize: 10.0.sp,
-                                          color: Constants.bpSkipStyle),
+                                // child: Center(
+                                //   child: Align(
+                                //     alignment: Alignment.topCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                       selectedSkillList == null ||
+                                                selectedSkillList.length == 0
+                                            ? "Please mention your skills example #skills1 #skills2..."
+                                            : selectedSkillList
+                                                .toString().replaceAll('[', '').replaceAll(']', '').
+                                                replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                        style: TextStyle(
+                                            fontFamily: "Montserrat",
+                                            fontSize: 10.0.sp,
+                                            color: Constants.bpSkipStyle),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
+                              //   ),
+                              // ),
                             ),
                           ),
                         ),
@@ -2285,24 +2296,27 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                       border: Border.all(
                                           color: Constants.formBorder),
                                       borderRadius: BorderRadius.circular(5.0)),
-                                  child: Center(
-                                    child: Align(
-                                      alignment: Alignment.topCenter,
-                                      child: Text(
-                                       selectedHobbiesList == null ||
-                                              selectedHobbiesList.length == 0
-                                          ? "Please mention your hobbies example #hobbie1 #hobbie2..."
-                                          : selectedHobbiesList
-                                              .toString().replaceAll('[', '').replaceAll(']', '').
-                                              replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                        style: TextStyle(
-                                            fontFamily: "Montserrat",
-                                            fontSize: 10.0.sp,
-                                            color: Constants.bpSkipStyle),
+                                  // child: Center(
+                                  //   child: Align(
+                                  //     alignment: Alignment.topCenter,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                         selectedHobbiesList == null ||
+                                                selectedHobbiesList.length == 0
+                                            ? "Please mention your hobbies example #hobbie1 #hobbie2..."
+                                            : selectedHobbiesList
+                                                .toString().replaceAll('[', '').replaceAll(']', '').
+                                                replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                          style: TextStyle(
+                                              fontFamily: "Montserrat",
+                                              fontSize: 10.0.sp,
+                                              color: Constants.bpSkipStyle),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                )
+                                //   ),
+                                // )
                                 // height: 13.0.h,
                                 // width: 90.0.w,
                                 //     child: TextFieldTags(
@@ -2663,6 +2677,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           child: GestureDetector(
                             onTap: () {
                               //print('Submit!!!');
+                              wordCountForDescription(_achivementController.text);
                               bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9."
                                       r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                   .hasMatch(_emailController.text.trim());
@@ -2769,7 +2784,18 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                     backgroundColor: Constants.bgColor,
                                     textColor: Colors.white,
                                     fontSize: 10.0.sp);
-                              } else if (_fbLinkController.text.isNotEmpty && fbLinkCheck == false) {
+                              } else if (wordCount > 100) {
+                              Fluttertoast.showToast(
+                            msg: 'Please Use 100 Words in Achivement Description',
+                             toastLength: Toast.LENGTH_SHORT,
+                             gravity: ToastGravity.BOTTOM,
+                             timeInSecForIosWeb: 1,
+                             backgroundColor: Constants.bgColor,
+                             textColor: Colors.white,
+                             fontSize: 10.0.sp,
+                            );
+                            }
+                               else if (_fbLinkController.text.isNotEmpty && fbLinkCheck == false) {
                                 Fluttertoast.showToast(
                                     msg: "Please Enter Valid Facebook Link",
                                     toastLength: Toast.LENGTH_SHORT,
