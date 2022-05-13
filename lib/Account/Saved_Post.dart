@@ -134,25 +134,25 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                       new AlwaysStoppedAnimation<Color>(Constants.bgColor),
                 ),
               )
-              : postIdList.length == 0
-            ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset('assets/images/noBooking.png',
-                        height: 250, width: 250, fit: BoxFit.contain),
-                    SizedBox(height: 5.0,),
-                    Text(
-                      'No Saved Post',
-                      style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 16.0.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Constants.bgColor),
-                    ),
-                  ],
-                ),
-              )
+            //   : postIdList.length == 0
+            // ? Center(
+            //     child: Column(
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       children: [
+            //         Image.asset('assets/images/noBooking.png',
+            //             height: 250, width: 250, fit: BoxFit.contain),
+            //         SizedBox(height: 5.0,),
+            //         Text(
+            //           'No Saved Post',
+            //           style: TextStyle(
+            //               fontFamily: 'Montserrat',
+            //               fontSize: 16.0.sp,
+            //               fontWeight: FontWeight.w600,
+            //               color: Constants.bgColor),
+            //         ),
+            //       ],
+            //     ),
+            //   )
             : SingleChildScrollView(
                 controller: _scrollController,
                 //physics: BouncingScrollPhysics(),

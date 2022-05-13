@@ -4,8 +4,12 @@
     <string name="facebook_app_id">491316335660059</string>
     <string name="fb_login_protocol_scheme">fb491316335660059</string>
     <string name="facebook_client_token">f4819b867e2c8a4e6984414efdf617c1</string> -->
-    <string name="app_name">being_pupil</string>
+    <!-- <string name="app_name">being_pupil</string>
     <string name="facebook_app_id">2633091180169454</string>
     <string name="fb_login_protocol_scheme">fb2633091180169454</string>
-    <string name="facebook_client_token">0d495ae217976eedc13f00fbb0ee728f</string>
+    <string name="facebook_client_token">0d495ae217976eedc13f00fbb0ee728f</string> -->
+    <string name="app_name">Being Pupil</string>
+    <string name="facebook_app_id">491316335660059</string>
+    <string name="fb_login_protocol_scheme">fb491316335660059</string>
+    <string name="facebook_client_token">f4819b867e2c8a4e6984414efdf617c1</string>
 </resources>

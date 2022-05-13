@@ -4,7 +4,7 @@ class Config{
   //static const String baseUrl = "http://43.204.0.106/being-pupil-backend/public/api/";
   static const String baseUrl = "http://beingpupil.com/public/api/";
   //TODO replace API Key
-  static const String locationKey = "AIzaSyBdxRyXCjoupZOKXtv6_mjTOkpnqcSPstI";
+  static const String locationKey = "AIzaSyCwOLCJW7tuZ6oRkXHuQaAnOeyQlpYIaQY";
 
   static const String signupUrl = baseUrl + "user/signup";
   static const String otpUrl = baseUrl + "user/verify_otp";

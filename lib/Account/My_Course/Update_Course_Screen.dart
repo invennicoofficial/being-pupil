@@ -224,7 +224,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                           initialDate: DateTime.now(),
                           firstDate: new DateTime.now(),
                           lastDate: new DateTime(2100),
-                          helpText: 'Select Birth Date');
+                          helpText: 'Select Course Date');
                       if (datePick != null && datePick != startDate) {
                         setState(() {
                           startDate = datePick;
@@ -300,7 +300,7 @@ class _UpdateCourseScreenState extends State<UpdateCourseScreen> {
                           initialDate: new DateTime.now(),
                           firstDate: new DateTime.now(),
                           lastDate: new DateTime(2100),
-                          helpText: 'Select Birth Date');
+                          helpText: 'Select Course Date');
                       if (datePick != null && datePick != endDate) {
                         setState(() {
                           endDate = datePick;

@@ -36,16 +36,16 @@
   <dict>
   <key>CFBundleURLSchemes</key>
   <array>
-    <string>fbAPP-ID</string>
+    <string>491316335660059</string>
   </array>
   </dict>
 </array>
 <key>FacebookAppID</key>
-<string>APP-ID</string>
+<string>491316335660059</string>
 <key>FacebookClientToken</key>
-<string>CLIENT-TOKEN</string>
+<string>f4819b867e2c8a4e6984414efdf617c1</string>
 <key>FacebookDisplayName</key>
-<string>APP-NAME</string>
+<string>Being Pupil</string>
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
 		<key>UIMainStoryboardFile</key>
