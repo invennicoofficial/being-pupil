@@ -55,14 +55,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     var _textH1 = TextStyle(
         fontFamily: "Montserrat",
         fontWeight: FontWeight.w600,
-        fontSize: 16.0.sp,
+        fontSize: 15.0.sp,
         color: Constants.bpOnBoardTitleStyle);
 
     var _textH2 = TextStyle(
         height: 0.2.h,
         fontFamily: "Montserrat",
         fontWeight: FontWeight.w400,
-        fontSize: 12.0.sp,
+        fontSize: 11.0.sp,
         color: Constants.bpOnBoardSubtitleStyle);
 
     return Scaffold(
@@ -209,7 +209,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  'Lorem ipsum dolor sit amet,',
+                                  'Find Your Learner & Educator',
                                   style: _textH1,
                                 ),
                                 SizedBox(height: 2.0),
@@ -218,10 +218,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                       horizontal: 1.5.w, vertical: 1.0.h),
                                   child: Container(
                                     //color: Colors.grey,
-                                    height: 15.0.h,
+                                    height: 42.0.h,
                                     width: 82.0.w,
                                     child: Text(
-                                      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore',
+                                      "Do you have knowledge? Enough that you feel to share it with a bunch of inquisitive individuals? It surely is a good choice as a waste of knowledge is the biggest waste. Or maybe you\'re somebody who is searching for a wise educator? We understand how finding exemplary educators or dedicated learners can turn into a vast and confusing decision because after all, you can’t channel your energy in the wrong direction. With Being Pupil, find your bunch of learners and educators who you can teach or get taught by. Try it for free now!",
                                       textAlign: TextAlign.center,
                                       style: _textH2,
                                       softWrap: true,
@@ -257,7 +257,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  'Lorem ipsum dolor sit amet,',
+                                  'Stay And Study',
                                   style: _textH1,
                                 ),
                                 SizedBox(height: 2.0),
@@ -265,10 +265,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 1.5.w, vertical: 1.0.h),
                                   child: Container(
-                                    height: 15.0.h,
+                                    height: 42.0.h,
                                     width: 82.0.w,
                                     child: Text(
-                                      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore',
+                                      "Understandably, locations are as necessary as the educators themselves. Are you worried you might land in a place that is not up to your expectations which can distract you? We’re here to the rescue. Book your study locations with the Being Pupil app and enjoy learning with exceptional views of your choice.",
                                       textAlign: TextAlign.center,
                                       style: _textH2,
                                       softWrap: true,
@@ -304,7 +304,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  'Lorem ipsum dolor sit amet,',
+                                  'Find Your Study Buddies',
                                   style: _textH1,
                                 ),
                                // SizedBox(height: 2.0),
@@ -312,10 +312,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 1.5.w, vertical: 1.0.h),
                                   child: Container(
-                                    height: 15.0.h,
+                                    height: 42.0.h,
                                     width: 82.0.w,
                                     child: Text(
-                                      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore',
+                                      "Well, studying with the right partners is a privilege because you never get to choose your batch before entering elementary or high school. Being Pupil provides you with the facility of finding the right pair of study buddies who vibe with you. Pupils, let’s make learning a fun activity! ",
                                       textAlign: TextAlign.center,
                                       style: _textH2,
                                       softWrap: true,
@@ -335,7 +335,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             Align(
               alignment: FractionalOffset.center,
               child: Padding(
-                  padding: EdgeInsets.only(top: 60.0.h),
+                  padding: EdgeInsets.only(top: 67.0.h),
                   child: _currentPage != 2
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.center,

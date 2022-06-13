@@ -313,7 +313,7 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
             for (int i = 0; i < mapData!.length; i++) {
               propertyId.add(mapData![i]['property_id']);
               propertyName.add(mapData![i]['name']);
-              propertyLocation.add(mapData![i]['location']['address']);
+              propertyLocation.add(mapData![i]['location'] == null ? '' : mapData![i]['location']['address']);
               propertyImage.add(mapData![i]['featured_image'][0]);
               //propertyPrice.add('${int.parse(result.data[i].room[0].roomAmount)}');
               propertyRating.add(mapData![i]['rating'].toDouble());

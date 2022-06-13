@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "105158486640-glmt3sgap7frap7c32st52n6os4b3vnd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.beingPupil",
+            "certificate_hash": "ebd29366e871bfcb707d1532c6acc4f47dd17676"
+          }
+        },
+        {
           "client_id": "105158486640-njc1sl13t6e9m5pmm3odpiojaggpv9mb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -45,6 +53,13 @@
             {
               "client_id": "105158486640-8bk3scavlkviras76km25dgjfu6jmmru.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "105158486640-325ctd3vf8rbvcodcb6fggf99hjmt4e0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.beingPupil"
+              }
             }
           ]
         }

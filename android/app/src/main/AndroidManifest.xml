@@ -24,7 +24,7 @@
         android:label="being_pupil"
         android:icon="@mipmap/launcher_icon">
         <meta-data android:name="com.google.android.geo.API_KEY"
-                   android:value="AIzaSyCwOLCJW7tuZ6oRkXHuQaAnOeyQlpYIaQY"/>
+                   android:value="AIzaSyBhPteA6FOMIaQqRIpHk7xLM5I4BN3_zMs"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

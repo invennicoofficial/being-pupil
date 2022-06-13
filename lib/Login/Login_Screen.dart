@@ -272,22 +272,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 setState(() {
                                   registrationType = 'A';
                                 });
-                                try {
-                                  if (!await TheAppleSignIn.isAvailable()) {
-                                    //print('APPLe not available');
-                                    return null; //Break from the program
-                                    }
-                                  //print('APPLe available');
-                                  final AuthService authService = AuthService();
-                                  final user = await authService.signInWithApple(
-                                      scopes: [Scope.email, Scope.fullName]);
-                                  if(user.email != null) {
-                                    //print(user);
-                                  }
-                                } catch (e) {
-                                  // TODO: Show alert here
-                                  //print(e);
-                                }
+                                _handleAppleSignIn();
                                 
                                 // Navigator.push(
                                 //     context,
@@ -798,7 +783,7 @@ class _LoginScreenState extends State<LoginScreen> {
         checkLogin(gUserData!.id);//'khdbcfioducde99he9hhe'
       }
     } catch (e) {
-      //print('Google Error:::$e');
+      print('Google Error:::$e');
     }
   }
 
@@ -831,6 +816,41 @@ class _LoginScreenState extends State<LoginScreen> {
       //print(result.status);
       //print(result.message);
     }
+  }
+
+  Future<void> _handleAppleSignIn()async{
+
+    try {
+           if (!await TheAppleSignIn.isAvailable()) {
+                //print('APPLe not available');
+            return null; //Break from the program
+              }
+              //print('APPLe available');
+            // final AuthService authService = AuthService();
+            // final user = await authService.signInWithApple(
+            //        scopes: [Scope.email, Scope.fullName]);
+            // if(user.email != null) {
+            //    //print(user);
+            // }
+            final AuthorizationResult result = await TheAppleSignIn.performRequests([
+            AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+    ]);
+
+    if(result.status == AuthorizationStatus.authorized){
+      socialName = result.credential!.fullName!.givenName;
+      socialEmail = result.credential!.email;
+      socialPhotoUrl = '';
+      socialId = result.credential!.user;
+      setState(() {});
+
+      if (result.credential != null) {
+        checkLogin(result.credential!.user.toString());
+      }
+
+    }
+            } catch (e) {
+
+           }
   }
 
      void saveToken(String token) async {
