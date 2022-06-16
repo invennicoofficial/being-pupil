@@ -31,199 +31,213 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
   String? role;
   Map<String, dynamic>? map;
   List<dynamic>? mapData;
+  FocusNode? mobileFocus;
+
+  @override
+  void initState() {
+    super.initState();
+    mobileFocus = FocusNode();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        height: 100.0.h,
-        width: 100.0.w,
-        child: Stack(
-          children: <Widget>[
-            Container(
-              height: 30.0.h,
-              width: 100.0.w,
-              decoration: BoxDecoration(
-                color: Color(0xFF231F20),
-                image: DecorationImage(
-                    image: AssetImage('assets/images/background.png'),
-                    fit: BoxFit.cover),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: 5.5.h, left: 2.0.w),
-                        child: Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.west_outlined,
-                                  color: Colors.white),
-                              iconSize: 30.0,
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            Text(
-                              'LogIn',
-                              style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 18.0.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.only(top: 2.0.h, left: 5.0.w, right: 15.0.w),
-                    child: Text(
-                      'Please provide your number to proceed further.',
-                      style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 9.0.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: 21.0.h, left: 5.0.w, right: 5.0.w, bottom: 3.0.h),
-              child: Card(
-                elevation: 5.0,
-                child: Container(
-                  height: 80.0.h,
-                  width: 100.0.w,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Theme(
-                        data: new ThemeData(
-                          primaryColor: Constants.bpSkipStyle,
-                          primaryColorDark: Constants.bpSkipStyle,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: 3.0.w, right: 3.0.w, top: 4.0.h),
-                          child: Container(
-                            height: 7.0.h,
-                            width: 90.0.w,
-                            child: TextFormField(
-                              controller: mobileController,
-                              keyboardType: TextInputType.phone,
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(10),
-                              ],
-                              decoration: InputDecoration(
-                                labelText: "Phone Number",
-                                labelStyle: TextStyle(
-                                  color: Constants.bpSkipStyle,
-                                  fontFamily: "Montserrat", 
-                                  fontSize: 10.0.sp
-                                ),
-                                fillColor: Colors.white,
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                    //width: 2.0,
-                                  ),
-                                ),
+    return GestureDetector(
+      onTap: () {
+        mobileFocus!.unfocus();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Container(
+          height: 100.0.h,
+          width: 100.0.w,
+          child: Stack(
+            children: <Widget>[
+              Container(
+                height: 30.0.h,
+                width: 100.0.w,
+                decoration: BoxDecoration(
+                  color: Color(0xFF231F20),
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/background.png'),
+                      fit: BoxFit.cover),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 5.5.h, left: 2.0.w),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.west_outlined,
+                                    color: Colors.white),
+                                iconSize: 30.0,
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
                               ),
-                              //keyboardType: TextInputType.emailAddress,
-                              style: new TextStyle(
-                                  fontFamily: "Montserrat", fontSize: 10.0.sp),
+                              Text(
+                                'LogIn',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 18.0.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.only(top: 2.0.h, left: 5.0.w, right: 15.0.w),
+                      child: Text(
+                        'Please provide your number to proceed further.',
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 9.0.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: 21.0.h, left: 5.0.w, right: 5.0.w, bottom: 3.0.h),
+                child: Card(
+                  elevation: 5.0,
+                  child: Container(
+                    height: 80.0.h,
+                    width: 100.0.w,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Theme(
+                          data: new ThemeData(
+                            primaryColor: Constants.bpSkipStyle,
+                            primaryColorDark: Constants.bpSkipStyle,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: 3.0.w, right: 3.0.w, top: 4.0.h),
+                            child: Container(
+                              height: 7.0.h,
+                              width: 90.0.w,
+                              child: TextFormField(
+                                autofocus: true,
+                                focusNode: mobileFocus,
+                                controller: mobileController,
+                                keyboardType: TextInputType.phone,
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(10),
+                                ],
+                                decoration: InputDecoration(
+                                  labelText: "Phone Number",
+                                  labelStyle: TextStyle(
+                                    color: Constants.bpSkipStyle,
+                                    fontFamily: "Montserrat", 
+                                    fontSize: 10.0.sp
+                                  ),
+                                  fillColor: Colors.white,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: BorderSide(
+                                      color: Constants.formBorder,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: BorderSide(
+                                      color: Constants.formBorder,
+                                      //width: 2.0,
+                                    ),
+                                  ),
+                                ),
+                                //keyboardType: TextInputType.emailAddress,
+                                style: new TextStyle(
+                                    fontFamily: "Montserrat", fontSize: 10.0.sp),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: 3.0.w, right: 3.0.w, top: 6.0.h),
-                        child: GestureDetector(
-                          onTap: () {
-                            bool mobileValid = RegExp(r"^[6-9]\d{9}$").hasMatch(mobileController.text);
-                            //print('Logged In!!!');
-                            if (mobileController.text.isEmpty || (mobileValid == false)){
-                              Fluttertoast.showToast(
-                                msg: 'Please Enter Valid Mobile Number',
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Constants.bgColor,
-                                textColor: Colors.white,
-                                fontSize: 10.0.sp,
-                              );
-                            } else {
-                              mobileCheckApi(mobileController.text);
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 3.0.w, right: 3.0.w, top: 6.0.h),
+                          child: GestureDetector(
+                            onTap: () {
+                              bool mobileValid = RegExp(r"^[6-9]\d{9}$").hasMatch(mobileController.text);
+                              //print('Logged In!!!');
+                              if (mobileController.text.isEmpty || (mobileValid == false)){
+                                Fluttertoast.showToast(
+                                  msg: 'Please Enter Valid Mobile Number',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Constants.bgColor,
+                                  textColor: Colors.white,
+                                  fontSize: 10.0.sp,
+                                );
+                              } else {
+                                mobileCheckApi(mobileController.text);
+                                // Navigator.push(
+                                //     context,
+                                //     PageTransition(
+                                //         type: PageTransitionType.fade,
+                                //         child: SignUpAfterLoginScreen(
+                                //           mobileNumber: mobileController.text,
+                                //         )));
+                              }
                               // Navigator.push(
                               //     context,
                               //     PageTransition(
                               //         type: PageTransitionType.fade,
-                              //         child: SignUpAfterLoginScreen(
-                              //           mobileNumber: mobileController.text,
-                              //         )));
-                            }
-                            // Navigator.push(
-                            //     context,
-                            //     PageTransition(
-                            //         type: PageTransitionType.fade,
-                            //         child: OtpScreen()));
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 4.0.h),
-                            child: Container(
-                              height: 7.0.h,
-                              width: 90.0.w,
-                              padding: const EdgeInsets.all(1.0),
-                              decoration: BoxDecoration(
-                                color: Constants.bpOnBoardTitleStyle,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0)),
-                                border: Border.all(
-                                  color: Constants.formBorder,
-                                  width: 0.15,
+                              //         child: OtpScreen()));
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: 4.0.h),
+                              child: Container(
+                                height: 7.0.h,
+                                width: 90.0.w,
+                                padding: const EdgeInsets.all(1.0),
+                                decoration: BoxDecoration(
+                                  color: Constants.bpOnBoardTitleStyle,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0)),
+                                  border: Border.all(
+                                    color: Constants.formBorder,
+                                    width: 0.15,
+                                  ),
                                 ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Continue'.toUpperCase(),
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 11.0.sp),
+                                child: Center(
+                                  child: Text(
+                                    'Continue'.toUpperCase(),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 11.0.sp),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

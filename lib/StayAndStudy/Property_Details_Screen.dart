@@ -89,8 +89,8 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
     } else {
       urlAppleMaps = 'https://maps.apple.com/?q=$lat,$long';
       url = "comgooglemaps://?saddr=&daddr=$lat,$long&directionsmode=driving";
-      if (await canLaunch(url)) {
-        await launch(url);
+      if (await canLaunch(urlAppleMaps)) {
+        await launch(urlAppleMaps);
       } else {
         throw 'Could not launch $url';
       }
