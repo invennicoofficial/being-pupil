@@ -333,9 +333,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               ),
             ),
             Align(
-              alignment: FractionalOffset.center,
+              alignment: FractionalOffset.bottomCenter,
               child: Padding(
-                  padding: EdgeInsets.only(top: 67.0.h),
+                  padding: EdgeInsets.only(bottom: 3.0.h),
                   child: _currentPage != 2
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.center,

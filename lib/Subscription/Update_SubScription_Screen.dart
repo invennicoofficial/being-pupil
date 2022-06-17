@@ -349,6 +349,71 @@ class _UpdateSubscriptionPlanScreen
     );
   }
 
+  //show msg dialog
+  void _showMsgDialog(String msg) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Message',
+                style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 15.0.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Constants.bgColor),
+              ),
+              // IconButton(
+              //   icon: Icon(Icons.close),
+              //   iconSize: 20.0,
+              //   color: Constants.bpOnBoardSubtitleStyle,
+              //   onPressed: () {
+              //     Navigator.of(context).pop();
+              //   },
+              // )
+            ],
+          ),
+          actionsPadding:
+              EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+          content: Text(msg,
+              style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 11.0.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Constants.bgColor),
+              textAlign: TextAlign.center),
+          actions: [
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Center(
+                child: Container(
+                    height: 35.0,
+                    width: 30.0.w,
+                    decoration: BoxDecoration(
+                        color: Constants.bgColor,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Constants.bgColor, width: 1.0)),
+                    child: Center(
+                      child: Text("Continue",
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 11.0.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white)),
+                    )),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 //Get All PLan LIst API
   Future<void> getAllPlanList() async {
     var dio = Dio();
@@ -419,15 +484,16 @@ class _UpdateSubscriptionPlanScreen
                        planName: result.data!.plan!.planName!,
                       )),
               (Route<dynamic> route) => false);
-          Fluttertoast.showToast(
-            msg: result.message!,
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Constants.bgColor,
-            textColor: Colors.white,
-            fontSize: 10.0.sp,
-          );
+          // Fluttertoast.showToast(
+          //   msg: result.message!,
+          //   toastLength: Toast.LENGTH_LONG,
+          //   gravity: ToastGravity.BOTTOM,
+          //   timeInSecForIosWeb: 1,
+          //   backgroundColor: Constants.bgColor,
+          //   textColor: Colors.white,
+          //   fontSize: 10.0.sp,
+          // );
+          _showMsgDialog(result.message!);
           //createRazorPaySubscriptionId(price, name, subscriptionId!);
         } else {
           Fluttertoast.showToast(
