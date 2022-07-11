@@ -260,27 +260,27 @@ class _AccountScreenState extends State<AccountScreen> {
                               padding: 20.0,
                             ),
                           ),
-                          SizedBox(
-                            height: 1.0.h,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              pushNewScreen(context,
-                                  withNavBar: false,
-                                  screen: isSubscribed == 0
-                                      ? SubscriptionPlanScreen()
-                                      : CurrentSubscriptionScreen(),
-                                  pageTransitionAnimation:
-                                      PageTransitionAnimation.cupertino);
-                            },
-                            child: ProfileList(
-                              txt: "Subscription",
-                              image: "assets/icons/subscriptionIcon.png",
-                              forwordIcon: true,
-                              sizeImage: 20.0,
-                              padding: 20.0,
-                            ),
-                          ),
+                          // SizedBox(
+                          //   height: 1.0.h,
+                          // ),
+                          // InkWell(
+                          //   onTap: () {
+                          //     pushNewScreen(context,
+                          //         withNavBar: false,
+                          //         screen: isSubscribed == 0
+                          //             ? SubscriptionPlanScreen()
+                          //             : CurrentSubscriptionScreen(),
+                          //         pageTransitionAnimation:
+                          //             PageTransitionAnimation.cupertino);
+                          //   },
+                          //   child: ProfileList(
+                          //     txt: "Subscription",
+                          //     image: "assets/icons/subscriptionIcon.png",
+                          //     forwordIcon: true,
+                          //     sizeImage: 20.0,
+                          //     padding: 20.0,
+                          //   ),
+                          // ),
                           SizedBox(
                             height: 3.0.h,
                           ),

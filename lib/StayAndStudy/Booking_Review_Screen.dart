@@ -470,7 +470,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                     ),
                     child: Center(
                       child: Text(
-                        'Pay now'.toUpperCase(),
+                        'Book now'.toUpperCase(),
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Montserrat',

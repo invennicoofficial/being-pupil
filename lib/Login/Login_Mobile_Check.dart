@@ -256,6 +256,7 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
 }
 
   Future<void> mobileCheckApi(String mobileNumber) async {
+    print('TYPE:::'+widget.registrationType.toString());
     displayProgressDialog(context);
      String? deviceId = await _getId();
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -265,7 +266,7 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
       FormData formData = FormData.fromMap({
         'mobile_number': mobileNumber,
         //'country_code': '+91',
-        'deviceType': 'A',
+        'deviceType': Platform.isAndroid ? 'A' : 'I',
         'deviceId': deviceId == null ? '123456' : deviceId,
         'registration_type': widget.registrationType,
         'social_login_details[display_name]': widget.socialDisplayName,
