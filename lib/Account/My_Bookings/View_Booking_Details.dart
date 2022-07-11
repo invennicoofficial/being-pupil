@@ -239,155 +239,155 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 3.0.h),
-                      child: Divider(
-                        color: Constants.formBorder,
-                        height: 2.0.h,
-                        thickness: 1.0,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 3.0.h),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Subtotal',
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 12.0.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Constants.bgColor),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.only(top: 3.0.h),
+                    //   child: Divider(
+                    //     color: Constants.formBorder,
+                    //     height: 2.0.h,
+                    //     thickness: 1.0,
+                    //   ),
+                    // ),
+                    // Padding(
+                    //   padding: EdgeInsets.only(top: 3.0.h),
+                    //   child: Row(
+                    //     children: [
+                    //       Text(
+                    //         'Subtotal',
+                    //         style: TextStyle(
+                    //             fontFamily: 'Montserrat',
+                    //             fontSize: 12.0.sp,
+                    //             fontWeight: FontWeight.w600,
+                    //             color: Constants.bgColor),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 1.0.h),
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 1.0.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text.rich(TextSpan(children: [
-                            TextSpan(
-                                text: 'Room Charges',
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 10.0.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Constants.bgColor)),
-                            TextSpan(
-                                text: '(${widget.roomType})',//'($roomType)',
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 8.0.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Constants.blueTitle)),
-                          ])),
-                          Text('₹${widget.roomAmount}',//'₹$roomCharge',
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 10.0.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Constants.bgColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 1.0.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text.rich(TextSpan(children: [
-                            TextSpan(
-                                text: 'Meal Charges',
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 10.0.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Constants.bgColor)),
-                            TextSpan(
-                                text: '(${widget.meal!.substring(1, widget.meal!.length - 1)})',//'(${meal.substring(1, meal.length - 1)})',
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 8.0.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Constants.blueTitle)),
-                          ])),
-                          Text('₹${widget.mealAmount.toStringAsFixed(2)}',//'₹$mealCharge',
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 10.0.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Constants.bgColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 1.0.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            'Taxes & Fees',
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 10.0.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Constants.bgColor),
-                          ),
-                          Text('₹${widget.taxAmount}',//'₹$taxCharge',
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 10.0.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Constants.bgColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 3.0.h),
-                      child: Divider(
-                        color: Constants.formBorder,
-                        height: 2.0.h,
-                        thickness: 1.0,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 2.0.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      'Total',
-                      style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 14.0.sp,
-                          fontWeight: FontWeight.w700,
-                          color: Constants.bgColor),
-                    ),
-                    Text('₹${widget.totalAmount}',//'₹$total',
-                      style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 14.0.sp,
-                          fontWeight: FontWeight.w700,
-                          color: Constants.bgColor),
-                    ),
-                  ],
-                ),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.only(top: 1.0.h),
+              //   child: Column(
+              //     children: <Widget>[
+              //       Padding(
+              //         padding: EdgeInsets.only(top: 1.0.h),
+              //         child: Row(
+              //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //           children: <Widget>[
+              //             Text.rich(TextSpan(children: [
+              //               TextSpan(
+              //                   text: 'Room Charges',
+              //                   style: TextStyle(
+              //                       fontFamily: 'Montserrat',
+              //                       fontSize: 10.0.sp,
+              //                       fontWeight: FontWeight.w400,
+              //                       color: Constants.bgColor)),
+              //               TextSpan(
+              //                   text: '(${widget.roomType})',//'($roomType)',
+              //                   style: TextStyle(
+              //                       fontFamily: 'Montserrat',
+              //                       fontSize: 8.0.sp,
+              //                       fontWeight: FontWeight.w400,
+              //                       color: Constants.blueTitle)),
+              //             ])),
+              //             Text('₹${widget.roomAmount}',//'₹$roomCharge',
+              //               style: TextStyle(
+              //                   fontFamily: 'Montserrat',
+              //                   fontSize: 10.0.sp,
+              //                   fontWeight: FontWeight.w400,
+              //                   color: Constants.bgColor),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //       Padding(
+              //         padding: EdgeInsets.only(top: 1.0.h),
+              //         child: Row(
+              //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //           children: <Widget>[
+              //             Text.rich(TextSpan(children: [
+              //               TextSpan(
+              //                   text: 'Meal Charges',
+              //                   style: TextStyle(
+              //                       fontFamily: 'Montserrat',
+              //                       fontSize: 10.0.sp,
+              //                       fontWeight: FontWeight.w400,
+              //                       color: Constants.bgColor)),
+              //               TextSpan(
+              //                   text: '(${widget.meal!.substring(1, widget.meal!.length - 1)})',//'(${meal.substring(1, meal.length - 1)})',
+              //                   style: TextStyle(
+              //                       fontFamily: 'Montserrat',
+              //                       fontSize: 8.0.sp,
+              //                       fontWeight: FontWeight.w400,
+              //                       color: Constants.blueTitle)),
+              //             ])),
+              //             Text('₹${widget.mealAmount.toStringAsFixed(2)}',//'₹$mealCharge',
+              //               style: TextStyle(
+              //                   fontFamily: 'Montserrat',
+              //                   fontSize: 10.0.sp,
+              //                   fontWeight: FontWeight.w400,
+              //                   color: Constants.bgColor),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //       Padding(
+              //         padding: EdgeInsets.only(top: 1.0.h),
+              //         child: Row(
+              //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //           children: <Widget>[
+              //             Text(
+              //               'Taxes & Fees',
+              //               style: TextStyle(
+              //                   fontFamily: 'Montserrat',
+              //                   fontSize: 10.0.sp,
+              //                   fontWeight: FontWeight.w400,
+              //                   color: Constants.bgColor),
+              //             ),
+              //             Text('₹${widget.taxAmount}',//'₹$taxCharge',
+              //               style: TextStyle(
+              //                   fontFamily: 'Montserrat',
+              //                   fontSize: 10.0.sp,
+              //                   fontWeight: FontWeight.w400,
+              //                   color: Constants.bgColor),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //       Padding(
+              //         padding: EdgeInsets.only(top: 3.0.h),
+              //         child: Divider(
+              //           color: Constants.formBorder,
+              //           height: 2.0.h,
+              //           thickness: 1.0,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // Padding(
+              //   padding: EdgeInsets.only(top: 2.0.h),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: <Widget>[
+              //       Text(
+              //         'Total',
+              //         style: TextStyle(
+              //             fontFamily: 'Montserrat',
+              //             fontSize: 14.0.sp,
+              //             fontWeight: FontWeight.w700,
+              //             color: Constants.bgColor),
+              //       ),
+              //       Text('₹${widget.totalAmount}',//'₹$total',
+              //         style: TextStyle(
+              //             fontFamily: 'Montserrat',
+              //             fontSize: 14.0.sp,
+              //             fontWeight: FontWeight.w700,
+              //             color: Constants.bgColor),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               Padding(
                       padding: EdgeInsets.only(top: 2.0.h),
                       child: Divider(
@@ -396,6 +396,7 @@ class _ViewBookingScreenState extends State<ViewBookingScreen> {
                         thickness: 1.0,
                       ),
                     ),
+              SizedBox(height: 15.0.h,),
               Center(
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 3.0.h),

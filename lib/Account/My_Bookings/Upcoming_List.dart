@@ -274,13 +274,13 @@ class _UpComingListState extends State<UpComingList> {
                                             checkOut: bookingCheckOut[index],
                                             roomType: bookingRoomType[index],
                                             meal: bookingMeal[index].toString(),
-                                            roomAmount:
-                                                bookingRoomAmount[index],
-                                            mealAmount:
-                                                bookingMealAmount[index],
-                                            taxAmount: bookingTaxAmount[index],
-                                            totalAmount:
-                                                bookingTotalAmount[index],
+                                            // roomAmount:
+                                            //     bookingRoomAmount[index],
+                                            // mealAmount:
+                                            //     bookingMealAmount[index],
+                                            // taxAmount: bookingTaxAmount[index],
+                                            // totalAmount:
+                                            //     bookingTotalAmount[index],
                                           ),
                                           withNavBar: false,
                                           pageTransitionAnimation:
@@ -331,10 +331,10 @@ class _UpComingListState extends State<UpComingList> {
               bookingCheckIn.add(result.data![i].checkInDate);
               bookingCheckOut.add(result.data![i].checkOutDate);
               bookingRoomType.add(result.data![i].roomType);
-              bookingRoomAmount.add(result.data![i].roomAmount);
-              bookingTaxAmount.add(result.data![i].taxAmount);
-              bookingMealAmount.add(result.data![i].mealAmount);
-              bookingTotalAmount.add(result.data![i].totalAmount);
+              //! bookingRoomAmount.add(result.data![i].roomAmount);
+              //! bookingTaxAmount.add(result.data![i].taxAmount);
+              //! bookingMealAmount.add(result.data![i].mealAmount);
+              //! bookingTotalAmount.add(result.data![i].totalAmount);
             }
             //print(bookingId);
             isLoading = false;

@@ -56,10 +56,10 @@ class Data {
         this.guestName,
         this.mobileNumber,
         this.meal,
-        this.roomAmount,
-        this.mealAmount,
-        this.taxAmount,
-        this.totalAmount,
+        // this.roomAmount,
+        // this.mealAmount,
+        // this.taxAmount,
+        // this.totalAmount,
     });
 
     String? propertyId;
@@ -72,10 +72,10 @@ class Data {
     String? guestName;
     String? mobileNumber;
     List<String>? meal;
-    double? roomAmount;
-    double? mealAmount;
-    double? taxAmount;
-    double? totalAmount;
+    // double? roomAmount;
+    // double? mealAmount;
+    // double? taxAmount;
+    // double? totalAmount;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         propertyId: json["property_id"],
@@ -88,10 +88,10 @@ class Data {
         guestName: json["guest_name"],
         mobileNumber: json["mobile_number"],
         meal: List<String>.from(json["meal"].map((x) => x)),
-        roomAmount: json["room_amount"].toDouble(),
-        mealAmount: json["meal_amount"].toDouble(),
-        taxAmount: json["tax_amount"].toDouble(),
-        totalAmount: json["total_amount"].toDouble(),
+        // roomAmount: json["room_amount"].toDouble(),
+        // mealAmount: json["meal_amount"].toDouble(),
+        // taxAmount: json["tax_amount"].toDouble(),
+        // totalAmount: json["total_amount"].toDouble(),
     );
 
     Map<String, dynamic> toJson() => {
@@ -105,9 +105,9 @@ class Data {
         "guest_name": guestName,
         "mobile_number": mobileNumber,
         "meal": List<dynamic>.from(meal!.map((x) => x)),
-        "room_amount": roomAmount,
-        "meal_amount": mealAmount,
-        "tax_amount": taxAmount,
-        "total_amount": totalAmount,
+        // "room_amount": roomAmount,
+        // "meal_amount": mealAmount,
+        // "tax_amount": taxAmount,
+        // "total_amount": totalAmount,
     };
 }
