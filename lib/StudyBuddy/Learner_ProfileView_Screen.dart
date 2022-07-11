@@ -61,7 +61,7 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
           padding: EdgeInsets.zero,
         ),
         title: Text(
-          'Study Buddy',
+          'Learner',
           style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 12.0.sp,

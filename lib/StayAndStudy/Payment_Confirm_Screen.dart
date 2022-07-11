@@ -80,7 +80,8 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
                       height: 3.0.h,
                     ),
                     Text(
-                      'Payment Received',
+                      //!'Payment Received',
+                      'Booking Confirmed',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 14.0.sp,

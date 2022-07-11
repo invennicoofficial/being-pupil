@@ -110,9 +110,10 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                   width: 100.0.w,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(widget.propertyDetails![widget.index!]['featured_image'][0]
-                        //widget.propertyDetails.data[widget.index].featuredImage[0]
-                        ),
+                      image: NetworkImage(widget.propertyDetails![widget.index!]
+                              ['featured_image'][0]
+                          //widget.propertyDetails.data[widget.index].featuredImage[0]
+                          ),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(8.0),
@@ -297,164 +298,179 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 3.0.h),
-                      child: Divider(
-                        color: Constants.formBorder,
-                        height: 2.0.h,
-                        thickness: 1.0,
+                    Visibility(
+                      visible: false,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 3.0.h),
+                        child: Divider(
+                          color: Constants.formBorder,
+                          height: 2.0.h,
+                          thickness: 1.0,
+                        ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 3.0.h),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Subtotal',
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 12.0.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Constants.bgColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 1.0.h),
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 1.0.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text.rich(TextSpan(children: [
-                            TextSpan(
-                                text: 'Room Charges ',
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 10.0.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Constants.bgColor)),
-                            TextSpan(
-                                text: '(${widget.roomType})',
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 8.0.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Constants.blueTitle)),
-                          ])),
-                          Text(
-                            '₹${widget.roomCharge}',
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 10.0.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Constants.bgColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 1.0.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text.rich(TextSpan(children: [
-                            TextSpan(
-                                text: 'Meal Charges ',
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 10.0.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Constants.bgColor)),
-                            TextSpan(
-                                text: '(${widget.meal!.substring(1, widget.meal!.length - 1)})',
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 8.0.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Constants.blueTitle)),
-                          ])),
-                          Text(
-                            '₹${widget.mealCharge}',
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 10.0.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Constants.bgColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 1.0.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            'Taxes & Fees',
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 10.0.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Constants.bgColor),
-                          ),
-                          Text(
-                            '₹${widget.taxCharge}',
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 10.0.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Constants.bgColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 3.0.h),
-                      child: Divider(
-                        color: Constants.formBorder,
-                        height: 2.0.h,
-                        thickness: 1.0,
+                    Visibility(
+                      visible: false,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 3.0.h),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Subtotal',
+                              style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 12.0.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Constants.bgColor),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 2.0.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      'Total',
-                      style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 14.0.sp,
-                          fontWeight: FontWeight.w700,
-                          color: Constants.bgColor),
-                    ),
-                    Text(
-                      '₹${widget.total}',
-                      style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 14.0.sp,
-                          fontWeight: FontWeight.w700,
-                          color: Constants.bgColor),
-                    ),
-                  ],
+              Visibility(
+                visible: false,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 1.0.h),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 1.0.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text.rich(TextSpan(children: [
+                              TextSpan(
+                                  text: 'Room Charges ',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 10.0.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Constants.bgColor)),
+                              TextSpan(
+                                  text: '(${widget.roomType})',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 8.0.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Constants.blueTitle)),
+                            ])),
+                            Text(
+                              '₹${widget.roomCharge}',
+                              style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 10.0.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: Constants.bgColor),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 1.0.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text.rich(TextSpan(children: [
+                              TextSpan(
+                                  text: 'Meal Charges ',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 10.0.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Constants.bgColor)),
+                              TextSpan(
+                                  text:
+                                      '(${widget.meal!.substring(1, widget.meal!.length - 1)})',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 8.0.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Constants.blueTitle)),
+                            ])),
+                            Text(
+                              '₹${widget.mealCharge}',
+                              style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 10.0.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: Constants.bgColor),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 1.0.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              'Taxes & Fees',
+                              style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 10.0.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: Constants.bgColor),
+                            ),
+                            Text(
+                              '₹${widget.taxCharge}',
+                              style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 10.0.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: Constants.bgColor),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 3.0.h),
+                        child: Divider(
+                          color: Constants.formBorder,
+                          height: 2.0.h,
+                          thickness: 1.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: false,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 2.0.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'Total',
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 14.0.sp,
+                            fontWeight: FontWeight.w700,
+                            color: Constants.bgColor),
+                      ),
+                      Text(
+                        '₹${widget.total}',
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 14.0.sp,
+                            fontWeight: FontWeight.w700,
+                            color: Constants.bgColor),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 3.0.h),
+               // padding: EdgeInsets.symmetric(vertical: 3.0.h),
+                padding: EdgeInsets.only(top: 25.0.h),
                 child: GestureDetector(
                   onTap: () {
-                    createRazorPayOrderId();
+                    //!createRazorPayOrderId();
+                    createBookingAPI();
                   },
                   child: Container(
                     height: 7.0.h,
@@ -488,14 +504,14 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
     );
   }
 
-
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // Do something when payment succeeds
     //print('kama liyaa!');
     //print(response.orderId);
     //print(response.paymentId);
     //print(response.signature);
-    createBookingAPI(response.orderId, response.paymentId, response.signature);
+    
+    //!createBookingAPI(response.orderId, response.paymentId, response.signature);
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
@@ -505,15 +521,16 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
 
   void _handleExternalWallet(ExternalWalletResponse response) {
     // Do something when an external wallet was selected
-
   }
 
   Future<void> createRazorPayOrderId() async {
     Map<String, dynamic>? map = {};
     var headers = {
-      'Authorization': 'Basic cnpwX3Rlc3RfTXREclBQTFdiVWRzWTc6TlZiWU5VNHRQMVdrQlU4SGlpWlljU21i'
+      'Authorization':
+          'Basic cnpwX3Rlc3RfTXREclBQTFdiVWRzWTc6TlZiWU5VNHRQMVdrQlU4SGlpWlljU21i'
     };
-    var request = http.MultipartRequest('POST', Uri.parse('https://api.razorpay.com/v1/orders'));
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('https://api.razorpay.com/v1/orders'));
     request.fields.addAll({
       'amount': (widget.total! * 100).toInt().toString(),
       'currency': 'INR'
@@ -533,15 +550,12 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
         'amount': (widget.total! * 100),
         'name': widget.name,
         'order_id': map!['id'],
-        'description': widget.propertyDetails![widget.index!]['name'],//widget.propertyDetails.data[widget.index].name,
-        'prefill': {
-          'contact': widget.mobileNumber,
-          'email': widget.email
-        }
+        'description': widget.propertyDetails![widget.index!]
+            ['name'], //widget.propertyDetails.data[widget.index].name,
+        'prefill': {'contact': widget.mobileNumber, 'email': widget.email}
       };
       _razorpay.open(options);
-    }
-    else {
+    } else {
       Fluttertoast.showToast(
         msg: 'Please try again',
         toastLength: Toast.LENGTH_SHORT,
@@ -552,10 +566,11 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
         fontSize: 10.0.sp,
       );
     }
-
   }
 
-  Future<CreateBooking> createBookingAPI(orderId, paymentId, signature) async {
+  Future<CreateBooking> createBookingAPI(
+    //!orderId, paymentId, signature
+    ) async {
     // //print(widget.mealId);
     //print('creating the booking...');
     displayProgressDialog(context);
@@ -563,7 +578,8 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
     try {
       var dio = Dio();
       FormData formData = FormData.fromMap({
-        'property_id': widget.propertyDetails![widget.index!]['property_id'],//widget.propertyDetails.data[widget.index].propertyId,
+        'property_id': widget.propertyDetails![widget.index!][
+            'property_id'], //widget.propertyDetails.data[widget.index].propertyId,
         'room_id': widget.roomId,
         'guest_name': widget.name,
         'mobile_number': widget.mobileNumber,
@@ -572,39 +588,36 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
         'checkOut_date': widget.checkOutDateFormat,
         'tax_amount': widget.taxCharge,
         'total_amount': widget.total,
-        'order_id': orderId,
-        'payment_id': paymentId,
-        'signature': signature
+        //! 'order_id': orderId,
+        //! 'payment_id': paymentId,
+        //! 'signature': signature
       });
 
-        for(int i = 0; i < widget.mealId!.length; i++){
-          //print(widget.mealId![i]);
-          formData.fields.addAll([
-            MapEntry('meal_id[$i]', widget.mealId![i].toString())
-          ]);
-        }
+      for (int i = 0; i < widget.mealId!.length; i++) {
+        //print(widget.mealId![i]);
+        formData.fields
+            .addAll([MapEntry('meal_id[$i]', widget.mealId![i].toString())]);
+      }
 
       var response = await dio.post(Config.createBookingUrl,
           data: formData,
           options: Options(headers: {"Authorization": 'Bearer $authToken'}));
 
-      if(response.statusCode == 200){
+      if (response.statusCode == 200) {
         closeProgressDialog(context);
-        //print(response.data);
+        print(response.data);
         result = CreateBooking.fromJson(response.data);
-        if(result.status == true){
+        if (result.status == true) {
           pushNewScreen(context,
-          screen: PaymentConfirmScreen(
-            name: widget.name,
-            mobileNumber: widget.mobileNumber,
-            checkIn: widget.checkIn,
-            checkOut: widget.checkOut,
-            roomType: widget.roomType,
-            meal: widget.meal
-          ),
-          withNavBar: false,
-          pageTransitionAnimation:
-          PageTransitionAnimation.cupertino);
+              screen: PaymentConfirmScreen(
+                  name: widget.name,
+                  mobileNumber: widget.mobileNumber,
+                  checkIn: widget.checkIn,
+                  checkOut: widget.checkOut,
+                  roomType: widget.roomType,
+                  meal: widget.meal),
+              withNavBar: false,
+              pageTransitionAnimation: PageTransitionAnimation.cupertino);
         }
       }
     } on DioError catch (e, stack) {
@@ -613,7 +626,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
       closeProgressDialog(context);
       if (e.response != null) {
         //print("This is the error message::::" +
-          //  e.response!.data['meta']['message']);
+        //  e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -632,7 +645,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
     return result;
   }
 
-   displayProgressDialog(BuildContext context) {
+  displayProgressDialog(BuildContext context) {
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
