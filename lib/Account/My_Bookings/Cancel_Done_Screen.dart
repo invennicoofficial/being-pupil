@@ -116,18 +116,18 @@ class _CancelDoneScreenState extends State<CancelDoneScreen> {
                           fontWeight: FontWeight.w700,
                           color: Constants.bgColor),
                     ),
-                    SizedBox(
-                      height: 1.0.h,
-                    ),
-                    Text(
-                      'Amount will be refunded in 7-14 working days in ${widget.mobileNumber}',
-                      style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 9.0.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Constants.bgColor),
-                      textAlign: TextAlign.center,
-                    ),
+                    // SizedBox(
+                    //   height: 1.0.h,
+                    // ),
+                    // Text(
+                    //   'Amount will be refunded in 7-14 working days in ${widget.mobileNumber}',
+                    //   style: TextStyle(
+                    //       fontFamily: 'Montserrat',
+                    //       fontSize: 9.0.sp,
+                    //       fontWeight: FontWeight.w400,
+                    //       color: Constants.bgColor),
+                    //   textAlign: TextAlign.center,
+                    // ),
                     SizedBox(
                       height: 3.0.h,
                     ),

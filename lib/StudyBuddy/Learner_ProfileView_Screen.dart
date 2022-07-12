@@ -3,6 +3,7 @@ import 'package:being_pupil/Model/Config.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'package:url_launcher/url_launcher.dart';
@@ -19,7 +20,7 @@ class LearnerProfileViewScreen extends StatefulWidget {
 class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
   Map<String, dynamic>? map = {};
   bool isLoading = true;
-  String? authToken;
+  String? authToken, registerAs;
 
   @override
   void initState() {
@@ -30,6 +31,10 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     //print(authToken);
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      registerAs = preferences.getString('RegisterAs');
+    });
     getUserProfile();
   }
 
@@ -61,7 +66,8 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
           padding: EdgeInsets.zero,
         ),
         title: Text(
-          'Learner',
+          registerAs == 'L'
+          ? 'Study Buddy' : 'Learner',
           style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 12.0.sp,

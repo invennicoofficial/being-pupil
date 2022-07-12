@@ -235,13 +235,13 @@ class _UpComingListState extends State<UpComingList> {
                                             checkOut: bookingCheckOut[index],
                                             roomType: bookingRoomType[index],
                                             meal: bookingMeal[index].toString(),
-                                            roomAmount:
-                                                bookingRoomAmount[index],
-                                            mealAmount:
-                                                bookingMealAmount[index],
-                                            taxAmount: bookingTaxAmount[index],
-                                            totalAmount:
-                                                bookingTotalAmount[index],
+                                            // roomAmount:
+                                            //     bookingRoomAmount[index],
+                                            // mealAmount:
+                                            //     bookingMealAmount[index],
+                                            // taxAmount: bookingTaxAmount[index],
+                                            // totalAmount:
+                                             //   bookingTotalAmount[index],
                                             propertyId:
                                                 int.parse(propertyId[index]!),
                                             bookingId: bookingId[index],

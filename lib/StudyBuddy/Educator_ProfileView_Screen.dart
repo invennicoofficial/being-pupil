@@ -75,6 +75,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
   bool isSelected = false;
   Map<String, dynamic> resultComment = {};
   int? isSubscribed;
+  String? registerAs;
 
   @override
   void initState() {
@@ -111,6 +112,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       isSubscribed = preferences.getInt('isSubscribed');
+      registerAs = preferences.getString('RegisterAs');
     });
   }
 
@@ -141,8 +143,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
           },
           padding: EdgeInsets.zero,
         ),
-        title: Text(
-          'Study Buddy',
+        title: Text(registerAs == 'L'
+          ? 'Fellow Educator' : 'Study Buddy',
           style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 12.0.sp,

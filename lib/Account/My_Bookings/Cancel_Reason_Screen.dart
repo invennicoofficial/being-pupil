@@ -24,9 +24,7 @@ class ReasonForCancelBooking extends StatefulWidget {
       checkOut,
       roomType,
       name;
-  dynamic roomAmount, mealAmount, taxAmount, totalAmount;
-  // final String name, mobileNumber, checkIn, checkOut, roomType, meal;
-  // final int roomCharge, mealCharge, taxCharge, total;
+  //dynamic roomAmount, mealAmount, taxAmount, totalAmount;
   ReasonForCancelBooking(
       {Key? key,
       required this.propertyId,
@@ -40,10 +38,11 @@ class ReasonForCancelBooking extends StatefulWidget {
       this.checkIn,
       this.roomType,
       this.name,
-      this.roomAmount,
-      this.mealAmount,
-      this.taxAmount,
-      this.totalAmount})
+      // this.roomAmount,
+      // this.mealAmount,
+      // this.taxAmount,
+      // this.totalAmount
+      })
       : super(key: key);
   @override
   _ReasonForCancelBookingState createState() => _ReasonForCancelBookingState();
@@ -341,10 +340,10 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
                 checkOut: widget.checkOut,
                 roomType: widget.roomType,
                 meal: widget.meal,
-                roomAmount: widget.roomType,
-                mealAmount: widget.mealAmount,
-                taxAmount: widget.taxAmount,
-                totalAmount: widget.totalAmount,
+                // roomAmount: widget.roomType,
+                // mealAmount: widget.mealAmount,
+                // taxAmount: widget.taxAmount,
+                // totalAmount: widget.totalAmount,
                 propertyId: widget.propertyId,
                 bookingId: widget.bookingId,
               ),

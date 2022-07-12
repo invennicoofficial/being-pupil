@@ -142,7 +142,8 @@ class _CancelledListState extends State<CancelledList> {
                             //Image for booking
                             Padding(
                               padding: EdgeInsets.only(right: 4.0.w),
-                              child: Container(
+                              child: bookingImage[index] != null
+                              ? Container(
                                 height: 70.0,
                                 width:70.0,
                                 decoration: BoxDecoration(
@@ -151,6 +152,13 @@ class _CancelledListState extends State<CancelledList> {
                                         image:
                                             NetworkImage(bookingImage[index]!),
                                         fit: BoxFit.cover)),
+                              ) : Container(
+                                height: 70.0,
+                                width:70.0,                  
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade300,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                )
                               ),
                             ),
                             //Other booking details
@@ -160,8 +168,8 @@ class _CancelledListState extends State<CancelledList> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(
-                                    bookingName[index]!,
+                                  Text(bookingName[index] != null
+                                    ? bookingName[index]! : '',
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 11.0.sp,
@@ -226,10 +234,10 @@ class _CancelledListState extends State<CancelledList> {
                                         checkOut: bookingCheckOut[index],
                                         roomType: bookingRoomType[index],
                                         meal: bookingMeal[index].toString(),
-                                        roomAmount: bookingRoomAmount[index],
-                                        mealAmount: bookingMealAmount[index],
-                                        taxAmount: bookingTaxAmount[index],
-                                        totalAmount: bookingTotalAmount[index],
+                                        // roomAmount: bookingRoomAmount[index],
+                                        // mealAmount: bookingMealAmount[index],
+                                        // taxAmount: bookingTaxAmount[index],
+                                        // totalAmount: bookingTotalAmount[index],
                                       ),
                                       withNavBar: false,
                                       pageTransitionAnimation:

@@ -222,14 +222,17 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                                 Padding(
                                   padding:
                                       EdgeInsets.symmetric(vertical: 0.5.h),
-                                  child: Text(
-                                    propertyName[index]!,
-                                    style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 10.0.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Constants.bgColor),
-                                  ),
+                                  child: Container(
+                                    width: 85.0.w,
+                                    child: Text(
+                                      propertyName[index]!,
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 10.0.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: Constants.bgColor),
+                                    ),
+                                  ),  
                                 ),
                               ],
                             ),
