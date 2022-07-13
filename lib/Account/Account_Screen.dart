@@ -343,7 +343,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           InkWell(
                             onTap: () {
                               Share.share(
-                                  'check out Being Pupil App! https://google.com',
+                                  'Download Being Pupil App! https://play.google.com/store/apps/details?id=com.beingPupil',
                                   subject: 'Download Being Pupil App!');
                             },
                             child: ProfileList(

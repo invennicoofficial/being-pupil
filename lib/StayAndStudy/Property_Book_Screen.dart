@@ -437,8 +437,8 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                             onTap: () async {
                               final datePick = await showDatePicker(
                                   context: context,
-                                  initialDate: new DateTime.now(),
-                                  firstDate: new DateTime.now(),
+                                  initialDate: new DateTime.now().add(const Duration(days: 1)),
+                                  firstDate: new DateTime.now().add(const Duration(days: 1)),
                                   lastDate: new DateTime.now()
                                       .add(const Duration(days: 365)),
                                   helpText: 'Select Check In Date');
