@@ -5,6 +5,7 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/UpdateProfile_Model.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
+import 'package:being_pupil/Widgets/Common_Widgets.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
@@ -631,53 +632,54 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: 3.0.w, right: 3.0.w, top: 4.0.h),
-                            child: Container(
-                              height: 7.0.h,
-                              width: 90.0.w,
-                              child: TextFormField(
-                                controller: _nameController,
-                                readOnly: true,
-                                decoration: InputDecoration(
-                                  labelText: "Name",
-                                  labelStyle: TextStyle(
-                                  color: Constants.bpSkipStyle,
-                                  fontFamily: "Montserrat", 
-                                  fontSize: 10.0.sp
-                                ),
-                                  fillColor: Colors.white,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                      //width: 2.0,
-                                    ),
-                                  ),
-                                ),
-                                //keyboardType: TextInputType.emailAddress,
-                                style: new TextStyle(
-                                    fontFamily: "Montserrat",
-                                    fontSize: 10.0.sp),
-                                // validator: (value) {
-                                //   if (value.isEmpty) {
-                                //     Fluttertoast.showToast(
-                                //         msg: "Please Enter Name",
-                                //         toastLength: Toast.LENGTH_SHORT,
-                                //         gravity: ToastGravity.BOTTOM,
-                                //         timeInSecForIosWeb: 1,
-                                //         backgroundColor: Colors.red,
-                                //         textColor: Colors.white,
-                                //         fontSize: 16.0);
-                                //   }
-                                // },
-                              ),
-                            ),
+                                left: 2.0.w, right: 2.0.w, top: 4.0.h),
+                            child: TextInputWidget(textEditingController: _nameController, lable: 'Name')
+                            // Container(
+                            //   height: 7.0.h,
+                            //   width: 90.0.w,
+                            //   child: TextFormField(
+                            //     controller: _nameController,
+                            //     readOnly: true,
+                            //     decoration: InputDecoration(
+                            //       labelText: "Name",
+                            //       labelStyle: TextStyle(
+                            //       color: Constants.bpSkipStyle,
+                            //       fontFamily: "Montserrat", 
+                            //       fontSize: 10.0.sp
+                            //     ),
+                            //       fillColor: Colors.white,
+                            //       focusedBorder: OutlineInputBorder(
+                            //         borderRadius: BorderRadius.circular(5.0),
+                            //         borderSide: BorderSide(
+                            //           color: Constants.formBorder,
+                            //         ),
+                            //       ),
+                            //       enabledBorder: OutlineInputBorder(
+                            //         borderRadius: BorderRadius.circular(5.0),
+                            //         borderSide: BorderSide(
+                            //           color: Constants.formBorder,
+                            //           //width: 2.0,
+                            //         ),
+                            //       ),
+                            //     ),
+                            //     //keyboardType: TextInputType.emailAddress,
+                            //     style: new TextStyle(
+                            //         fontFamily: "Montserrat",
+                            //         fontSize: 10.0.sp),
+                            //     // validator: (value) {
+                            //     //   if (value.isEmpty) {
+                            //     //     Fluttertoast.showToast(
+                            //     //         msg: "Please Enter Name",
+                            //     //         toastLength: Toast.LENGTH_SHORT,
+                            //     //         gravity: ToastGravity.BOTTOM,
+                            //     //         timeInSecForIosWeb: 1,
+                            //     //         backgroundColor: Colors.red,
+                            //     //         textColor: Colors.white,
+                            //     //         fontSize: 16.0);
+                            //     //   }
+                            //     // },
+                            //   ),
+                            // ),
                           ),
                         ),
                         Theme(
@@ -687,46 +689,47 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: 3.0.w, right: 3.0.w, top: 3.0.h),
-                            child: Container(
-                              height: 7.0.h,
-                              width: 90.0.w,
-                              child: TextFormField(
-                                controller: _mobileController,
-                                readOnly: true,
-                                keyboardType: TextInputType.phone,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(10),
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                decoration: InputDecoration(
-                                  labelText: "Mobile Number",
-                                  labelStyle: TextStyle(
-                                  color: Constants.bpSkipStyle,
-                                  fontFamily: "Montserrat", 
-                                  fontSize: 10.0.sp
-                                ),
-                                  fillColor: Colors.white,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                      //width: 2.0,
-                                    ),
-                                  ),
-                                ),
-                                //keyboardType: TextInputType.emailAddress,
-                                style: new TextStyle(
-                                    fontFamily: "Montserrat",
-                                    fontSize: 10.0.sp),
-                              ),
-                            ),
+                                left: 2.0.w, right: 2.0.w, top: 3.0.h),
+                            child: TextInputWidget(textEditingController: _mobileController, lable: 'Mobile Number')
+                            // Container(
+                            //   height: 7.0.h,
+                            //   width: 90.0.w,
+                            //   child: TextFormField(
+                            //     controller: _mobileController,
+                            //     readOnly: true,
+                            //     keyboardType: TextInputType.phone,
+                            //     inputFormatters: [
+                            //       LengthLimitingTextInputFormatter(10),
+                            //       FilteringTextInputFormatter.digitsOnly
+                            //     ],
+                            //     decoration: InputDecoration(
+                            //       labelText: "Mobile Number",
+                            //       labelStyle: TextStyle(
+                            //       color: Constants.bpSkipStyle,
+                            //       fontFamily: "Montserrat", 
+                            //       fontSize: 10.0.sp
+                            //     ),
+                            //       fillColor: Colors.white,
+                            //       focusedBorder: OutlineInputBorder(
+                            //         borderRadius: BorderRadius.circular(5.0),
+                            //         borderSide: BorderSide(
+                            //           color: Constants.formBorder,
+                            //         ),
+                            //       ),
+                            //       enabledBorder: OutlineInputBorder(
+                            //         borderRadius: BorderRadius.circular(5.0),
+                            //         borderSide: BorderSide(
+                            //           color: Constants.formBorder,
+                            //           //width: 2.0,
+                            //         ),
+                            //       ),
+                            //     ),
+                            //     //keyboardType: TextInputType.emailAddress,
+                            //     style: new TextStyle(
+                            //         fontFamily: "Montserrat",
+                            //         fontSize: 10.0.sp),
+                            //   ),
+                            // ),
                           ),
                         ),
                         Theme(
@@ -736,42 +739,43 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: 3.0.w, right: 3.0.w, top: 3.0.h),
-                            child: Container(
-                              height: 7.0.h,
-                              width: 90.0.w,
-                              child: TextFormField(
-                                controller: _emailController,
-                                readOnly: true,
-                                keyboardType: TextInputType.emailAddress,
-                                decoration: InputDecoration(
-                                  labelText: "Email",
-                                  labelStyle: TextStyle(
-                                  color: Constants.bpSkipStyle,
-                                  fontFamily: "Montserrat", 
-                                  fontSize: 10.0.sp
-                                ),
-                                  fillColor: Colors.white,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                      //width: 2.0,
-                                    ),
-                                  ),
-                                ),
-                                //keyboardType: TextInputType.emailAddress,
-                                style: new TextStyle(
-                                    fontFamily: "Montserrat",
-                                    fontSize: 10.0.sp),
-                              ),
-                            ),
+                                left: 2.0.w, right: 2.0.w, top: 3.0.h),
+                            child: TextInputWidget(textEditingController: _emailController, lable: 'Email')
+                            // Container(
+                            //   height: 7.0.h,
+                            //   width: 90.0.w,
+                            //   child: TextFormField(
+                            //     controller: _emailController,
+                            //     readOnly: true,
+                            //     keyboardType: TextInputType.emailAddress,
+                            //     decoration: InputDecoration(
+                            //       labelText: "Email",
+                            //       labelStyle: TextStyle(
+                            //       color: Constants.bpSkipStyle,
+                            //       fontFamily: "Montserrat", 
+                            //       fontSize: 10.0.sp
+                            //     ),
+                            //       fillColor: Colors.white,
+                            //       focusedBorder: OutlineInputBorder(
+                            //         borderRadius: BorderRadius.circular(5.0),
+                            //         borderSide: BorderSide(
+                            //           color: Constants.formBorder,
+                            //         ),
+                            //       ),
+                            //       enabledBorder: OutlineInputBorder(
+                            //         borderRadius: BorderRadius.circular(5.0),
+                            //         borderSide: BorderSide(
+                            //           color: Constants.formBorder,
+                            //           //width: 2.0,
+                            //         ),
+                            //       ),
+                            //     ),
+                            //     //keyboardType: TextInputType.emailAddress,
+                            //     style: new TextStyle(
+                            //         fontFamily: "Montserrat",
+                            //         fontSize: 10.0.sp),
+                            //   ),
+                            // ),
                           ),
                         ),
                         Row(
@@ -784,9 +788,9 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                               ),
                               child: Padding(
                                 padding: EdgeInsets.only(
-                                    left: 3.0.w, right: 3.0.w, top: 3.0.h),
+                                    left: 2.0.w, right: 2.0.w, top: 3.0.h),
                                 child: Container(
-                                  height: 7.0.h,
+                                  height: 48.0,//7.0.h,
                                   width: 35.0.w,
                                   child: CustomDropdown<int>(
                                     child: Row(
@@ -886,7 +890,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                               ),
                               child: Padding(
                                 padding: EdgeInsets.only(
-                                    left: 3.0.w, right: 3.0.w, top: 3.0.h),
+                                    left: 2.0.w, right: 2.0.w, top: 3.0.h),
                                 child: GestureDetector(
                                   onTap: () async {
                                     //print('Date Picker!!!');
@@ -935,7 +939,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                     }
                                   },
                                   child: Container(
-                                    height: 7.0.h,
+                                    height: 48.0,//7.0.h,
                                     width: 40.0.w,
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 3.0.w),
@@ -978,8 +982,8 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(
-                              left: 3.0.w,
-                              right: 3.0.w,
+                              left: 2.0.w,
+                              right: 2.0.w,
                               top: 3.0.h,
                               //bottom: 3.0.h
                             ),
@@ -1020,7 +1024,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 }
                               },
                               dropdownButtonStyle: DropdownButtonStyle(
-                                height: 7.0.h,
+                                height: 48.0,//7.0.h,
                                 width: 90.0.w,
                                 //padding: EdgeInsets.only(left: 2.0.w),
                                 elevation: 0,
@@ -1072,7 +1076,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
 
                         Padding(
                           padding: EdgeInsets.only(
-                              top: 3.0.h, right: 3.0.w, left: 3.0.w),
+                              top: 3.0.h, right: 2.0.w, left: 2.0.w),
                           child: DottedBorder(
                             borderType: BorderType.RRect,
                             radius: Radius.circular(5),
@@ -1144,43 +1148,44 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: 3.0.w, right: 3.0.w, top: 3.0.h),
-                            child: Container(
-                              height: 7.0.h,
-                              width: 90.0.w,
-                              child: TextFormField(
-                                controller: _idNumController,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(15),
-                                ],
-                                decoration: InputDecoration(
-                                  labelText: "Identification Document Number",
-                                  labelStyle: TextStyle(
-                                  color: Constants.bpSkipStyle,
-                                  fontFamily: "Montserrat", 
-                                  fontSize: 10.0.sp
-                                ),
-                                  fillColor: Colors.white,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                      //width: 2.0,
-                                    ),
-                                  ),
-                                ),
-                                //keyboardType: TextInputType.emailAddress,
-                                style: new TextStyle(
-                                    fontFamily: "Montserrat",
-                                    fontSize: 10.0.sp),
-                              ),
-                            ),
+                                left: 2.0.w, right: 2.0.w, top: 3.0.h),
+                            child: TextInputWidget(textEditingController: _idNumController, lable: 'Identification Document Number', isIdField: true,)
+                            // Container(
+                            //   height: 7.0.h,
+                            //   width: 90.0.w,
+                            //   child: TextFormField(
+                            //     controller: _idNumController,
+                            //     inputFormatters: [
+                            //       LengthLimitingTextInputFormatter(15),
+                            //     ],
+                            //     decoration: InputDecoration(
+                            //       labelText: "Identification Document Number",
+                            //       labelStyle: TextStyle(
+                            //       color: Constants.bpSkipStyle,
+                            //       fontFamily: "Montserrat", 
+                            //       fontSize: 10.0.sp
+                            //     ),
+                            //       fillColor: Colors.white,
+                            //       focusedBorder: OutlineInputBorder(
+                            //         borderRadius: BorderRadius.circular(5.0),
+                            //         borderSide: BorderSide(
+                            //           color: Constants.formBorder,
+                            //         ),
+                            //       ),
+                            //       enabledBorder: OutlineInputBorder(
+                            //         borderRadius: BorderRadius.circular(5.0),
+                            //         borderSide: BorderSide(
+                            //           color: Constants.formBorder,
+                            //           //width: 2.0,
+                            //         ),
+                            //       ),
+                            //     ),
+                            //     //keyboardType: TextInputType.emailAddress,
+                            //     style: new TextStyle(
+                            //         fontFamily: "Montserrat",
+                            //         fontSize: 10.0.sp),
+                            //   ),
+                            // ),
                           ),
                         ),
                         Theme(
@@ -1190,8 +1195,8 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           ),
                           child: Padding(
                               padding: EdgeInsets.only(
-                                left: 3.0.w,
-                                right: 3.0.w,
+                                left: 2.0.w,
+                                right: 2.0.w,
                                 top: 3.0.h,
                                 //bottom: 3.0.h
                               ),
@@ -1202,7 +1207,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                   showPlacePicker();
                                 },
                                 child: Container(
-                                  height: 7.0.h,
+                                  height: 48.0,//7.0.h,
                                   width: 90.0.w,
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 3.0.w),
@@ -1253,7 +1258,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                  top: 4.0.h, left: 3.0.w, right: 3.0.w),
+                                  top: 4.0.h, left: 2.0.w, right: 2.0.w),
                               child: Text(
                                 'Interested Categories',
                                 style: TextStyle(
@@ -1307,7 +1312,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                  top: 4.0.h, left: 3.0.w, right: 3.0.w),
+                                  top: 4.0.h, left: 2.0.w, right: 2.0.w),
                               child: Text(
                                 'Educational Details',
                                 style: TextStyle(
@@ -1327,7 +1332,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: EdgeInsets.only(
-                                  left: 3.0.w, right: 3.0.w, top: 3.0.h),
+                                  left: 2.0.w, right: 2.0.w, top: 1.5.h),
                               child: DottedBorder(
                                 borderType: BorderType.RRect,
                                 radius: Radius.circular(5),
@@ -1376,7 +1381,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                             right: 1.0.w,
                                             top: 1.0.h),
                                         child: Container(
-                                          height: 7.0.h,
+                                          height: 48.0,//7.0.h,
                                           width: 90.0.w,
                                           child: TextFormField(
                                             //controller: myControllers[index],
@@ -1519,7 +1524,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                               // }
                                             },
                                             child: Container(
-                                              height: 7.0.h,
+                                              height: 48.0,//7.0.h,
                                               width: 90.0.w,
                                               padding: EdgeInsets.symmetric(
                                                   horizontal: 3.0.w),
@@ -1720,7 +1725,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                           },
                                           dropdownButtonStyle:
                                               DropdownButtonStyle(
-                                            height: 7.0.h,
+                                            height: 48.0,//7.0.h,
                                             width: 90.0.w,
                                             //padding: EdgeInsets.only(left: 2.0.w),
                                             elevation: 0,
@@ -1909,8 +1914,8 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           ),
                           child: Padding(
                               padding: EdgeInsets.only(
-                                left: 3.0.w,
-                                right: 3.0.w,
+                                left: 2.0.w,
+                                right: 2.0.w,
                                 top: 3.0.h,
                                 //bottom: 3.0.h
                               ),
@@ -1958,7 +1963,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                   //print(educationDetailMap);
                                 },
                                 child: Container(
-                                  height: 7.0.h,
+                                  height: 48.0,//7.0.h,
                                   width: 90.0.w,
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 3.0.w),
@@ -2018,9 +2023,9 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(
-                              left: 3.0.w,
-                              right: 3.0.w,
-                              top: 3.0.h,
+                              left: 2.0.w,
+                              right: 2.0.w,
+                              top: 1.5.h,
                               //bottom: 3.0.h
                             ),
                             child: CustomDropdown<int>(
@@ -2057,7 +2062,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 }
                               },
                               dropdownButtonStyle: DropdownButtonStyle(
-                                height: 7.0.h,
+                                height: 48.0,//7.0.h,
                                 width: 90.0.w,
                                 //padding: EdgeInsets.only(left: 2.0.w),
                                 elevation: 0,
@@ -2122,7 +2127,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                  top: 4.0.h, left: 3.0.w, right: 3.0.w),
+                                  top: 4.0.h, left: 2.0.w, right: 2.0.w),
                               child: Text(
                                 'Achievements',
                                 style: TextStyle(
@@ -2142,7 +2147,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: 3.0.w, right: 3.0.w, top: 3.0.h),
+                                left: 2.0.w, right: 2.0.w, top: 1.5.h),
                             child: Container(
                               height: 13.0.h,
                               width: 90.0.w,
@@ -2182,7 +2187,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                  left: 3.0.w, right: 3.0.w, top: 0.5.h),
+                                  left: 2.0.w, right: 2.0.w, top: 0.5.h),
                               child: Text(
                                 'Maximum 100 words',
                                 style: TextStyle(
@@ -2199,7 +2204,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                  top: 4.0.h, left: 3.0.w, right: 3.0.w),
+                                  top: 4.0.h, left: 2.0.w, right: 2.0.w),
                               child: Text(
                                 'Skills',
                                 style: TextStyle(
@@ -2219,7 +2224,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: 3.0.w, right: 3.0.w, top: 3.0.h),
+                                left: 2.0.w, right: 2.0.w, top: 1.5.h),
                             child: GestureDetector(
                               onTap: () {
                                 _openFilterSkillsDialog();
@@ -2262,7 +2267,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                  top: 2.0.h, left: 3.0.w, right: 3.0.w),
+                                  top: 4.0.h, left: 2.0.w, right: 2.0.w),
                               child: Text(
                                 'Hobbies',
                                 style: TextStyle(
@@ -2282,7 +2287,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: 3.0.w, right: 3.0.w, top: 3.0.h),
+                                left: 2.0.w, right: 2.0.w, top: 1.5.h),
                             child: GestureDetector(
                                 onTap: () {
                                   _openFilterHobbiesDialog();
@@ -2444,7 +2449,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                  top: 2.0.h, left: 3.0.w, right: 3.0.w),
+                                  top: 4.0.h, left: 2.0.w, right: 2.0.w),
                               child: Text(
                                 'Other Social Media Links',
                                 style: TextStyle(
@@ -2463,49 +2468,50 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: 3.0.w, right: 3.0.w, top: 3.0.h),
-                            child: Container(
-                              height: 7.0.h,
-                              width: 90.0.w,
-                              child: TextFormField(
-                                controller: _fbLinkController,
-                                decoration: InputDecoration(
-                                    labelText: "Facebook",
-                                    labelStyle: TextStyle(
-                                  color: Constants.bpSkipStyle,
-                                  fontFamily: "Montserrat", 
-                                  fontSize: 10.0.sp
-                                ),
-                                    fillColor: Colors.white,
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: BorderSide(
-                                        color: Constants.formBorder,
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: BorderSide(
-                                        color: Constants.formBorder,
-                                        //width: 2.0,
-                                      ),
-                                    ),
-                                    suffixIconConstraints: BoxConstraints(
-                                      maxHeight: 30.0,
-                                      maxWidth: 30.0,
-                                    ),
-                                    suffixIcon: Padding(
-                                      padding: EdgeInsets.only(right: 2.0.w),
-                                      child: Image.asset(
-                                        'assets/icons/link.png',
-                                        color: Constants.formBorder,
-                                      ),
-                                    )), //keyboardType: TextInputType.emailAddress,
-                                style: new TextStyle(
-                                    fontFamily: "Montserrat",
-                                    fontSize: 10.0.sp),
-                              ),
-                            ),
+                                left: 2.0.w, right: 2.0.w, top: 1.5.h),
+                            child: LinkInputWidget(textEditingController: _fbLinkController, lable: 'Facebook')
+                            // Container(
+                            //   height: 7.0.h,
+                            //   width: 90.0.w,
+                            //   child: TextFormField(
+                            //     controller: _fbLinkController,
+                            //     decoration: InputDecoration(
+                            //         labelText: "Facebook",
+                            //         labelStyle: TextStyle(
+                            //       color: Constants.bpSkipStyle,
+                            //       fontFamily: "Montserrat", 
+                            //       fontSize: 10.0.sp
+                            //     ),
+                            //         fillColor: Colors.white,
+                            //         focusedBorder: OutlineInputBorder(
+                            //           borderRadius: BorderRadius.circular(5.0),
+                            //           borderSide: BorderSide(
+                            //             color: Constants.formBorder,
+                            //           ),
+                            //         ),
+                            //         enabledBorder: OutlineInputBorder(
+                            //           borderRadius: BorderRadius.circular(5.0),
+                            //           borderSide: BorderSide(
+                            //             color: Constants.formBorder,
+                            //             //width: 2.0,
+                            //           ),
+                            //         ),
+                            //         suffixIconConstraints: BoxConstraints(
+                            //           maxHeight: 30.0,
+                            //           maxWidth: 30.0,
+                            //         ),
+                            //         suffixIcon: Padding(
+                            //           padding: EdgeInsets.only(right: 2.0.w),
+                            //           child: Image.asset(
+                            //             'assets/icons/link.png',
+                            //             color: Constants.formBorder,
+                            //           ),
+                            //         )), //keyboardType: TextInputType.emailAddress,
+                            //     style: new TextStyle(
+                            //         fontFamily: "Montserrat",
+                            //         fontSize: 10.0.sp),
+                            //   ),
+                            // ),
                           ),
                         ),
                         Theme(
@@ -2515,50 +2521,51 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: 3.0.w, right: 3.0.w, top: 3.0.h),
-                            child: Container(
-                              height: 7.0.h,
-                              width: 90.0.w,
-                              child: TextFormField(
-                                controller: _instagramLinkController,
-                                decoration: InputDecoration(
-                                    labelText: "Instagram",
-                                    labelStyle: TextStyle(
-                                  color: Constants.bpSkipStyle,
-                                  fontFamily: "Montserrat", 
-                                  fontSize: 10.0.sp
-                                ),
-                                    fillColor: Colors.white,
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: BorderSide(
-                                        color: Constants.formBorder,
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: BorderSide(
-                                        color: Constants.formBorder,
-                                        //width: 2.0,
-                                      ),
-                                    ),
-                                    suffixIconConstraints: BoxConstraints(
-                                      maxHeight: 30.0,
-                                      maxWidth: 30.0,
-                                    ),
-                                    suffixIcon: Padding(
-                                      padding: EdgeInsets.only(right: 2.0.w),
-                                      child: Image.asset(
-                                        'assets/icons/link.png',
-                                        color: Constants.formBorder,
-                                      ),
-                                    )),
-                                //keyboardType: TextInputType.emailAddress,
-                                style: new TextStyle(
-                                    fontFamily: "Montserrat",
-                                    fontSize: 10.0.sp),
-                              ),
-                            ),
+                                left: 2.0.w, right: 2.0.w, top: 3.0.h),
+                            child: LinkInputWidget(textEditingController: _instagramLinkController, lable: 'Instagram')
+                            // Container(
+                            //   height: 7.0.h,
+                            //   width: 90.0.w,
+                            //   child: TextFormField(
+                            //     controller: _instagramLinkController,
+                            //     decoration: InputDecoration(
+                            //         labelText: "Instagram",
+                            //         labelStyle: TextStyle(
+                            //       color: Constants.bpSkipStyle,
+                            //       fontFamily: "Montserrat", 
+                            //       fontSize: 10.0.sp
+                            //     ),
+                            //         fillColor: Colors.white,
+                            //         focusedBorder: OutlineInputBorder(
+                            //           borderRadius: BorderRadius.circular(5.0),
+                            //           borderSide: BorderSide(
+                            //             color: Constants.formBorder,
+                            //           ),
+                            //         ),
+                            //         enabledBorder: OutlineInputBorder(
+                            //           borderRadius: BorderRadius.circular(5.0),
+                            //           borderSide: BorderSide(
+                            //             color: Constants.formBorder,
+                            //             //width: 2.0,
+                            //           ),
+                            //         ),
+                            //         suffixIconConstraints: BoxConstraints(
+                            //           maxHeight: 30.0,
+                            //           maxWidth: 30.0,
+                            //         ),
+                            //         suffixIcon: Padding(
+                            //           padding: EdgeInsets.only(right: 2.0.w),
+                            //           child: Image.asset(
+                            //             'assets/icons/link.png',
+                            //             color: Constants.formBorder,
+                            //           ),
+                            //         )),
+                            //     //keyboardType: TextInputType.emailAddress,
+                            //     style: new TextStyle(
+                            //         fontFamily: "Montserrat",
+                            //         fontSize: 10.0.sp),
+                            //   ),
+                            // ),
                           ),
                         ),
                         Theme(
@@ -2568,50 +2575,51 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: 3.0.w, right: 3.0.w, top: 3.0.h),
-                            child: Container(
-                              height: 7.0.h,
-                              width: 90.0.w,
-                              child: TextFormField(
-                                controller: _linkedInLinkLinkController,
-                                decoration: InputDecoration(
-                                    labelText: "LinkedIn",
-                                    labelStyle: TextStyle(
-                                  color: Constants.bpSkipStyle,
-                                  fontFamily: "Montserrat", 
-                                  fontSize: 10.0.sp
-                                ),
-                                    fillColor: Colors.white,
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: BorderSide(
-                                        color: Constants.formBorder,
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: BorderSide(
-                                        color: Constants.formBorder,
-                                        //width: 2.0,
-                                      ),
-                                    ),
-                                    suffixIconConstraints: BoxConstraints(
-                                      maxHeight: 30.0,
-                                      maxWidth: 30.0,
-                                    ),
-                                    suffixIcon: Padding(
-                                      padding: EdgeInsets.only(right: 2.0.w),
-                                      child: Image.asset(
-                                        'assets/icons/link.png',
-                                        color: Constants.formBorder,
-                                      ),
-                                    )),
-                                //keyboardType: TextInputType.emailAddress,
-                                style: new TextStyle(
-                                    fontFamily: "Montserrat",
-                                    fontSize: 10.0.sp),
-                              ),
-                            ),
+                                left: 2.0.w, right: 2.0.w, top: 3.0.h),
+                            child: LinkInputWidget(textEditingController: _linkedInLinkLinkController, lable: 'LinkedIn')
+                            // Container(
+                            //   height: 7.0.h,
+                            //   width: 90.0.w,
+                            //   child: TextFormField(
+                            //     controller: _linkedInLinkLinkController,
+                            //     decoration: InputDecoration(
+                            //         labelText: "LinkedIn",
+                            //         labelStyle: TextStyle(
+                            //       color: Constants.bpSkipStyle,
+                            //       fontFamily: "Montserrat", 
+                            //       fontSize: 10.0.sp
+                            //     ),
+                            //         fillColor: Colors.white,
+                            //         focusedBorder: OutlineInputBorder(
+                            //           borderRadius: BorderRadius.circular(5.0),
+                            //           borderSide: BorderSide(
+                            //             color: Constants.formBorder,
+                            //           ),
+                            //         ),
+                            //         enabledBorder: OutlineInputBorder(
+                            //           borderRadius: BorderRadius.circular(5.0),
+                            //           borderSide: BorderSide(
+                            //             color: Constants.formBorder,
+                            //             //width: 2.0,
+                            //           ),
+                            //         ),
+                            //         suffixIconConstraints: BoxConstraints(
+                            //           maxHeight: 30.0,
+                            //           maxWidth: 30.0,
+                            //         ),
+                            //         suffixIcon: Padding(
+                            //           padding: EdgeInsets.only(right: 2.0.w),
+                            //           child: Image.asset(
+                            //             'assets/icons/link.png',
+                            //             color: Constants.formBorder,
+                            //           ),
+                            //         )),
+                            //     //keyboardType: TextInputType.emailAddress,
+                            //     style: new TextStyle(
+                            //         fontFamily: "Montserrat",
+                            //         fontSize: 10.0.sp),
+                            //   ),
+                            // ),
                           ),
                         ),
                         Theme(
@@ -2621,57 +2629,58 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: 3.0.w, right: 3.0.w, top: 3.0.h),
-                            child: Container(
-                              height: 7.0.h,
-                              width: 90.0.w,
-                              child: TextFormField(
-                                controller: _otherLinkLinkController,
-                                decoration: InputDecoration(
-                                    labelText: "Other",
-                                    labelStyle: TextStyle(
-                                  color: Constants.bpSkipStyle,
-                                  fontFamily: "Montserrat", 
-                                  fontSize: 10.0.sp
-                                ),
-                                    fillColor: Colors.white,
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: BorderSide(
-                                        color: Constants.formBorder,
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: BorderSide(
-                                        color: Constants.formBorder,
-                                        //width: 2.0,
-                                      ),
-                                    ),
-                                    suffixIconConstraints: BoxConstraints(
-                                      maxHeight: 30.0,
-                                      maxWidth: 30.0,
-                                    ),
-                                    suffixIcon: Padding(
-                                      padding: EdgeInsets.only(right: 2.0.w),
-                                      child: Image.asset(
-                                        'assets/icons/link.png',
-                                        color: Constants.formBorder,
-                                      ),
-                                    )),
-                                //keyboardType: TextInputType.emailAddress,
-                                style: new TextStyle(
-                                    fontFamily: "Montserrat",
-                                    fontSize: 10.0.sp),
-                              ),
-                            ),
+                                left: 2.0.w, right: 2.0.w, top: 3.0.h),
+                            child: LinkInputWidget(textEditingController: _otherLinkLinkController, lable: 'Other')
+                            // Container(
+                            //   height: 7.0.h,
+                            //   width: 90.0.w,
+                            //   child: TextFormField(
+                            //     controller: _otherLinkLinkController,
+                            //     decoration: InputDecoration(
+                            //         labelText: "Other",
+                            //         labelStyle: TextStyle(
+                            //       color: Constants.bpSkipStyle,
+                            //       fontFamily: "Montserrat", 
+                            //       fontSize: 10.0.sp
+                            //     ),
+                            //         fillColor: Colors.white,
+                            //         focusedBorder: OutlineInputBorder(
+                            //           borderRadius: BorderRadius.circular(5.0),
+                            //           borderSide: BorderSide(
+                            //             color: Constants.formBorder,
+                            //           ),
+                            //         ),
+                            //         enabledBorder: OutlineInputBorder(
+                            //           borderRadius: BorderRadius.circular(5.0),
+                            //           borderSide: BorderSide(
+                            //             color: Constants.formBorder,
+                            //             //width: 2.0,
+                            //           ),
+                            //         ),
+                            //         suffixIconConstraints: BoxConstraints(
+                            //           maxHeight: 30.0,
+                            //           maxWidth: 30.0,
+                            //         ),
+                            //         suffixIcon: Padding(
+                            //           padding: EdgeInsets.only(right: 2.0.w),
+                            //           child: Image.asset(
+                            //             'assets/icons/link.png',
+                            //             color: Constants.formBorder,
+                            //           ),
+                            //         )),
+                            //     //keyboardType: TextInputType.emailAddress,
+                            //     style: new TextStyle(
+                            //         fontFamily: "Montserrat",
+                            //         fontSize: 10.0.sp),
+                            //   ),
+                            // ),
                           ),
                         ),
 
                         Padding(
                           padding: EdgeInsets.only(
-                              right: 3.0.w,
-                              left: 3.0.w,
+                              right: 2.0.w,
+                              left: 2.0.w,
                               top: 6.0.h,
                               bottom: 3.0.h),
                           child: GestureDetector(
@@ -2868,26 +2877,27 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 //(Route<dynamic> route) => false);
                               }
                             },
-                            child: Container(
-                              height: 7.0.h,
-                              width: 90.0.w,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Constants.bgColor,
-                                  ),
-                                  color: Constants.bgColor,
-                                  borderRadius: BorderRadius.circular(5.0)),
-                              child: Center(
-                                child: Text(
-                                  'Submit'.toUpperCase(),
-                                  style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 11.0.sp,
-                                      color: Colors.white),
-                                ),
-                              ),
-                            ),
+                            child: ButtonWidget(btnName: 'SUBMIT', isActive: true, fontWeight: FontWeight.w500)
+                            // Container(
+                            //   height: 7.0.h,
+                            //   width: 90.0.w,
+                            //   decoration: BoxDecoration(
+                            //       border: Border.all(
+                            //         color: Constants.bgColor,
+                            //       ),
+                            //       color: Constants.bgColor,
+                            //       borderRadius: BorderRadius.circular(5.0)),
+                            //   child: Center(
+                            //     child: Text(
+                            //       'Submit'.toUpperCase(),
+                            //       style: TextStyle(
+                            //           fontFamily: 'Montserrat',
+                            //           fontWeight: FontWeight.w500,
+                            //           fontSize: 11.0.sp,
+                            //           color: Colors.white),
+                            //     ),
+                            //   ),
+                            // ),
                           ),
                         ),
                       ],

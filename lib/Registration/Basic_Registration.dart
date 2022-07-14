@@ -8,6 +8,7 @@ import 'package:being_pupil/Login/Login_Screen.dart';
 import 'package:being_pupil/Login/OTP_Screen.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Model_Class.dart';
+import 'package:being_pupil/Widgets/Common_Widgets.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
@@ -118,37 +119,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: Padding(
                           padding: EdgeInsets.only(
                               left: 3.0.w, right: 3.0.w, top: 4.0.h),
-                          child: Container(
-                            height: 7.0.h,
-                            width: 90.0.w,
-                            child: TextFormField(
-                              controller: nameController,
-                              decoration: InputDecoration(
-                                labelText: "Name",
-                                labelStyle: TextStyle(
-                                    color: Constants.bpSkipStyle,
-                                    fontFamily: "Montserrat",
-                                    fontSize: 10.0.sp),
-                                fillColor: Colors.white,
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                    //width: 2.0,
-                                  ),
-                                ),
-                              ),
-                              //keyboardType: TextInputType.emailAddress,
-                              style: new TextStyle(
-                                  fontFamily: "Montserrat", fontSize: 10.0.sp),
-                            ),
-                          ),
+                          child: TextInputWidget(textEditingController: nameController, lable: 'Name')
+                          // Container(
+                          //   height: 7.0.h,
+                          //   width: 90.0.w,
+                          //   child: TextFormField(
+                          //     controller: nameController,
+                          //     decoration: InputDecoration(
+                          //       labelText: "Name",
+                          //       labelStyle: TextStyle(
+                          //           color: Constants.bpSkipStyle,
+                          //           fontFamily: "Montserrat",
+                          //           fontSize: 10.0.sp),
+                          //       fillColor: Colors.white,
+                          //       focusedBorder: OutlineInputBorder(
+                          //         borderRadius: BorderRadius.circular(5.0),
+                          //         borderSide: BorderSide(
+                          //           color: Constants.formBorder,
+                          //         ),
+                          //       ),
+                          //       enabledBorder: OutlineInputBorder(
+                          //         borderRadius: BorderRadius.circular(5.0),
+                          //         borderSide: BorderSide(
+                          //           color: Constants.formBorder,
+                          //           //width: 2.0,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //     //keyboardType: TextInputType.emailAddress,
+                          //     style: new TextStyle(
+                          //         fontFamily: "Montserrat", fontSize: 10.0.sp),
+                          //   ),
+                          // ),
                         ),
                       ),
                       Theme(
@@ -158,43 +160,44 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         child: Padding(
                           padding: EdgeInsets.only(
-                              left: 3.0.w, right: 3.0.w, top: 3.0.h),
-                          child: Container(
-                            height: 7.0.h,
-                            width: 90.0.w,
-                            child: TextFormField(
-                              controller: mobileController,
-                              keyboardType: TextInputType.phone,
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(10),
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              decoration: InputDecoration(
-                                labelText: "Phone Number",
-                                labelStyle: TextStyle(
-                                    color: Constants.bpSkipStyle,
-                                    fontFamily: "Montserrat",
-                                    fontSize: 10.0.sp),
-                                fillColor: Colors.white,
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                    //width: 2.0,
-                                  ),
-                                ),
-                              ),
-                              //keyboardType: TextInputType.emailAddress,
-                              style: new TextStyle(
-                                  fontFamily: "Montserrat", fontSize: 10.0.sp),
-                            ),
-                          ),
+                              left: 3.0.w, right: 3.0.w, top: 2.0.h),
+                          child: NumberInputWidget(textEditingController: mobileController, lable: 'Phone Number')
+                          // Container(
+                          //   height: 7.0.h,
+                          //   width: 90.0.w,
+                          //   child: TextFormField(
+                          //     controller: mobileController,
+                          //     keyboardType: TextInputType.phone,
+                          //     inputFormatters: [
+                          //       LengthLimitingTextInputFormatter(10),
+                          //       FilteringTextInputFormatter.digitsOnly
+                          //     ],
+                          //     decoration: InputDecoration(
+                          //       labelText: "Phone Number",
+                          //       labelStyle: TextStyle(
+                          //           color: Constants.bpSkipStyle,
+                          //           fontFamily: "Montserrat",
+                          //           fontSize: 10.0.sp),
+                          //       fillColor: Colors.white,
+                          //       focusedBorder: OutlineInputBorder(
+                          //         borderRadius: BorderRadius.circular(5.0),
+                          //         borderSide: BorderSide(
+                          //           color: Constants.formBorder,
+                          //         ),
+                          //       ),
+                          //       enabledBorder: OutlineInputBorder(
+                          //         borderRadius: BorderRadius.circular(5.0),
+                          //         borderSide: BorderSide(
+                          //           color: Constants.formBorder,
+                          //           //width: 2.0,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //     //keyboardType: TextInputType.emailAddress,
+                          //     style: new TextStyle(
+                          //         fontFamily: "Montserrat", fontSize: 10.0.sp),
+                          //   ),
+                          // ),
                         ),
                       ),
                       Theme(
@@ -204,39 +207,40 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         child: Padding(
                           padding: EdgeInsets.only(
-                              left: 3.0.w, right: 3.0.w, top: 3.0.h),
-                          child: Container(
-                            height: 7.0.h,
-                            width: 90.0.w,
-                            child: TextFormField(
-                              controller: emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
-                                labelText: "Email",
-                                labelStyle: TextStyle(
-                                    color: Constants.bpSkipStyle,
-                                    fontFamily: "Montserrat",
-                                    fontSize: 10.0.sp),
-                                fillColor: Colors.white,
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                    //width: 2.0,
-                                  ),
-                                ),
-                              ),
-                              //keyboardType: TextInputType.emailAddress,
-                              style: new TextStyle(
-                                  fontFamily: "Montserrat", fontSize: 10.0.sp),
-                            ),
-                          ),
+                              left: 3.0.w, right: 3.0.w, top: 2.0.h),
+                          child: TextInputWidget(textEditingController: emailController, lable: 'Email')
+                          // Container(
+                          //   height: 7.0.h,
+                          //   width: 90.0.w,
+                          //   child: TextFormField(
+                          //     controller: emailController,
+                          //     keyboardType: TextInputType.emailAddress,
+                          //     decoration: InputDecoration(
+                          //       labelText: "Email",
+                          //       labelStyle: TextStyle(
+                          //           color: Constants.bpSkipStyle,
+                          //           fontFamily: "Montserrat",
+                          //           fontSize: 10.0.sp),
+                          //       fillColor: Colors.white,
+                          //       focusedBorder: OutlineInputBorder(
+                          //         borderRadius: BorderRadius.circular(5.0),
+                          //         borderSide: BorderSide(
+                          //           color: Constants.formBorder,
+                          //         ),
+                          //       ),
+                          //       enabledBorder: OutlineInputBorder(
+                          //         borderRadius: BorderRadius.circular(5.0),
+                          //         borderSide: BorderSide(
+                          //           color: Constants.formBorder,
+                          //           //width: 2.0,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //     //keyboardType: TextInputType.emailAddress,
+                          //     style: new TextStyle(
+                          //         fontFamily: "Montserrat", fontSize: 10.0.sp),
+                          //   ),
+                          // ),
                         ),
                       ),
                       Theme(
@@ -248,7 +252,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           padding: EdgeInsets.only(
                               left: 3.0.w,
                               right: 3.0.w,
-                              top: 3.0.h,
+                              top: 2.0.h,
                               bottom: 0.0.h),
                           child: CustomDropdown<int>(
                             child: Row(
@@ -292,8 +296,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                  // sharedPreferences.getString('RegisterAs')!);
                             },
                             dropdownButtonStyle: DropdownButtonStyle(
-                              height: 7.0.h,
-                              width: 90.0.w,
+                              height: 48.0,//7.0.h,
+                              width: 80.0.w,//90.0.w,
                               //padding: EdgeInsets.only(left: 2.0.w),
                               elevation: 0,
                               backgroundColor: Colors.white,
@@ -324,7 +328,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                 fontWeight: FontWeight.w400,
                                                 color: Constants.bpSkipStyle),
                                           ),
-                                          SizedBox(width: 50.0.w)
+                                          SizedBox(width: 48.0.w)
                                         ],
                                       ),
                                     ),
@@ -335,7 +339,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 1.0.h),
+                        padding: EdgeInsets.symmetric(vertical: 2.0.h),
                         child: CheckboxListTile(
                           value: checkboxValue,
                           onChanged: (val) {
@@ -343,16 +347,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               checkboxValue = !checkboxValue;
                             });
                           },
-                          subtitle: !checkboxValue
-                              ? Text(
-                                  'Required.',
-                                  style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 11.0.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.red),
-                                )
-                              : null,
+                          // subtitle: !checkboxValue
+                          //     ? Text(
+                          //         'Required.',
+                          //         style: TextStyle(
+                          //             fontFamily: 'Montserrat',
+                          //             fontSize: 11.0.sp,
+                          //             fontWeight: FontWeight.w400,
+                          //             color: Colors.red),
+                          //       )
+                          //     : null,
                           title: GestureDetector(
                               onTap: () {
                                 Navigator.of(context).push(
@@ -464,34 +468,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   Platform.isAndroid ? 'A' : 'I');
                             }
                           },
-                          child: Container(
-                            height: 7.0.h,
-                            width: 90.0.w,
-                            padding: const EdgeInsets.all(1.0),
-                            decoration: BoxDecoration(
-                              color: Constants.bpOnBoardTitleStyle,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)),
-                              border: Border.all(
-                                color: Constants.formBorder,
-                                width: 0.15,
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'Sign Up'.toUpperCase(),
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 11.0.sp),
-                              ),
-                            ),
-                          ),
+                          child: ButtonWidget(btnName: 'SIGN UP', isActive: true, fontWeight: FontWeight.w700,)
+                          // Container(
+                          //   height: 7.0.h,
+                          //   width: 90.0.w,
+                          //   padding: const EdgeInsets.all(1.0),
+                          //   decoration: BoxDecoration(
+                          //     color: Constants.bpOnBoardTitleStyle,
+                          //     borderRadius:
+                          //         BorderRadius.all(Radius.circular(10.0)),
+                          //     border: Border.all(
+                          //       color: Constants.formBorder,
+                          //       width: 0.15,
+                          //     ),
+                          //   ),
+                          //   child: Center(
+                          //     child: Text(
+                          //       'Sign Up'.toUpperCase(),
+                          //       style: TextStyle(
+                          //           color: Colors.white,
+                          //           fontFamily: 'Montserrat',
+                          //           fontWeight: FontWeight.w700,
+                          //           fontSize: 11.0.sp),
+                          //     ),
+                          //   ),
+                          // ),
                         ),
                       ),
                       SizedBox(
-                        height: 10.0.h, //20.0.h
+                        height: 18.0.h, //20.0.h
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

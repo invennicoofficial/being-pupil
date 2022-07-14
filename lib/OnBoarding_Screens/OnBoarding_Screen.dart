@@ -1,6 +1,7 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Login/Login_Screen.dart';
 import 'package:being_pupil/Registration/Basic_Registration.dart';
+import 'package:being_pupil/Widgets/Common_Widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -349,22 +350,23 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                     type: PageTransitionType.fade,
                                     child: LoginScreen()));
                           },
-                          child: Container(
-                            height: 8.0.h,
-                            width: 80.0.w,
-                            decoration: BoxDecoration(
-                                color: Constants.bgColor,
-                                borderRadius: BorderRadius.circular(8.0)),
-                            child: Center(
-                              child: Text('GET STARTED',
-                                  style: TextStyle(
-                                    fontFamily: "Montserrat",
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12.0.sp,
-                                    color: Colors.white,
-                                  )),
-                            ),
-                          ),
+                          child: ButtonWidget(btnName: 'GET STARTED', isActive: true)
+                          // Container(
+                          //   height: 8.0.h,
+                          //   width: 80.0.w,
+                          //   decoration: BoxDecoration(
+                          //       color: Constants.bgColor,
+                          //       borderRadius: BorderRadius.circular(8.0)),
+                          //   child: Center(
+                          //     child: Text('GET STARTED',
+                          //         style: TextStyle(
+                          //           fontFamily: "Montserrat",
+                          //           fontWeight: FontWeight.w500,
+                          //           fontSize: 12.0.sp,
+                          //           color: Colors.white,
+                          //         )),
+                          //   ),
+                          // ),
                         )),
             ),
           ],

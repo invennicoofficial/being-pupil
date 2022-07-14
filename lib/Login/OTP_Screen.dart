@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Login/Verification_Screen.dart';
+import 'package:being_pupil/Widgets/Common_Widgets.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -320,30 +321,31 @@ class _OtpScreenState extends State<OtpScreen> {
                               //});
                             }
                           },
-                          child: Container(
-                            height: 7.0.h,
-                            width: 90.0.w,
-                            padding: const EdgeInsets.all(1.0),
-                            decoration: BoxDecoration(
-                              color: Constants.bpOnBoardTitleStyle,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)),
-                              border: Border.all(
-                                color: Constants.formBorder,
-                                width: 0.15,
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'Verify'.toUpperCase(),
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 11.0.sp),
-                              ),
-                            ),
-                          ),
+                          child: ButtonWidget(btnName: 'VERIFY', isActive: true, fontWeight: FontWeight.w700,)
+                          // Container(
+                          //   height: 7.0.h,
+                          //   width: 90.0.w,
+                          //   padding: const EdgeInsets.all(1.0),
+                          //   decoration: BoxDecoration(
+                          //     color: Constants.bpOnBoardTitleStyle,
+                          //     borderRadius:
+                          //         BorderRadius.all(Radius.circular(10.0)),
+                          //     border: Border.all(
+                          //       color: Constants.formBorder,
+                          //       width: 0.15,
+                          //     ),
+                          //   ),
+                          //   child: Center(
+                          //     child: Text(
+                          //       'Verify'.toUpperCase(),
+                          //       style: TextStyle(
+                          //           color: Colors.white,
+                          //           fontFamily: 'Montserrat',
+                          //           fontWeight: FontWeight.w700,
+                          //           fontSize: 11.0.sp),
+                          //     ),
+                          //   ),
+                          // ),
                         ),
                       ),
                     ],
