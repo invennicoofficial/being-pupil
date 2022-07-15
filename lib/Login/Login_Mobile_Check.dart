@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Registration/Educator_Registration.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
+import 'package:being_pupil/Widgets/Common_Widgets.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
@@ -121,54 +122,55 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 3.0.w, right: 3.0.w, top: 4.0.h),
-                            child: Container(
-                              height: 7.0.h,
-                              width: 90.0.w,
-                              child: TextFormField(
-                                autofocus: true,
-                                focusNode: mobileFocus,
-                                controller: mobileController,
-                                keyboardType: TextInputType.phone,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(10),
-                                ],
-                                decoration: InputDecoration(
-                                  labelText: "Phone Number",
-                                  labelStyle: TextStyle(
-                                    color: Constants.bpSkipStyle,
-                                    fontFamily: "Montserrat", 
-                                    fontSize: 10.0.sp
-                                  ),
-                                  fillColor: Colors.white,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    borderSide: BorderSide(
-                                      color: Constants.formBorder,
-                                      //width: 2.0,
-                                    ),
-                                  ),
-                                ),
-                                //keyboardType: TextInputType.emailAddress,
-                                style: new TextStyle(
-                                    fontFamily: "Montserrat", fontSize: 10.0.sp),
-                              ),
-                            ),
-                          ),
-                        ),
+                        NumberInputWidget(textEditingController: mobileController, lable: 'Phone Number', autoFocus: true, focusNode: mobileFocus,),
+                        // Theme(
+                        //   data: new ThemeData(
+                        //     primaryColor: Constants.bpSkipStyle,
+                        //     primaryColorDark: Constants.bpSkipStyle,
+                        //   ),
+                        //   child: Padding(
+                        //     padding: EdgeInsets.only(
+                        //         left: 3.0.w, right: 3.0.w, top: 4.0.h),
+                        //     child: Container(
+                        //       height: 7.0.h,
+                        //       width: 90.0.w,
+                        //       child: TextFormField(
+                        //         autofocus: true,
+                        //         focusNode: mobileFocus,
+                        //         controller: mobileController,
+                        //         keyboardType: TextInputType.phone,
+                        //         inputFormatters: [
+                        //           LengthLimitingTextInputFormatter(10),
+                        //         ],
+                        //         decoration: InputDecoration(
+                        //           labelText: "Phone Number",
+                        //           labelStyle: TextStyle(
+                        //             color: Constants.bpSkipStyle,
+                        //             fontFamily: "Montserrat", 
+                        //             fontSize: 10.0.sp
+                        //           ),
+                        //           fillColor: Colors.white,
+                        //           focusedBorder: OutlineInputBorder(
+                        //             borderRadius: BorderRadius.circular(5.0),
+                        //             borderSide: BorderSide(
+                        //               color: Constants.formBorder,
+                        //             ),
+                        //           ),
+                        //           enabledBorder: OutlineInputBorder(
+                        //             borderRadius: BorderRadius.circular(5.0),
+                        //             borderSide: BorderSide(
+                        //               color: Constants.formBorder,
+                        //               //width: 2.0,
+                        //             ),
+                        //           ),
+                        //         ),
+                        //         //keyboardType: TextInputType.emailAddress,
+                        //         style: new TextStyle(
+                        //             fontFamily: "Montserrat", fontSize: 10.0.sp),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         Padding(
                           padding: EdgeInsets.only(
                               left: 3.0.w, right: 3.0.w, top: 6.0.h),
@@ -204,30 +206,31 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
                             },
                             child: Padding(
                               padding: EdgeInsets.only(bottom: 4.0.h),
-                              child: Container(
-                                height: 7.0.h,
-                                width: 90.0.w,
-                                padding: const EdgeInsets.all(1.0),
-                                decoration: BoxDecoration(
-                                  color: Constants.bpOnBoardTitleStyle,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0)),
-                                  border: Border.all(
-                                    color: Constants.formBorder,
-                                    width: 0.15,
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    'Continue'.toUpperCase(),
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 11.0.sp),
-                                  ),
-                                ),
-                              ),
+                              child: ButtonWidget(btnName: 'CONTINUE', isActive: true, fontWeight: FontWeight.w700,)
+                              // Container(
+                              //   height: 7.0.h,
+                              //   width: 90.0.w,
+                              //   padding: const EdgeInsets.all(1.0),
+                              //   decoration: BoxDecoration(
+                              //     color: Constants.bpOnBoardTitleStyle,
+                              //     borderRadius:
+                              //         BorderRadius.all(Radius.circular(10.0)),
+                              //     border: Border.all(
+                              //       color: Constants.formBorder,
+                              //       width: 0.15,
+                              //     ),
+                              //   ),
+                              //   child: Center(
+                              //     child: Text(
+                              //       'Continue'.toUpperCase(),
+                              //       style: TextStyle(
+                              //           color: Colors.white,
+                              //           fontFamily: 'Montserrat',
+                              //           fontWeight: FontWeight.w700,
+                              //           fontSize: 11.0.sp),
+                              //     ),
+                              //   ),
+                              // ),
                             ),
                           ),
                         ),

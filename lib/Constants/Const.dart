@@ -12,4 +12,5 @@ static const selectedIcon = Color(0xFFCAE063);
 static const profileTitle = Color(0xFF263238);
 static const blueTitle = Color(0xFF1F7DE9);
 static const disableColor = Color(0xFF656263);
+static double constHeight = 48.0;
 }

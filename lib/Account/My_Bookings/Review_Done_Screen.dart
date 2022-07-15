@@ -1,3 +1,4 @@
+import 'package:being_pupil/Widgets/Common_Widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:being_pupil/Constants/Const.dart';
@@ -17,26 +18,27 @@ class ReviewDoneScreen extends StatelessWidget {
                   },
                   child: Padding(
                     padding: EdgeInsets.only(bottom: 5.0.h),
-                    child: Container(
-                      height: 7.0.h,
-                      width: 90.0.w,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Constants.bgColor,
-                          ),
-                          color: Constants.bgColor,
-                          borderRadius: BorderRadius.circular(8.0)),
-                      child: Center(
-                        child: Text(
-                          'GO TO MY BOOKINGS',
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 11.0.sp,
-                              color: Colors.white),
-                        ),
-                      ),
-                    ),
+                    child: ButtonWidget(btnName: 'GO TO MY BOOKINGS', isActive: true, fontWeight: FontWeight.w500)
+                    // Container(
+                    //   height: 7.0.h,
+                    //   width: 90.0.w,
+                    //   decoration: BoxDecoration(
+                    //       border: Border.all(
+                    //         color: Constants.bgColor,
+                    //       ),
+                    //       color: Constants.bgColor,
+                    //       borderRadius: BorderRadius.circular(8.0)),
+                    //   child: Center(
+                    //     child: Text(
+                    //       'GO TO MY BOOKINGS',
+                    //       style: TextStyle(
+                    //           fontFamily: 'Montserrat',
+                    //           fontWeight: FontWeight.w500,
+                    //           fontSize: 11.0.sp,
+                    //           color: Colors.white),
+                    //     ),
+                    //   ),
+                    // ),
                   ),
                 ),
       appBar: AppBar(

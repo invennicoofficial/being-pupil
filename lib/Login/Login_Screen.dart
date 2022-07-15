@@ -137,57 +137,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(5.0))),
                     child: Column(
                       children: <Widget>[
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 3.0.w, right: 3.0.w, top: 4.0.h),
-                            child: NumberInputWidget(focusNode: mobileFocus!, autoFocus: true,
-                            textEditingController: mobileController, lable: 'Phone Number')
-                            // Container(
-                            //   height: 7.0.h,
-                            //   width: 90.0.w,
-                            //   child: TextFormField(
-                            //     focusNode: mobileFocus,
-                            //     controller: mobileController,
-                            //     autofocus: true,
-                            //     keyboardType: TextInputType.phone,
-                            //     inputFormatters: [
-                            //       LengthLimitingTextInputFormatter(10),
-                            //       FilteringTextInputFormatter.digitsOnly
-                            //     ],
-                            //     decoration: InputDecoration(
-                            //       labelText: "Phone Number",
-                            //       labelStyle: TextStyle(
-                            //         color: Constants.bpSkipStyle,
-                            //         fontFamily: "Montserrat", 
-                            //         fontSize: 10.0.sp
-                            //       ),
-                            //       fillColor: Colors.white,
-                            //       focusedBorder: OutlineInputBorder(
-                            //         borderRadius: BorderRadius.circular(5.0),
-                            //         borderSide: BorderSide(
-                            //           color: Constants.formBorder,
-                            //         ),
-                            //       ),
-                            //       enabledBorder: OutlineInputBorder(
-                            //         borderRadius: BorderRadius.circular(5.0),
-                            //         borderSide: BorderSide(
-                            //           color: Constants.formBorder,
-                            //           //width: 2.0,
-                            //         ),
-                            //       ),
-                            //     ),
-                            //     //keyboardType: TextInputType.emailAddress,
-                            //     style: new TextStyle(
-                            //         fontFamily: "Montserrat", fontSize: 10.0.sp),
-                            //   ),
-                            // ),
-                          ),
-                        ),
+                        NumberInputWidget(focusNode: mobileFocus!, autoFocus: true,
+                        textEditingController: mobileController, lable: 'Phone Number'),
                         Padding(
                           padding: EdgeInsets.only(
                               left: 3.0.w, right: 3.0.w, top: 6.0.h),
@@ -425,7 +376,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         SizedBox(
-                          height: 25.0.h,
+                          height: 30.0.h,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

@@ -2,6 +2,7 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Stay_And_Study_Model/Create_Booking_Model.dart';
 import 'package:being_pupil/StayAndStudy/Payment_Confirm_Screen.dart';
+import 'package:being_pupil/Widgets/Common_Widgets.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -472,29 +473,30 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                     //!createRazorPayOrderId();
                     createBookingAPI();
                   },
-                  child: Container(
-                    height: 7.0.h,
-                    width: 90.0.w,
-                    padding: const EdgeInsets.all(1.0),
-                    decoration: BoxDecoration(
-                      color: Constants.bpOnBoardTitleStyle,
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      border: Border.all(
-                        color: Constants.bgColor,
-                        width: 0.15,
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Book now'.toUpperCase(),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w600,
-                            fontSize: 11.0.sp),
-                      ),
-                    ),
-                  ),
+                  child: ButtonWidget(btnName: 'BOOK NOW', isActive: true, fontWeight: FontWeight.w500,)
+                  // Container(
+                  //   height: 7.0.h,
+                  //   width: 90.0.w,
+                  //   padding: const EdgeInsets.all(1.0),
+                  //   decoration: BoxDecoration(
+                  //     color: Constants.bpOnBoardTitleStyle,
+                  //     borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  //     border: Border.all(
+                  //       color: Constants.bgColor,
+                  //       width: 0.15,
+                  //     ),
+                  //   ),
+                  //   child: Center(
+                  //     child: Text(
+                  //       'Book now'.toUpperCase(),
+                  //       style: TextStyle(
+                  //           color: Colors.white,
+                  //           fontFamily: 'Montserrat',
+                  //           fontWeight: FontWeight.w600,
+                  //           fontSize: 11.0.sp),
+                  //     ),
+                  //   ),
+                  // ),
                 ),
               ),
             ],

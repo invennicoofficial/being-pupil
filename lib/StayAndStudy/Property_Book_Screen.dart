@@ -2,6 +2,7 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Stay_And_Study_Model/Check_Booking_Model.dart';
 import 'package:being_pupil/Model/Stay_And_Study_Model/Get_All_Property_Model.dart';
+import 'package:being_pupil/Widgets/Common_Widgets.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
@@ -126,17 +127,14 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
         ),
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
-          child: Column(
-            children: <Widget>[
-              Theme(
-                data: new ThemeData(
-                  primaryColor: Constants.bpSkipStyle,
-                  primaryColorDark: Constants.bpSkipStyle,
-                ),
-                child: Padding(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 2.0.w),
+            child: Column(
+              children: <Widget>[
+                Padding(
                   padding: EdgeInsets.only(
-                    left: 4.0.w,
-                    right: 4.0.w,
+                    left: 3.0.w,
+                    right: 3.0.w,
                     top: 3.0.h,
                   ),
                   child: CustomDropdown<int>(
@@ -169,7 +167,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                       }
                     },
                     dropdownButtonStyle: DropdownButtonStyle(
-                      height: 7.0.h,
+                      height: Constants.constHeight,
                       width: 90.0.w,
                       elevation: 0,
                       backgroundColor: Colors.white,
@@ -214,31 +212,25 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                         .toList(),
                   ),
                 ),
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.only(top: 3.0.h, left: 4.0.w, right: 3.0.w),
-                    child: Text(
-                      'Select Meal',
-                      style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 12.0.sp,
-                          color: Constants.bgColor,
-                          fontWeight: FontWeight.w500),
+                Row(
+                  children: [
+                    Padding(
+                      padding:
+                          EdgeInsets.only(top: 3.0.h, left: 3.0.w, right: 3.0.w),
+                      child: Text(
+                        'Select Meal',
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 12.0.sp,
+                            color: Constants.bgColor,
+                            fontWeight: FontWeight.w500),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Theme(
-                data: new ThemeData(
-                  primaryColor: Constants.bpSkipStyle,
-                  primaryColorDark: Constants.bpSkipStyle,
+                  ],
                 ),
-                child: Padding(
+                Padding(
                     padding:
-                        EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 2.0.h),
+                        EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 1.5.h),
                     child: ListView.builder(
                         itemCount:
                             widget.propData![widget.index!]['meal'].length,
@@ -318,17 +310,11 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                                 }
                               });
                         })),
-              ),
-              Visibility(
-                visible: isRoomSelected ? true : false,
-                child: Theme(
-                  data: new ThemeData(
-                    primaryColor: Constants.bpSkipStyle,
-                    primaryColorDark: Constants.bpSkipStyle,
-                  ),
+                Visibility(
+                  visible: isRoomSelected ? true : false,
                   child: Padding(
                     padding:
-                        EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 3.0.h),
+                        EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 3.0.h),
                     child: CustomDropdown<int>(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -383,7 +369,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                         }
                       },
                       dropdownButtonStyle: DropdownButtonStyle(
-                        height: 7.0.h,
+                        height: Constants.constHeight,
                         width: 90.0.w,
                         elevation: 0,
                         backgroundColor: Colors.white,
@@ -419,19 +405,13 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                     ),
                   ),
                 ),
-              ),
-              Visibility(
-                visible: selectedMonth == 0 ? false : true,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 4.0.w, right: 4.0.w),
-                  child: Row(
-                    children: <Widget>[
-                      Theme(
-                        data: new ThemeData(
-                          primaryColor: Constants.bpSkipStyle,
-                          primaryColorDark: Constants.bpSkipStyle,
-                        ),
-                        child: Padding(
+                Visibility(
+                  visible: selectedMonth == 0 ? false : true,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 3.0.w, right: 3.0.w),
+                    child: Row(
+                      children: <Widget>[
+                        Padding(
                           padding: EdgeInsets.only(top: 3.0.h),
                           child: GestureDetector(
                             onTap: () async {
@@ -484,7 +464,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                               }
                             },
                             child: Container(
-                              height: 7.0.h,
+                              height: Constants.constHeight,
                               width: 44.0.w,
                               padding: EdgeInsets.symmetric(horizontal: 3.0.w),
                               decoration: BoxDecoration(
@@ -512,15 +492,9 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 3.0.w),
-                      Theme(
-                        data: new ThemeData(
-                          primaryColor: Constants.bpSkipStyle,
-                          primaryColorDark: Constants.bpSkipStyle,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 3.0.h),
+                        SizedBox(width: 2.0.w),
+                        Padding(
+                          padding: EdgeInsets.only(top: 3.0.h,),
                           child: GestureDetector(
                             onTap: () async {
                               if (checkInDate != null) {
@@ -589,7 +563,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                               }
                             },
                             child: Container(
-                              height: 7.0.h,
+                              height: Constants.constHeight,
                               width: 44.0.w,
                               padding: EdgeInsets.symmetric(horizontal: 3.0.w),
                               decoration: BoxDecoration(
@@ -619,402 +593,247 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.only(top: 3.0.h, left: 4.0.w, right: 3.0.w),
-                    child: Text(
-                      'Personal Information',
-                      style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 12.0.sp,
-                          color: Constants.bgColor,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                ],
-              ),
-              Theme(
-                data: new ThemeData(
-                  primaryColor: Constants.bpSkipStyle,
-                  primaryColorDark: Constants.bpSkipStyle,
-                ),
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 4.0.h),
-                  child: Container(
-                    height: 7.0.h,
-                    child: TextFormField(
-                      controller: _nameController,
-                      readOnly: true,
-                      decoration: InputDecoration(
-                        labelText: "Name",
-                        labelStyle: TextStyle(
-                            color: Constants.bpSkipStyle,
-                            fontFamily: "Montserrat",
-                            fontSize: 10.0.sp),
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: BorderSide(
-                            color: Constants.formBorder,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: BorderSide(
-                            color: Constants.formBorder,
-                          ),
-                        ),
-                      ),
-                      style: new TextStyle(
-                          fontFamily: "Montserrat", fontSize: 10.0.sp),
-                    ),
-                  ),
-                ),
-              ),
-              Theme(
-                data: new ThemeData(
-                  primaryColor: Constants.bpSkipStyle,
-                  primaryColorDark: Constants.bpSkipStyle,
-                ),
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 4.0.h),
-                  child: Container(
-                    height: 7.0.h,
-                    child: TextFormField(
-                      controller: _genderController,
-                      readOnly: true,
-                      decoration: InputDecoration(
-                        labelText: "Gender",
-                        labelStyle: TextStyle(
-                            color: Constants.bpSkipStyle,
-                            fontFamily: "Montserrat",
-                            fontSize: 10.0.sp),
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: BorderSide(
-                            color: Constants.formBorder,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: BorderSide(
-                            color: Constants.formBorder,
-                          ),
-                        ),
-                      ),
-                      style: new TextStyle(
-                          fontFamily: "Montserrat", fontSize: 10.0.sp),
-                    ),
-                  ),
-                ),
-              ),
-              Theme(
-                data: new ThemeData(
-                  primaryColor: Constants.bpSkipStyle,
-                  primaryColorDark: Constants.bpSkipStyle,
-                ),
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 4.0.h),
-                  child: Container(
-                    height: 7.0.h,
-                    child: TextFormField(
-                      controller: _emailController,
-                      readOnly: true,
-                      decoration: InputDecoration(
-                        labelText: "Email",
-                        labelStyle: TextStyle(
-                            color: Constants.bpSkipStyle,
-                            fontFamily: "Montserrat",
-                            fontSize: 10.0.sp),
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: BorderSide(
-                            color: Constants.formBorder,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: BorderSide(
-                            color: Constants.formBorder,
-                          ),
-                        ),
-                      ),
-                      style: new TextStyle(
-                          fontFamily: "Montserrat", fontSize: 10.0.sp),
-                    ),
-                  ),
-                ),
-              ),
-              Theme(
-                data: new ThemeData(
-                  primaryColor: Constants.bpSkipStyle,
-                  primaryColorDark: Constants.bpSkipStyle,
-                ),
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 3.0.h),
-                  child: Container(
-                    height: 7.0.h,
-                    child: TextFormField(
-                      controller: _mobileController,
-                      readOnly: true,
-                      keyboardType: TextInputType.phone,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(10),
                       ],
-                      decoration: InputDecoration(
-                        labelText: "Mobile Number",
-                        labelStyle: TextStyle(
-                            color: Constants.bpSkipStyle,
-                            fontFamily: "Montserrat",
-                            fontSize: 10.0.sp),
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: BorderSide(
-                            color: Constants.formBorder,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: BorderSide(
-                            color: Constants.formBorder,
-                          ),
-                        ),
-                      ),
-                      style: new TextStyle(
-                          fontFamily: "Montserrat", fontSize: 10.0.sp),
                     ),
                   ),
                 ),
-              ),
-              Visibility(
-                visible: false,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      left: 4.0.w, right: 4.0.w, top: 3.0.h, bottom: 3.0.h),
-                  child: Divider(
-                    color: Constants.formBorder,
-                    height: 2.0.h,
-                    thickness: 1.0,
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: false,
-                child: Container(
-                  width: 100.0.w,
-                  padding: EdgeInsets.only(
-                      left: 4.0.w, right: 4.0.w, top: 3.0.h, bottom: 3.0.h),
-                  color: Color(0xFFD3D9E0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        'Summary',
-                        style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 11.0.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Constants.bgColor),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 2.0.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text.rich(TextSpan(children: [
-                              TextSpan(
-                                  text: 'Room Charges ',
-                                  style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 10.0.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Constants.bgColor)),
-                              TextSpan(
-                                  text: roomType == null || roomType == ''
-                                      ? ''
-                                      : '($roomType)',
-                                  style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 8.0.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Constants.blueTitle)),
-                            ])),
-                            Text(
-                              roomCharge == 0 ? '₹0' : '₹$roomCharge',
-                              style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 10.0.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Constants.bgColor),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 2.0.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Meal Charges',
-                              style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 10.0.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Constants.bgColor),
-                            ),
-                            Text(
-                              mealCharge == 0 ? '₹0' : '₹$mealCharge',
-                              style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 10.0.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Constants.bgColor),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 2.0.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Taxes & Fees',
-                              style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 10.0.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Constants.bgColor),
-                            ),
-                            Text(
-                              '₹$taxCharge',
-                              style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 10.0.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Constants.bgColor),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 2.0.h, bottom: 2.0.h),
-                        child: Divider(
-                          color: Constants.formBorder,
-                          height: 2.0.h,
-                          thickness: 1.0,
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Grand Total',
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 13.0.sp,
-                                fontWeight: FontWeight.w700,
-                                color: Constants.bgColor),
-                          ),
-                          Text(
-                            total == 0 ? '₹0' : '₹$total',
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 13.0.sp,
-                                fontWeight: FontWeight.w700,
-                                color: Constants.bgColor),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 3.0.h),
-                child: GestureDetector(
-                  onTap: () {
-                    if (isRoomSelected == false) {
-                      Fluttertoast.showToast(
-                          msg: "Please Select Room Type",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Constants.bgColor,
-                          textColor: Colors.white,
-                          fontSize: 10.0.sp);
-                    } else if (selectedMonth == 0) {
-                      Fluttertoast.showToast(
-                          msg: "Please Select Number of Months",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Constants.bgColor,
-                          textColor: Colors.white,
-                          fontSize: 10.0.sp);
-                    } else if (checkInDate == null) {
-                      Fluttertoast.showToast(
-                          msg: "Please Select Check In Date",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Constants.bgColor,
-                          textColor: Colors.white,
-                          fontSize: 10.0.sp);
-                    } else if (checkOutDate == null) {
-                      Fluttertoast.showToast(
-                          msg: "Please Select Check Out Date",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Constants.bgColor,
-                          textColor: Colors.white,
-                          fontSize: 10.0.sp);
-                    } else {
-                      checkBookingDateAPI();
-                    }
-                  },
-                  child: Container(
-                    height: 7.0.h,
-                    width: 90.0.w,
-                    padding: const EdgeInsets.all(1.0),
-                    decoration: BoxDecoration(
-                      color: Constants.bpOnBoardTitleStyle,
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      border: Border.all(
-                        color: Constants.bgColor,
-                        width: 0.15,
-                      ),
-                    ),
-                    child: Center(
+                Row(
+                  children: [
+                    Padding(
+                      padding:
+                          EdgeInsets.only(top: 3.0.h, left: 4.0.w, right: 3.0.w),
                       child: Text(
-                        'Continue'.toUpperCase(),
+                        'Personal Information',
                         style: TextStyle(
-                            color: Colors.white,
                             fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w600,
-                            fontSize: 11.0.sp),
+                            fontSize: 12.0.sp,
+                            color: Constants.bgColor,
+                            fontWeight: FontWeight.w500),
                       ),
+                    ),
+                  ],
+                ),
+                TextInputWidget(textEditingController: _nameController, lable: 'Name', isReadOnly: true),
+                TextInputWidget(textEditingController: _genderController, lable: 'Gender', isReadOnly: true),
+                TextInputWidget(textEditingController: _emailController, lable: 'Email', isReadOnly: true),
+                NumberInputWidget(textEditingController: _mobileController, lable: 'Mobile Number', isReadOnly: true),
+                Visibility(
+                  visible: false,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: 4.0.w, right: 4.0.w, top: 3.0.h, bottom: 3.0.h),
+                    child: Divider(
+                      color: Constants.formBorder,
+                      height: 2.0.h,
+                      thickness: 1.0,
                     ),
                   ),
                 ),
-              ),
-            ],
+                Visibility(
+                  visible: false,
+                  child: Container(
+                    width: 100.0.w,
+                    padding: EdgeInsets.only(
+                        left: 4.0.w, right: 4.0.w, top: 3.0.h, bottom: 3.0.h),
+                    color: Color(0xFFD3D9E0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Summary',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 11.0.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Constants.bgColor),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 2.0.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text.rich(TextSpan(children: [
+                                TextSpan(
+                                    text: 'Room Charges ',
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 10.0.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Constants.bgColor)),
+                                TextSpan(
+                                    text: roomType == null || roomType == ''
+                                        ? ''
+                                        : '($roomType)',
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 8.0.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Constants.blueTitle)),
+                              ])),
+                              Text(
+                                roomCharge == 0 ? '₹0' : '₹$roomCharge',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 10.0.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Constants.bgColor),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 2.0.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Meal Charges',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 10.0.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Constants.bgColor),
+                              ),
+                              Text(
+                                mealCharge == 0 ? '₹0' : '₹$mealCharge',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 10.0.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Constants.bgColor),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 2.0.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Taxes & Fees',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 10.0.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Constants.bgColor),
+                              ),
+                              Text(
+                                '₹$taxCharge',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 10.0.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Constants.bgColor),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 2.0.h, bottom: 2.0.h),
+                          child: Divider(
+                            color: Constants.formBorder,
+                            height: 2.0.h,
+                            thickness: 1.0,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Grand Total',
+                              style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 13.0.sp,
+                                  fontWeight: FontWeight.w700,
+                                  color: Constants.bgColor),
+                            ),
+                            Text(
+                              total == 0 ? '₹0' : '₹$total',
+                              style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 13.0.sp,
+                                  fontWeight: FontWeight.w700,
+                                  color: Constants.bgColor),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 3.0.h),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (isRoomSelected == false) {
+                        Fluttertoast.showToast(
+                            msg: "Please Select Room Type",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Constants.bgColor,
+                            textColor: Colors.white,
+                            fontSize: 10.0.sp);
+                      } else if (selectedMonth == 0) {
+                        Fluttertoast.showToast(
+                            msg: "Please Select Number of Months",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Constants.bgColor,
+                            textColor: Colors.white,
+                            fontSize: 10.0.sp);
+                      } else if (checkInDate == null) {
+                        Fluttertoast.showToast(
+                            msg: "Please Select Check In Date",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Constants.bgColor,
+                            textColor: Colors.white,
+                            fontSize: 10.0.sp);
+                      } else if (checkOutDate == null) {
+                        Fluttertoast.showToast(
+                            msg: "Please Select Check Out Date",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Constants.bgColor,
+                            textColor: Colors.white,
+                            fontSize: 10.0.sp);
+                      } else {
+                        checkBookingDateAPI();
+                      }
+                    },
+                    child: ButtonWidget(btnName: 'Continue'.toUpperCase(), isActive: true, fontWeight: FontWeight.w500)
+                    // Container(
+                    //   height: 7.0.h,
+                    //   width: 90.0.w,
+                    //   padding: const EdgeInsets.all(1.0),
+                    //   decoration: BoxDecoration(
+                    //     color: Constants.bpOnBoardTitleStyle,
+                    //     borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    //     border: Border.all(
+                    //       color: Constants.bgColor,
+                    //       width: 0.15,
+                    //     ),
+                    //   ),
+                    //   child: Center(
+                    //     child: Text(
+                    //       'Continue'.toUpperCase(),
+                    //       style: TextStyle(
+                    //           color: Colors.white,
+                    //           fontFamily: 'Montserrat',
+                    //           fontWeight: FontWeight.w600,
+                    //           fontSize: 11.0.sp),
+                    //     ),
+                    //   ),
+                    // ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ));
   }

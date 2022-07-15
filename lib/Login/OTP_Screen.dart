@@ -156,7 +156,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           padding: EdgeInsets.only(
                               left: 20.0, right: 20.0, top: 4.0.h),
                           child: Container(
-                              height: 7.0.h,
+                              height: Constants.constHeight,
                               width: 90.0.w,
                               child: PinCodeTextField(
                                 appContext: context,

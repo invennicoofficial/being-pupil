@@ -514,7 +514,8 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                          // mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
+                           nameList.isNotEmpty
+                           ? Padding(
                               padding: EdgeInsets.only(top: 1.0.h, left: 5.0.w),
                               child: Text('Course taken',
                                                     //'${result.data[index].startDate} to ${result.data[index].endDate}',
@@ -523,7 +524,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                           fontSize: 12.0.sp,
                           fontWeight: FontWeight.w600,
                           color: Constants.bgColor)),
-                            ),
+                            ) : Container(),
                             ListView.builder(
                                 controller: _scrollController,
                                 itemCount: nameList.length,

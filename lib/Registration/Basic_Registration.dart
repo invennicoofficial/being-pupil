@@ -111,231 +111,96 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       borderRadius: BorderRadius.all(Radius.circular(5.0))),
                   child: Column(
                     children: <Widget>[
-                      Theme(
-                        data: new ThemeData(
-                          primaryColor: Constants.bpSkipStyle,
-                          primaryColorDark: Constants.bpSkipStyle,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: 3.0.w, right: 3.0.w, top: 4.0.h),
-                          child: TextInputWidget(textEditingController: nameController, lable: 'Name')
-                          // Container(
-                          //   height: 7.0.h,
-                          //   width: 90.0.w,
-                          //   child: TextFormField(
-                          //     controller: nameController,
-                          //     decoration: InputDecoration(
-                          //       labelText: "Name",
-                          //       labelStyle: TextStyle(
-                          //           color: Constants.bpSkipStyle,
-                          //           fontFamily: "Montserrat",
-                          //           fontSize: 10.0.sp),
-                          //       fillColor: Colors.white,
-                          //       focusedBorder: OutlineInputBorder(
-                          //         borderRadius: BorderRadius.circular(5.0),
-                          //         borderSide: BorderSide(
-                          //           color: Constants.formBorder,
-                          //         ),
-                          //       ),
-                          //       enabledBorder: OutlineInputBorder(
-                          //         borderRadius: BorderRadius.circular(5.0),
-                          //         borderSide: BorderSide(
-                          //           color: Constants.formBorder,
-                          //           //width: 2.0,
-                          //         ),
-                          //       ),
-                          //     ),
-                          //     //keyboardType: TextInputType.emailAddress,
-                          //     style: new TextStyle(
-                          //         fontFamily: "Montserrat", fontSize: 10.0.sp),
-                          //   ),
-                          // ),
-                        ),
-                      ),
-                      Theme(
-                        data: new ThemeData(
-                          primaryColor: Constants.bpSkipStyle,
-                          primaryColorDark: Constants.bpSkipStyle,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: 3.0.w, right: 3.0.w, top: 2.0.h),
-                          child: NumberInputWidget(textEditingController: mobileController, lable: 'Phone Number')
-                          // Container(
-                          //   height: 7.0.h,
-                          //   width: 90.0.w,
-                          //   child: TextFormField(
-                          //     controller: mobileController,
-                          //     keyboardType: TextInputType.phone,
-                          //     inputFormatters: [
-                          //       LengthLimitingTextInputFormatter(10),
-                          //       FilteringTextInputFormatter.digitsOnly
-                          //     ],
-                          //     decoration: InputDecoration(
-                          //       labelText: "Phone Number",
-                          //       labelStyle: TextStyle(
-                          //           color: Constants.bpSkipStyle,
-                          //           fontFamily: "Montserrat",
-                          //           fontSize: 10.0.sp),
-                          //       fillColor: Colors.white,
-                          //       focusedBorder: OutlineInputBorder(
-                          //         borderRadius: BorderRadius.circular(5.0),
-                          //         borderSide: BorderSide(
-                          //           color: Constants.formBorder,
-                          //         ),
-                          //       ),
-                          //       enabledBorder: OutlineInputBorder(
-                          //         borderRadius: BorderRadius.circular(5.0),
-                          //         borderSide: BorderSide(
-                          //           color: Constants.formBorder,
-                          //           //width: 2.0,
-                          //         ),
-                          //       ),
-                          //     ),
-                          //     //keyboardType: TextInputType.emailAddress,
-                          //     style: new TextStyle(
-                          //         fontFamily: "Montserrat", fontSize: 10.0.sp),
-                          //   ),
-                          // ),
-                        ),
-                      ),
-                      Theme(
-                        data: new ThemeData(
-                          primaryColor: Constants.bpSkipStyle,
-                          primaryColorDark: Constants.bpSkipStyle,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: 3.0.w, right: 3.0.w, top: 2.0.h),
-                          child: TextInputWidget(textEditingController: emailController, lable: 'Email')
-                          // Container(
-                          //   height: 7.0.h,
-                          //   width: 90.0.w,
-                          //   child: TextFormField(
-                          //     controller: emailController,
-                          //     keyboardType: TextInputType.emailAddress,
-                          //     decoration: InputDecoration(
-                          //       labelText: "Email",
-                          //       labelStyle: TextStyle(
-                          //           color: Constants.bpSkipStyle,
-                          //           fontFamily: "Montserrat",
-                          //           fontSize: 10.0.sp),
-                          //       fillColor: Colors.white,
-                          //       focusedBorder: OutlineInputBorder(
-                          //         borderRadius: BorderRadius.circular(5.0),
-                          //         borderSide: BorderSide(
-                          //           color: Constants.formBorder,
-                          //         ),
-                          //       ),
-                          //       enabledBorder: OutlineInputBorder(
-                          //         borderRadius: BorderRadius.circular(5.0),
-                          //         borderSide: BorderSide(
-                          //           color: Constants.formBorder,
-                          //           //width: 2.0,
-                          //         ),
-                          //       ),
-                          //     ),
-                          //     //keyboardType: TextInputType.emailAddress,
-                          //     style: new TextStyle(
-                          //         fontFamily: "Montserrat", fontSize: 10.0.sp),
-                          //   ),
-                          // ),
-                        ),
-                      ),
-                      Theme(
-                        data: new ThemeData(
-                          primaryColor: Constants.bpSkipStyle,
-                          primaryColorDark: Constants.bpSkipStyle,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: 3.0.w,
-                              right: 3.0.w,
-                              top: 2.0.h,
-                              bottom: 0.0.h),
-                          child: CustomDropdown<int>(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 3.0.w),
-                                  child: Text(
-                                    'Register As',
-                                    style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 10.0.sp,
-                                        fontWeight: FontWeight.w400,
-                                        color: Constants.bpSkipStyle),
-                                  ),
+                      TextInputWidget(textEditingController: nameController, lable: 'Name'),
+                      NumberInputWidget(textEditingController: mobileController, lable: 'Phone Number'),
+                      TextInputWidget(textEditingController: emailController, lable: 'Email'),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: 3.0.w,
+                            right: 3.0.w,
+                            top: 3.0.h,
+                            bottom: 0.0.h),
+                        child: CustomDropdown<int>(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 3.0.w),
+                                child: Text(
+                                  'Register As',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 10.0.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Constants.bpSkipStyle),
                                 ),
-                                //SizedBox(width: 50.0.w)
-                              ],
-                            ),
-                            // icon: Icon(
-                            //   Icons.expand_more,
-                            //   color: Constants.bpSkipStyle,
-                            // ),
-                            onChange: (String value, int index) async {
-                              //print(value);
-                              if (value == '1') {
-                                setState(() {
-                                  registerAs = 'E';
-                                });
-                              } else {
-                                setState(() {
-                                  registerAs = 'L';
-                                });
-                              }
-                              SharedPreferences sharedPreferences =
-                                  await SharedPreferences.getInstance();
-                              sharedPreferences.setString(
-                                  'RegisterAs', registerAs);
-                              //print('Preffff ::: ' +
-                                 // sharedPreferences.getString('RegisterAs')!);
-                            },
-                            dropdownButtonStyle: DropdownButtonStyle(
-                              height: 48.0,//7.0.h,
-                              width: 80.0.w,//90.0.w,
-                              //padding: EdgeInsets.only(left: 2.0.w),
-                              elevation: 0,
-                              backgroundColor: Colors.white,
-                              primaryColor: Constants.bpSkipStyle,
-                              side: BorderSide(color: Constants.formBorder),
-                            ),
-                            dropdownStyle: DropdownStyle(
-                              borderRadius: BorderRadius.circular(10.0),
-                              elevation: 6,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 2.0.w, vertical: 1.5.h),
-                            ),
-                            items: ['Educator', 'Learner']
-                                .asMap()
-                                .entries
-                                .map(
-                                  (item) => DropdownItem<int>(
-                                    value: item.key + 1,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            item.value,
-                                            style: TextStyle(
-                                                fontFamily: 'Montserrat',
-                                                fontSize: 10.0.sp,
-                                                fontWeight: FontWeight.w400,
-                                                color: Constants.bpSkipStyle),
-                                          ),
-                                          SizedBox(width: 48.0.w)
-                                        ],
-                                      ),
+                              ),
+                              //SizedBox(width: 50.0.w)
+                            ],
+                          ),
+                          // icon: Icon(
+                          //   Icons.expand_more,
+                          //   color: Constants.bpSkipStyle,
+                          // ),
+                          onChange: (String value, int index) async {
+                            //print(value);
+                            if (value == '1') {
+                              setState(() {
+                                registerAs = 'E';
+                              });
+                            } else {
+                              setState(() {
+                                registerAs = 'L';
+                              });
+                            }
+                            SharedPreferences sharedPreferences =
+                                await SharedPreferences.getInstance();
+                            sharedPreferences.setString(
+                                'RegisterAs', registerAs);
+                            //print('Preffff ::: ' +
+                               // sharedPreferences.getString('RegisterAs')!);
+                          },
+                          dropdownButtonStyle: DropdownButtonStyle(
+                            height: Constants.constHeight,//7.0.h,
+                            width: 90.0.w,//90.0.w,
+                            //padding: EdgeInsets.only(left: 2.0.w),
+                            elevation: 0,
+                            backgroundColor: Colors.white,
+                            primaryColor: Constants.bpSkipStyle,
+                            side: BorderSide(color: Constants.formBorder),
+                          ),
+                          dropdownStyle: DropdownStyle(
+                            borderRadius: BorderRadius.circular(10.0),
+                            elevation: 6,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 2.0.w, vertical: 1.5.h),
+                          ),
+                          items: ['Educator', 'Learner']
+                              .asMap()
+                              .entries
+                              .map(
+                                (item) => DropdownItem<int>(
+                                  value: item.key + 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          item.value,
+                                          style: TextStyle(
+                                              fontFamily: 'Montserrat',
+                                              fontSize: 10.0.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: Constants.bpSkipStyle),
+                                        ),
+                                        SizedBox(width: 48.0.w)
+                                      ],
                                     ),
                                   ),
-                                )
-                                .toList(),
-                          ),
+                                ),
+                              )
+                              .toList(),
                         ),
                       ),
                       Padding(
@@ -496,7 +361,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 18.0.h, //20.0.h
+                        height: 12.0.h, //20.0.h
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

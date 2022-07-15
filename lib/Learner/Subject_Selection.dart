@@ -158,58 +158,52 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Theme(
-                      data: new ThemeData(
-                        primaryColor: Constants.bpSkipStyle,
-                        primaryColorDark: Constants.bpSkipStyle,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 2.0.h),
-                        child: Container(
-                          height: 7.0.h,
-                          width: 90.0.w,
-                          child: TextFormField(
-                            controller: searchController,
-                            decoration: InputDecoration(
-                                hintText: "Search for subject of expertise",
-                                hintStyle: TextStyle(
-                                    color: Constants.bpSkipStyle,
-                                    fontFamily: "Montserrat",
-                                    fontSize: 10.0.sp),
-                                fillColor: Colors.white,
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                  ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 2.0.h),
+                      child: Container(
+                        height: Constants.constHeight,
+                        width: 90.0.w,
+                        child: TextFormField(
+                          controller: searchController,
+                          decoration: InputDecoration(
+                              hintText: "Search for subject of expertise",
+                              hintStyle: TextStyle(
+                                  color: Constants.bpSkipStyle,
+                                  fontFamily: "Montserrat",
+                                  fontSize: 10.0.sp),
+                              fillColor: Colors.white,
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: BorderSide(
+                                  color: Constants.formBorder,
                                 ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  borderSide: BorderSide(
-                                    color: Constants.formBorder,
-                                    //width: 2.0,
-                                  ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: BorderSide(
+                                  color: Constants.formBorder,
+                                  //width: 2.0,
                                 ),
-                                prefixIconConstraints: BoxConstraints(
-                                  maxHeight: 35.0,
-                                  maxWidth: 35.0,
+                              ),
+                              prefixIconConstraints: BoxConstraints(
+                                maxHeight: 35.0,
+                                maxWidth: 35.0,
+                              ),
+                              prefixIcon: Padding(
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 2.0.w),
+                                child: Image.asset(
+                                  'assets/icons/search.png',
+                                  color: Constants.formBorder,
                                 ),
-                                prefixIcon: Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 2.0.w),
-                                  child: Image.asset(
-                                    'assets/icons/search.png',
-                                    color: Constants.formBorder,
-                                  ),
-                                )), //keyboardType: TextInputType.emailAddress,
-                            style: new TextStyle(
-                                fontFamily: "Montserrat", fontSize: 10.0.sp),
-                            onChanged: (value) {
-                              Future.delayed(Duration(seconds: 2));
-                              searchSubjects(value);
-                              setState(() {});
-                            },
-                          ),
+                              )), //keyboardType: TextInputType.emailAddress,
+                          style: new TextStyle(
+                              fontFamily: "Montserrat", fontSize: 10.0.sp),
+                          onChanged: (value) {
+                            Future.delayed(Duration(seconds: 2));
+                            searchSubjects(value);
+                            setState(() {});
+                          },
                         ),
                       ),
                     ),

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Stay_And_Study_Model/Get_All_Property_Model.dart';
 import 'package:being_pupil/StayAndStudy/Property_Book_Screen.dart';
+import 'package:being_pupil/Widgets/Common_Widgets.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
@@ -514,8 +515,9 @@ Future<void> _createDynamicLink(bool short, String id) async {
               //print(long);
                 _launchMapsUrl(lat, long);
               },
-              child: Container(
-                height: 7.0.h,
+              child: 
+              Container(
+                height: Constants.constHeight,
                 width: 90.0.w,
                 padding: const EdgeInsets.all(1.0),
                 decoration: BoxDecoration(
@@ -553,29 +555,30 @@ Future<void> _createDynamicLink(bool short, String id) async {
                     withNavBar: false,
                     pageTransitionAnimation: PageTransitionAnimation.cupertino);
               },
-              child: Container(
-                height: 7.0.h,
-                width: 90.0.w,
-                padding: const EdgeInsets.all(1.0),
-                decoration: BoxDecoration(
-                  color: Constants.bpOnBoardTitleStyle,
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  border: Border.all(
-                    color: Constants.bgColor,
-                    width: 0.15,
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    'Book now'.toUpperCase(),
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 11.0.sp),
-                  ),
-                ),
-              ),
+              child: ButtonWidget(btnName: 'BOOK NOW', isActive: true, fontWeight: FontWeight.w700,)
+              // Container(
+              //   height: 7.0.h,
+              //   width: 90.0.w,
+              //   padding: const EdgeInsets.all(1.0),
+              //   decoration: BoxDecoration(
+              //     color: Constants.bpOnBoardTitleStyle,
+              //     borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              //     border: Border.all(
+              //       color: Constants.bgColor,
+              //       width: 0.15,
+              //     ),
+              //   ),
+              //   child: Center(
+              //     child: Text(
+              //       'Book now'.toUpperCase(),
+              //       style: TextStyle(
+              //           color: Colors.white,
+              //           fontFamily: 'Montserrat',
+              //           fontWeight: FontWeight.w700,
+              //           fontSize: 11.0.sp),
+              //     ),
+              //   ),
+              // ),
             ),
             SizedBox(
               height: 3.0.h,

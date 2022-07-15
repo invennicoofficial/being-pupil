@@ -637,473 +637,303 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
 
                     Column(
                       children: <Widget>[
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 2.0.w, right: 2.0.w, top: 4.0.h),
-                            child: TextInputWidget(textEditingController: _nameController, lable: 'Name')
-                            // Container(
-                            //   height: 7.0.h,
-                            //   width: 90.0.w,
-                            //   child: TextFormField(
-                            //     controller: _nameController,
-                            //     readOnly: true,
-                            //     decoration: InputDecoration(
-                            //       labelText: "Name",
-                            //       labelStyle: TextStyle(
-                            //       color: Constants.bpSkipStyle,
-                            //       fontFamily: "Montserrat", 
-                            //       fontSize: 10.0.sp
-                            //     ),
-                            //       fillColor: Colors.white,
-                            //       focusedBorder: OutlineInputBorder(
-                            //         borderRadius: BorderRadius.circular(5.0),
-                            //         borderSide: BorderSide(
-                            //           color: Constants.formBorder,
-                            //         ),
-                            //       ),
-                            //       enabledBorder: OutlineInputBorder(
-                            //         borderRadius: BorderRadius.circular(5.0),
-                            //         borderSide: BorderSide(
-                            //           color: Constants.formBorder,
-                            //           //width: 2.0,
-                            //         ),
-                            //       ),
-                            //     ),
-                            //     //keyboardType: TextInputType.emailAddress,
-                            //     style: new TextStyle(
-                            //         fontFamily: "Montserrat",
-                            //         fontSize: 10.0.sp),
-                            //     // validator: (value) {
-                            //     //   if (value.isEmpty) {
-                            //     //     Fluttertoast.showToast(
-                            //     //         msg: "Please Enter Name",
-                            //     //         toastLength: Toast.LENGTH_SHORT,
-                            //     //         gravity: ToastGravity.BOTTOM,
-                            //     //         timeInSecForIosWeb: 1,
-                            //     //         backgroundColor: Colors.red,
-                            //     //         textColor: Colors.white,
-                            //     //         fontSize: 16.0);
-                            //     //   }
-                            //     // },
-                            //   ),
-                            // ),
-                          ),
-                        ),
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 2.0.w, right: 2.0.w, top: 3.0.h),
-                            child: TextInputWidget(textEditingController: _mobileController, lable: 'Mobile Number')
-                        //     Container(
-                        //       height: 7.0.h,
-                        //       width: 90.0.w,
-                        //       child: TextFormField(
-                        //         controller: _mobileController,
-                        //         readOnly: true,
-                        //         keyboardType: TextInputType.phone,
-                        //         inputFormatters: [
-                        //           LengthLimitingTextInputFormatter(10),
-                        //           FilteringTextInputFormatter.digitsOnly
-                        //         ],
-                        //         decoration: InputDecoration(
-                        //           labelText: "Mobile Number",
-                        //           labelStyle: TextStyle(
-                        //           color: Constants.bpSkipStyle,
-                        //           fontFamily: "Montserrat", 
-                        //           fontSize: 10.0.sp
-                        //         ),
-                        //           fillColor: Colors.white,
-                        //           focusedBorder: OutlineInputBorder(
-                        //             borderRadius: BorderRadius.circular(5.0),
-                        //             borderSide: BorderSide(
-                        //               color: Constants.formBorder,
-                        //             ),
-                        //           ),
-                        //           enabledBorder: OutlineInputBorder(
-                        //             borderRadius: BorderRadius.circular(5.0),
-                        //             borderSide: BorderSide(
-                        //               color: Constants.formBorder,
-                        //               //width: 2.0,
-                        //             ),
-                        //           ),
-                        //         ),
-                        //         //keyboardType: TextInputType.emailAddress,
-                        //         style: new TextStyle(
-                        //             fontFamily: "Montserrat",
-                        //             fontSize: 10.0.sp),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                        
-                          ),
-                        ),
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 2.0.w, right: 2.0.w, top: 3.0.h),
-                            child: TextInputWidget(textEditingController: _emailController, lable: 'Email')
-                            // Container(
-                            //   height: 7.0.h,
-                            //   width: 90.0.w,
-                            //   child: TextFormField(
-                            //     controller: _emailController,
-                            //     readOnly: true,
-                            //     keyboardType: TextInputType.emailAddress,
-                            //     decoration: InputDecoration(
-                            //       labelText: "Email",
-                            //       labelStyle: TextStyle(
-                            //       color: Constants.bpSkipStyle,
-                            //       fontFamily: "Montserrat", 
-                            //       fontSize: 10.0.sp
-                            //     ),
-                            //       fillColor: Colors.white,
-                            //       focusedBorder: OutlineInputBorder(
-                            //         borderRadius: BorderRadius.circular(5.0),
-                            //         borderSide: BorderSide(
-                            //           color: Constants.formBorder,
-                            //         ),
-                            //       ),
-                            //       enabledBorder: OutlineInputBorder(
-                            //         borderRadius: BorderRadius.circular(5.0),
-                            //         borderSide: BorderSide(
-                            //           color: Constants.formBorder,
-                            //           //width: 2.0,
-                            //         ),
-                            //       ),
-                            //     ),
-                            //     //keyboardType: TextInputType.emailAddress,
-                            //     style: new TextStyle(
-                            //         fontFamily: "Montserrat",
-                            //         fontSize: 10.0.sp),
-                            //   ),
-                            // ),
-                          ),),
+                        TextInputWidget(textEditingController: _nameController, lable: 'Name', isReadOnly: true,),
+                        NumberInputWidget(textEditingController: _mobileController, lable: 'Mobile Number', isReadOnly: true),
+                        TextInputWidget(textEditingController: _emailController, lable: 'Email', isReadOnly: true),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Theme(
-                              data: new ThemeData(
-                                primaryColor: Constants.bpSkipStyle,
-                                primaryColorDark: Constants.bpSkipStyle,
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    left: 2.0.w, right: 2.0.w, top: 3.0.h),
-                                child: Container(
-                                  height: 48.0,//7.0.h,
-                                  width: 35.0.w,
-                                  child: CustomDropdown<int>(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 1.0.w),
-                                          child: Text(
-                                            'Gender',
-                                            style: TextStyle(
-                                                fontFamily: 'Montserrat',
-                                                fontSize: 10.0.sp,
-                                                fontWeight: FontWeight.w400,
-                                                color: Constants.bpSkipStyle),
-                                          ),
-                                        ),
-                                        //SizedBox(width: 10.0.w)
-                                      ],
-                                    ),
-                                    // icon: Icon(
-                                    //   Icons.expand_more,
-                                    //   color: Constants.bpSkipStyle,
-                                    // ),
-                                    onChange: (String value, int index) async {
-                                      //print(value);
-                                      if (value != '1' ||
-                                          value != '2' ||
-                                          value != '3') {
-                                        setState(() {
-                                          gender = 'GenderSelected';
-                                        });
-                                      }
-                                      if (value == '1') {
-                                        gender = 'M';
-                                      } else if (value == '2') {
-                                        gender = 'F';
-                                      } else {
-                                        gender = 'O';
-                                      }
-                                    },
-                                    dropdownButtonStyle: DropdownButtonStyle(
-                                      height: 7.0.h,
-                                      width: 90.0.w,
-                                      //padding: EdgeInsets.only(left: 2.0.w),
-                                      elevation: 0,
-                                      // backgroundColor:
-                                      //     //Color(0xFFA8B4C1).withOpacity(0.5),
-                                      //     Colors.white,
-                                      primaryColor: Constants.bpSkipStyle,
-                                      side: BorderSide(
-                                          color: Constants.formBorder),
-                                    ),
-                                    dropdownStyle: DropdownStyle(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      elevation: 6,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 2.0.w, vertical: 1.5.h),
-                                    ),
-                                    items: ['Male', 'Female', 'Other']
-                                        .asMap()
-                                        .entries
-                                        .map(
-                                          (item) => DropdownItem<int>(
-                                            value: item.key + 1,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    item.value,
-                                                    style: TextStyle(
-                                                        fontFamily:
-                                                            'Montserrat',
-                                                        fontSize: 10.0.sp,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        color: Constants
-                                                            .bpSkipStyle),
-                                                  ),
-                                                  //SizedBox(width: 10.0.w)
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                        .toList(),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Theme(
-                              data: new ThemeData(
-                                primaryColor: Constants.bpSkipStyle,
-                                primaryColorDark: Constants.bpSkipStyle,
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    left: 2.0.w, right: 2.0.w, top: 3.0.h),
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    //print('Date Picker!!!');
-                                    int year = DateTime.now().year - 15;
-                                    final datePick = await showDatePicker(
-                                        context: context,
-                                        initialDate: new DateTime(1960),
-                                        firstDate: new DateTime(1900),
-                                        lastDate: new DateTime(year),
-                                        helpText: 'Select Birth Date');
-                                    if (datePick != null &&
-                                        datePick != birthDate) {
-                                      setState(() {
-                                        birthDate = datePick;
-                                        //print(birthDate);
-                                        isDateSelected = true;
-
-                                        if (birthDate!.day.toString().length ==
-                                                1 &&
-                                            birthDate!.month.toString().length ==
-                                                1) {
-                                          setState(() {
-                                            birthDateInString =
-                                                "0${birthDate!.day.toString()}/0${birthDate!.month}/${birthDate!.year}";
-                                          });
-                                          //print('11111');
-                                        } else if (birthDate!.day
-                                                .toString()
-                                                .length ==
-                                            1) {
-                                          setState(() {
-                                            birthDateInString =
-                                                "0${birthDate!.day}/${birthDate!.month}/${birthDate!.year}";
-                                          });
-                                          //print('22222');
-                                        } else if (birthDate!.month
-                                                .toString()
-                                                .length ==
-                                            1) {
-                                          birthDateInString =
-                                              "${birthDate!.day}/0${birthDate!.month}/${birthDate!.year}";
-                                        } else {
-                                          birthDateInString =
-                                              "${birthDate!.day}/${birthDate!.month}/${birthDate!.year}";
-                                        } // 08/14/2019
-                                      });
-                                    }
-                                  },
-                                  child: Container(
-                                    height: 48.0,//7.0.h,
-                                    width: 40.0.w,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 3.0.w),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Constants.formBorder),
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      //color: Colors.transparent,//Color(0xFFA8B4C1).withOpacity(0.5),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          isDateSelected
-                                              ? birthDateInString!
-                                              : 'DOB',
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: 3.0.w, right: 3.0.w, top: 3.0.h),
+                              child: Container(
+                                height: Constants.constHeight,
+                                width: 35.0.w,
+                                child: CustomDropdown<int>(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 1.0.w),
+                                        child: Text(
+                                          'Gender',
                                           style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               fontSize: 10.0.sp,
                                               fontWeight: FontWeight.w400,
                                               color: Constants.bpSkipStyle),
                                         ),
-                                        ImageIcon(
-                                            AssetImage(
-                                                'assets/icons/calendar.png'),
-                                            size: 25,
-                                            color: Constants.formBorder),
-                                      ],
-                                    ),
+                                      ),
+                                      //SizedBox(width: 10.0.w)
+                                    ],
+                                  ),
+                                  // icon: Icon(
+                                  //   Icons.expand_more,
+                                  //   color: Constants.bpSkipStyle,
+                                  // ),
+                                  onChange: (String value, int index) async {
+                                    //print(value);
+                                    if (value != '1' ||
+                                        value != '2' ||
+                                        value != '3') {
+                                      setState(() {
+                                        gender = 'GenderSelected';
+                                      });
+                                    }
+                                    if (value == '1') {
+                                      gender = 'M';
+                                    } else if (value == '2') {
+                                      gender = 'F';
+                                    } else {
+                                      gender = 'O';
+                                    }
+                                  },
+                                  dropdownButtonStyle: DropdownButtonStyle(
+                                    height: 7.0.h,
+                                    width: 90.0.w,
+                                    //padding: EdgeInsets.only(left: 2.0.w),
+                                    elevation: 0,
+                                    // backgroundColor:
+                                    //     //Color(0xFFA8B4C1).withOpacity(0.5),
+                                    //     Colors.white,
+                                    primaryColor: Constants.bpSkipStyle,
+                                    side: BorderSide(
+                                        color: Constants.formBorder),
+                                  ),
+                                  dropdownStyle: DropdownStyle(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    elevation: 6,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 2.0.w, vertical: 1.5.h),
+                                  ),
+                                  items: ['Male', 'Female', 'Other']
+                                      .asMap()
+                                      .entries
+                                      .map(
+                                        (item) => DropdownItem<int>(
+                                          value: item.key + 1,
+                                          child: Padding(
+                                            padding:
+                                                const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  item.value,
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                          'Montserrat',
+                                                      fontSize: 10.0.sp,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: Constants
+                                                          .bpSkipStyle),
+                                                ),
+                                                //SizedBox(width: 10.0.w)
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: 3.0.w, right: 3.0.w, top: 3.0.h),
+                              child: GestureDetector(
+                                onTap: () async {
+                                  //print('Date Picker!!!');
+                                  int year = DateTime.now().year - 15;
+                                  final datePick = await showDatePicker(
+                                      context: context,
+                                      initialDate: new DateTime(1960),
+                                      firstDate: new DateTime(1900),
+                                      lastDate: new DateTime(year),
+                                      helpText: 'Select Birth Date');
+                                  if (datePick != null &&
+                                      datePick != birthDate) {
+                                    setState(() {
+                                      birthDate = datePick;
+                                      //print(birthDate);
+                                      isDateSelected = true;
+
+                                      if (birthDate!.day.toString().length ==
+                                              1 &&
+                                          birthDate!.month.toString().length ==
+                                              1) {
+                                        setState(() {
+                                          birthDateInString =
+                                              "0${birthDate!.day.toString()}/0${birthDate!.month}/${birthDate!.year}";
+                                        });
+                                        //print('11111');
+                                      } else if (birthDate!.day
+                                              .toString()
+                                              .length ==
+                                          1) {
+                                        setState(() {
+                                          birthDateInString =
+                                              "0${birthDate!.day}/${birthDate!.month}/${birthDate!.year}";
+                                        });
+                                        //print('22222');
+                                      } else if (birthDate!.month
+                                              .toString()
+                                              .length ==
+                                          1) {
+                                        birthDateInString =
+                                            "${birthDate!.day}/0${birthDate!.month}/${birthDate!.year}";
+                                      } else {
+                                        birthDateInString =
+                                            "${birthDate!.day}/${birthDate!.month}/${birthDate!.year}";
+                                      } // 08/14/2019
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  height: Constants.constHeight,
+                                  width: 40.0.w,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 3.0.w),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Constants.formBorder),
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    //color: Colors.transparent,//Color(0xFFA8B4C1).withOpacity(0.5),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        isDateSelected
+                                            ? birthDateInString!
+                                            : 'DOB',
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            fontSize: 10.0.sp,
+                                            fontWeight: FontWeight.w400,
+                                            color: Constants.bpSkipStyle),
+                                      ),
+                                      ImageIcon(
+                                          AssetImage(
+                                              'assets/icons/calendar.png'),
+                                          size: 25,
+                                          color: Constants.formBorder),
+                                    ],
                                   ),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: 3.0.w,
+                            right: 3.0.w,
+                            top: 3.0.h,
+                            //bottom: 3.0.h
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              left: 2.0.w,
-                              right: 2.0.w,
-                              top: 3.0.h,
-                              //bottom: 3.0.h
-                            ),
-                            child: CustomDropdown<int>(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 1.0.w),
-                                    child: Text(
-                                      'Select Document Type',
-                                      style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 10.0.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: Constants.bpSkipStyle),
-                                    ),
+                          child: CustomDropdown<int>(
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 1.0.w),
+                                  child: Text(
+                                    'Select Document Type',
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 10.0.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Constants.bpSkipStyle),
                                   ),
-                                  //SizedBox(width: 30.0.w)
-                                ],
-                              ),
-                              // icon: Icon(
-                              //   Icons.expand_more,
-                              //   color: Constants.bpSkipStyle,
-                              // ),
-                              onChange: (String value, int index) async {
-                                //print(value);
-                                if (value != '1' ||
-                                    value != '2' ||
-                                    value != '3' ||
-                                    value != '4' ||
-                                    value != '5') {
-                                  setState(() {
-                                    docType = 'DocSelected';
-                                  });
-                                }
-                                if (value == 1) {
-                                  docType = 'A';
-                                  //print(docType);
-                                } else if (value == 2) {
-                                  docType = 'PN';
-                                  //print(docType);
-                                } else if (value == 3) {
-                                  docType = 'PAS';
-                                  //print(docType);
-                                } else if (value == 4) {
-                                  docType = 'VI';
-                                  //print(docType);
-                                } else {
-                                  docType = 'DL';
-                                  //print(docType);
-                                }
-                              },
-                              dropdownButtonStyle: DropdownButtonStyle(
-                                height: 48.0,//7.0.h,
-                                width: 90.0.w,
-                                //padding: EdgeInsets.only(left: 2.0.w),
-                                elevation: 0,
-                                //backgroundColor: Colors.transparent,
-                                //Color(0xFFA8B4C1).withOpacity(0.5),
-                                primaryColor: Constants.bpSkipStyle,
-                                side: BorderSide(color: Constants.formBorder),
-                              ),
-                              dropdownStyle: DropdownStyle(
-                                borderRadius: BorderRadius.circular(10.0),
-                                elevation: 6,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 2.0.w, vertical: 1.5.h),
-                              ),
-                              items: [
-                                'Aadhaar',
-                                'PAN',
-                                'Passport',
-                                'Voter ID',
-                                'Driving License'
-                              ]
-                                  .asMap()
-                                  .entries
-                                  .map(
-                                    (item) => DropdownItem<int>(
-                                      value: item.key + 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              item.value,
-                                              style: TextStyle(
-                                                  fontFamily: 'Montserrat',
-                                                  fontSize: 10.0.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Constants.bpSkipStyle),
-                                            ),
-                                            //SizedBox(width: 45.0.w)
-                                          ],
-                                        ),
+                                ),
+                                //SizedBox(width: 30.0.w)
+                              ],
+                            ),
+                            // icon: Icon(
+                            //   Icons.expand_more,
+                            //   color: Constants.bpSkipStyle,
+                            // ),
+                            onChange: (String value, int index) async {
+                              //print(value);
+                              if (value != '1' ||
+                                  value != '2' ||
+                                  value != '3' ||
+                                  value != '4' ||
+                                  value != '5') {
+                                setState(() {
+                                  docType = 'DocSelected';
+                                });
+                              }
+                              if (value == 1) {
+                                docType = 'A';
+                                //print(docType);
+                              } else if (value == 2) {
+                                docType = 'PN';
+                                //print(docType);
+                              } else if (value == 3) {
+                                docType = 'PAS';
+                                //print(docType);
+                              } else if (value == 4) {
+                                docType = 'VI';
+                                //print(docType);
+                              } else {
+                                docType = 'DL';
+                                //print(docType);
+                              }
+                            },
+                            dropdownButtonStyle: DropdownButtonStyle(
+                              height: Constants.constHeight,
+                              width: 90.0.w,
+                              //padding: EdgeInsets.only(left: 2.0.w),
+                              elevation: 0,
+                              //backgroundColor: Colors.transparent,
+                              //Color(0xFFA8B4C1).withOpacity(0.5),
+                              primaryColor: Constants.bpSkipStyle,
+                              side: BorderSide(color: Constants.formBorder),
+                            ),
+                            dropdownStyle: DropdownStyle(
+                              borderRadius: BorderRadius.circular(10.0),
+                              elevation: 6,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2.0.w, vertical: 1.5.h),
+                            ),
+                            items: [
+                              'Aadhaar',
+                              'PAN',
+                              'Passport',
+                              'Voter ID',
+                              'Driving License'
+                            ]
+                                .asMap()
+                                .entries
+                                .map(
+                                  (item) => DropdownItem<int>(
+                                    value: item.key + 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            item.value,
+                                            style: TextStyle(
+                                                fontFamily: 'Montserrat',
+                                                fontSize: 10.0.sp,
+                                                fontWeight: FontWeight.w400,
+                                                color: Constants.bpSkipStyle),
+                                          ),
+                                          //SizedBox(width: 45.0.w)
+                                        ],
                                       ),
                                     ),
-                                  )
-                                  .toList(),
-                            ),
+                                  ),
+                                )
+                                .toList(),
                           ),
                         ),
 
@@ -1176,130 +1006,66 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           ),
                         ),
 
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
+                        TextInputWidget(textEditingController: _idNumController, lable: 'Identification Document Number', isIdField: true,),
+                        Padding(
                             padding: EdgeInsets.only(
-                                left: 2.0.w, right: 2.0.w, top: 3.0.h),
-                            child: TextInputWidget(textEditingController: _idNumController, lable: 'Identification Document Number', isIdField: true,)
-                            // Container(
-                            //   height: 7.0.h,
-                            //   width: 90.0.w,
-                            //   child: TextFormField(
-                            //     controller: _idNumController,
-                            //     inputFormatters: [
-                            //       LengthLimitingTextInputFormatter(15),
-                            //     ],
-                            //     decoration: InputDecoration(
-                            //       labelText: "Identification Document Number",
-                            //       labelStyle: TextStyle(
-                            //       color: Constants.bpSkipStyle,
-                            //       fontFamily: "Montserrat", 
-                            //       fontSize: 10.0.sp
-                            //     ),
-                            //       fillColor: Colors.white,
-                            //       focusedBorder: OutlineInputBorder(
-                            //         borderRadius: BorderRadius.circular(5.0),
-                            //         borderSide: BorderSide(
-                            //           color: Constants.formBorder,
-                            //         ),
-                            //       ),
-                            //       enabledBorder: OutlineInputBorder(
-                            //         borderRadius: BorderRadius.circular(5.0),
-                            //         borderSide: BorderSide(
-                            //           color: Constants.formBorder,
-                            //           //width: 2.0,
-                            //         ),
-                            //       ),
-                            //     ),
-                            //     //keyboardType: TextInputType.emailAddress,
-                            //     style: new TextStyle(
-                            //         fontFamily: "Montserrat",
-                            //         fontSize: 10.0.sp),
-                            //     validator: (val){
-                            //       if(val.toString().length == 15){
-                            //         Fluttertoast.showToast(
-                            //         msg: "Please Enter Valid ID Number",
-                            //         toastLength: Toast.LENGTH_SHORT,
-                            //         gravity: ToastGravity.BOTTOM,
-                            //         timeInSecForIosWeb: 1,
-                            //         backgroundColor: Constants.bgColor,
-                            //         textColor: Colors.white,
-                            //         fontSize: 10.0.sp);
-                            //       }
-                            //     },
-                            //   ),
-                            // ),
-                          ),
-                        ),
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 2.0.w,
-                                right: 2.0.w,
-                                top: 3.0.h,
-                                //bottom: 3.0.h
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  //print('Location!!!');
-                                  //_showLocation(context);
-                                  showPlacePicker();
-                                },
-                                child: Container(
-                                  height: 48.0,//7.0.h,
-                                  width: 90.0.w,
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 3.0.w),
-                                  decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Constants.formBorder),
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    //color: Color(0xFFA8B4C1).withOpacity(0.5),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: Container(
-                                            height: 2.5.h,
-                                            //width: 70.0.w,
-                                            child: Text(
-                                              address1 == null
-                                                  ? 'Location'
-                                                  : address1!,
-                                              style: TextStyle(
-                                                  fontFamily: 'Montserrat',
-                                                  fontSize: 10.0.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Constants.bpSkipStyle),
-                                            ),
+                              left: 3.0.w,
+                              right: 3.0.w,
+                              top: 3.0.h,
+                              //bottom: 3.0.h
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                //print('Location!!!');
+                                //_showLocation(context);
+                                showPlacePicker();
+                              },
+                              child: Container(
+                                height: Constants.constHeight,
+                                width: 90.0.w,
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 3.0.w),
+                                decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Constants.formBorder),
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  //color: Color(0xFFA8B4C1).withOpacity(0.5),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Container(
+                                          height: 2.5.h,
+                                          //width: 70.0.w,
+                                          child: Text(
+                                            address1 == null
+                                                ? 'Location'
+                                                : address1!,
+                                            style: TextStyle(
+                                                fontFamily: 'Montserrat',
+                                                fontSize: 10.0.sp,
+                                                fontWeight: FontWeight.w400,
+                                                color: Constants.bpSkipStyle),
                                           ),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 2.0.w),
-                                        child: Icon(
-                                          Icons.gps_fixed,
-                                          size: 25,
-                                          color: Constants.formBorder,
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 2.0.w),
+                                      child: Icon(
+                                        Icons.gps_fixed,
+                                        size: 25,
+                                        color: Constants.formBorder,
+                                      ),
+                                    )
+                                  ],
                                 ),
-                              )),
-                        ),
+                              ),
+                            )),
 
                         //Educational Details
                         // SizedBox(
@@ -1309,7 +1075,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                  top: 4.0.h, left: 2.0.w, right: 2.0.w),
+                                  top: 3.0.h, left: 3.0.w, right: 3.0.w),
                               child: Text(
                                 'Educational Details',
                                 style: TextStyle(
@@ -1329,7 +1095,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: EdgeInsets.only(
-                                  left: 2.0.w, right: 2.0.w, top: 1.5.h),
+                                  left: 3.0.w, right: 3.0.w, top: 1.5.h),
                               child: DottedBorder(
                                 borderType: BorderType.RRect,
                                 radius: Radius.circular(5),
@@ -1366,203 +1132,191 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                               ),
                                             ),
                                           ),
-                                    Theme(
-                                      data: new ThemeData(
-                                        primaryColor: Constants.bpSkipStyle,
-                                        primaryColorDark: Constants.bpSkipStyle,
-                                      ),
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 1.0.w,
-                                            right: 1.0.w,
-                                            top: 1.0.h),
-                                        child: Container(
-                                          height: 48.0,//7.0.h,
-                                          width: 90.0.w,
-                                          child: TextFormField(
-                                            //controller: myControllers[index],
-                                            onChanged: (value) {
-                                              educationDetailMap[index]
-                                                      ['school_name'] =
-                                                  value.toString();
-                                              //print(
-                                                 // 'SCHOOL### ${value.toString()}');
-                                            },
-                                            decoration: InputDecoration(
-                                              labelText: "Name of School",
-                                              labelStyle: TextStyle(
-                                              color: Constants.bpSkipStyle,
-                                              fontFamily: "Montserrat", 
-                                              fontSize: 10.0.sp
-                                              ),
-                                              fillColor: Colors.white,
-                                              focusedBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(5.0),
-                                                borderSide: BorderSide(
-                                                  color: Constants.formBorder,
-                                                ),
-                                              ),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(5.0),
-                                                borderSide: BorderSide(
-                                                  color: Constants.formBorder,
-                                                  //width: 2.0,
-                                                ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 1.0.w,
+                                          right: 1.0.w,
+                                          top: 1.0.h),
+                                      child: Container(
+                                        height: Constants.constHeight,
+                                        width: 90.0.w,
+                                        child: TextFormField(
+                                          //controller: myControllers[index],
+                                          onChanged: (value) {
+                                            educationDetailMap[index]
+                                                    ['school_name'] =
+                                                value.toString();
+                                            //print(
+                                               // 'SCHOOL### ${value.toString()}');
+                                          },
+                                          decoration: InputDecoration(
+                                            labelText: "Name of School",
+                                            labelStyle: TextStyle(
+                                            color: Constants.bpSkipStyle,
+                                            fontFamily: "Montserrat", 
+                                            fontSize: 10.0.sp
+                                            ),
+                                            fillColor: Colors.white,
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                              borderSide: BorderSide(
+                                                color: Constants.formBorder,
                                               ),
                                             ),
-                                            //keyboardType: TextInputType.emailAddress,
-                                            style: new TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontSize: 10.0.sp),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                              borderSide: BorderSide(
+                                                color: Constants.formBorder,
+                                                //width: 2.0,
+                                              ),
+                                            ),
                                           ),
+                                          //keyboardType: TextInputType.emailAddress,
+                                          style: new TextStyle(
+                                              fontFamily: "Montserrat",
+                                              fontSize: 10.0.sp),
                                         ),
                                       ),
                                     ),
 
-                                    Theme(
-                                      data: new ThemeData(
-                                        primaryColor: Constants.bpSkipStyle,
-                                        primaryColorDark: Constants.bpSkipStyle,
-                                      ),
-                                      child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 1.0.w,
-                                              right: 1.0.w,
-                                              top: 3.0.h),
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              //print('Year!!!');
-                                              showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: Text(
-                                                        "Select Qualification Year"),
-                                                    content: Container(
-                                                      // Need to use container to add size constraint.
-                                                      width: 75.0.w,
-                                                      height: 50.0.h,
-                                                      child: YearPicker(
-                                                        firstDate: DateTime(
-                                                            DateTime(1960).year,
-                                                            1),
-                                                        lastDate: DateTime(
-                                                            DateTime.now().year,
-                                                            1),
-                                                        //initialDate: DateTime.now(),
-                                                        // save the selected date to _selectedDate DateTime variable.
-                                                        // It's used to set the previous selected date when
-                                                        // re-showing the dialog.
-                                                        selectedDate:
-                                                            // isYearSelected
-                                                            //     ? selectedYear
-                                                            //     :
-                                                            DateTime(
-                                                                DateTime.now()
-                                                                    .year),
-                                                        onChanged: (DateTime
-                                                            dateTime) {
-                                                          // close the dialog when year is selected.
-                                                          setState(() {
-                                                            isYearSelected =
-                                                                true;
-                                                            selectedYear =
-                                                                dateTime;
-                                                          });
-                                                          educationDetailMap[
-                                                                      index]
-                                                                  ['year'] =
-                                                              selectedYear!.year
-                                                                  .toString();
+                                    Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 1.0.w,
+                                            right: 1.0.w,
+                                            top: 3.0.h),
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            //print('Year!!!');
+                                            showDialog(
+                                              context: context,
+                                              builder:
+                                                  (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text(
+                                                      "Select Qualification Year"),
+                                                  content: Container(
+                                                    // Need to use container to add size constraint.
+                                                    width: 75.0.w,
+                                                    height: 50.0.h,
+                                                    child: YearPicker(
+                                                      firstDate: DateTime(
+                                                          DateTime(1960).year,
+                                                          1),
+                                                      lastDate: DateTime(
+                                                          DateTime.now().year,
+                                                          1),
+                                                      //initialDate: DateTime.now(),
+                                                      // save the selected date to _selectedDate DateTime variable.
+                                                      // It's used to set the previous selected date when
+                                                      // re-showing the dialog.
+                                                      selectedDate:
+                                                          // isYearSelected
+                                                          //     ? selectedYear
+                                                          //     :
+                                                          DateTime(
+                                                              DateTime.now()
+                                                                  .year),
+                                                      onChanged: (DateTime
+                                                          dateTime) {
+                                                        // close the dialog when year is selected.
+                                                        setState(() {
+                                                          isYearSelected =
+                                                              true;
+                                                          selectedYear =
+                                                              dateTime;
+                                                        });
+                                                        educationDetailMap[
+                                                                    index]
+                                                                ['year'] =
+                                                            selectedYear!.year
+                                                                .toString();
 
-                                                          // print(selectedYear!
-                                                          //     .year);
-                                                          Navigator.pop(
-                                                              context);
-                                                          // Do something with the dateTime selected.
-                                                          // Remember that you need to use dateTime.year to get the year
-                                                        },
-                                                      ),
+                                                        // print(selectedYear!
+                                                        //     .year);
+                                                        Navigator.pop(
+                                                            context);
+                                                        // Do something with the dateTime selected.
+                                                        // Remember that you need to use dateTime.year to get the year
+                                                      },
                                                     ),
-                                                  );
-                                                },
-                                              );
-                                              // final pickedYear =
-                                              //     await showDatePicker(
-                                              //   context: context,
-                                              //   initialDate: DateTime.now(),
-                                              //   firstDate: DateTime(1960, 1, 1),
-                                              //   lastDate: DateTime.now(),
-                                              //   helpText:
-                                              //       'Select Qualification Year',
-                                              //   initialDatePickerMode:
-                                              //       DatePickerMode.year,
-                                              // );
-                                              // final pickedYear = await YearPicker(
-                                              //  selectedDate: DateTime.now(),
-                                              //  firstDate: DateTime(1960),
-                                              //  lastDate: DateTime.now(),
-                                              //  onChanged: (value) {
-                                              //    selectedYear = value;
-                                              //    },
-                                              // );
-                                              // if (pickedYear != null &&
-                                              //     pickedYear != selectedYear) {
-                                              //   setState(() {
-                                              //     selectedYear = pickedYear;
-                                              //     isYearSelected = true;
-                                              //     selectedYearString =
-                                              //         '${selectedYear.year}';
-                                              //   });
-                                              // }
-                                            },
-                                            child: Container(
-                                              height: 48.0,//7.0.h,
-                                              width: 90.0.w,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 3.0.w),
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color:
-                                                        Constants.formBorder),
-                                                borderRadius:
-                                                    BorderRadius.circular(5.0),
-                                                //color: Color(0xFFA8B4C1).withOpacity(0.5),
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    isYearSelected
-                                                        ? educationDetailMap[
-                                                                index]['year']
-                                                            .toString()
-                                                        : 'Year',
-                                                    style: TextStyle(
-                                                        fontFamily:
-                                                            'Montserrat',
-                                                        fontSize: 10.0.sp,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        color: Constants
-                                                            .bpSkipStyle),
                                                   ),
-                                                   Padding(
-                                                  padding: EdgeInsets.only(left: 0.0),
-                                                  child: Icon(
-                                                    Icons.keyboard_arrow_down,
-                                                    size: 25,
-                                                    color: Constants.formBorder,
-                                                  ),
-                                                )
-                                                ],
-                                              ),
+                                                );
+                                              },
+                                            );
+                                            // final pickedYear =
+                                            //     await showDatePicker(
+                                            //   context: context,
+                                            //   initialDate: DateTime.now(),
+                                            //   firstDate: DateTime(1960, 1, 1),
+                                            //   lastDate: DateTime.now(),
+                                            //   helpText:
+                                            //       'Select Qualification Year',
+                                            //   initialDatePickerMode:
+                                            //       DatePickerMode.year,
+                                            // );
+                                            // final pickedYear = await YearPicker(
+                                            //  selectedDate: DateTime.now(),
+                                            //  firstDate: DateTime(1960),
+                                            //  lastDate: DateTime.now(),
+                                            //  onChanged: (value) {
+                                            //    selectedYear = value;
+                                            //    },
+                                            // );
+                                            // if (pickedYear != null &&
+                                            //     pickedYear != selectedYear) {
+                                            //   setState(() {
+                                            //     selectedYear = pickedYear;
+                                            //     isYearSelected = true;
+                                            //     selectedYearString =
+                                            //         '${selectedYear.year}';
+                                            //   });
+                                            // }
+                                          },
+                                          child: Container(
+                                            height: Constants.constHeight,
+                                            width: 90.0.w,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 3.0.w),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color:
+                                                      Constants.formBorder),
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                              //color: Color(0xFFA8B4C1).withOpacity(0.5),
                                             ),
-                                          )),
-                                    ),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(
+                                                  isYearSelected
+                                                      ? educationDetailMap[
+                                                              index]['year']
+                                                          .toString()
+                                                      : 'Year',
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                          'Montserrat',
+                                                      fontSize: 10.0.sp,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: Constants
+                                                          .bpSkipStyle),
+                                                ),
+                                                 Padding(
+                                                padding: EdgeInsets.only(left: 0.0),
+                                                child: Icon(
+                                                  Icons.keyboard_arrow_down,
+                                                  size: 25,
+                                                  color: Constants.formBorder,
+                                                ),
+                                              )
+                                              ],
+                                            ),
+                                          ),
+                                        )),
                                     // Theme(
                                     //   data: new ThemeData(
                                     //     primaryColor: Constants.bpSkipStyle,
@@ -1646,131 +1400,125 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     //     ),
                                     //   ),
                                     // ),
-                                    Theme(
-                                      data: new ThemeData(
-                                        primaryColor: Constants.bpSkipStyle,
-                                        primaryColorDark: Constants.bpSkipStyle,
-                                      ),
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 1.0.w,
-                                            right: 1.0.w,
-                                            top: 3.0.h),
-                                        child: CustomDropdown<int>(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 1.0.w),
-                                                child: Text(
-                                                  'Qualification',
-                                                  style: TextStyle(
-                                                      fontFamily: 'Montserrat',
-                                                      fontSize: 10.0.sp,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      color: Constants
-                                                          .bpSkipStyle),
-                                                ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 1.0.w,
+                                          right: 1.0.w,
+                                          top: 3.0.h),
+                                      child: CustomDropdown<int>(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 1.0.w),
+                                              child: Text(
+                                                'Qualification',
+                                                style: TextStyle(
+                                                    fontFamily: 'Montserrat',
+                                                    fontSize: 10.0.sp,
+                                                    fontWeight:
+                                                        FontWeight.w400,
+                                                    color: Constants
+                                                        .bpSkipStyle),
                                               ),
-                                              //SizedBox(width: 50.0.w)
-                                            ],
-                                          ),
-                                          // icon: Icon(
-                                          //   Icons.expand_more,
-                                          //   color: Constants.bpSkipStyle,
-                                          // ),
-                                          onChange: (String value, int index) async {
-                                            //print(value);
-                                            if (int.parse(value) > 0) {
-                                              setState(() {
-                                                qualification = '1';
-                                              });
-                                            }
-                                            if (value == '1') {
-                                              qualification = 'Graduate';
-                                              educationDetailMap[index]
-                                                      ['qualification'] =
-                                                  'Graduate';
-                                              //print(qualification);
-                                            } else if (value == '2') {
-                                              qualification = 'Post-graduate';
-                                              educationDetailMap[index]
-                                                      ['qualification'] =
-                                                  'Post-graduate';
-                                              //print(qualification);
-                                            } else if (value == '3') {
-                                              qualification =
-                                                  'Chartered Accountant';
-                                              educationDetailMap[index]
-                                                      ['qualification'] =
-                                                  'Chartered Accountant';
-                                              //print(qualification);
-                                            } else {
-                                              qualification = 'Others';
-                                              educationDetailMap[index]
-                                                  ['qualification'] = 'Others';
-                                              //print(qualification);
-                                            }
-                                          },
-                                          dropdownButtonStyle:
-                                              DropdownButtonStyle(
-                                            height: 48.0,//7.0.h,
-                                            width: 90.0.w,
-                                            //padding: EdgeInsets.only(left: 2.0.w),
-                                            elevation: 0,
-                                            //backgroundColor: Colors.white,
-                                            primaryColor: Constants.bpSkipStyle,
-                                            side: BorderSide(
-                                                color: Constants.formBorder),
-                                          ),
-                                          dropdownStyle: DropdownStyle(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                            elevation: 6,
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 2.0.w,
-                                                vertical: 1.5.h),
-                                          ),
-                                          items: [
-                                            'Graduate',
-                                            'Post-graduate',
-                                            'Chartered Accountant',
-                                            'Others'
-                                          ]
-                                              .asMap()
-                                              .entries
-                                              .map(
-                                                (item) => DropdownItem<int>(
-                                                  value: item.key + 1,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Row(
-                                                      children: [
-                                                        Text(
-                                                          item.value,
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  'Montserrat',
-                                                              fontSize: 10.0.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              color: Constants
-                                                                  .bpSkipStyle),
-                                                        ),
-                                                        //SizedBox(width: 60.0.w)
-                                                      ],
-                                                    ),
+                                            ),
+                                            //SizedBox(width: 50.0.w)
+                                          ],
+                                        ),
+                                        // icon: Icon(
+                                        //   Icons.expand_more,
+                                        //   color: Constants.bpSkipStyle,
+                                        // ),
+                                        onChange: (String value, int index) async {
+                                          //print(value);
+                                          if (int.parse(value) > 0) {
+                                            setState(() {
+                                              qualification = '1';
+                                            });
+                                          }
+                                          if (value == '1') {
+                                            qualification = 'Graduate';
+                                            educationDetailMap[index]
+                                                    ['qualification'] =
+                                                'Graduate';
+                                            //print(qualification);
+                                          } else if (value == '2') {
+                                            qualification = 'Post-graduate';
+                                            educationDetailMap[index]
+                                                    ['qualification'] =
+                                                'Post-graduate';
+                                            //print(qualification);
+                                          } else if (value == '3') {
+                                            qualification =
+                                                'Chartered Accountant';
+                                            educationDetailMap[index]
+                                                    ['qualification'] =
+                                                'Chartered Accountant';
+                                            //print(qualification);
+                                          } else {
+                                            qualification = 'Others';
+                                            educationDetailMap[index]
+                                                ['qualification'] = 'Others';
+                                            //print(qualification);
+                                          }
+                                        },
+                                        dropdownButtonStyle:
+                                            DropdownButtonStyle(
+                                          height: Constants.constHeight,
+                                          width: 90.0.w,
+                                          //padding: EdgeInsets.only(left: 2.0.w),
+                                          elevation: 0,
+                                          //backgroundColor: Colors.white,
+                                          primaryColor: Constants.bpSkipStyle,
+                                          side: BorderSide(
+                                              color: Constants.formBorder),
+                                        ),
+                                        dropdownStyle: DropdownStyle(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          elevation: 6,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 2.0.w,
+                                              vertical: 1.5.h),
+                                        ),
+                                        items: [
+                                          'Graduate',
+                                          'Post-graduate',
+                                          'Chartered Accountant',
+                                          'Others'
+                                        ]
+                                            .asMap()
+                                            .entries
+                                            .map(
+                                              (item) => DropdownItem<int>(
+                                                value: item.key + 1,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(
+                                                          8.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        item.value,
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                'Montserrat',
+                                                            fontSize: 10.0.sp,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400,
+                                                            color: Constants
+                                                                .bpSkipStyle),
+                                                      ),
+                                                      //SizedBox(width: 60.0.w)
+                                                    ],
                                                   ),
                                                 ),
-                                              )
-                                              .toList(),
-                                        ),
+                                              ),
+                                            )
+                                            .toList(),
                                       ),
                                     ),
 
@@ -1932,103 +1680,97 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                         //       )),
                         // ),
 
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 2.0.w,
-                                right: 2.0.w,
-                                top: 3.0.h,
-                                //bottom: 3.0.h
-                              ),
-                              child: GestureDetector(
-                                onTap: itemCount >= 5
-                                ? (){
-                                  Fluttertoast.showToast(
-                                          msg: "You can add only 5 degree",
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.BOTTOM,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: Constants.bgColor,
-                                          textColor: Colors.white,
-                                          fontSize: 10.0.sp);
-                                }
-                                : () {
-                                  setState(() {
-                                    itemCount = itemCount + 1;
-                                  });
-                                  // setState(() {
-                                  //   if (itemCount < 5) {
-                                  //     itemCount = itemCount + 1;
-                                  //   } else {
-                                  //     Fluttertoast.showToast(
-                                  //         msg: "You can add only 5 degree",
-                                  //         toastLength: Toast.LENGTH_SHORT,
-                                  //         gravity: ToastGravity.BOTTOM,
-                                  //         timeInSecForIosWeb: 1,
-                                  //         backgroundColor: Constants.bgColor,
-                                  //         textColor: Colors.white,
-                                  //         fontSize: 10.0.sp);
-                                  //   }
-                                  // });
-                                  //print(myControllers[1].text.toString());
-                                  //print('Add more!!!');
-                                  setState(() {
-                                    educationId = educationId + 1;
-                                  });
-                                  educationDetailMap.add({
-                                    'school_name': 'MSU',
-                                    'year': 'Year',
-                                    'qualification': 'BCA',
-                                    'certificate': 'Upload Certificate/Degree'
-                                  });
-                                  //print(educationDetailMap);
-                                },
-                                child: Container(
-                                  height: 48.0,//7.0.h,
-                                  width: 90.0.w,
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 3.0.w),
-                                  decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Constants.formBorder),
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    //color: Color(0xFFA8B4C1).withOpacity(0.5),
-                                  ),
-                                  child: Center(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.add,
-                                          size: 15,
-                                          color: Constants.bgColor,
-                                        ),
-                                        Text(
-                                          ' Add more details',
-                                          style: TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              fontSize: 10.0.sp,
-                                              fontWeight: FontWeight.w400,
-                                              color: Constants.bgColor),
-                                        ),
-                                      ],
-                                    ),
+                        Padding(
+                            padding: EdgeInsets.only(
+                              left: 3.0.w,
+                              right: 3.0.w,
+                              top: 3.0.h,
+                              //bottom: 3.0.h
+                            ),
+                            child: GestureDetector(
+                              onTap: itemCount >= 5
+                              ? (){
+                                Fluttertoast.showToast(
+                                        msg: "You can add only 5 degree",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Constants.bgColor,
+                                        textColor: Colors.white,
+                                        fontSize: 10.0.sp);
+                              }
+                              : () {
+                                setState(() {
+                                  itemCount = itemCount + 1;
+                                });
+                                // setState(() {
+                                //   if (itemCount < 5) {
+                                //     itemCount = itemCount + 1;
+                                //   } else {
+                                //     Fluttertoast.showToast(
+                                //         msg: "You can add only 5 degree",
+                                //         toastLength: Toast.LENGTH_SHORT,
+                                //         gravity: ToastGravity.BOTTOM,
+                                //         timeInSecForIosWeb: 1,
+                                //         backgroundColor: Constants.bgColor,
+                                //         textColor: Colors.white,
+                                //         fontSize: 10.0.sp);
+                                //   }
+                                // });
+                                //print(myControllers[1].text.toString());
+                                //print('Add more!!!');
+                                setState(() {
+                                  educationId = educationId + 1;
+                                });
+                                educationDetailMap.add({
+                                  'school_name': 'MSU',
+                                  'year': 'Year',
+                                  'qualification': 'BCA',
+                                  'certificate': 'Upload Certificate/Degree'
+                                });
+                                //print(educationDetailMap);
+                              },
+                              child: Container(
+                                height: Constants.constHeight,
+                                width: 90.0.w,
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 3.0.w),
+                                decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Constants.formBorder),
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  //color: Color(0xFFA8B4C1).withOpacity(0.5),
+                                ),
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.add,
+                                        size: 15,
+                                        color: Constants.bgColor,
+                                      ),
+                                      Text(
+                                        ' Add more details',
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            fontSize: 10.0.sp,
+                                            fontWeight: FontWeight.w400,
+                                            color: Constants.bgColor),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              )),
-                        ),
+                              ),
+                            )),
 
                         //Work Experience
                         Row(
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                  top: 4.0.h, left: 2.0.w, right: 2.0.w),
+                                  top: 3.0.h, left: 3.0.w, right: 3.0.w),
                               child: Text(
                                 'Work Experience',
                                 style: TextStyle(
@@ -2041,217 +1783,205 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           ],
                         ),
 
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: 3.0.w,
+                            right: 3.0.w,
+                            top: 1.5.h,
+                            //bottom: 3.0.h
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              left: 2.0.w,
-                              right: 2.0.w,
-                              top: 1.5.h,
-                              //bottom: 3.0.h
-                            ),
-                            child: CustomDropdown<int>(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 3.0.w),
-                                    child: Text(
-                                      'Total Work Experience',
-                                      style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 10.0.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: Constants.bpSkipStyle),
-                                    ),
+                          child: CustomDropdown<int>(
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 3.0.w),
+                                  child: Text(
+                                    'Total Work Experience',
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 10.0.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Constants.bpSkipStyle),
                                   ),
-                                  //SizedBox(width: 30.0.w)
-                                ],
-                              ),
-                              // icon: Icon(
-                              //   Icons.expand_more,
-                              //   color: Constants.bpSkipStyle,
-                              // ),
-                              onChange: (String value, int index) async {
-                                totalWorkExp = int.parse(value);
-                                //print(value);
-                                if (int.parse(value) > 0) {
-                                  setState(() {
-                                    workExp = '1';
-                                  });
-                                }
-                              },
-                              dropdownButtonStyle: DropdownButtonStyle(
-                                height: 48.0,//7.0.h,
-                                width: 90.0.w,
-                                //padding: EdgeInsets.only(left: 2.0.w),
-                                elevation: 0,
-                                // backgroundColor:
-                                //     Color(0xFFA8B4C1).withOpacity(0.5),
-                                primaryColor: Constants.bpSkipStyle,
-                                side: BorderSide(color: Constants.formBorder),
-                              ),
-                              dropdownStyle: DropdownStyle(
-                                borderRadius: BorderRadius.circular(10.0),
-                                elevation: 6,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 2.0.w, vertical: 1.5.h),
-                              ),
-                              items: [
-                                '1 Year',
-                                '2 Years',
-                                '3 Years',
-                                '4 Years',
-                                '5 Years',
-                                '6 Years',
-                                '7 Years',
-                                '8 Years',
-                                '9 Years',
-                                '10 Years',
-                                '11 Years',
-                                '12 Years',
-                                '13 Years',
-                                '14 Years',
-                                '15 Years',
-                                '15+ Years'
-                              ]
-                                  .asMap()
-                                  .entries
-                                  .map(
-                                    (item) => DropdownItem<int>(
-                                      value: item.key + 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              item.value,
-                                              style: TextStyle(
-                                                  fontFamily: 'Montserrat',
-                                                  fontSize: 10.0.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Constants.bpSkipStyle),
-                                            ),
-                                            //SizedBox(width: 68.0.w)
-                                          ],
-                                        ),
+                                ),
+                                //SizedBox(width: 30.0.w)
+                              ],
+                            ),
+                            // icon: Icon(
+                            //   Icons.expand_more,
+                            //   color: Constants.bpSkipStyle,
+                            // ),
+                            onChange: (String value, int index) async {
+                              totalWorkExp = int.parse(value);
+                              //print(value);
+                              if (int.parse(value) > 0) {
+                                setState(() {
+                                  workExp = '1';
+                                });
+                              }
+                            },
+                            dropdownButtonStyle: DropdownButtonStyle(
+                              height: Constants.constHeight,
+                              width: 90.0.w,
+                              //padding: EdgeInsets.only(left: 2.0.w),
+                              elevation: 0,
+                              // backgroundColor:
+                              //     Color(0xFFA8B4C1).withOpacity(0.5),
+                              primaryColor: Constants.bpSkipStyle,
+                              side: BorderSide(color: Constants.formBorder),
+                            ),
+                            dropdownStyle: DropdownStyle(
+                              borderRadius: BorderRadius.circular(10.0),
+                              elevation: 6,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2.0.w, vertical: 1.5.h),
+                            ),
+                            items: [
+                              '1 Year',
+                              '2 Years',
+                              '3 Years',
+                              '4 Years',
+                              '5 Years',
+                              '6 Years',
+                              '7 Years',
+                              '8 Years',
+                              '9 Years',
+                              '10 Years',
+                              '11 Years',
+                              '12 Years',
+                              '13 Years',
+                              '14 Years',
+                              '15 Years',
+                              '15+ Years'
+                            ]
+                                .asMap()
+                                .entries
+                                .map(
+                                  (item) => DropdownItem<int>(
+                                    value: item.key + 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            item.value,
+                                            style: TextStyle(
+                                                fontFamily: 'Montserrat',
+                                                fontSize: 10.0.sp,
+                                                fontWeight: FontWeight.w400,
+                                                color: Constants.bpSkipStyle),
+                                          ),
+                                          //SizedBox(width: 68.0.w)
+                                        ],
                                       ),
                                     ),
-                                  )
-                                  .toList(),
-                            ),
+                                  ),
+                                )
+                                .toList(),
                           ),
                         ),
 
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: 3.0.w,
+                            right: 3.0.w,
+                            top: 3.0.h,
+                            //bottom: 3.0.h
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              left: 2.0.w,
-                              right: 2.0.w,
-                              top: 3.0.h,
-                              //bottom: 3.0.h
-                            ),
-                            child: CustomDropdown<int>(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 3.0.w),
-                                    child: Text(
-                                      'Total Teaching Experience',
-                                      style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 10.0.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: Constants.bpSkipStyle),
-                                    ),
+                          child: CustomDropdown<int>(
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 3.0.w),
+                                  child: Text(
+                                    'Total Teaching Experience',
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 10.0.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Constants.bpSkipStyle),
                                   ),
-                                  //SizedBox(width: 23.0.w)
-                                ],
-                              ),
-                              // icon: Icon(
-                              //   Icons.expand_more,
-                              //   color: Constants.bpSkipStyle,
-                              // ),
-                              onChange: (String value, int index) async {
-                                totalTeachExp = int.parse(value);
-                                //print(value);
-                                if (int.parse(value) > 0) {
-                                  setState(() {
-                                    teachExp = '1';
-                                  });
-                                }
-                              },
-                              dropdownButtonStyle: DropdownButtonStyle(
-                                height: 48.0,//7.0.h,
-                                width: 90.0.w,
-                                //padding: EdgeInsets.only(left: 2.0.w),
-                                elevation: 0,
-                                // backgroundColor:
-                                //     Color(0xFFA8B4C1).withOpacity(0.5),
-                                primaryColor: Constants.bpSkipStyle,
-                                side: BorderSide(color: Constants.formBorder),
-                              ),
-                              dropdownStyle: DropdownStyle(
-                                borderRadius: BorderRadius.circular(10.0),
-                                elevation: 6,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 2.0.w, vertical: 1.5.h),
-                              ),
-                              items: [
-                               '1 Year',
-                                '2 Years',
-                                '3 Years',
-                                '4 Years',
-                                '5 Years',
-                                '6 Years',
-                                '7 Years',
-                                '8 Years',
-                                '9 Years',
-                                '10 Years',
-                                '11 Years',
-                                '12 Years',
-                                '13 Years',
-                                '14 Years',
-                                '15 Years',
-                                '15+ Years'
-                              ]
-                                  .asMap()
-                                  .entries
-                                  .map(
-                                    (item) => DropdownItem<int>(
-                                      value: item.key + 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              item.value,
-                                              style: TextStyle(
-                                                  fontFamily: 'Montserrat',
-                                                  fontSize: 10.0.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Constants.bpSkipStyle),
-                                            ),
-                                            //SizedBox(width: 68.0.w)
-                                          ],
-                                        ),
+                                ),
+                                //SizedBox(width: 23.0.w)
+                              ],
+                            ),
+                            // icon: Icon(
+                            //   Icons.expand_more,
+                            //   color: Constants.bpSkipStyle,
+                            // ),
+                            onChange: (String value, int index) async {
+                              totalTeachExp = int.parse(value);
+                              //print(value);
+                              if (int.parse(value) > 0) {
+                                setState(() {
+                                  teachExp = '1';
+                                });
+                              }
+                            },
+                            dropdownButtonStyle: DropdownButtonStyle(
+                              height: Constants.constHeight,
+                              width: 90.0.w,
+                              //padding: EdgeInsets.only(left: 2.0.w),
+                              elevation: 0,
+                              // backgroundColor:
+                              //     Color(0xFFA8B4C1).withOpacity(0.5),
+                              primaryColor: Constants.bpSkipStyle,
+                              side: BorderSide(color: Constants.formBorder),
+                            ),
+                            dropdownStyle: DropdownStyle(
+                              borderRadius: BorderRadius.circular(10.0),
+                              elevation: 6,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2.0.w, vertical: 1.5.h),
+                            ),
+                            items: [
+                             '1 Year',
+                              '2 Years',
+                              '3 Years',
+                              '4 Years',
+                              '5 Years',
+                              '6 Years',
+                              '7 Years',
+                              '8 Years',
+                              '9 Years',
+                              '10 Years',
+                              '11 Years',
+                              '12 Years',
+                              '13 Years',
+                              '14 Years',
+                              '15 Years',
+                              '15+ Years'
+                            ]
+                                .asMap()
+                                .entries
+                                .map(
+                                  (item) => DropdownItem<int>(
+                                    value: item.key + 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            item.value,
+                                            style: TextStyle(
+                                                fontFamily: 'Montserrat',
+                                                fontSize: 10.0.sp,
+                                                fontWeight: FontWeight.w400,
+                                                color: Constants.bpSkipStyle),
+                                          ),
+                                          //SizedBox(width: 68.0.w)
+                                        ],
                                       ),
                                     ),
-                                  )
-                                  .toList(),
-                            ),
+                                  ),
+                                )
+                                .toList(),
                           ),
                         ),
 
@@ -2260,7 +1990,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                  top: 4.0.h, left: 2.0.w, right: 2.0.w),
+                                  top: 3.0.h, left: 3.0.w, right: 3.0.w),
                               child: Text(
                                 'Subjects of Expertise',
                                 style: TextStyle(
@@ -2273,43 +2003,37 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           ],
                         ),
 
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 2.0.w, right: 2.0.w, top: 1.5.h),
-                            child: GestureDetector(
-                              onTap: () {
-                                _openFilterSubjectDialog();
-                              },
-                              child: Container(
-                                height: 13.0.h,
-                                width: 90.0.w,
-                                padding:
-                                    EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.5.h),
-                                decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Constants.formBorder),
-                                    borderRadius: BorderRadius.circular(5.0)),
-                                child: Center(
-                                  child: Align(
-                                    alignment: Alignment.topLeft,
-                                    child: SingleChildScrollView(
-                                      child: Text(
-                                        selectedSubjectList == null ||
-                                                selectedSubjectList.length == 0
-                                            ? "Please mention your skills example #subject1 #subject2..."
-                                            : selectedSubjectList
-                                                .toString().replaceAll('[', '').replaceAll(']', '').
-                                                replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                        style: TextStyle(
-                                            fontFamily: "Montserrat",
-                                            fontSize: 10.0.sp,
-                                            color: Constants.bpSkipStyle),
-                                      ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 3.0.w, right: 3.0.w, top: 1.5.h),
+                          child: GestureDetector(
+                            onTap: () {
+                              _openFilterSubjectDialog();
+                            },
+                            child: Container(
+                              height: 13.0.h,
+                              width: 90.0.w,
+                              padding:
+                                  EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.5.h),
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Constants.formBorder),
+                                  borderRadius: BorderRadius.circular(5.0)),
+                              child: Center(
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: SingleChildScrollView(
+                                    child: Text(
+                                      selectedSubjectList == null ||
+                                              selectedSubjectList.length == 0
+                                          ? "Please mention your skills example #subject1 #subject2..."
+                                          : selectedSubjectList
+                                              .toString().replaceAll('[', '').replaceAll(']', '').
+                                              replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                      style: TextStyle(
+                                          fontFamily: "Montserrat",
+                                          fontSize: 10.0.sp,
+                                          color: Constants.bpSkipStyle),
                                     ),
                                   ),
                                 ),
@@ -2321,7 +2045,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                  left: 2.0.w, right: 2.0.w, top: 0.5.h),
+                                  left: 3.0.w, right: 3.0.w, top: 0.5.h),
                               child: Text(
                                 'Maximum 25 subjects',
                                 style: TextStyle(
@@ -2338,7 +2062,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                  top: 4.0.h, left: 2.0.w, right: 2.0.w),
+                                  top: 3.0.h, left: 3.0.w, right: 3.0.w),
                               child: Text(
                                 'Achievements',
                                 style: TextStyle(
@@ -2351,46 +2075,40 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           ],
                         ),
 
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 2.0.w, right: 2.0.w, top: 1.5.h),
-                            child: Container(
-                              height: 13.0.h,
-                              width: 90.0.w,
-                              child: TextFormField(
-                                controller: _achivementController,
-                                maxLines: 5,
-                                keyboardType: TextInputType.multiline,
-                                //maxLength: 100,
-                                decoration: InputDecoration(
-                                    //labelText: "Please mention your achivements...",
-                                    //counterText: '',
-                                    fillColor: Colors.white,
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: BorderSide(
-                                        color: Constants.formBorder,
-                                      ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 3.0.w, right: 3.0.w, top: 1.5.h),
+                          child: Container(
+                            height: 13.0.h,
+                            width: 90.0.w,
+                            child: TextFormField(
+                              controller: _achivementController,
+                              maxLines: 5,
+                              keyboardType: TextInputType.multiline,
+                              //maxLength: 100,
+                              decoration: InputDecoration(
+                                  //labelText: "Please mention your achivements...",
+                                  //counterText: '',
+                                  fillColor: Colors.white,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: BorderSide(
+                                      color: Constants.formBorder,
                                     ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      borderSide: BorderSide(
-                                        color: Constants.formBorder,
-                                        //width: 2.0,
-                                      ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: BorderSide(
+                                      color: Constants.formBorder,
+                                      //width: 2.0,
                                     ),
-                                    hintText:
-                                        "Please mention your achivements..."),
-                                //keyboardType: TextInputType.emailAddress,
-                                style: new TextStyle(
-                                    fontFamily: "Montserrat",
-                                    fontSize: 10.0.sp),
-                              ),
+                                  ),
+                                  hintText:
+                                      "Please mention your achivements..."),
+                              //keyboardType: TextInputType.emailAddress,
+                              style: new TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontSize: 10.0.sp),
                             ),
                           ),
                         ),
@@ -2398,7 +2116,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                  left: 2.0.w, right: 2.0.w, top: 0.5.h),
+                                  left: 3.0.w, right: 3.0.w, top: 0.5.h),
                               child: Text(
                                 'Maximum 100 words',
                                 style: TextStyle(
@@ -2415,7 +2133,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                  top: 4.0.h, left: 2.0.w, right: 2.0.w),
+                                  top: 3.0.h, left: 3.0.w, right: 3.0.w),
                               child: Text(
                                 'Skills',
                                 style: TextStyle(
@@ -2435,7 +2153,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: 2.0.w, right: 2.0.w, top: 1.5.h),
+                                left: 3.0.w, right: 3.0.w, top: 1.5.h),
                             child: GestureDetector(
                               onTap: () {
                                 _openFilterSkillsDialog();
@@ -2666,7 +2384,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                  top: 4.0.h, left: 2.0.w, right: 2.0.w),
+                                  top: 3.0.h, left: 3.0.w, right: 3.0.w),
                               child: Text(
                                 'Hobbies',
                                 style: TextStyle(
@@ -2679,208 +2397,202 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           ],
                         ),
 
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 2.0.w, right: 2.0.w, top: 1.5.h),
-                            child: GestureDetector(
-                              onTap: () {
-                                _openFilterHobbiesDialog();
-                              },
-                              child: Container(
-                                height: 13.0.h,
-                                width: 90.0.w,
-                                padding:
-                                    EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.5.h),
-                                decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Constants.formBorder),
-                                    borderRadius: BorderRadius.circular(5.0)),
-                                // child: Center(
-                                //   child: Align(
-                                //     alignment: Alignment.topCenter,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        selectedHobbiesList == null ||
-                                                selectedHobbiesList.length == 0
-                                            ? "Please mention your hobbies example #hobbie1 #hobbie2..."
-                                            : selectedHobbiesList
-                                                .toString().replaceAll('[', '').replaceAll(']', '').
-                                                replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                        style: TextStyle(
-                                            fontFamily: "Montserrat",
-                                            fontSize: 10.0.sp,
-                                            color: Constants.bpSkipStyle),
-                                      ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 3.0.w, right: 3.0.w, top: 1.5.h),
+                          child: GestureDetector(
+                            onTap: () {
+                              _openFilterHobbiesDialog();
+                            },
+                            child: Container(
+                              height: 13.0.h,
+                              width: 90.0.w,
+                              padding:
+                                  EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.5.h),
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Constants.formBorder),
+                                  borderRadius: BorderRadius.circular(5.0)),
+                              // child: Center(
+                              //   child: Align(
+                              //     alignment: Alignment.topCenter,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      selectedHobbiesList == null ||
+                                              selectedHobbiesList.length == 0
+                                          ? "Please mention your hobbies example #hobbie1 #hobbie2..."
+                                          : selectedHobbiesList
+                                              .toString().replaceAll('[', '').replaceAll(']', '').
+                                              replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                      style: TextStyle(
+                                          fontFamily: "Montserrat",
+                                          fontSize: 10.0.sp,
+                                          color: Constants.bpSkipStyle),
                                     ),
                                   ),
-                              //   ),
-                              // ),
-                              //     TextFieldTags(
-                              //   //initialTags: ["college"],
-                              //   tagsStyler: TagsStyler(
-                              //     showHashtag: true,
-                              //     tagMargin: const EdgeInsets.only(right: 4.0),
-                              //     tagCancelIcon: Icon(Icons.cancel,
-                              //         size: 20.0, color: Constants.bgColor),
-                              //     tagCancelIconPadding:
-                              //         EdgeInsets.only(left: 4.0, top: 2.0),
-                              //     tagPadding: EdgeInsets.only(
-                              //         top: 2.0,
-                              //         bottom: 4.0,
-                              //         left: 8.0,
-                              //         right: 4.0),
-                              //     tagDecoration: BoxDecoration(
-                              //       color: Colors.white,
-                              //       border: Border.all(
-                              //         color: Constants.formBorder,
-                              //       ),
-                              //       borderRadius: const BorderRadius.all(
-                              //         Radius.circular(20.0),
-                              //       ),
-                              //     ),
-                              //     tagTextStyle: TextStyle(
-                              //         fontWeight: FontWeight.normal,
-                              //         color: Constants.bgColor,
-                              //         fontFamily: "Montserrat"),
-                              //   ),
-                              //   textFieldStyler: TextFieldStyler(
-                              //     helperText: '',
-                              //     hintText:
-                              //         "Please mention your hobbies example #hobbies1 #hobbies2...",
-                              //     hintStyle: TextStyle(
-                              //         fontFamily: "Montserrat",
-                              //         fontSize: 10.0.sp),
-                              //     isDense: false,
-                              //     textFieldFocusedBorder: OutlineInputBorder(
-                              //       borderRadius: BorderRadius.circular(5.0),
-                              //       borderSide: BorderSide(
-                              //         color: Constants.formBorder,
-                              //       ),
-                              //     ),
-                              //     textFieldBorder: OutlineInputBorder(
-                              //       borderRadius: BorderRadius.circular(5.0),
-                              //       borderSide: BorderSide(
-                              //         color: Constants.formBorder,
-                              //       ),
-                              //     ),
-                              //     textFieldEnabledBorder: OutlineInputBorder(
-                              //       borderRadius: BorderRadius.circular(5.0),
-                              //       borderSide: BorderSide(
-                              //         color: Constants.formBorder,
-                              //       ),
-                              //     ),
-                              //     textFieldDisabledBorder: OutlineInputBorder(
-                              //       borderRadius: BorderRadius.circular(5.0),
-                              //       borderSide: BorderSide(
-                              //         color: Constants.formBorder,
-                              //       ),
-                              //     ),
-                              //   ),
-                              //   onDelete: (tag) {
-                              //     print('onDelete: $tag');
-                              //   },
-                              //   onTag: (tag) {
-                              //     print('onTag: $tag');
-                              //     hobbieList.add(tag);
-                              //   },
-                              //   // validator: (String tag) {
-                              //   //   print('validator: $tag');
-                              //   //   if (tag.length > 10) {
-                              //   //     return "hey that is too much";
-                              //   //   }
-                              //   //   return null;
-                              //   // },
-                              // )
-                              // FlutterTagging<Hobbies>(
-                              //   initialItems: _selectedHobbies,
-                              //   textFieldConfiguration: TextFieldConfiguration(
-                              //     decoration: InputDecoration(
-                              //         //labelText: "Please mention your achivements...",
-                              //         counterText: '',
-                              //         fillColor: Colors.white,
-                              //         focusedBorder: OutlineInputBorder(
-                              //           borderRadius:
-                              //               BorderRadius.circular(5.0),
-                              //           borderSide: BorderSide(
-                              //             color: Constants.formBorder,
-                              //           ),
-                              //         ),
-                              //         enabledBorder: OutlineInputBorder(
-                              //           borderRadius:
-                              //               BorderRadius.circular(5.0),
-                              //           borderSide: BorderSide(
-                              //             color: Constants.formBorder,
-                              //             //width: 2.0,
-                              //           ),
-                              //         ),
-                              //         hintText:
-                              //             "Please mention your hobbies example #hobbies1 #hobbies2..."),
-                              //     //keyboardType: TextInputType.emailAddress,
-                              //     style: new TextStyle(
-                              //         fontFamily: "Montserrat",
-                              //         fontSize: 10.0.sp),
-                              //   ),
-                              //   findSuggestions: HobbieService.getLanguages,
-                              //   additionCallback: (value) {
-                              //     return Hobbies(
-                              //       name: value,
-                              //       position: 0,
-                              //     );
-                              //   },
-                              //   onAdded: (language) {
-                              //     // api calls here, triggered when add to tag button is pressed
-                              //     return Hobbies(
-                              //       name: language.name,
-                              //       position: 0,
-                              //     );
-                              //   },
-                              //   configureSuggestion: (lang) {
-                              //     return SuggestionConfiguration(
-                              //       title: Text(lang.name),
-                              //       //subtitle: Text(lang.position.toString()),
-                              //       additionWidget: Chip(
-                              //         avatar: Icon(
-                              //           Icons.add_circle,
-                              //           color: Colors.white,
-                              //         ),
-                              //         label: Text('Add New Tag'),
-                              //         labelStyle: TextStyle(
-                              //           fontFamily: 'Montserrat',
-                              //           fontSize: 10.0.sp,
-                              //           color: Colors.white,
-                              //           fontWeight: FontWeight.w300,
-                              //         ),
-                              //         backgroundColor: Constants.bgColor,
-                              //       ),
-                              //     );
-                              //   },
-                              //   configureChip: (lang) {
-                              //     return ChipConfiguration(
-                              //       label: Text(lang.name),
-                              //       backgroundColor: Constants.bgColor,
-                              //       labelStyle: TextStyle(color: Colors.white),
-                              //       deleteIconColor: Colors.white,
-                              //     );
-                              //   },
-                              //   onChanged: () {
-                              //     setState(() {
-                              //       _selectedHobbiesJson = _selectedHobbies
-                              //           .map<String>(
-                              //               (lang) => '\n${lang.toJson()}')
-                              //           .toList()
-                              //           .toString();
-                              //       _selectedHobbiesJson = _selectedHobbiesJson
-                              //           .replaceFirst('}]', '}\n]');
-                              //     });
-                              //   },
-                              // ),
-                            ),
+                                ),
+                            //   ),
+                            // ),
+                            //     TextFieldTags(
+                            //   //initialTags: ["college"],
+                            //   tagsStyler: TagsStyler(
+                            //     showHashtag: true,
+                            //     tagMargin: const EdgeInsets.only(right: 4.0),
+                            //     tagCancelIcon: Icon(Icons.cancel,
+                            //         size: 20.0, color: Constants.bgColor),
+                            //     tagCancelIconPadding:
+                            //         EdgeInsets.only(left: 4.0, top: 2.0),
+                            //     tagPadding: EdgeInsets.only(
+                            //         top: 2.0,
+                            //         bottom: 4.0,
+                            //         left: 8.0,
+                            //         right: 4.0),
+                            //     tagDecoration: BoxDecoration(
+                            //       color: Colors.white,
+                            //       border: Border.all(
+                            //         color: Constants.formBorder,
+                            //       ),
+                            //       borderRadius: const BorderRadius.all(
+                            //         Radius.circular(20.0),
+                            //       ),
+                            //     ),
+                            //     tagTextStyle: TextStyle(
+                            //         fontWeight: FontWeight.normal,
+                            //         color: Constants.bgColor,
+                            //         fontFamily: "Montserrat"),
+                            //   ),
+                            //   textFieldStyler: TextFieldStyler(
+                            //     helperText: '',
+                            //     hintText:
+                            //         "Please mention your hobbies example #hobbies1 #hobbies2...",
+                            //     hintStyle: TextStyle(
+                            //         fontFamily: "Montserrat",
+                            //         fontSize: 10.0.sp),
+                            //     isDense: false,
+                            //     textFieldFocusedBorder: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(5.0),
+                            //       borderSide: BorderSide(
+                            //         color: Constants.formBorder,
+                            //       ),
+                            //     ),
+                            //     textFieldBorder: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(5.0),
+                            //       borderSide: BorderSide(
+                            //         color: Constants.formBorder,
+                            //       ),
+                            //     ),
+                            //     textFieldEnabledBorder: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(5.0),
+                            //       borderSide: BorderSide(
+                            //         color: Constants.formBorder,
+                            //       ),
+                            //     ),
+                            //     textFieldDisabledBorder: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(5.0),
+                            //       borderSide: BorderSide(
+                            //         color: Constants.formBorder,
+                            //       ),
+                            //     ),
+                            //   ),
+                            //   onDelete: (tag) {
+                            //     print('onDelete: $tag');
+                            //   },
+                            //   onTag: (tag) {
+                            //     print('onTag: $tag');
+                            //     hobbieList.add(tag);
+                            //   },
+                            //   // validator: (String tag) {
+                            //   //   print('validator: $tag');
+                            //   //   if (tag.length > 10) {
+                            //   //     return "hey that is too much";
+                            //   //   }
+                            //   //   return null;
+                            //   // },
+                            // )
+                            // FlutterTagging<Hobbies>(
+                            //   initialItems: _selectedHobbies,
+                            //   textFieldConfiguration: TextFieldConfiguration(
+                            //     decoration: InputDecoration(
+                            //         //labelText: "Please mention your achivements...",
+                            //         counterText: '',
+                            //         fillColor: Colors.white,
+                            //         focusedBorder: OutlineInputBorder(
+                            //           borderRadius:
+                            //               BorderRadius.circular(5.0),
+                            //           borderSide: BorderSide(
+                            //             color: Constants.formBorder,
+                            //           ),
+                            //         ),
+                            //         enabledBorder: OutlineInputBorder(
+                            //           borderRadius:
+                            //               BorderRadius.circular(5.0),
+                            //           borderSide: BorderSide(
+                            //             color: Constants.formBorder,
+                            //             //width: 2.0,
+                            //           ),
+                            //         ),
+                            //         hintText:
+                            //             "Please mention your hobbies example #hobbies1 #hobbies2..."),
+                            //     //keyboardType: TextInputType.emailAddress,
+                            //     style: new TextStyle(
+                            //         fontFamily: "Montserrat",
+                            //         fontSize: 10.0.sp),
+                            //   ),
+                            //   findSuggestions: HobbieService.getLanguages,
+                            //   additionCallback: (value) {
+                            //     return Hobbies(
+                            //       name: value,
+                            //       position: 0,
+                            //     );
+                            //   },
+                            //   onAdded: (language) {
+                            //     // api calls here, triggered when add to tag button is pressed
+                            //     return Hobbies(
+                            //       name: language.name,
+                            //       position: 0,
+                            //     );
+                            //   },
+                            //   configureSuggestion: (lang) {
+                            //     return SuggestionConfiguration(
+                            //       title: Text(lang.name),
+                            //       //subtitle: Text(lang.position.toString()),
+                            //       additionWidget: Chip(
+                            //         avatar: Icon(
+                            //           Icons.add_circle,
+                            //           color: Colors.white,
+                            //         ),
+                            //         label: Text('Add New Tag'),
+                            //         labelStyle: TextStyle(
+                            //           fontFamily: 'Montserrat',
+                            //           fontSize: 10.0.sp,
+                            //           color: Colors.white,
+                            //           fontWeight: FontWeight.w300,
+                            //         ),
+                            //         backgroundColor: Constants.bgColor,
+                            //       ),
+                            //     );
+                            //   },
+                            //   configureChip: (lang) {
+                            //     return ChipConfiguration(
+                            //       label: Text(lang.name),
+                            //       backgroundColor: Constants.bgColor,
+                            //       labelStyle: TextStyle(color: Colors.white),
+                            //       deleteIconColor: Colors.white,
+                            //     );
+                            //   },
+                            //   onChanged: () {
+                            //     setState(() {
+                            //       _selectedHobbiesJson = _selectedHobbies
+                            //           .map<String>(
+                            //               (lang) => '\n${lang.toJson()}')
+                            //           .toList()
+                            //           .toString();
+                            //       _selectedHobbiesJson = _selectedHobbiesJson
+                            //           .replaceFirst('}]', '}\n]');
+                            //     });
+                            //   },
+                            // ),
                           ),
                         ),
                         // Theme(
@@ -2930,7 +2642,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                  top: 4.0.h, left: 2.0.w, right: 2.0.w),
+                                  top: 3.0.h, left: 3.0.w, right: 3.0.w),
                               child: Text(
                                 'Other Social Media Links',
                                 style: TextStyle(
@@ -2942,214 +2654,15 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                             ),
                           ],
                         ),
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 2.0.w, right: 2.0.w, top: 1.5.h),
-                            child: LinkInputWidget(textEditingController: _fbLinkController, lable: 'Facebook')
-                            //  Container(
-                            //   height: 7.0.h,
-                            //   width: 90.0.w,
-                            //   child: TextFormField(
-                            //     controller: _fbLinkController,
-                            //     decoration: InputDecoration(
-                            //         labelText: "Facebook",
-                            //         labelStyle: TextStyle(
-                            //       color: Constants.bpSkipStyle,
-                            //       fontFamily: "Montserrat", 
-                            //       fontSize: 10.0.sp
-                            //     ),
-                            //         fillColor: Colors.white,
-                            //         focusedBorder: OutlineInputBorder(
-                            //           borderRadius: BorderRadius.circular(5.0),
-                            //           borderSide: BorderSide(
-                            //             color: Constants.formBorder,
-                            //           ),
-                            //         ),
-                            //         enabledBorder: OutlineInputBorder(
-                            //           borderRadius: BorderRadius.circular(5.0),
-                            //           borderSide: BorderSide(
-                            //             color: Constants.formBorder,
-                            //             //width: 2.0,
-                            //           ),
-                            //         ),
-                            //         suffixIconConstraints: BoxConstraints(
-                            //           maxHeight: 30.0,
-                            //           maxWidth: 30.0,                                   
-                            //         ),
-                            //         suffixIcon: Padding(
-                            //           padding: EdgeInsets.only(right: 2.0.w),
-                            //           child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
-                            //         )), //keyboardType: TextInputType.emailAddress,
-                            //     style: new TextStyle(
-                            //         fontFamily: "Montserrat",
-                            //         fontSize: 10.0.sp),
-                            //   ),
-                            // ),
-                          ),
-                        ),
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 2.0.w, right: 2.0.w, top: 3.0.h),
-                            child: LinkInputWidget(textEditingController: _instagramLinkController, lable: 'Instagram')
-                            // Container(
-                            //   height: 7.0.h,
-                            //   width: 90.0.w,
-                            //   child: TextFormField(
-                            //     controller: _instagramLinkController,
-                            //     decoration: InputDecoration(
-                            //         labelText: "Instagram",
-                            //         labelStyle: TextStyle(
-                            //       color: Constants.bpSkipStyle,
-                            //       fontFamily: "Montserrat", 
-                            //       fontSize: 10.0.sp
-                            //     ),
-                            //         fillColor: Colors.white,
-                            //         focusedBorder: OutlineInputBorder(
-                            //           borderRadius: BorderRadius.circular(5.0),
-                            //           borderSide: BorderSide(
-                            //             color: Constants.formBorder,
-                            //           ),
-                            //         ),
-                            //         enabledBorder: OutlineInputBorder(
-                            //           borderRadius: BorderRadius.circular(5.0),
-                            //           borderSide: BorderSide(
-                            //             color: Constants.formBorder,
-                            //             //width: 2.0,
-                            //           ),
-                            //         ),
-                            //          suffixIconConstraints: BoxConstraints(
-                            //           maxHeight: 30.0,
-                            //           maxWidth: 30.0,                                   
-                            //         ),
-                            //         suffixIcon: Padding(
-                            //           padding: EdgeInsets.only(right: 2.0.w),
-                            //           child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
-                            //         )),
-                            //     //keyboardType: TextInputType.emailAddress,
-                            //     style: new TextStyle(
-                            //         fontFamily: "Montserrat",
-                            //         fontSize: 10.0.sp),
-                            //   ),
-                            // ),
-                          ),
-                        ),
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 2.0.w, right: 2.0.w, top: 3.0.h),
-                            child: LinkInputWidget(textEditingController: _linkedInLinkLinkController, lable: 'LinkedIn')
-                            // Container(
-                            //   height: 7.0.h,
-                            //   width: 90.0.w,
-                            //   child: TextFormField(
-                            //     controller: _linkedInLinkLinkController,
-                            //     decoration: InputDecoration(
-                            //         labelText: "LinkedIn",
-                            //         labelStyle: TextStyle(
-                            //       color: Constants.bpSkipStyle,
-                            //       fontFamily: "Montserrat", 
-                            //       fontSize: 10.0.sp
-                            //     ),
-                            //         fillColor: Colors.white,
-                            //         focusedBorder: OutlineInputBorder(
-                            //           borderRadius: BorderRadius.circular(5.0),
-                            //           borderSide: BorderSide(
-                            //             color: Constants.formBorder,
-                            //           ),
-                            //         ),
-                            //         enabledBorder: OutlineInputBorder(
-                            //           borderRadius: BorderRadius.circular(5.0),
-                            //           borderSide: BorderSide(
-                            //             color: Constants.formBorder,
-                            //             //width: 2.0,
-                            //           ),
-                            //         ),
-                            //          suffixIconConstraints: BoxConstraints(
-                            //           maxHeight: 30.0,
-                            //           maxWidth: 30.0,                                   
-                            //         ),
-                            //         suffixIcon: Padding(
-                            //           padding: EdgeInsets.only(right: 2.0.w),
-                            //           child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
-                            //         )),
-                            //     //keyboardType: TextInputType.emailAddress,
-                            //     style: new TextStyle(
-                            //         fontFamily: "Montserrat",
-                            //         fontSize: 10.0.sp),
-                            //   ),
-                            // ),
-                          ),
-                        ),
-                        Theme(
-                          data: new ThemeData(
-                            primaryColor: Constants.bpSkipStyle,
-                            primaryColorDark: Constants.bpSkipStyle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: 2.0.w, right: 2.0.w, top: 3.0.h),
-                            child: LinkInputWidget(textEditingController: _otherLinkLinkController, lable: 'Other')
-                            // Container(
-                            //   height: 7.0.h,
-                            //   width: 90.0.w,
-                            //   child: TextFormField(
-                            //     controller: _otherLinkLinkController,
-                            //     decoration: InputDecoration(
-                            //         labelText: "Other",
-                            //         labelStyle: TextStyle(
-                            //       color: Constants.bpSkipStyle,
-                            //       fontFamily: "Montserrat", 
-                            //       fontSize: 10.0.sp
-                            //     ),
-                            //         fillColor: Colors.white,
-                            //         focusedBorder: OutlineInputBorder(
-                            //           borderRadius: BorderRadius.circular(5.0),
-                            //           borderSide: BorderSide(
-                            //             color: Constants.formBorder,
-                            //           ),
-                            //         ),
-                            //         enabledBorder: OutlineInputBorder(
-                            //           borderRadius: BorderRadius.circular(5.0),
-                            //           borderSide: BorderSide(
-                            //             color: Constants.formBorder,
-                            //             //width: 2.0,
-                            //           ),
-                            //         ),
-                            //          suffixIconConstraints: BoxConstraints(
-                            //           maxHeight: 30.0,
-                            //           maxWidth: 30.0,                                   
-                            //         ),
-                            //         suffixIcon: Padding(
-                            //           padding: EdgeInsets.only(right: 2.0.w),
-                            //           child: Image.asset('assets/icons/link.png', color: Constants.formBorder,),
-                            //         )),
-                            //     //keyboardType: TextInputType.emailAddress,
-                            //     style: new TextStyle(
-                            //         fontFamily: "Montserrat",
-                            //         fontSize: 10.0.sp),
-                            //   ),
-                            // ),
-                          ),
-                        ),
+                        LinkInputWidget(textEditingController: _fbLinkController, lable: 'Facebook'),
+                        LinkInputWidget(textEditingController: _instagramLinkController, lable: 'Instagram'),
+                        LinkInputWidget(textEditingController: _linkedInLinkLinkController, lable: 'LinkedIn'),
+                        LinkInputWidget(textEditingController: _otherLinkLinkController, lable: 'Other'),
 
                         Padding(
                           padding: EdgeInsets.only(
-                              right: 2.0.w,
-                              left: 2.0.w,
+                              right: 3.0.w,
+                              left: 3.0.w,
                               top: 6.0.h,
                               bottom: 3.0.h),
                           child: GestureDetector(

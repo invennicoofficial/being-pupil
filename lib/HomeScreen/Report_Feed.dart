@@ -1,5 +1,6 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
+import 'package:being_pupil/Widgets/Common_Widgets.dart';
 // import 'package:being_pupil/Model/Post_Model/Post_Api_Class.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
@@ -56,46 +57,41 @@ class _ReportFeedState extends State<ReportFeed> {
             ),
           ],
         ),
-        Theme(
-          data: new ThemeData(
-            primaryColor: Constants.bpSkipStyle,
-            primaryColorDark: Constants.bpSkipStyle,
-          ),
-          child: Padding(
-            padding: EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 1.0.h),
-            child: Container(
-              height: 13.0.h,
-              width: 90.0.w,
-              child: TextFormField(
-                controller: _detailController,
-                maxLines: 5,
-                keyboardType: TextInputType.multiline,
-                //maxLength: 100,
-                decoration: InputDecoration(
-                    //labelText: "Please mention your achivements...",
-                    //counterText: '',
-                    fillColor: Colors.white,
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: BorderSide(
-                        color: Constants.formBorder,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: BorderSide(
-                        color: Constants.formBorder,
-                        //width: 2.0,
-                      ),
-                    ),
-                    hintText: "Add Detailed Description"),
-                //keyboardType: TextInputType.emailAddress,
-                style:
-                    new TextStyle(fontFamily: "Montserrat", fontSize: 10.0.sp),
-              ),
-            ),
-          ),
-        ),
+        MultilineTextInput(textEditingController: _detailController, hint: 'Add Detailed Description')
+        // Padding(
+        //   padding: EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 1.0.h),
+        //   child: Container(
+        //     height: 13.0.h,
+        //     width: 90.0.w,
+        //     child: TextFormField(
+        //       controller: _detailController,
+        //       maxLines: 5,
+        //       keyboardType: TextInputType.multiline,
+        //       //maxLength: 100,
+        //       decoration: InputDecoration(
+        //           //labelText: "Please mention your achivements...",
+        //           //counterText: '',
+        //           fillColor: Colors.white,
+        //           focusedBorder: OutlineInputBorder(
+        //             borderRadius: BorderRadius.circular(5.0),
+        //             borderSide: BorderSide(
+        //               color: Constants.formBorder,
+        //             ),
+        //           ),
+        //           enabledBorder: OutlineInputBorder(
+        //             borderRadius: BorderRadius.circular(5.0),
+        //             borderSide: BorderSide(
+        //               color: Constants.formBorder,
+        //               //width: 2.0,
+        //             ),
+        //           ),
+        //           hintText: "Add Detailed Description"),
+        //       //keyboardType: TextInputType.emailAddress,
+        //       style:
+        //           new TextStyle(fontFamily: "Montserrat", fontSize: 10.0.sp),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
@@ -192,26 +188,27 @@ class _ReportFeedState extends State<ReportFeed> {
                   reportIssueOnPost(widget.postId, issueId);
                 }
               },
-              child: Container(
-                height: 7.0.h,
-                width: 90.0.w,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Constants.bgColor,
-                    ),
-                    color: Constants.bgColor,
-                    borderRadius: BorderRadius.circular(5.0)),
-                child: Center(
-                  child: Text(
-                    'Submit',
-                    style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 11.0.sp,
-                        color: Colors.white),
-                  ),
-                ),
-              ),
+              child: ButtonWidget(btnName: 'SUBMIT', isActive: true, fontWeight: FontWeight.w500)
+              // Container(
+              //   height: 7.0.h,
+              //   width: 90.0.w,
+              //   decoration: BoxDecoration(
+              //       border: Border.all(
+              //         color: Constants.bgColor,
+              //       ),
+              //       color: Constants.bgColor,
+              //       borderRadius: BorderRadius.circular(5.0)),
+              //   child: Center(
+              //     child: Text(
+              //       'Submit',
+              //       style: TextStyle(
+              //           fontFamily: 'Montserrat',
+              //           fontWeight: FontWeight.w500,
+              //           fontSize: 11.0.sp,
+              //           color: Colors.white),
+              //     ),
+              //   ),
+              // ),
             ),
           ],
         ),
