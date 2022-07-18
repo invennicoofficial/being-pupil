@@ -60,11 +60,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         color: Constants.bpOnBoardTitleStyle);
 
     var _textH2 = TextStyle(
-        height: 0.2.h,
+        height: 1.5,
         fontFamily: "Montserrat",
         fontWeight: FontWeight.w400,
         fontSize: 11.0.sp,
-        color: Constants.bpOnBoardSubtitleStyle);
+        color: Constants.bgColor);
 
     return Scaffold(
       appBar: AppBar(
@@ -350,7 +350,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                     type: PageTransitionType.fade,
                                     child: LoginScreen()));
                           },
-                          child: ButtonWidget(btnName: 'GET STARTED', isActive: true)
+                          child: ButtonWidget(btnName: 'GET STARTED', isActive: true, fontSize: 16.0,)
                           // Container(
                           //   height: 8.0.h,
                           //   width: 80.0.w,

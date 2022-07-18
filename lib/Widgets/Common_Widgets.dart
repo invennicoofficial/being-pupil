@@ -23,11 +23,13 @@ class ButtonWidget extends StatelessWidget {
   final String btnName;
   final bool isActive;
   FontWeight fontWeight;
+  double? fontSize;
   ButtonWidget(
       {Key? key,
       required this.btnName,
       required this.isActive,
-      this.fontWeight = FontWeight.w400})
+      this.fontWeight = FontWeight.w400,
+      this.fontSize})
       : super(key: key);
 
   @override
@@ -44,7 +46,7 @@ class ButtonWidget extends StatelessWidget {
             style: TextStyle(
               fontFamily: "Montserrat",
               fontWeight: fontWeight,
-              fontSize: 12.0.sp,
+              fontSize: fontSize ?? 12.0.sp,
               color: isActive ? Colors.white : Colors.white54,
             )),
       ),
@@ -58,7 +60,8 @@ class NumberInputWidget extends StatelessWidget {
   final TextEditingController textEditingController;
   bool autoFocus;
   bool isReadOnly;
-  Function? validator;
+  //String? Function(String?)? validator;
+  Function(String?)? onChanged;
   final String lable;
   NumberInputWidget(
       {Key? key,
@@ -66,7 +69,8 @@ class NumberInputWidget extends StatelessWidget {
       required this.textEditingController,
       this.autoFocus = false,
       this.isReadOnly = false,
-      this.validator,
+      //this.validator,
+      this.onChanged,
       required this.lable})
       : super(key: key);
 
@@ -125,15 +129,8 @@ class NumberInputWidget extends StatelessWidget {
                 ),
               ),
               style: new TextStyle(fontFamily: "Montserrat", fontSize: 10.0.sp),
-              // onChanged: (val) {
-              //   _formKey.currentState!.validate();
-              // },
-              // validator: (val){
-              //   if( val!.isEmpty || val.length < 10 || RegExp(r"^[6-9]\d{9}$").hasMatch(val)){
-              //     return 'Enter Valid Phone Number';
-              //   }
-              //   return null;
-              // },
+              onChanged: onChanged ?? (val){}
+              //validator: validator ?? (val){},
             ),
           ),
         ));
@@ -145,12 +142,16 @@ class TextInputWidget extends StatelessWidget {
   final String lable;
   bool isIdField;
   bool? isReadOnly;
+  //String? Function(String?)? validator;
+  Function(String?)? onChanged;
   TextInputWidget(
       {Key? key,
       required this.textEditingController,
       required this.lable,
       this.isIdField = false,
       this.isReadOnly,
+      this.onChanged
+      //this.validator
       })
       : super(key: key);
 
@@ -195,7 +196,9 @@ class TextInputWidget extends StatelessWidget {
               ),
             ),
             style: new TextStyle(fontFamily: "Montserrat", fontSize: 10.0.sp),
-          ),
+            //validator: validator ?? (val){},
+            onChanged: onChanged ?? (val){}
+          )
         ),
       ),
     );
@@ -311,5 +314,27 @@ class MultilineTextInput extends StatelessWidget {
             ),
           ),
         );
+  }
+}
+
+class Validator {
+  /// Can be used with any type of common text fields like Name, Address String, etc.
+  static String? commonValidator(
+      {required String? val,
+      required String? errorMessage,
+      int? characterLimit,
+      String? errorMessageForCharacter}) {
+    if (val == null) {
+      return null;
+    }
+    if (val.isEmpty) {
+      return errorMessage;
+    }
+    if (characterLimit != null) {
+      if (val.length < characterLimit) {
+        return errorMessageForCharacter ?? '';
+      }
+    }
+    return null;
   }
 }

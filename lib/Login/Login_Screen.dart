@@ -110,12 +110,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Padding(
                       padding:
-                          EdgeInsets.only(top: 2.0.h, left: 5.0.w, right: 15.0.w),
+                          EdgeInsets.only(top: 1.0.h, left: 5.0.w, right: 15.0.w),
                       child: Text(
                         'Login to your account using registered mobile number .',
                         style: TextStyle(
+                            height: 1.5,
                             fontFamily: 'Montserrat',
-                            fontSize: 9.0.sp,
+                            fontSize: 13.0,
                             fontWeight: FontWeight.w400,
                             color: Colors.white),
                         textAlign: TextAlign.left,
@@ -194,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         Padding(
-                            padding: EdgeInsets.only(top: 6.0.h),
+                            padding: EdgeInsets.only(top: 6.0.h, left: 3.0.w, right: 3.0.w),
                             child: Row(children: <Widget>[
                               Expanded(
                                 child: new Container(
@@ -226,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               left: 10.0.w, right: 10.0.w, top: 3.0.h),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               GestureDetector(
                                 onTap: () async {
@@ -252,6 +253,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     // )
                                     ),
                               ),
+                              SizedBox(width: 24,),
                               GestureDetector(
                                 onTap: () {
                                   //print('Google Login!!!');
@@ -273,6 +275,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       fit: BoxFit.contain,
                                     )),
                               ),
+                              SizedBox(width: 24,),
                               GestureDetector(
                                 onTap: () {
                                   //print('Facebook Login!!!');
@@ -316,7 +319,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               left: 10.0.w, right: 10.0.w, top: 3.0.h),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               GestureDetector(
                                 onTap: () {
@@ -339,6 +342,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       fit: BoxFit.contain,
                                     )),
                               ),
+                              SizedBox(width: 24,),
                               GestureDetector(
                                 onTap: () {
                                   //print('Facebook Login!!!');

@@ -109,6 +109,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
   File? ccfile; //some file from device storage
   CubeUser ccuser = CubeUser(); // some user to set avatar
   int wordCount = 0;
+  bool isButtonEnabled = false;
 
   @override
   void initState() {
@@ -637,9 +638,18 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
 
                     Column(
                       children: <Widget>[
-                        TextInputWidget(textEditingController: _nameController, lable: 'Name', isReadOnly: true,),
-                        NumberInputWidget(textEditingController: _mobileController, lable: 'Mobile Number', isReadOnly: true),
-                        TextInputWidget(textEditingController: _emailController, lable: 'Email', isReadOnly: true),
+                        TextInputWidget(textEditingController: _nameController, lable: 'Name', isReadOnly: true,
+                        onChanged: (val){
+                          isEmpty();
+                        },),
+                        NumberInputWidget(textEditingController: _mobileController, lable: 'Mobile Number', isReadOnly: true,
+                        onChanged: (val){
+                          isEmpty();
+                        },),
+                        TextInputWidget(textEditingController: _emailController, lable: 'Email', isReadOnly: true,
+                        onChanged: (val){
+                          isEmpty();
+                        },),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -689,6 +699,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     } else {
                                       gender = 'O';
                                     }
+                                    isEmpty();
                                   },
                                   dropdownButtonStyle: DropdownButtonStyle(
                                     height: 7.0.h,
@@ -755,6 +766,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                       helpText: 'Select Birth Date');
                                   if (datePick != null &&
                                       datePick != birthDate) {
+                                        isEmpty();
                                     setState(() {
                                       birthDate = datePick;
                                       //print(birthDate);
@@ -886,6 +898,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 docType = 'DL';
                                 //print(docType);
                               }
+                              isEmpty();
                             },
                             dropdownButtonStyle: DropdownButtonStyle(
                               height: Constants.constHeight,
@@ -955,7 +968,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                   _uploadDocument();
                                 },
                                 child: Container(
-                                  height: 6.0.h,
+                                  height: Constants.constHeight,
                                   width: 90.0.w,
                                   color: Colors.transparent,
                                   child: Padding(
@@ -1006,7 +1019,10 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                           ),
                         ),
 
-                        TextInputWidget(textEditingController: _idNumController, lable: 'Identification Document Number', isIdField: true,),
+                        TextInputWidget(textEditingController: _idNumController, lable: 'Identification Document Number', isIdField: true,
+                        onChanged: (val){
+                          isEmpty();
+                        }),
                         Padding(
                             padding: EdgeInsets.only(
                               left: 3.0.w,
@@ -1543,7 +1559,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                               _showCertificatePicker(context, index);
                                             },
                                             child: Container(
-                                              height: 6.0.h,
+                                              height: Constants.constHeight,
                                               width: 90.0.w,
                                               color: Colors.transparent,
                                               child: Padding(
@@ -2026,7 +2042,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     child: Text(
                                       selectedSubjectList == null ||
                                               selectedSubjectList.length == 0
-                                          ? "Please mention your skills example #subject1 #subject2..."
+                                          ? "Please mention your subjects example #subject1 #subject2..."
                                           : selectedSubjectList
                                               .toString().replaceAll('[', '').replaceAll(']', '').
                                               replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
@@ -2903,7 +2919,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     updateUserPicCC();
                               }
                             },
-                            child: ButtonWidget(btnName: 'SUBMIT', isActive: true, fontWeight: FontWeight.w500)
+                            child: ButtonWidget(btnName: 'SUBMIT', isActive: isButtonEnabled, fontWeight: FontWeight.w500)
                             // Container(
                             //   height: 7.0.h,
                             //   width: 90.0.w,
@@ -2934,6 +2950,24 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
             ),
           ),
         ));
+  }
+
+  bool isEmpty() {
+    setState(() {
+      if ((_nameController.text.isNotEmpty) &&
+          (_mobileController.text.isNotEmpty) &&
+          (_emailController.text.isNotEmpty) &&
+          (gender != 'Gender') && (birthDateInString != null || birthDateInString != '') &&
+          (docType != 'DocType') && (_idNumController.text.isNotEmpty) &&
+          (qualification != '0') && (workExp != '0') && (teachExp != '0') &&
+          (fileName != null || fileName != '') && (_certiName != null || _certiName != '') &&
+          (selectedSubjectList.isNotEmpty)) {
+        isButtonEnabled = true;
+      } else {
+        isButtonEnabled = false;
+      }
+    });
+    return isButtonEnabled;
   }
 
 
@@ -3112,9 +3146,21 @@ uploadFile(file, isPublic: false)
         },
         onApplyButtonClick: (list) {
           if (list != null) {
-            setState(() {
+            if(list.length > 25){
+              Fluttertoast.showToast(
+            msg: 'Subject reaches the maximum limit',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+            }else{
+              setState(() {
               selectedSubjectList = List.from(list);
             });
+            } 
           }
           Navigator.pop(context);
         });

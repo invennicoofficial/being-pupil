@@ -96,7 +96,7 @@ class Data {
     String? achievements;
     String? skills;
     String? hobbies;
-    String? subjects;
+    dynamic subjects;
     dynamic facebookUrl;
     String? instaUrl;
     String? linkedinUrl;

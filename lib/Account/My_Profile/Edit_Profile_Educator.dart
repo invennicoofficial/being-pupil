@@ -2053,20 +2053,22 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                               child: Center(
                                 child: Align(
                                   alignment: Alignment.topLeft,
-                                  child: Text(
-                                     selectedSubjectList == null ||
-                                            selectedSubjectList.length == 0
-                                        ? result.data!.subjects!
-                                            // .replaceAll('[', '').replaceAll(']', '').
-                                            // replaceAll(new RegExp(r', '), ' #').replaceAll(',', ' #').replaceFirst('', '#')
-                                            //.replaceFirst('', '#') //"Please mention your skills example #skills1 #skills2..."
-                                        : selectedSubjectList
-                                            .toString().replaceAll('[', '').replaceAll(']', '').
-                                            replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
-                                    style: TextStyle(
-                                        fontFamily: "Montserrat",
-                                        fontSize: 10.0.sp,
-                                        color: Constants.bpSkipStyle),
+                                  child: SingleChildScrollView(
+                                    child: Text(
+                                      //  selectedSubjectList == null ||
+                                      //         selectedSubjectList.length == 0
+                                            result.data!.subjects != null
+                                          ? result.data!.subjects
+                                          // : result.data!.subjects == null
+                                          // ? 'Subjects are not selected yet'
+                                          : selectedSubjectList
+                                              .toString().replaceAll('[', '').replaceAll(']', '').
+                                              replaceAll(new RegExp(r', '), ' #').replaceFirst('', '#'),
+                                      style: TextStyle(
+                                          fontFamily: "Montserrat",
+                                          fontSize: 10.0.sp,
+                                          color: Constants.bpSkipStyle),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -3271,9 +3273,21 @@ uploadFile(file, isPublic: false)
         },
         onApplyButtonClick: (list) {
           if (list != null) {
-            setState(() {
+            if(list.length > 25){
+              Fluttertoast.showToast(
+            msg: 'Subject reaches the maximum limit',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Constants.bgColor,
+            textColor: Colors.white,
+            fontSize: 10.0.sp,
+          );
+            }else{
+              setState(() {
               selectedSubjectList = List.from(list);
             });
+            } 
           }
           Navigator.pop(context);
         });

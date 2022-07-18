@@ -36,6 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   static const String TAG = "_LoginPageState";
   bool checkboxValue = false;
+  bool isButtonEnabled = false;
 
   @override
   void initState() {
@@ -111,9 +112,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       borderRadius: BorderRadius.all(Radius.circular(5.0))),
                   child: Column(
                     children: <Widget>[
-                      TextInputWidget(textEditingController: nameController, lable: 'Name'),
-                      NumberInputWidget(textEditingController: mobileController, lable: 'Phone Number'),
-                      TextInputWidget(textEditingController: emailController, lable: 'Email'),
+                      TextInputWidget(
+                        textEditingController: nameController,
+                        lable: 'Name',
+                        onChanged: (val) {
+                          isEmpty();
+                        },
+                      ),
+                      NumberInputWidget(
+                        textEditingController: mobileController,
+                        lable: 'Phone Number',
+                        onChanged: (val) {
+                          isEmpty();
+                        },
+                      ),
+                      TextInputWidget(
+                        textEditingController: emailController,
+                        lable: 'Email',
+                        onChanged: (val) {
+                          isEmpty();
+                        },
+                      ),
                       Padding(
                         padding: EdgeInsets.only(
                             left: 3.0.w,
@@ -158,12 +177,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 await SharedPreferences.getInstance();
                             sharedPreferences.setString(
                                 'RegisterAs', registerAs);
+                            isEmpty();
                             //print('Preffff ::: ' +
-                               // sharedPreferences.getString('RegisterAs')!);
+                            // sharedPreferences.getString('RegisterAs')!);
                           },
                           dropdownButtonStyle: DropdownButtonStyle(
-                            height: Constants.constHeight,//7.0.h,
-                            width: 90.0.w,//90.0.w,
+                            height: Constants.constHeight, //7.0.h,
+                            width: 90.0.w, //90.0.w,
                             //padding: EdgeInsets.only(left: 2.0.w),
                             elevation: 0,
                             backgroundColor: Colors.white,
@@ -211,6 +231,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             setState(() {
                               checkboxValue = !checkboxValue;
                             });
+                            isEmpty();
                           },
                           // subtitle: !checkboxValue
                           //     ? Text(
@@ -269,96 +290,107 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         padding: EdgeInsets.only(
                             left: 3.0.w, right: 3.0.w, top: 0.0.h),
                         child: GestureDetector(
-                          onTap: () {
-                            //print('Sign Up!!!');
-                            bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9."
-                                    r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                .hasMatch(emailController.text.trim());
-                            bool mobileValid = RegExp(r"^[6-9]\d{9}$")
-                                .hasMatch(mobileController.text);
-                            //signUp(nameController.text.trim(), mobileController.text.trim(), registerAs, deviceType, deviceId)
-                            if(checkboxValue == false){
-                              Fluttertoast.showToast(
-                                  msg: "Please Accept Tearms & Condition",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Constants.bgColor,
-                                  textColor: Colors.white,
-                                  fontSize: 10.0.sp);
-                            }else if (nameController.text.isEmpty) {
-                              Fluttertoast.showToast(
-                                  msg: "Please Enter Name",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Constants.bgColor,
-                                  textColor: Colors.white,
-                                  fontSize: 10.0.sp);
-                            } else if (mobileController.text.isEmpty ||
-                                (mobileValid == false)) {
-                              Fluttertoast.showToast(
-                                  msg: "Please Enter Valid Mobile Number",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Constants.bgColor,
-                                  textColor: Colors.white,
-                                  fontSize: 10.0.sp);
-                            } else if (emailController.text.trim().isEmpty ||
-                                (emailValid == false)) {
-                              Fluttertoast.showToast(
-                                  msg: "Please Enter Valid Email Id",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Constants.bgColor,
-                                  textColor: Colors.white,
-                                  fontSize: 10.0.sp);
-                            } else if (registerAs == 'notSelected') {
-                              Fluttertoast.showToast(
-                                  msg: "Please Select Register As",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Constants.bgColor,
-                                  textColor: Colors.white,
-                                  fontSize: 10.0.sp);
-                            } else {
-                              register(
-                                  nameController.text.trim(),
-                                  mobileController.text.trim(),
-                                  emailController.text.trim(),
-                                  registerAs,
-                                  Platform.isAndroid ? 'A' : 'I');
-                            }
-                          },
-                          child: ButtonWidget(btnName: 'SIGN UP', isActive: true, fontWeight: FontWeight.w700,)
-                          // Container(
-                          //   height: 7.0.h,
-                          //   width: 90.0.w,
-                          //   padding: const EdgeInsets.all(1.0),
-                          //   decoration: BoxDecoration(
-                          //     color: Constants.bpOnBoardTitleStyle,
-                          //     borderRadius:
-                          //         BorderRadius.all(Radius.circular(10.0)),
-                          //     border: Border.all(
-                          //       color: Constants.formBorder,
-                          //       width: 0.15,
-                          //     ),
-                          //   ),
-                          //   child: Center(
-                          //     child: Text(
-                          //       'Sign Up'.toUpperCase(),
-                          //       style: TextStyle(
-                          //           color: Colors.white,
-                          //           fontFamily: 'Montserrat',
-                          //           fontWeight: FontWeight.w700,
-                          //           fontSize: 11.0.sp),
-                          //     ),
-                          //   ),
-                          // ),
-                        ),
+                            onTap: isButtonEnabled
+                                ? () {
+                                    //print('Sign Up!!!');
+                                    bool emailValid = RegExp(
+                                            r"^[a-zA-Z0-9.a-zA-Z0-9."
+                                            r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                        .hasMatch(emailController.text.trim());
+                                    bool mobileValid = RegExp(r"^[6-9]\d{9}$")
+                                        .hasMatch(mobileController.text);
+                                    //signUp(nameController.text.trim(), mobileController.text.trim(), registerAs, deviceType, deviceId)
+                                    if (checkboxValue == false) {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "Please Accept Tearms & Condition",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor: Constants.bgColor,
+                                          textColor: Colors.white,
+                                          fontSize: 10.0.sp);
+                                    } else if (nameController.text.isEmpty) {
+                                      Fluttertoast.showToast(
+                                          msg: "Please Enter Name",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor: Constants.bgColor,
+                                          textColor: Colors.white,
+                                          fontSize: 10.0.sp);
+                                    } else if (mobileController.text.isEmpty ||
+                                        (mobileValid == false)) {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "Please Enter Valid Mobile Number",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor: Constants.bgColor,
+                                          textColor: Colors.white,
+                                          fontSize: 10.0.sp);
+                                    } else if (emailController.text
+                                            .trim()
+                                            .isEmpty ||
+                                        (emailValid == false)) {
+                                      Fluttertoast.showToast(
+                                          msg: "Please Enter Valid Email Id",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor: Constants.bgColor,
+                                          textColor: Colors.white,
+                                          fontSize: 10.0.sp);
+                                    } else if (registerAs == 'notSelected') {
+                                      Fluttertoast.showToast(
+                                          msg: "Please Select Register As",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor: Constants.bgColor,
+                                          textColor: Colors.white,
+                                          fontSize: 10.0.sp);
+                                    } else {
+                                      register(
+                                          nameController.text.trim(),
+                                          mobileController.text.trim(),
+                                          emailController.text.trim(),
+                                          registerAs,
+                                          Platform.isAndroid ? 'A' : 'I');
+                                    }
+                                  }
+                                : null,
+                            child: ButtonWidget(
+                              btnName: 'SIGN UP',
+                              isActive: isButtonEnabled,
+                              fontWeight: FontWeight.w700,
+                            )
+                            // Container(
+                            //   height: 7.0.h,
+                            //   width: 90.0.w,
+                            //   padding: const EdgeInsets.all(1.0),
+                            //   decoration: BoxDecoration(
+                            //     color: Constants.bpOnBoardTitleStyle,
+                            //     borderRadius:
+                            //         BorderRadius.all(Radius.circular(10.0)),
+                            //     border: Border.all(
+                            //       color: Constants.formBorder,
+                            //       width: 0.15,
+                            //     ),
+                            //   ),
+                            //   child: Center(
+                            //     child: Text(
+                            //       'Sign Up'.toUpperCase(),
+                            //       style: TextStyle(
+                            //           color: Colors.white,
+                            //           fontFamily: 'Montserrat',
+                            //           fontWeight: FontWeight.w700,
+                            //           fontSize: 11.0.sp),
+                            //     ),
+                            //   ),
+                            // ),
+                            ),
                       ),
                       SizedBox(
                         height: 12.0.h, //20.0.h
@@ -410,6 +442,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  bool isEmpty() {
+    setState(() {
+      if ((nameController.text.isNotEmpty) &&
+          (mobileController.text.isNotEmpty) &&
+          (emailController.text.isNotEmpty) &&
+          (registerAs != 'notSelected') && 
+          (checkboxValue == true)) {
+        isButtonEnabled = true;
+      } else {
+        isButtonEnabled = false;
+      }
+    });
+    return isButtonEnabled;
+  }
+
   //ConnectyCube
 
   _signInCC(BuildContext context, CubeUser user, result) async {
@@ -453,21 +500,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<String?> _getId() async {
-  var deviceInfo = DeviceInfoPlugin();
-  if (Platform.isIOS) { // import 'dart:io'
-    var iosDeviceInfo = await deviceInfo.iosInfo;
-    return iosDeviceInfo.identifierForVendor; // unique ID on iOS
-  } else {
-    var androidDeviceInfo = await deviceInfo.androidInfo;
-    //print('DID:::'+androidDeviceInfo.androidId.toString());
-    return androidDeviceInfo.androidId; // unique ID on Android
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) {
+      // import 'dart:io'
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+    } else {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
+      //print('DID:::'+androidDeviceInfo.androidId.toString());
+      return androidDeviceInfo.androidId; // unique ID on Android
+    }
   }
-}
 
   Future<SignUp> register(String name, String mobileNumber, String email,
       String registerAs, String deviceType) async {
     displayProgressDialog(context);
-     String? deviceId = await _getId();
+    String? deviceId = await _getId();
     var result = SignUp();
     try {
       Dio dio = Dio();
@@ -482,7 +530,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       var response = await dio.post(Config.signupUrl, data: formData);
       if (response.statusCode == 200) {
         //print(response.data);
-        closeProgressDialog(context);
         result = SignUp.fromJson(response.data);
         if (result.status == true) {
           //print('ID ::: ' + result.data!.userId.toString());
@@ -495,6 +542,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   password: '12345678',
                   email: email),
               result);
+          closeProgressDialog(context);
         } else {
           Fluttertoast.showToast(
             msg: result.message == null ? result.errorMsg! : result.message!,
@@ -514,7 +562,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       closeProgressDialog(context);
       if (e.response != null) {
         //print("This is the error message::::" +
-          //  e.response!.data['meta']['message']);
+        //  e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
