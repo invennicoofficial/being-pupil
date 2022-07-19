@@ -386,7 +386,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
         fileName = file.name;
         _document = XFile(file.path!);
       });
-
+      isEmpty();
       //print(file.name);
       //print(file.bytes);
       //print(file.size);
@@ -416,6 +416,8 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
       educationDetailMap[index]['certificate'] = _certificate!.path;
       //print(_certiName);
     });
+    isEmpty();
+    print(educationDetailMap);
   }
 
   void _showCertificatePicker(context, int index) {
@@ -766,7 +768,6 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                       helpText: 'Select Birth Date');
                                   if (datePick != null &&
                                       datePick != birthDate) {
-                                        isEmpty();
                                     setState(() {
                                       birthDate = datePick;
                                       //print(birthDate);
@@ -801,6 +802,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                             "${birthDate!.day}/${birthDate!.month}/${birthDate!.year}";
                                       } // 08/14/2019
                                     });
+                                    isEmpty();
                                   }
                                 },
                                 child: Container(
@@ -1162,6 +1164,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                             educationDetailMap[index]
                                                     ['school_name'] =
                                                 value.toString();
+                                            isEmpty();
                                             //print(
                                                // 'SCHOOL### ${value.toString()}');
                                           },
@@ -1248,7 +1251,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                                                 ['year'] =
                                                             selectedYear!.year
                                                                 .toString();
-
+                                                        isEmpty();
                                                         // print(selectedYear!
                                                         //     .year);
                                                         Navigator.pop(
@@ -1448,7 +1451,8 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                         //   color: Constants.bpSkipStyle,
                                         // ),
                                         onChange: (String value, int index) async {
-                                          //print(value);
+                                          print(value);
+                                          print(index);
                                           if (int.parse(value) > 0) {
                                             setState(() {
                                               qualification = '1';
@@ -1461,11 +1465,13 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                                 'Graduate';
                                             //print(qualification);
                                           } else if (value == '2') {
+                                            print(educationDetailMap);
                                             qualification = 'Post-graduate';
                                             educationDetailMap[index]
                                                     ['qualification'] =
                                                 'Post-graduate';
-                                            //print(qualification);
+                                            print(educationDetailMap[index]
+                                                    ['qualification']);
                                           } else if (value == '3') {
                                             qualification =
                                                 'Chartered Accountant';
@@ -1479,6 +1485,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                                 ['qualification'] = 'Others';
                                             //print(qualification);
                                           }
+                                          isEmpty();
                                         },
                                         dropdownButtonStyle:
                                             DropdownButtonStyle(
@@ -1837,6 +1844,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 setState(() {
                                   workExp = '1';
                                 });
+                                isEmpty();
                               }
                             },
                             dropdownButtonStyle: DropdownButtonStyle(
@@ -1938,6 +1946,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                 setState(() {
                                   teachExp = '1';
                                 });
+                                isEmpty();
                               }
                             },
                             dropdownButtonStyle: DropdownButtonStyle(
@@ -2125,6 +2134,9 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               style: new TextStyle(
                                   fontFamily: "Montserrat",
                                   fontSize: 10.0.sp),
+                              onChanged: (val){
+                                isEmpty();
+                              },
                             ),
                           ),
                         ),
@@ -2682,7 +2694,8 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               top: 6.0.h,
                               bottom: 3.0.h),
                           child: GestureDetector(
-                            onTap: () {
+                            onTap: isButtonEnabled
+                            ? () {
                               //print('Submit!!!');
                               wordCountForDescription(_achivementController.text);
                               bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9."
@@ -2918,7 +2931,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     totalTeachExp);
                                     updateUserPicCC();
                               }
-                            },
+                            } : null,
                             child: ButtonWidget(btnName: 'SUBMIT', isActive: isButtonEnabled, fontWeight: FontWeight.w500)
                             // Container(
                             //   height: 7.0.h,
@@ -2953,20 +2966,32 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
   }
 
   bool isEmpty() {
-    setState(() {
-      if ((_nameController.text.isNotEmpty) &&
+    //setState(() {
+    //   'school_name': 'MSU',
+    //  'year': 'Year',
+    //  'qualification': 'BCA',
+    //  'certificate': 'Upload Certificate/Degree'
+      if ((_image != null) &&
+        (_nameController.text.isNotEmpty) &&
           (_mobileController.text.isNotEmpty) &&
-          (_emailController.text.isNotEmpty) &&
-          (gender != 'Gender') && (birthDateInString != null || birthDateInString != '') &&
-          (docType != 'DocType') && (_idNumController.text.isNotEmpty) &&
-          (qualification != '0') && (workExp != '0') && (teachExp != '0') &&
-          (fileName != null || fileName != '') && (_certiName != null || _certiName != '') &&
-          (selectedSubjectList.isNotEmpty)) {
-        isButtonEnabled = true;
+          (_emailController.text.isNotEmpty)
+           && (gender != 'Gender')  && (isDateSelected) &&
+           (docType != 'DocType') && (_document != null) && (_idNumController.text.isNotEmpty) &&
+           (address1 != null) && (workExp != '0') && (teachExp != '0') && (selectedSubjectList.length != 0)
+          && (educationDetailMap[0]['school_name'] != 'MSU') && (educationDetailMap[0]['year'] != 'Year')
+           && (qualification != '0') && (educationDetailMap[0]['certificate'] != 'Upload Certificate/Degre')
+          && (_achivementController.text.isNotEmpty) && (selectedSkillList.length != 0) && (selectedHobbiesList.length != 0)
+          ) {
+            print(birthDateInString);
+        setState(() {
+          isButtonEnabled = true;
+        });
       } else {
-        isButtonEnabled = false;
+        setState(() {
+          isButtonEnabled = false;
+        });
       }
-    });
+    //});
     return isButtonEnabled;
   }
 
@@ -3079,6 +3104,7 @@ uploadFile(file, isPublic: false)
       lng = result.latLng!.longitude;
       pinCode = result.postalCode;
     });
+    isEmpty();
 
     // print('CITY::: $city');
     // print('LATLNG::: ${result.latLng}');
@@ -3160,6 +3186,7 @@ uploadFile(file, isPublic: false)
               setState(() {
               selectedSubjectList = List.from(list);
             });
+            isEmpty();
             } 
           }
           Navigator.pop(context);
@@ -3227,6 +3254,7 @@ uploadFile(file, isPublic: false)
             setState(() {
               selectedSkillList = List.from(list);
             });
+            isEmpty();
           }
           Navigator.pop(context);
         });
@@ -3293,6 +3321,7 @@ uploadFile(file, isPublic: false)
             setState(() {
               selectedHobbiesList = List.from(list);
             });
+            isEmpty();
           }
           Navigator.pop(context);
         });

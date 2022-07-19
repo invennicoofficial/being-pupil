@@ -123,12 +123,12 @@ class _OtpScreenState extends State<OtpScreen> {
                   ),
                   Padding(
                     padding:
-                        EdgeInsets.only(top: 2.0.h, left: 5.0.w, right: 15.0.w),
+                        EdgeInsets.only(top: 1.0.h, left: 5.0.w, right: 5.0.w),
                     child: Text(
                       'We sent code on your registered mobile number $newMobNumber',
                       style: TextStyle(
                           fontFamily: 'Montserrat',
-                          fontSize: 9.0.sp,
+                          fontSize: 13.0,
                           fontWeight: FontWeight.w400,
                           color: Colors.white),
                       textAlign: TextAlign.left,

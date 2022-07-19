@@ -129,7 +129,7 @@ class _EducatorListState extends State<EducatorList> {
                 itemCount: _userId.length == 0 ? 0 : _userId.length,
                 itemBuilder: (context, index) {
                   return Card(
-                    elevation: 2.0,
+                    elevation: 3.0,
                     child: Padding(
                       padding: EdgeInsets.only(left: 2.0.w),
                       child: Container(

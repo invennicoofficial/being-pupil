@@ -99,7 +99,7 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
                   labelStyle: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 10.0.sp,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                       color: Constants.bgColor),
                   unselectedLabelColor: Constants.bpSkipStyle,
                   unselectedLabelStyle: TextStyle(

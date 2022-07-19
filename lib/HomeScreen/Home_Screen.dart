@@ -12,6 +12,7 @@ import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:being_pupil/Model/Stay_And_Study_Model/Get_All_Property_Model.dart';
 import 'package:being_pupil/StayAndStudy/Property_Details_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
@@ -411,8 +412,8 @@ saveFirebaseToken(String token) async {
                                         padding: EdgeInsets.only(top: 5.0),
                                         child: ClipRRect(
                                           borderRadius: BorderRadius.circular(50),
-                                          child: Image.network(
-                                            profileImageList[index]!,
+                                          child: CachedNetworkImage(
+                                            imageUrl: profileImageList[index]!,
                                             width: 35.0,
                                             height: 35.0,
                                             fit: BoxFit.cover,
@@ -556,12 +557,16 @@ saveFirebaseToken(String token) async {
                                                     PageTransitionAnimation
                                                         .cupertino);
                                               },
-                                              child: Image.network(
-                                                imageListMap[index][imageIndex]['file'],
+                                              child: CachedNetworkImage(imageUrl: imageListMap[index][imageIndex]['file'],
                                                 height: 100,
                                                 width: 250,
-                                                fit: BoxFit.contain,
-                                              ),
+                                                fit: BoxFit.contain,)
+                                              // Image.network(
+                                              //   imageListMap[index][imageIndex]['file'],
+                                              //   height: 100,
+                                              //   width: 250,
+                                              //   fit: BoxFit.contain,
+                                              //),
                                             ),
                                           )
                                           : Padding(
@@ -583,8 +588,8 @@ saveFirebaseToken(String token) async {
                                                     PageTransitionAnimation
                                                         .cupertino);
                                               },
-                                              child: Image.network(
-                                                imageListMap[index][imageIndex]['file'],
+                                              child: CachedNetworkImage(
+                                                imageUrl: imageListMap[index][imageIndex]['file'],
                                                 height: 100,
                                                 width: 250,
                                                 fit: BoxFit.cover,
