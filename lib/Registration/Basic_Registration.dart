@@ -472,6 +472,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       user.id = newUser.id;
       SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
       sharedPrefs.saveNewUser(user);
+      closeProgressDialog(context);
       Navigator.push(
           context,
           PageTransition(
@@ -534,7 +535,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if (result.status == true) {
           //print('ID ::: ' + result.data!.userId.toString());
           saveUserData(result.data!.userId!);
-          _signInCC(
+          await _signInCC(
               context,
               CubeUser(
                   fullName: name,
@@ -542,7 +543,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   password: '12345678',
                   email: email),
               result);
-          closeProgressDialog(context);
+          //
         } else {
           Fluttertoast.showToast(
             msg: result.message == null ? result.errorMsg! : result.message!,

@@ -271,10 +271,12 @@ class LinkInputWidget extends StatelessWidget {
 class MultilineTextInput extends StatelessWidget {
   final TextEditingController textEditingController;
   final String hint;
-  const MultilineTextInput({
+  Function(String)? onChange;
+  MultilineTextInput({
     Key? key,
     required this.textEditingController,
     required this.hint,
+    this.onChange
   }) : super(key: key);
 
   @override
@@ -310,6 +312,7 @@ class MultilineTextInput extends StatelessWidget {
                     hintText: hint),
                 style:
                     new TextStyle(fontFamily: "Montserrat", fontSize: 10.0.sp),
+                onChanged: onChange ?? (val){},
               ),
             ),
           ),

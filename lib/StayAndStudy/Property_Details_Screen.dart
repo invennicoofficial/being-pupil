@@ -4,6 +4,7 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Stay_And_Study_Model/Get_All_Property_Model.dart';
 import 'package:being_pupil/StayAndStudy/Property_Book_Screen.dart';
 import 'package:being_pupil/Widgets/Common_Widgets.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
@@ -203,7 +204,8 @@ Future<void> _createDynamicLink(bool short, String id) async {
                             widget.propData![widget.index]['featured_image']
                                 .map<Widget>((item) => Container(
                                       child: Center(
-                                          child: Image.network(item,
+                                          child:CachedNetworkImage(
+                                                imageUrl: item,
                                               fit: BoxFit.cover, width: 1000)),
                                     ))
                                 .toList(),
@@ -467,7 +469,8 @@ Future<void> _createDynamicLink(bool short, String id) async {
                               title: Row(
                                 children: [
                                   //ImageIcon(
-                                  Image.network(widget.propData![widget.index]['amenities'] != [] || widget.propData![widget.index]['amenities'] != null
+                                 CachedNetworkImage(
+                                     imageUrl:widget.propData![widget.index]['amenities'] != [] || widget.propData![widget.index]['amenities'] != null
                                     ? widget.propData![widget.index]['amenities'][index]['amenities_image'] : '',
                                     //widget.propDataList[widget.index].data[widget.index].amenities[index].amenitiesImage,
                                     // widget.propertyDetails.data[widget.index]

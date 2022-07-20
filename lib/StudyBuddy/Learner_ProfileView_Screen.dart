@@ -1,5 +1,6 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -106,8 +107,8 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
                           //Profile DP
                           ClipRRect(
                             borderRadius: BorderRadius.circular(100),
-                            child: Image.network(
-                              map!['data']['profile_image'],
+                            child:CachedNetworkImage(
+                                                imageUrl:map!['data']['profile_image'],
                               height: 120,
                               width: 120,
                               fit: BoxFit.cover,

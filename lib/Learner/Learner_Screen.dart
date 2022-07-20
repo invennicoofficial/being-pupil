@@ -3,6 +3,7 @@ import 'package:being_pupil/Learner/Connection_API.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Learner_List_Model.dart';
 import 'package:being_pupil/StudyBuddy/Search_Screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -171,8 +172,8 @@ class _LearnerScreenState extends State<LearnerScreen> {
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(50),
-                                    child: Image.network(
-                                      _profileImage[index]!,
+                                    child:CachedNetworkImage(
+                                                imageUrl: _profileImage[index]!,
                                       width: 40.0,
                                       height: 40.0,
                                       fit: BoxFit.cover,

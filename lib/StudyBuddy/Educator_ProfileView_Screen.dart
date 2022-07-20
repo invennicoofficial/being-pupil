@@ -11,6 +11,7 @@ import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Educator_Post_Model.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
@@ -182,8 +183,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                           //Profile DP
                           ClipRRect(
                             borderRadius: BorderRadius.circular(100),
-                            child: Image.network(
-                              profileImageUrl!,
+                            child:CachedNetworkImage(
+                                                imageUrl: profileImageUrl!,
                               width: 130,
                               height: 130,
                               fit: BoxFit.cover,
@@ -717,8 +718,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                               child: ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(50),
-                                                child: Image.network(
-                                                  profileImageUrl!,
+                                                child:CachedNetworkImage(
+                                                imageUrl:profileImageUrl!,
                                                   width: 35.0,
                                                   height: 35.0,
                                                   fit: BoxFit.cover,
@@ -869,8 +870,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                                                     PageTransitionAnimation
                                                                         .cupertino);
                                                           },
-                                                          child: Image.network(
-                                                            imageListMap[index]
+                                                          child:CachedNetworkImage(
+                                                imageUrl:imageListMap[index]
                                                                     [imageIndex]
                                                                 ['file'],
                                                             height: 100,
@@ -914,8 +915,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                                                     PageTransitionAnimation
                                                                         .cupertino);
                                                           },
-                                                          child: Image.network(
-                                                            imageListMap[index]
+                                                          child:CachedNetworkImage(
+                                                imageUrl:imageListMap[index]
                                                                     [imageIndex]
                                                                 ['file'],
                                                             height: 100,

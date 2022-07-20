@@ -7,6 +7,7 @@ import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/MyProfile_Model.dart';
 import 'package:being_pupil/Model/Post_Model/Educator_Post_Model.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -200,8 +201,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                         //Profile DP
                         ClipRRect(
                           borderRadius: BorderRadius.circular(50),
-                          child: Image.network(
-                            myProfileMap!['data']['profile_image'],
+                          child:CachedNetworkImage(
+                            imageUrl: myProfileMap!['data']['profile_image'],
                             width: 90.0,
                             height: 90.0,
                             fit: BoxFit.cover,
@@ -512,8 +513,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                           child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(50),
-                                            child: Image.network(
-                                              profileImageUrl!,
+                                            child:CachedNetworkImage(
+                                                imageUrl: profileImageUrl!,
                                               width: 35.0,
                                               height: 35.0,
                                               fit: BoxFit.cover,
@@ -716,8 +717,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                     PageTransitionAnimation
                                                         .cupertino);
                                               },
-                                              child: Image.network(
-                                                imageListMap[index][imageIndex]['file'],
+                                              child:CachedNetworkImage(
+                                                imageUrl: imageListMap[index][imageIndex]['file'],
                                                 height: 100,
                                                 width: 250,
                                                 fit: BoxFit.contain,
@@ -743,8 +744,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                     PageTransitionAnimation
                                                         .cupertino);
                                               },
-                                              child: Image.network(
-                                                imageListMap[index][imageIndex]['file'],
+                                              child:CachedNetworkImage(
+                                                imageUrl: imageListMap[index][imageIndex]['file'],
                                                 height: 100,
                                                 width: 250,
                                                 fit: BoxFit.cover,

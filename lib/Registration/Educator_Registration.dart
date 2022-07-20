@@ -176,6 +176,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
       _image = image;
     });
     ccfile = File(image!.path);
+    isEmpty();
     //print('CCCAM:::'+ccFile!.path.toString());
   }
 
@@ -187,6 +188,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
       _image = image;
     });
      ccfile = File(image!.path);
+     isEmpty();
     //print('CCGAL:::'+ccFile!.path.toString());
   }
 
@@ -404,6 +406,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
       _certiName = doc!.path.split('/scaled_').last.substring(35);
       educationDetailMap[index]['certificate'] = _certificate!.path;
     });
+    isEmpty();
   }
 
   _certificateFromGallery(int index) async {

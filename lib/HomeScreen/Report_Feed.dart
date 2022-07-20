@@ -26,6 +26,7 @@ class _ReportFeedState extends State<ReportFeed> {
   String? authToken;
   int? issueId;
   bool isLoading = true;
+  bool isButtonActive = false;
 
   @override
   void initState() {
@@ -57,7 +58,10 @@ class _ReportFeedState extends State<ReportFeed> {
             ),
           ],
         ),
-        MultilineTextInput(textEditingController: _detailController, hint: 'Add Detailed Description')
+        MultilineTextInput(textEditingController: _detailController, hint: 'Add Detailed Description',
+        onChange: (val){
+          isEmpty();
+        },)
         // Padding(
         //   padding: EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 1.0.h),
         //   child: Container(
@@ -94,6 +98,23 @@ class _ReportFeedState extends State<ReportFeed> {
         // ),
       ],
     );
+  }
+
+  bool isEmpty(){
+    if((selectedIssue != null) && (!isOther)){
+      setState(() {
+        isButtonActive = true;
+      });
+    }else if((selectedIssue != null) && (isOther) && (_detailController.text.isNotEmpty)){
+      setState(() {
+        isButtonActive = true;
+      });
+    }else{
+      setState(() {
+        isButtonActive = false;
+      });
+    }
+    return isButtonActive;
   }
 
   @override
@@ -134,37 +155,65 @@ class _ReportFeedState extends State<ReportFeed> {
         physics: BouncingScrollPhysics(),
         child: Column(
           children: <Widget>[
-            ListView.builder(
+            ListView.separated(
                 itemCount: reportMapData!.length,
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  return ListTile(
+                  return RadioListTile(
                       contentPadding: EdgeInsets.symmetric(horizontal: 4.0.w),
-                      onTap: () {
-                        setState(() {
+                      groupValue: selectedIssue == index ? 1 : 0,
+                      value: 1,
+                      controlAffinity: ListTileControlAffinity.trailing,
+                      selected: false,
+                      activeColor: Constants.selectedIcon,  
+                      //toggleable: true,
+                      onChanged: (val){
+                           setState(() {
                           selectedIssue = index;
                           issueId = index + 1;
                           reportMapData![index]['name'] == 'Others'
                               ? isOther = true
                               : isOther = false;
                         });
-                        //print(isOther ? 'Other' : 'NotOther');
-                        //print('ISSUE_ID::: $issueId');
+                        isEmpty();
                       },
-                      tileColor: selectedIssue == index
-                          ? Constants.bgColor.withOpacity(0.7)
-                          : null,
+                      // onTap: () {
+                      //   setState(() {
+                      //     selectedIssue = index;
+                      //     issueId = index + 1;
+                      //     reportMapData![index]['name'] == 'Others'
+                      //         ? isOther = true
+                      //         : isOther = false;
+                      //   });
+                      //   //print(isOther ? 'Other' : 'NotOther');
+                      //   //print('ISSUE_ID::: $issueId');
+                      // },
+                      // tileColor: selectedIssue == index
+                      //     ? Constants.bgColor.withOpacity(0.7)
+                      //     : null,
                       title: Text(
                         '${reportMapData![index]['name']}',
                         style: TextStyle(
                             fontFamily: 'Montserrat',
-                            fontSize: 12.0.sp,
+                            fontSize: 15.0,
                             fontWeight: FontWeight.w400,
-                            color: selectedIssue == index
-                                ? Colors.white
-                                : Constants.bgColor),
-                      ));
+                            color: Constants.bgColor),
+                      ),
+                      subtitle: Text('Ex: includes racist, homophobic or sexist slurs',
+                      style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF828282)),),
+                      );
+                },
+                separatorBuilder: (context, index) {
+                  return Divider(
+                    height: 1.0,
+                    color: Color(0xFFE0E0E0),
+                    thickness: 0.5,
+                  );
                 }),
             isOther ? detailedBox() : Container(),
             // SizedBox(
@@ -188,7 +237,7 @@ class _ReportFeedState extends State<ReportFeed> {
                   reportIssueOnPost(widget.postId, issueId);
                 }
               },
-              child: ButtonWidget(btnName: 'SUBMIT', isActive: true, fontWeight: FontWeight.w500)
+              child: ButtonWidget(btnName: 'SUBMIT', isActive: isButtonActive, fontWeight: FontWeight.w500)
               // Container(
               //   height: 7.0.h,
               //   width: 90.0.w,

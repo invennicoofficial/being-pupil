@@ -6,6 +6,7 @@ import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -192,8 +193,8 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                           padding: const EdgeInsets.only(top: 5.0),
                                           child: ClipRRect(
                                             borderRadius: BorderRadius.circular(50),
-                                            child: Image.network(
-                                              profileImageList[index]!,
+                                            child: CachedNetworkImage(
+                                              imageUrl: profileImageList[index]!,
                                               width: 35.0,
                                               height: 35.0,
                                               fit: BoxFit.cover,
@@ -358,8 +359,8 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                                     PageTransitionAnimation
                                                         .cupertino);
                                               },
-                                              child: Image.network(
-                                                imageListMap[index][imageIndex]['file'],
+                                              child: CachedNetworkImage(
+                                                imageUrl: imageListMap[index][imageIndex]['file'],
                                                 height: 100,
                                                 width: 250,
                                                 fit: BoxFit.contain,
@@ -385,8 +386,8 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                                     PageTransitionAnimation
                                                         .cupertino);
                                               },
-                                              child: Image.network(
-                                                imageListMap[index][imageIndex]['file'],
+                                              child: CachedNetworkImage(
+                                                imageUrl: imageListMap[index][imageIndex]['file'],
                                                 height: 100,
                                                 width: 250,
                                                 fit: BoxFit.cover,

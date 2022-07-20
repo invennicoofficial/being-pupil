@@ -4,6 +4,7 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Create_Post_Model.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -260,8 +261,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 contentPadding: EdgeInsets.all(0.0),
                 leading: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
-                  child: Image.network(
-                    profilePic!,
+                  child: CachedNetworkImage(
+                     imageUrl: profilePic!,
                     width: 40.0,
                     height: 40.0,
                     fit: BoxFit.cover,

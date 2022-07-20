@@ -1,5 +1,6 @@
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Stay_And_Study_Model/Get_Property_Review_Model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
@@ -530,8 +531,8 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                                   ClipRRect(
                                                     borderRadius:
                                                         BorderRadius.circular(50),
-                                                    child: Image.network(
-                                                      result.data?.review![index]
+                                                    child:CachedNetworkImage(
+                                                imageUrl: result.data?.review![index]
                                                           .profileImage! ?? '',
                                                       width: 9.0.w,
                                                       height: 4.5.h,

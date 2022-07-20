@@ -4,6 +4,7 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Learner/Connection_API.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
@@ -219,8 +220,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                           child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(50),
-                                            child: Image.network(
-                                              _profileImage[index]!,
+                                            child:CachedNetworkImage(
+                                                imageUrl:  _profileImage[index]!,
                                               width: 40.0,
                                               height: 40.0,
                                               fit: BoxFit.cover,
@@ -406,8 +407,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                             child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(50),
-                                              child: Image.network(
-                                                _profileImage[index]!,
+                                              child:CachedNetworkImage(
+                                                imageUrl: _profileImage[index]!,
                                                 //connection.data[index].profileImage,
                                                 width: 40.0,
                                                 height: 40.0,

@@ -11,6 +11,7 @@ import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
 import 'package:being_pupil/Widgets/Common_Widgets.dart';
 import 'package:being_pupil/Widgets/Custom_Dropdown.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -597,8 +598,8 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
                                         radius: 70.0,
                                         child: ClipRRect(
                                           borderRadius: BorderRadius.circular(70),
-                                          child: Image.network(
-                                            result.data!.imageUrl!,
+                                          child: CachedNetworkImage(
+                                            imageUrl: result.data!.imageUrl!,
                                             height: 125.0,//14.0.h,
                                             width: 125.0,//30.0.w,
                                             fit: BoxFit.cover,

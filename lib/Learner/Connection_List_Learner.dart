@@ -53,6 +53,12 @@ class _ConnectionListLearnerState extends State<ConnectionListLearner> {
     getToken();
   }
 
+   @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
+
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     //print(authToken);

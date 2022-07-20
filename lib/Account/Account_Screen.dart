@@ -13,6 +13,7 @@ import 'package:being_pupil/Login/Login_Screen.dart';
 import 'package:being_pupil/Subscription/Current_Subscription_Screen.dart';
 import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:flutter/material.dart';
@@ -108,17 +109,33 @@ class _AccountScreenState extends State<AccountScreen> {
                         children: <Widget>[
                           // Padding(padding: EdgeInsets.only(top: 2.0.h, left: 2.0.w, right: 2.0.w),
                           // child: ,)
-                          Container(
-                            height: 16.5.h,
+                          // Container(
+                          //   height: 16.5.h,
+                          //   width: 29.5.w,
+                          //   //color: Colors.grey,
+                          //   child: CircleAvatar(
+                          //     backgroundImage: //AssetImage('assets/images/dp2.png'),
+                          //        CachedNetworkImage(
+                          //                       imageUrl:profilePicUrl!) as ImageProvider,
+                          //     //backgroundColor: Colors.grey,
+                          //     radius: 100.0,
+                          //   ),
+                          // ),
+                          CachedNetworkImage(
+                      imageUrl: profilePicUrl!,
+                      errorWidget: (context, url, error) => Text("error"),
+                      imageBuilder: (context, imageProvider) => Container(
+                          height: 16.5.h,
                             width: 29.5.w,
-                            //color: Colors.grey,
-                            child: CircleAvatar(
-                              backgroundImage: //AssetImage('assets/images/dp2.png'),
-                                  NetworkImage(profilePicUrl!),
-                              //backgroundColor: Colors.grey,
-                              radius: 100.0,
-                            ),
-                          ),
+                        child: CircleAvatar(
+                          radius: 100,
+                          backgroundImage: imageProvider,
+                        ),
+                      ),
+                      placeholder: (context, url) => CircularProgressIndicator(
+                        backgroundColor: Constants.bgColor,
+                      ),
+                    ),
                           SizedBox(
                             height: 0.5.h,
                           ),

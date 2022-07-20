@@ -3,6 +3,7 @@ import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Stay_And_Study_Model/Get_All_Property_Model.dart';
 import 'package:being_pupil/StayAndStudy/Property_Details_Screen.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -166,19 +167,34 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                               //Image and Rating
                               child: Stack(
                                 children: <Widget>[
-                                  Container(
-                                    height: 18.0.h,
-                                    width: 100.0.w,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                            propertyImage[index]!),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      borderRadius:
-                                          BorderRadius.circular(8.0),
-                                    ),
-                                  ),
+                                  CachedNetworkImage(
+                      imageUrl: propertyImage[index]!,
+                      errorWidget: (context, url, error) => Text("error"),
+                      imageBuilder: (context, imageProvider) => Container(
+                          height: 18.0.h,
+                          width: 100.0.w,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      placeholder: (context, url) => CircularProgressIndicator(
+                        backgroundColor: Constants.bgColor,
+                      ),
+                    ),
+                                  // Container(
+                                  //   height: 18.0.h,
+                                  //   width: 100.0.w,
+                                  //   decoration: BoxDecoration(
+                                  //     image: DecorationImage(
+                                  //       image: NetworkImage(
+                                  //           propertyImage[index]!),
+                                  //       fit: BoxFit.cover,
+                                  //     ),
+                                  //     borderRadius:
+                                  //         BorderRadius.circular(8.0),
+                                  //   ),
+                                  // ),
                                   Align(
                                     alignment: Alignment.topRight,
                                     child: Container(

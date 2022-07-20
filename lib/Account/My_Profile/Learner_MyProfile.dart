@@ -3,6 +3,7 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Course_Model/Get_Enrolled_Course_Model.dart';
 import 'package:being_pupil/Registration/Learner_Registration.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -206,8 +207,8 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                         //Profile DP
                         ClipRRect(
                           borderRadius: BorderRadius.circular(100),
-                          child: Image.network(
-                            profileImageUrl!,
+                          child:CachedNetworkImage(
+                                                imageUrl: profileImageUrl!,
                             width: 130,
                             height: 130,
                             fit: BoxFit.cover,

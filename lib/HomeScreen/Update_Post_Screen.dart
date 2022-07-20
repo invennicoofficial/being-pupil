@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
@@ -308,8 +309,8 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                 contentPadding: EdgeInsets.all(0.0),
                 leading: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
-                  child: Image.network(
-                    profilePic!,
+                  child:CachedNetworkImage(
+                    imageUrl: profilePic!,
                     width: 40.0,
                     height: 40.0,
                     fit: BoxFit.cover,

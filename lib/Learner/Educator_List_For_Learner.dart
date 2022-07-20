@@ -56,6 +56,12 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
     getToken();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
+
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     //print(authToken);

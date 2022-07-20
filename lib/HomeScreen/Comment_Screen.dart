@@ -6,6 +6,7 @@ import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Learner_ProfileView_Screen.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -235,8 +236,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                           padding: const EdgeInsets.only(top: 5.0),
                                           child: ClipRRect(
                                             borderRadius: BorderRadius.circular(50),
-                                            child: Image.network(
-                                              widget.profileImage!,
+                                            child:CachedNetworkImage(
+                                                imageUrl: widget.profileImage!,
                                               width: 35.0,
                                               height: 35.0,
                                               fit: BoxFit.cover,
@@ -357,8 +358,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                                     PageTransitionAnimation
                                                         .cupertino);
                                               },
-                                              child: Image.network(
-                                                widget.imageListMap![widget.index!][imageIndex]['file'],
+                                              child:CachedNetworkImage(
+                                                imageUrl: widget.imageListMap![widget.index!][imageIndex]['file'],
                                                 height: 100,
                                                 width: 250,
                                                 fit: BoxFit.contain,
@@ -608,8 +609,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                             child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(50),
-                                              child: Image.network(
-                                                profileImages[index]!,
+                                              child:CachedNetworkImage(
+                                                imageUrl: profileImages[index]!,
                                                 height: 35.0,
                                                 width: 35.0,
                                                 fit: BoxFit.cover,
@@ -833,8 +834,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                               horizontal: 2.0.w, vertical: 1.0.h),
                                           child: ClipRRect(
                                             borderRadius: BorderRadius.circular(50),
-                                            child: Image.network(
-                                              imageUrl!,
+                                            child:CachedNetworkImage(
+                                                imageUrl: imageUrl!,
                                               width: 3.0.w,
                                               height: 1.0.h,
                                               fit: BoxFit.cover,
@@ -921,8 +922,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                               horizontal: 2.0.w, vertical: 1.0.h),
                                           child: ClipRRect(
                                             borderRadius: BorderRadius.circular(50),
-                                            child: Image.network(
-                                              imageUrl!,
+                                            child: CachedNetworkImage(
+                                                imageUrl: imageUrl!,
                                               width: 3.0.w,
                                               height: 1.0.h,
                                               fit: BoxFit.cover,

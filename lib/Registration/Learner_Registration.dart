@@ -41,6 +41,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
   DateTime? birthDate, selectedYear;
   bool isDateSelected = false;
   bool isYearSelected = false;
+  bool isButtonEnabled = false;
   String gender = 'Gender';
   String docType = 'DocType';
   String qualification = '0';
@@ -158,6 +159,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
     setState(() {
       _image = image;
     });
+    isEmpty();
   }
 
   _imageFromGallery() async {
@@ -167,6 +169,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
     setState(() {
       _image = image;
     });
+    isEmpty();
   }
 
   void _showPicker(context) {
@@ -365,7 +368,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
         fileName = file.name;
         _document = XFile(file.path!);
       });
-
+      isEmpty();
       //print(file.name);
       //print(file.bytes);
       //print(file.size);
@@ -383,6 +386,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
       _certiName = doc!.path.split('/scaled_').last.substring(35);
       educationDetailMap[index]['certificate'] = _certificate!.path;
     });
+    isEmpty();
   }
 
   _certificateFromGallery(int index) async {
@@ -395,6 +399,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
       educationDetailMap[index]['certificate'] = _certificate!.path;
       //print(_certiName);
     });
+    isEmpty();
   }
 
   void _showCertificatePicker(context, int index) {
@@ -625,9 +630,18 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
 
                     Column(
                       children: <Widget>[
-                        TextInputWidget(textEditingController: _nameController, lable: 'Name'),
-                        NumberInputWidget(textEditingController: _mobileController, lable: 'Mobile Number'),
-                        TextInputWidget(textEditingController: _emailController, lable: 'Email'),
+                        TextInputWidget(textEditingController: _nameController, lable: 'Name', isReadOnly: true,
+                         onChanged: (val){
+                          isEmpty();
+                        },),
+                        NumberInputWidget(textEditingController: _mobileController, lable: 'Mobile Number', isReadOnly: true,
+                         onChanged: (val){
+                          isEmpty();
+                        },),
+                        TextInputWidget(textEditingController: _emailController, lable: 'Email', isReadOnly: true,
+                         onChanged: (val){
+                          isEmpty();
+                        },),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -677,6 +691,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                       gender = 'O';
                                     }
                                     }
+                                    isEmpty();
                                   },
                                   dropdownButtonStyle: DropdownButtonStyle(
                                     height: 7.0.h,
@@ -775,6 +790,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                             "${birthDate!.day}/${birthDate!.month}/${birthDate!.year}";
                                       } // 08/14/2019
                                     });
+                                    isEmpty();
                                   }
                                 },
                                 child: Container(
@@ -855,6 +871,23 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                   docType = 'DocSelected';
                                 });
                               }
+                              if (value == 1) {
+                                docType = 'A';
+                                //print(docType);
+                              } else if (value == 2) {
+                                docType = 'PN';
+                                //print(docType);
+                              } else if (value == 3) {
+                                docType = 'PAS';
+                                //print(docType);
+                              } else if (value == 4) {
+                                docType = 'VI';
+                                //print(docType);
+                              } else {
+                                docType = 'DL';
+                                //print(docType);
+                              }
+                              isEmpty();
                             },
                             dropdownButtonStyle: DropdownButtonStyle(
                               height: Constants.constHeight,
@@ -973,7 +1006,10 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                           ),
                         ),
 
-                        TextInputWidget(textEditingController: _idNumController, lable: 'Identification Document Number', isIdField: true,),
+                        TextInputWidget(textEditingController: _idNumController, lable: 'Identification Document Number', isIdField: true,
+                        onChanged: (val){
+                          isEmpty();
+                        },),
                         Padding(
                             padding: EdgeInsets.only(
                               left: 3.0.w,
@@ -1084,6 +1120,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                       intrestedCatKey.sort();
                                       //print(intrestedCatKey);
                                     });
+                                    isEmpty();
                                   });
                             }),
 
@@ -1164,6 +1201,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                             educationDetailMap[index]
                                                     ['school_name'] =
                                                 value.toString();
+                                            isEmpty();
                                             // print(
                                             //     'SCHOOL### ${value.toString()}');
                                           },
@@ -1250,7 +1288,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                                                 ['year'] =
                                                             selectedYear!.year
                                                                 .toString();
-
+                                                        isEmpty();
                                                         // print(selectedYear!
                                                         //     .year);
                                                         Navigator.pop(
@@ -1485,6 +1523,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                                 ['qualification'] = 'Others';
                                             //print(qualification);
                                           }
+                                          isEmpty();
                                         },
                                         dropdownButtonStyle:
                                             DropdownButtonStyle(
@@ -1810,6 +1849,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 setState(() {
                                   workExp = '1';
                                 });
+                                isEmpty();
                               }
                             },
                             dropdownButtonStyle: DropdownButtonStyle(
@@ -1924,6 +1964,9 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                               style: new TextStyle(
                                   fontFamily: "Montserrat",
                                   fontSize: 10.0.sp),
+                              onChanged: (val){
+                                isEmpty();
+                              },
                             ),
                           ),
                         ),
@@ -2398,7 +2441,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                 //(Route<dynamic> route) => false);
                               }
                             },
-                            child: ButtonWidget(btnName: 'SUBMIT', isActive: true, fontWeight: FontWeight.w500)
+                            child: ButtonWidget(btnName: 'SUBMIT', isActive: isButtonEnabled, fontWeight: FontWeight.w500)
                             // Container(
                             //   height: 7.0.h,
                             //   width: 90.0.w,
@@ -2429,6 +2472,36 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
             ),
           ),
         ));
+  }
+
+  bool isEmpty() {
+    //setState(() {
+    //   'school_name': 'MSU',
+    //  'year': 'Year',
+    //  'qualification': 'BCA',
+    //  'certificate': 'Upload Certificate/Degree'
+      if ((_image != null) &&
+        (_nameController.text.isNotEmpty) &&
+          (_mobileController.text.isNotEmpty) &&
+          (_emailController.text.isNotEmpty)
+           && (gender != 'Gender')  && (isDateSelected) &&
+           (docType != 'DocType') && (_document != null) && (_idNumController.text.isNotEmpty) &&
+           (address1 != null) && (workExp != '0') && (intrestedCat.length != 0)
+          && (educationDetailMap[0]['school_name'] != 'MSU') && (educationDetailMap[0]['year'] != 'Year')
+           && (qualification != '0') && (educationDetailMap[0]['certificate'] != 'Upload Certificate/Degre')
+          && (_achivementController.text.isNotEmpty) && (selectedSkillList.length != 0) && (selectedHobbiesList.length != 0)
+          ) {
+            print(birthDateInString);
+        setState(() {
+          isButtonEnabled = true;
+        });
+      } else {
+        setState(() {
+          isButtonEnabled = false;
+        });
+      }
+    //});
+    return isButtonEnabled;
   }
 
 //CC user profile pic
@@ -2514,6 +2587,7 @@ uploadFile(file, isPublic: false)
             setState(() {
               selectedSkillList = List.from(list);
             });
+            isEmpty();
           }
           Navigator.pop(context);
         });
@@ -2580,6 +2654,7 @@ uploadFile(file, isPublic: false)
             setState(() {
               selectedHobbiesList = List.from(list);
             });
+            isEmpty();
           }
           Navigator.pop(context);
         });
@@ -2602,7 +2677,7 @@ uploadFile(file, isPublic: false)
       lng = result.latLng!.longitude;
       pinCode = result.postalCode;
     });
-
+    isEmpty();
     //print('CITY::: $city');
     //print('LATLNG::: ${result.latLng}');
     //print('Country::: $pinCode');
