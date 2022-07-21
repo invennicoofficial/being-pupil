@@ -13,7 +13,9 @@ import 'package:being_pupil/Model/Stay_And_Study_Model/Get_All_Property_Model.da
 import 'package:being_pupil/StayAndStudy/Property_Details_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
 import 'package:being_pupil/Widgets/Post_Widget.dart';
+import 'package:being_pupil/Widgets/Shimmer_Widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
@@ -27,6 +29,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
@@ -92,6 +95,12 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
   Map<String, dynamic>? propMap;
   List<dynamic> propDataList = [];
   //List<dynamic>? mapData;
+  List<int> _current = [];
+  final CarouselController _controller = CarouselController();
+  List<List<String>> imageList = [];
+  List<String> list = [];
+  String? _linkMessage;
+  bool _isCreatingLink = false;
 
   @override
   void initState() {
@@ -130,6 +139,13 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
     // Write value
     await storage.write(key: 'firebaseToken', value: token);
   }
+
+  // getAllImagesList(){
+  //   for(int i = 0; i < )
+  //   for (int i = 0; i < imageListMap[index].length; i++) {
+  //    imgList.add(imageListMap[index][i]['file']);
+  //    }
+  // }
 
 //   pushNotificationOnMsg() async{
 //     FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
@@ -242,6 +258,9 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
       isLiked = [];
       imageListMap = {};
       k = 0;
+      list = [];
+      imageList = [];
+      _current = [];
     });
     getAllPostApi(page);
     _refreshController.refreshCompleted();
@@ -375,39 +394,37 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                 itemCount: postIdList != null ? postIdList.length : 0,
                 itemBuilder: (context, index) {
                   return PostWidget(
-                      postId: postIdList[index]!,
-                      profileTap: () {
-                        getUserProfile(userIdList[index]);
-                      },
-                      profileImage: profileImageList[index]!,
-                      profileName: nameList[index]!,
-                      profileSchool:
-                          '${degreeList[index]} | ${schoolList[index]}',
-                      postTime: dateList[index]!.substring(0, 11),
-                      reportTap: () async {
-                        var result = await pushNewScreen(context,
-                            withNavBar: false,
-                            screen: ReportFeed(
-                              postId: postIdList[index],
-                            ),
-                            pageTransitionAnimation:
-                                PageTransitionAnimation.cupertino);
-                        if (result == true) {
-                          _onRefresh();
-                        }
-                      },
-                      description: descriptionList[index]!,
-                      imageListView: imageListMap[index].length != 0
-                          ? Container(
-                              height: 25.0.h,
-                              width: 100.0.w,
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                physics: BouncingScrollPhysics(),
-                                scrollDirection: Axis.horizontal,
-                                //itemExtent: MediaQuery.of(context).size.width / imageListMap[index].length,
+                    isCommentScreen: false,
+                    postId: postIdList[index]!,
+                    profileTap: () {
+                      getUserProfile(userIdList[index]);
+                    },
+                    profileImage: profileImageList[index]!,
+                    profileName: nameList[index]!,
+                    profileSchool:
+                        '${degreeList[index]} | ${schoolList[index]}',
+                    postTime: dateList[index]!.substring(0, 11),
+                    reportTap: () async {
+                      var result = await pushNewScreen(context,
+                          withNavBar: false,
+                          screen: ReportFeed(
+                            postId: postIdList[index],
+                          ),
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.cupertino);
+                      if (result == true) {
+                        _onRefresh();
+                      }
+                    },
+                    description: descriptionList[index]!,
+                    imageListView: imageListMap[index].length != 0
+                        ? Container(
+                            height: 25.0.h,
+                            width: 100.0.w,
+                            child: CarouselSlider.builder(
+                                carouselController: _controller,
                                 itemCount: imageListMap[index].length,
-                                itemBuilder: (context, imageIndex) {
+                                itemBuilder: (context, imageIndex, rindex) {
                                   return GestureDetector(
                                       onTap: () {
                                         List<String> imgList = [];
@@ -427,8 +444,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                                 PageTransitionAnimation
                                                     .cupertino);
                                       },
-                                      child: 
-                                      CachedNetworkImage(
+                                      child: CachedNetworkImage(
                                         imageUrl: imageListMap[index]
                                             [imageIndex]['file'],
                                         errorWidget: (context, url, error) =>
@@ -448,606 +464,122 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                           ),
                                         ),
                                         placeholder: (context, url) =>
-                                            Container(
-                                          child: Center(
-                                            child: CircularProgressIndicator(
-                                              backgroundColor:
-                                                  Constants.bgColor,
-                                            ),
-                                          ),
-                                        ),
-                                      ));
+                                            PhotoLoadingWidget()
+                                      )
+                                      );
                                 },
-                              ),
-                            )
-                          : Container(),
-                      mutualLike:
-                          'Samay, Tarun & 324 other people are liked this post.', //likesList[index].toString(),
-                      likeTap: () {
-                        setState(() {
-                          isLiked[index] = !isLiked[index]!;
-                        });
-                        like.likePostApi(postIdList[index], authToken!);
-                        setState(() {
-                          isLiked[index] == true
-                              ? likesList[index] = likesList[index]! + 1
-                              : likesList[index] = likesList[index]! - 1;
-                        });
-                      },
-                      isLiked: isLiked[index]!,
-                      totalLike: likesList[index].toString(),
-                      commentTap: () async {
-                        resultComment =
-                            await Navigator.of(context, rootNavigator: true)
-                                .push(MaterialPageRoute(
-                                    builder: (context) => CommentScreen(
-                                          postId: postIdList[index],
-                                          userId: userIdList[index],
-                                          name: nameList[index],
-                                          profileImage: profileImageList[index],
-                                          degree: degreeList[index],
-                                          schoolName: schoolList[index],
-                                          date: dateList[index],
-                                          description: descriptionList[index],
-                                          like: likesList[index],
-                                          comment: totalCommentsList[index],
-                                          isLiked: isLiked[index],
-                                          isSaved: isSaved[index],
-                                          imageListMap: imageListMap,
-                                          index: index,
-                                        )));
+                                options: CarouselOptions(
+                                    autoPlay: false,
+                                    enableInfiniteScroll: false,
+                                    viewportFraction: 1.0,
+                                    onPageChanged: (cindex, reason) {
+                                      setState(() {
+                                        _current[index] = cindex;
+                                      });
+                                    }
+                                    )))
+                        : Container(),
+                    indicator: imageListMap[index].length != 0
+                        ? Center(
+                            child: imageListMap[index].length != 1
+                                ? SizedBox(
+                                    height: 18,
+                                    child: ListView.builder(
+                                        itemCount: imageListMap[index].length,
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, iIndex) {
+                                          return Container(
+                                            width: 15.0,
+                                            height: 15.0,
+                                            margin: EdgeInsets.symmetric(vertical: 5.0),
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: (Theme.of(context)
+                                                                .brightness ==
+                                                            Brightness.dark
+                                                        ? Colors.white
+                                                        : Colors.black)
+                                                    .withOpacity(
+                                                        _current[index] == iIndex
+                                                            ? 0.9
+                                                            : 0.3)),
+                                          );
+                                        }),
+                                  )
+                                : SizedBox(),
+                          )
+                        : Row(),
+                    mutualLike:
+                        'Samay, Tarun & 324 other people are liked this post.', //likesList[index].toString(),
+                    likeTap: () {
+                      setState(() {
+                        isLiked[index] = !isLiked[index]!;
+                      });
+                      like.likePostApi(postIdList[index], authToken!);
+                      setState(() {
+                        isLiked[index] == true
+                            ? likesList[index] = likesList[index]! + 1
+                            : likesList[index] = likesList[index]! - 1;
+                      });
+                    },
+                    isLiked: isLiked[index]!,
+                    totalLike: likesList[index].toString(),
+                    commentTap: () async {
+                      resultComment =
+                          await Navigator.of(context, rootNavigator: true)
+                              .push(MaterialPageRoute(
+                                  builder: (context) => CommentScreen(
+                                        postId: postIdList[index],
+                                        userId: userIdList[index],
+                                        name: nameList[index],
+                                        profileImage: profileImageList[index],
+                                        degree: degreeList[index],
+                                        schoolName: schoolList[index],
+                                        date: dateList[index],
+                                        description: descriptionList[index],
+                                        like: likesList[index],
+                                        comment: totalCommentsList[index],
+                                        isLiked: isLiked[index],
+                                        isSaved: isSaved[index],
+                                        imageListMap: imageListMap,
+                                        index: index,
+                                      )));
 
-                        setState(() {});
+                      setState(() {});
 
-                        totalCommentsList[resultComment['index']] =
-                            resultComment['count'];
-                        likesList[resultComment['index']] =
-                            resultComment['likeCount'];
-                        isSaved[resultComment['index']] =
-                            resultComment['isSaved'];
-                        isLiked[resultComment['index']] =
-                            resultComment['isLiked'];
-                        setState(() {});
-                      },
-                      totalComments: totalCommentsList[index].toString(),
-                      saveTap: () {
-                        setState(() {
-                          isSaved[index] = !isSaved[index]!;
-                        });
-                        savePostApi(postIdList[index]);
-                      },
-                      isSaved: isSaved[index]!,
-                      shareTap: () {},
-                      );
-                  // Column(
-                  //   children: <Widget>[
-                  //     //main horizontal padding
-                  //     Padding(
-                  //       padding: EdgeInsets.symmetric(horizontal: 5.0.w),
-                  //       //Container for one post
-                  //       child: Container(
-                  //         // height: index == 0 ? 27.5.h : 57.5.h,
-                  //         // width: 100.0.w,
-                  //         //color: Colors.grey[300],
-                  //         //column for post content
-                  //         child: Column(
-                  //           children: <Widget>[
-                  //             SizedBox(
-                  //               height: 1.0.h,
-                  //             ),
-                  //             //ListTile for educator details
-                  //             ListTile(
-                  //               contentPadding: EdgeInsets.all(0.0),
-                  //               //leading:
-                  //               title: GestureDetector(
-                  //                 onTap: (){
-                  //                   getUserProfile(userIdList[index]);
-                  //                 },
-                  //                 child: Row(
-                  //                   mainAxisAlignment: MainAxisAlignment.start,
-                  //                   children: [
-                  //                     Padding(
-                  //                       padding: EdgeInsets.only(top: 5.0),
-                  //                       child: ClipRRect(
-                  //                         borderRadius: BorderRadius.circular(50),
-                  //                         child: CachedNetworkImage(
-                  //                           imageUrl: profileImageList[index]!,
-                  //                           width: 35.0,
-                  //                           height: 35.0,
-                  //                           fit: BoxFit.cover,
-                  //                         ),
-                  //                       ),
-                  //                     ),
-                  //                     SizedBox(
-                  //                       width: 2.0.w,
-                  //                     ),
-                  //                     Padding(
-                  //                       padding: EdgeInsets.only(top: 1.0.h),
-                  //                       child: Column(
-                  //                         crossAxisAlignment:
-                  //                             CrossAxisAlignment.start,
-                  //                         children: [
-                  //                           Text(
-                  //                             nameList[index]!,
-                  //                             style: TextStyle(
-                  //                                 fontSize: 9.0.sp,
-                  //                                 color: Constants.bgColor,
-                  //                                 fontFamily: 'Montserrat',
-                  //                                 fontWeight: FontWeight.w700),
-                  //                           ),
-                  //                           SizedBox(height: 1.0),
-                  //                           Text(
-                  //                             '${degreeList[index]} | ${schoolList[index]}',
-                  //                             style: TextStyle(
-                  //                                 fontSize: 6.5.sp,
-                  //                                 color: Constants.bgColor,
-                  //                                 fontFamily: 'Montserrat',
-                  //                                 fontWeight: FontWeight.w400),
-                  //                           ),
-                  //                           SizedBox(height: 1.0),
-                  //                           Text(
-                  //                             dateList[index]!.substring(0, 11),
-                  //                             style: TextStyle(
-                  //                                 fontSize: 6.5.sp,
-                  //                                 color: Constants.bpOnBoardSubtitleStyle,
-                  //                                 fontFamily: 'Montserrat',
-                  //                                 fontWeight: FontWeight.w400),
-                  //                           ),
-                  //                         ],
-                  //                       ),
-                  //                     ),
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //               trailing: IconButton(
-                  //                    icon: SvgPicture.asset('assets/icons/reportSvg.svg'),
-                  //                   //  Image.asset('assets/icons/issueIcon.png',
-                  //                   //   height: 18.0,
-                  //                   //   width: 18.0,),
-                  //                   onPressed: () async{
-                  //                     var result = await
-                  //                     pushNewScreen(context,
-                  //                         withNavBar: false,
-                  //                         screen: ReportFeed(
-                  //                           postId: postIdList[index],
-                  //                         ),
-                  //                         pageTransitionAnimation:
-                  //                             PageTransitionAnimation
-                  //                                 .cupertino);
-                  //                       if(result == true){
-                  //                         _onRefresh();
-                  //                       }
-                  //                   }),
-                  //               // GestureDetector(
-                  //               //   onTap: () {
-                  //               //     pushNewScreen(context,
-                  //               //         withNavBar: false,
-                  //               //         screen: ReportFeed(
-                  //               //           postId: postIdList[index],
-                  //               //         ),
-                  //               //         pageTransitionAnimation:
-                  //               //             PageTransitionAnimation.cupertino);
-                  //               //   },
-                  //               //   child: Padding(
-                  //               //     padding: const EdgeInsets.only(right: 10.0),
-                  //               //     child: Container(
-                  //               //         height: 20.0,
-                  //               //         width: 20.0,
-                  //               //         //color: Colors.grey,
-                  //               //         child: Icon(Icons.error_outline_outlined, color: Constants.bpOnBoardSubtitleStyle, size: 20.0,)
-                  //               //         //Image.asset('assets/icons/issueIcon.png',),
-                  //               //         // size: 25.0,
-                  //               //         // color: Constants.bgColor,
-                  //               //             //Icons.report_gmailerrorred_outlined
-                  //               //             ),
-                  //               //   )),
-                  //               //),
-                  //             ),
-                  //             //Post descriptionText
-                  //             Padding(
-                  //               padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 2),
-                  //               child: Container(
-                  //                 width: 100.0.w,
-                  //                 child: Text(descriptionList[index]!,
-                  //                     style: TextStyle(
-                  //                         fontSize: 12.0.sp,
-                  //                         color: Constants.bpOnBoardSubtitleStyle,
-                  //                         fontFamily: 'Montserrat',
-                  //                         height: 1.5,
-                  //                         fontWeight: FontWeight.w400,),
-                  //                     // textAlign: TextAlign.justify
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //             SizedBox(
-                  //               height: 1.0.h,
-                  //             ),
-                  //             // Container for image or video
-                  //             imageListMap[index].length == 0
-                  //                 ? Container()
-                  //                 : Container(
-                  //                     height: 25.0.h,
-                  //                     width: 100.0.w,
-                  //                     child: ListView.builder(
-                  //                       shrinkWrap: true,
-                  //                       physics: BouncingScrollPhysics(),
-                  //                       scrollDirection: Axis.horizontal,
-                  //                       //itemExtent: MediaQuery.of(context).size.width / imageListMap[index].length,
-                  //                       itemCount: imageListMap[index].length,
-                  //                       itemBuilder: (context, imageIndex) {
-                  //                         return imageListMap[index].length == 1
-                  //                         ? Padding(
-                  //                           padding: EdgeInsets.symmetric(horizontal: 0.0.w),
-                  //                           child: GestureDetector(
-                  //                             onTap: () {
-                  //                               List<String> imgList = [];
-                  //                               for(int i = 0; i<imageListMap[index].length; i++) {
-                  //                                 imgList.add(imageListMap[index][i]['file']);
-                  //                               }
-                  //                               pushNewScreen(context,
-                  //                                   withNavBar: false,
-                  //                                   screen: FullScreenSlider(
-                  //                                     imageList: imgList,
-                  //                                     index: imageIndex,
-                  //                                     name: nameList[index]!
-                  //                                   ),
-                  //                                   pageTransitionAnimation:
-                  //                                   PageTransitionAnimation
-                  //                                       .cupertino);
-                  //                             },
-                  //                             child: CachedNetworkImage(
-                  //     imageUrl: imageListMap[index][imageIndex]['file'],
-                  //     errorWidget: (context, url, error) => Image.asset('assets/images/404.gif', fit: BoxFit.fitHeight,
-                  //     width: 100.0.w),
-                  //     imageBuilder: (context, imageProvider) => Container(
-                  //        height: 100,
-                  //        width: 100.0.w,
-                  //       decoration: BoxDecoration(
-                  //         image: DecorationImage(image: imageProvider, fit: BoxFit.fitWidth,),
-                  //       ),
-                  //     ),
-                  //     placeholder: (context, url) => Container(
-                  //       child: Center(
-                  //         child: CircularProgressIndicator(
-                  //           backgroundColor: Constants.bgColor,
-                  //         ),
-                  //       ),
-                  //     ),
-
-                  //   )
-                  //                             // CachedNetworkImage(imageUrl: imageListMap[index][imageIndex]['file'],
-                  //                             //   height: 100,
-                  //                             //   width: 250,
-                  //                             //   fit: BoxFit.contain,
-                  //                             //   )
-                  //                             // Image.network(
-                  //                             //   imageListMap[index][imageIndex]['file'],
-                  //                             //   height: 100,
-                  //                             //   width: 250,
-                  //                             //   fit: BoxFit.contain,
-                  //                             //),
-                  //                           ),
-                  //                         )
-                  //                         : Padding(
-                  //                           padding: const EdgeInsets.only(right: 8.0),
-                  //                           child: GestureDetector(
-                  //                             onTap: () {
-                  //                               List<String> imgList = [];
-                  //                               for(int i = 0; i<imageListMap[index].length; i++) {
-                  //                                 imgList.add(imageListMap[index][i]['file']);
-                  //                               }
-                  //                               pushNewScreen(context,
-                  //                                   withNavBar: false,
-                  //                                   screen: FullScreenSlider(
-                  //                                     imageList: imgList,
-                  //                                     index: imageIndex,
-                  //                                     name: nameList[index]!
-                  //                                   ),
-                  //                                   pageTransitionAnimation:
-                  //                                   PageTransitionAnimation
-                  //                                       .cupertino);
-                  //                             },
-                  //                             child: CachedNetworkImage(
-                  //                               imageUrl: imageListMap[index][imageIndex]['file'],
-                  //                               height: 100,
-                  //                               width: 250,
-                  //                               fit: BoxFit.cover,
-                  //                             ),
-                  //                           ),
-                  //                         );
-                  //                       },
-                  //                     ),
-                  //                   ),
-
-                  //             // //Row for Liked, commented, shared
-                  //             // Padding(
-                  //             //   padding: EdgeInsets.only(top: 1.0.h),
-                  //             //   child: Row(
-                  //             //     mainAxisAlignment:
-                  //             //         MainAxisAlignment.spaceBetween,
-                  //             //     children: <Widget>[
-                  //             //       Row(
-                  //             //         children: [
-                  //             //           // Icon(
-                  //             //           //   Icons.thumb_up_alt_rounded,
-                  //             //           //   color: Constants.bgColor,
-                  //             //           // ),
-                  //             //           ImageIcon(
-                  //             //             AssetImage('assets/icons/likeNew.png'),
-                  //             //             size: 25.0,
-                  //             //             color: Constants.bgColor,
-                  //             //           ),
-                  //             //           SizedBox(
-                  //             //             width: 1.0.w,
-                  //             //           ),
-                  //             //           Container(
-                  //             //             padding: EdgeInsets.only(top: 1.0.h),
-                  //             //             child: Text(
-                  //             //               "${likesList[index]} Likes",
-                  //             //               style: TextStyle(
-                  //             //                   fontSize: 6.5.sp,
-                  //             //                   color: Constants
-                  //             //                       .bpOnBoardSubtitleStyle,
-                  //             //                   fontFamily: 'Montserrat',
-                  //             //                   fontWeight: FontWeight.w400),
-                  //             //             ),
-                  //             //           ),
-                  //             //         ],
-                  //             //       ),
-                  //             //       Container(
-                  //             //         padding: EdgeInsets.only(top: 1.0.h),
-                  //             //         child: Text(
-                  //             //           "${totalCommentsList[index]} Comments",
-                  //             //           style: TextStyle(
-                  //             //               fontSize: 6.5.sp,
-                  //             //               color: Constants
-                  //             //                   .bpOnBoardSubtitleStyle,
-                  //             //               fontFamily: 'Montserrat',
-                  //             //               fontWeight: FontWeight.w400),
-                  //             //         ),
-                  //             //       )
-                  //             //     ],
-                  //             //   ),
-                  //             // ),
-                  //             //divider
-                  //             Divider(
-                  //               height: 1.0.h,
-                  //               color: Constants.bpOnBoardSubtitleStyle
-                  //                   .withOpacity(0.5),
-                  //               thickness: 1.0,
-                  //             ),
-
-                  //             //Row for Like comment and Share
-                  //             Padding(
-                  //               padding: EdgeInsets.only(top: 0.3.h, bottom: 0.3.h),
-                  //               child: Row(
-                  //                 mainAxisAlignment:
-                  //                     MainAxisAlignment.spaceBetween,
-                  //                 children: <Widget>[
-                  //                   GestureDetector(
-                  //                     onTap: () {
-                  //                       setState(() {
-                  //                         isLiked[index] = !isLiked[index]!;
-                  //                       });
-                  //                       like.likePostApi(
-                  //                           postIdList[index], authToken!);
-                  //                       setState(() {
-                  //                         isLiked[index] == true
-                  //                             ? likesList[index] = likesList[index]! + 1
-                  //                             : likesList[index] = likesList[index]! - 1;
-                  //                       });
-                  //                     },
-                  //                     child: Container(
-                  //                       child: Row(
-                  //                         mainAxisAlignment:
-                  //                             MainAxisAlignment.start,
-                  //                         children: [
-                  //                           ImageIcon(
-                  //                             isLiked[index]!
-                  //                                 ? AssetImage('assets/icons/likeNew.png')
-                  //                                 : AssetImage('assets/icons/likeThumb.png'),
-                  //                             color: isLiked[index]!
-                  //                                 ? Constants.selectedIcon
-                  //                                 : Constants.bpOnBoardSubtitleStyle,
-                  //                             size: 25.0,
-                  //                           ),
-                  //                           SizedBox(
-                  //                             width: 2.0.w,
-                  //                           ),
-                  //                           Container(
-                  //                             padding: EdgeInsets.only(top: 1.0.h),
-                  //                             child: Text(
-                  //                               "${likesList[index]} Likes",
-                  //                               style: TextStyle(
-                  //                                   fontSize: 6.5.sp,
-                  //                                   color: Constants
-                  //                                       .bpOnBoardSubtitleStyle,
-                  //                                   fontFamily: 'Montserrat',
-                  //                                   fontWeight: FontWeight.w400),
-                  //                             ),
-                  //                           ),
-                  //                           // Container(
-                  //                           //   padding:
-                  //                           //       EdgeInsets.only(top: 1.0.h),
-                  //                           //   child: Text(
-                  //                           //     "Like",
-                  //                           //     style: TextStyle(
-                  //                           //         fontSize: 6.5.sp,
-                  //                           //         color: Constants
-                  //                           //             .bpOnBoardSubtitleStyle,
-                  //                           //         fontFamily: 'Montserrat',
-                  //                           //         fontWeight: FontWeight.w400),
-                  //                           //   ),
-                  //                           // ),
-                  //                         ],
-                  //                       ),
-                  //                     ),
-                  //                   ),
-                  //                   GestureDetector(
-                  //                     onTap: () async{
-                  //                       //commentResult = await
-                  //                         resultComment = await
-                  //                         Navigator.of(context, rootNavigator: true).push(
-                  //                           MaterialPageRoute(builder: (context)=> CommentScreen(
-                  //                             postId: postIdList[index],
-                  //                             userId: userIdList[index],
-                  //                             name: nameList[index],
-                  //                             profileImage: profileImageList[index],
-                  //                             degree: degreeList[index],
-                  //                             schoolName: schoolList[index],
-                  //                             date: dateList[index],
-                  //                             description: descriptionList[index],
-                  //                             like: likesList[index],
-                  //                             comment: totalCommentsList[index],
-                  //                             isLiked: isLiked[index],
-                  //                             isSaved: isSaved[index],
-                  //                             imageListMap: imageListMap,
-                  //                             index: index,
-                  //                           ))
-                  //                         );
-
-                  //                         setState(() {});
-
-                  //                         totalCommentsList[resultComment['index']] = resultComment['count'];
-                  //                         likesList[resultComment['index']] = resultComment['likeCount'];
-                  //                         isSaved[resultComment['index']] = resultComment['isSaved'];
-                  //                         isLiked[resultComment['index']] = resultComment['isLiked'];
-                  //                         // print('TC###Comm'+totalCommentsList[resultComment['index']].toString());
-                  //                         // print('TC###Like'+likesList[resultComment['index']].toString());
-                  //                         // print('TC###IsSa'+isSaved[resultComment['index']].toString());
-                  //                         // print('TC###IsLa'+isLiked[resultComment['index']].toString());
-                  //                       setState(() {});
-                  //                       // pushNewScreen(context,
-                  //                       //     withNavBar: false,
-                  //                       //     screen: CommentScreen(
-                  //                       //       postId: postIdList[index],
-                  //                       //       userId: userIdList[index],
-                  //                       //       name: nameList[index],
-                  //                       //       profileImage: profileImageList[index],
-                  //                       //       degree: degreeList[index],
-                  //                       //       schoolName: schoolList[index],
-                  //                       //       date: dateList[index],
-                  //                       //       description: descriptionList[index],
-                  //                       //       like: likesList[index],
-                  //                       //       comment: totalCommentsList[index],
-                  //                       //       isLiked: isLiked[index],
-                  //                       //       isSaved: isSaved[index],
-                  //                       //       imageListMap: imageListMap,
-                  //                       //       index: index,
-                  //                       //     ),
-                  //                       //     pageTransitionAnimation:
-                  //                       //         PageTransitionAnimation
-                  //                       //             .cupertino
-                  //                       //             );
-                  //                     },
-                  //                     child: Container(
-                  //                       child: Row(
-                  //                         mainAxisAlignment:
-                  //                             MainAxisAlignment.start,
-                  //                         children: [
-                  //                           ImageIcon(
-                  //                             AssetImage('assets/icons/commentNew.png'),
-                  //                             size: 21.0,
-                  //                             color: Constants.bpOnBoardSubtitleStyle,
-                  //                           ),
-                  //                           // Icon(
-                  //                           //   Icons.comment_outlined,
-                  //                           //   color: Constants
-                  //                           //       .bpOnBoardSubtitleStyle,
-                  //                           //   size: 30.0,
-                  //                           // ),
-                  //                           SizedBox(
-                  //                             width: 2.0.w,
-                  //                           ),
-                  //                           Container(
-                  //                             padding: EdgeInsets.only(top: 1.0.h),
-                  //                             child: Text(
-                  //                               // resultComment['index'] == index
-                  //                               // ? "${resultComment['count']} Comments"
-                  //                               // :
-                  //                               "${totalCommentsList[index]} Comments",
-                  //                               style: TextStyle(
-                  //                                   fontSize: 6.5.sp,
-                  //                                   color: Constants
-                  //                                       .bpOnBoardSubtitleStyle,
-                  //                                   fontFamily: 'Montserrat',
-                  //                                   fontWeight: FontWeight.w400),
-                  //                             ),
-                  //                           )
-                  //                           // Container(
-                  //                           //   padding:
-                  //                           //       EdgeInsets.only(top: 1.0.h),
-                  //                           //   child: Text(
-                  //                           //     "Comment",
-                  //                           //     style: TextStyle(
-                  //                           //         fontSize: 6.5.sp,
-                  //                           //         color: Constants
-                  //                           //             .bpOnBoardSubtitleStyle,
-                  //                           //         fontFamily: 'Montserrat',
-                  //                           //         fontWeight: FontWeight.w400),
-                  //                           //   ),
-                  //                           // ),
-                  //                         ],
-                  //                       ),
-                  //                     ),
-                  //                   ),
-                  //                   GestureDetector(
-                  //                     onTap: () {
-                  //                       setState(() {
-                  //                         isSaved[index] = !isSaved[index]!;
-                  //                       });
-                  //                       savePostApi(postIdList[index]);
-                  //                     },
-                  //                     child: Container(
-                  //                       child: Row(
-                  //                         mainAxisAlignment:
-                  //                             MainAxisAlignment.start,
-                  //                         children: [
-                  //                           ImageIcon(
-                  //                             isSaved[index]!
-                  //                                 ? AssetImage('assets/icons/saveGreen.png')
-                  //                                 : AssetImage('assets/icons/saveNew.png'),
-                  //                             color: isSaved[index]!
-                  //                                 ? Constants.selectedIcon
-                  //                                 : Constants.bpOnBoardSubtitleStyle,
-                  //                             size: 21.0,
-                  //                           ),
-                  //                           SizedBox(
-                  //                             width: 1.0.w,
-                  //                           ),
-                  //                           Container(
-                  //                             padding:
-                  //                                 EdgeInsets.only(top: 1.0.h),
-                  //                             child: Text(
-                  //                               "Save",
-                  //                               style: TextStyle(
-                  //                                   fontSize: 6.5.sp,
-                  //                                   color: Constants
-                  //                                       .bpOnBoardSubtitleStyle,
-                  //                                   fontFamily: 'Montserrat',
-                  //                                   fontWeight: FontWeight.w400),
-                  //                             ),
-                  //                           ),
-                  //                         ],
-                  //                       ),
-                  //                     ),
-                  //                   ),
-                  //                 ],
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     )
-                  //   ],
-                  // );
+                      totalCommentsList[resultComment['index']] =
+                          resultComment['count'];
+                      likesList[resultComment['index']] =
+                          resultComment['likeCount'];
+                      isSaved[resultComment['index']] =
+                          resultComment['isSaved'];
+                      isLiked[resultComment['index']] =
+                          resultComment['isLiked'];
+                      setState(() {});
+                    },
+                    totalComments: totalCommentsList[index].toString(),
+                    saveTap: () {
+                      setState(() {
+                        isSaved[index] = !isSaved[index]!;
+                      });
+                      savePostApi(postIdList[index]);
+                    },
+                    isSaved: isSaved[index]!,
+                    shareTap: !_isCreatingLink ? (){
+                      print(postIdList[index].toString());
+                      _createDynamicLink(true, postIdList[index].toString(), index);
+                    } : (){},
+                  );
                 },
                 separatorBuilder: (context, index) {
                   return Divider(
-                    height: 1.0,
-                    thickness: 0.5,
-                    color: Color(0xFFBDBDBD),
-                  );
+                      //height: 2.0.h,
+                      thickness: 5.0,
+                      color: Color(0xFFD3D9E0),
+                    );
                 },
               ),
             ),
@@ -1105,6 +637,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
           //print("HELLO");
 
           for (int i = 0; i < map!['data'].length; i++) {
+            _current.add(0);
             nameList.add(map!['data'][i]['name']);
             profileImageList.add(map!['data'][i]['profile_image']);
             degreeList.add(map!['data'][i]['last_degree']);
@@ -1121,9 +654,25 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
               imageListMap.putIfAbsent(k, () => map!['data'][i]['post_media']);
             }
             k++;
-            //print(k);
+            // print('IMG:::'+imageList.toString());
           }
-          //print(imageListMap);
+          //  for (int i = 0; i < imageListMap[index].length; i++) {
+          //   for(int j = 0; j < imageListMap[i].length; j++) {
+          //     list.add(imageListMap[i][j]['file']);
+          //   }
+          //   imageList.add(list);
+          //   list = [];
+          //   }
+          // for (int i = 0; i < imageListMap.length; i++) {
+          //   for (int p = 0; p < imageListMap[i].length; p++) {
+          //     print('MAP+++++' + imageListMap.toString());
+          //     list.add(imageListMap[i][p]['file']);
+          //   }
+          //   imageList.add(list);
+          //   print(imageList);
+          //   list = [];
+          // }
+          // print('LLLLL:::' + imageList.toString());
           isLoading = false;
           isPostLoading = false;
           setState(() {});
@@ -1483,4 +1032,46 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
     }
     //return propertyDetails;
   }
+
+  //create dynamic link
+Future<void> _createDynamicLink(bool short, String id, int index) async {
+    setState(() {
+      _isCreatingLink = true;
+    });
+//print('create DL::: ${widget.propData![widget.index]['featured_image'][0].toString()}');
+    final DynamicLinkParameters parameters = DynamicLinkParameters(
+      uriPrefix: 'https://bepshare.page.link',
+      link: Uri.parse("https://beingpupil.com"),
+      androidParameters: const AndroidParameters(
+        packageName: 'com.beingPupil',
+        minimumVersion: 0,
+      ),
+      iosParameters: const IOSParameters(
+        bundleId: 'com.beingpupil',
+        minimumVersion: '0',
+      ),
+      socialMetaTagParameters: SocialMetaTagParameters(
+        title: nameList[index],
+        description: descriptionList[index].toString(),
+        imageUrl: imageListMap[index].isEmpty ? Uri.parse('') :
+        Uri.parse(imageListMap[index][0]['file'].toString()),
+      )
+    );
+    Uri url;
+    if (short) {
+      final ShortDynamicLink shortLink =
+          await dynamicLinks.buildShortLink(parameters);
+       url = shortLink.shortUrl;
+    } else {
+      url = await dynamicLinks.buildLink(parameters);
+    }
+    setState(() {
+      _linkMessage = url.toString();
+      _isCreatingLink = false;
+    });
+
+    Share.share(
+      'Check out this post on Being Pupil App! $_linkMessage',
+       subject: 'Download Being Pupil App!');
+}
 }

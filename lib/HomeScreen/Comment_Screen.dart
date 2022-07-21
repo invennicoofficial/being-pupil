@@ -6,7 +6,10 @@ import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:being_pupil/StudyBuddy/Educator_ProfileView_Screen.dart';
 import 'package:being_pupil/StudyBuddy/Learner_ProfileView_Screen.dart';
 import 'package:being_pupil/Widgets/Bottom_Nav_Bar.dart';
+import 'package:being_pupil/Widgets/Post_Widget.dart';
+import 'package:being_pupil/Widgets/Shimmer_Widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -78,6 +81,8 @@ class _CommentScreenState extends State<CommentScreen> {
   Map<String, dynamic>? saveMap;
   int? commentCount, likeCount;
   Map<String, dynamic>? resultMap;
+  int _current = 0;
+  final CarouselController _controller = CarouselController();
 
   @override
   void initState() {
@@ -104,10 +109,13 @@ class _CommentScreenState extends State<CommentScreen> {
     setState(() {
       commentCount = widget.comment;
       likeCount = widget.like;
-      resultMap = {"count": widget.comment, "isSaved": widget.isSaved,
-      "likeCount": widget.like, 
-      "index": widget.index,
-      "isLiked": widget.isLiked};
+      resultMap = {
+        "count": widget.comment,
+        "isSaved": widget.isSaved,
+        "likeCount": widget.like,
+        "index": widget.index,
+        "isLiked": widget.isLiked
+      };
     });
   }
 
@@ -208,305 +216,487 @@ class _CommentScreenState extends State<CommentScreen> {
                       //mainAxisSize: MainAxisSize.min,
                       shrinkWrap: true,
                       children: <Widget>[
-                        //main horizontal paddingF
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5.0.w),
-                          //Container for one post
-                          child: Container(
-                            width: 100.0.w,
-                            //color: Colors.grey[300],
-                            //column for post content
-                            child: Column(
-                              children: <Widget>[
-                                SizedBox(
-                                  height: 1.0.h,
+                        PostWidget(
+                          isCommentScreen: true,
+                          postId: widget.postId!,
+                          profileTap: () {
+                            getUserProfile(widget.userId!);
+                          },
+                          profileImage: widget.profileImage!,
+                          profileName: widget.name!,
+                          profileSchool:
+                              '${widget.degree} | ${widget.schoolName}',
+                          postTime: widget.date!.substring(0, 11),
+                          reportTap: () async {
+                            var result = await pushNewScreen(context,
+                                withNavBar: false,
+                                screen: ReportFeed(
+                                  postId: widget.postId!,
                                 ),
-                                //ListTile for educator details
-                                ListTile(
-                                  contentPadding: EdgeInsets.all(0.0),
-                                  //leading:
-                                  title: GestureDetector(
-                                     onTap: (){
-                                          getUserProfile(widget.userId!);
-                                        },
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 5.0),
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(50),
-                                            child:CachedNetworkImage(
-                                                imageUrl: widget.profileImage!,
-                                              width: 35.0,
-                                              height: 35.0,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 2.0.w,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(top: 1.0.h),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                widget.name!,
-                                                style: TextStyle(
-                                                    fontSize: 9.0.sp,
-                                                    color: Constants.bgColor,
-                                                    fontFamily: 'Montserrat',
-                                                    fontWeight: FontWeight.w700),
-                                              ),
-                                              SizedBox(height: 1.0,),
-                                              Text(
-                                                '${widget.degree} | ${widget.schoolName}',
-                                                style: TextStyle(
-                                                    fontSize: 6.5.sp,
-                                                    color: Constants.bgColor,
-                                                    fontFamily: 'Montserrat',
-                                                    fontWeight: FontWeight.w400),
-                                              ),
-                                              SizedBox(height: 1.0,),
-                                              Text(
-                                                widget.date!,
-                                                style: TextStyle(
-                                                    fontSize: 6.5.sp,
-                                                    color: Constants.bgColor,
-                                                    fontFamily: 'Montserrat',
-                                                    fontWeight: FontWeight.w400),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  trailing: IconButton(
-                                       icon: SvgPicture.asset('assets/icons/reportSvg.svg'),
-                                      //  Image.asset('assets/icons/issueIcon.png',
-                                      //   height: 18.0,
-                                      //   width: 18.0,),
-                                      onPressed: () async{
-                                        var result = await pushNewScreen(context,
-                                            withNavBar: false,
-                                            screen: ReportFeed(
-                                              postId: widget.postId,
-                                            ),
-                                            pageTransitionAnimation:
-                                                PageTransitionAnimation
-                                                    .cupertino);
-
-                                          if(result == true){
-                                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: 
-                                            (context) => bottomNavBar(0)), (route) => false);
-                                        }
-                                      }),
-                                  //ImageIcon(AssetImage('assets/icons/report.png'),)
-                                ),
-                                //Post descriptionText
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 2.0),
-                                  child: Container(
-                                    width: 100.0.w,
-                                    child: Text(widget.description!,
-                                      style: TextStyle(
-                                        fontSize: 9.0.sp,
-                                        color: Constants.bpOnBoardSubtitleStyle,
-                                        fontFamily: 'Montserrat',
-                                        height: 1.5,
-                                        fontWeight: FontWeight.w400,),
-                                      // textAlign: TextAlign.justify
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 1.0.h,
-                                ),
-                                // Container for image or video
-                                widget.imageListMap![widget.index!].length == 0
-                                    ? Container()
-                                    : Container(
-                                        height: 25.0.h,
-                                        width: 100.0.w,
-                                        child: ListView.builder(
-                                          shrinkWrap: true,
-                                          physics: BouncingScrollPhysics(),
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: widget
-                                              .imageListMap![widget.index!].length,
-                                          itemBuilder: (context, imageIndex) {
-                                            return GestureDetector(
-                                              onTap: () {
-                                                List<String> imgList = [];
-                                                for(int i = 0; i<widget
-                                                    .imageListMap![widget.index!].length; i++) {
-                                                  imgList.add(widget
-                                                      .imageListMap![widget.index!][i]['file']);
-                                                }
-                                                pushNewScreen(context,
-                                                    withNavBar: false,
-                                                    screen: FullScreenSlider(
-                                                        imageList: imgList,
-                                                        index: imageIndex,
-                                                        name: widget.name!
+                                pageTransitionAnimation:
+                                    PageTransitionAnimation.cupertino);
+                            if (result == true) {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => bottomNavBar(0)),
+                                  (route) => false);
+                            }
+                          },
+                          description: widget.description!,
+                          imageListView: widget
+                                      .imageListMap![widget.index!].length !=
+                                  0
+                              ? Container(
+                                  height: 25.0.h,
+                                  width: 100.0.w,
+                                  child: CarouselSlider.builder(
+                                      carouselController: _controller,
+                                      itemCount: widget
+                                          .imageListMap![widget.index].length,
+                                      itemBuilder:
+                                          (context, imageIndex, rindex) {
+                                        return GestureDetector(
+                                            onTap: () {
+                                              List<String> imgList = [];
+                                              for (int i = 0;
+                                                  i <
+                                                      widget
+                                                          .imageListMap![
+                                                              widget.index!]
+                                                          .length;
+                                                  i++) {
+                                                imgList.add(widget
+                                                        .imageListMap![
+                                                    widget.index!][i]['file']);
+                                              }
+                                              pushNewScreen(context,
+                                                  withNavBar: false,
+                                                  screen: FullScreenSlider(
+                                                      imageList: imgList,
+                                                      index: imageIndex,
+                                                      name: widget.name!),
+                                                  pageTransitionAnimation:
+                                                      PageTransitionAnimation
+                                                          .cupertino);
+                                            },
+                                            child: CachedNetworkImage(
+                                                imageUrl: widget.imageListMap![
+                                                        widget.index!]
+                                                    [imageIndex]['file'],
+                                                errorWidget: (context, url,
+                                                        error) =>
+                                                    Image.asset(
+                                                        'assets/images/404.gif',
+                                                        fit: BoxFit.fitHeight,
+                                                        width: 100.0.w),
+                                                imageBuilder: (context,
+                                                        imageProvider) =>
+                                                    Container(
+                                                      //height: 100,
+                                                      width: 100.0.w,
+                                                      decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                          image: imageProvider,
+                                                          fit: BoxFit.fitWidth,
+                                                        ),
+                                                      ),
                                                     ),
-                                                    pageTransitionAnimation:
-                                                    PageTransitionAnimation
-                                                        .cupertino);
-                                              },
-                                              child:CachedNetworkImage(
-                                                imageUrl: widget.imageListMap![widget.index!][imageIndex]['file'],
-                                                height: 100,
-                                                width: 250,
-                                                fit: BoxFit.contain,
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                //divider
-                                Divider(
-                                  height: 1.0.h,
-                                  color: Constants.bpOnBoardSubtitleStyle
-                                      .withOpacity(0.5),
-                                  thickness: 1.0,
-                                ),
-                                //Row for Like comment and Share
-                                Padding(
-                                  padding: EdgeInsets.only(top: 0.5.h, bottom: 0.5.h),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      GestureDetector(
-                                        onTap: () async{
-                                          setState(() {
-                                            widget.isLiked = !widget.isLiked!;
-                                          });
-                                          await like.likePostApi(widget.postId, authToken!);
-                                          setState(() {
-                                            likeCount = like.likeCount;
-                                            widget.isLiked == true
-                                                ? widget.like = widget.like! + 1
-                                                : widget.like = widget.like! - 1;
-                                             resultMap = {"count": commentCount, 
-                                             "isSaved": widget.isSaved, "likeCount": likeCount,
-                                             "index": widget.index, "isLiked": widget.isLiked};
-                                          });
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                           ImageIcon(
-                                                widget.isLiked!
-                                                    ? AssetImage('assets/icons/likeNew.png')
-                                                    : AssetImage('assets/icons/likeThumb.png'),
-                                                color: widget.isLiked!
-                                                    ? Constants.selectedIcon
-                                                    : Constants.bpOnBoardSubtitleStyle,
-                                                size: 25.0,
-                                              ),
-                                            SizedBox(
-                                              width: 2.0.w,
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.only(top: 1.0.h),
-                                              child: Text(
-                                              //   likeCount == 0 || likeCount == null
-                                              // ? "${widget.like} Likes"
-                                              // : "$likeCount Likes",
-                                                "${widget.like} Likes",
-                                                style: TextStyle(
-                                                    fontSize: 6.5.sp,
-                                                    color: Constants
-                                                        .bpOnBoardSubtitleStyle,
-                                                    fontFamily: 'Montserrat',
-                                                    fontWeight: FontWeight.w400),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          ImageIcon(
-                                                AssetImage('assets/icons/commentNew.png'),
-                                                size: 21.0,
-                                                color: Constants.bpOnBoardSubtitleStyle,
-                                              ),
-                                          SizedBox(
-                                            width: 2.0.w,
-                                          ),
-                                          Container(
-                                            padding: EdgeInsets.only(top: 1.0.h),
-                                            child: Text(commentCount == 0 || commentCount == null
-                                              ? "${widget.comment} Comments"
-                                              : "$commentCount Comments",
-                                              style: TextStyle(
-                                                  fontSize: 6.5.sp,
-                                                  color: Constants
-                                                      .bpOnBoardSubtitleStyle,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            widget.isSaved = !widget.isSaved!;
-                                          });
-                                          savePostApi(widget.postId);
-                                          resultMap = {"count": commentCount, "isSaved": widget.isSaved, "isLiked": widget.isLiked,
-                                           "likeCount": widget.like, "index": widget.index};
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            ImageIcon(
-                                                widget.isSaved!
-                                                    ? AssetImage('assets/icons/saveGreen.png')
-                                                    : AssetImage('assets/icons/saveNew.png'),
-                                                color: widget.isSaved!
-                                                    ? Constants.selectedIcon
-                                                    : Constants.bpOnBoardSubtitleStyle,
-                                                size: 21.0,
-                                              ),
-                                            SizedBox(
-                                              width: 1.0.w,
-                                            ),
-                                            Container(
-                                              padding:
-                                                  EdgeInsets.only(top: 1.0.h),
-                                              child: Text(
-                                                "Save",
-                                                style: TextStyle(
-                                                    fontSize: 6.5.sp,
-                                                    color: Constants
-                                                        .bpOnBoardSubtitleStyle,
-                                                    fontFamily: 'Montserrat',
-                                                    fontWeight: FontWeight.w400),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                                                placeholder: (context, url) =>
+                                                    PhotoLoadingWidget()));
+                                      },
+                                      options: CarouselOptions(
+                                          autoPlay: false,
+                                          enableInfiniteScroll: false,
+                                          viewportFraction: 1.0,
+                                          onPageChanged: (cindex, reason) {
+                                            setState(() {
+                                              _current = cindex;
+                                            });
+                                          })))
+                              : Container(),
+                          indicator: widget
+                                      .imageListMap![widget.index].length !=
+                                  0
+                              ? Center(
+                                  child: widget.imageListMap![widget.index]
+                                              .length !=
+                                          1
+                                      ? SizedBox(
+                                          height: 18,
+                                          child: ListView.builder(
+                                              itemCount: widget
+                                                  .imageListMap![widget.index]
+                                                  .length,
+                                              shrinkWrap: true,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              scrollDirection: Axis.horizontal,
+                                              itemBuilder: (context, iIndex) {
+                                                return Container(
+                                                  width: 15.0,
+                                                  height: 15.0,
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 5.0),
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: (Theme.of(context)
+                                                                      .brightness ==
+                                                                  Brightness
+                                                                      .dark
+                                                              ? Colors.white
+                                                              : Colors.black)
+                                                          .withOpacity(
+                                                              _current == iIndex
+                                                                  ? 0.9
+                                                                  : 0.3)),
+                                                );
+                                              }),
+                                        )
+                                      : SizedBox(),
+                                )
+                              : Row(),
+                          mutualLike:
+                              'Samay, Tarun & 324 other people are liked this post.', //likesList[index].toString(),
+                          likeTap: () async {
+                            setState(() {
+                              widget.isLiked = !widget.isLiked!;
+                            });
+                            await like.likePostApi(widget.postId, authToken!);
+                            setState(() {
+                              likeCount = like.likeCount;
+                              widget.isLiked == true
+                                  ? widget.like = widget.like! + 1
+                                  : widget.like = widget.like! - 1;
+                              resultMap = {
+                                "count": commentCount,
+                                "isSaved": widget.isSaved,
+                                "likeCount": likeCount,
+                                "index": widget.index,
+                                "isLiked": widget.isLiked
+                              };
+                            });
+                          },
+                          isLiked: widget.isLiked!,
+                          totalLike: likeCount.toString(),
+                          totalComments: commentCount.toString(),
+                          commentTap: () {},
+                          saveTap: () {
+                            setState(() {
+                              widget.isSaved = !widget.isSaved!;
+                            });
+                            savePostApi(widget.postId);
+                            resultMap = {
+                              "count": commentCount,
+                              "isSaved": widget.isSaved,
+                              "isLiked": widget.isLiked,
+                              "likeCount": widget.like,
+                              "index": widget.index
+                            };
+                          },
+                          isSaved: widget.isSaved!,
+                          shareTap: () {},
                         ),
+
+                        //main horizontal paddingF
+                        // Padding(
+                        //   padding: EdgeInsets.symmetric(horizontal: 5.0.w),
+                        //   //Container for one post
+                        //   child: Container(
+                        //     width: 100.0.w,
+                        //     //color: Colors.grey[300],
+                        //     //column for post content
+                        //     child: Column(
+                        //       children: <Widget>[
+                        //         SizedBox(
+                        //           height: 1.0.h,
+                        //         ),
+                        //         //ListTile for educator details
+                        //         ListTile(
+                        //           contentPadding: EdgeInsets.all(0.0),
+                        //           //leading:
+                        //           title: GestureDetector(
+                        //              onTap: (){
+                        //                   getUserProfile(widget.userId!);
+                        //                 },
+                        //             child: Row(
+                        //               mainAxisAlignment: MainAxisAlignment.start,
+                        //               children: [
+                        //                 Padding(
+                        //                   padding: const EdgeInsets.only(top: 5.0),
+                        //                   child: ClipRRect(
+                        //                     borderRadius: BorderRadius.circular(50),
+                        //                     child:CachedNetworkImage(
+                        //                         imageUrl: widget.profileImage!,
+                        //                       width: 35.0,
+                        //                       height: 35.0,
+                        //                       fit: BoxFit.cover,
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //                 SizedBox(
+                        //                   width: 2.0.w,
+                        //                 ),
+                        //                 Padding(
+                        //                   padding: EdgeInsets.only(top: 1.0.h),
+                        //                   child: Column(
+                        //                     crossAxisAlignment:
+                        //                         CrossAxisAlignment.start,
+                        //                     children: [
+                        //                       Text(
+                        //                         widget.name!,
+                        //                         style: TextStyle(
+                        //                             fontSize: 9.0.sp,
+                        //                             color: Constants.bgColor,
+                        //                             fontFamily: 'Montserrat',
+                        //                             fontWeight: FontWeight.w700),
+                        //                       ),
+                        //                       SizedBox(height: 1.0,),
+                        //                       Text(
+                        //                         '${widget.degree} | ${widget.schoolName}',
+                        //                         style: TextStyle(
+                        //                             fontSize: 6.5.sp,
+                        //                             color: Constants.bgColor,
+                        //                             fontFamily: 'Montserrat',
+                        //                             fontWeight: FontWeight.w400),
+                        //                       ),
+                        //                       SizedBox(height: 1.0,),
+                        //                       Text(
+                        //                         widget.date!,
+                        //                         style: TextStyle(
+                        //                             fontSize: 6.5.sp,
+                        //                             color: Constants.bgColor,
+                        //                             fontFamily: 'Montserrat',
+                        //                             fontWeight: FontWeight.w400),
+                        //                       ),
+                        //                     ],
+                        //                   ),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           ),
+                        //           trailing: IconButton(
+                        //                icon: SvgPicture.asset('assets/icons/reportSvg.svg'),
+                        //               //  Image.asset('assets/icons/issueIcon.png',
+                        //               //   height: 18.0,
+                        //               //   width: 18.0,),
+                        //               onPressed: () async{
+                        //                 var result = await pushNewScreen(context,
+                        //                     withNavBar: false,
+                        //                     screen: ReportFeed(
+                        //                       postId: widget.postId,
+                        //                     ),
+                        //                     pageTransitionAnimation:
+                        //                         PageTransitionAnimation
+                        //                             .cupertino);
+
+                        //                   if(result == true){
+                        //                     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder:
+                        //                     (context) => bottomNavBar(0)), (route) => false);
+                        //                 }
+                        //               }),
+                        //           //ImageIcon(AssetImage('assets/icons/report.png'),)
+                        //         ),
+                        //         //Post descriptionText
+                        //         Padding(
+                        //           padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 2.0),
+                        //           child: Container(
+                        //             width: 100.0.w,
+                        //             child: Text(widget.description!,
+                        //               style: TextStyle(
+                        //                 fontSize: 9.0.sp,
+                        //                 color: Constants.bpOnBoardSubtitleStyle,
+                        //                 fontFamily: 'Montserrat',
+                        //                 height: 1.5,
+                        //                 fontWeight: FontWeight.w400,),
+                        //               // textAlign: TextAlign.justify
+                        //             ),
+                        //           ),
+                        //         ),
+                        //         SizedBox(
+                        //           height: 1.0.h,
+                        //         ),
+                        //         // Container for image or video
+                        //         widget.imageListMap![widget.index!].length == 0
+                        //             ? Container()
+                        //             : Container(
+                        //                 height: 25.0.h,
+                        //                 width: 100.0.w,
+                        //                 child: ListView.builder(
+                        //                   shrinkWrap: true,
+                        //                   physics: BouncingScrollPhysics(),
+                        //                   scrollDirection: Axis.horizontal,
+                        //                   itemCount: widget
+                        //                       .imageListMap![widget.index!].length,
+                        //                   itemBuilder: (context, imageIndex) {
+                        //                     return GestureDetector(
+                        //                       onTap: () {
+                        //                         List<String> imgList = [];
+                        //                         for(int i = 0; i<widget
+                        //                             .imageListMap![widget.index!].length; i++) {
+                        //                           imgList.add(widget
+                        //                               .imageListMap![widget.index!][i]['file']);
+                        //                         }
+                        //                         pushNewScreen(context,
+                        //                             withNavBar: false,
+                        //                             screen: FullScreenSlider(
+                        //                                 imageList: imgList,
+                        //                                 index: imageIndex,
+                        //                                 name: widget.name!
+                        //                             ),
+                        //                             pageTransitionAnimation:
+                        //                             PageTransitionAnimation
+                        //                                 .cupertino);
+                        //                       },
+                        //                       child:CachedNetworkImage(
+                        //                         imageUrl: widget.imageListMap![widget.index!][imageIndex]['file'],
+                        //                         height: 100,
+                        //                         width: 250,
+                        //                         fit: BoxFit.contain,
+                        //                       ),
+                        //                     );
+                        //                   },
+                        //                 ),
+                        //               ),
+                        //         //divider
+                        //         Divider(
+                        //           height: 1.0.h,
+                        //           color: Constants.bpOnBoardSubtitleStyle
+                        //               .withOpacity(0.5),
+                        //           thickness: 1.0,
+                        //         ),
+                        //         //Row for Like comment and Share
+                        //         Padding(
+                        //           padding: EdgeInsets.only(top: 0.5.h, bottom: 0.5.h),
+                        //           child: Row(
+                        //             mainAxisAlignment:
+                        //                 MainAxisAlignment.spaceBetween,
+                        //             children: <Widget>[
+                        //               GestureDetector(
+                        //                 onTap: () async{
+                        //                   setState(() {
+                        //                     widget.isLiked = !widget.isLiked!;
+                        //                   });
+                        //                   await like.likePostApi(widget.postId, authToken!);
+                        //                   setState(() {
+                        //                     likeCount = like.likeCount;
+                        //                     widget.isLiked == true
+                        //                         ? widget.like = widget.like! + 1
+                        //                         : widget.like = widget.like! - 1;
+                        //                      resultMap = {"count": commentCount,
+                        //                      "isSaved": widget.isSaved, "likeCount": likeCount,
+                        //                      "index": widget.index, "isLiked": widget.isLiked};
+                        //                   });
+                        //                 },
+                        //                 child: Row(
+                        //                   mainAxisAlignment:
+                        //                       MainAxisAlignment.start,
+                        //                   children: [
+                        //                    ImageIcon(
+                        //                         widget.isLiked!
+                        //                             ? AssetImage('assets/icons/likeNew.png')
+                        //                             : AssetImage('assets/icons/likeThumb.png'),
+                        //                         color: widget.isLiked!
+                        //                             ? Constants.selectedIcon
+                        //                             : Constants.bpOnBoardSubtitleStyle,
+                        //                         size: 25.0,
+                        //                       ),
+                        //                     SizedBox(
+                        //                       width: 2.0.w,
+                        //                     ),
+                        //                     Container(
+                        //                       padding: EdgeInsets.only(top: 1.0.h),
+                        //                       child: Text(
+                        //                       //   likeCount == 0 || likeCount == null
+                        //                       // ? "${widget.like} Likes"
+                        //                       // : "$likeCount Likes",
+                        //                         "${widget.like} Likes",
+                        //                         style: TextStyle(
+                        //                             fontSize: 6.5.sp,
+                        //                             color: Constants
+                        //                                 .bpOnBoardSubtitleStyle,
+                        //                             fontFamily: 'Montserrat',
+                        //                             fontWeight: FontWeight.w400),
+                        //                       ),
+                        //                     ),
+                        //                   ],
+                        //                 ),
+                        //               ),
+                        //               Row(
+                        //                 mainAxisAlignment:
+                        //                     MainAxisAlignment.start,
+                        //                 children: [
+                        //                   ImageIcon(
+                        //                         AssetImage('assets/icons/commentNew.png'),
+                        //                         size: 21.0,
+                        //                         color: Constants.bpOnBoardSubtitleStyle,
+                        //                       ),
+                        //                   SizedBox(
+                        //                     width: 2.0.w,
+                        //                   ),
+                        //                   Container(
+                        //                     padding: EdgeInsets.only(top: 1.0.h),
+                        //                     child: Text(commentCount == 0 || commentCount == null
+                        //                       ? "${widget.comment} Comments"
+                        //                       : "$commentCount Comments",
+                        //                       style: TextStyle(
+                        //                           fontSize: 6.5.sp,
+                        //                           color: Constants
+                        //                               .bpOnBoardSubtitleStyle,
+                        //                           fontFamily: 'Montserrat',
+                        //                           fontWeight: FontWeight.w400),
+                        //                     ),
+                        //                   )
+                        //                 ],
+                        //               ),
+                        //               GestureDetector(
+                        //                 onTap: () {
+                        //                   setState(() {
+                        //                     widget.isSaved = !widget.isSaved!;
+                        //                   });
+                        //                   savePostApi(widget.postId);
+                        //                   resultMap = {"count": commentCount, "isSaved": widget.isSaved, "isLiked": widget.isLiked,
+                        //                    "likeCount": widget.like, "index": widget.index};
+                        //                 },
+                        //                 child: Row(
+                        //                   mainAxisAlignment:
+                        //                       MainAxisAlignment.start,
+                        //                   children: [
+                        //                     ImageIcon(
+                        //                         widget.isSaved!
+                        //                             ? AssetImage('assets/icons/saveGreen.png')
+                        //                             : AssetImage('assets/icons/saveNew.png'),
+                        //                         color: widget.isSaved!
+                        //                             ? Constants.selectedIcon
+                        //                             : Constants.bpOnBoardSubtitleStyle,
+                        //                         size: 21.0,
+                        //                       ),
+                        //                     SizedBox(
+                        //                       width: 1.0.w,
+                        //                     ),
+                        //                     Container(
+                        //                       padding:
+                        //                           EdgeInsets.only(top: 1.0.h),
+                        //                       child: Text(
+                        //                         "Save",
+                        //                         style: TextStyle(
+                        //                             fontSize: 6.5.sp,
+                        //                             color: Constants
+                        //                                 .bpOnBoardSubtitleStyle,
+                        //                             fontFamily: 'Montserrat',
+                        //                             fontWeight: FontWeight.w400),
+                        //                       ),
+                        //                     ),
+                        //                   ],
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                         //Reaction dp
                         // Padding(
                         //   padding: EdgeInsets.only(
@@ -566,7 +756,7 @@ class _CommentScreenState extends State<CommentScreen> {
                         //     ],
                         //   ),
                         // ),
-    
+
                         //comment list
                         Padding(
                           padding: EdgeInsets.only(
@@ -595,21 +785,24 @@ class _CommentScreenState extends State<CommentScreen> {
                                 padding:
                                     EdgeInsets.only(bottom: 2.0.h, top: 1.0.h),
                                 child: ListTile(
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 3.0.w),
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 3.0.w),
                                   title: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 28.0),
+                                          padding: const EdgeInsets.only(
+                                              bottom: 28.0),
                                           child: GestureDetector(
-                                            onTap: (){
-                                              getUserProfile(commentUserId[index]);
+                                            onTap: () {
+                                              getUserProfile(
+                                                  commentUserId[index]);
                                             },
                                             child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(50),
-                                              child:CachedNetworkImage(
+                                              child: CachedNetworkImage(
                                                 imageUrl: profileImages[index]!,
                                                 height: 35.0,
                                                 width: 35.0,
@@ -625,7 +818,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                           //height: 7.0.h,
                                           width: 82.0.w,
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: 2.0.w, vertical: 1.0.h),
+                                              horizontal: 2.0.w,
+                                              vertical: 1.0.h),
                                           decoration: BoxDecoration(
                                               border: Border.all(
                                                 color: Constants.formBorder
@@ -645,7 +839,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                                 children: [
                                                   Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: <Widget>[
                                                       Text(
                                                         name[index]!,
@@ -659,7 +854,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                                                 .bgColor),
                                                       ),
                                                       Text(
-                                                        date[index]!.substring(0, 9),
+                                                        date[index]!
+                                                            .substring(0, 9),
                                                         style: TextStyle(
                                                             fontFamily:
                                                                 'Montserrat',
@@ -692,61 +888,71 @@ class _CommentScreenState extends State<CommentScreen> {
                                                                 .bpSkipStyle,
                                                             size: 20.0,
                                                           ),
-                                                          onSelected:
-                                                              (dynamic value) async {
+                                                          onSelected: (dynamic
+                                                              value) async {
                                                             if (value == 1) {
                                                               //Edit Comment API
                                                               setState(() {
                                                                 isEdit = true;
-                                                                idForEdit = commentId[index];
-                                                                commentController.text = comments[index]!;
-                                                                focusNode.requestFocus();
+                                                                idForEdit =
+                                                                    commentId[
+                                                                        index];
+                                                                commentController
+                                                                        .text =
+                                                                    comments[
+                                                                        index]!;
+                                                                focusNode
+                                                                    .requestFocus();
                                                               });
                                                             } else {
                                                               //Delete comment APi
-                                                              await deleteCommentApi(commentId[index]);
+                                                              await deleteCommentApi(
+                                                                  commentId[
+                                                                      index]);
                                                               setState(() {
-                                                                isLoading = true;
+                                                                isLoading =
+                                                                    true;
                                                                 page = 1;
                                                                 commentId = [];
-                                                                commentUserId = [];
-                                                                profileImages = [];
+                                                                commentUserId =
+                                                                    [];
+                                                                profileImages =
+                                                                    [];
                                                                 name = [];
                                                                 date = [];
                                                                 comments = [];
                                                               });
-                                                              getCommentListApi(page);
+                                                              getCommentListApi(
+                                                                  page);
                                                             }
                                                           },
                                                           itemBuilder:
                                                               (context) => [
                                                                     PopupMenuItem(
-                                                                      child: Text(
+                                                                      child:
+                                                                          Text(
                                                                         "Edit",
                                                                         style: TextStyle(
                                                                             fontFamily:
                                                                                 'Montserrat',
-                                                                            fontSize: 10.0
-                                                                                .sp,
-                                                                            fontWeight: FontWeight
-                                                                                .w400,
-                                                                            color:
-                                                                                Constants.bgColor),
+                                                                            fontSize:
+                                                                                10.0.sp,
+                                                                            fontWeight: FontWeight.w400,
+                                                                            color: Constants.bgColor),
                                                                       ),
                                                                       value: 1,
                                                                     ),
                                                                     PopupMenuItem(
-                                                                      child: Text(
+                                                                      child:
+                                                                          Text(
                                                                         "Delete",
                                                                         style: TextStyle(
                                                                             fontFamily:
                                                                                 'Montserrat',
-                                                                            fontSize: 10.0
-                                                                                .sp,
-                                                                            fontWeight: FontWeight
-                                                                                .w400,
-                                                                            color:
-                                                                                Constants.bgColor),
+                                                                            fontSize:
+                                                                                10.0.sp,
+                                                                            fontWeight: FontWeight.w400,
+                                                                            color: Constants.bgColor),
                                                                       ),
                                                                       value: 2,
                                                                     )
@@ -794,193 +1000,218 @@ class _CommentScreenState extends State<CommentScreen> {
                     ),
                   ),
                   //}),
-    
+
                   //add comments
                   isEdit
-                  ? Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 4.0.h,
-                      ),
-                      Row(
-                        //mainAxisAlignment: MainAxisAlignment.end,
-                        //crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                              //height: 7.0.h,
-                              width: 100.0.w,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(
-                                    color: Constants.formBorder.withOpacity(0.2),
-                                    width: 3.0,
-                                  )),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 4.0.w,
-                                ),
-                                child: TextFormField(
-                                    controller: commentController,
-                                    focusNode: focusNode,
-                                    keyboardType: TextInputType.multiline,
-                                    maxLength: 140,
-                                    cursorColor: Constants.bgColor,
-                                    cursorHeight: 25.0,
-                                    decoration: InputDecoration(
-                                        //labelText: "Please mention your achivements...",
-                                        prefixIcon: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 2.0.w, vertical: 1.0.h),
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(50),
-                                            child:CachedNetworkImage(
-                                                imageUrl: imageUrl!,
-                                              width: 3.0.w,
-                                              height: 1.0.h,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                        suffixIcon: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 1.0.w),
-                                          child: TextButton(
-                                            onPressed: () async{
-                                              await editCommentApi(idForEdit);
-                                              setState(() {
-                                                FocusScope.of(context).unfocus();
-                                                commentController.text = '';
-                                                isLoading = true;
-                                                page = 1;
-                                                commentId = [];
-                                                commentUserId = [];
-                                                profileImages = [];
-                                                name = [];
-                                                date = [];
-                                                comments = [];
-                                              });
-                                              getCommentListApi(page);
-                                            },
-                                            child: Text('Post',
-                                                style: TextStyle(
-                                                    fontFamily: 'Montserrat',
-                                                    fontSize: 12.0.sp,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Constants.bgColor)),
-                                          ),
-                                        ),
-                                        counterText: '',
-                                        fillColor: Colors.white,
-                                        hintText: "Leave your thoughts here...",
-                                        border: InputBorder.none,
-                                        focusedBorder: InputBorder.none,
-                                        enabledBorder: InputBorder.none,
-                                        disabledBorder: InputBorder.none),
-                                    style: new TextStyle(
-                                        fontFamily: "Montserrat",
-                                        fontSize: 10.0.sp,
-                                        color: Constants.bgColor)),
-                              ))
-                        ],
-                      ),
-                    ],
-                  )
-                  : Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 4.0.h,
-                      ),
-                      Row(
-                        //mainAxisAlignment: MainAxisAlignment.end,
-                        //crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                              //height: 7.0.h,
-                              width: 100.0.w,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(
-                                    color: Constants.formBorder.withOpacity(0.2),
-                                    width: 3.0,
-                                  )),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 4.0.w,
-                                ),
-                                child: TextFormField(
-                                    controller: commentController,
-                                    keyboardType: TextInputType.multiline,
-                                    maxLength: 140,
-                                    cursorColor: Constants.bgColor,
-                                    //cursorHeight: 25.0,
-                                    decoration: InputDecoration(
-                                        //labelText: "Please mention your achivements...",
-                                        prefixIcon: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 2.0.w, vertical: 1.0.h),
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(50),
-                                            child: CachedNetworkImage(
-                                                imageUrl: imageUrl!,
-                                              width: 3.0.w,
-                                              height: 1.0.h,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                        suffixIcon: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 1.0.w),
-                                          child: TextButton(
-                                            onPressed: () async{
-                                              await comment.addCommentApi(
-                                                  widget.postId,
-                                                  commentController.text,
-                                                  authToken!);
-                                              setState(() {
-                                                commentCount = comment.commentCount;
-                                                resultMap = {"count": commentCount, "index": widget.index, "isLiked": widget.isLiked,
-                                                "isSaved": widget.isSaved, "likeCount": widget.like 
-                                                };
-                                                focusNode.unfocus();
-                                                commentController.text = '';
-                                                isLoading = true;
-                                                page = 1;
-                                                commentId = [];
-                                                commentUserId = [];
-                                                profileImages = [];
-                                                name = [];
-                                                date = [];
-                                                comments = [];
-                                              });
-                                              getCommentListApi(page);
-                                            },
-                                            child: Text('Post',
-                                                style: TextStyle(
-                                                    fontFamily: 'Montserrat',
-                                                    fontSize: 12.0.sp,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Constants.bgColor)),
-                                          ),
-                                        ),
-                                        counterText: '',
-                                        fillColor: Colors.white,
-                                        hintText: "Leave your thoughts here...",
-                                        border: InputBorder.none,
-                                        focusedBorder: InputBorder.none,
-                                        enabledBorder: InputBorder.none,
-                                        disabledBorder: InputBorder.none),
-                                    style: new TextStyle(
-                                        fontFamily: "Montserrat",
-                                        fontSize: 10.0.sp,
-                                        color: Constants.bgColor)),
-                              ))
-                        ],
-                      ),
-                    ],
-                  ),
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              height: 4.0.h,
+                            ),
+                            Row(
+                              //mainAxisAlignment: MainAxisAlignment.end,
+                              //crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                    //height: 7.0.h,
+                                    width: 100.0.w,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                          color: Constants.formBorder
+                                              .withOpacity(0.2),
+                                          width: 3.0,
+                                        )),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 4.0.w,
+                                      ),
+                                      child: TextFormField(
+                                          controller: commentController,
+                                          focusNode: focusNode,
+                                          keyboardType: TextInputType.multiline,
+                                          maxLength: 140,
+                                          cursorColor: Constants.bgColor,
+                                          cursorHeight: 25.0,
+                                          decoration: InputDecoration(
+                                              //labelText: "Please mention your achivements...",
+                                              prefixIcon: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 2.0.w,
+                                                    vertical: 1.0.h),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: imageUrl!,
+                                                    width: 3.0.w,
+                                                    height: 1.0.h,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                              suffixIcon: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 1.0.w),
+                                                child: TextButton(
+                                                  onPressed: () async {
+                                                    await editCommentApi(
+                                                        idForEdit);
+                                                    setState(() {
+                                                      FocusScope.of(context)
+                                                          .unfocus();
+                                                      commentController.text =
+                                                          '';
+                                                      isLoading = true;
+                                                      page = 1;
+                                                      commentId = [];
+                                                      commentUserId = [];
+                                                      profileImages = [];
+                                                      name = [];
+                                                      date = [];
+                                                      comments = [];
+                                                    });
+                                                    getCommentListApi(page);
+                                                  },
+                                                  child: Text('Post',
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              'Montserrat',
+                                                          fontSize: 12.0.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Constants
+                                                              .bgColor)),
+                                                ),
+                                              ),
+                                              counterText: '',
+                                              fillColor: Colors.white,
+                                              hintText:
+                                                  "Leave your thoughts here...",
+                                              border: InputBorder.none,
+                                              focusedBorder: InputBorder.none,
+                                              enabledBorder: InputBorder.none,
+                                              disabledBorder: InputBorder.none),
+                                          style: new TextStyle(
+                                              fontFamily: "Montserrat",
+                                              fontSize: 10.0.sp,
+                                              color: Constants.bgColor)),
+                                    ))
+                              ],
+                            ),
+                          ],
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              height: 4.0.h,
+                            ),
+                            Row(
+                              //mainAxisAlignment: MainAxisAlignment.end,
+                              //crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                    //height: 7.0.h,
+                                    width: 100.0.w,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                          color: Constants.formBorder
+                                              .withOpacity(0.2),
+                                          width: 3.0,
+                                        )),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 4.0.w,
+                                      ),
+                                      child: TextFormField(
+                                          controller: commentController,
+                                          keyboardType: TextInputType.multiline,
+                                          maxLength: 140,
+                                          cursorColor: Constants.bgColor,
+                                          //cursorHeight: 25.0,
+                                          decoration: InputDecoration(
+                                              //labelText: "Please mention your achivements...",
+                                              prefixIcon: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 2.0.w,
+                                                    vertical: 1.0.h),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: imageUrl!,
+                                                    width: 3.0.w,
+                                                    height: 1.0.h,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                              suffixIcon: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 1.0.w),
+                                                child: TextButton(
+                                                  onPressed: () async {
+                                                    await comment.addCommentApi(
+                                                        widget.postId,
+                                                        commentController.text,
+                                                        authToken!);
+                                                    setState(() {
+                                                      commentCount =
+                                                          comment.commentCount;
+                                                      resultMap = {
+                                                        "count": commentCount,
+                                                        "index": widget.index,
+                                                        "isLiked":
+                                                            widget.isLiked,
+                                                        "isSaved":
+                                                            widget.isSaved,
+                                                        "likeCount": widget.like
+                                                      };
+                                                      focusNode.unfocus();
+                                                      commentController.text =
+                                                          '';
+                                                      isLoading = true;
+                                                      page = 1;
+                                                      commentId = [];
+                                                      commentUserId = [];
+                                                      profileImages = [];
+                                                      name = [];
+                                                      date = [];
+                                                      comments = [];
+                                                    });
+                                                    getCommentListApi(page);
+                                                  },
+                                                  child: Text('Post',
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              'Montserrat',
+                                                          fontSize: 12.0.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Constants
+                                                              .bgColor)),
+                                                ),
+                                              ),
+                                              counterText: '',
+                                              fillColor: Colors.white,
+                                              hintText:
+                                                  "Leave your thoughts here...",
+                                              border: InputBorder.none,
+                                              focusedBorder: InputBorder.none,
+                                              enabledBorder: InputBorder.none,
+                                              disabledBorder: InputBorder.none),
+                                          style: new TextStyle(
+                                              fontFamily: "Montserrat",
+                                              fontSize: 10.0.sp,
+                                              color: Constants.bgColor)),
+                                    ))
+                              ],
+                            ),
+                          ],
+                        ),
                 ],
               ),
       ),
@@ -989,7 +1220,6 @@ class _CommentScreenState extends State<CommentScreen> {
 
   //Get Comment LIst API
   Future<void> getCommentListApi(int page) async {
-
     try {
       Dio dio = Dio();
       var response = await dio
@@ -997,7 +1227,7 @@ class _CommentScreenState extends State<CommentScreen> {
       //commentList = GetCommentList.fromJson(response.data);
       commentMap = response.data;
       commentMapData = commentMap!['data'];
-      
+
       if (response.statusCode == 200) {
         if (commentMap!['status'] == true) {
           setState(() {
@@ -1041,7 +1271,7 @@ class _CommentScreenState extends State<CommentScreen> {
       //print(stack);
       if (e.response != null) {
         //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
+        //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -1111,7 +1341,7 @@ class _CommentScreenState extends State<CommentScreen> {
       //print(stack);
       if (e.response != null) {
         //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
+        //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -1132,7 +1362,8 @@ class _CommentScreenState extends State<CommentScreen> {
     try {
       Dio dio = Dio();
 
-      FormData formData = FormData.fromMap({'comment_id': commentId, 'comment': commentController.text});
+      FormData formData = FormData.fromMap(
+          {'comment_id': commentId, 'comment': commentController.text});
       var response = await dio.post(Config.editCommentUrl,
           data: formData,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
@@ -1144,7 +1375,7 @@ class _CommentScreenState extends State<CommentScreen> {
           //print('true');
           //print(editMap);
           isEdit = false;
-          setState((){});
+          setState(() {});
           Fluttertoast.showToast(
               msg: editMap!['message'],
               backgroundColor: Constants.bgColor,
@@ -1182,7 +1413,7 @@ class _CommentScreenState extends State<CommentScreen> {
       //print(stack);
       if (e.response != null) {
         //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
+        //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -1253,10 +1484,10 @@ class _CommentScreenState extends State<CommentScreen> {
       }
     } on DioError catch (e, stack) {
       //print(e.response);
-     // print(stack);
-     if (e.response != null) {
+      // print(stack);
+      if (e.response != null) {
         //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
+        //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -1291,16 +1522,17 @@ class _CommentScreenState extends State<CommentScreen> {
           setState(() {});
           map['data']['role'] == 'E'
               ? pushNewScreen(context,
-              screen: EducatorProfileViewScreen(id: id,),
-              withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation.cupertino)
+                  screen: EducatorProfileViewScreen(
+                    id: id,
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino)
               : pushNewScreen(context,
-              screen: LearnerProfileViewScreen(id: id,),
-              withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation
-                  .cupertino);
+                  screen: LearnerProfileViewScreen(
+                    id: id,
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino);
         } else {
           isLoading = false;
           setState(() {});
@@ -1327,5 +1559,5 @@ class _CommentScreenState extends State<CommentScreen> {
     //print('CCC###'+resultMap.toString());
     // then
     return true; // return true if the route to be popped
-}
+  }
 }

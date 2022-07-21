@@ -11,7 +11,10 @@ import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Post_Model/Educator_Post_Model.dart';
 import 'package:being_pupil/Model/Post_Model/Post_Global_API_Class.dart';
 import 'package:being_pupil/Subscription/Subscription_Plan_Screen.dart';
+import 'package:being_pupil/Widgets/Post_Widget.dart';
+import 'package:being_pupil/Widgets/Shimmer_Widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:dio/dio.dart';
@@ -77,6 +80,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
   Map<String, dynamic> resultComment = {};
   int? isSubscribed;
   String? registerAs;
+  List<int> _current = [];
+  final CarouselController _controller = CarouselController();
 
   @override
   void initState() {
@@ -680,111 +685,29 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                   //Educator Post
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding:  EdgeInsets.zero,
                       child: SingleChildScrollView(
                         controller: _scrollController,
                         physics: BouncingScrollPhysics(),
                         child: ListView.separated(
                           physics: BouncingScrollPhysics(),
-                          padding: EdgeInsets.symmetric(
-                              vertical: 1.0.h, horizontal: 5.0.w),
+                          // padding: EdgeInsets.symmetric(
+                          //     vertical: 1.0.h, horizontal: 5.0.w),
                           shrinkWrap: true,
                           itemCount: postIdList != null ? postIdList.length : 0,
                           // controller: _scrollController,
                           itemBuilder: (context, index) {
-                            return ListView(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              children: <Widget>[
-                                //main horizontal padding
-                                ListView(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  children: <Widget>[
-                                    SizedBox(
-                                      height: 1.0.h,
-                                    ),
-                                    //ListTile for educator details
-                                    ListTile(
-                                        contentPadding: EdgeInsets.all(0.0),
-                                        //leading:
-                                        title: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 5.0),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(50),
-                                                child:CachedNetworkImage(
-                                                imageUrl:profileImageUrl!,
-                                                  width: 35.0,
-                                                  height: 35.0,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 2.0.w,
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(top: 1.0.h),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    name!,
-                                                    style: TextStyle(
-                                                        fontSize: 9.0.sp,
-                                                        color:
-                                                            Constants.bgColor,
-                                                        fontFamily:
-                                                            'Montserrat',
-                                                        fontWeight:
-                                                            FontWeight.w700),
-                                                  ),
-                                                  SizedBox(height: 1.0),
-                                                  Text(
-                                                    '$degreeName | $schoolName',
-                                                    style: TextStyle(
-                                                        fontSize: 6.5.sp,
-                                                        color:
-                                                            Constants.bgColor,
-                                                        fontFamily:
-                                                            'Montserrat',
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                  ),
-                                                  SizedBox(height: 1.0),
-                                                  Text(
-                                                    dateList[index]!
-                                                        .substring(0, 11),
-                                                    style: TextStyle(
-                                                        fontSize: 6.5.sp,
-                                                        color:
-                                                            Constants.bgColor,
-                                                        fontFamily:
-                                                            'Montserrat',
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        trailing: IconButton(
-                                            icon: SvgPicture.asset(
-                                                'assets/icons/reportSvg.svg'),
-                                            //  Image.asset('assets/icons/issueIcon.png',
-                                            //   height: 18.0,
-                                            //   width: 18.0,),
-                                            onPressed: () {
-                                              pushNewScreen(context,
+                            return PostWidget(
+                    isCommentScreen: false,
+                    postId: postIdList[index]!,
+                    profileTap: () {},
+                    profileImage: profileImageList[index]!,
+                    profileName: nameList[index]!,
+                    profileSchool:
+                        '${degreeList[index]} | ${schoolList[index]}',
+                    postTime: dateList[index]!.substring(0, 11),
+                    reportTap: (){
+                      pushNewScreen(context,
                                                   withNavBar: false,
                                                   screen: ReportFeed(
                                                     postId: postIdList[index],
@@ -792,393 +715,648 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                                   pageTransitionAnimation:
                                                       PageTransitionAnimation
                                                           .cupertino);
-                                            })),
-                                    //Post descriptionText
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 0.0, horizontal: 2.0),
-                                      child: Container(
-                                        width: 100.0.w,
-                                        child: Text(
-                                          descriptionList[index]!,
-                                          style: TextStyle(
-                                            fontSize: 12.0.sp,
-                                            color: Constants
-                                                .bpOnBoardSubtitleStyle,
-                                            fontFamily: 'Montserrat',
-                                            height: 1.5,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                          // textAlign: TextAlign.justify
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 1.0.h,
-                                    ),
-                                    // Container for image or video
-                                    imageListMap[index].length == 0
-                                        ? Container()
-                                        : Container(
-                                            height: 25.0.h,
-                                            width: 100.0.w,
-                                            child: ListView.builder(
-                                              shrinkWrap: true,
-                                              physics: BouncingScrollPhysics(),
-                                              scrollDirection: Axis.horizontal,
-                                              //itemExtent: MediaQuery.of(context).size.width / imageListMap[index].length,
-                                              itemCount:
-                                                  imageListMap[index].length,
-                                              itemBuilder:
-                                                  (context, imageIndex) {
-                                                return imageListMap[index]
-                                                            .length ==
-                                                        1
-                                                    ? Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal:
-                                                                    15.0.w),
-                                                        child: GestureDetector(
-                                                          onTap: () {
-                                                            List<String>
-                                                                imgList = [];
-                                                            for (int i = 0;
-                                                                i <
-                                                                    imageListMap[
-                                                                            index]
-                                                                        .length;
-                                                                i++) {
-                                                              imgList.add(
-                                                                  imageListMap[
-                                                                          index]
-                                                                      [
-                                                                      i]['file']);
-                                                            }
-                                                            pushNewScreen(
-                                                                context,
-                                                                withNavBar:
-                                                                    false,
-                                                                screen: FullScreenSlider(
-                                                                    imageList:
-                                                                        imgList,
-                                                                    index:
-                                                                        imageIndex,
-                                                                    name: nameList[
-                                                                        index]!),
-                                                                pageTransitionAnimation:
-                                                                    PageTransitionAnimation
-                                                                        .cupertino);
-                                                          },
-                                                          child:CachedNetworkImage(
-                                                imageUrl:imageListMap[index]
-                                                                    [imageIndex]
-                                                                ['file'],
-                                                            height: 100,
-                                                            width: 250,
-                                                            fit: BoxFit.contain,
-                                                          ),
-                                                        ),
-                                                      )
-                                                    : Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: GestureDetector(
-                                                          onTap: () {
-                                                            List<String>
-                                                                imgList = [];
-                                                            for (int i = 0;
-                                                                i <
-                                                                    imageListMap[
-                                                                            index]
-                                                                        .length;
-                                                                i++) {
-                                                              imgList.add(
-                                                                  imageListMap[
-                                                                          index]
-                                                                      [
-                                                                      i]['file']);
-                                                            }
-                                                            pushNewScreen(
-                                                                context,
-                                                                withNavBar:
-                                                                    false,
-                                                                screen: FullScreenSlider(
-                                                                    imageList:
-                                                                        imgList,
-                                                                    index:
-                                                                        imageIndex,
-                                                                    name: nameList[
-                                                                        index]!),
-                                                                pageTransitionAnimation:
-                                                                    PageTransitionAnimation
-                                                                        .cupertino);
-                                                          },
-                                                          child:CachedNetworkImage(
-                                                imageUrl:imageListMap[index]
-                                                                    [imageIndex]
-                                                                ['file'],
-                                                            height: 100,
-                                                            width: 250,
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
-                                                      );
-                                              },
-                                            ),
-                                          ),
-
-                                    //divider
-                                    Divider(
-                                      height: 1.0.h,
-                                      color: Constants.bpOnBoardSubtitleStyle
-                                          .withOpacity(0.5),
-                                      thickness: 1.0,
-                                    ),
-                                    //Row for Like comment and Share
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 0.5.h, bottom: 0.5.h),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                isLiked[index] =
-                                                    !isLiked[index]!;
-                                              });
-                                              like.likePostApi(
-                                                  postIdList[index],
-                                                  authToken!);
-                                              setState(() {
-                                                isLiked[index] == true
-                                                    ? likesList[index] = likesList[index]! + 1
-                                                    : likesList[index] = likesList[index]! - 1;
-                                              });
-                                            },
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                ImageIcon(
-                                                  isLiked[index]!
-                                                      ? AssetImage(
-                                                          'assets/icons/likeNew.png')
-                                                      : AssetImage(
-                                                          'assets/icons/likeThumb.png'),
-                                                  color: isLiked[index]!
-                                                      ? Constants.selectedIcon
-                                                      : Constants
-                                                          .bpOnBoardSubtitleStyle,
-                                                  size: 25.0,
-                                                ),
-                                                SizedBox(
-                                                  width: 1.0.w,
-                                                ),
+                            //                 })),
+                    },
+                    description: descriptionList[index]!,
+                    imageListView: imageListMap[index].length != 0
+                        ? Container(
+                            height: 25.0.h,
+                            width: 100.0.w,
+                            child: CarouselSlider.builder(
+                                carouselController: _controller,
+                                itemCount: imageListMap[index].length,
+                                itemBuilder: (context, imageIndex, rindex) {
+                                  return GestureDetector(
+                                      onTap: () {
+                                        List<String> imgList = [];
+                                        for (int i = 0;
+                                            i < imageListMap[index].length;
+                                            i++) {
+                                          imgList.add(
+                                              imageListMap[index][i]['file']);
+                                        }
+                                        pushNewScreen(context,
+                                            withNavBar: false,
+                                            screen: FullScreenSlider(
+                                                imageList: imgList,
+                                                index: imageIndex,
+                                                name: nameList[index]!),
+                                            pageTransitionAnimation:
+                                                PageTransitionAnimation
+                                                    .cupertino);
+                                      },
+                                      child: CachedNetworkImage(
+                                        imageUrl: imageListMap[index]
+                                            [imageIndex]['file'],
+                                        errorWidget: (context, url, error) =>
+                                            Image.asset('assets/images/404.gif',
+                                                fit: BoxFit.fitHeight,
+                                                width: 100.0.w),
+                                        imageBuilder:
+                                            (context, imageProvider) =>
                                                 Container(
-                                                  padding: EdgeInsets.only(
-                                                      top: 1.0.h),
-                                                  child: Text(
-                                                    "${likesList[index]} Likes",
-                                                    style: TextStyle(
-                                                        fontSize: 6.5.sp,
-                                                        color: Constants
-                                                            .bpOnBoardSubtitleStyle,
-                                                        fontFamily:
-                                                            'Montserrat',
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                  ),
-                                                ),
-                                              ],
+                                          //height: 100,
+                                          width: 100.0.w,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.fitWidth,
                                             ),
                                           ),
-                                          GestureDetector(
-                                            onTap: () async {
-                                              resultComment = await Navigator
-                                                      .of(context,
-                                                          rootNavigator: true)
-                                                  .push(MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          CommentScreen(
-                                                            postId: postIdList[
-                                                                index],
-                                                            name:
-                                                                nameList[index],
-                                                            profileImage:
-                                                                profileImageList[
-                                                                    index],
-                                                            degree: degreeList[
-                                                                index],
-                                                            schoolName:
-                                                                schoolList[
-                                                                    index],
-                                                            date:
-                                                                dateList[index],
-                                                            description:
-                                                                descriptionList[
-                                                                    index],
-                                                            like: likesList[
-                                                                index],
-                                                            comment:
-                                                                totalCommentsList[
-                                                                    index],
-                                                            isLiked:
-                                                                isLiked[index],
-                                                            isSaved:
-                                                                isSaved[index],
-                                                            imageListMap:
-                                                                imageListMap,
-                                                            index: index,
-                                                          )));
+                                        ),
+                                        placeholder: (context, url) =>
+                                            PhotoLoadingWidget()
+                                      )
+                                      );
+                                },
+                                options: CarouselOptions(
+                                    autoPlay: false,
+                                    enableInfiniteScroll: false,
+                                    viewportFraction: 1.0,
+                                    onPageChanged: (cindex, reason) {
+                                      setState(() {
+                                        _current[index] = cindex;
+                                      });
+                                    }
+                                    )))
+                        : Container(),
+                    indicator: imageListMap[index].length != 0
+                        ? Center(
+                            child: imageListMap[index].length != 1
+                                ? SizedBox(
+                                    height: 18,
+                                    child: ListView.builder(
+                                        itemCount: imageListMap[index].length,
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, iIndex) {
+                                          return Container(
+                                            width: 15.0,
+                                            height: 15.0,
+                                            margin: EdgeInsets.symmetric(vertical: 5.0),
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: (Theme.of(context)
+                                                                .brightness ==
+                                                            Brightness.dark
+                                                        ? Colors.white
+                                                        : Colors.black)
+                                                    .withOpacity(
+                                                        _current[index] == iIndex
+                                                            ? 0.9
+                                                            : 0.3)),
+                                          );
+                                        }),
+                                  )
+                                : SizedBox(),
+                          )
+                        : Row(),
+                    mutualLike:
+                        'Samay, Tarun & 324 other people are liked this post.', //likesList[index].toString(),
+                    likeTap: () {
+                      setState(() {
+                        isLiked[index] = !isLiked[index]!;
+                      });
+                      like.likePostApi(postIdList[index], authToken!);
+                      setState(() {
+                        isLiked[index] == true
+                            ? likesList[index] = likesList[index]! + 1
+                            : likesList[index] = likesList[index]! - 1;
+                      });
+                    },
+                    isLiked: isLiked[index]!,
+                    totalLike: likesList[index].toString(),
+                    commentTap: () async {
+                      resultComment =
+                          await Navigator.of(context, rootNavigator: true)
+                              .push(MaterialPageRoute(
+                                  builder: (context) => CommentScreen(
+                                        postId: postIdList[index],
+                                        name: nameList[index],
+                                        profileImage: profileImageList[index],
+                                        degree: degreeList[index],
+                                        schoolName: schoolList[index],
+                                        date: dateList[index],
+                                        description: descriptionList[index],
+                                        like: likesList[index],
+                                        comment: totalCommentsList[index],
+                                        isLiked: isLiked[index],
+                                        isSaved: isSaved[index],
+                                        imageListMap: imageListMap,
+                                        index: index,
+                                      )));
 
-                                              setState(() {});
+                      setState(() {});
 
-                                          totalCommentsList[resultComment['index']] = resultComment['count'];
-                                          likesList[resultComment['index']] = resultComment['likeCount']; 
-                                          isSaved[resultComment['index']] = resultComment['isSaved'];
-                                          isLiked[resultComment['index']] = resultComment['isLiked'];
-                                              //print('TC###' +
-                                                  // totalCommentsList[
-                                                  //         resultComment[
-                                                  //             'index']]
-                                                  //     .toString());
-                                              setState(() {});
+                      totalCommentsList[resultComment['index']] =
+                          resultComment['count'];
+                      likesList[resultComment['index']] =
+                          resultComment['likeCount'];
+                      isSaved[resultComment['index']] =
+                          resultComment['isSaved'];
+                      isLiked[resultComment['index']] =
+                          resultComment['isLiked'];
+                      setState(() {});
+                    },
+                    totalComments: totalCommentsList[index].toString(),
+                    saveTap: () {
+                      setState(() {
+                        isSaved[index] = !isSaved[index]!;
+                      });
+                      savePostApi(postIdList[index]);
+                    },
+                    isSaved: isSaved[index]!,
+                    shareTap: () {},
+                  );
+                            // ListView(
+                            //   shrinkWrap: true,
+                            //   physics: NeverScrollableScrollPhysics(),
+                            //   children: <Widget>[
+                            //     //main horizontal padding
+                            //     ListView(
+                            //       shrinkWrap: true,
+                            //       physics: NeverScrollableScrollPhysics(),
+                            //       children: <Widget>[
+                            //         SizedBox(
+                            //           height: 1.0.h,
+                            //         ),
+                            //         //ListTile for educator details
+                            //         ListTile(
+                            //             contentPadding: EdgeInsets.all(0.0),
+                            //             //leading:
+                            //             title: Row(
+                            //               mainAxisAlignment:
+                            //                   MainAxisAlignment.start,
+                            //               children: [
+                            //                 Padding(
+                            //                   padding: const EdgeInsets.only(
+                            //                       top: 5.0),
+                            //                   child: ClipRRect(
+                            //                     borderRadius:
+                            //                         BorderRadius.circular(50),
+                            //                     child:CachedNetworkImage(
+                            //                     imageUrl:profileImageUrl!,
+                            //                       width: 35.0,
+                            //                       height: 35.0,
+                            //                       fit: BoxFit.cover,
+                            //                     ),
+                            //                   ),
+                            //                 ),
+                            //                 SizedBox(
+                            //                   width: 2.0.w,
+                            //                 ),
+                            //                 Padding(
+                            //                   padding:
+                            //                       EdgeInsets.only(top: 1.0.h),
+                            //                   child: Column(
+                            //                     crossAxisAlignment:
+                            //                         CrossAxisAlignment.start,
+                            //                     children: [
+                            //                       Text(
+                            //                         name!,
+                            //                         style: TextStyle(
+                            //                             fontSize: 9.0.sp,
+                            //                             color:
+                            //                                 Constants.bgColor,
+                            //                             fontFamily:
+                            //                                 'Montserrat',
+                            //                             fontWeight:
+                            //                                 FontWeight.w700),
+                            //                       ),
+                            //                       SizedBox(height: 1.0),
+                            //                       Text(
+                            //                         '$degreeName | $schoolName',
+                            //                         style: TextStyle(
+                            //                             fontSize: 6.5.sp,
+                            //                             color:
+                            //                                 Constants.bgColor,
+                            //                             fontFamily:
+                            //                                 'Montserrat',
+                            //                             fontWeight:
+                            //                                 FontWeight.w400),
+                            //                       ),
+                            //                       SizedBox(height: 1.0),
+                            //                       Text(
+                            //                         dateList[index]!
+                            //                             .substring(0, 11),
+                            //                         style: TextStyle(
+                            //                             fontSize: 6.5.sp,
+                            //                             color:
+                            //                                 Constants.bgColor,
+                            //                             fontFamily:
+                            //                                 'Montserrat',
+                            //                             fontWeight:
+                            //                                 FontWeight.w400),
+                            //                       ),
+                            //                     ],
+                            //                   ),
+                            //                 ),
+                            //               ],
+                            //             ),
+                            //             trailing: IconButton(
+                            //                 icon: SvgPicture.asset(
+                            //                     'assets/icons/reportSvg.svg'),
+                            //                 //  Image.asset('assets/icons/issueIcon.png',
+                            //                 //   height: 18.0,
+                            //                 //   width: 18.0,),
+                            //                 onPressed: () {
+                            //                   pushNewScreen(context,
+                            //                       withNavBar: false,
+                            //                       screen: ReportFeed(
+                            //                         postId: postIdList[index],
+                            //                       ),
+                            //                       pageTransitionAnimation:
+                            //                           PageTransitionAnimation
+                            //                               .cupertino);
+                            //                 })),
+                            //         //Post descriptionText
+                            //         Padding(
+                            //           padding: const EdgeInsets.symmetric(
+                            //               vertical: 0.0, horizontal: 2.0),
+                            //           child: Container(
+                            //             width: 100.0.w,
+                            //             child: Text(
+                            //               descriptionList[index]!,
+                            //               style: TextStyle(
+                            //                 fontSize: 12.0.sp,
+                            //                 color: Constants
+                            //                     .bpOnBoardSubtitleStyle,
+                            //                 fontFamily: 'Montserrat',
+                            //                 height: 1.5,
+                            //                 fontWeight: FontWeight.w400,
+                            //               ),
+                            //               // textAlign: TextAlign.justify
+                            //             ),
+                            //           ),
+                            //         ),
+                            //         SizedBox(
+                            //           height: 1.0.h,
+                            //         ),
+                            //         // Container for image or video
+                            //         imageListMap[index].length == 0
+                            //             ? Container()
+                            //             : Container(
+                            //                 height: 25.0.h,
+                            //                 width: 100.0.w,
+                            //                 child: ListView.builder(
+                            //                   shrinkWrap: true,
+                            //                   physics: BouncingScrollPhysics(),
+                            //                   scrollDirection: Axis.horizontal,
+                            //                   //itemExtent: MediaQuery.of(context).size.width / imageListMap[index].length,
+                            //                   itemCount:
+                            //                       imageListMap[index].length,
+                            //                   itemBuilder:
+                            //                       (context, imageIndex) {
+                            //                     return imageListMap[index]
+                            //                                 .length ==
+                            //                             1
+                            //                         ? Padding(
+                            //                             padding: EdgeInsets
+                            //                                 .symmetric(
+                            //                                     horizontal:
+                            //                                         15.0.w),
+                            //                             child: GestureDetector(
+                            //                               onTap: () {
+                            //                                 List<String>
+                            //                                     imgList = [];
+                            //                                 for (int i = 0;
+                            //                                     i <
+                            //                                         imageListMap[
+                            //                                                 index]
+                            //                                             .length;
+                            //                                     i++) {
+                            //                                   imgList.add(
+                            //                                       imageListMap[
+                            //                                               index]
+                            //                                           [
+                            //                                           i]['file']);
+                            //                                 }
+                            //                                 pushNewScreen(
+                            //                                     context,
+                            //                                     withNavBar:
+                            //                                         false,
+                            //                                     screen: FullScreenSlider(
+                            //                                         imageList:
+                            //                                             imgList,
+                            //                                         index:
+                            //                                             imageIndex,
+                            //                                         name: nameList[
+                            //                                             index]!),
+                            //                                     pageTransitionAnimation:
+                            //                                         PageTransitionAnimation
+                            //                                             .cupertino);
+                            //                               },
+                            //                               child:CachedNetworkImage(
+                            //                     imageUrl:imageListMap[index]
+                            //                                         [imageIndex]
+                            //                                     ['file'],
+                            //                                 height: 100,
+                            //                                 width: 250,
+                            //                                 fit: BoxFit.contain,
+                            //                               ),
+                            //                             ),
+                            //                           )
+                            //                         : Padding(
+                            //                             padding:
+                            //                                 const EdgeInsets
+                            //                                     .all(8.0),
+                            //                             child: GestureDetector(
+                            //                               onTap: () {
+                            //                                 List<String>
+                            //                                     imgList = [];
+                            //                                 for (int i = 0;
+                            //                                     i <
+                            //                                         imageListMap[
+                            //                                                 index]
+                            //                                             .length;
+                            //                                     i++) {
+                            //                                   imgList.add(
+                            //                                       imageListMap[
+                            //                                               index]
+                            //                                           [
+                            //                                           i]['file']);
+                            //                                 }
+                            //                                 pushNewScreen(
+                            //                                     context,
+                            //                                     withNavBar:
+                            //                                         false,
+                            //                                     screen: FullScreenSlider(
+                            //                                         imageList:
+                            //                                             imgList,
+                            //                                         index:
+                            //                                             imageIndex,
+                            //                                         name: nameList[
+                            //                                             index]!),
+                            //                                     pageTransitionAnimation:
+                            //                                         PageTransitionAnimation
+                            //                                             .cupertino);
+                            //                               },
+                            //                               child:CachedNetworkImage(
+                            //                     imageUrl:imageListMap[index]
+                            //                                         [imageIndex]
+                            //                                     ['file'],
+                            //                                 height: 100,
+                            //                                 width: 250,
+                            //                                 fit: BoxFit.cover,
+                            //                               ),
+                            //                             ),
+                            //                           );
+                            //                   },
+                            //                 ),
+                            //               ),
 
-                                              // pushNewScreen(context,
-                                              //     withNavBar: false,
-                                              //     screen: CommentScreen(
-                                              //       postId: postIdList[index],
-                                              //       name: nameList[index],
-                                              //       profileImage: profileImageList[index],
-                                              //       degree: degreeList[index],
-                                              //       schoolName: schoolList[index],
-                                              //       date: dateList[index],
-                                              //       description: descriptionList[index],
-                                              //       like: likesList[index],
-                                              //       comment: totalCommentsList[index],
-                                              //       isLiked: isLiked[index],
-                                              //       isSaved: isSaved[index],
-                                              //       imageListMap: imageListMap,
-                                              //       index: index,
-                                              //     ),
-                                              //     pageTransitionAnimation:
-                                              //     PageTransitionAnimation
-                                              //         .cupertino);
-                                            },
-                                            child: Container(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  ImageIcon(
-                                                    AssetImage(
-                                                        'assets/icons/commentNew.png'),
-                                                    size: 21.0,
-                                                    color: Constants
-                                                        .bpOnBoardSubtitleStyle,
-                                                  ),
-                                                  // Icon(
-                                                  //   Icons.comment_outlined,
-                                                  //   color: Constants
-                                                  //       .bpOnBoardSubtitleStyle,
-                                                  //   size: 30.0,
-                                                  // ),
-                                                  SizedBox(
-                                                    width: 2.0.w,
-                                                  ),
-                                                  Container(
-                                                    padding: EdgeInsets.only(
-                                                        top: 1.0.h),
-                                                    child: Text(
-                                                      //  resultComment['index'] == index
-                                                      // ? "${resultComment['count']} Comments"
-                                                      // :
-                                                      "${totalCommentsList[index]} Comments",
-                                                      style: TextStyle(
-                                                          fontSize: 6.5.sp,
-                                                          color: Constants
-                                                              .bpOnBoardSubtitleStyle,
-                                                          fontFamily:
-                                                              'Montserrat',
-                                                          fontWeight:
-                                                              FontWeight.w400),
-                                                    ),
-                                                  )
-                                                  // Container(
-                                                  //   padding:
-                                                  //       EdgeInsets.only(top: 1.0.h),
-                                                  //   child: Text(
-                                                  //     "Comment",
-                                                  //     style: TextStyle(
-                                                  //         fontSize: 6.5.sp,
-                                                  //         color: Constants
-                                                  //             .bpOnBoardSubtitleStyle,
-                                                  //         fontFamily: 'Montserrat',
-                                                  //         fontWeight: FontWeight.w400),
-                                                  //   ),
-                                                  // ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                isSaved[index] =
-                                                    !isSaved[index]!;
-                                              });
-                                              savePostApi(postIdList[index]);
-                                            },
-                                            child: Container(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  ImageIcon(
-                                                    isSaved[index]!
-                                                        ? AssetImage(
-                                                            'assets/icons/saveGreen.png')
-                                                        : AssetImage(
-                                                            'assets/icons/saveNew.png'),
-                                                    color: isSaved[index]!
-                                                        ? Constants.selectedIcon
-                                                        : Constants
-                                                            .bpOnBoardSubtitleStyle,
-                                                    size: 21.0,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 1.0.w,
-                                                  ),
-                                                  Container(
-                                                    padding: EdgeInsets.only(
-                                                        top: 1.0.h),
-                                                    child: Text(
-                                                      "Save",
-                                                      style: TextStyle(
-                                                          fontSize: 6.5.sp,
-                                                          color: Constants
-                                                              .bpOnBoardSubtitleStyle,
-                                                          fontFamily:
-                                                              'Montserrat',
-                                                          fontWeight:
-                                                              FontWeight.w400),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            );
+                            //         //divider
+                            //         Divider(
+                            //           height: 1.0.h,
+                            //           color: Constants.bpOnBoardSubtitleStyle
+                            //               .withOpacity(0.5),
+                            //           thickness: 1.0,
+                            //         ),
+                            //         //Row for Like comment and Share
+                            //         Padding(
+                            //           padding: EdgeInsets.only(
+                            //               top: 0.5.h, bottom: 0.5.h),
+                            //           child: Row(
+                            //             mainAxisAlignment:
+                            //                 MainAxisAlignment.spaceBetween,
+                            //             children: <Widget>[
+                            //               GestureDetector(
+                            //                 onTap: () {
+                            //                   setState(() {
+                            //                     isLiked[index] =
+                            //                         !isLiked[index]!;
+                            //                   });
+                            //                   like.likePostApi(
+                            //                       postIdList[index],
+                            //                       authToken!);
+                            //                   setState(() {
+                            //                     isLiked[index] == true
+                            //                         ? likesList[index] = likesList[index]! + 1
+                            //                         : likesList[index] = likesList[index]! - 1;
+                            //                   });
+                            //                 },
+                            //                 child: Row(
+                            //                   mainAxisAlignment:
+                            //                       MainAxisAlignment.start,
+                            //                   children: [
+                            //                     ImageIcon(
+                            //                       isLiked[index]!
+                            //                           ? AssetImage(
+                            //                               'assets/icons/likeNew.png')
+                            //                           : AssetImage(
+                            //                               'assets/icons/likeThumb.png'),
+                            //                       color: isLiked[index]!
+                            //                           ? Constants.selectedIcon
+                            //                           : Constants
+                            //                               .bpOnBoardSubtitleStyle,
+                            //                       size: 25.0,
+                            //                     ),
+                            //                     SizedBox(
+                            //                       width: 1.0.w,
+                            //                     ),
+                            //                     Container(
+                            //                       padding: EdgeInsets.only(
+                            //                           top: 1.0.h),
+                            //                       child: Text(
+                            //                         "${likesList[index]} Likes",
+                            //                         style: TextStyle(
+                            //                             fontSize: 6.5.sp,
+                            //                             color: Constants
+                            //                                 .bpOnBoardSubtitleStyle,
+                            //                             fontFamily:
+                            //                                 'Montserrat',
+                            //                             fontWeight:
+                            //                                 FontWeight.w400),
+                            //                       ),
+                            //                     ),
+                            //                   ],
+                            //                 ),
+                            //               ),
+                            //               GestureDetector(
+                            //                 onTap: () async {
+                            //                   resultComment = await Navigator
+                            //                           .of(context,
+                            //                               rootNavigator: true)
+                            //                       .push(MaterialPageRoute(
+                            //                           builder: (context) =>
+                            //                               CommentScreen(
+                            //                                 postId: postIdList[
+                            //                                     index],
+                            //                                 name:
+                            //                                     nameList[index],
+                            //                                 profileImage:
+                            //                                     profileImageList[
+                            //                                         index],
+                            //                                 degree: degreeList[
+                            //                                     index],
+                            //                                 schoolName:
+                            //                                     schoolList[
+                            //                                         index],
+                            //                                 date:
+                            //                                     dateList[index],
+                            //                                 description:
+                            //                                     descriptionList[
+                            //                                         index],
+                            //                                 like: likesList[
+                            //                                     index],
+                            //                                 comment:
+                            //                                     totalCommentsList[
+                            //                                         index],
+                            //                                 isLiked:
+                            //                                     isLiked[index],
+                            //                                 isSaved:
+                            //                                     isSaved[index],
+                            //                                 imageListMap:
+                            //                                     imageListMap,
+                            //                                 index: index,
+                            //                               )));
+
+                            //                   setState(() {});
+
+                            //               totalCommentsList[resultComment['index']] = resultComment['count'];
+                            //               likesList[resultComment['index']] = resultComment['likeCount']; 
+                            //               isSaved[resultComment['index']] = resultComment['isSaved'];
+                            //               isLiked[resultComment['index']] = resultComment['isLiked'];
+                            //                   //print('TC###' +
+                            //                       // totalCommentsList[
+                            //                       //         resultComment[
+                            //                       //             'index']]
+                            //                       //     .toString());
+                            //                   setState(() {});
+
+                            //                   // pushNewScreen(context,
+                            //                   //     withNavBar: false,
+                            //                   //     screen: CommentScreen(
+                            //                   //       postId: postIdList[index],
+                            //                   //       name: nameList[index],
+                            //                   //       profileImage: profileImageList[index],
+                            //                   //       degree: degreeList[index],
+                            //                   //       schoolName: schoolList[index],
+                            //                   //       date: dateList[index],
+                            //                   //       description: descriptionList[index],
+                            //                   //       like: likesList[index],
+                            //                   //       comment: totalCommentsList[index],
+                            //                   //       isLiked: isLiked[index],
+                            //                   //       isSaved: isSaved[index],
+                            //                   //       imageListMap: imageListMap,
+                            //                   //       index: index,
+                            //                   //     ),
+                            //                   //     pageTransitionAnimation:
+                            //                   //     PageTransitionAnimation
+                            //                   //         .cupertino);
+                            //                 },
+                            //                 child: Container(
+                            //                   child: Row(
+                            //                     mainAxisAlignment:
+                            //                         MainAxisAlignment.start,
+                            //                     children: [
+                            //                       ImageIcon(
+                            //                         AssetImage(
+                            //                             'assets/icons/commentNew.png'),
+                            //                         size: 21.0,
+                            //                         color: Constants
+                            //                             .bpOnBoardSubtitleStyle,
+                            //                       ),
+                            //                       // Icon(
+                            //                       //   Icons.comment_outlined,
+                            //                       //   color: Constants
+                            //                       //       .bpOnBoardSubtitleStyle,
+                            //                       //   size: 30.0,
+                            //                       // ),
+                            //                       SizedBox(
+                            //                         width: 2.0.w,
+                            //                       ),
+                            //                       Container(
+                            //                         padding: EdgeInsets.only(
+                            //                             top: 1.0.h),
+                            //                         child: Text(
+                            //                           //  resultComment['index'] == index
+                            //                           // ? "${resultComment['count']} Comments"
+                            //                           // :
+                            //                           "${totalCommentsList[index]} Comments",
+                            //                           style: TextStyle(
+                            //                               fontSize: 6.5.sp,
+                            //                               color: Constants
+                            //                                   .bpOnBoardSubtitleStyle,
+                            //                               fontFamily:
+                            //                                   'Montserrat',
+                            //                               fontWeight:
+                            //                                   FontWeight.w400),
+                            //                         ),
+                            //                       )
+                            //                       // Container(
+                            //                       //   padding:
+                            //                       //       EdgeInsets.only(top: 1.0.h),
+                            //                       //   child: Text(
+                            //                       //     "Comment",
+                            //                       //     style: TextStyle(
+                            //                       //         fontSize: 6.5.sp,
+                            //                       //         color: Constants
+                            //                       //             .bpOnBoardSubtitleStyle,
+                            //                       //         fontFamily: 'Montserrat',
+                            //                       //         fontWeight: FontWeight.w400),
+                            //                       //   ),
+                            //                       // ),
+                            //                     ],
+                            //                   ),
+                            //                 ),
+                            //               ),
+                            //               GestureDetector(
+                            //                 onTap: () {
+                            //                   setState(() {
+                            //                     isSaved[index] =
+                            //                         !isSaved[index]!;
+                            //                   });
+                            //                   savePostApi(postIdList[index]);
+                            //                 },
+                            //                 child: Container(
+                            //                   child: Row(
+                            //                     mainAxisAlignment:
+                            //                         MainAxisAlignment.start,
+                            //                     children: [
+                            //                       ImageIcon(
+                            //                         isSaved[index]!
+                            //                             ? AssetImage(
+                            //                                 'assets/icons/saveGreen.png')
+                            //                             : AssetImage(
+                            //                                 'assets/icons/saveNew.png'),
+                            //                         color: isSaved[index]!
+                            //                             ? Constants.selectedIcon
+                            //                             : Constants
+                            //                                 .bpOnBoardSubtitleStyle,
+                            //                         size: 21.0,
+                            //                       ),
+                            //                       SizedBox(
+                            //                         width: 1.0.w,
+                            //                       ),
+                            //                       Container(
+                            //                         padding: EdgeInsets.only(
+                            //                             top: 1.0.h),
+                            //                         child: Text(
+                            //                           "Save",
+                            //                           style: TextStyle(
+                            //                               fontSize: 6.5.sp,
+                            //                               color: Constants
+                            //                                   .bpOnBoardSubtitleStyle,
+                            //                               fontFamily:
+                            //                                   'Montserrat',
+                            //                               fontWeight:
+                            //                                   FontWeight.w400),
+                            //                         ),
+                            //                       ),
+                            //                     ],
+                            //                   ),
+                            //                 ),
+                            //               ),
+                            //             ],
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     )
+                            //   ],
+                            // );
                           },
                           separatorBuilder: (context, index) {
                             return Divider(
