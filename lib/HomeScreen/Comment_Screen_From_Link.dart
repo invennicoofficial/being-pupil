@@ -23,12 +23,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 import 'Fulll_Screen_Image_Screen.dart';
 
-class CommentScreen extends StatefulWidget {
+class CommentScreenFromLink extends StatefulWidget {
   String? name, profileImage, degree, schoolName, date, description;
   int? postId, like, comment, index, userId;
   bool? isLiked, isSaved;
-  Map<int, dynamic>? imageListMap;
-  CommentScreen(
+  List<String>? imageListMap;
+  CommentScreenFromLink(
       {Key? key,
       this.postId,
       this.userId,
@@ -47,10 +47,10 @@ class CommentScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _CommentScreenState createState() => _CommentScreenState();
+  _CommentScreenFromLinkState createState() => _CommentScreenFromLinkState();
 }
 
-class _CommentScreenState extends State<CommentScreen> {
+class _CommentScreenFromLinkState extends State<CommentScreenFromLink> {
   List<String> dpImages = [];
   List<String?> profileImages = [];
   List<String?> name = [];
@@ -258,27 +258,27 @@ class _CommentScreenState extends State<CommentScreen> {
                                   child: CarouselSlider.builder(
                                       carouselController: _controller,
                                       itemCount: widget
-                                          .imageListMap![widget.index].length,
+                                          .imageListMap!.length,
                                       itemBuilder:
                                           (context, imageIndex, rindex) {
                                         return GestureDetector(
                                             onTap: () {
-                                              List<String> imgList = [];
-                                              for (int i = 0;
-                                                  i <
-                                                      widget
-                                                          .imageListMap![
-                                                              widget.index!]
-                                                          .length;
-                                                  i++) {
-                                                imgList.add(widget
-                                                        .imageListMap![
-                                                    widget.index!][i]['file']);
-                                              }
+                                              // List<String> imgList = [];
+                                              // for (int i = 0;
+                                              //     i <
+                                              //         widget
+                                              //             .imageListMap![
+                                              //                 widget.index!]
+                                              //             .length;
+                                              //     i++) {
+                                              //   imgList.add(widget
+                                              //           .imageListMap![
+                                              //       widget.index!][i]['file']);
+                                              // }
                                               pushNewScreen(context,
                                                   withNavBar: false,
                                                   screen: FullScreenSlider(
-                                                      imageList: imgList,
+                                                      imageList: widget.imageListMap!,
                                                       index: imageIndex,
                                                       name: widget.name!),
                                                   pageTransitionAnimation:
@@ -287,8 +287,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                             },
                                             child: CachedNetworkImage(
                                                 imageUrl: widget.imageListMap![
-                                                        widget.index!]
-                                                    [imageIndex]['file'],
+                                                        imageIndex],
                                                 errorWidget: (context, url,
                                                         error) =>
                                                     Image.asset(
@@ -321,17 +320,17 @@ class _CommentScreenState extends State<CommentScreen> {
                                           })))
                               : Container(),
                           indicator: widget
-                                      .imageListMap![widget.index].length !=
+                                      .imageListMap!.length !=
                                   0
                               ? Center(
-                                  child: widget.imageListMap![widget.index]
+                                  child: widget.imageListMap!
                                               .length !=
                                           1
                                       ? SizedBox(
                                           height: 18,
                                           child: ListView.builder(
                                               itemCount: widget
-                                                  .imageListMap![widget.index]
+                                                  .imageListMap!
                                                   .length,
                                               shrinkWrap: true,
                                               physics:
@@ -406,10 +405,9 @@ class _CommentScreenState extends State<CommentScreen> {
                               widget.index!,
                               widget.name!,
                               widget.description!,
-                              widget.imageListMap![widget.index].isEmpty
+                              widget.imageListMap!.isEmpty
                                   ? ''
-                                  : widget.imageListMap![widget.index][0]
-                                          ['file']
+                                  : widget.imageListMap![0]
                                       .toString(),
                             );
                           },

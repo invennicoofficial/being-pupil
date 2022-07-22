@@ -92,6 +92,7 @@ class NumberInputWidget extends StatelessWidget {
               autofocus: autoFocus,
               readOnly: isReadOnly,
               keyboardType: TextInputType.phone,
+              textInputAction: TextInputAction.done,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(10),
                 FilteringTextInputFormatter.digitsOnly
@@ -170,6 +171,7 @@ class TextInputWidget extends StatelessWidget {
           child: TextFormField(
             controller: textEditingController,
             readOnly: isReadOnly ?? false,
+            textInputAction: TextInputAction.done,
             inputFormatters: [
               isIdField
                   ? LengthLimitingTextInputFormatter(15)
@@ -230,6 +232,7 @@ class LinkInputWidget extends StatelessWidget {
             width: moreLink ? 80.0.w : 90.0.w,
             child: TextFormField(
               controller: textEditingController,
+              textInputAction: TextInputAction.done,
               decoration: InputDecoration(
                   labelText: lable,
                   labelStyle: TextStyle(
@@ -295,6 +298,7 @@ class MultilineTextInput extends StatelessWidget {
                 controller: textEditingController,
                 maxLines: 5,
                 keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
                     fillColor: Colors.white,
                     focusedBorder: OutlineInputBorder(

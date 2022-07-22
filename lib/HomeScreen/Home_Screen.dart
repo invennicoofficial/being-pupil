@@ -4,6 +4,7 @@ import 'package:being_pupil/ConnectyCube/api_utils.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/ConnectyCube/select_dialog_screen.dart';
 import 'package:being_pupil/Constants/Const.dart';
+import 'package:being_pupil/HomeScreen/Comment_Screen_From_Link.dart';
 import 'package:being_pupil/HomeScreen/Create_Post_Screen.dart';
 import 'package:being_pupil/HomeScreen/Fulll_Screen_Image_Screen.dart';
 import 'package:being_pupil/Model/Config.dart';
@@ -71,7 +72,12 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
   List<String?> profileImageList = [];
   List<String?> degreeList = [];
   List<String?> schoolList = [];
+  List<String?> cityList = [];
+  List<String?> durationList = [];
   List<String?> descriptionList = [];
+  List<String?> commentTextList = [];
+  List<String?> mutualList = [];
+  List<String?> commentProfile = [];
   Map<int, dynamic> imageListMap = {};
   List<int?> likesList = [];
   List<int?> totalCommentsList = [];
@@ -93,6 +99,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
   FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
   GetAllProperty propertyDetails = GetAllProperty();
   Map<String, dynamic>? propMap;
+  Map<String, dynamic> postMap = {};
   List<dynamic> propDataList = [];
   //List<dynamic>? mapData;
   List<int> _current = [];
@@ -101,6 +108,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
   List<String> list = [];
   String? _linkMessage;
   bool _isCreatingLink = false;
+  var dLink = CreateDynamicLink();
 
   @override
   void initState() {
@@ -247,11 +255,16 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
       userIdList = [];
       dateList = [];
       descriptionList = [];
+      commentTextList = [];
+      mutualList = [];
       //imageListMap.removeWhere((key, value) => key == index);
       likesList = [];
       totalCommentsList = [];
       nameList = [];
       profileImageList = [];
+      cityList = [];
+      durationList = [];
+      commentProfile = [];
       degreeList = [];
       schoolList = [];
       isSaved = [];
@@ -282,17 +295,25 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
     final Uri? deepLink = data?.link;
 
     if (deepLink != null) {
-      //print('DL:::::::$deepLink');
+      print('DL:::::::$deepLink');
       // ignore: unawaited_futures
       //Future.delayed(const Duration(milliseconds: 1000), () {
-      getPropertyAPI(deepLink.toString().substring(0, 51));
+      if (deepLink.toString().contains('/post')) {
+        getPostById(deepLink.toString());
+      } else {
+        getPropertyAPI(deepLink.toString().substring(0, 51));
+      }
       //setState(() {});
       //});
       //Navigator.pushNamed(context, deepLink.path);
     }
     dynamicLinks.onLink.listen((dynamicLinkData) {
-      //print('DL:::'+ dynamicLinkData.link.toString());
-      getPropertyAPI(dynamicLinkData.link.toString().substring(0, 51));
+      print('DL:::' + dynamicLinkData.link.toString());
+      if (dynamicLinkData.link.toString().contains('/post')) {
+        getPostById(dynamicLinkData.link.toString());
+      } else {
+        getPropertyAPI(dynamicLinkData.link.toString().substring(0, 51));
+      }
       //Navigator.pushNamed(context, dynamicLinkData.link.path);
     }).onError((error) {
       //print('onLink error');
@@ -393,17 +414,25 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                 shrinkWrap: true,
                 itemCount: postIdList != null ? postIdList.length : 0,
                 itemBuilder: (context, index) {
+                  final tagName = mutualList[index];
+                  final split = tagName.toString().split(',');
+                  final Map<int, String> values = {
+                    for (int i = 0; i < split.length; i++) i: split[i]
+                  };
                   return PostWidget(
                     isCommentScreen: false,
+                    commentImage: commentProfile[index],
                     postId: postIdList[index]!,
                     profileTap: () {
+                      print('ID:::' + userIdList[index].toString());
                       getUserProfile(userIdList[index]);
                     },
                     profileImage: profileImageList[index]!,
                     profileName: nameList[index]!,
-                    profileSchool:
-                        '${degreeList[index]} | ${schoolList[index]}',
-                    postTime: dateList[index]!.substring(0, 11),
+                    profileSchool: cityList[index]!,
+                    //'${degreeList[index]} | ${schoolList[index]}',
+                    postTime: durationList[index]!,
+                    //dateList[index]!.substring(0, 11),
                     reportTap: () async {
                       var result = await pushNewScreen(context,
                           withNavBar: false,
@@ -445,28 +474,27 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                                     .cupertino);
                                       },
                                       child: CachedNetworkImage(
-                                        imageUrl: imageListMap[index]
-                                            [imageIndex]['file'],
-                                        errorWidget: (context, url, error) =>
-                                            Image.asset('assets/images/404.gif',
-                                                fit: BoxFit.fitHeight,
-                                                width: 100.0.w),
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                Container(
-                                          //height: 100,
-                                          width: 100.0.w,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: imageProvider,
-                                              fit: BoxFit.fitWidth,
-                                            ),
-                                          ),
-                                        ),
-                                        placeholder: (context, url) =>
-                                            PhotoLoadingWidget()
-                                      )
-                                      );
+                                          imageUrl: imageListMap[index]
+                                              [imageIndex]['file'],
+                                          errorWidget: (context, url, error) =>
+                                              Image.asset(
+                                                  'assets/images/404.gif',
+                                                  fit: BoxFit.fitHeight,
+                                                  width: 100.0.w),
+                                          imageBuilder:
+                                              (context, imageProvider) =>
+                                                  Container(
+                                                    //height: 100,
+                                                    width: 100.0.w,
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: imageProvider,
+                                                        fit: BoxFit.fitWidth,
+                                                      ),
+                                                    ),
+                                                  ),
+                                          placeholder: (context, url) =>
+                                              PhotoLoadingWidget()));
                                 },
                                 options: CarouselOptions(
                                     autoPlay: false,
@@ -476,8 +504,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                       setState(() {
                                         _current[index] = cindex;
                                       });
-                                    }
-                                    )))
+                                    })))
                         : Container(),
                     indicator: imageListMap[index].length != 0
                         ? Center(
@@ -494,7 +521,8 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                           return Container(
                                             width: 15.0,
                                             height: 15.0,
-                                            margin: EdgeInsets.symmetric(vertical: 5.0),
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: 5.0),
                                             decoration: BoxDecoration(
                                                 shape: BoxShape.circle,
                                                 color: (Theme.of(context)
@@ -503,7 +531,8 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                                         ? Colors.white
                                                         : Colors.black)
                                                     .withOpacity(
-                                                        _current[index] == iIndex
+                                                        _current[index] ==
+                                                                iIndex
                                                             ? 0.9
                                                             : 0.3)),
                                           );
@@ -512,8 +541,9 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                 : SizedBox(),
                           )
                         : Row(),
-                    mutualLike:
-                        'Samay, Tarun & 324 other people are liked this post.', //likesList[index].toString(),
+                    mutualLike: likesList[index]! -
+                        values.length, //likesList[index].toString(),
+                    mutualFriend: mutualList[index],
                     likeTap: () {
                       setState(() {
                         isLiked[index] = !isLiked[index]!;
@@ -536,9 +566,9 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                         userId: userIdList[index],
                                         name: nameList[index],
                                         profileImage: profileImageList[index],
-                                        degree: degreeList[index],
+                                        degree: cityList[index],
                                         schoolName: schoolList[index],
-                                        date: dateList[index],
+                                        date: durationList[index],
                                         description: descriptionList[index],
                                         like: likesList[index],
                                         comment: totalCommentsList[index],
@@ -568,18 +598,30 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                       savePostApi(postIdList[index]);
                     },
                     isSaved: isSaved[index]!,
-                    shareTap: !_isCreatingLink ? (){
-                      print(postIdList[index].toString());
-                      _createDynamicLink(true, postIdList[index].toString(), index);
-                    } : (){},
+                    shareTap: () async {
+                      await dLink.createDynamicLink(
+                        true,
+                        postIdList[index].toString(),
+                        index,
+                        nameList[index]!,
+                        descriptionList[index]!,
+                        imageListMap[index].isEmpty
+                            ? ''
+                            : imageListMap[index][0]['file'].toString(),
+                      );
+                    },
+                    iscomment: commentTextList[index] != null ? true : false,
+                    commentText: commentTextList[index] != null
+                        ? commentTextList[index]!
+                        : '',
                   );
                 },
                 separatorBuilder: (context, index) {
                   return Divider(
-                      //height: 2.0.h,
-                      thickness: 5.0,
-                      color: Color(0xFFD3D9E0),
-                    );
+                    //height: 2.0.h,
+                    thickness: 5.0,
+                    color: Color(0xFFD3D9E0),
+                  );
                 },
               ),
             ),
@@ -640,6 +682,8 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
             _current.add(0);
             nameList.add(map!['data'][i]['name']);
             profileImageList.add(map!['data'][i]['profile_image']);
+            cityList.add(map!['data'][i]['city']);
+            durationList.add(map!['data'][i]['duration']);
             degreeList.add(map!['data'][i]['last_degree']);
             schoolList.add(map!['data'][i]['school_name']);
             postIdList.add(map!['data'][i]['post_id']);
@@ -650,6 +694,9 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
             isSaved.add(map!['data'][i]['isSaved']);
             likesList.add(map!['data'][i]['total_likes']);
             totalCommentsList.add(map!['data'][i]['total_comments']);
+            commentTextList.add(map!['data'][i]['comment']);
+            mutualList.add(map!['data'][i]['mutual']);
+            commentProfile.add(map!['data'][i]['commenter_profile']);
             for (int j = 0; j < map!['data'].length; j++) {
               imageListMap.putIfAbsent(k, () => map!['data'][i]['post_media']);
             }
@@ -943,7 +990,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
         propMap = response.data;
         propDataList.add(propMap!['data'][0]);
         //mapData = map!['data'];
-        //print('PROP:::'+propMap.toString());
+        print('PROP:::' + propMap.toString());
         //print('PROPDATA:::'+propDataList.toString());
         //closeProgressDialog(context);
 
@@ -1033,45 +1080,76 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
     //return propertyDetails;
   }
 
-  //create dynamic link
-Future<void> _createDynamicLink(bool short, String id, int index) async {
-    setState(() {
-      _isCreatingLink = true;
-    });
-//print('create DL::: ${widget.propData![widget.index]['featured_image'][0].toString()}');
-    final DynamicLinkParameters parameters = DynamicLinkParameters(
-      uriPrefix: 'https://bepshare.page.link',
-      link: Uri.parse("https://beingpupil.com"),
-      androidParameters: const AndroidParameters(
-        packageName: 'com.beingPupil',
-        minimumVersion: 0,
-      ),
-      iosParameters: const IOSParameters(
-        bundleId: 'com.beingpupil',
-        minimumVersion: '0',
-      ),
-      socialMetaTagParameters: SocialMetaTagParameters(
-        title: nameList[index],
-        description: descriptionList[index].toString(),
-        imageUrl: imageListMap[index].isEmpty ? Uri.parse('') :
-        Uri.parse(imageListMap[index][0]['file'].toString()),
-      )
-    );
-    Uri url;
-    if (short) {
-      final ShortDynamicLink shortLink =
-          await dynamicLinks.buildShortLink(parameters);
-       url = shortLink.shortUrl;
-    } else {
-      url = await dynamicLinks.buildLink(parameters);
-    }
-    setState(() {
-      _linkMessage = url.toString();
-      _isCreatingLink = false;
-    });
+  getPostById(String url) async {
+    List<String> imageListMap1 = [];
+    isLoading = true;
+    propDataList.clear();
+    setState(() {});
+    try {
+      var dio = Dio();
+      var response = await dio.get(url,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
+      if (response.statusCode == 200) {
+        //propertyDetails = GetAllProperty.fromJson(response.data);
+        postMap = response.data;
+        //propDataList.add(propMap!['data'][0]);
 
-    Share.share(
-      'Check out this post on Being Pupil App! $_linkMessage',
-       subject: 'Download Being Pupil App!');
-}
+        if (postMap['status'] == true) {
+          isLoading = false;
+          setState(() {});
+
+          for (int j = 0; j < postMap['data']['post_media'].length; j++) {
+            imageListMap1.add(postMap['data']['post_media'][j]['file']);
+          }
+
+          print('IMMM:::' + imageListMap1.toString());
+
+          resultComment = await Navigator.of(context, rootNavigator: true)
+              .push(MaterialPageRoute(
+                  builder: (context) => CommentScreenFromLink(
+                        postId: postMap['data']['post_id'],
+                        userId: postMap['data']['post_user_id'],
+                        name: postMap['data']['name'],
+                        profileImage: postMap['data']['profile_image'],
+                        degree: postMap['data']['city'],
+                        schoolName: postMap['data']['school_name'],
+                        date: postMap['data']['duration'],
+                        description: postMap['data']['description'],
+                        comment: postMap['data']['total_comments'],
+                        like: postMap['data']['total_likes'],
+                        isLiked: postMap['data']['isLiked'],
+                        isSaved: postMap['data']['isSaved'],
+                        imageListMap: imageListMap1,
+                        index: 0,
+                      )));
+
+          setState(() {});
+
+          totalCommentsList[resultComment['index']] = resultComment['count'];
+          likesList[resultComment['index']] = resultComment['likeCount'];
+          isSaved[resultComment['index']] = resultComment['isSaved'];
+          isLiked[resultComment['index']] = resultComment['isLiked'];
+          // setState(() {});
+
+        } else {
+          isLoading = false;
+          setState(() {});
+        }
+      }
+    } on DioError catch (e, stack) {
+      isLoading = false;
+      setState(() {});
+      if (e.response != null) {
+        Fluttertoast.showToast(
+          msg: e.response!.data['meta']['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Constants.bgColor,
+          textColor: Colors.white,
+          fontSize: 10.0.sp,
+        );
+      } else {}
+    }
+  }
 }

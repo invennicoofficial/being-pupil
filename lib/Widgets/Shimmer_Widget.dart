@@ -39,3 +39,24 @@ class ProfileLoadingWidget extends StatelessWidget {
     );
   }
 }
+
+class PropertyLoadingWidget extends StatelessWidget {
+  const PropertyLoadingWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      enabled: true,
+      child: Container(
+      width: 100.0.w,
+      height: 18.0.h,
+      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+      child: Icon(Icons.photo, size: 100, color: Colors.grey,),
+      )
+    );
+  }
+}

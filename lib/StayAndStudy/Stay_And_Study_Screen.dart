@@ -3,6 +3,7 @@ import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Stay_And_Study_Model/Get_All_Property_Model.dart';
 import 'package:being_pupil/StayAndStudy/Property_Details_Screen.dart';
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
+import 'package:being_pupil/Widgets/Shimmer_Widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -178,9 +179,10 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
-                      placeholder: (context, url) => CircularProgressIndicator(
-                        backgroundColor: Constants.bgColor,
-                      ),
+                      placeholder: (context, url) => PropertyLoadingWidget()
+                      // CircularProgressIndicator(
+                      //   backgroundColor: Constants.bgColor,
+                      // ),
                     ),
                                   // Container(
                                   //   height: 18.0.h,

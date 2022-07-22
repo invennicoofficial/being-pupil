@@ -70,6 +70,11 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
   List<int?> totalCommentsList = [];
   LikePostAPI like = LikePostAPI();
   Map<String, dynamic>? profileMap = {};
+  List<String?> durationList = [];
+  List<String?> cityList = [];
+  List<String?> commentTextList = [];
+  List<String?> mutualList = [];
+  List<String?> commentProfile = [];
 
   Map<String, dynamic>? saveMap;
   String? authToken;
@@ -82,12 +87,20 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
   String? registerAs;
   List<int> _current = [];
   final CarouselController _controller = CarouselController();
+  var dLink = CreateDynamicLink();
 
   @override
   void initState() {
     //print(widget.id);
     getToken();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _scrollController.dispose();
   }
 
   void getToken() async {
@@ -697,7 +710,13 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                           itemCount: postIdList != null ? postIdList.length : 0,
                           // controller: _scrollController,
                           itemBuilder: (context, index) {
+                            final tagName = mutualList[index];
+                  final split = tagName.toString().split(',');
+                  final Map<int, String> values = {
+                    for (int i = 0; i < split.length; i++) i: split[i]
+                  };
                             return PostWidget(
+                              commentImage: commentProfile[index],
                     isCommentScreen: false,
                     postId: postIdList[index]!,
                     profileTap: () {},
@@ -813,8 +832,6 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                 : SizedBox(),
                           )
                         : Row(),
-                    mutualLike:
-                        'Samay, Tarun & 324 other people are liked this post.', //likesList[index].toString(),
                     likeTap: () {
                       setState(() {
                         isLiked[index] = !isLiked[index]!;
@@ -868,7 +885,23 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                       savePostApi(postIdList[index]);
                     },
                     isSaved: isSaved[index]!,
-                    shareTap: () {},
+                    shareTap: () async {
+                      await dLink.createDynamicLink(
+                        true,
+                        postIdList[index].toString(),
+                        index,
+                        nameList[index]!,
+                        descriptionList[index]!,
+                        imageListMap[index].isEmpty
+                            ? ''
+                            : imageListMap[index][0]['file'].toString(),
+                      );
+                    },
+                     iscomment: commentTextList[index] != null ? true : false,
+                    commentText: commentTextList[index] != null ? commentTextList[index]! : '',
+                    mutualLike: likesList[index]! - values.length,
+                    mutualFriend: mutualList[index],
+                    isMyProfile: false,
                   );
                             // ListView(
                             //   shrinkWrap: true,
@@ -1398,13 +1431,19 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
         //print(mapData);
         if (map!['data'].length > 0) {
           for (int i = 0; i < map!['data'].length; i++) {
+            _current.add(0);
             nameList.add(map!['data'][i]['name']);
             profileImageList.add(map!['data'][i]['profile_image']);
             degreeList.add(map!['data'][i]['last_degree']);
             schoolList.add(map!['data'][i]['school_name']);
             postIdList.add(map!['data'][i]['post_id']);
             dateList.add(map!['data'][i]['date']);
+            cityList.add(map!['data'][i]['city']);
+            durationList.add(map!['data'][i]['duration']);
+            commentTextList.add(map!['data'][i]['comment']);
             descriptionList.add(map!['data'][i]['description']);
+            mutualList.add(map!['data'][i]['mutual']);
+            commentProfile.add(map!['data'][i]['commenter_profile']);
             isLiked.add(map!['data'][i]['isLiked']);
             isSaved.add(map!['data'][i]['isSaved']);
             likesList.add(map!['data'][i]['total_likes']);

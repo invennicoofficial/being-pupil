@@ -57,6 +57,11 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
   Map<int, dynamic> imageListMap = {};
   List<int?> likesList = [];
   List<int?> totalCommentsList = [];
+  List<String?> durationList = [];
+  List<String?> cityList = [];
+  List<String?> commentTextList = [];
+  List<String?> mutualList = [];
+  List<String?> commentProfile = [];
 
   int? userId;
   String? authToken;
@@ -68,6 +73,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
   Map<String, dynamic> resultComment = {};
   List<int> _current = [];
   final CarouselController _controller = CarouselController();
+  var dLink = CreateDynamicLink();
 
   @override
   void initState() {
@@ -167,6 +173,11 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                   physics: BouncingScrollPhysics(),
                   itemCount: postIdList != null ? postIdList.length : 0,
                   itemBuilder: (context, index) {
+                    final tagName = mutualList[index];
+                  final split = tagName.toString().split(',');
+                  final Map<int, String> values = {
+                    for (int i = 0; i < split.length; i++) i: split[i]
+                  };
                     return PostWidget(
                     isCommentScreen: false,
                     postId: postIdList[index]!,
@@ -284,8 +295,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                 : SizedBox(),
                           )
                         : Row(),
-                    mutualLike:
-                        'Samay, Tarun & 324 other people are liked this post.', //likesList[index].toString(),
+                    mutualLike: likesList[index]! - values.length, //likesList[index].toString(),
                     likeTap: () {
                       setState(() {
                         isLiked[index] = !isLiked[index]!;
@@ -340,7 +350,23 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                           savePostApi(postIdList[index].toString());
                     },
                     isSaved: isSaved[index]!,
-                    shareTap: () {},
+                    shareTap: () async {
+                      await dLink.createDynamicLink(
+                        true,
+                        postIdList[index].toString(),
+                        index,
+                        nameList[index]!,
+                        descriptionList[index]!,
+                        imageListMap[index].isEmpty
+                            ? ''
+                            : imageListMap[index][0]['file'].toString(),
+                      );
+                    },
+                    iscomment: commentTextList[index] != null ? true : false,
+                    commentText: commentTextList[index] != null ? commentTextList[index]! : '',
+                    commentImage: commentProfile[index],
+                    isMyProfile: false,
+                    mutualFriend: mutualList[index],
                   );
                     // Column(
                     //   children: <Widget>[
@@ -818,6 +844,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
           //print("HELLO");
 
           for (int i = 0; i < map!['data'].length; i++) {
+            _current.add(0);
             postIdList.add(map!['data'][i]['post_id']);
             userIdList.add(map!['data'][i]['post_user_id']);
             nameList.add(map!['data'][i]['name']);
@@ -826,6 +853,11 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
             schoolList.add(map!['data'][i]['school_name']);
             dateList.add(map!['data'][i]['date']);
             descriptionList.add(map!['data'][i]['description']);
+            cityList.add(map!['data'][i]['city']);
+            durationList.add(map!['data'][i]['duration']);
+            commentTextList.add(map!['data'][i]['comment']);
+            mutualList.add(map!['data'][i]['mutual']);
+            commentProfile.add(map!['data'][i]['commenter_profile']);
             isSaved.add(map!['data'][i]['isSaved']);
             isLiked.add(map!['data'][i]['isLiked']);
             likesList.add(map!['data'][i]['total_likes']);
@@ -893,6 +925,12 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
           postIdList = [];
           dateList = [];
           descriptionList = [];
+          cityList = [];
+          durationList = [];
+          commentTextList = [];
+          mutualList = [];
+          commentProfile = [];
+          _current = [];
           //imageListMap.removeWhere((key, value) => key == index);
           likesList = [];
           totalCommentsList = [];

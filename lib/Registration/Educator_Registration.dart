@@ -1098,7 +1098,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               padding: EdgeInsets.only(
                                   top: 3.0.h, left: 3.0.w, right: 3.0.w),
                               child: Text(
-                                'Educational Details',
+                                'Educational Details*',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 12.0.sp,
@@ -1798,7 +1798,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               padding: EdgeInsets.only(
                                   top: 3.0.h, left: 3.0.w, right: 3.0.w),
                               child: Text(
-                                'Work Experience',
+                                'Work Experience*',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 12.0.sp,
@@ -2020,7 +2020,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               padding: EdgeInsets.only(
                                   top: 3.0.h, left: 3.0.w, right: 3.0.w),
                               child: Text(
-                                'Subjects of Expertise',
+                                'Subjects of Expertise*',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 12.0.sp,
@@ -2092,7 +2092,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               padding: EdgeInsets.only(
                                   top: 3.0.h, left: 3.0.w, right: 3.0.w),
                               child: Text(
-                                'Achievements',
+                                'Achievements*',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 12.0.sp,
@@ -2166,7 +2166,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               padding: EdgeInsets.only(
                                   top: 3.0.h, left: 3.0.w, right: 3.0.w),
                               child: Text(
-                                'Skills',
+                                'Skills*',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 12.0.sp,
@@ -2417,7 +2417,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               padding: EdgeInsets.only(
                                   top: 3.0.h, left: 3.0.w, right: 3.0.w),
                               child: Text(
-                                'Hobbies',
+                                'Hobbies*',
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 12.0.sp,
