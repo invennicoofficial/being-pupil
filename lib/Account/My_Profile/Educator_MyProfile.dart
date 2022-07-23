@@ -518,83 +518,86 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                 postIdList != null ? postIdList.length : 0,
                             itemBuilder: (context, index) {
                               final tagName = mutualList[index];
-                  final split = tagName.toString().split(',');
-                  final Map<int, String> values = {
-                    for (int i = 0; i < split.length; i++) i: split[i]
-                  };
+                              final split = tagName.toString().split(',');
+                              final Map<int, String> values = {
+                                for (int i = 0; i < split.length; i++)
+                                  i: split[i]
+                              };
                               return PostWidget(
-                                iscomment: commentTextList[index] != null ? true : false,
+                                iscomment: commentTextList[index] != null
+                                    ? true
+                                    : false,
                                 mutualFriend: mutualList[index],
                                 isCommentScreen: false,
                                 postId: postIdList[index]!,
                                 profileTap: () {},
                                 profileImage: profileImageUrl!,
                                 profileName: name!,
-                                profileSchool: '$degreeName | $schoolName}',
-                                postTime: dateList[index]!.substring(0, 11),
+                                profileSchool: cityList[index]!,
+                                postTime: durationList[index]!,
                                 isMyProfile: true,
-                                reportTap: () {
-                                  PopupMenuButton(
-                                      color: Color(0xFFF0F2F4),
-                                      elevation: 2.0,
-                                      padding: EdgeInsets.only(left: 8.0.w),
-                                      onSelected: (dynamic value) {
-                                        if (value == 2) {
-                                          // isProfileLoading = true;
-                                          _showDialog(
-                                              postIdList[index].toString(),
-                                              index);
-                                        } else {
-                                          pushNewScreen(context,
-                                              screen: imageListMap.length ==
-                                                          0 ||
-                                                      imageListMap.length ==
-                                                          null
-                                                  ? UpdatePostScreen(
-                                                      description:
-                                                          descriptionList[index]
-                                                              .toString(),
-                                                      postId: postIdList[index],
-                                                    )
-                                                  : UpdatePostScreen(
-                                                      description:
-                                                          descriptionList[index]
-                                                              .toString(),
-                                                      images: imageListMap,
-                                                      index: index,
-                                                      postId: postIdList[index],
-                                                    ),
-                                              withNavBar: false,
-                                              pageTransitionAnimation:
-                                                  PageTransitionAnimation
-                                                      .cupertino);
-                                        }
-                                      },
-                                      itemBuilder: (context) => [
-                                            PopupMenuItem(
-                                              child: Text(
-                                                "Edit",
-                                                style: TextStyle(
-                                                    fontFamily: 'Montserrat',
-                                                    fontSize: 10.0.sp,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: Constants.bgColor),
-                                              ),
-                                              value: 1,
+                                reportTap: PopupMenuButton(
+                                  color: Color(0xFFF0F2F4),
+                                    icon: Icon(
+                                      Icons.more_horiz_outlined,
+                                      color: Color(0xFF828282),
+                                    ),
+                                    elevation: 2.0,
+                                    padding: EdgeInsets.only(left: 8.0.w),
+                                    onSelected: (dynamic value) {
+                                      if (value == 2) {
+                                        // isProfileLoading = true;
+                                        _showDialog(
+                                            postIdList[index].toString(),
+                                            index);
+                                      } else {
+                                        pushNewScreen(context,
+                                            screen: imageListMap.length == 0 ||
+                                                    imageListMap.length == null
+                                                ? UpdatePostScreen(
+                                                    description:
+                                                        descriptionList[index]
+                                                            .toString(),
+                                                    postId: postIdList[index],
+                                                  )
+                                                : UpdatePostScreen(
+                                                    description:
+                                                        descriptionList[index]
+                                                            .toString(),
+                                                    images: imageListMap,
+                                                    index: index,
+                                                    postId: postIdList[index],
+                                                  ),
+                                            withNavBar: false,
+                                            pageTransitionAnimation:
+                                                PageTransitionAnimation
+                                                    .cupertino);
+                                      }
+                                    },
+                                    itemBuilder: (context) => [
+                                          PopupMenuItem(
+                                            child: Text(
+                                              "Edit",
+                                              style: TextStyle(
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 10.0.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Constants.bgColor),
                                             ),
-                                            PopupMenuItem(
-                                              child: Text(
-                                                "Delete",
-                                                style: TextStyle(
-                                                    fontFamily: 'Montserrat',
-                                                    fontSize: 10.0.sp,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: Constants.bgColor),
-                                              ),
-                                              value: 2,
-                                            )
-                                          ]);
-                                },
+                                            value: 1,
+                                          ),
+                                          PopupMenuItem(
+                                            child: Text(
+                                              "Delete",
+                                              style: TextStyle(
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 10.0.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Constants.bgColor),
+                                            ),
+                                            value: 2,
+                                          )
+                                        ]),
                                 description: descriptionList[index]!,
                                 imageListView: imageListMap[index].length != 0
                                     ? Container(
@@ -718,7 +721,9 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                             : SizedBox(),
                                       )
                                     : SizedBox(),
-                                mutualLike:likesList[index]! - values.length, //likesList[index].toString(),
+                                mutualLike: likesList[index]! -
+                                    values
+                                        .length, //likesList[index].toString(),
                                 likeTap: () {
                                   setState(() {
                                     isLiked[index] = !isLiked[index]!;
@@ -754,6 +759,9 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                         isSaved: isSaved[index],
                                         imageListMap: imageListMap,
                                         index: index,
+                                        mutual: mutualList[index],
+                                        otherCount:
+                                            likesList[index]! - values.length,
                                       ),
                                       pageTransitionAnimation:
                                           PageTransitionAnimation.cupertino);
@@ -778,20 +786,22 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                   save.savePostApi(
                                       postIdList[index], authToken!);
                                 },
-                                shareTap: ()async {
-                                        await dLink.createDynamicLink(
-                                          true,
-                                          postIdList[index].toString(),
-                                          index,
-                                          name!,
-                                          descriptionList[index]!,
-                                          imageListMap[index].isEmpty
-                                              ? ''
-                                              : imageListMap[index][0]['file']
-                                                  .toString(),
-                                        );
-                                    },
-                                commentText: commentTextList[index] != null ? commentTextList[index] : '',
+                                shareTap: () async {
+                                  await dLink.createDynamicLink(
+                                    true,
+                                    postIdList[index].toString(),
+                                    index,
+                                    name!,
+                                    descriptionList[index]!,
+                                    imageListMap[index].isEmpty
+                                        ? ''
+                                        : imageListMap[index][0]['file']
+                                            .toString(),
+                                  );
+                                },
+                                commentText: commentTextList[index] != null
+                                    ? commentTextList[index]
+                                    : '',
                                 commentImage: commentProfile[index],
                               );
                               // Column(

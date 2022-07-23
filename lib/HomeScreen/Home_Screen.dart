@@ -301,7 +301,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
       if (deepLink.toString().contains('/post')) {
         getPostById(deepLink.toString());
       } else {
-        getPropertyAPI(deepLink.toString().substring(0, 51));
+        getPropertyAPI(deepLink.toString().substring(0, deepLink.toString().length - 2));
       }
       //setState(() {});
       //});
@@ -312,7 +312,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
       if (dynamicLinkData.link.toString().contains('/post')) {
         getPostById(dynamicLinkData.link.toString());
       } else {
-        getPropertyAPI(dynamicLinkData.link.toString().substring(0, 51));
+        getPropertyAPI(dynamicLinkData.link.toString().substring(0, dynamicLinkData.link.toString().length - 3));
       }
       //Navigator.pushNamed(context, dynamicLinkData.link.path);
     }).onError((error) {
@@ -433,18 +433,24 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                     //'${degreeList[index]} | ${schoolList[index]}',
                     postTime: durationList[index]!,
                     //dateList[index]!.substring(0, 11),
-                    reportTap: () async {
-                      var result = await pushNewScreen(context,
-                          withNavBar: false,
-                          screen: ReportFeed(
-                            postId: postIdList[index],
-                          ),
-                          pageTransitionAnimation:
-                              PageTransitionAnimation.cupertino);
-                      if (result == true) {
-                        _onRefresh();
-                      }
-                    },
+                    reportTap: IconButton(
+                      icon: Icon(
+                        Icons.more_horiz_outlined,
+                        color: Color(0xFF828282),
+                      ),
+                      onPressed: () async {
+                        var result = await pushNewScreen(context,
+                            withNavBar: false,
+                            screen: ReportFeed(
+                              postId: postIdList[index],
+                            ),
+                            pageTransitionAnimation:
+                                PageTransitionAnimation.cupertino);
+                        if (result == true) {
+                          _onRefresh();
+                        }
+                      },
+                    ),
                     description: descriptionList[index]!,
                     imageListView: imageListMap[index].length != 0
                         ? Container(
@@ -576,6 +582,9 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                         isSaved: isSaved[index],
                                         imageListMap: imageListMap,
                                         index: index,
+                                        mutual: mutualList[index],
+                                        otherCount:
+                                            likesList[index]! - values.length,
                                       )));
 
                       setState(() {});
@@ -978,6 +987,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
   getPropertyAPI(String url) async {
     //displayProgressDialog(context);
     //await getToken();
+    print('PROP:::' + url.toString());
     isLoading = true;
     propDataList.clear();
     setState(() {});
@@ -990,7 +1000,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
         propMap = response.data;
         propDataList.add(propMap!['data'][0]);
         //mapData = map!['data'];
-        print('PROP:::' + propMap.toString());
+        
         //print('PROPDATA:::'+propDataList.toString());
         //closeProgressDialog(context);
 
@@ -1104,6 +1114,12 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
 
           print('IMMM:::' + imageListMap1.toString());
 
+          final tagName = postMap['data']['mutual'];
+          final split = tagName.toString().split(',');
+          final Map<int, String> values = {
+            for (int i = 0; i < split.length; i++) i: split[i]
+          };
+
           resultComment = await Navigator.of(context, rootNavigator: true)
               .push(MaterialPageRoute(
                   builder: (context) => CommentScreenFromLink(
@@ -1121,6 +1137,9 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                         isSaved: postMap['data']['isSaved'],
                         imageListMap: imageListMap1,
                         index: 0,
+                        mutual: postMap['data']['mutual'],
+                        otherCount:
+                            postMap['data']['total_likes']! - values.length,
                       )));
 
           setState(() {});

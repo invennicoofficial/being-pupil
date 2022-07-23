@@ -162,8 +162,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
           },
           padding: EdgeInsets.zero,
         ),
-        title: Text(registerAs == 'L'
-          ? 'Fellow Educator' : 'Study Buddy',
+        title: Text(
+          registerAs == 'L' ? 'Fellow Educator' : 'Study Buddy',
           style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 12.0.sp,
@@ -201,8 +201,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                           //Profile DP
                           ClipRRect(
                             borderRadius: BorderRadius.circular(100),
-                            child:CachedNetworkImage(
-                                                imageUrl: profileImageUrl!,
+                            child: CachedNetworkImage(
+                              imageUrl: profileImageUrl!,
                               width: 130,
                               height: 130,
                               fit: BoxFit.cover,
@@ -610,8 +610,9 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                                             children: <Widget>[
                                               Text(
                                                 profileMap!['data']
-                                                        ['total_experience']
-                                                    .toString() + ' Yrs',
+                                                            ['total_experience']
+                                                        .toString() +
+                                                    ' Yrs',
                                                 style: TextStyle(
                                                     fontSize: 10.0.sp,
                                                     color: Constants.bgColor,
@@ -698,7 +699,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                   //Educator Post
                   Expanded(
                     child: Padding(
-                      padding:  EdgeInsets.zero,
+                      padding: EdgeInsets.zero,
                       child: SingleChildScrollView(
                         controller: _scrollController,
                         physics: BouncingScrollPhysics(),
@@ -711,198 +712,234 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                           // controller: _scrollController,
                           itemBuilder: (context, index) {
                             final tagName = mutualList[index];
-                  final split = tagName.toString().split(',');
-                  final Map<int, String> values = {
-                    for (int i = 0; i < split.length; i++) i: split[i]
-                  };
+                            final split = tagName.toString().split(',');
+                            final Map<int, String> values = {
+                              for (int i = 0; i < split.length; i++) i: split[i]
+                            };
                             return PostWidget(
                               commentImage: commentProfile[index],
-                    isCommentScreen: false,
-                    postId: postIdList[index]!,
-                    profileTap: () {},
-                    profileImage: profileImageList[index]!,
-                    profileName: nameList[index]!,
-                    profileSchool:
-                        '${degreeList[index]} | ${schoolList[index]}',
-                    postTime: dateList[index]!.substring(0, 11),
-                    reportTap: (){
-                      pushNewScreen(context,
-                                                  withNavBar: false,
-                                                  screen: ReportFeed(
-                                                    postId: postIdList[index],
-                                                  ),
-                                                  pageTransitionAnimation:
-                                                      PageTransitionAnimation
-                                                          .cupertino);
-                            //                 })),
-                    },
-                    description: descriptionList[index]!,
-                    imageListView: imageListMap[index].length != 0
-                        ? Container(
-                            height: 25.0.h,
-                            width: 100.0.w,
-                            child: CarouselSlider.builder(
-                                carouselController: _controller,
-                                itemCount: imageListMap[index].length,
-                                itemBuilder: (context, imageIndex, rindex) {
-                                  return GestureDetector(
-                                      onTap: () {
-                                        List<String> imgList = [];
-                                        for (int i = 0;
-                                            i < imageListMap[index].length;
-                                            i++) {
-                                          imgList.add(
-                                              imageListMap[index][i]['file']);
-                                        }
-                                        pushNewScreen(context,
-                                            withNavBar: false,
-                                            screen: FullScreenSlider(
-                                                imageList: imgList,
-                                                index: imageIndex,
-                                                name: nameList[index]!),
-                                            pageTransitionAnimation:
-                                                PageTransitionAnimation
-                                                    .cupertino);
-                                      },
-                                      child: CachedNetworkImage(
-                                        imageUrl: imageListMap[index]
-                                            [imageIndex]['file'],
-                                        errorWidget: (context, url, error) =>
-                                            Image.asset('assets/images/404.gif',
-                                                fit: BoxFit.fitHeight,
-                                                width: 100.0.w),
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                Container(
-                                          //height: 100,
-                                          width: 100.0.w,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: imageProvider,
-                                              fit: BoxFit.fitWidth,
-                                            ),
-                                          ),
-                                        ),
-                                        placeholder: (context, url) =>
-                                            PhotoLoadingWidget()
-                                      )
-                                      );
-                                },
-                                options: CarouselOptions(
-                                    autoPlay: false,
-                                    enableInfiniteScroll: false,
-                                    viewportFraction: 1.0,
-                                    onPageChanged: (cindex, reason) {
-                                      setState(() {
-                                        _current[index] = cindex;
-                                      });
-                                    }
-                                    )))
-                        : Container(),
-                    indicator: imageListMap[index].length != 0
-                        ? Center(
-                            child: imageListMap[index].length != 1
-                                ? SizedBox(
-                                    height: 18,
-                                    child: ListView.builder(
-                                        itemCount: imageListMap[index].length,
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        scrollDirection: Axis.horizontal,
-                                        itemBuilder: (context, iIndex) {
-                                          return Container(
-                                            width: 15.0,
-                                            height: 15.0,
-                                            margin: EdgeInsets.symmetric(vertical: 5.0),
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: (Theme.of(context)
-                                                                .brightness ==
-                                                            Brightness.dark
-                                                        ? Colors.white
-                                                        : Colors.black)
-                                                    .withOpacity(
-                                                        _current[index] == iIndex
-                                                            ? 0.9
-                                                            : 0.3)),
-                                          );
-                                        }),
-                                  )
-                                : SizedBox(),
-                          )
-                        : Row(),
-                    likeTap: () {
-                      setState(() {
-                        isLiked[index] = !isLiked[index]!;
-                      });
-                      like.likePostApi(postIdList[index], authToken!);
-                      setState(() {
-                        isLiked[index] == true
-                            ? likesList[index] = likesList[index]! + 1
-                            : likesList[index] = likesList[index]! - 1;
-                      });
-                    },
-                    isLiked: isLiked[index]!,
-                    totalLike: likesList[index].toString(),
-                    commentTap: () async {
-                      resultComment =
-                          await Navigator.of(context, rootNavigator: true)
-                              .push(MaterialPageRoute(
-                                  builder: (context) => CommentScreen(
+                              isCommentScreen: false,
+                              postId: postIdList[index]!,
+                              profileTap: () {},
+                              profileImage: profileImageList[index]!,
+                              profileName: nameList[index]!,
+                              profileSchool: cityList[index]!,
+                              postTime: durationList[index]!,
+                              reportTap: IconButton(
+                                icon: Icon(
+                                  Icons.more_horiz_outlined,
+                                  color: Color(0xFF828282),
+                                ),
+                                onPressed: () {
+                                  pushNewScreen(context,
+                                      withNavBar: false,
+                                      screen: ReportFeed(
                                         postId: postIdList[index],
-                                        name: nameList[index],
-                                        profileImage: profileImageList[index],
-                                        degree: degreeList[index],
-                                        schoolName: schoolList[index],
-                                        date: dateList[index],
-                                        description: descriptionList[index],
-                                        like: likesList[index],
-                                        comment: totalCommentsList[index],
-                                        isLiked: isLiked[index],
-                                        isSaved: isSaved[index],
-                                        imageListMap: imageListMap,
-                                        index: index,
-                                      )));
+                                      ),
+                                      pageTransitionAnimation:
+                                          PageTransitionAnimation.cupertino);
+                                  //                 })),
+                                },
+                              ),
+                              description: descriptionList[index]!,
+                              imageListView: imageListMap[index].length != 0
+                                  ? Container(
+                                      height: 25.0.h,
+                                      width: 100.0.w,
+                                      child: CarouselSlider.builder(
+                                          carouselController: _controller,
+                                          itemCount: imageListMap[index].length,
+                                          itemBuilder:
+                                              (context, imageIndex, rindex) {
+                                            return GestureDetector(
+                                                onTap: () {
+                                                  List<String> imgList = [];
+                                                  for (int i = 0;
+                                                      i <
+                                                          imageListMap[index]
+                                                              .length;
+                                                      i++) {
+                                                    imgList.add(
+                                                        imageListMap[index][i]
+                                                            ['file']);
+                                                  }
+                                                  pushNewScreen(context,
+                                                      withNavBar: false,
+                                                      screen: FullScreenSlider(
+                                                          imageList: imgList,
+                                                          index: imageIndex,
+                                                          name:
+                                                              nameList[index]!),
+                                                      pageTransitionAnimation:
+                                                          PageTransitionAnimation
+                                                              .cupertino);
+                                                },
+                                                child: CachedNetworkImage(
+                                                    imageUrl:
+                                                        imageListMap[index]
+                                                                [imageIndex]
+                                                            ['file'],
+                                                    errorWidget: (context, url,
+                                                            error) =>
+                                                        Image.asset(
+                                                            'assets/images/404.gif',
+                                                            fit: BoxFit
+                                                                .fitHeight,
+                                                            width: 100.0.w),
+                                                    imageBuilder: (context,
+                                                            imageProvider) =>
+                                                        Container(
+                                                          //height: 100,
+                                                          width: 100.0.w,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            image:
+                                                                DecorationImage(
+                                                              image:
+                                                                  imageProvider,
+                                                              fit: BoxFit
+                                                                  .fitWidth,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                    placeholder: (context,
+                                                            url) =>
+                                                        PhotoLoadingWidget()));
+                                          },
+                                          options: CarouselOptions(
+                                              autoPlay: false,
+                                              enableInfiniteScroll: false,
+                                              viewportFraction: 1.0,
+                                              onPageChanged: (cindex, reason) {
+                                                setState(() {
+                                                  _current[index] = cindex;
+                                                });
+                                              })))
+                                  : Container(),
+                              indicator: imageListMap[index].length != 0
+                                  ? Center(
+                                      child: imageListMap[index].length != 1
+                                          ? SizedBox(
+                                              height: 18,
+                                              child: ListView.builder(
+                                                  itemCount: imageListMap[index]
+                                                      .length,
+                                                  shrinkWrap: true,
+                                                  physics:
+                                                      const NeverScrollableScrollPhysics(),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemBuilder:
+                                                      (context, iIndex) {
+                                                    return Container(
+                                                      width: 15.0,
+                                                      height: 15.0,
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 5.0),
+                                                      decoration: BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: (Theme.of(context)
+                                                                          .brightness ==
+                                                                      Brightness
+                                                                          .dark
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .black)
+                                                              .withOpacity(
+                                                                  _current[index] ==
+                                                                          iIndex
+                                                                      ? 0.9
+                                                                      : 0.3)),
+                                                    );
+                                                  }),
+                                            )
+                                          : SizedBox(),
+                                    )
+                                  : Row(),
+                              likeTap: () {
+                                setState(() {
+                                  isLiked[index] = !isLiked[index]!;
+                                });
+                                like.likePostApi(postIdList[index], authToken!);
+                                setState(() {
+                                  isLiked[index] == true
+                                      ? likesList[index] = likesList[index]! + 1
+                                      : likesList[index] =
+                                          likesList[index]! - 1;
+                                });
+                              },
+                              isLiked: isLiked[index]!,
+                              totalLike: likesList[index].toString(),
+                              commentTap: () async {
+                                resultComment = await Navigator.of(context,
+                                        rootNavigator: true)
+                                    .push(MaterialPageRoute(
+                                        builder: (context) => CommentScreen(
+                                              postId: postIdList[index],
+                                              name: nameList[index],
+                                              profileImage:
+                                                  profileImageList[index],
+                                              degree: degreeList[index],
+                                              schoolName: schoolList[index],
+                                              date: dateList[index],
+                                              description:
+                                                  descriptionList[index],
+                                              like: likesList[index],
+                                              comment: totalCommentsList[index],
+                                              isLiked: isLiked[index],
+                                              isSaved: isSaved[index],
+                                              imageListMap: imageListMap,
+                                              index: index,
+                                              mutual: mutualList[index],
+                                              otherCount: likesList[index]! -
+                                                  values.length,
+                                            )));
 
-                      setState(() {});
+                                setState(() {});
 
-                      totalCommentsList[resultComment['index']] =
-                          resultComment['count'];
-                      likesList[resultComment['index']] =
-                          resultComment['likeCount'];
-                      isSaved[resultComment['index']] =
-                          resultComment['isSaved'];
-                      isLiked[resultComment['index']] =
-                          resultComment['isLiked'];
-                      setState(() {});
-                    },
-                    totalComments: totalCommentsList[index].toString(),
-                    saveTap: () {
-                      setState(() {
-                        isSaved[index] = !isSaved[index]!;
-                      });
-                      savePostApi(postIdList[index]);
-                    },
-                    isSaved: isSaved[index]!,
-                    shareTap: () async {
-                      await dLink.createDynamicLink(
-                        true,
-                        postIdList[index].toString(),
-                        index,
-                        nameList[index]!,
-                        descriptionList[index]!,
-                        imageListMap[index].isEmpty
-                            ? ''
-                            : imageListMap[index][0]['file'].toString(),
-                      );
-                    },
-                     iscomment: commentTextList[index] != null ? true : false,
-                    commentText: commentTextList[index] != null ? commentTextList[index]! : '',
-                    mutualLike: likesList[index]! - values.length,
-                    mutualFriend: mutualList[index],
-                    isMyProfile: false,
-                  );
+                                totalCommentsList[resultComment['index']] =
+                                    resultComment['count'];
+                                likesList[resultComment['index']] =
+                                    resultComment['likeCount'];
+                                isSaved[resultComment['index']] =
+                                    resultComment['isSaved'];
+                                isLiked[resultComment['index']] =
+                                    resultComment['isLiked'];
+                                setState(() {});
+                              },
+                              totalComments:
+                                  totalCommentsList[index].toString(),
+                              saveTap: () {
+                                setState(() {
+                                  isSaved[index] = !isSaved[index]!;
+                                });
+                                savePostApi(postIdList[index]);
+                              },
+                              isSaved: isSaved[index]!,
+                              shareTap: () async {
+                                await dLink.createDynamicLink(
+                                  true,
+                                  postIdList[index].toString(),
+                                  index,
+                                  nameList[index]!,
+                                  descriptionList[index]!,
+                                  imageListMap[index].isEmpty
+                                      ? ''
+                                      : imageListMap[index][0]['file']
+                                          .toString(),
+                                );
+                              },
+                              iscomment:
+                                  commentTextList[index] != null ? true : false,
+                              commentText: commentTextList[index] != null
+                                  ? commentTextList[index]!
+                                  : '',
+                              mutualLike: likesList[index]! - values.length,
+                              mutualFriend: mutualList[index],
+                              isMyProfile: false,
+                            );
                             // ListView(
                             //   shrinkWrap: true,
                             //   physics: NeverScrollableScrollPhysics(),
@@ -1249,7 +1286,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                             //                   setState(() {});
 
                             //               totalCommentsList[resultComment['index']] = resultComment['count'];
-                            //               likesList[resultComment['index']] = resultComment['likeCount']; 
+                            //               likesList[resultComment['index']] = resultComment['likeCount'];
                             //               isSaved[resultComment['index']] = resultComment['isSaved'];
                             //               isLiked[resultComment['index']] = resultComment['isLiked'];
                             //                   //print('TC###' +
@@ -1587,7 +1624,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
       //print(stack);
       if (e.response != null) {
         //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
+        //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -1643,7 +1680,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
       //print(stack);
       if (e.response != null) {
         //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
+        //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,

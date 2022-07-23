@@ -16,7 +16,7 @@ class PostWidget extends StatelessWidget {
   final String profileName;
   final String profileSchool;
   final String postTime;
-  void Function() reportTap;
+  Widget reportTap;
   String? description;
   Widget? imageListView;
   Widget? indicator;
@@ -138,19 +138,8 @@ class PostWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              trailing: 
-              // isMyProfile == true
-              // ? GestureDetector(
-              //   onTap: reportTap,
-              // )
-              // : 
-              IconButton(
-                icon: Icon(
-                  Icons.more_horiz_outlined,
-                  color: Color(0xFF828282),
-                ),
-                onPressed: reportTap,
-              )),
+              trailing: reportTap,
+               ),
         ),
         //Description
         Padding(
@@ -193,13 +182,16 @@ class PostWidget extends StatelessWidget {
         ),
 
         //Mutual friends like
-        int.parse(totalLike) > 2 && mutualFriend != null
+        int.parse(totalLike) >= 2 && mutualFriend != null
         ? Padding(
           padding: EdgeInsets.symmetric(vertical: 3.0, horizontal: 4.0.w),
           child: Container(
             width: 100.0.w,
             child: Text(
-              '$mutualFriend & ${mutualLike.toString()} other people are liked this post.',
+              int.parse(totalLike) > 2
+              ? '$mutualFriend & ${mutualLike.toString()} other people are liked this post.'
+              : int.parse(totalLike) >= 2
+              ? '$mutualFriend liked this post.' : '',
               style: TextStyle(
                 fontSize: 12.0,
                 color: Color(0xFF828282),
@@ -372,7 +364,20 @@ class PostWidget extends StatelessWidget {
                           width: 25.0,
                           height: 25.0,
                           fit: BoxFit.cover,
-                          placeholder: (context, url) => ProfileLoadingWidget()
+                          placeholder: (context, url) => ProfileLoadingWidget(),
+                           errorWidget: (context, url, error) =>
+                                            Material(
+                                          child: Image.asset(
+                                            'assets/images/studyBudyBg.png',
+                                            width: 25.0,
+                                            height: 25.0,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0),
+                                          ),
+                                          clipBehavior: Clip.hardEdge,
+                                        ),
                         ),
                       ),
                     ),

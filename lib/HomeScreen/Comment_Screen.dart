@@ -24,8 +24,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 import 'Fulll_Screen_Image_Screen.dart';
 
 class CommentScreen extends StatefulWidget {
-  String? name, profileImage, degree, schoolName, date, description;
-  int? postId, like, comment, index, userId;
+  String? name, profileImage, degree, schoolName, date, description, mutual;
+  int? postId, like, comment, index, userId, otherCount;
   bool? isLiked, isSaved;
   Map<int, dynamic>? imageListMap;
   CommentScreen(
@@ -43,7 +43,9 @@ class CommentScreen extends StatefulWidget {
       this.isLiked,
       this.isSaved,
       this.imageListMap,
-      this.index})
+      this.index,
+      this.mutual,
+      this.otherCount})
       : super(key: key);
 
   @override
@@ -221,7 +223,7 @@ class _CommentScreenState extends State<CommentScreen> {
                         PostWidget(
                           isMyProfile: false,
                           iscomment: false,
-                          mutualFriend: '',
+                          mutualFriend: widget.mutual,
                           isCommentScreen: true,
                           postId: widget.postId!,
                           profileTap: () {
@@ -232,7 +234,12 @@ class _CommentScreenState extends State<CommentScreen> {
                           profileSchool: widget.degree!,
                               //'${widget.degree} | ${widget.schoolName}',
                           postTime: widget.date!,//widget.date!.substring(0, 11),
-                          reportTap: () async {
+                          reportTap: IconButton(
+                      icon: Icon(
+                        Icons.more_horiz_outlined,
+                        color: Color(0xFF828282),
+                      ),
+                      onPressed: () async {
                             var result = await pushNewScreen(context,
                                 withNavBar: false,
                                 screen: ReportFeed(
@@ -247,7 +254,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                       builder: (context) => bottomNavBar(0)),
                                   (route) => false);
                             }
-                          },
+                      },
+                    ),
                           description: widget.description!,
                           imageListView: widget
                                       .imageListMap![widget.index!].length !=
@@ -361,7 +369,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                       : SizedBox(),
                                 )
                               : Row(),
-                          mutualLike: 0, //likesList[index].toString(),
+                          mutualLike: widget.otherCount!, //likesList[index].toString(),
                           likeTap: () async {
                             setState(() {
                               widget.isLiked = !widget.isLiked!;

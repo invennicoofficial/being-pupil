@@ -174,200 +174,213 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                   itemCount: postIdList != null ? postIdList.length : 0,
                   itemBuilder: (context, index) {
                     final tagName = mutualList[index];
-                  final split = tagName.toString().split(',');
-                  final Map<int, String> values = {
-                    for (int i = 0; i < split.length; i++) i: split[i]
-                  };
+                    final split = tagName.toString().split(',');
+                    final Map<int, String> values = {
+                      for (int i = 0; i < split.length; i++) i: split[i]
+                    };
                     return PostWidget(
-                    isCommentScreen: false,
-                    postId: postIdList[index]!,
-                    profileTap: () {
-                      getUserProfile(userIdList[index]);
-                    },
-                    profileImage: profileImageList[index]!,
-                    profileName: nameList[index]!,
-                    profileSchool:
-                        '${degreeList[index]} | ${schoolList[index]}',
-                    postTime: dateList[index]!.substring(0, 11),
-                    reportTap: () async {
-                      var result = await pushNewScreen(context,
-                          withNavBar: false,
-                          screen: ReportFeed(
-                            postId: postIdList[index],
-                          ),
-                          pageTransitionAnimation:
-                              PageTransitionAnimation.cupertino);
-                      
-                    },
-                    description: descriptionList[index]!,
-                    imageListView: imageListMap[index].length != 0
-                        ? Container(
-                            height: 25.0.h,
-                            width: 100.0.w,
-                            child: CarouselSlider.builder(
-                                carouselController: _controller,
-                                itemCount: imageListMap[index].length,
-                                itemBuilder: (context, imageIndex, rindex) {
-                                  return GestureDetector(
-                                      onTap: () {
-                                        List<String> imgList = [];
-                                        for (int i = 0;
-                                            i < imageListMap[index].length;
-                                            i++) {
-                                          imgList.add(
-                                              imageListMap[index][i]['file']);
-                                        }
-                                        pushNewScreen(context,
-                                            withNavBar: false,
-                                            screen: FullScreenSlider(
-                                                imageList: imgList,
-                                                index: imageIndex,
-                                                name: nameList[index]!),
-                                            pageTransitionAnimation:
-                                                PageTransitionAnimation
-                                                    .cupertino);
-                                      },
-                                      child: CachedNetworkImage(
-                                        imageUrl: imageListMap[index]
-                                            [imageIndex]['file'],
-                                        errorWidget: (context, url, error) =>
-                                            Image.asset('assets/images/404.gif',
-                                                fit: BoxFit.fitHeight,
-                                                width: 100.0.w),
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                Container(
-                                          //height: 100,
-                                          width: 100.0.w,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: imageProvider,
-                                              fit: BoxFit.fitWidth,
-                                            ),
-                                          ),
-                                        ),
-                                        placeholder: (context, url) =>
-                                            PhotoLoadingWidget()
-                                      )
-                                      );
-                                },
-                                options: CarouselOptions(
-                                    autoPlay: false,
-                                    enableInfiniteScroll: false,
-                                    viewportFraction: 1.0,
-                                    onPageChanged: (cindex, reason) {
-                                      setState(() {
-                                        _current[index] = cindex;
-                                      });
-                                    }
-                                    )))
-                        : Container(),
-                    indicator: imageListMap[index].length != 0
-                        ? Center(
-                            child: imageListMap[index].length != 1
-                                ? SizedBox(
-                                    height: 18,
-                                    child: ListView.builder(
-                                        itemCount: imageListMap[index].length,
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        scrollDirection: Axis.horizontal,
-                                        itemBuilder: (context, iIndex) {
-                                          return Container(
-                                            width: 15.0,
-                                            height: 15.0,
-                                            margin: EdgeInsets.symmetric(vertical: 5.0),
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: (Theme.of(context)
-                                                                .brightness ==
-                                                            Brightness.dark
-                                                        ? Colors.white
-                                                        : Colors.black)
-                                                    .withOpacity(
-                                                        _current[index] == iIndex
-                                                            ? 0.9
-                                                            : 0.3)),
-                                          );
-                                        }),
-                                  )
-                                : SizedBox(),
-                          )
-                        : Row(),
-                    mutualLike: likesList[index]! - values.length, //likesList[index].toString(),
-                    likeTap: () {
-                      setState(() {
-                        isLiked[index] = !isLiked[index]!;
-                      });
-                      like.likePostApi(postIdList[index], authToken!);
-                      setState(() {
-                        isLiked[index] == true
-                            ? likesList[index] = likesList[index]! + 1
-                            : likesList[index] = likesList[index]! - 1;
-                      });
-                    },
-                    isLiked: isLiked[index]!,
-                    totalLike: likesList[index].toString(),
-                    commentTap: () async {
-                      resultComment =
-                          await Navigator.of(context, rootNavigator: true)
-                              .push(MaterialPageRoute(
-                                  builder: (context) => CommentScreen(
-                                        postId: postIdList[index],
-                                        userId: userIdList[index],
-                                        name: nameList[index],
-                                        profileImage: profileImageList[index],
-                                        degree: degreeList[index],
-                                        schoolName: schoolList[index],
-                                        date: dateList[index],
-                                        description: descriptionList[index],
-                                        like: likesList[index],
-                                        comment: totalCommentsList[index],
-                                        isLiked: isLiked[index],
-                                        isSaved: isSaved[index],
-                                        imageListMap: imageListMap,
-                                        index: index,
-                                      )));
+                      isCommentScreen: false,
+                      postId: postIdList[index]!,
+                      profileTap: () {
+                        getUserProfile(userIdList[index]);
+                      },
+                      profileImage: profileImageList[index]!,
+                      profileName: nameList[index]!,
+                      profileSchool:
+                          '${degreeList[index]} | ${schoolList[index]}',
+                      postTime: dateList[index]!.substring(0, 11),
+                      reportTap: IconButton(
+                        icon: Icon(
+                          Icons.more_horiz_outlined,
+                          color: Color(0xFF828282),
+                        ),
+                        onPressed: () async {
+                          var result = await pushNewScreen(context,
+                              withNavBar: false,
+                              screen: ReportFeed(
+                                postId: postIdList[index],
+                              ),
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino);
+                        },
+                      ),
 
-                      setState(() {});
+                      description: descriptionList[index]!,
+                      imageListView: imageListMap[index].length != 0
+                          ? Container(
+                              height: 25.0.h,
+                              width: 100.0.w,
+                              child: CarouselSlider.builder(
+                                  carouselController: _controller,
+                                  itemCount: imageListMap[index].length,
+                                  itemBuilder: (context, imageIndex, rindex) {
+                                    return GestureDetector(
+                                        onTap: () {
+                                          List<String> imgList = [];
+                                          for (int i = 0;
+                                              i < imageListMap[index].length;
+                                              i++) {
+                                            imgList.add(
+                                                imageListMap[index][i]['file']);
+                                          }
+                                          pushNewScreen(context,
+                                              withNavBar: false,
+                                              screen: FullScreenSlider(
+                                                  imageList: imgList,
+                                                  index: imageIndex,
+                                                  name: nameList[index]!),
+                                              pageTransitionAnimation:
+                                                  PageTransitionAnimation
+                                                      .cupertino);
+                                        },
+                                        child: CachedNetworkImage(
+                                            imageUrl: imageListMap[index]
+                                                [imageIndex]['file'],
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Image.asset(
+                                                        'assets/images/404.gif',
+                                                        fit: BoxFit.fitHeight,
+                                                        width: 100.0.w),
+                                            imageBuilder:
+                                                (context, imageProvider) =>
+                                                    Container(
+                                                      //height: 100,
+                                                      width: 100.0.w,
+                                                      decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                          image: imageProvider,
+                                                          fit: BoxFit.fitWidth,
+                                                        ),
+                                                      ),
+                                                    ),
+                                            placeholder: (context, url) =>
+                                                PhotoLoadingWidget()));
+                                  },
+                                  options: CarouselOptions(
+                                      autoPlay: false,
+                                      enableInfiniteScroll: false,
+                                      viewportFraction: 1.0,
+                                      onPageChanged: (cindex, reason) {
+                                        setState(() {
+                                          _current[index] = cindex;
+                                        });
+                                      })))
+                          : Container(),
+                      indicator: imageListMap[index].length != 0
+                          ? Center(
+                              child: imageListMap[index].length != 1
+                                  ? SizedBox(
+                                      height: 18,
+                                      child: ListView.builder(
+                                          itemCount: imageListMap[index].length,
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (context, iIndex) {
+                                            return Container(
+                                              width: 15.0,
+                                              height: 15.0,
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: 5.0),
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: (Theme.of(context)
+                                                                  .brightness ==
+                                                              Brightness.dark
+                                                          ? Colors.white
+                                                          : Colors.black)
+                                                      .withOpacity(
+                                                          _current[index] ==
+                                                                  iIndex
+                                                              ? 0.9
+                                                              : 0.3)),
+                                            );
+                                          }),
+                                    )
+                                  : SizedBox(),
+                            )
+                          : Row(),
+                      mutualLike: likesList[index]! -
+                          values.length, //likesList[index].toString(),
+                      likeTap: () {
+                        setState(() {
+                          isLiked[index] = !isLiked[index]!;
+                        });
+                        like.likePostApi(postIdList[index], authToken!);
+                        setState(() {
+                          isLiked[index] == true
+                              ? likesList[index] = likesList[index]! + 1
+                              : likesList[index] = likesList[index]! - 1;
+                        });
+                      },
+                      isLiked: isLiked[index]!,
+                      totalLike: likesList[index].toString(),
+                      commentTap: () async {
+                        resultComment =
+                            await Navigator.of(context, rootNavigator: true)
+                                .push(MaterialPageRoute(
+                                    builder: (context) => CommentScreen(
+                                          postId: postIdList[index],
+                                          userId: userIdList[index],
+                                          name: nameList[index],
+                                          profileImage: profileImageList[index],
+                                          degree: degreeList[index],
+                                          schoolName: schoolList[index],
+                                          date: dateList[index],
+                                          description: descriptionList[index],
+                                          like: likesList[index],
+                                          comment: totalCommentsList[index],
+                                          isLiked: isLiked[index],
+                                          isSaved: isSaved[index],
+                                          imageListMap: imageListMap,
+                                          index: index,
+                                          mutual: mutualList[index],
+                                          otherCount:
+                                              likesList[index]! - values.length,
+                                        )));
 
-                      totalCommentsList[resultComment['index']] =
-                          resultComment['count'];
-                      likesList[resultComment['index']] =
-                          resultComment['likeCount'];
-                      isSaved[resultComment['index']] =
-                          resultComment['isSaved'];
-                      isLiked[resultComment['index']] =
-                          resultComment['isLiked'];
-                      setState(() {});
-                    },
-                    totalComments: totalCommentsList[index].toString(),
-                    saveTap: () {
-                       setState(() {
-                                            isSaved[index] = !isSaved[index]!;
-                                          });
-                                          savePostApi(postIdList[index].toString());
-                    },
-                    isSaved: isSaved[index]!,
-                    shareTap: () async {
-                      await dLink.createDynamicLink(
-                        true,
-                        postIdList[index].toString(),
-                        index,
-                        nameList[index]!,
-                        descriptionList[index]!,
-                        imageListMap[index].isEmpty
-                            ? ''
-                            : imageListMap[index][0]['file'].toString(),
-                      );
-                    },
-                    iscomment: commentTextList[index] != null ? true : false,
-                    commentText: commentTextList[index] != null ? commentTextList[index]! : '',
-                    commentImage: commentProfile[index],
-                    isMyProfile: false,
-                    mutualFriend: mutualList[index],
-                  );
+                        setState(() {});
+
+                        totalCommentsList[resultComment['index']] =
+                            resultComment['count'];
+                        likesList[resultComment['index']] =
+                            resultComment['likeCount'];
+                        isSaved[resultComment['index']] =
+                            resultComment['isSaved'];
+                        isLiked[resultComment['index']] =
+                            resultComment['isLiked'];
+                        setState(() {});
+                      },
+                      totalComments: totalCommentsList[index].toString(),
+                      saveTap: () {
+                        setState(() {
+                          isSaved[index] = !isSaved[index]!;
+                        });
+                        savePostApi(postIdList[index].toString());
+                      },
+                      isSaved: isSaved[index]!,
+                      shareTap: () async {
+                        await dLink.createDynamicLink(
+                          true,
+                          postIdList[index].toString(),
+                          index,
+                          nameList[index]!,
+                          descriptionList[index]!,
+                          imageListMap[index].isEmpty
+                              ? ''
+                              : imageListMap[index][0]['file'].toString(),
+                        );
+                      },
+                      iscomment: commentTextList[index] != null ? true : false,
+                      commentText: commentTextList[index] != null
+                          ? commentTextList[index]!
+                          : '',
+                      commentImage: commentProfile[index],
+                      isMyProfile: false,
+                      mutualFriend: mutualList[index],
+                    );
                     // Column(
                     //   children: <Widget>[
                     //     //main horizontal padding
@@ -464,7 +477,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                     //                                 .cupertino);
 
                     //                       if(result == true){
-                    //                         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: 
+                    //                         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder:
                     //                         (context) => bottomNavBar(0)), (route) => false);
                     //                       }
                     //                   }),
@@ -1012,7 +1025,6 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
     }
   }
 
-  
 //get User Profile
   Future<void> getUserProfile(id) async {
     // displayProgressDialog(context);
@@ -1033,12 +1045,13 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
         if (map!['data'] != null || map['data'] != []) {
           setState(() {});
           // map['data']['role'] == 'E'
-          //     ? 
-              pushNewScreen(context,
-              screen: EducatorProfileViewScreen(id: id,),
+          //     ?
+          pushNewScreen(context,
+              screen: EducatorProfileViewScreen(
+                id: id,
+              ),
               withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation.cupertino);
+              pageTransitionAnimation: PageTransitionAnimation.cupertino);
           //     :
           // pushNewScreen(context,
           //     screen: LearnerProfileViewScreen(id: id,),
@@ -1065,5 +1078,4 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
       //print(stack);
     }
   }
-  
 }

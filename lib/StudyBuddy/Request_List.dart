@@ -1,3 +1,4 @@
+import 'package:being_pupil/ConnectyCube/consts.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Request_Model.dart';
@@ -132,7 +133,7 @@ class _RequestListState extends State<RequestList> {
                       child: Container(
                         //height: 10.0.h,
                         child: ListTile(
-                          contentPadding: EdgeInsets.all(0.0),
+                          contentPadding: EdgeInsets.zero,
                           //leading:
                           title: GestureDetector(
                             onTap: () {
@@ -143,17 +144,46 @@ class _RequestListState extends State<RequestList> {
                               //crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child:CachedNetworkImage(
-                                                imageUrl:_profileImage[index]!,
-                                    width: 40.0,
-                                    height: 40.0,
-                                    fit: BoxFit.cover,
-                                  ),
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: CachedNetworkImage(
+                                        placeholder: (context, url) =>
+                                            Container(
+                                          child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.black),
+                                          ),
+                                          width: 40.0,
+                                          height: 40.0,
+                                          padding: EdgeInsets.all(70.0),
+                                          decoration: BoxDecoration(
+                                            color: greyColor2,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0),
+                                            ),
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Material(
+                                          child: Image.asset(
+                                            'assets/images/studyBudyBg.png',
+                                            width: 40.0,
+                                            height: 40.0,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0),
+                                          ),
+                                          clipBehavior: Clip.hardEdge,
+                                        ),
+                                        imageUrl: _profileImage[index]!,
+                                        width: 40.0,
+                                        height: 40.0,
+                                        fit: BoxFit.fitWidth,
+                                      )),
+                                SizedBox(
+                                  width: 2.0.w,
                                 ),
-                                // SizedBox(
-                                //   width: 2.0.w,
-                                // ),
                                 Padding(
                                   padding: EdgeInsets.only(right: 0.0.w),
                                   child: Column(
@@ -162,7 +192,7 @@ class _RequestListState extends State<RequestList> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        width: 40.0.w,
+                                        width: 38.0.w,
                                         //color: Colors.grey,
                                         child: Text(
                                           _name[index]!,
@@ -175,7 +205,7 @@ class _RequestListState extends State<RequestList> {
                                       ),
                                       Container(
                                         //color: Colors.grey,
-                                        width: 40.0.w,
+                                        width: 38.0.w,
                                         child: Text(
                                           _lastDegree[index] != null &&
                                                   _schoolName[index] != null
