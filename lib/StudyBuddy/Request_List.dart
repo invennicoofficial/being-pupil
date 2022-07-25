@@ -179,7 +179,7 @@ class _RequestListState extends State<RequestList> {
                                         imageUrl: _profileImage[index]!,
                                         width: 40.0,
                                         height: 40.0,
-                                        fit: BoxFit.fitWidth,
+                                        fit: BoxFit.cover,
                                       )),
                                 SizedBox(
                                   width: 2.0.w,

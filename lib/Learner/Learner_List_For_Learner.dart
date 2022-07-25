@@ -1,3 +1,4 @@
+import 'package:being_pupil/ConnectyCube/consts.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Learner/Connection_API.dart';
 import 'package:being_pupil/Model/Config.dart';
@@ -164,13 +165,42 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
                                     //child:
                                      ClipRRect(
                                       borderRadius: BorderRadius.circular(50),
-                                      child:CachedNetworkImage(
-                                                imageUrl: _profileImage[index]!,
+                                      child: CachedNetworkImage(
+                                        placeholder: (context, url) =>
+                                            Container(
+                                          child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.black),
+                                          ),
+                                          width: 40.0,
+                                          height: 40.0,
+                                          padding: EdgeInsets.all(70.0),
+                                          decoration: BoxDecoration(
+                                            color: greyColor2,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0),
+                                            ),
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Material(
+                                          child: Image.asset(
+                                            'assets/images/studyBudyBg.png',
+                                            width: 40.0,
+                                            height: 40.0,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0),
+                                          ),
+                                          clipBehavior: Clip.hardEdge,
+                                        ),
+                                        imageUrl: _profileImage[index]!,
                                         width: 40.0,
                                         height: 40.0,
                                         fit: BoxFit.cover,
-                                      ),
-                                    ),
+                                      )),
                                   //),
                                   SizedBox(
                                     width: 2.0.w,

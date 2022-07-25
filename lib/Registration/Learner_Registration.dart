@@ -1491,7 +1491,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                                         //   Icons.expand_more,
                                         //   color: Constants.bpSkipStyle,
                                         // ),
-                                        onChange: (String value, int index)async  {
+                                        onChange: (String value, int dindex)async  {
                                           //print(value);
                                           if (int.parse(value) > 0) {
                                             setState(() {
@@ -1941,6 +1941,7 @@ class _LearnerRegistrationState extends State<LearnerRegistration> {
                               maxLines: 5,
                               keyboardType: TextInputType.multiline,
                               //maxLength: 100,
+                              textInputAction: TextInputAction.done,
                               decoration: InputDecoration(
                                   //labelText: "Please mention your achivements...",
                                   //counterText: '',

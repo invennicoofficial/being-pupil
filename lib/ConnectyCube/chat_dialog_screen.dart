@@ -66,7 +66,7 @@ class ChatDialogScreen extends StatelessWidget {
                 imageUrl: this.imageUrl!,
                 width: 50.0,
                 height: 50.0,
-                fit: BoxFit.fitWidth,
+                fit: BoxFit.cover,
               )
             ),
             SizedBox(width: 10,),

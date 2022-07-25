@@ -178,7 +178,7 @@ class _ConnectionListState extends State<ConnectionList> {
                                         imageUrl: _profileImage[index]!,
                                         width: 40.0,
                                         height: 40.0,
-                                        fit: BoxFit.fitWidth,
+                                        fit: BoxFit.cover,
                                       )
                                   ),
                                   SizedBox(
@@ -189,7 +189,7 @@ class _ConnectionListState extends State<ConnectionList> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
-                                        width: _status[index] == '0' ? 45.0.w : 52.0.w,
+                                        width: _status[index] == '0' ? 43.0.w : 52.0.w,
                                         //color: Colors.grey,
                                         child: Text(
                                           _name[index]!,
@@ -202,7 +202,7 @@ class _ConnectionListState extends State<ConnectionList> {
                                         ),
                                       ),
                                       Container(
-                                        width: _status[index] == '0' ? 45.0.w : 52.0.w,
+                                        width: _status[index] == '0' ? 43.0.w : 52.0.w,
                                         //color: Colors.grey,
                                         child: Text(
                                           _lastDegree[index] != null &&

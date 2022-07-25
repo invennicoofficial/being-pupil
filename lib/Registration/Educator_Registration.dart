@@ -120,13 +120,16 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
     createControllers();
     getToken();
     getData();
-    educationDetailMap.add({
+    //for(int i = 0; i < 4; i++){
+      educationDetailMap.add({
      'school_name': 'MSU',
      'year': 'Year',
      'qualification': 'BCA',
      'certificate': 'Upload Certificate/Degree'
       });
-    //print(educationDetailMap);
+   // }
+    
+    print('MAPPP:::'+ educationDetailMap.toString());
     super.initState();
     // _selectedSkills = [];
     // _selectedHobbies = [];
@@ -1453,7 +1456,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                         //   Icons.expand_more,
                                         //   color: Constants.bpSkipStyle,
                                         // ),
-                                        onChange: (String value, int index) async {
+                                        onChange: (String value, int dindex) async {
                                           print(value);
                                           print(index);
                                           if (int.parse(value) > 0) {
@@ -1463,23 +1466,19 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                           }
                                           if (value == '1') {
                                             qualification = 'Graduate';
-                                            educationDetailMap[index]
-                                                    ['qualification'] =
+                                            educationDetailMap[index]['qualification'] =
                                                 'Graduate';
                                             //print(qualification);
                                           } else if (value == '2') {
                                             print(educationDetailMap);
                                             qualification = 'Post-graduate';
-                                            educationDetailMap[index]
-                                                    ['qualification'] =
+                                            educationDetailMap[index]['qualification'] =
                                                 'Post-graduate';
-                                            print(educationDetailMap[index]
-                                                    ['qualification']);
+                                            print(educationDetailMap[index]['qualification']);
                                           } else if (value == '3') {
                                             qualification =
                                                 'Chartered Accountant';
-                                            educationDetailMap[index]
-                                                    ['qualification'] =
+                                            educationDetailMap[index]['qualification'] =
                                                 'Chartered Accountant';
                                             //print(qualification);
                                           } else {
@@ -2698,7 +2697,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               bottom: 3.0.h),
                           child: GestureDetector(
                             onTap: isButtonEnabled
-                            ? () {
+                            ? () async{
                               //print('Submit!!!');
                               wordCountForDescription(_achivementController.text);
                               bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9."
@@ -2903,6 +2902,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               }
                                else {
                                 // _signInCC(context, CubeUser(fullName:  _nameController.text, login: _emailController.text, password: '12345678'));
+                                await updateUserPicCC();
                                 addEducatorProfile(
                                   //userId,
                                     registerAs,
@@ -2932,7 +2932,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     _otherLinkLinkController.text,
                                     totalWorkExp,
                                     totalTeachExp);
-                                    updateUserPicCC();
+                                    //updateUserPicCC();
                               }
                             } : null,
                             child: ButtonWidget(btnName: 'SUBMIT', isActive: isButtonEnabled, fontWeight: FontWeight.w500)
@@ -3056,18 +3056,18 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
      File file = File(_image!.path);
     CubeUser? user = sharedPrefs.getUser(); 
     user!.password = '12345678';
-//print('CCU::'+user.fullName.toString());  
+print('CCU::'+user.fullName.toString());  
 uploadFile(file, isPublic: false)
   .then((cubeFile) {
     user.avatar = cubeFile.uid;
     return updateUser(user);
   })
   .catchError((error) {
-    //print('CCERR:::.'+error.toString());
+    print('CCERR:::.'+error.toString());
   });
-  //print('CCPIC:::.'+user.avatar.toString());
-  String? avatarUrl = getPrivateUrlForUid(user.avatar);
-  //print('CCAV:::.'+avatarUrl!);
+  print('CCPIC:::.'+user.avatar.toString());
+  String? avatarUrl = getPrivateUrlForUid(user.id.toString());
+  print('CCAV:::.'+avatarUrl!);
   }
 
   void _processLoginError(exception) {

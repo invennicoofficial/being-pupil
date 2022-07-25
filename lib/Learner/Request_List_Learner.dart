@@ -1,3 +1,4 @@
+import 'package:being_pupil/ConnectyCube/consts.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Model/Request_Model.dart';
@@ -146,17 +147,46 @@ class _RequestListLearnerState extends State<RequestListLearner> {
                               //crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child:CachedNetworkImage(
-                                                imageUrl:_profileImage[index]!,
-                                    width: 40.0,
-                                    height: 40.0,
-                                    fit: BoxFit.cover,
-                                  ),
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: CachedNetworkImage(
+                                        placeholder: (context, url) =>
+                                            Container(
+                                          child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.black),
+                                          ),
+                                          width: 40.0,
+                                          height: 40.0,
+                                          padding: EdgeInsets.all(70.0),
+                                          decoration: BoxDecoration(
+                                            color: greyColor2,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0),
+                                            ),
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Material(
+                                          child: Image.asset(
+                                            'assets/images/studyBudyBg.png',
+                                            width: 40.0,
+                                            height: 40.0,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0),
+                                          ),
+                                          clipBehavior: Clip.hardEdge,
+                                        ),
+                                        imageUrl: _profileImage[index]!,
+                                        width: 40.0,
+                                        height: 40.0,
+                                        fit: BoxFit.cover,
+                                      )),
+                                SizedBox(
+                                  width: 2.0.w,
                                 ),
-                                // SizedBox(
-                                //   width: 2.0.w,
-                                // ),
                                 Padding(
                                   padding: EdgeInsets.only(right: 0.0.w),
                                   child: Column(
@@ -164,7 +194,7 @@ class _RequestListLearnerState extends State<RequestListLearner> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        width: 40.0.w,
+                                        width: 38.0.w,
                                         child: Text(
                                           _name[index]!,
                                           style: TextStyle(
@@ -176,11 +206,11 @@ class _RequestListLearnerState extends State<RequestListLearner> {
                                       ),
                                       Container(
                                         //color: Colors.grey,
-                                        width: 40.0.w,
+                                        width: 38.0.w,
                                         child: Text(
                                           _lastDegree[index] != null &&
                                                   _schoolName[index] != null
-                                              ? '${_lastDegree[index]} | ${_schoolName[index]}'
+                                              ? '{_lastDegree[index]} | {_schoolName[index]}'
                                               : '',
                                           style: TextStyle(
                                               fontSize: 6.5.sp,

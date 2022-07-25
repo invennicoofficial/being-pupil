@@ -3159,25 +3159,25 @@ class _EditEducatorProfileState extends State<EditEducatorProfile> {
         ));
   }
 
-  updateUserPicCC() async{
+   updateUserPicCC() async{
      //some file from device storage
      SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
      //sharedPrefs.getUser();
      File file = File(_image!.path);
     CubeUser? user = sharedPrefs.getUser(); 
     user!.password = '12345678';
-//print('CCU::'+user.fullName.toString());  
+print('CCU::'+user.fullName.toString());  
 uploadFile(file, isPublic: false)
   .then((cubeFile) {
     user.avatar = cubeFile.uid;
     return updateUser(user);
   })
   .catchError((error) {
-   // print('CCERR:::.'+error.toString());
+    print('CCERR:::.'+error.toString());
   });
-  //print('CCPIC:::.'+user.avatar.toString());
-  String? avatarUrl = getPrivateUrlForUid(user.avatar);
-  //print('CCAV:::.'+avatarUrl!);
+  print('CCPIC:::.'+user.avatar.toString());
+  String? avatarUrl = getPrivateUrlForUid(user.id.toString());
+  print('CCAV:::.'+avatarUrl!);
   }
 
   //Location Picker
