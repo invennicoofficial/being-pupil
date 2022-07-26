@@ -191,6 +191,7 @@ Future<void> _createDynamicLink(bool short, String id) async {
         physics: BouncingScrollPhysics(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             //Images of Property
             Padding(
@@ -384,8 +385,8 @@ Future<void> _createDynamicLink(bool short, String id) async {
               padding: EdgeInsets.only(left: 4.0.w, right: 4.0.w, top: 3.0.h),
               child: Row(
                 children: [
-                  Text(
-                    'About Property',
+                  Text(widget.propData![widget.index]['description'] != null
+                    ? 'About Property' : '',
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 12.0.sp,
@@ -427,6 +428,7 @@ Future<void> _createDynamicLink(bool short, String id) async {
                       fontSize: 11.0.sp,
                       fontWeight: FontWeight.w400,
                       color: Constants.bpOnBoardSubtitleStyle),
+                  
                 ),
               ),
             ),
@@ -519,26 +521,28 @@ Future<void> _createDynamicLink(bool short, String id) async {
                 _launchMapsUrl(lat, long);
               },
               child: 
-              Container(
-                height: Constants.constHeight,
-                width: 90.0.w,
-                padding: const EdgeInsets.all(1.0),
-                decoration: BoxDecoration(
-                  //color: Constants.bpOnBoardTitleStyle,
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  border: Border.all(
-                    //color: Constants.bgColor,
-                    width: 1.0,
+              Center(
+                child: Container(
+                  height: Constants.constHeight,
+                  width: 90.0.w,
+                  padding: const EdgeInsets.all(1.0),
+                  decoration: BoxDecoration(
+                    //color: Constants.bpOnBoardTitleStyle,
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    border: Border.all(
+                      //color: Constants.bgColor,
+                      width: 1.0,
+                    ),
                   ),
-                ),
-                child: Center(
-                  child: Text(
-                    'Show on Map',
-                    style: TextStyle(
-                        color: Constants.bgColor,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 11.0.sp),
+                  child: Center(
+                    child: Text(
+                      'Show on Map',
+                      style: TextStyle(
+                          color: Constants.bgColor,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 11.0.sp),
+                    ),
                   ),
                 ),
               ),
@@ -558,7 +562,7 @@ Future<void> _createDynamicLink(bool short, String id) async {
                     withNavBar: false,
                     pageTransitionAnimation: PageTransitionAnimation.cupertino);
               },
-              child: ButtonWidget(btnName: 'BOOK NOW', isActive: true, fontWeight: FontWeight.w700,)
+              child: Center(child: ButtonWidget(btnName: 'BOOK NOW', isActive: true, fontWeight: FontWeight.w700,))
               // Container(
               //   height: 7.0.h,
               //   width: 90.0.w,

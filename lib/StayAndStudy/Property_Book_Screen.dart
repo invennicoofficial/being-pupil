@@ -185,7 +185,7 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                           i < widget.propData![widget.index!]['room'].length;
                           i++)
                         {
-                          '${widget.propData![widget.index!]['room'][i]['room_type']}\t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t',
+                          '${widget.propData![widget.index!]['room'][i]['room_type']}\t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t',
                           //₹${widget.propData![widget.index!]['room'][i]['room_amount']}',
                         }
                     ]
@@ -807,29 +807,6 @@ class _BookPropertyScreenState extends State<BookPropertyScreen> {
                       }
                     },
                     child: ButtonWidget(btnName: 'Continue'.toUpperCase(), isActive: true, fontWeight: FontWeight.w500)
-                    // Container(
-                    //   height: 7.0.h,
-                    //   width: 90.0.w,
-                    //   padding: const EdgeInsets.all(1.0),
-                    //   decoration: BoxDecoration(
-                    //     color: Constants.bpOnBoardTitleStyle,
-                    //     borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    //     border: Border.all(
-                    //       color: Constants.bgColor,
-                    //       width: 0.15,
-                    //     ),
-                    //   ),
-                    //   child: Center(
-                    //     child: Text(
-                    //       'Continue'.toUpperCase(),
-                    //       style: TextStyle(
-                    //           color: Colors.white,
-                    //           fontFamily: 'Montserrat',
-                    //           fontWeight: FontWeight.w600,
-                    //           fontSize: 11.0.sp),
-                    //     ),
-                    //   ),
-                    // ),
                   ),
                 ),
               ],

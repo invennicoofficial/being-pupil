@@ -88,6 +88,8 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
   LikePostAPI like = LikePostAPI();
   static const String TAG = "_LoginPageState";
   CubeUser? user;
+  CubeSession? session;
+  String? ccToken;
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -215,6 +217,9 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
     if (user != null) {
       user!.password = '12345678';
       createSession(user).then((cubeSession) {
+        //ccToken = cubeSession.token;
+        preferences.setString('ccToken', cubeSession.token!);
+        //print('CCT:::'+ccToken!);
         signIn(user!).then((cubeUser) async {
           _loginToCubeChat(context, user!);
         }).catchError((error) {});

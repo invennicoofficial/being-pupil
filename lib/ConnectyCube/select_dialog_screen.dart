@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api_utils.dart';
 import 'chat_dialog_screen.dart';
@@ -100,6 +101,7 @@ class _BodyLayoutState extends State<BodyLayout> {
       CubeChatConnection.instance.chatMessagesManager;
 
   _BodyLayoutState(this.currentUser);
+  String? ccToken;
 
   @override
   Widget build(BuildContext context) {
@@ -217,6 +219,7 @@ class _BodyLayoutState extends State<BodyLayout> {
     }
 
     getDialogAvatarWidget() {
+      // getCCToken();
       var dialog = dialogList[index].data;
       if (dialog.photo == null) {
         return CircleAvatar(
@@ -224,6 +227,7 @@ class _BodyLayoutState extends State<BodyLayout> {
       } else {
         // String? avatarUrl = getPrivateUrlForUid(dialog.userId.toString());
         // print('CCAV:::.'+avatarUrl!);
+        
         return CachedNetworkImage(
           placeholder: (context, url) => Container(
             child: CircularProgressIndicator(
@@ -241,7 +245,7 @@ class _BodyLayoutState extends State<BodyLayout> {
           ),
           imageUrl: //'https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/fxj5vmias8fcvuhn627q',
               //dialogList[index].data.photo!,
-              'https://api.connectycube.com/blobs/${dialogList[index].data.photo!}?token=43ACD3EE6A2FC4B40EA1869E1334B6AEE2B7',
+              'https://api.connectycube.com/blobs/${dialogList[index].data.photo!}?token=$ccToken',
           width: 45.0,
           height: 45.0,
           fit: BoxFit.cover,
@@ -367,7 +371,7 @@ class _BodyLayoutState extends State<BodyLayout> {
                   user,
                   createdDialog,
                   dialogList[index].data.photo != null
-                      ? 'https://api.connectycube.com/blobs/${dialogList[index].data.photo!}?token=43ACD3EE6A2FC4B40EA1869E1334B6AEE2B7'
+                      ? 'https://api.connectycube.com/blobs/${dialogList[index].data.photo!}?token=$ccToken'
                       : 'https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/fxj5vmias8fcvuhn627q'),
               withNavBar: false,
               pageTransitionAnimation: PageTransitionAnimation.cupertino)
@@ -398,11 +402,18 @@ class _BodyLayoutState extends State<BodyLayout> {
     });
   }
 
+   getCCToken() async{
+      SharedPreferences preff = await SharedPreferences.getInstance();
+      ccToken = preff.getString('ccToken');
+      print('CC::'+ ccToken!);
+    }
+
   @override
   void initState() {
     super.initState();
     msgSubscription =
         chatMessagesManager!.chatMessagesStream.listen(onReceiveMessage);
+    getCCToken();
   }
 
   @override

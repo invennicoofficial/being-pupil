@@ -543,8 +543,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   password: '12345678',
                   email: email),
               result);
-          //
         } else {
+          closeProgressDialog(context);
           Fluttertoast.showToast(
             msg: result.message == null ? result.errorMsg! : result.message!,
             toastLength: Toast.LENGTH_SHORT,
