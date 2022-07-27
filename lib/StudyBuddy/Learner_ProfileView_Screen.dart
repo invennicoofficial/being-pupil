@@ -1,3 +1,4 @@
+import 'package:being_pupil/ConnectyCube/consts.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -108,6 +109,15 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(100),
                             child:CachedNetworkImage(
+                              errorWidget: (context, url, error) =>
+                                            Material(
+                                              child: CircleAvatar(radius: 50, backgroundColor: greyColor2,
+                                                child: Icon(Icons.person, size: 110, color: Colors.black,)),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(8.0),
+                                              ),
+                                              clipBehavior: Clip.hardEdge,
+                                            ),
                                                 imageUrl:map!['data']['profile_image'],
                               height: 120,
                               width: 120,

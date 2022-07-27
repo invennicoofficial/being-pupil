@@ -48,7 +48,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
           padding: EdgeInsets.zero,
         ),
         title: Text(
-          'Verification Screen',
+          'Profile Verification',
           style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 12.0.sp,

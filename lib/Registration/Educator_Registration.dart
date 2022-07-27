@@ -99,6 +99,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
 
 
   static const String TAG = "_LoginPageState";
+  CubeUser? user;
   //List<String> _schoolNameList
 
   // List<Skills> _selectedSkills;
@@ -154,7 +155,44 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
       registerAs = preferences.getString('RegisterAs');
       userId = preferences.getInt('userId');
     });
+
+    SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+    user = sharedPrefs.getUser();
+
+    if (user != null) {
+      user!.password = '12345678';
+      print('UUU:::'+user.toString());
+      createSession(user).then((cubeSession) {
+        //ccToken = cubeSession.token;
+        preferences.setString('ccToken', cubeSession.token!);
+        //print('CCT:::'+ccToken!);
+        signIn(user!).then((cubeUser) async {
+          _loginToCubeChat(context, user!);
+          sharedPrefs.saveNewUser(user!);
+        }).catchError((error) {});
+      }).catchError((error) {});
+    }
     //print(registerAs);
+  }
+
+   //ConnectyCube
+  _loginToCubeChat(BuildContext context, CubeUser user) {
+    user.password = '12345678';
+    //print("_loginToCubeChat user $user");
+    CubeChatConnectionSettings.instance.totalReconnections = 0;
+    CubeChatConnection.instance
+        .login(user)
+        .then((cubeUser) {})
+        .catchError((error) {
+      //print('Came Here!!');
+      _processLoginError(error);
+    });
+  }
+
+  void _processLoginError(exception) {
+    log("Login error $exception", TAG);
+    setState(() {});
+    showDialogError(exception, context);
   }
 
   wordCountForDescription(String str) {
@@ -2112,6 +2150,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               controller: _achivementController,
                               maxLines: 5,
                               keyboardType: TextInputType.multiline,
+                              textInputAction: TextInputAction.done,
                               //maxLength: 100,
                               decoration: InputDecoration(
                                   //labelText: "Please mention your achivements...",
@@ -2902,7 +2941,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                               }
                                else {
                                 // _signInCC(context, CubeUser(fullName:  _nameController.text, login: _emailController.text, password: '12345678'));
-                                await updateUserPicCC();
+                                //await updateUserPicCC();
                                 addEducatorProfile(
                                   //userId,
                                     registerAs,
@@ -2932,7 +2971,7 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
                                     _otherLinkLinkController.text,
                                     totalWorkExp,
                                     totalTeachExp);
-                                    //updateUserPicCC();
+                                   updateUserPicCC();
                               }
                             } : null,
                             child: ButtonWidget(btnName: 'SUBMIT', isActive: isButtonEnabled, fontWeight: FontWeight.w500)
@@ -3049,34 +3088,55 @@ class _EducatorRegistrationState extends State<EducatorRegistration> {
     });
   }
 
+   void logout() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.clear();
+  }
+
   updateUserPicCC() async{
      //some file from device storage
-     SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+     //SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
      //sharedPrefs.getUser();
      File file = File(_image!.path);
-    CubeUser? user = sharedPrefs.getUser(); 
+    //CubeUser? user = sharedPrefs.getUser(); 
     user!.password = '12345678';
-print('CCU::'+user.fullName.toString());  
+print('CCU::'+user!.fullName.toString());  
+print('CCFILE::'+file.toString());  
 uploadFile(file, isPublic: false)
   .then((cubeFile) {
-    user.avatar = cubeFile.uid;
-    return updateUser(user);
+    user!.avatar = cubeFile.uid;
+    return updateUser(user!);
   })
   .catchError((error) {
     print('CCERR:::.'+error.toString());
   });
-  print('CCPIC:::.'+user.avatar.toString());
-  String? avatarUrl = getPrivateUrlForUid(user.id.toString());
+  print('CCPIC:::.'+user!.avatar.toString());
+  String? avatarUrl = getPrivateUrlForUid(user!.id.toString());
   print('CCAV:::.'+avatarUrl!);
+
+                              // logout();
+                              // signOut()
+                              //     .then(
+                              //       (voidValue) {},
+                              //     )
+                              //     .catchError(
+                              //       (onError) {},
+                              //     )
+                              //     .whenComplete(() {
+                              //   // CubeChatConnection.instance.destroy();
+                              //   SharedPrefs.instance.deleteUser();
+
+                              //     });
+  
   }
 
-  void _processLoginError(exception) {
-    log("Login error $exception", TAG);
-    setState(() {
+  // void _processLoginError(exception) {
+  //   log("Login error $exception", TAG);
+  //   setState(() {
 
-    });
-    showDialogError(exception, context);
-  }
+  //   });
+  //   showDialogError(exception, context);
+  // }
 
 //Save Education Details
   saveEducationDetails() async {
@@ -3588,6 +3648,7 @@ uploadFile(file, isPublic: false)
             //    result.data!.educationalDetails!.last.qualification!);
             //print('LOCATION:::: ' + result.data!.location![0].addressLine2!);
            // print('IMAGE:::: ' + result.data!.imageUrl!);
+           //updateUserPicCC();
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => bottomNavBar(4)),
                     (Route<dynamic> route) => false);

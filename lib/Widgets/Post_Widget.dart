@@ -189,7 +189,7 @@ class PostWidget extends StatelessWidget {
             width: 100.0.w,
             child: Text(
               int.parse(totalLike) > 2
-              ? '$mutualFriend & ${mutualLike.toString()} other people are liked this post.'
+              ? '$mutualFriend & ${mutualLike.toString()} other people liked this post.'
               : int.parse(totalLike) >= 2
               ? '$mutualFriend liked this post.' : '',
               style: TextStyle(

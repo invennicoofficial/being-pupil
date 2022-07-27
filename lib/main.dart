@@ -231,39 +231,45 @@ class _SplashScreenState extends State<SplashScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Constants.bgColor,
-        body: Stack(
-          children: [
+        body: 
+        // Stack(
+        //   children: [
             Container(
               height: 100.0.h,
               width: 100.0.w,
               decoration: BoxDecoration(
-                color: Constants.bgColor,
+                color: Colors.black,
               ),
-              child: Image.asset('assets/images/background.png',
-                  fit: BoxFit.cover),
-            ),
-            Center(
+              child: Center(
               child: Image.asset(
                 'assets/images/beingPupil.png',
                 height: 15.0.h,
                 width: 90.0.w,
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 18.0.h),
-              child: Center(
-                child: Text(
-                  'Student of Life',
-                  style: TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.white,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w400),
-                ),
-              ),
-            )
-          ],
-        ),
+            ),
+            // Center(
+            //   child: Image.asset(
+            //     'assets/images/beingPupil.png',
+            //     height: 15.0.h,
+            //     width: 90.0.w,
+            //   ),
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.only(top: 18.0.h),
+            //   child: Center(
+            //     child: Text(
+            //       'Student of Life',
+            //       style: TextStyle(
+            //           fontSize: 16.0,
+            //           color: Colors.white,
+            //           fontFamily: 'Montserrat',
+            //           fontWeight: FontWeight.w400),
+            //     ),
+            //   ),
+            // )
+        //   ],
+        // ),
       ),
     );
   }

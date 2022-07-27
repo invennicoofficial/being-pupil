@@ -1,5 +1,6 @@
 import 'package:being_pupil/Account/My_Course/Get_Educator_Course_Screen.dart';
 import 'package:being_pupil/ConnectyCube/chat_dialog_screen.dart';
+import 'package:being_pupil/ConnectyCube/consts.dart';
 import 'package:being_pupil/ConnectyCube/pref_util.dart';
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/HomeScreen/Comment_Screen.dart';
@@ -133,6 +134,7 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
       isSubscribed = preferences.getInt('isSubscribed');
       registerAs = preferences.getString('RegisterAs');
     });
+    print(registerAs);
   }
 
   void _launchSocialUrl(String url) async {
@@ -163,7 +165,8 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
           padding: EdgeInsets.zero,
         ),
         title: Text(
-          registerAs == 'L' ? 'Fellow Educator' : 'Study Buddy',
+          //registerAs == 'L' ? 'Study Buddy' : 
+          'Fellow Educator' ,
           style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 12.0.sp,
@@ -202,6 +205,15 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(100),
                             child: CachedNetworkImage(
+                              errorWidget: (context, url, error) =>
+                                            Material(
+                                              child: CircleAvatar(radius: 50, backgroundColor: greyColor2,
+                                                child: Icon(Icons.person, size: 110, color: Colors.black,)),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(8.0),
+                                              ),
+                                              clipBehavior: Clip.hardEdge,
+                                            ),
                               imageUrl: profileImageUrl!,
                               width: 130,
                               height: 130,
@@ -697,7 +709,15 @@ class _EducatorProfileViewScreenState extends State<EducatorProfileViewScreen> {
                     color: Constants.bgColor.withOpacity(0.5),
                   ),
                   //Educator Post
-                  Expanded(
+                  isPostLoading
+          ? Padding(
+            padding: EdgeInsets.only(top: 15.0.h),
+              child: CircularProgressIndicator(
+                valueColor:
+                    new AlwaysStoppedAnimation<Color>(Constants.bgColor),
+              ),
+            )
+          : Expanded(
                     child: Padding(
                       padding: EdgeInsets.zero,
                       child: SingleChildScrollView(
