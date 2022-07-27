@@ -11,36 +11,17 @@ class ReviewDoneScreen extends StatelessWidget {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: GestureDetector(
-                  onTap: () {
-                    //print('GO TO!!!');
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 5.0.h),
-                    child: ButtonWidget(btnName: 'GO TO MY BOOKINGS', isActive: true, fontWeight: FontWeight.w500)
-                    // Container(
-                    //   height: 7.0.h,
-                    //   width: 90.0.w,
-                    //   decoration: BoxDecoration(
-                    //       border: Border.all(
-                    //         color: Constants.bgColor,
-                    //       ),
-                    //       color: Constants.bgColor,
-                    //       borderRadius: BorderRadius.circular(8.0)),
-                    //   child: Center(
-                    //     child: Text(
-                    //       'GO TO MY BOOKINGS',
-                    //       style: TextStyle(
-                    //           fontFamily: 'Montserrat',
-                    //           fontWeight: FontWeight.w500,
-                    //           fontSize: 11.0.sp,
-                    //           color: Colors.white),
-                    //     ),
-                    //   ),
-                    // ),
-                  ),
-                ),
+        onTap: () {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        },
+        child: Padding(
+            padding: EdgeInsets.only(bottom: 5.0.h),
+            child: ButtonWidget(
+                btnName: 'GO TO MY BOOKINGS',
+                isActive: true,
+                fontWeight: FontWeight.w500)),
+      ),
       appBar: AppBar(
         backgroundColor: Constants.bgColor,
         leading: IconButton(
@@ -58,7 +39,9 @@ class ReviewDoneScreen extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            SizedBox(height: 2.0.h,),
+            SizedBox(
+              height: 2.0.h,
+            ),
             Container(
               height: 40.0.h,
               child: Center(
@@ -88,7 +71,7 @@ class ReviewDoneScreen extends StatelessWidget {
                     fontSize: 10.0.sp,
                     fontWeight: FontWeight.w400,
                     color: Constants.bgColor),
-                    textAlign: TextAlign.center,
+                textAlign: TextAlign.center,
               ),
             ),
           ],

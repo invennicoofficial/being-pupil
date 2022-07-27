@@ -1,14 +1,6 @@
 class Config{
-
-  // static const String baseUrl = "http://13.233.57.156/being-pupil-backend/public/api/";
-  //static const String baseUrl = "http://43.204.0.106/being-pupil-backend/public/api/";
   static const String baseUrl = "http://beingpupil.com/public/api/";
-  //TODO replace API Key
-  //static const String locationKey = "AIzaSyCwOLCJW7tuZ6oRkXHuQaAnOeyQlpYIaQY";
-  //static const String locationKey = "AIzaSyDQS-dIfjnJceR4GWmKS97zGuw7b2oZ_Us";
   static const String locationKey = "AIzaSyBhPteA6FOMIaQqRIpHk7xLM5I4BN3_zMs";
-  //static const String locationKey = "AIzaSyBcXusiwmv2cDRUdDcpTQyLw3EJPTDjglU";
-
   static const String signupUrl = baseUrl + "user/signup";
   static const String otpUrl = baseUrl + "user/verify_otp";
   static const String loginUrl = baseUrl + "user/login";
@@ -78,14 +70,3 @@ class Config{
   static const String privacyUrl = baseUrl + "privacy";
   static const String aboutUsUrl = baseUrl + "about-us";
 }
-
-
-
-
-
-
-//? Shered Preffrence 
-//RegisterAs(String) = user role
-//userId(int) = user id for both user
-//isNew(String) = check for ew user
-//isLoggedIn(bool) = check for login user

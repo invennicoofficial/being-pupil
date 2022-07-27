@@ -110,29 +110,6 @@ class _PaymentSucessScreenState extends State<PaymentSucessScreen> {
                     (Route<dynamic> route) => false);
               },
               child: ButtonWidget(btnName: 'BACK TO HOME', isActive: true, fontWeight: FontWeight.w600,)
-              // Container(
-              //   height: 7.0.h,
-              //   width: 85.0.w,
-              //   padding: const EdgeInsets.all(1.0),
-              //   decoration: BoxDecoration(
-              //     color: Constants.bpOnBoardTitleStyle,
-              //     borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              //     border: Border.all(
-              //       color: Constants.bgColor,
-              //       width: 0.15,
-              //     ),
-              //   ),
-              //   child: Center(
-              //     child: Text(
-              //       'BACK TO HOME',
-              //       style: TextStyle(
-              //           color: Colors.white,
-              //           fontFamily: 'Montserrat',
-              //           fontWeight: FontWeight.w600,
-              //           fontSize: 11.0.sp),
-              //     ),
-              //   ),
-              // ),
             ),
           ),
         ],

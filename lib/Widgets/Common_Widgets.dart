@@ -5,20 +5,6 @@ import 'package:sizer/sizer.dart';
 
 import 'package:being_pupil/Constants/Const.dart';
 
-// class Toast{
-//   showToast(String message){
-//     Fluttertoast.showToast(
-//         msg: message,
-//         //toastLength: Toast.LENGTH_SHORT,
-//         gravity: ToastGravity.BOTTOM,
-//         timeInSecForIosWeb: 1,
-//         backgroundColor: Constants.bgColor,
-//         textColor: Colors.white,
-//         fontSize: 10.0.sp
-//     );
-//   }
-// }
-
 class ButtonWidget extends StatelessWidget {
   final String btnName;
   final bool isActive;
@@ -60,7 +46,7 @@ class NumberInputWidget extends StatelessWidget {
   final TextEditingController textEditingController;
   bool autoFocus;
   bool isReadOnly;
-  //String? Function(String?)? validator;
+
   Function(String?)? onChanged;
   final String lable;
   NumberInputWidget(
@@ -69,7 +55,6 @@ class NumberInputWidget extends StatelessWidget {
       required this.textEditingController,
       this.autoFocus = false,
       this.isReadOnly = false,
-      //this.validator,
       this.onChanged,
       required this.lable})
       : super(key: key);
@@ -87,52 +72,51 @@ class NumberInputWidget extends StatelessWidget {
             height: 48.0,
             width: 90.0.w,
             child: TextFormField(
-              focusNode: focusNode,
-              controller: textEditingController,
-              autofocus: autoFocus,
-              readOnly: isReadOnly,
-              keyboardType: TextInputType.phone,
-              textInputAction: TextInputAction.done,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(10),
-                FilteringTextInputFormatter.digitsOnly
-              ],
-              decoration: InputDecoration(
-                labelText: lable, //"Phone Number",
-                labelStyle: TextStyle(
-                    color: Constants.bpSkipStyle,
-                    fontFamily: "Montserrat",
-                    fontSize: 10.0.sp),
-                fillColor: Colors.white,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: BorderSide(
-                    color: Constants.formBorder,
+                focusNode: focusNode,
+                controller: textEditingController,
+                autofocus: autoFocus,
+                readOnly: isReadOnly,
+                keyboardType: TextInputType.phone,
+                textInputAction: TextInputAction.done,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(10),
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                decoration: InputDecoration(
+                  labelText: lable,
+                  labelStyle: TextStyle(
+                      color: Constants.bpSkipStyle,
+                      fontFamily: "Montserrat",
+                      fontSize: 10.0.sp),
+                  fillColor: Colors.white,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: BorderSide(
+                      color: Constants.formBorder,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: BorderSide(
+                      color: Constants.formBorder,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: BorderSide(
+                      color: Colors.red,
+                    ),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: BorderSide(
+                      color: Colors.red,
+                    ),
                   ),
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: BorderSide(
-                    color: Constants.formBorder,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: BorderSide(
-                    color: Colors.red,
-                  ),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: BorderSide(
-                    color: Colors.red,
-                  ),
-                ),
-              ),
-              style: new TextStyle(fontFamily: "Montserrat", fontSize: 10.0.sp),
-              onChanged: onChanged ?? (val){}
-              //validator: validator ?? (val){},
-            ),
+                style:
+                    new TextStyle(fontFamily: "Montserrat", fontSize: 10.0.sp),
+                onChanged: onChanged ?? (val) {}),
           ),
         ));
   }
@@ -143,7 +127,7 @@ class TextInputWidget extends StatelessWidget {
   final String lable;
   bool isIdField;
   bool? isReadOnly;
-  //String? Function(String?)? validator;
+
   Function(String?)? onChanged;
   TextInputWidget(
       {Key? key,
@@ -151,9 +135,7 @@ class TextInputWidget extends StatelessWidget {
       required this.lable,
       this.isIdField = false,
       this.isReadOnly,
-      this.onChanged
-      //this.validator
-      })
+      this.onChanged})
       : super(key: key);
 
   @override
@@ -166,42 +148,40 @@ class TextInputWidget extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.only(top: 3.0.h, left: 3.0.w, right: 3.0.w),
         child: Container(
-          height: 48.0,
-          width: 90.0.w,
-          child: TextFormField(
-            controller: textEditingController,
-            readOnly: isReadOnly ?? false,
-            textInputAction: TextInputAction.done,
-            inputFormatters: [
-              isIdField
-                  ? LengthLimitingTextInputFormatter(15)
-                  : LengthLimitingTextInputFormatter(200),
-            ],
-            decoration: InputDecoration(
-              labelText: lable,
-              labelStyle: TextStyle(
-                  color: Constants.bpSkipStyle,
-                  fontFamily: "Montserrat",
-                  fontSize: 10.0.sp),
-              fillColor: Colors.white,
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5.0),
-                borderSide: BorderSide(
-                  color: Constants.formBorder,
+            height: 48.0,
+            width: 90.0.w,
+            child: TextFormField(
+                controller: textEditingController,
+                readOnly: isReadOnly ?? false,
+                textInputAction: TextInputAction.done,
+                inputFormatters: [
+                  isIdField
+                      ? LengthLimitingTextInputFormatter(15)
+                      : LengthLimitingTextInputFormatter(200),
+                ],
+                decoration: InputDecoration(
+                  labelText: lable,
+                  labelStyle: TextStyle(
+                      color: Constants.bpSkipStyle,
+                      fontFamily: "Montserrat",
+                      fontSize: 10.0.sp),
+                  fillColor: Colors.white,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: BorderSide(
+                      color: Constants.formBorder,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: BorderSide(
+                      color: Constants.formBorder,
+                    ),
+                  ),
                 ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5.0),
-                borderSide: BorderSide(
-                  color: Constants.formBorder,
-                ),
-              ),
-            ),
-            style: new TextStyle(fontFamily: "Montserrat", fontSize: 10.0.sp),
-            //validator: validator ?? (val){},
-            onChanged: onChanged ?? (val){}
-          )
-        ),
+                style:
+                    new TextStyle(fontFamily: "Montserrat", fontSize: 10.0.sp),
+                onChanged: onChanged ?? (val) {})),
       ),
     );
   }
@@ -250,7 +230,6 @@ class LinkInputWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5.0),
                     borderSide: BorderSide(
                       color: Constants.formBorder,
-                      //width: 2.0,
                     ),
                   ),
                   suffixIconConstraints: BoxConstraints(
@@ -263,7 +242,7 @@ class LinkInputWidget extends StatelessWidget {
                       'assets/icons/link.png',
                       color: Constants.formBorder,
                     ),
-                  )), //keyboardType: TextInputType.emailAddress,
+                  )),
               style: new TextStyle(fontFamily: "Montserrat", fontSize: 10.0.sp),
             ),
           ),
@@ -275,57 +254,55 @@ class MultilineTextInput extends StatelessWidget {
   final TextEditingController textEditingController;
   final String hint;
   Function(String)? onChange;
-  MultilineTextInput({
-    Key? key,
-    required this.textEditingController,
-    required this.hint,
-    this.onChange
-  }) : super(key: key);
+  MultilineTextInput(
+      {Key? key,
+      required this.textEditingController,
+      required this.hint,
+      this.onChange})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Theme(
-          data: new ThemeData(
-            primaryColor: Constants.bpSkipStyle,
-            primaryColorDark: Constants.bpSkipStyle,
+      data: new ThemeData(
+        primaryColor: Constants.bpSkipStyle,
+        primaryColorDark: Constants.bpSkipStyle,
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 3.0.h),
+        child: Container(
+          height: 13.0.h,
+          width: 90.0.w,
+          child: TextFormField(
+            controller: textEditingController,
+            maxLines: 5,
+            keyboardType: TextInputType.multiline,
+            textInputAction: TextInputAction.done,
+            decoration: InputDecoration(
+                fillColor: Colors.white,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                  borderSide: BorderSide(
+                    color: Constants.formBorder,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                  borderSide: BorderSide(
+                    color: Constants.formBorder,
+                  ),
+                ),
+                hintText: hint),
+            style: new TextStyle(fontFamily: "Montserrat", fontSize: 10.0.sp),
+            onChanged: onChange ?? (val) {},
           ),
-          child: Padding(
-            padding: EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 3.0.h),
-            child: Container(
-              height: 13.0.h,
-              width: 90.0.w,
-              child: TextFormField(
-                controller: textEditingController,
-                maxLines: 5,
-                keyboardType: TextInputType.multiline,
-                textInputAction: TextInputAction.done,
-                decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: BorderSide(
-                        color: Constants.formBorder,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: BorderSide(
-                        color: Constants.formBorder,
-                      ),
-                    ),
-                    hintText: hint),
-                style:
-                    new TextStyle(fontFamily: "Montserrat", fontSize: 10.0.sp),
-                onChanged: onChange ?? (val){},
-              ),
-            ),
-          ),
-        );
+        ),
+      ),
+    );
   }
 }
 
 class Validator {
-  /// Can be used with any type of common text fields like Name, Address String, etc.
   static String? commonValidator(
       {required String? val,
       required String? errorMessage,

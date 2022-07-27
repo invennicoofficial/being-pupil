@@ -1,7 +1,7 @@
 import 'package:being_pupil/Constants/Const.dart';
 import 'package:being_pupil/Model/Config.dart';
 import 'package:being_pupil/Widgets/Common_Widgets.dart';
-// import 'package:being_pupil/Model/Post_Model/Post_Api_Class.dart';
+
 import 'package:being_pupil/Widgets/Progress_Dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class _ReportFeedState extends State<ReportFeed> {
   bool isOther = false;
   TextEditingController _detailController = TextEditingController();
   Map<String, dynamic>? reportMap = Map<String, dynamic>();
-  List<dynamic>? reportMapData = []; //List<dynamic>();
+  List<dynamic>? reportMapData = [];
   int? selectedIssue;
   String? authToken;
   int? issueId;
@@ -36,7 +36,7 @@ class _ReportFeedState extends State<ReportFeed> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    //print(authToken);
+
     getReportIssueList();
   }
 
@@ -58,58 +58,29 @@ class _ReportFeedState extends State<ReportFeed> {
             ),
           ],
         ),
-        MultilineTextInput(textEditingController: _detailController, hint: 'Add Detailed Description',
-        onChange: (val){
-          isEmpty();
-        },)
-        // Padding(
-        //   padding: EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 1.0.h),
-        //   child: Container(
-        //     height: 13.0.h,
-        //     width: 90.0.w,
-        //     child: TextFormField(
-        //       controller: _detailController,
-        //       maxLines: 5,
-        //       keyboardType: TextInputType.multiline,
-        //       //maxLength: 100,
-        //       decoration: InputDecoration(
-        //           //labelText: "Please mention your achivements...",
-        //           //counterText: '',
-        //           fillColor: Colors.white,
-        //           focusedBorder: OutlineInputBorder(
-        //             borderRadius: BorderRadius.circular(5.0),
-        //             borderSide: BorderSide(
-        //               color: Constants.formBorder,
-        //             ),
-        //           ),
-        //           enabledBorder: OutlineInputBorder(
-        //             borderRadius: BorderRadius.circular(5.0),
-        //             borderSide: BorderSide(
-        //               color: Constants.formBorder,
-        //               //width: 2.0,
-        //             ),
-        //           ),
-        //           hintText: "Add Detailed Description"),
-        //       //keyboardType: TextInputType.emailAddress,
-        //       style:
-        //           new TextStyle(fontFamily: "Montserrat", fontSize: 10.0.sp),
-        //     ),
-        //   ),
-        // ),
+        MultilineTextInput(
+          textEditingController: _detailController,
+          hint: 'Add Detailed Description',
+          onChange: (val) {
+            isEmpty();
+          },
+        )
       ],
     );
   }
 
-  bool isEmpty(){
-    if((selectedIssue != null) && (!isOther)){
+  bool isEmpty() {
+    if ((selectedIssue != null) && (!isOther)) {
       setState(() {
         isButtonActive = true;
       });
-    }else if((selectedIssue != null) && (isOther) && (_detailController.text.isNotEmpty)){
+    } else if ((selectedIssue != null) &&
+        (isOther) &&
+        (_detailController.text.isNotEmpty)) {
       setState(() {
         isButtonActive = true;
       });
-    }else{
+    } else {
       setState(() {
         isButtonActive = false;
       });
@@ -129,8 +100,7 @@ class _ReportFeedState extends State<ReportFeed> {
             color: Colors.white,
             size: 35.0,
           ),
-          onPressed: //null,
-              () {
+          onPressed: () {
             Navigator.of(context).pop();
           },
           padding: EdgeInsets.zero,
@@ -152,149 +122,101 @@ class _ReportFeedState extends State<ReportFeed> {
               ),
             )
           : SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Column(
-          children: <Widget>[
-            ListView.separated(
-                itemCount: reportMapData!.length,
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return RadioListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 4.0.w),
-                      groupValue: selectedIssue == index ? 1 : 0,
-                      value: 1,
-                      controlAffinity: ListTileControlAffinity.trailing,
-                      selected: false,
-                      activeColor: Constants.selectedIcon,  
-                      //toggleable: true,
-                      onChanged: (val){
-                           setState(() {
-                          selectedIssue = index;
-                          issueId = index + 1;
-                          reportMapData![index]['name'] == 'Others'
-                              ? isOther = true
-                              : isOther = false;
-                        });
-                        isEmpty();
+              physics: BouncingScrollPhysics(),
+              child: Column(
+                children: <Widget>[
+                  ListView.separated(
+                      itemCount: reportMapData!.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return RadioListTile(
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 4.0.w),
+                          groupValue: selectedIssue == index ? 1 : 0,
+                          value: 1,
+                          controlAffinity: ListTileControlAffinity.trailing,
+                          selected: false,
+                          activeColor: Constants.selectedIcon,
+                          onChanged: (val) {
+                            setState(() {
+                              selectedIssue = index;
+                              issueId = index + 1;
+                              reportMapData![index]['name'] == 'Others'
+                                  ? isOther = true
+                                  : isOther = false;
+                            });
+                            isEmpty();
+                          },
+                          title: Text(
+                            '${reportMapData![index]['name']}',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w400,
+                                color: Constants.bgColor),
+                          ),
+                          subtitle: Text(
+                            'Ex: includes racist, homophobic or sexist slurs',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF828282)),
+                          ),
+                        );
                       },
-                      // onTap: () {
-                      //   setState(() {
-                      //     selectedIssue = index;
-                      //     issueId = index + 1;
-                      //     reportMapData![index]['name'] == 'Others'
-                      //         ? isOther = true
-                      //         : isOther = false;
-                      //   });
-                      //   //print(isOther ? 'Other' : 'NotOther');
-                      //   //print('ISSUE_ID::: $issueId');
-                      // },
-                      // tileColor: selectedIssue == index
-                      //     ? Constants.bgColor.withOpacity(0.7)
-                      //     : null,
-                      title: Text(
-                        '${reportMapData![index]['name']}',
-                        style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w400,
-                            color: Constants.bgColor),
-                      ),
-                      subtitle: Text('Ex: includes racist, homophobic or sexist slurs',
-                      style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xFF828282)),),
-                      );
-                },
-                separatorBuilder: (context, index) {
-                  return Divider(
-                    height: 1.0,
-                    color: Color(0xFFE0E0E0),
-                    thickness: 0.5,
-                  );
-                }),
-            isOther ? detailedBox() : Container(),
-            // SizedBox(
-            //   height: 25.0.h,
-            // ),
-
-            SizedBox(
-              height: 3.0.h,
+                      separatorBuilder: (context, index) {
+                        return Divider(
+                          height: 1.0,
+                          color: Color(0xFFE0E0E0),
+                          thickness: 0.5,
+                        );
+                      }),
+                  isOther ? detailedBox() : Container(),
+                  SizedBox(
+                    height: 3.0.h,
+                  ),
+                  InkWell(
+                      onTap: () {
+                        if (selectedIssue == null) {
+                          Fluttertoast.showToast(
+                            msg: "Select Issue for Report",
+                            fontSize: 10.0.sp,
+                            backgroundColor: Constants.bgColor,
+                            textColor: Colors.white,
+                            toastLength: Toast.LENGTH_SHORT,
+                          );
+                        } else {
+                          reportIssueOnPost(widget.postId, issueId);
+                        }
+                      },
+                      child: ButtonWidget(
+                          btnName: 'SUBMIT',
+                          isActive: isButtonActive,
+                          fontWeight: FontWeight.w500)),
+                ],
+              ),
             ),
-            InkWell(
-              onTap: () {
-                if (selectedIssue == null) {
-                  Fluttertoast.showToast(
-                    msg: "Select Issue for Report",
-                    fontSize: 10.0.sp,
-                    backgroundColor: Constants.bgColor,
-                    textColor: Colors.white,
-                    toastLength: Toast.LENGTH_SHORT,
-                  );
-                } else {
-                  reportIssueOnPost(widget.postId, issueId);
-                }
-              },
-              child: ButtonWidget(btnName: 'SUBMIT', isActive: isButtonActive, fontWeight: FontWeight.w500)
-              // Container(
-              //   height: 7.0.h,
-              //   width: 90.0.w,
-              //   decoration: BoxDecoration(
-              //       border: Border.all(
-              //         color: Constants.bgColor,
-              //       ),
-              //       color: Constants.bgColor,
-              //       borderRadius: BorderRadius.circular(5.0)),
-              //   child: Center(
-              //     child: Text(
-              //       'Submit',
-              //       style: TextStyle(
-              //           fontFamily: 'Montserrat',
-              //           fontWeight: FontWeight.w500,
-              //           fontSize: 11.0.sp,
-              //           color: Colors.white),
-              //     ),
-              //   ),
-              // ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
-  //get Report issue list API
   getReportIssueList() async {
-    //displayProgressDialog(context);
-    //var result = ReportIssue();
     try {
       Dio dio = Dio();
       var response = await dio.get(Config.getReportIssueListUrl);
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
-        //closeProgressDialog(context);
-        //result = reportIssueFromJson(response.data);
         reportMap = response.data;
         setState(() {
           reportMapData = reportMap!['data'];
         });
-        //print(reportMap);
 
         isLoading = false;
         setState(() {});
-        //return ReportIssue.fromJson(json.decode(response.data));
-      } else {
-        //print('NOT OK');
-      }
+      } else {}
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -308,10 +230,9 @@ class _ReportFeedState extends State<ReportFeed> {
     }
   }
 
-  //Report Issue on Post API
   reportIssueOnPost(int? postId, int? issueId) async {
     displayProgressDialog(context);
-    //var result = ReportIssue();
+
     Map<String, dynamic>? map = Map<String, dynamic>();
     try {
       Dio dio = Dio();
@@ -331,13 +252,12 @@ class _ReportFeedState extends State<ReportFeed> {
 
       if (response.statusCode == 200) {
         closeProgressDialog(context);
-        // result = reportIssueFromJson(response.data.toString());
-        // print(result);
+
         map = response.data;
-        //mapData = map['data'];
+
         if (map!['status'] == true) {
           Fluttertoast.showToast(
-            msg: map['message'], //map['data']['status'],
+            msg: map['message'],
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -345,9 +265,7 @@ class _ReportFeedState extends State<ReportFeed> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-          //print(map);
-          //Go back to HomeScreen
-          //Navigator.pop(context);
+
           Navigator.pop(context, true);
         } else {
           Fluttertoast.showToast(
@@ -359,25 +277,10 @@ class _ReportFeedState extends State<ReportFeed> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-          //print(map);
         }
-      } else {
-        // Fluttertoast.showToast(
-        //   msg: result.message == null ? result.errorMsg : result.message,
-        //   toastLength: Toast.LENGTH_SHORT,
-        //   gravity: ToastGravity.BOTTOM,
-        //   timeInSecForIosWeb: 1,
-        //   backgroundColor: Constants.bgColor,
-        //   textColor: Colors.white,
-        //   fontSize: 10.0.sp,
-        // );
-      }
+      } else {}
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-          //  e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -387,11 +290,7 @@ class _ReportFeedState extends State<ReportFeed> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-        //print(e.message);
-      }
+      } else {}
     }
   }
 

@@ -59,14 +59,14 @@ class _CancelledListState extends State<CancelledList> {
           if (result.data!.length > 0) {
             page++;
             getCancelledBookingAPI(page);
-            //print(page);
+            
           } else {
             _refreshController.loadComplete();
           }
         } else {
           page++;
           getCancelledBookingAPI(page);
-          //print(page);
+       
         }
       }
     });
@@ -222,7 +222,6 @@ class _CancelledListState extends State<CancelledList> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  //print(bookingMeal[index].toString());
                                   pushNewScreen(context,
                                       screen: ViewBookingScreen(
                                         image: bookingImage[index],
@@ -268,7 +267,6 @@ class _CancelledListState extends State<CancelledList> {
       var response = await dio.get('${Config.cancelledBookingUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer $authToken'}));
       if (response.statusCode == 200) {
-        //print(response.data);
         result = BookingDetails.fromJson(response.data);
         if(result.status == true){
         if (result.data!.length > 0) {
@@ -290,8 +288,6 @@ class _CancelledListState extends State<CancelledList> {
             // bookingMealAmount.add(result.data![i].mealAmount);
             // bookingTotalAmount.add(result.data![i].totalAmount);
           }
-          //print(bookingGuestName);
-          //print(bookingId);
           isLoading = false;
           setState(() {});
         } else {
@@ -310,15 +306,10 @@ class _CancelledListState extends State<CancelledList> {
           );
         }
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,

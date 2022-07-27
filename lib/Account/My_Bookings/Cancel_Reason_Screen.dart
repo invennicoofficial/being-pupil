@@ -91,46 +91,6 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
           ],
         ),
         MultilineTextInput(textEditingController: _detailController, hint: 'Add Detailed Description')
-        // Theme(
-        //   data: new ThemeData(
-        //     primaryColor: Constants.bpSkipStyle,
-        //     primaryColorDark: Constants.bpSkipStyle,
-        //   ),
-        //   child: Padding(
-        //     padding: EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 1.0.h),
-        //     child: Container(
-        //       height: 13.0.h,
-        //       width: 90.0.w,
-        //       child: TextFormField(
-        //         controller: _detailController,
-        //         maxLines: 5,
-        //         keyboardType: TextInputType.multiline,
-        //         //maxLength: 100,
-        //         decoration: InputDecoration(
-        //             //labelText: "Please mention your achivements...",
-        //             //counterText: '',
-        //             fillColor: Colors.white,
-        //             focusedBorder: OutlineInputBorder(
-        //               borderRadius: BorderRadius.circular(5.0),
-        //               borderSide: BorderSide(
-        //                 color: Constants.formBorder,
-        //               ),
-        //             ),
-        //             enabledBorder: OutlineInputBorder(
-        //               borderRadius: BorderRadius.circular(5.0),
-        //               borderSide: BorderSide(
-        //                 color: Constants.formBorder,
-        //                 //width: 2.0,
-        //               ),
-        //             ),
-        //             hintText: "Add Detailed Description"),
-        //         //keyboardType: TextInputType.emailAddress,
-        //         style:
-        //             new TextStyle(fontFamily: "Montserrat", fontSize: 10.0.sp),
-        //       ),
-        //     ),
-        //   ),
-        // ),
       ],
     );
   }
@@ -192,8 +152,6 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
                                     ? isOther = true
                                     : isOther = false;
                               });
-                              //print(isOther ? 'Other' : 'NotOther');
-                              //print('ISSUE_ID::: $issueId');
                             },
                             tileColor: selectedIssue == index
                                 ? Constants.bgColor.withOpacity(0.7)
@@ -241,26 +199,6 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
                     child: Padding(
                       padding: EdgeInsets.only(bottom: 4.0.h),
                       child: ButtonWidget(btnName: 'SUBMIT', isActive: true, fontWeight: FontWeight.w500,)
-                      // Container(
-                      //   height: 7.0.h,
-                      //   width: 90.0.w,
-                      //   decoration: BoxDecoration(
-                      //       border: Border.all(
-                      //         color: Constants.bgColor,
-                      //       ),
-                      //       color: Constants.bgColor,
-                      //       borderRadius: BorderRadius.circular(5.0)),
-                      //   child: Center(
-                      //     child: Text(
-                      //       'Submit',
-                      //       style: TextStyle(
-                      //           fontFamily: 'Montserrat',
-                      //           fontWeight: FontWeight.w500,
-                      //           fontSize: 11.0.sp,
-                      //           color: Colors.white),
-                      //     ),
-                      //   ),
-                      // ),
                     ),
                   ),
                 ],
@@ -275,29 +213,24 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
     try {
       Dio dio = Dio();
       var response = await dio.get(Config.getCancelReasonList);
-      //print(response.statusCode);
+
 
       if (response.statusCode == 200) {
         result = CancelBookoingReason.fromJson(response.data);
-        //print(response.data);
-        //closeProgressDialog(context);
+
         isLoading = false;
         setState(() {});
       } else {
-        //print('NOT OK');
         isLoading = false;
         setState(() {});
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
     }
     return result;
   }
 
   //submit Cancel Rason API
   submitCancelRason() async {
-    //print(result.data![selectedIssue!].cancelId);
     displayProgressDialog(context);
     //var result = ReportIssue();
     Map<String, dynamic>? map = Map<String, dynamic>();
@@ -318,8 +251,6 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
 
       if (response.statusCode == 200) {
         closeProgressDialog(context);
-        // result = reportIssueFromJson(response.data.toString());
-        // //print(result);
         map = response.data;
         //mapData = map['data'];
         if (map!['status'] == true) {
@@ -353,7 +284,6 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
               withNavBar: false,
               pageTransitionAnimation: PageTransitionAnimation.cupertino);
 
-          //print(map);
           //Go back to HomeScreen
           //Navigator.of(context).pop();
         } else {
@@ -366,7 +296,6 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
             textColor: Colors.white,
             fontSize: 10.0.sp,
           );
-          //print(map);
         }
       } else {
         // Fluttertoast.showToast(
@@ -380,11 +309,7 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
         // );
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -395,9 +320,6 @@ class _ReasonForCancelBookingState extends State<ReasonForCancelBooking> {
           fontSize: 10.0.sp,
         );
       } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-        //print(e.message);
       }
     }
   }

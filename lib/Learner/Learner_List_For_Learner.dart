@@ -50,7 +50,7 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
     getToken();
   }
 
-   @override
+  @override
   void dispose() {
     super.dispose();
     _scrollController.dispose();
@@ -58,7 +58,7 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    //print(authToken);
+
     getData();
   }
 
@@ -75,28 +75,18 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
           if (learner.data!.length > 0) {
             page++;
             getLearnerListApi(page);
-            //print(_name);
-            //print(page);
           }
         } else {
           page++;
           getLearnerListApi(page);
-          //print(_name);
-          //print(page);
         }
       }
     });
   }
 
   void _onLoading() async {
-    //if (mounted) setState(() {});
-    // if (request.data.length > 0) {
-    //   //_refreshController.loadComplete();
-    //   _refreshController.requestLoading();
-    // } else {
     _refreshController.loadComplete();
     _refreshController.loadNoData();
-    //}
   }
 
   @override
@@ -107,26 +97,19 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
               valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
             ),
           )
-        :
-        // SingleChildScrollView(
-        //     controller: _scrollController,
-        //     physics: BouncingScrollPhysics(),
-        //     child:
-        SmartRefresher(
+        : SmartRefresher(
             controller: _refreshController,
             enablePullDown: false,
             enablePullUp: true,
             footer: ClassicFooter(
               loadStyle: LoadStyle.ShowWhenLoading,
               noDataText: 'No More Learners',
-              //noMoreIcon: Icon(Icons.refresh_outlined),
             ),
             onLoading: _onLoading,
             child: ListView.builder(
-              controller: _scrollController,
+                controller: _scrollController,
                 padding:
                     EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
-               // physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: _userId.length == 0 ? 0 : _userId.length,
                 itemBuilder: (context, index) {
@@ -135,35 +118,16 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 1.0.w),
                       child: Container(
-                        //height: 10.0.h,
                         child: ListTile(
                             contentPadding: EdgeInsets.zero,
                             title: GestureDetector(
                               onTap: () {
-                                    // registerAs == 'E'
-                                    //     ? pushNewScreen(context,
-                                    //         screen: EducatorProfileViewScreen(),
-                                    //         withNavBar: false,
-                                    //         pageTransitionAnimation:
-                                    //             PageTransitionAnimation
-                                    //                 .cupertino)
-                                    //     : pushNewScreen(context,
-                                    //         screen: LearnerProfileViewScreen(),
-                                    //         withNavBar: false,
-                                    //         pageTransitionAnimation:
-                                    //             PageTransitionAnimation
-                                                   // .cupertino);
-                                     getUserProfile(_userId[index]);
-                                  },
+                                getUserProfile(_userId[index]);
+                              },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  // GestureDetector(
-                                  //   onTap: (){
-                                  //     getUserProfile(_userId[index]);
-                                  //   },
-                                    //child:
-                                     ClipRRect(
+                                  ClipRRect(
                                       borderRadius: BorderRadius.circular(50),
                                       child: CachedNetworkImage(
                                         placeholder: (context, url) =>
@@ -201,12 +165,12 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
                                         height: 40.0,
                                         fit: BoxFit.cover,
                                       )),
-                                  //),
                                   SizedBox(
                                     width: 2.0.w,
                                   ),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
@@ -229,7 +193,7 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
                                               color: Constants.bgColor,
                                               fontFamily: 'Montserrat',
                                               fontWeight: FontWeight.w400),
-                                              overflow: TextOverflow.clip,
+                                          overflow: TextOverflow.clip,
                                         ),
                                       ),
                                     ],
@@ -241,9 +205,9 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
                               padding:
                                   EdgeInsets.only(right: 2.0.w, top: 2.0.h),
                               child: GestureDetector(
-                                onTap: () async{
-                                  //print('$index is Connected');
-                                  await connect.connectionApi(_userId[index], authToken!);
+                                onTap: () async {
+                                  await connect.connectionApi(
+                                      _userId[index], authToken!);
                                   setState(() {
                                     isLoading = true;
                                     page = 1;
@@ -254,7 +218,7 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
                                     _schoolName = [];
                                     _date = [];
                                     _distance = [];
-                                  });         
+                                  });
                                   getLearnerListApi(page);
                                 },
                                 child: Padding(
@@ -264,7 +228,8 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
                                     width: 16.0.w,
                                     decoration: BoxDecoration(
                                         border: Border.all(
-                                            color: Constants.bgColor, width: 0.5),
+                                            color: Constants.bgColor,
+                                            width: 0.5),
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(8.0))),
                                     child: Center(
@@ -288,21 +253,14 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
           );
   }
 
-  //Get Learner List API
   Future<void> getLearnerListApi(int page) async {
-    // displayProgressDialog(context);
-
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.getLearnerListUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
-        // closeProgressDialog(context);
-        //return EducatorPost.fromJson(json)
-        //result = EducatorPost.fromJson(response.data);
         learner = LearnerListModel.fromJson(response.data);
 
         if (learner.data!.length > 0) {
@@ -316,8 +274,6 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
             _distance.add(learner.data![i].distance);
           }
 
-          //print(_name);
-
           isLoading = false;
           setState(() {});
         } else {
@@ -329,16 +285,10 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -352,58 +302,45 @@ class _LearnerListForLearnerState extends State<LearnerListForLearner> {
     }
   }
 
-//Get User Profile
   Future<void> getUserProfile(id) async {
-    // displayProgressDialog(context);
-
     Map<String, dynamic>? map = {};
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        //print(map!['data']);
-        ////print(mapData);
         if (map!['data'] != null) {
           setState(() {});
           map['data']['role'] == 'E'
               ? pushNewScreen(context,
-              screen: EducatorProfileViewScreen(id: id,),
-              withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation.cupertino)
-              :
-          pushNewScreen(context,
-              screen: LearnerProfileViewScreen(id: id,),
-              withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation
-                  .cupertino);
+                  screen: EducatorProfileViewScreen(
+                    id: id,
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino)
+              : pushNewScreen(context,
+                  screen: LearnerProfileViewScreen(
+                    id: id,
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino);
         } else {
           isLoading = false;
           setState(() {});
         }
-        ////print(result.data);
-        //return result;
+
         setState(() {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,

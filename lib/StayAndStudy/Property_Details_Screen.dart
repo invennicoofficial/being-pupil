@@ -77,12 +77,6 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
   final String link = 'https://bepshare.page.link/property';
 
  void _launchMapsUrl(double lat, double long) async {
-  // final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$long';
-  // if (await canLaunch(url)) {
-  //   await launch(url);
-  // } else {
-  //   throw 'Could not launch $url';
-  // }
 
   var url = '';
     var urlAppleMaps = '';
@@ -107,26 +101,13 @@ class _PropertyDetailScreenState extends State<PropertyDetailScreen> {
     }
 }
 
-//compress image
-// Future<Uint8List> testCompressFile(File file) async {
-//     var result = await FlutterImageCompress.compressAssetImage(
-//       file.absolute.path,
-//       minWidth: 300,
-//       minHeight: 200,
-//       quality: 94,
-//       rotate: 90,
-//     );
-//     print(file.lengthSync());
-//     print(result!.length);
-//     return result;
-//   }
+
 
 //create dynamic link
 Future<void> _createDynamicLink(bool short, String id) async {
     setState(() {
       _isCreatingLink = true;
     });
-//print('create DL::: ${widget.propData![widget.index]['featured_image'][0].toString()}');
     final DynamicLinkParameters parameters = DynamicLinkParameters(
       uriPrefix: 'https://bepshare.page.link',
       link: Uri.parse("https://beingpupil.com/public/api/property/get?id=$id}"),
@@ -516,8 +497,6 @@ Future<void> _createDynamicLink(bool short, String id) async {
                 // lat = double.parse(widget.propertyDetails.data[widget.index].location.lat);
                 // long = double.parse(widget.propertyDetails.data[widget.index].location.lng);
               });
-              //print(lat);
-              //print(long);
                 _launchMapsUrl(lat, long);
               },
               child: 

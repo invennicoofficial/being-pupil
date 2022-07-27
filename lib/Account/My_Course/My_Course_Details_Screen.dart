@@ -49,16 +49,15 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen> {
     setState(() {
       registerAs = preferences.getString('RegisterAs');
     });
-    print(registerAs);
   }
 
-   void _launchUrl(String url) async {
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
+  void _launchUrl(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -84,16 +83,14 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen> {
                   child: Center(
                       child: FlatButton(
                     onPressed: () {
-                      print('EDIT!!!');
                       pushNewScreen(context,
                           screen: UpdateCourseScreen(
-                            courseId: widget.courseId!,
-                            courseName: widget.courseName!,
-                            courseDescription: widget.courseDescription!,
-                            startDate: widget.courseStartDate!,
-                            endDate: widget.courseEndDate!,
-                            linkList: widget.courseLinks
-                          ),
+                              courseId: widget.courseId!,
+                              courseName: widget.courseName!,
+                              courseDescription: widget.courseDescription!,
+                              startDate: widget.courseStartDate!,
+                              endDate: widget.courseEndDate!,
+                              linkList: widget.courseLinks),
                           withNavBar: false,
                           pageTransitionAnimation:
                               PageTransitionAnimation.cupertino);
@@ -119,38 +116,6 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen> {
               color: Colors.white),
         ),
       ),
-      // floatingActionButton: Padding(
-      //   padding: EdgeInsets.only(bottom: 2.0.h),
-      //   child: GestureDetector(
-      //     onTap: () {
-      //       enrollCourseAPI();
-      //     },
-      //     child: Container(
-      //       height: 7.0.h,
-      //       width: 90.0.w,
-      //       padding: const EdgeInsets.all(1.0),
-      //       decoration: BoxDecoration(
-      //         color: Constants.bpOnBoardTitleStyle,
-      //         borderRadius: BorderRadius.all(Radius.circular(10.0)),
-      //         border: Border.all(
-      //           color: Constants.formBorder,
-      //           width: 0.15,
-      //         ),
-      //       ),
-      //       child: Center(
-      //         child: Text(
-      //           'Enroll'.toUpperCase(),
-      //           style: TextStyle(
-      //               color: Colors.white,
-      //               fontFamily: 'Montserrat',
-      //               fontWeight: FontWeight.w700,
-      //               fontSize: 11.0.sp),
-      //         ),
-      //       ),
-      //     ),
-      //   ),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Center(
@@ -183,7 +148,8 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen> {
                     SizedBox(
                       width: 2.0.w,
                     ),
-                    Text('${widget.courseStartDate!} to ${widget.courseStartDate!}',
+                    Text(
+                        '${widget.courseStartDate!} to ${widget.courseStartDate!}',
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 10.0.sp,
@@ -214,7 +180,7 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen> {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           _launchUrl(widget.courseLinks![index]);
                         },
                         child: Padding(
@@ -248,7 +214,6 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen> {
                                     scrollDirection: Axis.horizontal,
                                     child: Container(
                                       height: 5.0.h,
-                                      //width: 70.0.w,
                                       child: Center(
                                         child: Text(
                                           widget.courseLinks![index],
@@ -276,7 +241,6 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen> {
     );
   }
 
-  //Course Enroll API
   Future<EnrollCourse> enrollCourseAPI() async {
     displayProgressDialog(context);
     var result = EnrollCourse();
@@ -287,7 +251,6 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen> {
           data: formData,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
-        print(response.data);
         result = EnrollCourse.fromJson(response.data);
         closeProgressDialog(context);
         if (result.message == null) {
@@ -323,12 +286,8 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen> {
         );
       }
     } on DioError catch (e, stack) {
-      print(e.response);
-      print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        print("This is the error message::::" +
-            e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -339,9 +298,6 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen> {
           fontSize: 10.0.sp,
         );
       } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-        print(e.message);
       }
     }
     return result;

@@ -83,7 +83,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    //print(authToken);
+
     getData();
   }
 
@@ -92,7 +92,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
     setState(() {
       userId = preferences.getInt('userId');
     });
-    //print('ID::::::' + userId.toString());
+
     getSavedPostApi(page);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -101,12 +101,10 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
           if (map!['data'].length > 0) {
             page++;
             getSavedPostApi(page);
-            //print(page);
           }
         } else {
           page++;
           getSavedPostApi(page);
-          //print(page);
         }
       }
     });
@@ -124,8 +122,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
               color: Colors.white,
               size: 35.0,
             ),
-            onPressed: //null,
-                () {
+            onPressed: () {
               Navigator.of(context).pop();
             },
             padding: EdgeInsets.zero,
@@ -146,28 +143,8 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                       new AlwaysStoppedAnimation<Color>(Constants.bgColor),
                 ),
               )
-            //   : postIdList.length == 0
-            // ? Center(
-            //     child: Column(
-            //       mainAxisAlignment: MainAxisAlignment.center,
-            //       children: [
-            //         Image.asset('assets/images/noBooking.png',
-            //             height: 250, width: 250, fit: BoxFit.contain),
-            //         SizedBox(height: 5.0,),
-            //         Text(
-            //           'No Saved Post',
-            //           style: TextStyle(
-            //               fontFamily: 'Montserrat',
-            //               fontSize: 16.0.sp,
-            //               fontWeight: FontWeight.w600,
-            //               color: Constants.bgColor),
-            //         ),
-            //       ],
-            //     ),
-            //   )
             : SingleChildScrollView(
                 controller: _scrollController,
-                //physics: BouncingScrollPhysics(),
                 child: ListView.separated(
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
@@ -204,7 +181,6 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                   PageTransitionAnimation.cupertino);
                         },
                       ),
-
                       description: descriptionList[index]!,
                       imageListView: imageListMap[index].length != 0
                           ? Container(
@@ -245,7 +221,6 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                             imageBuilder:
                                                 (context, imageProvider) =>
                                                     Container(
-                                                      //height: 100,
                                                       width: 100.0.w,
                                                       decoration: BoxDecoration(
                                                         image: DecorationImage(
@@ -302,8 +277,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                                   : SizedBox(),
                             )
                           : Row(),
-                      mutualLike: likesList[index]! -
-                          values.length, //likesList[index].toString(),
+                      mutualLike: likesList[index]! - values.length,
                       likeTap: () {
                         setState(() {
                           isLiked[index] = !isLiked[index]!;
@@ -381,442 +355,9 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                       isMyProfile: false,
                       mutualFriend: mutualList[index],
                     );
-                    // Column(
-                    //   children: <Widget>[
-                    //     //main horizontal padding
-                    //     Padding(
-                    //       padding: EdgeInsets.symmetric(horizontal: 5.0.w),
-                    //       //Container for one post
-                    //       child: Container(
-                    //         // height: 58.0.h,
-                    //         // width: 100.0.w,
-                    //         //color: Colors.grey[300],
-                    //         //column for post content
-                    //         child: Column(
-                    //           children: <Widget>[
-                    //             SizedBox(
-                    //               height: 1.0.h,
-                    //             ),
-                    //             //ListTile for educator details
-                    //             ListTile(
-                    //               contentPadding: EdgeInsets.all(0.0),
-                    //               //leading:
-                    //               title: GestureDetector(
-                    //                 onTap: (){
-                    //                       getUserProfile(userIdList[index]);
-                    //                     },
-                    //                 child: Row(
-                    //                   mainAxisAlignment: MainAxisAlignment.start,
-                    //                   children: [
-                    //                     Padding(
-                    //                       padding: const EdgeInsets.only(top: 5.0),
-                    //                       child: ClipRRect(
-                    //                         borderRadius: BorderRadius.circular(50),
-                    //                         child: CachedNetworkImage(
-                    //                           imageUrl: profileImageList[index]!,
-                    //                           width: 35.0,
-                    //                           height: 35.0,
-                    //                           fit: BoxFit.cover,
-                    //                         ),
-                    //                       ),
-                    //                     ),
-                    //                     SizedBox(
-                    //                       width: 2.0.w,
-                    //                     ),
-                    //                     Padding(
-                    //                       padding: EdgeInsets.only(top: 1.0.h),
-                    //                       child: Column(
-                    //                         crossAxisAlignment:
-                    //                             CrossAxisAlignment.start,
-                    //                         children: [
-                    //                           Text(
-                    //                             nameList[index]!,
-                    //                             style: TextStyle(
-                    //                                 fontSize: 9.0.sp,
-                    //                                 color: Constants.bgColor,
-                    //                                 fontFamily: 'Montserrat',
-                    //                                 fontWeight: FontWeight.w700),
-                    //                           ),
-                    //                           SizedBox(height: 1.0,),
-                    //                           Text(
-                    //                             '${degreeList[index]} | ${schoolList[index]}',
-                    //                             style: TextStyle(
-                    //                                 fontSize: 6.5.sp,
-                    //                                 color: Constants.bgColor,
-                    //                                 fontFamily: 'Montserrat',
-                    //                                 fontWeight: FontWeight.w400),
-                    //                           ),
-                    //                           SizedBox(height: 1.0,),
-                    //                           Text(
-                    //                             dateList[index]!.substring(0, 11),
-                    //                             style: TextStyle(
-                    //                                 fontSize: 6.5.sp,
-                    //                                 color: Constants.bgColor,
-                    //                                 fontFamily: 'Montserrat',
-                    //                                 fontWeight: FontWeight.w400),
-                    //                           ),
-                    //                         ],
-                    //                       ),
-                    //                     ),
-                    //                   ],
-                    //                 ),
-                    //               ),
-                    //               trailing: IconButton(
-                    //                   icon: SvgPicture.asset('assets/icons/reportSvg.svg'),
-                    //                   // Image.asset('assets/icons/issueIcon.png',
-                    //                   // height: 20.0,
-                    //                   // width: 20.0,),
-                    //                   onPressed: () async{
-                    //                    var result = await pushNewScreen(context,
-                    //                         withNavBar: false,
-                    //                         screen: ReportFeed(
-                    //                           postId: postIdList[index],
-                    //                         ),
-                    //                         pageTransitionAnimation:
-                    //                             PageTransitionAnimation
-                    //                                 .cupertino);
-
-                    //                       if(result == true){
-                    //                         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder:
-                    //                         (context) => bottomNavBar(0)), (route) => false);
-                    //                       }
-                    //                   }),
-                    //               //ImageIcon(AssetImage('assets/icons/report.png'),)
-                    //             ),
-                    //             //Post descriptionText
-                    //             Padding(
-                    //               padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 2.0),
-                    //               child: Container(
-                    //                 width: 100.0.w,
-                    //                 child: Text(descriptionList[index]!,
-                    //                   style: TextStyle(
-                    //                     fontSize: 12.0.sp,
-                    //                     color: Constants.bpOnBoardSubtitleStyle,
-                    //                     fontFamily: 'Montserrat',
-                    //                     height: 1.5,
-                    //                     fontWeight: FontWeight.w400,),
-                    //                   // textAlign: TextAlign.justify
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //             SizedBox(
-                    //               height: 1.0.h,
-                    //             ),
-                    //             // // Container for image or video
-                    //             // imageListMap[index].length == 0
-                    //             //     ? Container()
-                    //             //     : Container(
-                    //             //         height: 25.0.h,
-                    //             //         width: 100.0.w,
-                    //             //         child: ListView.builder(
-                    //             //           shrinkWrap: true,
-                    //             //           physics: BouncingScrollPhysics(),
-                    //             //           scrollDirection: Axis.horizontal,
-                    //             //           itemCount: imageListMap[index].length,
-                    //             //           itemBuilder: (context, imageIndex) {
-                    //             //             return Padding(
-                    //             //               padding:
-                    //             //                   const EdgeInsets.all(8.0),
-                    //             //               child: GestureDetector(
-                    //             //                 onTap: () {
-                    //             //                   List<String> imgList = [];
-                    //             //                   for(int i = 0; i<imageListMap[index].length; i++) {
-                    //             //                     imgList.add(imageListMap[index][i]['file']);
-                    //             //                   }
-                    //             //                   pushNewScreen(context,
-                    //             //                       withNavBar: false,
-                    //             //                       screen: FullScreenSlider(
-                    //             //                           imageList: imgList,
-                    //             //                           index: imageIndex,
-                    //             //                           name: nameList[index]!
-                    //             //                       ),
-                    //             //                       pageTransitionAnimation:
-                    //             //                       PageTransitionAnimation
-                    //             //                           .cupertino);
-                    //             //                 },
-                    //             //                 child: Image.network(
-                    //             //                   imageListMap[index][imageIndex]['file'],
-                    //             //                   height: 100,
-                    //             //                   width: 250,
-                    //             //                   fit: BoxFit.cover,
-                    //             //                 ),
-                    //             //               ),
-                    //             //             );
-                    //             //           },
-                    //             //         ),
-                    //             //       ),
-                    //             // Container for image or video
-                    //           imageListMap[index].length == 0
-                    //               ? Container()
-                    //               : Container(
-                    //                   height: 25.0.h,
-                    //                   width: 100.0.w,
-                    //                   child: ListView.builder(
-                    //                     shrinkWrap: true,
-                    //                     physics: BouncingScrollPhysics(),
-                    //                     scrollDirection: Axis.horizontal,
-                    //                     //itemExtent: MediaQuery.of(context).size.width / imageListMap[index].length,
-                    //                     itemCount: imageListMap[index].length,
-                    //                     itemBuilder: (context, imageIndex) {
-                    //                       return imageListMap[index].length == 1
-                    //                       ? Padding(
-                    //                         padding: EdgeInsets.symmetric(horizontal: 15.0.w),
-                    //                         child: GestureDetector(
-                    //                           onTap: () {
-                    //                             List<String> imgList = [];
-                    //                             for(int i = 0; i<imageListMap[index].length; i++) {
-                    //                               imgList.add(imageListMap[index][i]['file']);
-                    //                             }
-                    //                             pushNewScreen(context,
-                    //                                 withNavBar: false,
-                    //                                 screen: FullScreenSlider(
-                    //                                   imageList: imgList,
-                    //                                   index: imageIndex,
-                    //                                   name: nameList[index]!
-                    //                                 ),
-                    //                                 pageTransitionAnimation:
-                    //                                 PageTransitionAnimation
-                    //                                     .cupertino);
-                    //                           },
-                    //                           child: CachedNetworkImage(
-                    //                             imageUrl: imageListMap[index][imageIndex]['file'],
-                    //                             height: 100,
-                    //                             width: 250,
-                    //                             fit: BoxFit.contain,
-                    //                           ),
-                    //                         ),
-                    //                       )
-                    //                       : Padding(
-                    //                         padding: const EdgeInsets.all(8.0),
-                    //                         child: GestureDetector(
-                    //                           onTap: () {
-                    //                             List<String> imgList = [];
-                    //                             for(int i = 0; i<imageListMap[index].length; i++) {
-                    //                               imgList.add(imageListMap[index][i]['file']);
-                    //                             }
-                    //                             pushNewScreen(context,
-                    //                                 withNavBar: false,
-                    //                                 screen: FullScreenSlider(
-                    //                                   imageList: imgList,
-                    //                                   index: imageIndex,
-                    //                                   name: nameList[index]!
-                    //                                 ),
-                    //                                 pageTransitionAnimation:
-                    //                                 PageTransitionAnimation
-                    //                                     .cupertino);
-                    //                           },
-                    //                           child: CachedNetworkImage(
-                    //                             imageUrl: imageListMap[index][imageIndex]['file'],
-                    //                             height: 100,
-                    //                             width: 250,
-                    //                             fit: BoxFit.cover,
-                    //                           ),
-                    //                         ),
-                    //                       );
-                    //                     },
-                    //                   ),
-                    //                 ),
-                    //             //divider
-                    //             Divider(
-                    //               height: 1.0.h,
-                    //               color: Color(0xFF7F7F7F).withOpacity(0.5),
-                    //               thickness: 1.0,
-                    //             ),
-                    //             //Row for Like comment and Share
-                    //             Padding(
-                    //               padding: EdgeInsets.only(top: 0.5.h, bottom: 0.5.h),
-                    //               child: Row(
-                    //                 mainAxisAlignment:
-                    //                 MainAxisAlignment.spaceBetween,
-                    //                 children: <Widget>[
-                    //                   GestureDetector(
-                    //                     onTap: () {
-                    //                       setState(() {
-                    //                         isLiked[index] = !isLiked[index]!;
-                    //                       });
-                    //                       like.likePostApi(
-                    //                           postIdList[index], authToken!);
-                    //                       setState(() {
-                    //                         isLiked[index] == true
-                    //                             ? likesList[index] = likesList[index]! + 1
-                    //                             : likesList[index] = likesList[index]! - 1;
-                    //                       });
-                    //                     },
-                    //                     child: Container(
-                    //                       child: Row(
-                    //                         mainAxisAlignment:
-                    //                         MainAxisAlignment.start,
-                    //                         children: [
-                    //                           ImageIcon(
-                    //                             isLiked[index]!
-                    //                                 ? AssetImage('assets/icons/likeNew.png')
-                    //                                 : AssetImage('assets/icons/likeThumb.png'),
-                    //                             color: isLiked[index]!
-                    //                                 ? Constants.selectedIcon
-                    //                                 : Constants.bpOnBoardSubtitleStyle,
-                    //                             size: 25.0,
-                    //                           ),
-                    //                           SizedBox(
-                    //                             width: 2.0.w,
-                    //                           ),
-                    //                           Container(
-                    //                             padding: EdgeInsets.only(top: 1.0.h),
-                    //                             child: Text(
-                    //                               "${likesList[index]} Likes",
-                    //                               style: TextStyle(
-                    //                                   fontSize: 6.5.sp,
-                    //                                   color: Constants
-                    //                                       .bpOnBoardSubtitleStyle,
-                    //                                   fontFamily: 'Montserrat',
-                    //                                   fontWeight: FontWeight.w400),
-                    //                             ),
-                    //                           ),
-                    //                           // Container(
-                    //                           //   padding:
-                    //                           //       EdgeInsets.only(top: 1.0.h),
-                    //                           //   child: Text(
-                    //                           //     "Like",
-                    //                           //     style: TextStyle(
-                    //                           //         fontSize: 6.5.sp,
-                    //                           //         color: Constants
-                    //                           //             .bpOnBoardSubtitleStyle,
-                    //                           //         fontFamily: 'Montserrat',
-                    //                           //         fontWeight: FontWeight.w400),
-                    //                           //   ),
-                    //                           // ),
-                    //                         ],
-                    //                       ),
-                    //                     ),
-                    //                   ),
-                    //                   GestureDetector(
-                    //                     onTap: () async{
-                    //                        resultComment = await
-                    //                       Navigator.of(context, rootNavigator: true).push(
-                    //                         MaterialPageRoute(builder: (context)=> CommentScreen(
-                    //                           postId: postIdList[index],
-                    //                           name: nameList[index],
-                    //                           profileImage: profileImageList[index],
-                    //                           degree: degreeList[index],
-                    //                           schoolName: schoolList[index],
-                    //                           date: dateList[index],
-                    //                           description: descriptionList[index],
-                    //                           like: likesList[index],
-                    //                           comment: totalCommentsList[index],
-                    //                           isLiked: isLiked[index],
-                    //                           isSaved: isSaved[index],
-                    //                           imageListMap: imageListMap,
-                    //                           index: index,
-                    //                         ))
-                    //                       );
-
-                    //                       setState(() {});
-
-                    //                        totalCommentsList[resultComment['index']] = resultComment['count'];
-                    //                       //print('TC###'+totalCommentsList[resultComment['index']].toString());
-                    //                     setState(() {});
-                    //                     },
-                    //                     child: Container(
-                    //                       child: Row(
-                    //                         mainAxisAlignment:
-                    //                         MainAxisAlignment.start,
-                    //                         children: [
-                    //                           ImageIcon(
-                    //                             AssetImage('assets/icons/commentNew.png'),
-                    //                             size: 21.0,
-                    //                             color: Constants.bpOnBoardSubtitleStyle,
-                    //                           ),
-                    //                           // Icon(
-                    //                           //   Icons.comment_outlined,
-                    //                           //   color: Constants
-                    //                           //       .bpOnBoardSubtitleStyle,
-                    //                           //   size: 30.0,
-                    //                           // ),
-                    //                           SizedBox(
-                    //                             width: 2.0.w,
-                    //                           ),
-                    //                           Container(
-                    //                             padding: EdgeInsets.only(top: 1.0.h),
-                    //                             child: Text(
-                    //                               "${totalCommentsList[index]} Comments",
-                    //                               style: TextStyle(
-                    //                                   fontSize: 6.5.sp,
-                    //                                   color: Constants
-                    //                                       .bpOnBoardSubtitleStyle,
-                    //                                   fontFamily: 'Montserrat',
-                    //                                   fontWeight: FontWeight.w400),
-                    //                             ),
-                    //                           )
-                    //                           // Container(
-                    //                           //   padding:
-                    //                           //       EdgeInsets.only(top: 1.0.h),
-                    //                           //   child: Text(
-                    //                           //     "Comment",
-                    //                           //     style: TextStyle(
-                    //                           //         fontSize: 6.5.sp,
-                    //                           //         color: Constants
-                    //                           //             .bpOnBoardSubtitleStyle,
-                    //                           //         fontFamily: 'Montserrat',
-                    //                           //         fontWeight: FontWeight.w400),
-                    //                           //   ),
-                    //                           // ),
-                    //                         ],
-                    //                       ),
-                    //                     ),
-                    //                   ),
-                    //                   GestureDetector(
-                    //                     onTap: () {
-                    //                       setState(() {
-                    //                         isSaved[index] = !isSaved[index]!;
-                    //                       });
-                    //                       savePostApi(postIdList[index].toString());
-                    //                     },
-                    //                     child: Container(
-                    //                       child: Row(
-                    //                         mainAxisAlignment:
-                    //                         MainAxisAlignment.start,
-                    //                         children: [
-                    //                           ImageIcon(
-                    //                             isSaved[index]!
-                    //                                 ? AssetImage('assets/icons/saveGreen.png')
-                    //                                 : AssetImage('assets/icons/saveNew.png'),
-                    //                             color: isSaved[index]!
-                    //                                 ? Constants.selectedIcon
-                    //                                 : Constants.bpOnBoardSubtitleStyle,
-                    //                             size: 21.0,
-                    //                           ),
-                    //                           SizedBox(
-                    //                             width: 1.0.w,
-                    //                           ),
-                    //                           Container(
-                    //                             padding:
-                    //                             EdgeInsets.only(top: 1.0.h),
-                    //                             child: Text(
-                    //                               "Save",
-                    //                               style: TextStyle(
-                    //                                   fontSize: 6.5.sp,
-                    //                                   color: Constants
-                    //                                       .bpOnBoardSubtitleStyle,
-                    //                                   fontFamily: 'Montserrat',
-                    //                                   fontWeight: FontWeight.w400),
-                    //                             ),
-                    //                           ),
-                    //                         ],
-                    //                       ),
-                    //                     ),
-                    //                   ),
-                    //                 ],
-                    //               ),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     )
-                    //   ],
-                    // );
                   },
                   separatorBuilder: (context, index) {
                     return Divider(
-                      //height: 2.0.h,
                       thickness: 5.0,
                       color: Color(0xFFD3D9E0),
                     );
@@ -825,37 +366,18 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
               ));
   }
 
-  //Get Svaed Post API
   Future<void> getSavedPostApi(int page) async {
-    // displayProgressDialog(context);
-
     try {
       Dio dio = Dio();
 
-      //var response = await dio.get('${Config.getSavePostUrl}$userId?page=$page');
       var response = await dio.get('${Config.getSavePostUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      print(response.statusCode);
 
       if (response.statusCode == 200) {
-        // closeProgressDialog(context);
-        //return EducatorPost.fromJson(json)
-        //result = EducatorPost.fromJson(response.data);
         map = response.data;
         mapData = map!['data'];
 
-        //print(map!['data']);
-        ////print(mapData);
         if (map!['data'].length > 0) {
-          // imageListMap = {};
-          // if (name == '') {
-          //   name = map['data'][0]['name'];
-          //   profileImageUrl = map['data'][0]['profile_image'];
-          //   degreeName = map['data'][0]['last_degree'];
-          //   schoolName = map['data'][0]['school_name'];
-          // }
-          //print("HELLO");
-
           for (int i = 0; i < map!['data'].length; i++) {
             _current.add(0);
             postIdList.add(map!['data'][i]['post_id']);
@@ -875,15 +397,13 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
             isLiked.add(map!['data'][i]['isLiked']);
             likesList.add(map!['data'][i]['total_likes']);
             totalCommentsList.add(map!['data'][i]['total_comments']);
-            //for save unsave
-            //isSaved.add(true);
+
             for (int j = 0; j < map!['data'].length; j++) {
               imageListMap.putIfAbsent(k, () => map!['data'][i]['post_media']);
             }
             k++;
-            //print(k);
           }
-          //print(nameList);
+
           isLoading = false;
           isPostLoading = false;
           setState(() {});
@@ -892,27 +412,18 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
           isPostLoading = false;
           setState(() {});
         }
-        //print(result.data);
-        //return result;
+
         setState(() {
           isLoading = false;
           isPostLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
-    } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
-    }
+    } on DioError catch (e, stack) {}
   }
 
-  //unsave post API
   Future<void> savePostApi(String postID) async {
-    //var delResult = PostDelete();
-
     try {
       Dio dio = Dio();
 
@@ -922,16 +433,9 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
-        //delResult = postDeleteFromJson(response.data);
         saveMap = response.data;
-        //saveMapData = map['data']['status'];
 
-        //print(saveMapData);
-        // setState(() {
-        //   isLoading = false;
-        // });
         if (saveMap!['status'] == true) {
-          //print('true');
           map!.clear();
           map = {};
           mapData = [];
@@ -944,7 +448,7 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
           mutualList = [];
           commentProfile = [];
           _current = [];
-          //imageListMap.removeWhere((key, value) => key == index);
+
           likesList = [];
           totalCommentsList = [];
           nameList = [];
@@ -956,37 +460,11 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
           isLiked = [];
           imageListMap = {};
           k = 0;
-          //print('MAP:::' +imageListMap.toString());
+
           getSavedPostApi(1);
-          // print('AFTER:::'+ postIdList.toString());
-          // postIdList.removeAt(index);
-          // dateList.removeAt(index);
-          // descriptionList.removeAt(index);
-          // //imageListMap.removeWhere((key, value) => key == index);
-          // likesList.removeAt(index);
-          // totalCommentsList.removeAt(index);
-          // nameList.removeAt(index);
-          // profileImageList.removeAt(index);
-          // degreeList.removeAt(index);
-          // schoolList.removeAt(index);
-          // isSaved.removeAt(index);
-          // isLiked.removeAt(index);
-          // print('BEFORE:::'+ postIdList.toString());
-          // print('AAAA:'+map['data'].toString());
-          // map['data'].removeAt(index);
-          // print(map['data']);
-          // print(map['data'].length);
-          // k = 0;
-          // imageListMap = {};
-          // for (int i = 0; i < map['data'].length; i++) {
-          //   for (int j = 0; j < map['data'].length; j++) {
-          //     imageListMap.putIfAbsent(k, () => map['data'][i]['post_media']);
-          //   }
-          //   k++;
-          //   print(k);
-          // }
+
           setState(() {});
-          // getSavedPostApi(1);
+
           Fluttertoast.showToast(
               msg: saveMap!['message'],
               backgroundColor: Constants.bgColor,
@@ -995,7 +473,6 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          //print('false');
           if (saveMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: saveMap!['error_msg'],
@@ -1014,68 +491,41 @@ class _SavedPostScreenState extends State<SavedPostScreen> {
                 textColor: Colors.white);
           }
         }
-        //getEducatorPostApi(page);
-        //print(saveMap);
-      } else {
-        //print(response.statusCode);
-      }
-    } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
-    }
+      } else {}
+    } on DioError catch (e, stack) {}
   }
 
-//get User Profile
   Future<void> getUserProfile(id) async {
-    // displayProgressDialog(context);
-
     Map<String, dynamic>? map = {};
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        //print(map!['data']);
-        //print(mapData);
         if (map!['data'] != null || map['data'] != []) {
           setState(() {});
-          // map['data']['role'] == 'E'
-          //     ?
+
           pushNewScreen(context,
               screen: EducatorProfileViewScreen(
                 id: id,
               ),
               withNavBar: false,
               pageTransitionAnimation: PageTransitionAnimation.cupertino);
-          //     :
-          // pushNewScreen(context,
-          //     screen: LearnerProfileViewScreen(id: id,),
-          //     withNavBar: false,
-          //     pageTransitionAnimation:
-          //     PageTransitionAnimation
-          //         .cupertino);
         } else {
           isLoading = false;
           setState(() {});
         }
-        //print(result.data);
-        //return result;
+
         setState(() {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
-    } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
-    }
+    } on DioError catch (e, stack) {}
   }
 }

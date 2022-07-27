@@ -62,7 +62,7 @@ class _CommentScreenState extends State<CommentScreen> {
   List<String?> commentUserId = [];
   TextEditingController commentController = TextEditingController();
   CommentAPI comment = CommentAPI();
-  //GetCommentList commentList = GetCommentList();
+
   String? authToken;
   int page = 1;
   bool isLoading = true;
@@ -108,7 +108,7 @@ class _CommentScreenState extends State<CommentScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    //print(authToken);
+
     getData();
     setState(() {
       commentCount = widget.comment;
@@ -137,23 +137,19 @@ class _CommentScreenState extends State<CommentScreen> {
           if (commentMapData!.length > 0) {
             page++;
             getCommentListApi(page);
-            //print(page);
           } else {
             _refreshController.loadComplete();
           }
         } else {
           page++;
           getCommentListApi(page);
-          //print(page);
         }
       }
     });
   }
 
   void _onLoading() async {
-    //if (mounted) setState(() {});
     if (commentMapData!.length == 0) {
-      //_refreshController.loadComplete();
       _refreshController.loadNoData();
     } else {
       _refreshController.requestLoading();
@@ -177,7 +173,6 @@ class _CommentScreenState extends State<CommentScreen> {
             ),
             onPressed: () {
               Navigator.pop(context, resultMap);
-              //print('CCC###'+resultMap.toString());
             },
             padding: EdgeInsets.zero,
           ),
@@ -199,11 +194,6 @@ class _CommentScreenState extends State<CommentScreen> {
               )
             : Stack(
                 children: <Widget>[
-                  // ListView.builder(
-                  //     shrinkWrap: true,
-                  //     itemCount: 5,
-                  //     itemBuilder: (context, index) {
-                  //       return
                   SmartRefresher(
                     controller: _refreshController,
                     enablePullDown: false,
@@ -211,13 +201,10 @@ class _CommentScreenState extends State<CommentScreen> {
                     footer: ClassicFooter(
                       loadStyle: LoadStyle.ShowWhenLoading,
                       noDataText: 'No More Comments',
-                      //noMoreIcon: Icon(Icons.refresh_outlined),
                     ),
                     onLoading: _onLoading,
                     child: ListView(
                       controller: _scrollController,
-                      //physics: BouncingScrollPhysics(),
-                      //mainAxisSize: MainAxisSize.min,
                       shrinkWrap: true,
                       children: <Widget>[
                         PostWidget(
@@ -232,30 +219,29 @@ class _CommentScreenState extends State<CommentScreen> {
                           profileImage: widget.profileImage!,
                           profileName: widget.name!,
                           profileSchool: widget.degree!,
-                              //'${widget.degree} | ${widget.schoolName}',
-                          postTime: widget.date!,//widget.date!.substring(0, 11),
+                          postTime: widget.date!,
                           reportTap: IconButton(
-                      icon: Icon(
-                        Icons.more_horiz_outlined,
-                        color: Color(0xFF828282),
-                      ),
-                      onPressed: () async {
-                            var result = await pushNewScreen(context,
-                                withNavBar: false,
-                                screen: ReportFeed(
-                                  postId: widget.postId!,
-                                ),
-                                pageTransitionAnimation:
-                                    PageTransitionAnimation.cupertino);
-                            if (result == true) {
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => bottomNavBar(0)),
-                                  (route) => false);
-                            }
-                      },
-                    ),
+                            icon: Icon(
+                              Icons.more_horiz_outlined,
+                              color: Color(0xFF828282),
+                            ),
+                            onPressed: () async {
+                              var result = await pushNewScreen(context,
+                                  withNavBar: false,
+                                  screen: ReportFeed(
+                                    postId: widget.postId!,
+                                  ),
+                                  pageTransitionAnimation:
+                                      PageTransitionAnimation.cupertino);
+                              if (result == true) {
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => bottomNavBar(0)),
+                                    (route) => false);
+                              }
+                            },
+                          ),
                           description: widget.description!,
                           imageListView: widget
                                       .imageListMap![widget.index!].length !=
@@ -306,7 +292,6 @@ class _CommentScreenState extends State<CommentScreen> {
                                                 imageBuilder: (context,
                                                         imageProvider) =>
                                                     Container(
-                                                      //height: 100,
                                                       width: 100.0.w,
                                                       decoration: BoxDecoration(
                                                         image: DecorationImage(
@@ -369,7 +354,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                       : SizedBox(),
                                 )
                               : Row(),
-                          mutualLike: widget.otherCount!, //likesList[index].toString(),
+                          mutualLike: widget.otherCount!,
                           likeTap: () async {
                             setState(() {
                               widget.isLiked = !widget.isLiked!;
@@ -423,367 +408,6 @@ class _CommentScreenState extends State<CommentScreen> {
                           },
                           commentText: '',
                         ),
-
-                        //main horizontal paddingF
-                        // Padding(
-                        //   padding: EdgeInsets.symmetric(horizontal: 5.0.w),
-                        //   //Container for one post
-                        //   child: Container(
-                        //     width: 100.0.w,
-                        //     //color: Colors.grey[300],
-                        //     //column for post content
-                        //     child: Column(
-                        //       children: <Widget>[
-                        //         SizedBox(
-                        //           height: 1.0.h,
-                        //         ),
-                        //         //ListTile for educator details
-                        //         ListTile(
-                        //           contentPadding: EdgeInsets.all(0.0),
-                        //           //leading:
-                        //           title: GestureDetector(
-                        //              onTap: (){
-                        //                   getUserProfile(widget.userId!);
-                        //                 },
-                        //             child: Row(
-                        //               mainAxisAlignment: MainAxisAlignment.start,
-                        //               children: [
-                        //                 Padding(
-                        //                   padding: const EdgeInsets.only(top: 5.0),
-                        //                   child: ClipRRect(
-                        //                     borderRadius: BorderRadius.circular(50),
-                        //                     child:CachedNetworkImage(
-                        //                         imageUrl: widget.profileImage!,
-                        //                       width: 35.0,
-                        //                       height: 35.0,
-                        //                       fit: BoxFit.cover,
-                        //                     ),
-                        //                   ),
-                        //                 ),
-                        //                 SizedBox(
-                        //                   width: 2.0.w,
-                        //                 ),
-                        //                 Padding(
-                        //                   padding: EdgeInsets.only(top: 1.0.h),
-                        //                   child: Column(
-                        //                     crossAxisAlignment:
-                        //                         CrossAxisAlignment.start,
-                        //                     children: [
-                        //                       Text(
-                        //                         widget.name!,
-                        //                         style: TextStyle(
-                        //                             fontSize: 9.0.sp,
-                        //                             color: Constants.bgColor,
-                        //                             fontFamily: 'Montserrat',
-                        //                             fontWeight: FontWeight.w700),
-                        //                       ),
-                        //                       SizedBox(height: 1.0,),
-                        //                       Text(
-                        //                         '${widget.degree} | ${widget.schoolName}',
-                        //                         style: TextStyle(
-                        //                             fontSize: 6.5.sp,
-                        //                             color: Constants.bgColor,
-                        //                             fontFamily: 'Montserrat',
-                        //                             fontWeight: FontWeight.w400),
-                        //                       ),
-                        //                       SizedBox(height: 1.0,),
-                        //                       Text(
-                        //                         widget.date!,
-                        //                         style: TextStyle(
-                        //                             fontSize: 6.5.sp,
-                        //                             color: Constants.bgColor,
-                        //                             fontFamily: 'Montserrat',
-                        //                             fontWeight: FontWeight.w400),
-                        //                       ),
-                        //                     ],
-                        //                   ),
-                        //                 ),
-                        //               ],
-                        //             ),
-                        //           ),
-                        //           trailing: IconButton(
-                        //                icon: SvgPicture.asset('assets/icons/reportSvg.svg'),
-                        //               //  Image.asset('assets/icons/issueIcon.png',
-                        //               //   height: 18.0,
-                        //               //   width: 18.0,),
-                        //               onPressed: () async{
-                        //                 var result = await pushNewScreen(context,
-                        //                     withNavBar: false,
-                        //                     screen: ReportFeed(
-                        //                       postId: widget.postId,
-                        //                     ),
-                        //                     pageTransitionAnimation:
-                        //                         PageTransitionAnimation
-                        //                             .cupertino);
-
-                        //                   if(result == true){
-                        //                     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder:
-                        //                     (context) => bottomNavBar(0)), (route) => false);
-                        //                 }
-                        //               }),
-                        //           //ImageIcon(AssetImage('assets/icons/report.png'),)
-                        //         ),
-                        //         //Post descriptionText
-                        //         Padding(
-                        //           padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 2.0),
-                        //           child: Container(
-                        //             width: 100.0.w,
-                        //             child: Text(widget.description!,
-                        //               style: TextStyle(
-                        //                 fontSize: 9.0.sp,
-                        //                 color: Constants.bpOnBoardSubtitleStyle,
-                        //                 fontFamily: 'Montserrat',
-                        //                 height: 1.5,
-                        //                 fontWeight: FontWeight.w400,),
-                        //               // textAlign: TextAlign.justify
-                        //             ),
-                        //           ),
-                        //         ),
-                        //         SizedBox(
-                        //           height: 1.0.h,
-                        //         ),
-                        //         // Container for image or video
-                        //         widget.imageListMap![widget.index!].length == 0
-                        //             ? Container()
-                        //             : Container(
-                        //                 height: 25.0.h,
-                        //                 width: 100.0.w,
-                        //                 child: ListView.builder(
-                        //                   shrinkWrap: true,
-                        //                   physics: BouncingScrollPhysics(),
-                        //                   scrollDirection: Axis.horizontal,
-                        //                   itemCount: widget
-                        //                       .imageListMap![widget.index!].length,
-                        //                   itemBuilder: (context, imageIndex) {
-                        //                     return GestureDetector(
-                        //                       onTap: () {
-                        //                         List<String> imgList = [];
-                        //                         for(int i = 0; i<widget
-                        //                             .imageListMap![widget.index!].length; i++) {
-                        //                           imgList.add(widget
-                        //                               .imageListMap![widget.index!][i]['file']);
-                        //                         }
-                        //                         pushNewScreen(context,
-                        //                             withNavBar: false,
-                        //                             screen: FullScreenSlider(
-                        //                                 imageList: imgList,
-                        //                                 index: imageIndex,
-                        //                                 name: widget.name!
-                        //                             ),
-                        //                             pageTransitionAnimation:
-                        //                             PageTransitionAnimation
-                        //                                 .cupertino);
-                        //                       },
-                        //                       child:CachedNetworkImage(
-                        //                         imageUrl: widget.imageListMap![widget.index!][imageIndex]['file'],
-                        //                         height: 100,
-                        //                         width: 250,
-                        //                         fit: BoxFit.contain,
-                        //                       ),
-                        //                     );
-                        //                   },
-                        //                 ),
-                        //               ),
-                        //         //divider
-                        //         Divider(
-                        //           height: 1.0.h,
-                        //           color: Constants.bpOnBoardSubtitleStyle
-                        //               .withOpacity(0.5),
-                        //           thickness: 1.0,
-                        //         ),
-                        //         //Row for Like comment and Share
-                        //         Padding(
-                        //           padding: EdgeInsets.only(top: 0.5.h, bottom: 0.5.h),
-                        //           child: Row(
-                        //             mainAxisAlignment:
-                        //                 MainAxisAlignment.spaceBetween,
-                        //             children: <Widget>[
-                        //               GestureDetector(
-                        //                 onTap: () async{
-                        //                   setState(() {
-                        //                     widget.isLiked = !widget.isLiked!;
-                        //                   });
-                        //                   await like.likePostApi(widget.postId, authToken!);
-                        //                   setState(() {
-                        //                     likeCount = like.likeCount;
-                        //                     widget.isLiked == true
-                        //                         ? widget.like = widget.like! + 1
-                        //                         : widget.like = widget.like! - 1;
-                        //                      resultMap = {"count": commentCount,
-                        //                      "isSaved": widget.isSaved, "likeCount": likeCount,
-                        //                      "index": widget.index, "isLiked": widget.isLiked};
-                        //                   });
-                        //                 },
-                        //                 child: Row(
-                        //                   mainAxisAlignment:
-                        //                       MainAxisAlignment.start,
-                        //                   children: [
-                        //                    ImageIcon(
-                        //                         widget.isLiked!
-                        //                             ? AssetImage('assets/icons/likeNew.png')
-                        //                             : AssetImage('assets/icons/likeThumb.png'),
-                        //                         color: widget.isLiked!
-                        //                             ? Constants.selectedIcon
-                        //                             : Constants.bpOnBoardSubtitleStyle,
-                        //                         size: 25.0,
-                        //                       ),
-                        //                     SizedBox(
-                        //                       width: 2.0.w,
-                        //                     ),
-                        //                     Container(
-                        //                       padding: EdgeInsets.only(top: 1.0.h),
-                        //                       child: Text(
-                        //                       //   likeCount == 0 || likeCount == null
-                        //                       // ? "${widget.like} Likes"
-                        //                       // : "$likeCount Likes",
-                        //                         "${widget.like} Likes",
-                        //                         style: TextStyle(
-                        //                             fontSize: 6.5.sp,
-                        //                             color: Constants
-                        //                                 .bpOnBoardSubtitleStyle,
-                        //                             fontFamily: 'Montserrat',
-                        //                             fontWeight: FontWeight.w400),
-                        //                       ),
-                        //                     ),
-                        //                   ],
-                        //                 ),
-                        //               ),
-                        //               Row(
-                        //                 mainAxisAlignment:
-                        //                     MainAxisAlignment.start,
-                        //                 children: [
-                        //                   ImageIcon(
-                        //                         AssetImage('assets/icons/commentNew.png'),
-                        //                         size: 21.0,
-                        //                         color: Constants.bpOnBoardSubtitleStyle,
-                        //                       ),
-                        //                   SizedBox(
-                        //                     width: 2.0.w,
-                        //                   ),
-                        //                   Container(
-                        //                     padding: EdgeInsets.only(top: 1.0.h),
-                        //                     child: Text(commentCount == 0 || commentCount == null
-                        //                       ? "${widget.comment} Comments"
-                        //                       : "$commentCount Comments",
-                        //                       style: TextStyle(
-                        //                           fontSize: 6.5.sp,
-                        //                           color: Constants
-                        //                               .bpOnBoardSubtitleStyle,
-                        //                           fontFamily: 'Montserrat',
-                        //                           fontWeight: FontWeight.w400),
-                        //                     ),
-                        //                   )
-                        //                 ],
-                        //               ),
-                        //               GestureDetector(
-                        //                 onTap: () {
-                        //                   setState(() {
-                        //                     widget.isSaved = !widget.isSaved!;
-                        //                   });
-                        //                   savePostApi(widget.postId);
-                        //                   resultMap = {"count": commentCount, "isSaved": widget.isSaved, "isLiked": widget.isLiked,
-                        //                    "likeCount": widget.like, "index": widget.index};
-                        //                 },
-                        //                 child: Row(
-                        //                   mainAxisAlignment:
-                        //                       MainAxisAlignment.start,
-                        //                   children: [
-                        //                     ImageIcon(
-                        //                         widget.isSaved!
-                        //                             ? AssetImage('assets/icons/saveGreen.png')
-                        //                             : AssetImage('assets/icons/saveNew.png'),
-                        //                         color: widget.isSaved!
-                        //                             ? Constants.selectedIcon
-                        //                             : Constants.bpOnBoardSubtitleStyle,
-                        //                         size: 21.0,
-                        //                       ),
-                        //                     SizedBox(
-                        //                       width: 1.0.w,
-                        //                     ),
-                        //                     Container(
-                        //                       padding:
-                        //                           EdgeInsets.only(top: 1.0.h),
-                        //                       child: Text(
-                        //                         "Save",
-                        //                         style: TextStyle(
-                        //                             fontSize: 6.5.sp,
-                        //                             color: Constants
-                        //                                 .bpOnBoardSubtitleStyle,
-                        //                             fontFamily: 'Montserrat',
-                        //                             fontWeight: FontWeight.w400),
-                        //                       ),
-                        //                     ),
-                        //                   ],
-                        //                 ),
-                        //               ),
-                        //             ],
-                        //           ),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
-                        //Reaction dp
-                        // Padding(
-                        //   padding: EdgeInsets.only(
-                        //     top: 3.0.h,
-                        //     right: 4.0.w,
-                        //     left: 4.0.w,
-                        //   ),
-                        //   child:
-                        //       //Column(
-                        //       //children: <Widget>[
-                        //       Row(
-                        //     children: [
-                        //       Text(
-                        //         'Reactions',
-                        //         style: TextStyle(
-                        //             fontSize: 12.0.sp,
-                        //             color: Constants.bgColor,
-                        //             fontFamily: 'Montserrat',
-                        //             fontWeight: FontWeight.w500),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        // Padding(
-                        //   padding: EdgeInsets.only(
-                        //       top: 0.0.h, right: 4.0.w, left: 4.0.w),
-                        //   child: Row(
-                        //     children: [
-                        //       Expanded(
-                        //         child: Container(
-                        //           height: 7.0.h,
-                        //           child: ListView.builder(
-                        //               physics: BouncingScrollPhysics(),
-                        //               scrollDirection: Axis.horizontal,
-                        //               itemCount: dpImages.length,
-                        //               shrinkWrap: true,
-                        //               itemBuilder: (context, index) {
-                        //                 return Padding(
-                        //                   padding: EdgeInsets.only(right: 3.0.w),
-                        //                   child: ClipRRect(
-                        //                     borderRadius:
-                        //                         BorderRadius.circular(65),
-                        //                     child: Image.asset(
-                        //                       // index == 8
-                        //                       // ? 'assets/icons/menu.png'
-                        //                       // :
-                        //                       dpImages[index],
-                        //                       height: 4.5.h,
-                        //                       width: 7.5.w,
-                        //                       fit: BoxFit.contain,
-                        //                     ),
-                        //                   ),
-                        //                 );
-                        //               }),
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-
-                        //comment list
                         Padding(
                           padding: EdgeInsets.only(
                               top: 2.0.h, right: 4.0.w, left: 4.0.w),
@@ -802,7 +426,6 @@ class _CommentScreenState extends State<CommentScreen> {
                         ),
                         ListView.builder(
                             physics: NeverScrollableScrollPhysics(),
-                            //scrollDirection: Axis.horizontal,
                             itemCount:
                                 commentId.length == 0 ? 0 : commentId.length,
                             shrinkWrap: true,
@@ -841,7 +464,6 @@ class _CommentScreenState extends State<CommentScreen> {
                                           width: 2.0.w,
                                         ),
                                         Container(
-                                          //height: 7.0.h,
                                           width: 82.0.w,
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 2.0.w,
@@ -893,12 +515,6 @@ class _CommentScreenState extends State<CommentScreen> {
                                                       ),
                                                     ],
                                                   ),
-                                                  // Image.asset(
-                                                  //   'assets/icons/menu.png',
-                                                  //   height: 2.0.h,
-                                                  //   width: 2.0.w,
-                                                  //   fit: BoxFit.contain,
-                                                  // )
                                                   userId.toString() ==
                                                           commentUserId[index]
                                                       ? PopupMenuButton(
@@ -917,7 +533,6 @@ class _CommentScreenState extends State<CommentScreen> {
                                                           onSelected: (dynamic
                                                               value) async {
                                                             if (value == 1) {
-                                                              //Edit Comment API
                                                               setState(() {
                                                                 isEdit = true;
                                                                 idForEdit =
@@ -931,7 +546,6 @@ class _CommentScreenState extends State<CommentScreen> {
                                                                     .requestFocus();
                                                               });
                                                             } else {
-                                                              //Delete comment APi
                                                               await deleteCommentApi(
                                                                   commentId[
                                                                       index]);
@@ -992,7 +606,6 @@ class _CommentScreenState extends State<CommentScreen> {
                                                 child: Row(
                                                   children: [
                                                     Container(
-                                                      //color: Colors.grey,
                                                       width: 77.0.w,
                                                       child: Text(
                                                         comments[index]!,
@@ -1016,18 +629,12 @@ class _CommentScreenState extends State<CommentScreen> {
                                 ),
                               );
                             }),
-                        //   ],
-                        // ),
-                        //),
                         SizedBox(
                           height: 5.0.h,
                         )
                       ],
                     ),
                   ),
-                  //}),
-
-                  //add comments
                   isEdit
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1036,11 +643,8 @@ class _CommentScreenState extends State<CommentScreen> {
                               height: 4.0.h,
                             ),
                             Row(
-                              //mainAxisAlignment: MainAxisAlignment.end,
-                              //crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Container(
-                                    //height: 7.0.h,
                                     width: 100.0.w,
                                     decoration: BoxDecoration(
                                         color: Colors.white,
@@ -1061,7 +665,6 @@ class _CommentScreenState extends State<CommentScreen> {
                                           cursorColor: Constants.bgColor,
                                           cursorHeight: 25.0,
                                           decoration: InputDecoration(
-                                              //labelText: "Please mention your achivements...",
                                               prefixIcon: Padding(
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 2.0.w,
@@ -1135,11 +738,8 @@ class _CommentScreenState extends State<CommentScreen> {
                               height: 4.0.h,
                             ),
                             Row(
-                              //mainAxisAlignment: MainAxisAlignment.end,
-                              //crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Container(
-                                    //height: 7.0.h,
                                     width: 100.0.w,
                                     decoration: BoxDecoration(
                                         color: Colors.white,
@@ -1157,9 +757,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                           keyboardType: TextInputType.multiline,
                                           maxLength: 140,
                                           cursorColor: Constants.bgColor,
-                                          //cursorHeight: 25.0,
                                           decoration: InputDecoration(
-                                              //labelText: "Please mention your achivements...",
                                               prefixIcon: Padding(
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 2.0.w,
@@ -1244,13 +842,12 @@ class _CommentScreenState extends State<CommentScreen> {
     );
   }
 
-  //Get Comment LIst API
   Future<void> getCommentListApi(int page) async {
     try {
       Dio dio = Dio();
       var response = await dio
           .get('${Config.getCommentListUrl}${widget.postId}?page=$page');
-      //commentList = GetCommentList.fromJson(response.data);
+
       commentMap = response.data;
       commentMapData = commentMap!['data'];
 
@@ -1261,7 +858,6 @@ class _CommentScreenState extends State<CommentScreen> {
           });
 
           if (commentMapData!.length > 0) {
-            //print(commentMap);
             for (int i = 0; i < commentMapData!.length; i++) {
               commentId.add(commentMapData![i]['comment_id']);
               commentUserId.add(commentMapData![i]['comment_user_id']);
@@ -1270,7 +866,7 @@ class _CommentScreenState extends State<CommentScreen> {
               date.add(commentMapData![i]['date']);
               comments.add(commentMapData![i]['comment']);
             }
-            //print(name);
+
             isLoading = false;
 
             setState(() {});
@@ -1289,15 +885,10 @@ class _CommentScreenState extends State<CommentScreen> {
               textColor: Colors.white);
         }
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-        //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -1309,13 +900,9 @@ class _CommentScreenState extends State<CommentScreen> {
         );
       }
     }
-    //return commentList;
   }
 
-//Delete Comment API
   Future<void> deleteCommentApi(int? commentId) async {
-    //var delResult = PostDelete();
-
     try {
       Dio dio = Dio();
 
@@ -1328,8 +915,6 @@ class _CommentScreenState extends State<CommentScreen> {
         delMap = response.data;
 
         if (delMap!['status'] == true) {
-          //print('true');
-          //print(delMap);
           Fluttertoast.showToast(
               msg: delMap!['message'],
               backgroundColor: Constants.bgColor,
@@ -1338,7 +923,6 @@ class _CommentScreenState extends State<CommentScreen> {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          //print('false');
           if (delMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: delMap!['error_msg'],
@@ -1357,17 +941,9 @@ class _CommentScreenState extends State<CommentScreen> {
                 textColor: Colors.white);
           }
         }
-        //getEducatorPostApi(page);
-        //print(delMap);
-      } else {
-        //print(response.statusCode);
-      }
+      } else {}
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-        //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -1381,10 +957,7 @@ class _CommentScreenState extends State<CommentScreen> {
     }
   }
 
-  //Edit Comment API
   Future<void> editCommentApi(int? commentId) async {
-    //var delResult = PostDelete();
-
     try {
       Dio dio = Dio();
 
@@ -1398,8 +971,6 @@ class _CommentScreenState extends State<CommentScreen> {
         editMap = response.data;
 
         if (editMap!['status'] == true) {
-          //print('true');
-          //print(editMap);
           isEdit = false;
           setState(() {});
           Fluttertoast.showToast(
@@ -1410,7 +981,6 @@ class _CommentScreenState extends State<CommentScreen> {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          //print('false');
           if (editMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: editMap!['error_msg'],
@@ -1429,17 +999,9 @@ class _CommentScreenState extends State<CommentScreen> {
                 textColor: Colors.white);
           }
         }
-        //getEducatorPostApi(page);
-        //print(editMap);
-      } else {
-        //print(response.statusCode);
-      }
+      } else {}
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-        //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -1454,8 +1016,6 @@ class _CommentScreenState extends State<CommentScreen> {
   }
 
   Future<void> savePostApi(int? postID) async {
-    //var delResult = PostDelete();
-
     try {
       Dio dio = Dio();
 
@@ -1465,17 +1025,9 @@ class _CommentScreenState extends State<CommentScreen> {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
-        //delResult = postDeleteFromJson(response.data);
         saveMap = response.data;
-        //saveMapData = map['data']['status'];
 
-        //print(saveMap);
-        // setState(() {
-        //   isLoading = false;
-        // });
         if (saveMap!['status'] == true) {
-          //print('true');
-          //getEducatorPostApi(page);
           Fluttertoast.showToast(
               msg: saveMap!['message'],
               backgroundColor: Constants.bgColor,
@@ -1484,7 +1036,6 @@ class _CommentScreenState extends State<CommentScreen> {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          //print('false');
           if (saveMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: saveMap!['error_msg'],
@@ -1503,17 +1054,9 @@ class _CommentScreenState extends State<CommentScreen> {
                 textColor: Colors.white);
           }
         }
-        //getEducatorPostApi(page);
-        //print(saveMap);
-      } else {
-        //print(response.statusCode);
-      }
+      } else {}
     } on DioError catch (e, stack) {
-      //print(e.response);
-      // print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-        //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -1527,23 +1070,17 @@ class _CommentScreenState extends State<CommentScreen> {
     }
   }
 
-  //get User Profile
   Future<void> getUserProfile(id) async {
-    // displayProgressDialog(context);
-
     Map<String, dynamic>? map = {};
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        //print(map!['data']);
-        //print(mapData);
         if (map!['data'] != null || map['data'] != []) {
           setState(() {});
           map['data']['role'] == 'E'
@@ -1563,27 +1100,19 @@ class _CommentScreenState extends State<CommentScreen> {
           isLoading = false;
           setState(() {});
         }
-        //print(result.data);
-        //return result;
+
         setState(() {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
-    } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
-    }
+    } on DioError catch (e, stack) {}
   }
 
   Future<bool> _willPopCallback() async {
-    // await showDialog or Show add banners or whatever
     Navigator.pop(context, resultMap);
-    //print('CCC###'+resultMap.toString());
-    // then
-    return true; // return true if the route to be popped
+
+    return true;
   }
 }

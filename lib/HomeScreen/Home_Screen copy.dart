@@ -90,7 +90,6 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
   GetAllProperty propertyDetails = GetAllProperty();
   Map<String, dynamic>? propMap;
   List<dynamic> propDataList = [];
-  //List<dynamic>? mapData;
 
   @override
   void initState() {
@@ -101,131 +100,66 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    //print(authToken);
+
     getData();
     generateFirebaseToken();
   }
 
-  //Generate firebase token
   generateFirebaseToken() async {
-  _firebaseMessaging.requestPermission(sound: true, alert: true, badge: true);
-   //FirebaseMessaging.onMessage.listen((remoteMessage) {
-     //   log('[onMessage] message: $remoteMessage');
-        //showNotification(remoteMessage);
-    //});
-  _firebaseMessaging.getToken().then((token) {
-    var firebaseToken = token!;
-    //print('token::: ' + token);
-    saveFirebaseToken(token);
-    setState(() {});
-    deviceTokenAPi(token);
-  });
-}
+    _firebaseMessaging.requestPermission(sound: true, alert: true, badge: true);
 
-saveFirebaseToken(String token) async {
-  // Create storage
-  final storage = new FlutterSecureStorage();
+    _firebaseMessaging.getToken().then((token) {
+      var firebaseToken = token!;
 
-  // Write value
-  await storage.write(key: 'firebaseToken', value: token);
-}
+      saveFirebaseToken(token);
+      setState(() {});
+      deviceTokenAPi(token);
+    });
+  }
 
-//   pushNotificationOnMsg() async{
-//     FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-// String? token;
-// if (Platform.isAndroid || kIsWeb) {
-//     token = (await firebaseMessaging.getToken())!;
-// } else if (Platform.isIOS || Platform.isMacOS) {
-//     token = (await firebaseMessaging.getAPNSToken())!;
-// }
+  saveFirebaseToken(String token) async {
+    final storage = new FlutterSecureStorage();
 
-// if (!isEmpty(token)) {
-//     subscribe(token!);
-// }
-
-// firebaseMessaging.onTokenRefresh.listen((newToken) {
-//     subscribe(newToken);
-// });
-//   }
-
-
-//   subscribe(String token) async {
-//     log('[subscribe] token: $token');
-
-//     bool isProduction = bool.fromEnvironment('dart.vm.product');
-
-//     CreateSubscriptionParameters parameters = CreateSubscriptionParameters();
-//     parameters.environment =
-//         isProduction ? CubeEnvironment.PRODUCTION : CubeEnvironment.DEVELOPMENT;
-
-//     if (Platform.isAndroid) {
-//       parameters.channel = NotificationsChannels.GCM;
-//       parameters.platform = CubePlatform.ANDROID;
-//       parameters.bundleIdentifier = "com.connectycube.flutter.chat_sample";
-//     } else if (Platform.isIOS) {
-//       parameters.channel = NotificationsChannels.APNS;
-//       parameters.platform = CubePlatform.IOS;
-//       parameters.bundleIdentifier = Platform.isIOS
-//           ? "com.connectycube.flutter.chatSample.app"
-//           : "com.connectycube.flutter.chatSample.macOS"; 
-//     }
-
-//     String deviceId = await DeviceId.getID;
-//     parameters.udid = deviceId;
-//     parameters.pushToken = token;
-
-//     createSubscription(parameters.getRequestParameters())
-//         .then((cubeSubscription) {})
-//         .catchError((error) {});
-// }
+    await storage.write(key: 'firebaseToken', value: token);
+  }
 
   getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       registerAs = preferences.getString('RegisterAs');
     });
-    //print('RoLE::::::' + registerAs.toString());
+
     SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
     user = sharedPrefs.getUser();
 
-    if(user != null) {
+    if (user != null) {
       user!.password = '12345678';
-      createSession(user)
-          .then((cubeSession) {
-        signIn(user!)
-            .then((cubeUser) async {
+      createSession(user).then((cubeSession) {
+        signIn(user!).then((cubeUser) async {
           _loginToCubeChat(context, user!);
-        })
-            .catchError((error){});
-      })
-          .catchError((error){});
-
+        }).catchError((error) {});
+      }).catchError((error) {});
     }
     getAllPostApi(page);
-     _scrollController.addListener(() {
+    _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if (page > 1) {
           if (map!['data'].length > 0) {
             page++;
             getAllPostApi(page);
-            //print(page);
-          }else{
+          } else {
             _refreshController.loadComplete();
           }
         } else {
           page++;
           getAllPostApi(page);
-          //print(page);
         }
       }
     });
   }
 
   void _onRefresh() async {
-    // monitor network fetch
-    //await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
     setState(() {
       isLoading = true;
       page = 1;
@@ -236,7 +170,7 @@ saveFirebaseToken(String token) async {
       userIdList = [];
       dateList = [];
       descriptionList = [];
-      //imageListMap.removeWhere((key, value) => key == index);
+
       likesList = [];
       totalCommentsList = [];
       nameList = [];
@@ -253,38 +187,23 @@ saveFirebaseToken(String token) async {
   }
 
   void _onLoading() async {
-    //if (mounted) setState(() {});
-    if(map!['data'].length == 0){
-    //_refreshController.loadComplete();
-    _refreshController.loadNoData();
-    } else{
+    if (map!['data'].length == 0) {
+      _refreshController.loadNoData();
+    } else {
       _refreshController.requestLoading();
     }
   }
 
-  //init dynamic link
   Future<void> initDynamicLinks() async {
     final PendingDynamicLinkData? data = await dynamicLinks.getInitialLink();
-         final Uri? deepLink = data?.link;
+    final Uri? deepLink = data?.link;
 
-         if (deepLink != null) {
-           //print('DL:::::::$deepLink');
-         // ignore: unawaited_futures
-         //Future.delayed(const Duration(milliseconds: 1000), () {
-           getPropertyAPI(deepLink.toString().substring(0, 51));
-           //setState(() {});
-      //});
-         //Navigator.pushNamed(context, deepLink.path);
-       }
+    if (deepLink != null) {
+      getPropertyAPI(deepLink.toString().substring(0, 51));
+    }
     dynamicLinks.onLink.listen((dynamicLinkData) {
-      //print('DL:::'+ dynamicLinkData.link.toString());
       getPropertyAPI(dynamicLinkData.link.toString().substring(0, 51));
-      //Navigator.pushNamed(context, dynamicLinkData.link.path);
-    }).onError((error) {
-      //print('onLink error');
-      //print(error.message);
-    });
-    
+    }).onError((error) {});
   }
 
   @override
@@ -295,21 +214,21 @@ saveFirebaseToken(String token) async {
         backgroundColor: Constants.bgColor,
         actions: <Widget>[
           Padding(
-                padding: EdgeInsets.only(right: 5.0.w),
-                child: Row(
-                  children: [
-                    IconButton(
-                        icon: Icon(Icons.message_outlined),
-                        onPressed: () {
-                          pushNewScreen(context,
-                              screen: SelectDialogScreen(user!),
-                              withNavBar: false,
-                              pageTransitionAnimation:
-                                  PageTransitionAnimation.cupertino);
-                        },
-                      ),
-                      registerAs == 'E'
-                     ? IconButton(
+            padding: EdgeInsets.only(right: 5.0.w),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: Icon(Icons.message_outlined),
+                  onPressed: () {
+                    pushNewScreen(context,
+                        screen: SelectDialogScreen(user!),
+                        withNavBar: false,
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino);
+                  },
+                ),
+                registerAs == 'E'
+                    ? IconButton(
                         icon: Icon(Icons.add_box_outlined),
                         onPressed: () {
                           pushNewScreen(context,
@@ -319,11 +238,10 @@ saveFirebaseToken(String token) async {
                                   PageTransitionAnimation.cupertino);
                         },
                       )
-                      : Container()
-                  ],
-                ),
-              )
-              
+                    : Container()
+              ],
+            ),
+          )
         ],
         title: Container(
             height: 8.0.h,
@@ -338,12 +256,7 @@ saveFirebaseToken(String token) async {
                     new AlwaysStoppedAnimation<Color>(Constants.bgColor),
               ),
             )
-          :
-          // SingleChildScrollView(
-          //     controller: _scrollController,
-          //     physics: BouncingScrollPhysics(),
-          //     child:
-          SmartRefresher(
+          : SmartRefresher(
               controller: _refreshController,
               enablePullDown: true,
               enablePullUp: true,
@@ -351,58 +264,27 @@ saveFirebaseToken(String token) async {
               footer: ClassicFooter(
                 loadStyle: LoadStyle.ShowWhenLoading,
               ),
-              
-            //  footer: 
-              // CustomFooter(
-              //   builder: (BuildContext context, LoadStatus mode) {
-              //     Widget body;
-              //     if (mode == LoadStatus.idle) {
-              //       body = Text("pull up load");
-              //     } else if (mode == LoadStatus.loading) {
-              //       body = CupertinoActivityIndicator();
-              //     } else if (mode == LoadStatus.failed) {
-              //       body = Text("Load Failed!Click retry!");
-              //     } else if (mode == LoadStatus.canLoading) {
-              //       body = Text("release to load more");
-              //     } else {
-              //       body = Text("No more Data");
-              //     }
-              //     return Container(
-              //       height: 55.0,
-              //       child: Center(child: body),
-              //     );
-              //   },
-              // ),
               onRefresh: _onRefresh,
               onLoading: _onLoading,
               child: ListView.separated(
                 controller: _scrollController,
-                //physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: postIdList != null ? postIdList.length : 0,
                 itemBuilder: (context, index) {
                   return Column(
                     children: <Widget>[
-                      //main horizontal padding
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 5.0.w),
-                        //Container for one post
                         child: Container(
-                          // height: index == 0 ? 27.5.h : 57.5.h,
-                          // width: 100.0.w,
-                          //color: Colors.grey[300],
-                          //column for post content
                           child: Column(
                             children: <Widget>[
                               SizedBox(
                                 height: 1.0.h,
                               ),
-                              //ListTile for educator details
                               ListTile(
                                 contentPadding: EdgeInsets.all(0.0),
-                                //leading:
                                 title: GestureDetector(
-                                  onTap: (){
+                                  onTap: () {
                                     getUserProfile(userIdList[index]);
                                   },
                                   child: Row(
@@ -411,7 +293,8 @@ saveFirebaseToken(String token) async {
                                       Padding(
                                         padding: EdgeInsets.only(top: 5.0),
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(50),
+                                          borderRadius:
+                                              BorderRadius.circular(50),
                                           child: CachedNetworkImage(
                                             imageUrl: profileImageList[index]!,
                                             width: 35.0,
@@ -451,7 +334,8 @@ saveFirebaseToken(String token) async {
                                               dateList[index]!.substring(0, 11),
                                               style: TextStyle(
                                                   fontSize: 6.5.sp,
-                                                  color: Constants.bpOnBoardSubtitleStyle,
+                                                  color: Constants
+                                                      .bpOnBoardSubtitleStyle,
                                                   fontFamily: 'Montserrat',
                                                   fontWeight: FontWeight.w400),
                                             ),
@@ -462,13 +346,10 @@ saveFirebaseToken(String token) async {
                                   ),
                                 ),
                                 trailing: IconButton(
-                                     icon: SvgPicture.asset('assets/icons/reportSvg.svg'),
-                                    //  Image.asset('assets/icons/issueIcon.png',
-                                    //   height: 18.0,
-                                    //   width: 18.0,),
-                                    onPressed: () async{
-                                      var result = await 
-                                      pushNewScreen(context,
+                                    icon: SvgPicture.asset(
+                                        'assets/icons/reportSvg.svg'),
+                                    onPressed: () async {
+                                      var result = await pushNewScreen(context,
                                           withNavBar: false,
                                           screen: ReportFeed(
                                             postId: postIdList[index],
@@ -476,55 +357,31 @@ saveFirebaseToken(String token) async {
                                           pageTransitionAnimation:
                                               PageTransitionAnimation
                                                   .cupertino);
-                                        if(result == true){
-                                          _onRefresh();
-                                        }
+                                      if (result == true) {
+                                        _onRefresh();
+                                      }
                                     }),
-                                // GestureDetector(
-                                //   onTap: () {
-                                //     pushNewScreen(context,
-                                //         withNavBar: false,
-                                //         screen: ReportFeed(
-                                //           postId: postIdList[index],
-                                //         ),
-                                //         pageTransitionAnimation:
-                                //             PageTransitionAnimation.cupertino);
-                                //   },
-                                //   child: Padding(
-                                //     padding: const EdgeInsets.only(right: 10.0),
-                                //     child: Container(
-                                //         height: 20.0,
-                                //         width: 20.0,
-                                //         //color: Colors.grey,
-                                //         child: Icon(Icons.error_outline_outlined, color: Constants.bpOnBoardSubtitleStyle, size: 20.0,)
-                                //         //Image.asset('assets/icons/issueIcon.png',),
-                                //         // size: 25.0,
-                                //         // color: Constants.bgColor,
-                                //             //Icons.report_gmailerrorred_outlined
-                                //             ),
-                                //   )),
-                                //),
                               ),
-                              //Post descriptionText
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 2),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 0.0, horizontal: 2),
                                 child: Container(
                                   width: 100.0.w,
-                                  child: Text(descriptionList[index]!,
-                                      style: TextStyle(
-                                          fontSize: 12.0.sp,
-                                          color: Constants.bpOnBoardSubtitleStyle,
-                                          fontFamily: 'Montserrat',
-                                          height: 1.5,
-                                          fontWeight: FontWeight.w400,),
-                                      // textAlign: TextAlign.justify
+                                  child: Text(
+                                    descriptionList[index]!,
+                                    style: TextStyle(
+                                      fontSize: 12.0.sp,
+                                      color: Constants.bpOnBoardSubtitleStyle,
+                                      fontFamily: 'Montserrat',
+                                      height: 1.5,
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
                                 ),
                               ),
                               SizedBox(
                                 height: 1.0.h,
                               ),
-                              // Container for image or video
                               imageListMap[index].length == 0
                                   ? Container()
                                   : Container(
@@ -534,156 +391,136 @@ saveFirebaseToken(String token) async {
                                         shrinkWrap: true,
                                         physics: BouncingScrollPhysics(),
                                         scrollDirection: Axis.horizontal,
-                                        //itemExtent: MediaQuery.of(context).size.width / imageListMap[index].length,
                                         itemCount: imageListMap[index].length,
                                         itemBuilder: (context, imageIndex) {
                                           return imageListMap[index].length == 1
-                                          ? Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 0.0.w),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                List<String> imgList = [];
-                                                for(int i = 0; i<imageListMap[index].length; i++) {
-                                                  imgList.add(imageListMap[index][i]['file']);
-                                                }
-                                                pushNewScreen(context,
-                                                    withNavBar: false,
-                                                    screen: FullScreenSlider(
-                                                      imageList: imgList,
-                                                      index: imageIndex,
-                                                      name: nameList[index]!
+                                              ? Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 0.0.w),
+                                                  child: GestureDetector(
+                                                      onTap: () {
+                                                        List<String> imgList =
+                                                            [];
+                                                        for (int i = 0;
+                                                            i <
+                                                                imageListMap[
+                                                                        index]
+                                                                    .length;
+                                                            i++) {
+                                                          imgList.add(
+                                                              imageListMap[
+                                                                      index][i]
+                                                                  ['file']);
+                                                        }
+                                                        pushNewScreen(context,
+                                                            withNavBar: false,
+                                                            screen: FullScreenSlider(
+                                                                imageList:
+                                                                    imgList,
+                                                                index:
+                                                                    imageIndex,
+                                                                name: nameList[
+                                                                    index]!),
+                                                            pageTransitionAnimation:
+                                                                PageTransitionAnimation
+                                                                    .cupertino);
+                                                      },
+                                                      child: CachedNetworkImage(
+                                                        imageUrl:
+                                                            imageListMap[index]
+                                                                    [imageIndex]
+                                                                ['file'],
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            Image.asset(
+                                                                'assets/images/404.gif',
+                                                                fit: BoxFit
+                                                                    .fitHeight,
+                                                                width: 100.0.w),
+                                                        imageBuilder: (context,
+                                                                imageProvider) =>
+                                                            Container(
+                                                          height: 100,
+                                                          width: 100.0.w,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            image:
+                                                                DecorationImage(
+                                                              image:
+                                                                  imageProvider,
+                                                              fit: BoxFit
+                                                                  .fitWidth,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        placeholder:
+                                                            (context, url) =>
+                                                                Container(
+                                                          child: Center(
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              backgroundColor:
+                                                                  Constants
+                                                                      .bgColor,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )),
+                                                )
+                                              : Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 8.0),
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      List<String> imgList = [];
+                                                      for (int i = 0;
+                                                          i <
+                                                              imageListMap[
+                                                                      index]
+                                                                  .length;
+                                                          i++) {
+                                                        imgList.add(
+                                                            imageListMap[index]
+                                                                [i]['file']);
+                                                      }
+                                                      pushNewScreen(context,
+                                                          withNavBar: false,
+                                                          screen:
+                                                              FullScreenSlider(
+                                                                  imageList:
+                                                                      imgList,
+                                                                  index:
+                                                                      imageIndex,
+                                                                  name: nameList[
+                                                                      index]!),
+                                                          pageTransitionAnimation:
+                                                              PageTransitionAnimation
+                                                                  .cupertino);
+                                                    },
+                                                    child: CachedNetworkImage(
+                                                      imageUrl:
+                                                          imageListMap[index]
+                                                                  [imageIndex]
+                                                              ['file'],
+                                                      height: 100,
+                                                      width: 250,
+                                                      fit: BoxFit.cover,
                                                     ),
-                                                    pageTransitionAnimation:
-                                                    PageTransitionAnimation
-                                                        .cupertino);
-                                              },
-                                              child: CachedNetworkImage(
-                      imageUrl: imageListMap[index][imageIndex]['file'],
-                      errorWidget: (context, url, error) => Image.asset('assets/images/404.gif', fit: BoxFit.fitHeight,
-                      width: 100.0.w),
-                      imageBuilder: (context, imageProvider) => Container(
-                         height: 100,
-                         width: 100.0.w,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(image: imageProvider, fit: BoxFit.fitWidth,),
-                        ),
-                      ),
-                      placeholder: (context, url) => Container(
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            backgroundColor: Constants.bgColor,
-                          ),
-                        ),
-                      ),
-                      
-                    )
-                                              // CachedNetworkImage(imageUrl: imageListMap[index][imageIndex]['file'],
-                                              //   height: 100,
-                                              //   width: 250,
-                                              //   fit: BoxFit.contain,
-                                              //   )
-                                              // Image.network(
-                                              //   imageListMap[index][imageIndex]['file'],
-                                              //   height: 100,
-                                              //   width: 250,
-                                              //   fit: BoxFit.contain,
-                                              //),
-                                            ),
-                                          )
-                                          : Padding(
-                                            padding: const EdgeInsets.only(right: 8.0),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                List<String> imgList = [];
-                                                for(int i = 0; i<imageListMap[index].length; i++) {
-                                                  imgList.add(imageListMap[index][i]['file']);
-                                                }
-                                                pushNewScreen(context,
-                                                    withNavBar: false,
-                                                    screen: FullScreenSlider(
-                                                      imageList: imgList,
-                                                      index: imageIndex,
-                                                      name: nameList[index]!
-                                                    ),
-                                                    pageTransitionAnimation:
-                                                    PageTransitionAnimation
-                                                        .cupertino);
-                                              },
-                                              child: CachedNetworkImage(
-                                                imageUrl: imageListMap[index][imageIndex]['file'],
-                                                height: 100,
-                                                width: 250,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          );
+                                                  ),
+                                                );
                                         },
                                       ),
                                     ),
-
-
-                              // //Row for Liked, commented, shared
-                              // Padding(
-                              //   padding: EdgeInsets.only(top: 1.0.h),
-                              //   child: Row(
-                              //     mainAxisAlignment:
-                              //         MainAxisAlignment.spaceBetween,
-                              //     children: <Widget>[
-                              //       Row(
-                              //         children: [
-                              //           // Icon(
-                              //           //   Icons.thumb_up_alt_rounded,
-                              //           //   color: Constants.bgColor,
-                              //           // ),
-                              //           ImageIcon(
-                              //             AssetImage('assets/icons/likeNew.png'),
-                              //             size: 25.0,
-                              //             color: Constants.bgColor,
-                              //           ),
-                              //           SizedBox(
-                              //             width: 1.0.w,
-                              //           ),
-                              //           Container(
-                              //             padding: EdgeInsets.only(top: 1.0.h),
-                              //             child: Text(
-                              //               "${likesList[index]} Likes",
-                              //               style: TextStyle(
-                              //                   fontSize: 6.5.sp,
-                              //                   color: Constants
-                              //                       .bpOnBoardSubtitleStyle,
-                              //                   fontFamily: 'Montserrat',
-                              //                   fontWeight: FontWeight.w400),
-                              //             ),
-                              //           ),
-                              //         ],
-                              //       ),
-                              //       Container(
-                              //         padding: EdgeInsets.only(top: 1.0.h),
-                              //         child: Text(
-                              //           "${totalCommentsList[index]} Comments",
-                              //           style: TextStyle(
-                              //               fontSize: 6.5.sp,
-                              //               color: Constants
-                              //                   .bpOnBoardSubtitleStyle,
-                              //               fontFamily: 'Montserrat',
-                              //               fontWeight: FontWeight.w400),
-                              //         ),
-                              //       )
-                              //     ],
-                              //   ),
-                              // ),
-                              //divider
                               Divider(
                                 height: 1.0.h,
                                 color: Constants.bpOnBoardSubtitleStyle
                                     .withOpacity(0.5),
                                 thickness: 1.0,
                               ),
-
-
-                              //Row for Like comment and Share
                               Padding(
-                                padding: EdgeInsets.only(top: 0.3.h, bottom: 0.3.h),
+                                padding:
+                                    EdgeInsets.only(top: 0.3.h, bottom: 0.3.h),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -697,8 +534,10 @@ saveFirebaseToken(String token) async {
                                             postIdList[index], authToken!);
                                         setState(() {
                                           isLiked[index] == true
-                                              ? likesList[index] = likesList[index]! + 1
-                                              : likesList[index] = likesList[index]! - 1;
+                                              ? likesList[index] =
+                                                  likesList[index]! + 1
+                                              : likesList[index] =
+                                                  likesList[index]! - 1;
                                         });
                                       },
                                       child: Container(
@@ -708,18 +547,22 @@ saveFirebaseToken(String token) async {
                                           children: [
                                             ImageIcon(
                                               isLiked[index]!
-                                                  ? AssetImage('assets/icons/likeNew.png')
-                                                  : AssetImage('assets/icons/likeThumb.png'),
+                                                  ? AssetImage(
+                                                      'assets/icons/likeNew.png')
+                                                  : AssetImage(
+                                                      'assets/icons/likeThumb.png'),
                                               color: isLiked[index]!
                                                   ? Constants.selectedIcon
-                                                  : Constants.bpOnBoardSubtitleStyle,
+                                                  : Constants
+                                                      .bpOnBoardSubtitleStyle,
                                               size: 25.0,
                                             ),
                                             SizedBox(
                                               width: 2.0.w,
                                             ),
                                             Container(
-                                              padding: EdgeInsets.only(top: 1.0.h),
+                                              padding:
+                                                  EdgeInsets.only(top: 1.0.h),
                                               child: Text(
                                                 "${likesList[index]} Likes",
                                                 style: TextStyle(
@@ -727,82 +570,59 @@ saveFirebaseToken(String token) async {
                                                     color: Constants
                                                         .bpOnBoardSubtitleStyle,
                                                     fontFamily: 'Montserrat',
-                                                    fontWeight: FontWeight.w400),
+                                                    fontWeight:
+                                                        FontWeight.w400),
                                               ),
                                             ),
-                                            // Container(
-                                            //   padding:
-                                            //       EdgeInsets.only(top: 1.0.h),
-                                            //   child: Text(
-                                            //     "Like",
-                                            //     style: TextStyle(
-                                            //         fontSize: 6.5.sp,
-                                            //         color: Constants
-                                            //             .bpOnBoardSubtitleStyle,
-                                            //         fontFamily: 'Montserrat',
-                                            //         fontWeight: FontWeight.w400),
-                                            //   ),
-                                            // ),
                                           ],
                                         ),
                                       ),
                                     ),
                                     GestureDetector(
-                                      onTap: () async{
-                                        //commentResult = await 
-                                          resultComment = await
-                                          Navigator.of(context, rootNavigator: true).push(
-                                            MaterialPageRoute(builder: (context)=> CommentScreen(
-                                              postId: postIdList[index],
-                                              userId: userIdList[index],
-                                              name: nameList[index],
-                                              profileImage: profileImageList[index],
-                                              degree: degreeList[index],
-                                              schoolName: schoolList[index],
-                                              date: dateList[index],
-                                              description: descriptionList[index],
-                                              like: likesList[index],
-                                              comment: totalCommentsList[index],
-                                              isLiked: isLiked[index],
-                                              isSaved: isSaved[index],
-                                              imageListMap: imageListMap,
-                                              index: index,
-                                            ))
-                                          );
+                                      onTap: () async {
+                                        resultComment = await Navigator.of(
+                                                context,
+                                                rootNavigator: true)
+                                            .push(MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CommentScreen(
+                                                      postId: postIdList[index],
+                                                      userId: userIdList[index],
+                                                      name: nameList[index],
+                                                      profileImage:
+                                                          profileImageList[
+                                                              index],
+                                                      degree: degreeList[index],
+                                                      schoolName:
+                                                          schoolList[index],
+                                                      date: dateList[index],
+                                                      description:
+                                                          descriptionList[
+                                                              index],
+                                                      like: likesList[index],
+                                                      comment:
+                                                          totalCommentsList[
+                                                              index],
+                                                      isLiked: isLiked[index],
+                                                      isSaved: isSaved[index],
+                                                      imageListMap:
+                                                          imageListMap,
+                                                      index: index,
+                                                    )));
 
-                                          setState(() {});
-
-                                          totalCommentsList[resultComment['index']] = resultComment['count'];
-                                          likesList[resultComment['index']] = resultComment['likeCount']; 
-                                          isSaved[resultComment['index']] = resultComment['isSaved'];
-                                          isLiked[resultComment['index']] = resultComment['isLiked'];
-                                          // print('TC###Comm'+totalCommentsList[resultComment['index']].toString());
-                                          // print('TC###Like'+likesList[resultComment['index']].toString());
-                                          // print('TC###IsSa'+isSaved[resultComment['index']].toString());
-                                          // print('TC###IsLa'+isLiked[resultComment['index']].toString());
                                         setState(() {});
-                                        // pushNewScreen(context,
-                                        //     withNavBar: false,
-                                        //     screen: CommentScreen(
-                                        //       postId: postIdList[index],
-                                        //       userId: userIdList[index],
-                                        //       name: nameList[index],
-                                        //       profileImage: profileImageList[index],
-                                        //       degree: degreeList[index],
-                                        //       schoolName: schoolList[index],
-                                        //       date: dateList[index],
-                                        //       description: descriptionList[index],
-                                        //       like: likesList[index],
-                                        //       comment: totalCommentsList[index],
-                                        //       isLiked: isLiked[index],
-                                        //       isSaved: isSaved[index],
-                                        //       imageListMap: imageListMap,
-                                        //       index: index,
-                                        //     ),
-                                        //     pageTransitionAnimation:
-                                        //         PageTransitionAnimation
-                                        //             .cupertino
-                                        //             );
+
+                                        totalCommentsList[
+                                                resultComment['index']] =
+                                            resultComment['count'];
+                                        likesList[resultComment['index']] =
+                                            resultComment['likeCount'];
+                                        isSaved[resultComment['index']] =
+                                            resultComment['isSaved'];
+                                        isLiked[resultComment['index']] =
+                                            resultComment['isLiked'];
+
+                                        setState(() {});
                                       },
                                       child: Container(
                                         child: Row(
@@ -810,47 +630,29 @@ saveFirebaseToken(String token) async {
                                               MainAxisAlignment.start,
                                           children: [
                                             ImageIcon(
-                                              AssetImage('assets/icons/commentNew.png'),
+                                              AssetImage(
+                                                  'assets/icons/commentNew.png'),
                                               size: 21.0,
-                                              color: Constants.bpOnBoardSubtitleStyle,
+                                              color: Constants
+                                                  .bpOnBoardSubtitleStyle,
                                             ),
-                                            // Icon(
-                                            //   Icons.comment_outlined,
-                                            //   color: Constants
-                                            //       .bpOnBoardSubtitleStyle,
-                                            //   size: 30.0,
-                                            // ),
                                             SizedBox(
                                               width: 2.0.w,
                                             ),
                                             Container(
-                                              padding: EdgeInsets.only(top: 1.0.h),
+                                              padding:
+                                                  EdgeInsets.only(top: 1.0.h),
                                               child: Text(
-                                                // resultComment['index'] == index 
-                                                // ? "${resultComment['count']} Comments"
-                                                // : 
                                                 "${totalCommentsList[index]} Comments",
                                                 style: TextStyle(
                                                     fontSize: 6.5.sp,
                                                     color: Constants
                                                         .bpOnBoardSubtitleStyle,
                                                     fontFamily: 'Montserrat',
-                                                    fontWeight: FontWeight.w400),
+                                                    fontWeight:
+                                                        FontWeight.w400),
                                               ),
                                             )
-                                            // Container(
-                                            //   padding:
-                                            //       EdgeInsets.only(top: 1.0.h),
-                                            //   child: Text(
-                                            //     "Comment",
-                                            //     style: TextStyle(
-                                            //         fontSize: 6.5.sp,
-                                            //         color: Constants
-                                            //             .bpOnBoardSubtitleStyle,
-                                            //         fontFamily: 'Montserrat',
-                                            //         fontWeight: FontWeight.w400),
-                                            //   ),
-                                            // ),
                                           ],
                                         ),
                                       ),
@@ -869,11 +671,14 @@ saveFirebaseToken(String token) async {
                                           children: [
                                             ImageIcon(
                                               isSaved[index]!
-                                                  ? AssetImage('assets/icons/saveGreen.png')
-                                                  : AssetImage('assets/icons/saveNew.png'),
+                                                  ? AssetImage(
+                                                      'assets/icons/saveGreen.png')
+                                                  : AssetImage(
+                                                      'assets/icons/saveNew.png'),
                                               color: isSaved[index]!
                                                   ? Constants.selectedIcon
-                                                  : Constants.bpOnBoardSubtitleStyle,
+                                                  : Constants
+                                                      .bpOnBoardSubtitleStyle,
                                               size: 21.0,
                                             ),
                                             SizedBox(
@@ -889,7 +694,8 @@ saveFirebaseToken(String token) async {
                                                     color: Constants
                                                         .bpOnBoardSubtitleStyle,
                                                     fontFamily: 'Montserrat',
-                                                    fontWeight: FontWeight.w400),
+                                                    fontWeight:
+                                                        FontWeight.w400),
                                               ),
                                             ),
                                           ],
@@ -908,68 +714,45 @@ saveFirebaseToken(String token) async {
                 },
                 separatorBuilder: (context, index) {
                   return Divider(
-                    //height: 2.0.h,
                     thickness: 5.0,
                     color: Color(0xFFD3D9E0),
                   );
                 },
               ),
             ),
-      // )
     );
   }
 
-  //ConnectyCube
   _loginToCubeChat(BuildContext context, CubeUser user) {
     user.password = '12345678';
-    //print("_loginToCubeChat user $user");
+
     CubeChatConnectionSettings.instance.totalReconnections = 0;
-    CubeChatConnection.instance.login(user).then((cubeUser) {
-    }).catchError((error) {
-      //print('Came Here!!');
+    CubeChatConnection.instance
+        .login(user)
+        .then((cubeUser) {})
+        .catchError((error) {
       _processLoginError(error);
     });
   }
 
   void _processLoginError(exception) {
-    log("Login error $exception", TAG);
-    setState(() {
-
-    });
+    //log("Login error $exception", TAG);
+    setState(() {});
     showDialogError(exception, context);
   }
 
-
-  //Get all Post API
   Future<void> getAllPostApi(int page) async {
-    // displayProgressDialog(context);
-
-    
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.getAllPostUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer $authToken'}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
-        // closeProgressDialog(context);
-        //return EducatorPost.fromJson(json)
-        //result = EducatorPost.fromJson(response.data);
         map = response.data;
         mapData = map!['data'];
 
-        //print(map);
-        print(mapData);
         if (map!['data'].length > 0) {
-          // if (name == '') {
-          //   name = map['data'][0]['name'];
-          //   profileImageUrl = map['data'][0]['profile_image'];
-          //   degreeName = map['data'][0]['last_degree'];
-          //   schoolName = map['data'][0]['school_name'];
-          // }
-          //print("HELLO");
-
           for (int i = 0; i < map!['data'].length; i++) {
             nameList.add(map!['data'][i]['name']);
             profileImageList.add(map!['data'][i]['profile_image']);
@@ -987,9 +770,8 @@ saveFirebaseToken(String token) async {
               imageListMap.putIfAbsent(k, () => map!['data'][i]['post_media']);
             }
             k++;
-            //print(k);
           }
-          //print(imageListMap);
+
           isLoading = false;
           isPostLoading = false;
           setState(() {});
@@ -998,32 +780,25 @@ saveFirebaseToken(String token) async {
           isPostLoading = false;
           setState(() {});
         }
-        ////print(result.data);
-        //return result;
+
         setState(() {
           isLoading = false;
           isPostLoading = false;
         });
 
         if (map!['status'] == true) {
-          //print('TRUE');
-        } else if(map!['status'] == false && map!['error_code'] == 'ERR302') {
+        } else if (map!['status'] == false && map!['error_code'] == 'ERR302') {
           refreshToken();
         }
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
-    } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
-    }
+    } on DioError catch (e, stack) {}
   }
 
   void saveToken(String token) async {
-    // Write value
-    await storage.FlutterSecureStorage().write(key: 'access_token', value: token);
+    await storage.FlutterSecureStorage()
+        .write(key: 'access_token', value: token);
     setState(() {
       authToken = token;
     });
@@ -1031,7 +806,6 @@ saveFirebaseToken(String token) async {
   }
 
   Future<void> refreshToken() async {
-    //print(authToken);
     try {
       Dio dio = Dio();
       var response = await dio.get(Config.refreshTokenUrl,
@@ -1041,18 +815,11 @@ saveFirebaseToken(String token) async {
         if (refreshTokenMap!.length > 1) {
           saveToken(refreshTokenMap!['access_token']);
         }
-      } else {
-        //print(response.statusCode);
-      }
-    } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
-    }
+      } else {}
+    } on DioError catch (e, stack) {}
   }
 
   Future<void> savePostApi(int? postID) async {
-    //var delResult = PostDelete();
-
     try {
       Dio dio = Dio();
 
@@ -1062,17 +829,9 @@ saveFirebaseToken(String token) async {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
-        //delResult = postDeleteFromJson(response.data);
         saveMap = response.data;
-        //saveMapData = map['data']['status'];
 
-        //print(saveMap);
-        // setState(() {
-        //   isLoading = false;
-        // });
         if (saveMap!['status'] == true) {
-          //print('true');
-          //getEducatorPostApi(page);
           Fluttertoast.showToast(
               msg: saveMap!['message'],
               backgroundColor: Constants.bgColor,
@@ -1081,7 +840,6 @@ saveFirebaseToken(String token) async {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          //print('false');
           if (saveMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: saveMap!['error_msg'],
@@ -1100,17 +858,9 @@ saveFirebaseToken(String token) async {
                 textColor: Colors.white);
           }
         }
-        //getEducatorPostApi(page);
-        //print(saveMap);
-      } else {
-        //print(response.statusCode);
-      }
+      } else {}
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -1124,59 +874,39 @@ saveFirebaseToken(String token) async {
     }
   }
 
-//get User Profile
   Future<void> getUserProfile(id) async {
-    // displayProgressDialog(context);
-
     Map<String, dynamic>? map = {};
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        //print(map!['data']);
-        //print(mapData);
         if (map!['data'] != null || map['data'] != []) {
           setState(() {});
-          // map['data']['role'] == 'E'
-          //     ? 
-              pushNewScreen(context,
-              screen: EducatorProfileViewScreen(id: id,),
+
+          pushNewScreen(context,
+              screen: EducatorProfileViewScreen(
+                id: id,
+              ),
               withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation.cupertino);
-          //     :
-          // pushNewScreen(context,
-          //     screen: LearnerProfileViewScreen(id: id,),
-          //     withNavBar: false,
-          //     pageTransitionAnimation:
-          //     PageTransitionAnimation
-          //         .cupertino);
+              pageTransitionAnimation: PageTransitionAnimation.cupertino);
         } else {
           isLoading = false;
           setState(() {});
         }
-        //print(result.data);
-        //return result;
+
         setState(() {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -1190,23 +920,22 @@ saveFirebaseToken(String token) async {
     }
   }
 
-  Future<void> deviceTokenAPi(String token) async{
+  Future<void> deviceTokenAPi(String token) async {
     var result = DeviceToken();
 
-    try{
+    try {
       var dio = Dio();
-      FormData formData = FormData.fromMap({
-        "deviceToken": token,
-        "deviceType": 'A'
-      });
+      FormData formData =
+          FormData.fromMap({"deviceToken": token, "deviceType": 'A'});
 
-      var response = await dio.post(Config.deviceTokenUrl, data: formData,
-      options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
+      var response = await dio.post(Config.deviceTokenUrl,
+          data: formData,
+          options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
-      if(response.statusCode == 200){
+      if (response.statusCode == 200) {
         result = DeviceToken.fromJson(response.data);
-        //print(response.data);
-        if(result.status == true){
+
+        if (result.status == true) {
           Fluttertoast.showToast(
               msg: saveMap!['message'],
               backgroundColor: Constants.bgColor,
@@ -1214,7 +943,7 @@ saveFirebaseToken(String token) async {
               fontSize: 10.0.sp,
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
-        } else{
+        } else {
           Fluttertoast.showToast(
               msg: saveMap!['message'],
               backgroundColor: Constants.bgColor,
@@ -1222,14 +951,10 @@ saveFirebaseToken(String token) async {
               fontSize: 10.0.sp,
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
-          }
+        }
       }
-    }on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
+    } on DioError catch (e, stack) {
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -1243,10 +968,7 @@ saveFirebaseToken(String token) async {
     }
   }
 
-  //Future<GetAllProperty> 
   getPropertyAPI(String url) async {
-    //displayProgressDialog(context);
-    //await getToken();
     isLoading = true;
     propDataList.clear();
     setState(() {});
@@ -1255,82 +977,30 @@ saveFirebaseToken(String token) async {
       var response = await dio.get(url,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
-        //propertyDetails = GetAllProperty.fromJson(response.data);
         propMap = response.data;
         propDataList.add(propMap!['data'][0]);
-        //mapData = map!['data'];
-        //print('PROP:::'+propMap.toString());
-        //print('PROPDATA:::'+propDataList.toString());
-        //closeProgressDialog(context);
 
         if (propMap!['status'] == true) {
-
           isLoading = false;
           setState(() {});
-          // if(mounted){
-           
-          // } else{
-            // print('NOT MOUNTED:::');
-            // Navigator.of(context).pushAndRemoveUntil(PageRouteBuilder(
-            // pageBuilder: (_, __, ___) => new bottomNavBar(1),), (Route<dynamic> route) => false);
-            
-            pushNewScreen(context, screen: PropertyDetailScreen(propertyDetails: propertyDetails, 
-            propData: propDataList,
-            index: 0),
-            withNavBar: false,
-            pageTransitionAnimation: PageTransitionAnimation.cupertino);
-          //}
-          
-         // propertyLength = 0;
-          // propertyLength = result.data == [] ? 0 : result.data.length;
-          // setState(() {});
-          // print('PROP:::' + propertyLength.toString());
-          // print('PROP:::' + page.toString());
-          // if (page > 0) {
-          //   for (int i = 0; i < mapData!.length; i++) {
-          //     propertyId.add(mapData![i]['property_id']);
-          //     propertyName.add(mapData![i]['name']);
-          //     propertyLocation.add(mapData![i]['location']['address']);
-          //     propertyImage.add(mapData![i]['featured_image'][0]);
-          //     //propertyPrice.add('${int.parse(result.data[i].room[0].roomAmount)}');
-          //     propertyRating.add(mapData![i]['rating'].toDouble());
-          //     //allImage.add(result.data[i].featuredImage);
-          //     propDataList.add(mapData![i]);
-          //   }
-          //   print('DATAPROP:::'+ propDataList.toString());
-            // isLoading = false;
-            // setState(() {});
-          //} else {
-            // isLoading = false;
-            // setState(() {});
-          //}
-        //} else {
-          // isLoading = false;
-          // setState(() {});
-          // Fluttertoast.showToast(
-          //   msg: result.message,
-          //   toastLength: Toast.LENGTH_SHORT,
-          //   gravity: ToastGravity.BOTTOM,
-          //   timeInSecForIosWeb: 1,
-          //   backgroundColor: Constants.bgColor,
-          //   textColor: Colors.white,
-          //   fontSize: 10.0.sp,
-          // );
-        }
-        else{
+
+          pushNewScreen(context,
+              screen: PropertyDetailScreen(
+                  propertyDetails: propertyDetails,
+                  propData: propDataList,
+                  index: 0),
+              withNavBar: false,
+              pageTransitionAnimation: PageTransitionAnimation.cupertino);
+        } else {
           isLoading = false;
           setState(() {});
         }
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       isLoading = false;
       setState(() {});
-      //closeProgressDialog(context);
+
       if (e.response != null) {
-        //print("This is the error message::::" +
-          //  e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -1340,12 +1010,7 @@ saveFirebaseToken(String token) async {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-        //print(e.message);
-      }
+      } else {}
     }
-    //return propertyDetails;
   }
 }

@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final CancelBookoingReason = CancelBookoingReasonFromJson(jsonString);
-
 import 'dart:convert';
 
 CancelBookoingReason cancelBookoingReasonFromJson(String str) => CancelBookoingReason.fromJson(json.decode(str));

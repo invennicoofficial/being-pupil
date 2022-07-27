@@ -103,7 +103,7 @@ class ChatDialogScreen extends StatelessWidget {
   }
 
   _chatDetails(BuildContext context) async {
-    log("_chatDetails= $_cubeDialog");
+    //log("_chatDetails= $_cubeDialog");
     // Navigator.push(
     //   context,
     //   MaterialPageRoute(
@@ -205,7 +205,7 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   void onReceiveMessage(CubeMessage message) {
-    log("onReceiveMessage message= $message");
+    //log("onReceiveMessage message= $message");
     if (message.dialogId != _cubeDialog.dialogId ||
         message.senderId == _cubeUser!.id) return;
 
@@ -214,17 +214,17 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   void onDeliveredMessage(MessageStatus status) {
-    log("onDeliveredMessage message= $status");
+    //log("onDeliveredMessage message= $status");
     updateReadDeliveredStatusMessage(status, false);
   }
 
   void onReadMessage(MessageStatus status) {
-    log("onReadMessage message= ${status.messageId}");
+    //log("onReadMessage message= ${status.messageId}");
     updateReadDeliveredStatusMessage(status, true);
   }
 
   void onTypingMessage(TypingStatus status) {
-    log("TypingStatus message= ${status.userId}");
+    //log("TypingStatus message= ${status.userId}");
     if (status.userId == _cubeUser!.id ||
         (status.dialogId != null && status.dialogId != _cubeDialog.dialogId))
       return;
@@ -285,7 +285,7 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   void onSendMessage(CubeMessage message) async {
-    log("onSendMessage message= $message");
+    //log("onSendMessage message= $message");
     textEditingController.clear();
     await _cubeDialog.sendMessage(message);
     //print('THIS IS THE SENDER ID' + message.senderId.toString());
@@ -296,7 +296,7 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   updateReadDeliveredStatusMessage(MessageStatus status, bool isRead) {
-    log('[updateReadDeliveredStatusMessage]');
+    //log('[updateReadDeliveredStatusMessage]');
     setState(() {
       CubeMessage msg = listMessage!.firstWhere(
               (msg) => msg.messageId == status.messageId);
@@ -310,7 +310,7 @@ class ChatScreenState extends State<ChatScreen> {
             ? msg.deliveredIds = [status.userId]
             : msg.deliveredIds?.add(status.userId);
 
-      log('[updateReadDeliveredStatusMessage] status updated for $msg');
+      //log('[updateReadDeliveredStatusMessage] status updated for $msg');
     });
   }
 
@@ -375,9 +375,9 @@ class ChatScreenState extends State<ChatScreen> {
     }
 
     Widget getReadDeliveredWidget() {
-      log("[getReadDeliveredWidget]");
+      //log("[getReadDeliveredWidget]");
       bool messageIsRead() {
-        log("[getReadDeliveredWidget] messageIsRead");
+        //log("[getReadDeliveredWidget] messageIsRead");
         if (_cubeDialog.type == CubeDialogType.PRIVATE)
           return message.readIds != null &&
               (message.recipientId == null ||
@@ -387,7 +387,7 @@ class ChatScreenState extends State<ChatScreen> {
       }
 
       bool messageIsDelivered() {
-        log("[getReadDeliveredWidget] messageIsDelivered");
+        //log("[getReadDeliveredWidget] messageIsDelivered");
         if (_cubeDialog.type == CubeDialogType.PRIVATE)
           return message.deliveredIds?.contains(message.recipientId) ?? false;
         return message.deliveredIds != null &&
@@ -395,7 +395,7 @@ class ChatScreenState extends State<ChatScreen> {
       }
 
       if (messageIsRead()) {
-        log("[getReadDeliveredWidget] if messageIsRead");
+        //log("[getReadDeliveredWidget] if messageIsRead");
         return Stack(children: <Widget>[
           Icon(
             Icons.check,
@@ -412,7 +412,7 @@ class ChatScreenState extends State<ChatScreen> {
           )
         ]);
       } else if (messageIsDelivered()) {
-        log("[getReadDeliveredWidget] if messageIsDelivered");
+        //log("[getReadDeliveredWidget] if messageIsDelivered");
         return Stack(children: <Widget>[
           Icon(
             Icons.check,
@@ -429,7 +429,7 @@ class ChatScreenState extends State<ChatScreen> {
           )
         ]);
       } else {
-        log("[getReadDeliveredWidget] sent");
+        //log("[getReadDeliveredWidget] sent");
         return Icon(
           Icons.check,
           size: 15.0,
@@ -883,14 +883,14 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   void _initCubeChat() {
-    log("_initCubeChat");
+    //log("_initCubeChat");
     if (CubeChatConnection.instance.isAuthenticated()) {
-      log("[_initCubeChat] isAuthenticated");
+      //log("[_initCubeChat] isAuthenticated");
       _initChatListeners();
     } else {
-      log("[_initCubeChat] not authenticated");
+      //log("[_initCubeChat] not authenticated");
       CubeChatConnection.instance.connectionStateStream.listen((state) {
-        log("[_initCubeChat] state $state");
+        //log("[_initCubeChat] state $state");
         if (CubeChatConnectionState.Ready == state) {
           _initChatListeners();
 

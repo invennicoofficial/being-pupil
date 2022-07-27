@@ -17,12 +17,9 @@ class EducatorStudyBuddyScreen extends StatefulWidget {
       _EducatorStudyBuddyScreenState();
 }
 
-class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
-//with SingleTickerProviderStateMixin
-{
+class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen> {
   String? registerAs;
-  //TabController _tabController;
-  //int selectedIndex = 0;
+
   String? searchIn;
 
   @override
@@ -37,14 +34,6 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
       registerAs = preferences.getString('RegisterAs');
       searchIn = registerAs == 'E' ? 'E' : 'L';
     });
-    //print(registerAs);
-    // _tabController = TabController(length: 3, vsync: this);
-    // _tabController.addListener(() {
-    //   setState(() {
-    //     selectedIndex = _tabController.index;
-    //   });
-    //   print('Selected Index::: ' +selectedIndex.toString());
-    // });
   }
 
   @override
@@ -54,17 +43,6 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Constants.bgColor,
-          // leading: IconButton(
-          //   icon: Icon(
-          //     Icons.west_rounded,
-          //     color: Colors.white,
-          //     size: 35.0,
-          //   ),
-          //   onPressed: () {
-          //     Navigator.of(context).pop();
-          //   },
-          //   padding: EdgeInsets.zero,
-          // ),
           title: Text(registerAs == 'L' ? 'Study Buddy' : 'Fellow Educator',
               style: TextStyle(
                   fontFamily: 'Montserrat',
@@ -75,7 +53,8 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
             Padding(
                 padding: EdgeInsets.only(right: 2.0.w),
                 child: IconButton(
-                    icon: Image.asset('assets/icons/searchNew.png', height: 20.0, width: 20.0, color: Colors.white),
+                    icon: Image.asset('assets/icons/searchNew.png',
+                        height: 20.0, width: 20.0, color: Colors.white),
                     onPressed: () {
                       pushNewScreen(context,
                           screen: SearchScreen(
@@ -91,9 +70,6 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
             child: ColoredBox(
               color: Colors.white,
               child: TabBar(
-                  //controller: _tabController,
-                  //indicatorPadding: EdgeInsets.symmetric(horizontal: 3.0.w),
-                  //indicatorSize: TabBarIndicatorSize.label,
                   labelPadding: EdgeInsets.symmetric(horizontal: 5.0.w),
                   labelColor: Constants.bgColor,
                   labelStyle: TextStyle(
@@ -126,11 +102,10 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
                         searchIn = 'R';
                       });
                     } else {
-                       setState(() {
-                          searchIn = 'C';
-                        });
+                      setState(() {
+                        searchIn = 'C';
+                      });
                     }
-                    //print('Selected Index::: ' + searchIn!);
                   },
                   tabs: [
                     Tab(
@@ -152,7 +127,7 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
               height: 100.0.h,
               width: 100.0.w,
               decoration: BoxDecoration(
-                color: Colors.white10,
+                  color: Colors.white10,
                   image: DecorationImage(
                       image: AssetImage('assets/images/studyBudyBg.png'),
                       fit: BoxFit.cover)),
@@ -160,7 +135,7 @@ class _EducatorStudyBuddyScreenState extends State<EducatorStudyBuddyScreen>
             TabBarView(
               physics: NeverScrollableScrollPhysics(),
               children: <Widget>[
-                registerAs == 'E' ? EducatorList() : LearnerList(),      
+                registerAs == 'E' ? EducatorList() : LearnerList(),
                 RequestList(),
                 ConnectionList(),
               ],

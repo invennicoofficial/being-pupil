@@ -30,7 +30,6 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getToken();
   }
@@ -46,17 +45,7 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
     setState(() {
       razorpayLink = preferences.getString('razorpayLink');
     });
-    //print(razorpayLink);
   }
-
-  // Widget urlLauncher() {
-  //   debugPrint(razorpayLink);
-  //   return WebView(
-  //     initialUrl: razorpayLink,
-  //     javascriptMode: JavascriptMode.unrestricted,
-  //     gestureNavigationEnabled: true,
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +59,7 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
             color: Colors.white,
             size: 35.0,
           ),
-          onPressed: //null,
-              () {
+          onPressed: () {
             Navigator.of(context).pop();
           },
           padding: EdgeInsets.zero,
@@ -263,7 +251,6 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
     );
   }
 
-  //Alert Dialog
   void _showDialog() {
     showDialog(
       context: context,
@@ -280,14 +267,6 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
                     fontWeight: FontWeight.w600,
                     color: Constants.bgColor),
               ),
-              // IconButton(
-              //   icon: Icon(Icons.close),
-              //   iconSize: 20.0,
-              //   color: Constants.bpOnBoardSubtitleStyle,
-              //   onPressed: () {
-              //     Navigator.of(context).pop();
-              //   },
-              // )
             ],
           ),
           actionsPadding:
@@ -301,8 +280,6 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
                   color: Constants.bgColor),
               textAlign: TextAlign.center),
           actions: [
-            // usually buttons at the bottom of the dialog
-
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pop();
@@ -326,7 +303,6 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
               onTap: () {
                 Navigator.of(context).pop();
                 cancelSubscriptionAPI();
-                // deletePostApi(id, index);
               },
               child: Container(
                   height: 35.0,
@@ -350,7 +326,6 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
     );
   }
 
-  //Get Current Subscription
   Future<void> getCurrentSubscriptionAPI() async {
     var dio = Dio();
     result = CurrentSubscription();
@@ -359,13 +334,10 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         result = CurrentSubscription.fromJson(response.data);
-        //print(response);
         if (result.status == true) {
           isLoading = false;
           setState(() {});
         } else {
-          // isLoading = false;
-          // setState(() {});
           Fluttertoast.showToast(
             msg: result.errorMsg == null ? result.message : result.errorMsg,
             toastLength: Toast.LENGTH_SHORT,
@@ -380,11 +352,8 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
     } on DioError catch (e, stack) {
       isLoading = false;
       setState(() {});
-      //print(e.message);
-      //print(stack);
+
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -398,7 +367,6 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
     }
   }
 
-  //Cancel Subscription
   Future<void> cancelSubscriptionAPI() async {
     displayProgressDialog(context);
     SharedPreferences preff = await SharedPreferences.getInstance();
@@ -410,7 +378,7 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
       if (response.statusCode == 200) {
         result = CancelSubscription.fromJson(response.data);
         closeProgressDialog(context);
-        //print(response);
+
         if (result.status == true) {
           preff.setInt('isSubscribed', 0);
           setState(() {});
@@ -440,11 +408,8 @@ class _CurrentSubscriptionScreenState extends State<CurrentSubscriptionScreen> {
       }
     } on DioError catch (e, stack) {
       closeProgressDialog(context);
-      //print(e.message);
-      //print(stack);
+
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,

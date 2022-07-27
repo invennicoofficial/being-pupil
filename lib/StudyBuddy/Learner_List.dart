@@ -53,14 +53,13 @@ class _LearnerListState extends State<LearnerList> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _scrollController.dispose();
   }
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    //print(authToken);
+
     getData();
   }
 
@@ -78,28 +77,18 @@ class _LearnerListState extends State<LearnerList> {
           if (learner.data!.length > 0) {
             page++;
             getLearnerListApi(page);
-            //print(_name);
-            //print(page);
           }
         } else {
           page++;
           getLearnerListApi(page);
-          //print(_name);
-          //print(page);
         }
       }
     });
   }
 
   void _onLoading() async {
-    //if (mounted) setState(() {});
-    // if (request.data.length > 0) {
-    //   //_refreshController.loadComplete();
-    //   _refreshController.requestLoading();
-    // } else {
     _refreshController.loadComplete();
     _refreshController.loadNoData();
-    //}
   }
 
   @override
@@ -110,26 +99,19 @@ class _LearnerListState extends State<LearnerList> {
               valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
             ),
           )
-        :
-        // SingleChildScrollView(
-        //     controller: _scrollController,
-        //     physics: BouncingScrollPhysics(),
-        //     child:
-        SmartRefresher(
+        : SmartRefresher(
             controller: _refreshController,
             enablePullDown: false,
             enablePullUp: true,
             footer: ClassicFooter(
               loadStyle: LoadStyle.ShowWhenLoading,
               noDataText: 'No More Learners',
-              //noMoreIcon: Icon(Icons.refresh_outlined),
             ),
             onLoading: _onLoading,
             child: ListView.builder(
                 controller: _scrollController,
                 padding:
                     EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
-                // physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: _userId.length == 0 ? 0 : _userId.length,
                 itemBuilder: (context, index) {
@@ -138,7 +120,6 @@ class _LearnerListState extends State<LearnerList> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 1.0.w),
                       child: Container(
-                        //height: 10.0.h,
                         child: ListTile(
                             contentPadding: EdgeInsets.zero,
                             title: GestureDetector(
@@ -149,13 +130,14 @@ class _LearnerListState extends State<LearnerList> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child:CachedNetworkImage(
-                                        placeholder: (context, url) => Container(
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: CachedNetworkImage(
+                                        placeholder: (context, url) =>
+                                            Container(
                                           child: CircularProgressIndicator(
                                             valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                                Colors.black),
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.black),
                                           ),
                                           width: 40.0,
                                           height: 40.0,
@@ -169,23 +151,22 @@ class _LearnerListState extends State<LearnerList> {
                                         ),
                                         errorWidget: (context, url, error) =>
                                             Material(
-                                              child: Image.asset(
-                                                'assets/images/studyBudyBg.png',
-                                                width: 40.0,
-                                                height: 40.0,
-                                                fit: BoxFit.cover,
-                                              ),
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(8.0),
-                                              ),
-                                              clipBehavior: Clip.hardEdge,
-                                            ),
+                                          child: Image.asset(
+                                            'assets/images/studyBudyBg.png',
+                                            width: 40.0,
+                                            height: 40.0,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0),
+                                          ),
+                                          clipBehavior: Clip.hardEdge,
+                                        ),
                                         imageUrl: _profileImage[index]!,
                                         width: 40.0,
                                         height: 40.0,
                                         fit: BoxFit.cover,
-                                      )
-                                  ),
+                                      )),
                                   SizedBox(
                                     width: 2.0.w,
                                   ),
@@ -229,7 +210,6 @@ class _LearnerListState extends State<LearnerList> {
                               child: GestureDetector(
                                 onTap: isSubscribed == 1
                                     ? () async {
-                                        //print('$index is Connected');
                                         await connect.connectionApi(
                                             _userId[index], authToken!);
                                         setState(() {
@@ -282,21 +262,16 @@ class _LearnerListState extends State<LearnerList> {
   }
 
   Future<void> getUserProfile(id) async {
-    // displayProgressDialog(context);
-
     Map<String, dynamic>? map = {};
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        //print(map!['data']);
-        ////print(mapData);
         if (map!['data'] != null || map['data'] != []) {
           setState(() {});
           map['data']['role'] == 'E'
@@ -316,37 +291,24 @@ class _LearnerListState extends State<LearnerList> {
           isLoading = false;
           setState(() {});
         }
-        ////print(result.data);
-        //return result;
+
         setState(() {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
-    } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
-    }
+    } on DioError catch (e, stack) {}
   }
 
-  //Get Learner List API
   Future<void> getLearnerListApi(int page) async {
-    // displayProgressDialog(context);
-
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.getLearnerListUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
-        // closeProgressDialog(context);
-        //return EducatorPost.fromJson(json)
-        //result = EducatorPost.fromJson(response.data);
         learner = LearnerListModel.fromJson(response.data);
 
         if (learner.data!.length > 0) {
@@ -360,8 +322,6 @@ class _LearnerListState extends State<LearnerList> {
             _distance.add(learner.data![i].distance);
           }
 
-          //print(_name);
-
           isLoading = false;
           setState(() {});
         } else {
@@ -373,13 +333,8 @@ class _LearnerListState extends State<LearnerList> {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
-    } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
-    }
+    } on DioError catch (e, stack) {}
   }
 }

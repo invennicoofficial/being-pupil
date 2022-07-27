@@ -21,7 +21,6 @@ class _TermsAndPolicyScreenState extends State<TermsAndPolicyScreen> {
   final _key = UniqueKey();
 
   initState() {
-    //getTearmsLink();
     super.initState();
   }
 
@@ -37,12 +36,8 @@ class _TermsAndPolicyScreenState extends State<TermsAndPolicyScreen> {
               color: Colors.white,
               size: 35.0,
             ),
-            onPressed: //null,
-                () {
+            onPressed: () {
               Navigator.of(context).pop();
-              // pushNewScreen(context,
-              //     screen: HomeScreen(),
-              //     pageTransitionAnimation: PageTransitionAnimation.fade);
             },
             padding: EdgeInsets.zero,
           ),
@@ -55,35 +50,13 @@ class _TermsAndPolicyScreenState extends State<TermsAndPolicyScreen> {
                 color: Colors.white),
           ),
         ),
-        body: 
-        // isLinkLoading
-        //     ? Center(
-        //         child: CircularProgressIndicator(
-        //         valueColor:
-        //             new AlwaysStoppedAnimation<Color>(Constants.bgColor),
-        //       ))
-        //     : 
-            WebView(
-              key: _key,
-                initialUrl: 'https://beingpupil.com/terms-and-conditions',//link,
-                javascriptMode: JavascriptMode.unrestricted,
-              )
-        // Container(
-        //   child: Padding(
-        //     padding: const EdgeInsets.all(8.0),
-        //     child: Text('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-        //       style: TextStyle(
-        //           fontFamily: 'Montserrat',
-        //           fontSize: 12.0.sp,
-        //           fontWeight: FontWeight.w500,
-        //           color: Colors.black),
-        //     ),
-        //   ),
-        // ),
-        );
+        body: WebView(
+          key: _key,
+          initialUrl: 'https://beingpupil.com/terms-and-conditions',
+          javascriptMode: JavascriptMode.unrestricted,
+        ));
   }
 
-  //get T&C linl
   Future<void> getTearmsLink() async {
     var dio = Dio();
 
@@ -110,8 +83,6 @@ class _TermsAndPolicyScreenState extends State<TermsAndPolicyScreen> {
       isLinkLoading = false;
       link = 'https://beingpupil.com/terms-and-conditions';
       setState(() {});
-      //print(e.toString());
-      //print(sacktrace.toString());
     }
   }
 }

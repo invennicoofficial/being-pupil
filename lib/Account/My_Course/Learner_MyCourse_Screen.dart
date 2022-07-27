@@ -22,9 +22,8 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
   int courseLength = 0;
   var result = GetMyCourse();
 
-   @override
+  @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getToken();
   }
@@ -33,7 +32,7 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     getMyCourseAPI();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,94 +57,97 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
                 color: Colors.white)),
       ),
       body: courseLength == 0
-      ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset('assets/images/noBooking.png',
-                        height: 250, width: 250, fit: BoxFit.contain),
-                    SizedBox(height: 5.0,),
-                    Text(
-                      'Course Not Enrolled',
-                      style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 16.0.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Constants.bgColor),
-                    ),
-                  ],
-                ),
-              )
-       : SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: ListView.builder(
-            itemCount: courseLength,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding:
-                    EdgeInsets.symmetric(vertical: 1.5.h, horizontal: 1.0.w),
-                child: ListTile(
-                  onTap: () {
-                    pushNewScreen(context,
-                        screen: CourseDetailScreen(),
-                        withNavBar: false,
-                        pageTransitionAnimation:
-                            PageTransitionAnimation.cupertino);
-                  },
-                  title: Row(
-                    children: <Widget>[
-                      Container(
-                        height: 70.0,
-                        width: 70.0,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.0),
-                            image: DecorationImage(
-                                image:
-                                    AssetImage('assets/images/postImage.png'),
-                                fit: BoxFit.cover)),
-                      ),
-                      SizedBox(
-                        width: 5.0.w,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: Container(
-                              width: 63.0.w,
-                              child: Text(result.data![index].courseName!,
-                                style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 11.0.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: Constants.bgColor),
-                                overflow: TextOverflow.clip,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 0.5.h,
-                          ),
-                          Text('${result.data![index].startDate} to ${result.data![index].endDate}',
-                              style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 8.0.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Constants.bgColor)),
-                        ],
-                      ),
-                    ],
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/images/noBooking.png',
+                      height: 250, width: 250, fit: BoxFit.contain),
+                  SizedBox(
+                    height: 5.0,
                   ),
-                ),
-              );
-            }),
-      ),
+                  Text(
+                    'Course Not Enrolled',
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 16.0.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Constants.bgColor),
+                  ),
+                ],
+              ),
+            )
+          : SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: ListView.builder(
+                  itemCount: courseLength,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 1.5.h, horizontal: 1.0.w),
+                      child: ListTile(
+                        onTap: () {
+                          pushNewScreen(context,
+                              screen: CourseDetailScreen(),
+                              withNavBar: false,
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino);
+                        },
+                        title: Row(
+                          children: <Widget>[
+                            Container(
+                              height: 70.0,
+                              width: 70.0,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/images/postImage.png'),
+                                      fit: BoxFit.cover)),
+                            ),
+                            SizedBox(
+                              width: 5.0.w,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10.0),
+                                  child: Container(
+                                    width: 63.0.w,
+                                    child: Text(
+                                      result.data![index].courseName!,
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 11.0.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: Constants.bgColor),
+                                      overflow: TextOverflow.clip,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 0.5.h,
+                                ),
+                                Text(
+                                    '${result.data![index].startDate} to ${result.data![index].endDate}',
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 8.0.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Constants.bgColor)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+            ),
     );
   }
-  //Get My  Course API
 
   Future<GetMyCourse> getMyCourseAPI() async {
     displayProgressDialog(context);
@@ -156,9 +158,9 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         result = GetMyCourse.fromJson(response.data);
-       // print(response.data);
+
         courseLength = result.data == [] ? 0 : result.data!.length;
-        setState((){});
+        setState(() {});
         closeProgressDialog(context);
       } else {
         Fluttertoast.showToast(
@@ -172,13 +174,8 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
         );
       }
     } on DioError catch (e, stack) {
-     // print(e.response);
-     // print(stack);
-      //closeProgressDialog(context);
       closeProgressDialog(context);
       if (e.response != null) {
-        // print("This is the error message::::" +
-        //     e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -188,11 +185,7 @@ class _LearnerMyCourseScreenState extends State<LearnerMyCourseScreen> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-        //print(e.message);
-      }
+      } else {}
     }
     return result;
   }

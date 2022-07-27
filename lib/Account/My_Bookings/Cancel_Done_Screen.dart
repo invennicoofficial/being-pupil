@@ -117,18 +117,6 @@ class _CancelDoneScreenState extends State<CancelDoneScreen> {
                           fontWeight: FontWeight.w700,
                           color: Constants.bgColor),
                     ),
-                    // SizedBox(
-                    //   height: 1.0.h,
-                    // ),
-                    // Text(
-                    //   'Amount will be refunded in 7-14 working days in ${widget.mobileNumber}',
-                    //   style: TextStyle(
-                    //       fontFamily: 'Montserrat',
-                    //       fontSize: 9.0.sp,
-                    //       fontWeight: FontWeight.w400,
-                    //       color: Constants.bgColor),
-                    //   textAlign: TextAlign.center,
-                    // ),
                     SizedBox(
                       height: 3.0.h,
                     ),
@@ -313,29 +301,6 @@ class _CancelDoneScreenState extends State<CancelDoneScreen> {
                         (Route<dynamic> route) => false);
                   },
                   child: ButtonWidget(btnName: 'BACK TO HOME', isActive: true, fontWeight: FontWeight.w600,)
-                  // Container(
-                  //   height: 7.0.h,
-                  //   width: 90.0.w,
-                  //   padding: const EdgeInsets.all(1.0),
-                  //   decoration: BoxDecoration(
-                  //     color: Constants.bpOnBoardTitleStyle,
-                  //     borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  //     border: Border.all(
-                  //       color: Constants.bgColor,
-                  //       width: 0.15,
-                  //     ),
-                  //   ),
-                  //   child: Center(
-                  //     child: Text(
-                  //       'BACK TO HOME',
-                  //       style: TextStyle(
-                  //           color: Colors.white,
-                  //           fontFamily: 'Montserrat',
-                  //           fontWeight: FontWeight.w600,
-                  //           fontSize: 11.0.sp),
-                  //     ),
-                  //   ),
-                  // ),
                 ),
               ),
             ],

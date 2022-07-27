@@ -103,7 +103,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
   Map<String, dynamic>? propMap;
   Map<String, dynamic> postMap = {};
   List<dynamic> propDataList = [];
-  //List<dynamic>? mapData;
+
   List<int> _current = [];
   final CarouselController _controller = CarouselController();
   List<List<String>> imageList = [];
@@ -121,21 +121,17 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    //print(authToken);
+
     getData();
     generateFirebaseToken();
   }
 
-  //Generate firebase token
   generateFirebaseToken() async {
     _firebaseMessaging.requestPermission(sound: true, alert: true, badge: true);
-    //FirebaseMessaging.onMessage.listen((remoteMessage) {
-    //   log('[onMessage] message: $remoteMessage');
-    //showNotification(remoteMessage);
-    //});
+
     _firebaseMessaging.getToken().then((token) {
       var firebaseToken = token!;
-      //print('token::: ' + token);
+
       saveFirebaseToken(token);
       setState(() {});
       deviceTokenAPi(token);
@@ -143,83 +139,25 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
   }
 
   saveFirebaseToken(String token) async {
-    // Create storage
     final storage = new FlutterSecureStorage();
 
-    // Write value
     await storage.write(key: 'firebaseToken', value: token);
   }
-
-  // getAllImagesList(){
-  //   for(int i = 0; i < )
-  //   for (int i = 0; i < imageListMap[index].length; i++) {
-  //    imgList.add(imageListMap[index][i]['file']);
-  //    }
-  // }
-
-//   pushNotificationOnMsg() async{
-//     FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-// String? token;
-// if (Platform.isAndroid || kIsWeb) {
-//     token = (await firebaseMessaging.getToken())!;
-// } else if (Platform.isIOS || Platform.isMacOS) {
-//     token = (await firebaseMessaging.getAPNSToken())!;
-// }
-
-// if (!isEmpty(token)) {
-//     subscribe(token!);
-// }
-
-// firebaseMessaging.onTokenRefresh.listen((newToken) {
-//     subscribe(newToken);
-// });
-//   }
-
-//   subscribe(String token) async {
-//     log('[subscribe] token: $token');
-
-//     bool isProduction = bool.fromEnvironment('dart.vm.product');
-
-//     CreateSubscriptionParameters parameters = CreateSubscriptionParameters();
-//     parameters.environment =
-//         isProduction ? CubeEnvironment.PRODUCTION : CubeEnvironment.DEVELOPMENT;
-
-//     if (Platform.isAndroid) {
-//       parameters.channel = NotificationsChannels.GCM;
-//       parameters.platform = CubePlatform.ANDROID;
-//       parameters.bundleIdentifier = "com.connectycube.flutter.chat_sample";
-//     } else if (Platform.isIOS) {
-//       parameters.channel = NotificationsChannels.APNS;
-//       parameters.platform = CubePlatform.IOS;
-//       parameters.bundleIdentifier = Platform.isIOS
-//           ? "com.connectycube.flutter.chatSample.app"
-//           : "com.connectycube.flutter.chatSample.macOS";
-//     }
-
-//     String deviceId = await DeviceId.getID;
-//     parameters.udid = deviceId;
-//     parameters.pushToken = token;
-
-//     createSubscription(parameters.getRequestParameters())
-//         .then((cubeSubscription) {})
-//         .catchError((error) {});
-// }
 
   getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       registerAs = preferences.getString('RegisterAs');
     });
-    //print('RoLE::::::' + registerAs.toString());
+
     SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
     user = sharedPrefs.getUser();
 
     if (user != null) {
       user!.password = '12345678';
       createSession(user).then((cubeSession) {
-        //ccToken = cubeSession.token;
         preferences.setString('ccToken', cubeSession.token!);
-        //print('CCT:::'+ccToken!);
+
         signIn(user!).then((cubeUser) async {
           _loginToCubeChat(context, user!);
         }).catchError((error) {});
@@ -233,23 +171,18 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
           if (map!['data'].length > 0) {
             page++;
             getAllPostApi(page);
-            //print(page);
           } else {
             _refreshController.loadComplete();
           }
         } else {
           page++;
           getAllPostApi(page);
-          //print(page);
         }
       }
     });
   }
 
   void _onRefresh() async {
-    // monitor network fetch
-    //await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
     setState(() {
       isLoading = true;
       page = 1;
@@ -262,7 +195,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
       descriptionList = [];
       commentTextList = [];
       mutualList = [];
-      //imageListMap.removeWhere((key, value) => key == index);
+
       likesList = [];
       totalCommentsList = [];
       nameList = [];
@@ -285,45 +218,35 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
   }
 
   void _onLoading() async {
-    //if (mounted) setState(() {});
     if (map!['data'].length == 0) {
-      //_refreshController.loadComplete();
       _refreshController.loadNoData();
     } else {
       _refreshController.requestLoading();
     }
   }
 
-  //init dynamic link
   Future<void> initDynamicLinks() async {
     final PendingDynamicLinkData? data = await dynamicLinks.getInitialLink();
     final Uri? deepLink = data?.link;
 
     if (deepLink != null) {
-      print('DL:::::::$deepLink');
-      // ignore: unawaited_futures
-      //Future.delayed(const Duration(milliseconds: 1000), () {
+
       if (deepLink.toString().contains('/post')) {
         getPostById(deepLink.toString());
       } else {
-        getPropertyAPI(deepLink.toString().substring(0, deepLink.toString().length - 2));
+        getPropertyAPI(
+            deepLink.toString().substring(0, deepLink.toString().length - 2));
       }
-      //setState(() {});
-      //});
-      //Navigator.pushNamed(context, deepLink.path);
     }
     dynamicLinks.onLink.listen((dynamicLinkData) {
-      print('DL:::' + dynamicLinkData.link.toString());
       if (dynamicLinkData.link.toString().contains('/post')) {
         getPostById(dynamicLinkData.link.toString());
       } else {
-        getPropertyAPI(dynamicLinkData.link.toString().substring(0, dynamicLinkData.link.toString().length - 3));
+        getPropertyAPI(dynamicLinkData.link
+            .toString()
+            .substring(0, dynamicLinkData.link.toString().length - 3));
       }
-      //Navigator.pushNamed(context, dynamicLinkData.link.path);
-    }).onError((error) {
-      //print('onLink error');
-      //print(error.message);
-    });
+    }).onError((error) {});
   }
 
   @override
@@ -376,12 +299,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                     new AlwaysStoppedAnimation<Color>(Constants.bgColor),
               ),
             )
-          :
-          // SingleChildScrollView(
-          //     controller: _scrollController,
-          //     physics: BouncingScrollPhysics(),
-          //     child:
-          SmartRefresher(
+          : SmartRefresher(
               controller: _refreshController,
               enablePullDown: true,
               enablePullUp: true,
@@ -389,33 +307,10 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
               footer: ClassicFooter(
                 loadStyle: LoadStyle.ShowWhenLoading,
               ),
-
-              //  footer:
-              // CustomFooter(
-              //   builder: (BuildContext context, LoadStatus mode) {
-              //     Widget body;
-              //     if (mode == LoadStatus.idle) {
-              //       body = Text("pull up load");
-              //     } else if (mode == LoadStatus.loading) {
-              //       body = CupertinoActivityIndicator();
-              //     } else if (mode == LoadStatus.failed) {
-              //       body = Text("Load Failed!Click retry!");
-              //     } else if (mode == LoadStatus.canLoading) {
-              //       body = Text("release to load more");
-              //     } else {
-              //       body = Text("No more Data");
-              //     }
-              //     return Container(
-              //       height: 55.0,
-              //       child: Center(child: body),
-              //     );
-              //   },
-              // ),
               onRefresh: _onRefresh,
               onLoading: _onLoading,
               child: ListView.separated(
                 controller: _scrollController,
-                //physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: postIdList != null ? postIdList.length : 0,
                 itemBuilder: (context, index) {
@@ -429,15 +324,12 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                     commentImage: commentProfile[index],
                     postId: postIdList[index]!,
                     profileTap: () {
-                      print('ID:::' + userIdList[index].toString());
                       getUserProfile(userIdList[index]);
                     },
                     profileImage: profileImageList[index]!,
                     profileName: nameList[index]!,
                     profileSchool: cityList[index]!,
-                    //'${degreeList[index]} | ${schoolList[index]}',
                     postTime: durationList[index]!,
-                    //dateList[index]!.substring(0, 11),
                     reportTap: IconButton(
                       icon: Icon(
                         Icons.more_horiz_outlined,
@@ -495,7 +387,6 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                           imageBuilder:
                                               (context, imageProvider) =>
                                                   Container(
-                                                    //height: 100,
                                                     width: 100.0.w,
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
@@ -552,8 +443,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                                 : SizedBox(),
                           )
                         : Row(),
-                    mutualLike: likesList[index]! -
-                        values.length, //likesList[index].toString(),
+                    mutualLike: likesList[index]! - values.length,
                     mutualFriend: mutualList[index],
                     likeTap: () {
                       setState(() {
@@ -632,66 +522,45 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                 },
                 separatorBuilder: (context, index) {
                   return Divider(
-                    //height: 2.0.h,
                     thickness: 5.0,
                     color: Color(0xFFD3D9E0),
                   );
                 },
               ),
             ),
-      // )
     );
   }
 
-  //ConnectyCube
   _loginToCubeChat(BuildContext context, CubeUser user) {
     user.password = '12345678';
-    //print("_loginToCubeChat user $user");
+
     CubeChatConnectionSettings.instance.totalReconnections = 0;
     CubeChatConnection.instance
         .login(user)
         .then((cubeUser) {})
         .catchError((error) {
-      //print('Came Here!!');
       _processLoginError(error);
     });
   }
 
   void _processLoginError(exception) {
-    log("Login error $exception", TAG);
+    //log("Login error $exception", TAG);
     setState(() {});
     showDialogError(exception, context);
   }
 
-  //Get all Post API
   Future<void> getAllPostApi(int page) async {
-    // displayProgressDialog(context);
-
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.getAllPostUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer $authToken'}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
-        // closeProgressDialog(context);
-        //return EducatorPost.fromJson(json)
-        //result = EducatorPost.fromJson(response.data);
         map = response.data;
         mapData = map!['data'];
 
-        //print(map);
-        print(mapData);
         if (map!['data'].length > 0) {
-          // if (name == '') {
-          //   name = map['data'][0]['name'];
-          //   profileImageUrl = map['data'][0]['profile_image'];
-          //   degreeName = map['data'][0]['last_degree'];
-          //   schoolName = map['data'][0]['school_name'];
-          // }
-          //print("HELLO");
-
           for (int i = 0; i < map!['data'].length; i++) {
             _current.add(0);
             nameList.add(map!['data'][i]['name']);
@@ -715,25 +584,8 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
               imageListMap.putIfAbsent(k, () => map!['data'][i]['post_media']);
             }
             k++;
-            // print('IMG:::'+imageList.toString());
           }
-          //  for (int i = 0; i < imageListMap[index].length; i++) {
-          //   for(int j = 0; j < imageListMap[i].length; j++) {
-          //     list.add(imageListMap[i][j]['file']);
-          //   }
-          //   imageList.add(list);
-          //   list = [];
-          //   }
-          // for (int i = 0; i < imageListMap.length; i++) {
-          //   for (int p = 0; p < imageListMap[i].length; p++) {
-          //     print('MAP+++++' + imageListMap.toString());
-          //     list.add(imageListMap[i][p]['file']);
-          //   }
-          //   imageList.add(list);
-          //   print(imageList);
-          //   list = [];
-          // }
-          // print('LLLLL:::' + imageList.toString());
+
           isLoading = false;
           isPostLoading = false;
           setState(() {});
@@ -742,31 +594,23 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
           isPostLoading = false;
           setState(() {});
         }
-        ////print(result.data);
-        //return result;
+
         setState(() {
           isLoading = false;
           isPostLoading = false;
         });
 
         if (map!['status'] == true) {
-          //print('TRUE');
         } else if (map!['status'] == false && map!['error_code'] == 'ERR302') {
           refreshToken();
         }
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
-    } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
-    }
+    } on DioError catch (e, stack) {}
   }
 
   void saveToken(String token) async {
-    // Write value
     await storage.FlutterSecureStorage()
         .write(key: 'access_token', value: token);
     setState(() {
@@ -776,7 +620,6 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
   }
 
   Future<void> refreshToken() async {
-    //print(authToken);
     try {
       Dio dio = Dio();
       var response = await dio.get(Config.refreshTokenUrl,
@@ -786,18 +629,11 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
         if (refreshTokenMap!.length > 1) {
           saveToken(refreshTokenMap!['access_token']);
         }
-      } else {
-        //print(response.statusCode);
-      }
-    } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
-    }
+      } else {}
+    } on DioError catch (e, stack) {}
   }
 
   Future<void> savePostApi(int? postID) async {
-    //var delResult = PostDelete();
-
     try {
       Dio dio = Dio();
 
@@ -807,17 +643,9 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
-        //delResult = postDeleteFromJson(response.data);
         saveMap = response.data;
-        //saveMapData = map['data']['status'];
 
-        //print(saveMap);
-        // setState(() {
-        //   isLoading = false;
-        // });
         if (saveMap!['status'] == true) {
-          //print('true');
-          //getEducatorPostApi(page);
           Fluttertoast.showToast(
               msg: saveMap!['message'],
               backgroundColor: Constants.bgColor,
@@ -826,7 +654,6 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          //print('false');
           if (saveMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: saveMap!['error_msg'],
@@ -845,17 +672,9 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                 textColor: Colors.white);
           }
         }
-        //getEducatorPostApi(page);
-        //print(saveMap);
-      } else {
-        //print(response.statusCode);
-      }
+      } else {}
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-        //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -869,60 +688,39 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
     }
   }
 
-//get User Profile
   Future<void> getUserProfile(id) async {
-    // displayProgressDialog(context);
-
     Map<String, dynamic>? map = {};
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        //print(map!['data']);
-        //print(mapData);
         if (map!['data'] != null || map['data'] != []) {
           setState(() {});
-          // map['data']['role'] == 'E'
-          //     ?
+
           pushNewScreen(context,
               screen: EducatorProfileViewScreen(
                 id: id,
               ),
               withNavBar: false,
               pageTransitionAnimation: PageTransitionAnimation.cupertino);
-          //     :
-          // pushNewScreen(context,
-          //     screen: LearnerProfileViewScreen(id: id,),
-          //     withNavBar: false,
-          //     pageTransitionAnimation:
-          //     PageTransitionAnimation
-          //         .cupertino);
         } else {
           isLoading = false;
           setState(() {});
         }
-        //print(result.data);
-        //return result;
+
         setState(() {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-        //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -950,7 +748,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
 
       if (response.statusCode == 200) {
         result = DeviceToken.fromJson(response.data);
-        //print(response.data);
+
         if (result.status == true) {
           Fluttertoast.showToast(
               msg: saveMap!['message'],
@@ -970,11 +768,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
         }
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-        //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -988,11 +782,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
     }
   }
 
-  //Future<GetAllProperty>
   getPropertyAPI(String url) async {
-    //displayProgressDialog(context);
-    //await getToken();
-    print('PROP:::' + url.toString());
     isLoading = true;
     propDataList.clear();
     setState(() {});
@@ -1001,23 +791,12 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
       var response = await dio.get(url,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
-        //propertyDetails = GetAllProperty.fromJson(response.data);
         propMap = response.data;
         propDataList.add(propMap!['data'][0]);
-        //mapData = map!['data'];
-        
-        //print('PROPDATA:::'+propDataList.toString());
-        //closeProgressDialog(context);
 
         if (propMap!['status'] == true) {
           isLoading = false;
           setState(() {});
-          // if(mounted){
-
-          // } else{
-          // print('NOT MOUNTED:::');
-          // Navigator.of(context).pushAndRemoveUntil(PageRouteBuilder(
-          // pageBuilder: (_, __, ___) => new bottomNavBar(1),), (Route<dynamic> route) => false);
 
           pushNewScreen(context,
               screen: PropertyDetailScreen(
@@ -1026,57 +805,16 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
                   index: 0),
               withNavBar: false,
               pageTransitionAnimation: PageTransitionAnimation.cupertino);
-          //}
-
-          // propertyLength = 0;
-          // propertyLength = result.data == [] ? 0 : result.data.length;
-          // setState(() {});
-          // print('PROP:::' + propertyLength.toString());
-          // print('PROP:::' + page.toString());
-          // if (page > 0) {
-          //   for (int i = 0; i < mapData!.length; i++) {
-          //     propertyId.add(mapData![i]['property_id']);
-          //     propertyName.add(mapData![i]['name']);
-          //     propertyLocation.add(mapData![i]['location']['address']);
-          //     propertyImage.add(mapData![i]['featured_image'][0]);
-          //     //propertyPrice.add('${int.parse(result.data[i].room[0].roomAmount)}');
-          //     propertyRating.add(mapData![i]['rating'].toDouble());
-          //     //allImage.add(result.data[i].featuredImage);
-          //     propDataList.add(mapData![i]);
-          //   }
-          //   print('DATAPROP:::'+ propDataList.toString());
-          // isLoading = false;
-          // setState(() {});
-          //} else {
-          // isLoading = false;
-          // setState(() {});
-          //}
-          //} else {
-          // isLoading = false;
-          // setState(() {});
-          // Fluttertoast.showToast(
-          //   msg: result.message,
-          //   toastLength: Toast.LENGTH_SHORT,
-          //   gravity: ToastGravity.BOTTOM,
-          //   timeInSecForIosWeb: 1,
-          //   backgroundColor: Constants.bgColor,
-          //   textColor: Colors.white,
-          //   fontSize: 10.0.sp,
-          // );
         } else {
           isLoading = false;
           setState(() {});
         }
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       isLoading = false;
       setState(() {});
-      //closeProgressDialog(context);
+
       if (e.response != null) {
-        //print("This is the error message::::" +
-        //  e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -1086,13 +824,8 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-        //print(e.message);
-      }
+      } else {}
     }
-    //return propertyDetails;
   }
 
   getPostById(String url) async {
@@ -1105,9 +838,7 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
       var response = await dio.get(url,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
-        //propertyDetails = GetAllProperty.fromJson(response.data);
         postMap = response.data;
-        //propDataList.add(propMap!['data'][0]);
 
         if (postMap['status'] == true) {
           isLoading = false;
@@ -1117,7 +848,6 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
             imageListMap1.add(postMap['data']['post_media'][j]['file']);
           }
 
-          print('IMMM:::' + imageListMap1.toString());
 
           final tagName = postMap['data']['mutual'];
           final split = tagName.toString().split(',');
@@ -1153,8 +883,6 @@ class _EducatorHomeScreenState extends State<EducatorHomeScreen> {
           likesList[resultComment['index']] = resultComment['likeCount'];
           isSaved[resultComment['index']] = resultComment['isSaved'];
           isLiked[resultComment['index']] = resultComment['isLiked'];
-          // setState(() {});
-
         } else {
           isLoading = false;
           setState(() {});

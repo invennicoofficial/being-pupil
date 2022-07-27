@@ -60,10 +60,6 @@ class _AccountScreenState extends State<AccountScreen> {
     schoolName = preferences.getString("schoolName");
     isSubscribed = preferences.getInt('isSubscribed');
     setState(() {});
-    print(registerAs);
-    print(degreeName);
-    print(schoolName);
-    print('DP:::' + imageUrl!);
   }
 
   @override
@@ -79,63 +75,36 @@ class _AccountScreenState extends State<AccountScreen> {
                 fontWeight: FontWeight.w500,
                 color: Colors.white),
           ),
-          //   leading: IconButton(
-          //   icon: Icon(
-          //     Icons.west_rounded,
-          //     color: Colors.white,
-          //     size: 35.0,
-          //   ),
-          //   onPressed: (){
-          //     // Navigator.of(context).pop();
-          //   },
-          //   padding: EdgeInsets.zero,
-          // ),
         ),
         body: Padding(
           padding: EdgeInsets.only(left: 5.0.w, right: 5.0.w),
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Container(
-              //height: 90.0.h,
               width: 100.0.w,
-              //color: Colors.grey,
               child: Padding(
                 padding: EdgeInsets.only(top: 2.0.h),
                 child: Column(
                   children: <Widget>[
-                    //Column for User Info
                     Center(
                       child: Column(
                         children: <Widget>[
-                          // Padding(padding: EdgeInsets.only(top: 2.0.h, left: 2.0.w, right: 2.0.w),
-                          // child: ,)
-                          // Container(
-                          //   height: 16.5.h,
-                          //   width: 29.5.w,
-                          //   //color: Colors.grey,
-                          //   child: CircleAvatar(
-                          //     backgroundImage: //AssetImage('assets/images/dp2.png'),
-                          //        CachedNetworkImage(
-                          //                       imageUrl:profilePicUrl!) as ImageProvider,
-                          //     //backgroundColor: Colors.grey,
-                          //     radius: 100.0,
-                          //   ),
-                          // ),
                           CachedNetworkImage(
-                      imageUrl: profilePicUrl!,
-                      errorWidget: (context, url, error) => Text("error"),
-                      imageBuilder: (context, imageProvider) => Container(
-                          height: 16.5.h,
-                            width: 29.5.w,
-                        child: CircleAvatar(
-                          radius: 100,
-                          backgroundImage: imageProvider,
-                        ),
-                      ),
-                      placeholder: (context, url) => CircularProgressIndicator(
-                        backgroundColor: Constants.bgColor,
-                      ),
-                    ),
+                            imageUrl: profilePicUrl!,
+                            errorWidget: (context, url, error) => Text("error"),
+                            imageBuilder: (context, imageProvider) => Container(
+                              height: 16.5.h,
+                              width: 29.5.w,
+                              child: CircleAvatar(
+                                radius: 100,
+                                backgroundImage: imageProvider,
+                              ),
+                            ),
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(
+                              backgroundColor: Constants.bgColor,
+                            ),
+                          ),
                           SizedBox(
                             height: 0.5.h,
                           ),
@@ -175,8 +144,6 @@ class _AccountScreenState extends State<AccountScreen> {
                         ],
                       ),
                     ),
-
-                    //Profile list
                     Padding(
                       padding: EdgeInsets.only(top: 5.0.h),
                       child: Column(
@@ -189,17 +156,11 @@ class _AccountScreenState extends State<AccountScreen> {
                                       withNavBar: false,
                                       pageTransitionAnimation:
                                           PageTransitionAnimation.cupertino)
-                                  // Navigator.of(context).push(PageRouteBuilder(
-                                  //     pageBuilder: (_, __, ____) =>
-                                  //         EducatorProfile()))
                                   : pushNewScreen(context,
                                       screen: LearnerMyProfileScreen(),
                                       withNavBar: false,
                                       pageTransitionAnimation:
                                           PageTransitionAnimation.cupertino);
-                              // Navigator.of(context).push(PageRouteBuilder(
-                              //     pageBuilder: (_, __, ____) =>
-                              //         LearnerProfile()));
                             },
                             child: ProfileList(
                               txt: "My Profile",
@@ -261,8 +222,6 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              // Navigator.of(context).push(PageRouteBuilder(
-                              //     pageBuilder: (_, __, ____) => EducatorHomeScreen()));
                               pushNewScreen(context,
                                   withNavBar: false,
                                   screen: SavedPostScreen(),
@@ -277,37 +236,16 @@ class _AccountScreenState extends State<AccountScreen> {
                               padding: 20.0,
                             ),
                           ),
-                          // SizedBox(
-                          //   height: 1.0.h,
-                          // ),
-                          // InkWell(
-                          //   onTap: () {
-                          //     pushNewScreen(context,
-                          //         withNavBar: false,
-                          //         screen: isSubscribed == 0
-                          //             ? SubscriptionPlanScreen()
-                          //             : CurrentSubscriptionScreen(),
-                          //         pageTransitionAnimation:
-                          //             PageTransitionAnimation.cupertino);
-                          //   },
-                          //   child: ProfileList(
-                          //     txt: "Subscription",
-                          //     image: "assets/icons/subscriptionIcon.png",
-                          //     forwordIcon: true,
-                          //     sizeImage: 20.0,
-                          //     padding: 20.0,
-                          //   ),
-                          // ),
                           SizedBox(
                             height: 3.0.h,
                           ),
                           InkWell(
                             onTap: () {
-                              // Navigator.of(context).push(PageRouteBuilder(
-                              //     pageBuilder: (_, __, ____) =>
-                              //         AboutUsScreen()));
-                              pushNewScreen(context, screen: AboutUsScreen(),
-                              withNavBar: false, pageTransitionAnimation: PageTransitionAnimation.cupertino);
+                              pushNewScreen(context,
+                                  screen: AboutUsScreen(),
+                                  withNavBar: false,
+                                  pageTransitionAnimation:
+                                      PageTransitionAnimation.cupertino);
                             },
                             child: ProfileList(
                               txt: "About",
@@ -322,10 +260,11 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              // Navigator.of(context).push(PageRouteBuilder(
-                              //     pageBuilder: (_, __, ____) => FAQScreen()));
-                              pushNewScreen(context, screen: FAQScreen(),
-                              withNavBar: false, pageTransitionAnimation: PageTransitionAnimation.cupertino);
+                              pushNewScreen(context,
+                                  screen: FAQScreen(),
+                                  withNavBar: false,
+                                  pageTransitionAnimation:
+                                      PageTransitionAnimation.cupertino);
                             },
                             child: ProfileList(
                               txt: "FAQs",
@@ -340,11 +279,11 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              // Navigator.of(context).push(PageRouteBuilder(
-                              //     pageBuilder: (_, __, ____) =>
-                              //         TermsAndPolicyScreen()));
-                              pushNewScreen(context, screen: TermsAndPolicyScreen(),
-                              withNavBar: false, pageTransitionAnimation: PageTransitionAnimation.cupertino);
+                              pushNewScreen(context,
+                                  screen: TermsAndPolicyScreen(),
+                                  withNavBar: false,
+                                  pageTransitionAnimation:
+                                      PageTransitionAnimation.cupertino);
                             },
                             child: ProfileList(
                               txt: "Terms & Policy",
@@ -386,16 +325,9 @@ class _AccountScreenState extends State<AccountScreen> {
                                     (onError) {},
                                   )
                                   .whenComplete(() {
-                                // CubeChatConnection.instance.destroy();
                                 SharedPrefs.instance.deleteUser();
                                 closeProgressDialog(context);
-                                // pushNewScreen(
-                                //   context,
-                                //   screen: LoginScreen(),
-                                //   withNavBar: false,
-                                //   pageTransitionAnimation:
-                                //   PageTransitionAnimation.cupertino,
-                                // );
+
                                 Navigator.of(context, rootNavigator: true)
                                     .pushAndRemoveUntil(
                                         MaterialPageRoute(
@@ -403,10 +335,6 @@ class _AccountScreenState extends State<AccountScreen> {
                                                 LoginScreen()),
                                         (Route<dynamic> route) => false);
                               });
-
-                              // Navigator.of(context).push(PageRouteBuilder(
-                              //     pageBuilder: (_, __, ____) =>
-                              //         EducatorHomeScreen()));
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(left: 3.0),
@@ -438,7 +366,7 @@ class _AccountScreenState extends State<AccountScreen> {
     preferences.clear();
   }
 
-   displayProgressDialog(BuildContext context) {
+  displayProgressDialog(BuildContext context) {
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
@@ -451,7 +379,6 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 }
 
-//Profile Component
 class ProfileList extends StatelessWidget {
   @override
   String? txt, image;
@@ -515,17 +442,3 @@ class ProfileList extends StatelessWidget {
     );
   }
 }
-
-// InkWell(
-//                       onTap: () {
-//                         Navigator.of(context).push(PageRouteBuilder(
-//                             pageBuilder: (_, __, ____) =>
-//                                 PrivacyPolicyScreen()));
-//                       },
-//                       child: category(
-//                         txt: "Privacy Policy",
-//                         image: "assets/icon/privacyPolicy.png",
-//                         padding: 20.0,
-//                         sizeImage: 23.0,
-//                       ),
-//                     ),

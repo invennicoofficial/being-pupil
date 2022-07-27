@@ -40,8 +40,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    // //SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     super.initState();
   }
 
@@ -155,15 +153,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       color: Constants.bpSkipStyle),
                                 ),
                               ),
-                              //SizedBox(width: 50.0.w)
                             ],
                           ),
-                          // icon: Icon(
-                          //   Icons.expand_more,
-                          //   color: Constants.bpSkipStyle,
-                          // ),
                           onChange: (String value, int index) async {
-                            //print(value);
                             if (value == '1') {
                               setState(() {
                                 registerAs = 'E';
@@ -178,13 +170,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             sharedPreferences.setString(
                                 'RegisterAs', registerAs);
                             isEmpty();
-                            //print('Preffff ::: ' +
-                            // sharedPreferences.getString('RegisterAs')!);
                           },
                           dropdownButtonStyle: DropdownButtonStyle(
-                            height: Constants.constHeight, //7.0.h,
-                            width: 90.0.w, //90.0.w,
-                            //padding: EdgeInsets.only(left: 2.0.w),
+                            height: Constants.constHeight,
+                            width: 90.0.w,
                             elevation: 0,
                             backgroundColor: Colors.white,
                             primaryColor: Constants.bpSkipStyle,
@@ -233,16 +222,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             });
                             isEmpty();
                           },
-                          // subtitle: !checkboxValue
-                          //     ? Text(
-                          //         'Required.',
-                          //         style: TextStyle(
-                          //             fontFamily: 'Montserrat',
-                          //             fontSize: 11.0.sp,
-                          //             fontWeight: FontWeight.w400,
-                          //             color: Colors.red),
-                          //       )
-                          //     : null,
                           title: GestureDetector(
                               onTap: () {
                                 Navigator.of(context).push(
@@ -271,16 +250,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       decoration: TextDecoration.underline,
                                       color: Constants.blueTitle),
                                 )
-                              ]))
-                              // Text(
-                              //   'I agree to the Terms & Conditions.',
-                              //   style: TextStyle(
-                              //       fontFamily: 'Montserrat',
-                              //       fontSize: 11.0.sp,
-                              //       fontWeight: FontWeight.w400,
-                              //       color: Constants.bgColor),
-                              // ),
-                              ),
+                              ]))),
                           controlAffinity: ListTileControlAffinity.leading,
                           activeColor: Constants.bgColor,
                           contentPadding: EdgeInsets.only(left: 2.0.w),
@@ -292,14 +262,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: GestureDetector(
                             onTap: isButtonEnabled
                                 ? () {
-                                    //print('Sign Up!!!');
                                     bool emailValid = RegExp(
                                             r"^[a-zA-Z0-9.a-zA-Z0-9."
                                             r"!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                         .hasMatch(emailController.text.trim());
                                     bool mobileValid = RegExp(r"^[6-9]\d{9}$")
                                         .hasMatch(mobileController.text);
-                                    //signUp(nameController.text.trim(), mobileController.text.trim(), registerAs, deviceType, deviceId)
+
                                     if (checkboxValue == false) {
                                       Fluttertoast.showToast(
                                           msg:
@@ -365,35 +334,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               btnName: 'SIGN UP',
                               isActive: isButtonEnabled,
                               fontWeight: FontWeight.w700,
-                            )
-                            // Container(
-                            //   height: 7.0.h,
-                            //   width: 90.0.w,
-                            //   padding: const EdgeInsets.all(1.0),
-                            //   decoration: BoxDecoration(
-                            //     color: Constants.bpOnBoardTitleStyle,
-                            //     borderRadius:
-                            //         BorderRadius.all(Radius.circular(10.0)),
-                            //     border: Border.all(
-                            //       color: Constants.formBorder,
-                            //       width: 0.15,
-                            //     ),
-                            //   ),
-                            //   child: Center(
-                            //     child: Text(
-                            //       'Sign Up'.toUpperCase(),
-                            //       style: TextStyle(
-                            //           color: Colors.white,
-                            //           fontFamily: 'Montserrat',
-                            //           fontWeight: FontWeight.w700,
-                            //           fontSize: 11.0.sp),
-                            //     ),
-                            //   ),
-                            // ),
-                            ),
+                            )),
                       ),
                       SizedBox(
-                        height: 12.0.h, //20.0.h
+                        height: 12.0.h,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -408,7 +352,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              //print('Sign In!!!');
                               Navigator.push(
                                   context,
                                   PageTransition(
@@ -416,8 +359,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       child: LoginScreen()));
                             },
                             child: Container(
-                              // height: 2.2.h,
-                              // width: 13.0.w,
                               child: Text(
                                 'Sign In',
                                 style: TextStyle(
@@ -447,7 +388,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if ((nameController.text.isNotEmpty) &&
           (mobileController.text.isNotEmpty) &&
           (emailController.text.isNotEmpty) &&
-          (registerAs != 'notSelected') && 
+          (registerAs != 'notSelected') &&
           (checkboxValue == true)) {
         isButtonEnabled = true;
       } else {
@@ -456,8 +397,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
     return isButtonEnabled;
   }
-
-  //ConnectyCube
 
   _signInCC(BuildContext context, CubeUser user, result) async {
     if (!CubeSessionManager.instance.isActiveSessionValid()) {
@@ -468,7 +407,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
     }
     signUp(user).then((newUser) async {
-      //print("signUp newUser $newUser");
       user.id = newUser.id;
       SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
       sharedPrefs.saveNewUser(user);
@@ -495,7 +433,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void _processLoginError(exception) {
-    log("Login error $exception", TAG);
+    //log("Login error $exception", TAG);
     setState(() {});
     showDialogError(exception, context);
   }
@@ -503,13 +441,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Future<String?> _getId() async {
     var deviceInfo = DeviceInfoPlugin();
     if (Platform.isIOS) {
-      // import 'dart:io'
       var iosDeviceInfo = await deviceInfo.iosInfo;
-      return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+      return iosDeviceInfo.identifierForVendor;
     } else {
       var androidDeviceInfo = await deviceInfo.androidInfo;
-      //print('DID:::'+androidDeviceInfo.androidId.toString());
-      return androidDeviceInfo.androidId; // unique ID on Android
+
+      return androidDeviceInfo.androidId;
     }
   }
 
@@ -530,10 +467,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
       var response = await dio.post(Config.signupUrl, data: formData);
       if (response.statusCode == 200) {
-        //print(response.data);
         result = SignUp.fromJson(response.data);
         if (result.status == true) {
-          //print('ID ::: ' + result.data!.userId.toString());
           saveUserData(result.data!.userId!);
           await _signInCC(
               context,
@@ -555,15 +490,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
             fontSize: 10.0.sp,
           );
         }
-        //print(result);
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        //print("This is the error message::::" +
-        //  e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -573,11 +503,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        ////print(e.request);
-        //print(e.message);
-      }
+      } else {}
     }
     return result;
   }
@@ -585,7 +511,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void saveUserData(int userId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setInt('userId', userId);
-    //print(userId);
   }
 
   displayProgressDialog(BuildContext context) {
@@ -600,89 +525,3 @@ class _SignUpScreenState extends State<SignUpScreen> {
     Navigator.of(context).pop();
   }
 }
-
-//  Future<void> signUp() async {
-//     displayProgressDialog(context);
-//     var formData = FormData.fromMap({
-//       'name': nameController.text.trim(),
-//       'email': emailController.text.trim(),
-//       'contact_number': mobileNumberController.text.trim(),
-//       'password': passwordController.text.trim(),
-//     });
-//     try {
-//       Response response = await dio.post(Config.registerUrl, data: formData);
-//       Map<String, dynamic> map;
-//       map = json.decode(response.toString());
-//       //print(map);
-//       //print(map['data']['profile']);
-//       saveUserData(
-//           map['data']['name'],
-//           map['data']['email'],
-//           map['data']['contact_number'],
-//           map['data']['profile'] == null ? '' : map['data']['profile'],
-//         map['data']['user_id']);
-//       saveToken(map['meta']['auth_token']);
-//     } on DioError catch (e) {
-//       closeProgressDialog(context);
-//       if (e.response != null) {
-//         //print(e.response.data);
-//         //print(e.response.headers);
-//         //print(e.response.request);
-//         //print("This is the error message::::" +
-//             e.response.data['meta']['message']);
-//         Fluttertoast.showToast(
-//           msg: e.response.data['meta']['message'],
-//           toastLength: Toast.LENGTH_SHORT,
-//           gravity: ToastGravity.BOTTOM,
-//           timeInSecForIosWeb: 1,
-//           backgroundColor: Color(0xFF1E2026),
-//           textColor: Constants.mfaRed,
-//           fontSize: 15,
-//         );
-//       } else {
-//         // Something happened in setting up or sending the request that triggered an Error
-//         //print(e.request);
-//         //print(e.message);
-//       }
-//     }
-//   }
-
-//   void saveUserData(String name, email, mobile, profileUrl, userId) async {
-//     SharedPreferences preferences = await SharedPreferences.getInstance();
-//     //print(name);
-//     preferences.setString(Preferences.userName, name);
-//     preferences.setString(Preferences.userEmail, email);
-//     preferences.setString(Preferences.userNumber, mobile);
-//     preferences.setString(Preferences.userProfilePicUrl, profileUrl);
-//     preferences.setString(Preferences.checkLoggedIn, "LoggedIn");
-//     preferences.setString(Preferences.checkGuest, "notGuest");
-//     preferences.setInt('userId', userId);
-//     preferences.setString(Preferences.userTrialEndDate, '');
-//     preferences.setString(Preferences.userSubscriptionEndDate, '');
-//     preferences.setString('trialDate', '');
-//     preferences.setString('subscriptionDate', '');
-//     preferences.setBool('isSubscribed', false);
-//   }
-
-//   void saveToken(String token) async {
-//     // Write value
-//     await storage.write(key: 'auth_token', value: token);
-//     closeProgressDialog(context);
-
-//     //go to otp page
-//     Navigator.of(context).pushAndRemoveUntil(
-//         MaterialPageRoute(builder: (context) => bottomNavBar(0)),
-//         (Route<dynamic> route) => false);
-//   }
-
-//   displayProgressDialog(BuildContext context) {
-//     Navigator.of(context).push(new PageRouteBuilder(
-//         opaque: false,
-//         pageBuilder: (BuildContext context, _, __) {
-//           return new ProgressDialog();
-//         }));
-//   }
-
-//   closeProgressDialog(BuildContext context) {
-//     Navigator.of(context).pop();
-//   }

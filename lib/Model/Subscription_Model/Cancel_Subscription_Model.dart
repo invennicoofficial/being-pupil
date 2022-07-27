@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final cencelSubscription = cencelSubscriptionFromJson(jsonString);
-
 import 'dart:convert';
 
 class CancelSubscription {

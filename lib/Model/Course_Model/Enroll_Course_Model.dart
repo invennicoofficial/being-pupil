@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final enrollCourse = enrollCourseFromJson(jsonString);
-
 import 'dart:convert';
 
 EnrollCourse enrollCourseFromJson(String str) => EnrollCourse.fromJson(json.decode(str));

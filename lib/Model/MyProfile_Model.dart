@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final myProfile = myProfileFromJson(jsonString);
-
 import 'dart:convert';
 
 MyProfile myProfileFromJson(String str) => MyProfile.fromJson(json.decode(str));

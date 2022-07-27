@@ -10,7 +10,6 @@ import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
 
 class SubjectSelectionScreen extends StatefulWidget {
-  //bool isSubjectSelected;
   SubjectSelectionScreen({
     Key? key,
   }) : super(key: key);
@@ -71,7 +70,7 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
   TextEditingController searchController = TextEditingController();
   String? authToken;
   Map<String, dynamic>? subjectMap = Map<String, dynamic>();
-  List<dynamic>? subjectMapData = []; //List();
+  List<dynamic>? subjectMapData = [];
   bool isLoading = true;
   Map<String, dynamic>? selectedSubMap = Map<String, dynamic>();
   Map<String, dynamic>? selectedSubjectMap = Map<String, dynamic>();
@@ -79,7 +78,6 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
 
   @override
   void initState() {
-    //_getAllItem();
     super.initState();
     getToken();
   }
@@ -120,8 +118,7 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
                 color: Colors.white,
                 size: 35.0,
               ),
-              onPressed: //null,
-                  () {
+              onPressed: () {
                 if (_selectedItem.isNotEmpty || _selectedItem.length != 0) {
                   Navigator.of(context).pop();
                 } else {
@@ -182,7 +179,6 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
                                 borderRadius: BorderRadius.circular(5.0),
                                 borderSide: BorderSide(
                                   color: Constants.formBorder,
-                                  //width: 2.0,
                                 ),
                               ),
                               prefixIconConstraints: BoxConstraints(
@@ -196,7 +192,7 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
                                   'assets/icons/search.png',
                                   color: Constants.formBorder,
                                 ),
-                              )), //keyboardType: TextInputType.emailAddress,
+                              )),
                           style: new TextStyle(
                               fontFamily: "Montserrat", fontSize: 10.0.sp),
                           onChanged: (value) {
@@ -207,8 +203,6 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
                         ),
                       ),
                     ),
-
-                    //Selected Subjects
                     Wrap(
                       spacing: 8,
                       children: List<Widget>.generate(
@@ -217,13 +211,11 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
                           return ChoiceChip(
                             backgroundColor: Constants.selectedIcon,
                             selectedColor: Constants.selectedIcon,
-                            //side: BorderSide(color: Constants.bpOnBoardSubtitleStyle),
                             label: GestureDetector(
                               onTap: () {
                                 setState(() {
                                   _selectedItem.removeAt(index);
                                 });
-                                //print('NEWLLLL' + _selectedItem.toString());
                               },
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -244,16 +236,12 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
                             ),
                             selected: true,
                             onSelected: (bool selected) {
-                              setState(() {
-                                //_value = selected ? index : null;
-                              });
+                              setState(() {});
                             },
                           );
                         },
                       ).toList(),
                     ),
-
-                    //Count text
                     _selectedItem.length == 0
                         ? Container()
                         : Text('${_selectedItem.length} subjects are selected',
@@ -262,7 +250,6 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
                                 fontSize: 8.0.sp,
                                 fontWeight: FontWeight.w400,
                                 color: Color(0xFF6B737C))),
-                    //Divider
                     _selectedItem.length == 0
                         ? Container()
                         : Padding(
@@ -273,7 +260,6 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
                               color: Color(0xFFA8B4C1),
                             ),
                           ),
-                    //All subjects
                     Wrap(
                       spacing: 8,
                       children: List<Widget>.generate(
@@ -310,23 +296,15 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
                                       textColor: Colors.white);
                                 }
                               }
-
-                              //print('LLLLL' + _selectedItem.toString());
                             },
                           );
                         },
                       ).toList(),
                     ),
-
-                    //Continue Button
                     Padding(
                       padding: EdgeInsets.only(top: 15.0.h),
                       child: GestureDetector(
                         onTap: () async {
-                          // SharedPreferences preff =
-                          //     await SharedPreferences.getInstance();
-                          // preff.setBool("isSubjectSelected", true);
-                          //setState(() {});
                           postSubjectForLearner(_selectedItem.toString());
                         },
                         child: Container(
@@ -357,89 +335,18 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
                     ),
                   ],
                 ),
-              )
-                // Tags(
-                //   key: _tagStateKey,
-                //   textField: TagsTextField(
-                //     textStyle: TextStyle(fontSize: _fontSize),
-                //     constraintSuggestion: true, suggestions: [],
-                //     //width: double.infinity, padding: EdgeInsets.symmetric(horizontal: 10),
-                //     onSubmitted: (String str) {
-                //       // Add item to the data source.
-                //       setState(() {
-                //         // required
-                //         _items.add(Item(
-                //           title: str,
-                //           active: true,
-                //           index: 1,
-                //         ));
-                //       });
-                //     },
-                //   ),
-                //   itemCount: _items.length, // required
-                //   itemBuilder: (int index) {
-                //     final item = _items[index];
-
-                //     return ItemTags(
-                //       // Each ItemTags must contain a Key. Keys allow Flutter to
-                //       // uniquely identify widgets.
-                //       key: Key(index.toString()),
-                //       index: index, // required
-                //       title: item.title,
-                //       active: item.active,
-                //       customData: item.customData,
-                //       textStyle: TextStyle(
-                //         fontSize: _fontSize,
-                //       ),
-                //       combine: ItemTagsCombine.withTextBefore,
-                //       image: ItemTagsImage(
-                //           image: AssetImage(
-                //               "assets/icons/apple.png") // OR NetworkImage("https://...image.png")
-                //           ), // OR null,
-                //       icon: ItemTagsIcon(
-                //         icon: Icons.add,
-                //       ), // OR null,
-                //       removeButton: ItemTagsRemoveButton(
-                //         onRemoved: () {
-                //           // Remove the item from the data source.
-                //           setState(() {
-                //             // required
-                //             _items.removeAt(index);
-                //           });
-                //           //required
-                //           return true;
-                //         },
-                //       ), // OR null,
-                //       onPressed: (item) => //print(item),
-                //       onLongPressed: (item) => //print(item),
-                //     );
-                //   },
-                // ),
-
-                //         Wrap(
-                //    children: _items.asMap().map(
-                //       (index, ingredient) => MapEntry(index, _buildChip(index, ingredient))
-                //     ).values.toList(),
-                //     spacing: 6,
-                //     runSpacing: 3,
-                // ),
-                ),
+              )),
       ),
     );
   }
 
-//Get filter subject list for learner
   getFilteredSubjectListForLearner() async {
-    //displayProgressDialog(context);
-    //var result = CategoryList();
-
     try {
       Dio dio = Dio();
       var option = Options(headers: {"Authorization": 'Bearer ' + authToken!});
       var response = await dio.get(Config.getFilteredListUrl, options: option);
 
       if (response.statusCode == 200) {
-        //closeProgressDialog(context);
         subjectMap = response.data;
         setState(() {
           subjectMapData = subjectMap!['data'];
@@ -447,10 +354,7 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
 
         isLoading = false;
         setState(() {});
-
-        //closeProgressDialog(context);
       } else {
-        //closeProgressDialog(context);
         if (subjectMap!['error_msg'] != null) {
           Fluttertoast.showToast(
             msg: subjectMap!['error_msg'],
@@ -464,10 +368,7 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
         }
       }
     } on DioError catch (e, stack) {
-      //closeProgressDialog(context);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -481,11 +382,7 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
     }
   }
 
-  //Search in subjects
   searchSubjects(String search) async {
-    //displayProgressDialog(context);
-    //var result = CategoryList();
-
     try {
       Dio dio = Dio();
       var option = Options(headers: {"Authorization": 'Bearer ' + authToken!});
@@ -493,7 +390,6 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
           .get('${Config.getFilteredListUrl}?search=$search', options: option);
 
       if (response.statusCode == 200) {
-        //closeProgressDialog(context);
         subjectMap = response.data;
         setState(() {
           subjectMapData = subjectMap!['data'];
@@ -501,10 +397,7 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
 
         isLoading = false;
         setState(() {});
-
-        //closeProgressDialog(context);
       } else {
-        //closeProgressDialog(context);
         if (subjectMap!['error_msg'] != null) {
           Fluttertoast.showToast(
             msg: subjectMap!['error_msg'],
@@ -518,19 +411,11 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
         }
       }
     } on DioError catch (e, stack) {
-      //closeProgressDialog(context);
-      if (e.response != null) {
-        //print(e.message);
-        //print(stack);
-      }
+      if (e.response != null) {}
     }
   }
 
-  //Get Selected subject list for learner
   getSelectedSubjectListForLearner() async {
-    //displayProgressDialog(context);
-    //var result = CategoryList();
-
     try {
       Dio dio = Dio();
       var option = Options(headers: {"Authorization": 'Bearer ' + authToken!});
@@ -538,9 +423,8 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
           await dio.get(Config.getSelectedSubjectUrl, options: option);
 
       if (response.statusCode == 200) {
-        //closeProgressDialog(context);
         selectedSubjectMap = response.data;
-        //debugPrint('SELECTED:::' + selectedSubjectMap.toString());
+
         if (selectedSubjectMap!['status'] == true) {
           setState(() {
             selectedSubjectMapData = selectedSubjectMap!['data'];
@@ -549,8 +433,6 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
 
           isLoading = false;
           setState(() {});
-
-          //closeProgressDialog(context);
         } else {
           Fluttertoast.showToast(
             msg: selectedSubjectMap!['error_msg'],
@@ -563,7 +445,6 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
           );
         }
       } else {
-        //closeProgressDialog(context);
         if (selectedSubjectMap!['error_msg'] != null) {
           Fluttertoast.showToast(
             msg: selectedSubjectMap!['error_msg'],
@@ -577,15 +458,10 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
         }
       }
     } on DioError catch (e, stack) {
-      //closeProgressDialog(context);
-      if (e.response != null) {
-        //print(e.message);
-        //print(stack);
-      }
+      if (e.response != null) {}
     }
   }
 
-  //post subject for learner
   postSubjectForLearner(String subjects) async {
     displayProgressDialog(context);
 
@@ -600,11 +476,10 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
 
       if (response.statusCode == 200) {
         selectedSubMap = response.data;
-        //print(response.data);
+
         closeProgressDialog(context);
 
         if (selectedSubMap!['status'] == true) {
-          //Navigator.pop(context, 'true');
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => bottomNavBar(2)),
               (Route<dynamic> route) => false);
@@ -631,10 +506,7 @@ class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
           );
         }
       }
-    } on DioError catch (e, stack) {
-      //print(e.message);
-      //print(stack);
-    }
+    } on DioError catch (e, stack) {}
   }
 
   displayProgressDialog(BuildContext context) {

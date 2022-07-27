@@ -26,10 +26,12 @@ class EnrolledCourseDetailScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _EnrolledCourseDetailScreenState createState() => _EnrolledCourseDetailScreenState();
+  _EnrolledCourseDetailScreenState createState() =>
+      _EnrolledCourseDetailScreenState();
 }
 
-class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen> {
+class _EnrolledCourseDetailScreenState
+    extends State<EnrolledCourseDetailScreen> {
   String? registerAs, authToken;
 
   @override
@@ -47,10 +49,8 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
     setState(() {
       registerAs = preferences.getString('RegisterAs');
     });
-    //print(registerAs);
   }
 
-   //Alert Dialog for Delete Post
   void _showDialog() {
     showDialog(
       context: context,
@@ -59,20 +59,14 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Discontinue Course',
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 15.0.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Constants.bgColor),),
-              // IconButton(
-              //   icon: Icon(Icons.close),
-              //   iconSize: 20.0,
-              //   color: Constants.bpOnBoardSubtitleStyle,
-              //   onPressed: () {
-              //     Navigator.of(context).pop();
-              //   },
-              // )
+              Text(
+                'Discontinue Course',
+                style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 15.0.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Constants.bgColor),
+              ),
             ],
           ),
           actionsPadding:
@@ -83,10 +77,8 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
                   fontSize: 11.0.sp,
                   fontWeight: FontWeight.w400,
                   color: Constants.bgColor),
-                  textAlign: TextAlign.center),
+              textAlign: TextAlign.center),
           actions: [
-            // usually buttons at the bottom of the dialog
-
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pop();
@@ -147,7 +139,6 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
                   child: Center(
                       child: FlatButton(
                     onPressed: () {
-                      //print('EDIT!!!');
                       pushNewScreen(context,
                           screen: UpdateCourseScreen(),
                           withNavBar: false,
@@ -178,34 +169,14 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 2.0.h),
         child: GestureDetector(
-          onTap: () {
-            _showDialog();
-          },
-          child: ButtonWidget(btnName: 'LEAVE COURSE', isActive: true, fontWeight: FontWeight.w700,)
-          // Container(
-          //   height: 7.0.h,
-          //   width: 90.0.w,
-          //   padding: const EdgeInsets.all(1.0),
-          //   decoration: BoxDecoration(
-          //     color: Constants.bpOnBoardTitleStyle,
-          //     borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          //     border: Border.all(
-          //       color: Constants.formBorder,
-          //       width: 0.15,
-          //     ),
-          //   ),
-          //   child: Center(
-          //     child: Text(
-          //       'Leave Course'.toUpperCase(),
-          //       style: TextStyle(
-          //           color: Colors.white,
-          //           fontFamily: 'Montserrat',
-          //           fontWeight: FontWeight.w700,
-          //           fontSize: 11.0.sp),
-          //     ),
-          //   ),
-          // ),
-        ),
+            onTap: () {
+              _showDialog();
+            },
+            child: ButtonWidget(
+              btnName: 'LEAVE COURSE',
+              isActive: true,
+              fontWeight: FontWeight.w700,
+            )),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SingleChildScrollView(
@@ -301,7 +272,6 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
                                   scrollDirection: Axis.horizontal,
                                   child: Container(
                                     height: 5.0.h,
-                                    //width: 70.0.w,
                                     child: Center(
                                       child: Text(
                                         widget.courseLinks![index],
@@ -328,7 +298,6 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
     );
   }
 
-  //Course Enroll API
   Future<DiscontinueCourse> leaveCourseAPI() async {
     displayProgressDialog(context);
     var result = DiscontinueCourse();
@@ -339,10 +308,9 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
           data: formData,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
-        //print(response.data);
         result = DiscontinueCourse.fromJson(response.data);
         closeProgressDialog(context);
-        if(result.status == true){
+        if (result.status == true) {
           Navigator.of(context).pop('leave');
         }
         if (result.message == null) {
@@ -378,12 +346,8 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
         );
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        // print("This is the error message::::" +
-        //     e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -393,11 +357,7 @@ class _EnrolledCourseDetailScreenState extends State<EnrolledCourseDetailScreen>
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-        //print(e.message);
-      }
+      } else {}
     }
     return result;
   }

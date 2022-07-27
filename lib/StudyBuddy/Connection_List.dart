@@ -54,7 +54,7 @@ class _ConnectionListState extends State<ConnectionList> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    //print(authToken);
+
     getData();
   }
 
@@ -64,7 +64,7 @@ class _ConnectionListState extends State<ConnectionList> {
       registerAs = preferences.getString('RegisterAs');
       userId = preferences.getInt('userId');
     });
-    //print('ID::::::' + userId.toString());
+
     getConnectionApi(page);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -73,28 +73,18 @@ class _ConnectionListState extends State<ConnectionList> {
           if (connection.data!.length > 0) {
             page++;
             getConnectionApi(page);
-            //print(_name);
-            //print(page);
           }
         } else {
           page++;
           getConnectionApi(page);
-          //print(_name);
-          //print(page);
         }
       }
     });
   }
 
   void _onLoading() async {
-    //if (mounted) setState(() {});
-    // if (request.data.length > 0) {
-    //   //_refreshController.loadComplete();
-    //   _refreshController.requestLoading();
-    // } else {
-      _refreshController.loadComplete();
-      _refreshController.loadNoData();
-    //}
+    _refreshController.loadComplete();
+    _refreshController.loadNoData();
   }
 
   @override
@@ -105,26 +95,19 @@ class _ConnectionListState extends State<ConnectionList> {
               valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
             ),
           )
-        : 
-        // SingleChildScrollView(
-        //     controller: _scrollController,
-        //     physics: BouncingScrollPhysics(),
-        //     child: 
-            SmartRefresher(
+        : SmartRefresher(
             controller: _refreshController,
             enablePullDown: false,
             enablePullUp: true,
             footer: ClassicFooter(
               loadStyle: LoadStyle.ShowWhenLoading,
               noDataText: 'No More Connection',
-              //noMoreIcon: Icon(Icons.refresh_outlined),
             ),
             onLoading: _onLoading,
             child: ListView.builder(
-              controller: _scrollController,
+                controller: _scrollController,
                 padding:
                     EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
-                //physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: _userId.length == 0 ? 0 : _userId.length,
                 itemBuilder: (context, index) {
@@ -133,24 +116,24 @@ class _ConnectionListState extends State<ConnectionList> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 2.0.w),
                       child: Container(
-                        //height: 10.0.h,
                         child: ListTile(
                             contentPadding: EdgeInsets.zero,
                             title: GestureDetector(
                               onTap: () {
-                                  getUserProfile(_userId[index]);
-                                },
+                                getUserProfile(_userId[index]);
+                              },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   ClipRRect(
                                       borderRadius: BorderRadius.circular(50),
                                       child: CachedNetworkImage(
-                                        placeholder: (context, url) => Container(
+                                        placeholder: (context, url) =>
+                                            Container(
                                           child: CircularProgressIndicator(
                                             valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                                Colors.black),
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.black),
                                           ),
                                           width: 40.0,
                                           height: 40.0,
@@ -164,36 +147,36 @@ class _ConnectionListState extends State<ConnectionList> {
                                         ),
                                         errorWidget: (context, url, error) =>
                                             Material(
-                                              child: Image.asset(
-                                                'assets/images/studyBudyBg.png',
-                                                width: 40.0,
-                                                height: 40.0,
-                                                fit: BoxFit.cover,
-                                              ),
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(8.0),
-                                              ),
-                                              clipBehavior: Clip.hardEdge,
-                                            ),
+                                          child: Image.asset(
+                                            'assets/images/studyBudyBg.png',
+                                            width: 40.0,
+                                            height: 40.0,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0),
+                                          ),
+                                          clipBehavior: Clip.hardEdge,
+                                        ),
                                         imageUrl: _profileImage[index]!,
                                         width: 40.0,
                                         height: 40.0,
                                         fit: BoxFit.cover,
-                                      )
-                                  ),
+                                      )),
                                   SizedBox(
                                     width: 2.0.w,
                                   ),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
-                                        width: _status[index] == '0' ? 43.0.w : 52.0.w,
-                                        //color: Colors.grey,
+                                        width: _status[index] == '0'
+                                            ? 43.0.w
+                                            : 52.0.w,
                                         child: Text(
                                           _name[index]!,
-                                          //connection.data[index].name,
                                           style: TextStyle(
                                               fontSize: 9.0.sp,
                                               color: Constants.bgColor,
@@ -202,22 +185,20 @@ class _ConnectionListState extends State<ConnectionList> {
                                         ),
                                       ),
                                       Container(
-                                        width: _status[index] == '0' ? 43.0.w : 52.0.w,
-                                        //color: Colors.grey,
+                                        width: _status[index] == '0'
+                                            ? 43.0.w
+                                            : 52.0.w,
                                         child: Text(
-                                          _lastDegree[index] != null &&
-                                                  _schoolName[index] != null
-                                              ? '${_lastDegree[index]} | ${_schoolName[index]}'
-                                              : '',
-                                          // connection.data[index].lastDegree != null && connection.data[index].schoolName != null
-                                          // ? "${connection.data[index].lastDegree} | ${connection.data[index].schoolName}" : '',
-                                          style: TextStyle(
-                                              fontSize: 6.5.sp,
-                                              color: Constants.bgColor,
-                                              fontFamily: 'Montserrat',
-                                              fontWeight: FontWeight.w400),
-                                              overflow: TextOverflow.clip
-                                        ),
+                                            _lastDegree[index] != null &&
+                                                    _schoolName[index] != null
+                                                ? '${_lastDegree[index]} | ${_schoolName[index]}'
+                                                : '',
+                                            style: TextStyle(
+                                                fontSize: 6.5.sp,
+                                                color: Constants.bgColor,
+                                                fontFamily: 'Montserrat',
+                                                fontWeight: FontWeight.w400),
+                                            overflow: TextOverflow.clip),
                                       ),
                                     ],
                                   ),
@@ -227,11 +208,8 @@ class _ConnectionListState extends State<ConnectionList> {
                             trailing: Padding(
                               padding: EdgeInsets.only(right: 2.0.w),
                               child: GestureDetector(
-                                onTap: () {
-                                  //print('$index is Connected');
-                                },
+                                onTap: () {},
                                 child: _status[index] == '0'
-                                    //connection.data[index].status == '0'
                                     ? Container(
                                         height: 3.5.h,
                                         width: 25.0.w,
@@ -253,36 +231,38 @@ class _ConnectionListState extends State<ConnectionList> {
                                         ),
                                       )
                                     : GestureDetector(
-                                  onTap: () async {
-                                    displayProgressDialog(context);
-                                    SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
-                                    CubeUser? user = sharedPrefs.getUser();
-                                    //print(_email[index]);
-                                    getUserByEmail(_email[index]!)
-                                        .then((cubeUser) {
-                                          CubeDialog newDialog = CubeDialog(
-                                        CubeDialogType.PRIVATE,
-                                        occupantsIds: [cubeUser!.id!]);
-                                    createDialog(newDialog)
-                                        .then((createdDialog) {
-                                      closeProgressDialog(context);
-                                      pushNewScreen(context,
-                                          screen: ChatDialogScreen(user, createdDialog, _profileImage[index]),
-                                          withNavBar: false,
-                                          pageTransitionAnimation:
-                                          PageTransitionAnimation
-                                              .cupertino);
-                                    })
-                                        .catchError((error) {
-                                      displayProgressDialog(context);
-                                    });
-                                    })
-                                        .catchError((error) {
-                                      displayProgressDialog(context);
-                                    });
+                                        onTap: () async {
+                                          displayProgressDialog(context);
+                                          SharedPrefs sharedPrefs =
+                                              await SharedPrefs.instance.init();
+                                          CubeUser? user =
+                                              sharedPrefs.getUser();
 
-                                  },
-                                      child: Container(
+                                          getUserByEmail(_email[index]!)
+                                              .then((cubeUser) {
+                                            CubeDialog newDialog = CubeDialog(
+                                                CubeDialogType.PRIVATE,
+                                                occupantsIds: [cubeUser!.id!]);
+                                            createDialog(newDialog)
+                                                .then((createdDialog) {
+                                              closeProgressDialog(context);
+                                              pushNewScreen(context,
+                                                  screen: ChatDialogScreen(
+                                                      user,
+                                                      createdDialog,
+                                                      _profileImage[index]),
+                                                  withNavBar: false,
+                                                  pageTransitionAnimation:
+                                                      PageTransitionAnimation
+                                                          .cupertino);
+                                            }).catchError((error) {
+                                              displayProgressDialog(context);
+                                            });
+                                          }).catchError((error) {
+                                            displayProgressDialog(context);
+                                          });
+                                        },
+                                        child: Container(
                                           height: 3.5.h,
                                           width: 16.0.w,
                                           decoration: BoxDecoration(
@@ -302,7 +282,7 @@ class _ConnectionListState extends State<ConnectionList> {
                                             ),
                                           ),
                                         ),
-                                    ),
+                                      ),
                               ),
                             )),
                       ),
@@ -313,56 +293,44 @@ class _ConnectionListState extends State<ConnectionList> {
   }
 
   Future<void> getUserProfile(id) async {
-    // displayProgressDialog(context);
-
     Map<String, dynamic>? map = {};
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        //print(map!['data']);
-        ////print(mapData);
         if (map!['data'] != null || map['data'] != []) {
           setState(() {});
           map['data']['role'] == 'E'
               ? pushNewScreen(context,
-              screen: EducatorProfileViewScreen(id: id,),
-              withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation.cupertino)
-              :
-          pushNewScreen(context,
-              screen: LearnerProfileViewScreen(id: id,),
-              withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation
-                  .cupertino);
+                  screen: EducatorProfileViewScreen(
+                    id: id,
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino)
+              : pushNewScreen(context,
+                  screen: LearnerProfileViewScreen(
+                    id: id,
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino);
         } else {
           isLoading = false;
           setState(() {});
         }
-        ////print(result.data);
-        //return result;
+
         setState(() {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
-    } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
-    }
+    } on DioError catch (e, stack) {}
   }
-
 
   displayProgressDialog(BuildContext context) {
     Navigator.of(context).push(new PageRouteBuilder(
@@ -376,23 +344,16 @@ class _ConnectionListState extends State<ConnectionList> {
     Navigator.of(context).pop();
   }
 
-  //Get Connection List API
   Future<void> getConnectionApi(int page) async {
-    // displayProgressDialog(context);
-
     try {
       Dio dio = Dio();
 
-      var response =
-          await dio.get('${Config.getConnectionUrl}$userId?page=$page&user_type=$registerAs');
-      //print(response.statusCode);
+      var response = await dio.get(
+          '${Config.getConnectionUrl}$userId?page=$page&user_type=$registerAs');
 
       if (response.statusCode == 200) {
-        // closeProgressDialog(context);
-        //return EducatorPost.fromJson(json)
-        //result = EducatorPost.fromJson(response.data);
         connection = Connection.fromJson(response.data);
-        //print(response.data);
+
         if (connection.data!.length > 0) {
           for (int i = 0; i < connection.data!.length; i++) {
             _userId.add(connection.data![i].userId);
@@ -402,17 +363,7 @@ class _ConnectionListState extends State<ConnectionList> {
             _lastDegree.add(connection.data![i].lastDegree);
             _schoolName.add(connection.data![i].schoolName);
             _status.add(connection.data![i].status);
-            // isSaved.add(true);
-            // for (int j = 0; j < map['data'].length; j++) {
-            //   imageListMap.putIfAbsent(k, () => map['data'][i]['post_media']);
-          //   k++;
-          // //print(k);
           }
-          // k++;
-          // //print(k);
-          //print(_profileImage);
-          //print(_lastDegree);
-          //print(_schoolName);
 
           isLoading = false;
           setState(() {});
@@ -425,17 +376,11 @@ class _ConnectionListState extends State<ConnectionList> {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
-    } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
-    }
+    } on DioError catch (e, stack) {}
   }
 }
-
 
 class ProgressDialog1 extends StatelessWidget {
   @override
@@ -445,11 +390,9 @@ class ProgressDialog1 extends StatelessWidget {
         height: 75,
         width: 75,
         decoration: BoxDecoration(
-          color: Constants.bgColor,
-            border: Border.all(
-                color: Constants.bgColor, width: 0.5),
-            borderRadius: BorderRadius.all(
-                Radius.circular(8.0))),
+            color: Constants.bgColor,
+            border: Border.all(color: Constants.bgColor, width: 0.5),
+            borderRadius: BorderRadius.all(Radius.circular(8.0))),
         child: new GestureDetector(
           onTap: () {
             Navigator.pop(context);
@@ -460,7 +403,7 @@ class ProgressDialog1 extends StatelessWidget {
               children: <Widget>[
                 new CircularProgressIndicator(
                   valueColor:
-                  new AlwaysStoppedAnimation<Color>(Constants.selectedIcon),
+                      new AlwaysStoppedAnimation<Color>(Constants.selectedIcon),
                 ),
               ],
             ),

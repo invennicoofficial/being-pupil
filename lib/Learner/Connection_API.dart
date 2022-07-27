@@ -9,10 +9,7 @@ class ConnectionAPI {
   Map<String, dynamic>? map;
   bool? status;
 
-  //For save, unsave post API
   Future<void> connectionApi(int? userId, String authToken) async {
-    //var delResult = PostDelete();
-
     try {
       Dio dio = Dio();
 
@@ -23,21 +20,14 @@ class ConnectionAPI {
 
       if (response.statusCode == 200) {
         map = response.data;
-        //saveMapData = map['data']['status'];
 
-        ////print(saveMapData);
-        // setState(() {
-        //   isLoading = false;
-        // });
         if (map!['status'] == true) {
-          //print('true');
-          //print(map);
           if (map!['data']['Status'] == 1) {
             status = true;
           } else {
             status = false;
           }
-          // getSavedPostApi(page);
+
           Fluttertoast.showToast(
               msg: map!['message'],
               backgroundColor: Constants.bgColor,
@@ -46,7 +36,6 @@ class ConnectionAPI {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          //print('false');
           if (map!['message'] == null) {
             Fluttertoast.showToast(
                 msg: map!['error_msg'],
@@ -65,17 +54,9 @@ class ConnectionAPI {
                 textColor: Colors.white);
           }
         }
-        //getEducatorPostApi(page);
-        //print(map);
-      } else {
-        //print(response.statusCode);
-      }
+      } else {}
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,

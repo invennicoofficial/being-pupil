@@ -2,7 +2,6 @@ import 'package:being_pupil/Constants/Const.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-
 class VerificationScreen extends StatefulWidget {
   String? verificationStatus;
   VerificationScreen({Key? key, this.verificationStatus}) : super(key: key);
@@ -12,17 +11,13 @@ class VerificationScreen extends StatefulWidget {
 }
 
 class _VerificationScreenState extends State<VerificationScreen> {
-
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -38,12 +33,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
             color: Colors.white,
             size: 35.0,
           ),
-          onPressed: //null,
-              () {
+          onPressed: () {
             Navigator.of(context).pop();
-            // pushNewScreen(context,
-            //     screen: HomeScreen(),
-            //     pageTransitionAnimation: PageTransitionAnimation.fade);
           },
           padding: EdgeInsets.zero,
         ),
@@ -65,22 +56,25 @@ class _VerificationScreenState extends State<VerificationScreen> {
             children: [
               Image.asset(
                 widget.verificationStatus == 'R'
-                ? 'assets/icons/failed.png'
-                : 'assets/icons/ok.png',
+                    ? 'assets/icons/failed.png'
+                    : 'assets/icons/ok.png',
                 height: 100,
                 width: 100,
                 fit: BoxFit.cover,
               ),
-              SizedBox(height: 15,),
-              Text(widget.verificationStatus == 'R'
-                ? 'Your profile is Rejected!\nPlease contact to BeingPupil admin at beingpupil@gmail.com.'
-                : 'Your profile is under verification!\nPlease try again after sometime.',
+              SizedBox(
+                height: 15,
+              ),
+              Text(
+                widget.verificationStatus == 'R'
+                    ? 'Your profile is Rejected!\nPlease contact to BeingPupil admin at beingpupil@gmail.com.'
+                    : 'Your profile is under verification!\nPlease try again after sometime.',
                 style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 12.0.sp,
                     fontWeight: FontWeight.w500,
                     color: Colors.black),
-                    textAlign: TextAlign.center,
+                textAlign: TextAlign.center,
               ),
             ],
           ),

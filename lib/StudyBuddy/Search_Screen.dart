@@ -58,32 +58,11 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     super.initState();
     getToken();
-    //print('WIDGET:::${widget.searchIn}');
   }
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     getData();
-    //print(authToken);
-    // getLearnerListApi(page);
-    // _scrollController.addListener(() {
-    //   if (_scrollController.position.pixels ==
-    //       _scrollController.position.maxScrollExtent) {
-    //     if (page > 1) {
-    //       if (learner.data.length > 0) {
-    //         page++;
-    //         getLearnerListApi(page);
-    //         ////print(_name);
-    //         //print(page);
-    //       }
-    //     } else {
-    //       page++;
-    //       getLearnerListApi(page);
-    //       //print(_name);
-    //       //print(page);
-    //     }
-    //   }
-    // });
   }
 
   getData() async {
@@ -95,14 +74,8 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void _onLoading() async {
-    //if (mounted) setState(() {});
-    // if (request.data.length > 0) {
-    //   //_refreshController.loadComplete();
-    //   _refreshController.requestLoading();
-    // } else {
     _refreshController.loadComplete();
     _refreshController.loadNoData();
-    //}
   }
 
   @override
@@ -130,11 +103,9 @@ class _SearchScreenState extends State<SearchScreen> {
                     border: InputBorder.none),
                 onChanged: (value) {
                   Future.delayed(Duration(seconds: 2));
-                  // if(widget.searchIn == 'C' || widget.searchIn == 'R'){
+
                   searchApi(value);
-                  // } else if(widget.searchIn == 'E' || widget.searchIn == 'L'){
-                  //   searchApiTwo(value);
-                  // }
+
                   setState(() {});
                 },
               ),
@@ -160,19 +131,13 @@ class _SearchScreenState extends State<SearchScreen> {
                       new AlwaysStoppedAnimation<Color>(Constants.bgColor),
                 ),
               )
-            :
-            // SingleChildScrollView(
-            //     controller: _scrollController,
-            //     physics: BouncingScrollPhysics(),
-            //     child:
-            SmartRefresher(
+            : SmartRefresher(
                 controller: _refreshController,
                 enablePullDown: false,
                 enablePullUp: true,
                 footer: ClassicFooter(
                   loadStyle: LoadStyle.ShowWhenLoading,
                   noDataText: 'No More Connection',
-                  //noMoreIcon: Icon(Icons.refresh_outlined),
                 ),
                 onLoading: _onLoading,
                 child: widget.searchIn == 'R'
@@ -180,7 +145,6 @@ class _SearchScreenState extends State<SearchScreen> {
                         controller: _scrollController,
                         padding: EdgeInsets.symmetric(
                             horizontal: 4.0.w, vertical: 1.0.h),
-                        //physics: BouncingScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: _userId.length == 0 ? 0 : _userId.length,
                         itemBuilder: (context, index) {
@@ -189,48 +153,29 @@ class _SearchScreenState extends State<SearchScreen> {
                             child: Padding(
                               padding: EdgeInsets.only(left: 2.0.w),
                               child: Container(
-                                //height: 10.0.h,
                                 child: GestureDetector(
                                   onTap: () {
                                     getUserProfile(_userId[index]);
                                   },
                                   child: ListTile(
                                     contentPadding: EdgeInsets.all(0.0),
-                                    //leading:
                                     title: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
-                                      //crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         GestureDetector(
-                                          onTap: () {
-                                            // registerAs == 'E'
-                                            //     ? pushNewScreen(context,
-                                            //         screen: EducatorProfileViewScreen(),
-                                            //         withNavBar: false,
-                                            //         pageTransitionAnimation:
-                                            //             PageTransitionAnimation.cupertino)
-                                            //     : pushNewScreen(context,
-                                            //         screen: LearnerProfileViewScreen(),
-                                            //         withNavBar: false,
-                                            //         pageTransitionAnimation:
-                                            //             PageTransitionAnimation
-                                            //                 .cupertino);
-                                          },
+                                          onTap: () {},
                                           child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(50),
-                                            child:CachedNetworkImage(
-                                                imageUrl:  _profileImage[index]!,
+                                            child: CachedNetworkImage(
+                                              imageUrl: _profileImage[index]!,
                                               width: 40.0,
                                               height: 40.0,
                                               fit: BoxFit.cover,
                                             ),
                                           ),
                                         ),
-                                        // SizedBox(
-                                        //   width: 2.0.w,
-                                        // ),
                                         Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -239,7 +184,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                           children: [
                                             Container(
                                               width: 40.0.w,
-                                              //color: Colors.grey,
                                               child: Text(
                                                 _name[index]!,
                                                 style: TextStyle(
@@ -251,7 +195,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                               ),
                                             ),
                                             Container(
-                                              //color: Colors.grey,
                                               width: 40.0.w,
                                               child: Text(
                                                 _lastDegree[index] != null &&
@@ -270,8 +213,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                             ),
                                           ],
                                         ),
-
-                                        //Buttons
                                         Padding(
                                           padding:
                                               EdgeInsets.only(right: 2.0.w),
@@ -279,7 +220,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                             children: [
                                               GestureDetector(
                                                 onTap: () {
-                                                  //print('$index is Rejected');
                                                   requestActionApi(
                                                       _userId[index], 'R');
                                                 },
@@ -315,7 +255,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                               ),
                                               GestureDetector(
                                                 onTap: () {
-                                                  //print('$index is Connected');
                                                   isSubscribed == 1
                                                       ? requestActionApi(
                                                           _userId[index], 'A')
@@ -369,7 +308,6 @@ class _SearchScreenState extends State<SearchScreen> {
                         controller: _scrollController,
                         padding: EdgeInsets.symmetric(
                             horizontal: 4.0.w, vertical: 1.0.h),
-                        //physics: BouncingScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: _userId.length == 0 ? 0 : _userId.length,
                         itemBuilder: (context, index) {
@@ -378,7 +316,6 @@ class _SearchScreenState extends State<SearchScreen> {
                             child: Padding(
                               padding: EdgeInsets.only(left: 2.0.w),
                               child: Container(
-                                //height: 10.0.h,
                                 child: GestureDetector(
                                   onTap: () {
                                     getUserProfile(_userId[index]);
@@ -390,26 +327,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                             MainAxisAlignment.start,
                                         children: [
                                           GestureDetector(
-                                            onTap: () {
-                                              // registerAs == 'E'
-                                              //     ? pushNewScreen(context,
-                                              //         screen: EducatorProfileViewScreen(),
-                                              //         withNavBar: false,
-                                              //         pageTransitionAnimation:
-                                              //             PageTransitionAnimation.cupertino)
-                                              //     : pushNewScreen(context,
-                                              //         screen: LearnerProfileViewScreen(),
-                                              //         withNavBar: false,
-                                              //         pageTransitionAnimation:
-                                              //             PageTransitionAnimation
-                                              //                 .cupertino);
-                                            },
+                                            onTap: () {},
                                             child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(50),
-                                              child:CachedNetworkImage(
+                                              child: CachedNetworkImage(
                                                 imageUrl: _profileImage[index]!,
-                                                //connection.data[index].profileImage,
                                                 width: 40.0,
                                                 height: 40.0,
                                                 fit: BoxFit.cover,
@@ -427,10 +350,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                             children: [
                                               Container(
                                                 width: 45.0.w,
-                                                //color: Colors.grey,
                                                 child: Text(
                                                   _name[index]!,
-                                                  //connection.data[index].name,
                                                   style: TextStyle(
                                                       fontSize: 9.0.sp,
                                                       color: Constants.bgColor,
@@ -441,7 +362,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                               ),
                                               Container(
                                                 width: 45.0.w,
-                                                //color: Colors.grey,
                                                 child: Text(
                                                     _lastDegree[index] !=
                                                                 null &&
@@ -450,8 +370,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                                                 null
                                                         ? '${_lastDegree[index]} | ${_schoolName[index]}'
                                                         : '',
-                                                    // connection.data[index].lastDegree != null && connection.data[index].schoolName != null
-                                                    // ? "${connection.data[index].lastDegree} | ${connection.data[index].schoolName}" : '',
                                                     style: TextStyle(
                                                         fontSize: 6.5.sp,
                                                         color:
@@ -465,7 +383,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                               ),
                                             ],
                                           ),
-                                          //for request list
                                         ],
                                       ),
                                       trailing: widget.searchIn == 'C'
@@ -474,11 +391,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                                 right: 2.0.w,
                                               ),
                                               child: GestureDetector(
-                                                onTap: () {
-                                                  //print('$index is Connected');
-                                                },
+                                                onTap: () {},
                                                 child: _status[index] == '0'
-                                                    //connection.data[index].status == '0'
                                                     ? Container(
                                                         height: 3.5.h,
                                                         width: 25.0.w,
@@ -519,7 +433,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                           CubeUser? user =
                                                               sharedPrefs
                                                                   .getUser();
-                                                          //print(_email[index]);
+
                                                           getUserByEmail(_email[
                                                                   index]!)
                                                               .then((cubeUser) {
@@ -599,8 +513,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                                   ),
                                                   child: GestureDetector(
                                                     onTap: () async {
-                                                      //print(
-                                                         // '$index is Connected');
                                                       isSubscribed == 1
                                                           ? await connect
                                                               .connectionApi(
@@ -615,18 +527,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                                               pageTransitionAnimation:
                                                                   PageTransitionAnimation
                                                                       .cupertino);
-                                                      // setState(() {
-                                                      //   isLoading = true;
-                                                      //   page = 1;
-                                                      //   _userId = [];
-                                                      //   _profileImage = [];
-                                                      //   _name = [];
-                                                      //   _lastDegree = [];
-                                                      //   _schoolName = [];
-                                                      //   _date = [];
-                                                      //   _distance = [];
-                                                      // });
-                                                      // getEducatorListApi(page);
                                                     },
                                                     child: Container(
                                                       height: 3.5.h,
@@ -667,32 +567,21 @@ class _SearchScreenState extends State<SearchScreen> {
               ));
   }
 
-  //Search API for connection and Request Tab
   Future<void> searchApi(String search) async {
-    //var delResult = PostDelete();
-
     setState(() {
       isLoading = true;
     });
     try {
       Dio dio = Dio();
 
-      //FormData formData = FormData.fromMap({'search_in': widget.searchIn, 'search': searchController.text});
       var response = await dio.get(
           '${Config.searchUserUrl}?search_in=${widget.searchIn}&search=$search&page=$page&user_type=$registerAs',
-          //data: formData,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
         map = response.data;
         mapData = map!['data'];
-        //saveMapData = map['data']['status'];
 
-        //print(mapData);
-        // setState(() {
-        //   isLoading = false;
-        // });
-        //print('LENGTH: ' + mapData!.length.toString());
         _userId = [];
         _profileImage = [];
         _name = [];
@@ -714,18 +603,10 @@ class _SearchScreenState extends State<SearchScreen> {
             _email.add(mapData![i]['email']);
             if (widget.searchIn == 'C' || widget.searchIn == 'R') {
               _status.add(mapData![i]['status']);
-            } else //if(widget.searchIn == 'E' || widget.searchIn == 'L')
-            {
+            } else {
               _distance.add(mapData![i]['distance']);
             }
           }
-          // k++;
-          // //print(k);
-          //print(_profileImage);
-          //print(_lastDegree);
-          //print(_schoolName);
-          //print(_distance);
-          //print('EMAIL:::' + _email.toString());
 
           isLoading = false;
           setState(() {});
@@ -738,16 +619,10 @@ class _SearchScreenState extends State<SearchScreen> {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -761,32 +636,21 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
-  //Search API for Educator List and Learner Tab
   Future<void> searchApiTwo(String search) async {
-    //var delResult = PostDelete();
-
     setState(() {
       isLoading = true;
     });
     try {
       Dio dio = Dio();
 
-      //FormData formData = FormData.fromMap({'search_in': widget.searchIn, 'search': searchController.text});
       var response = await dio.get(
           '${Config.searchUserUrl}?search_in=${widget.searchIn}&search=$search',
-          //data: formData,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
         map = response.data;
         mapData = map!['data'];
-        //saveMapData = map['data']['status'];
 
-        //print(mapData);
-        // setState(() {
-        //   isLoading = false;
-        // });
-        //print('LENGTH: ' + mapData!.length.toString());
         _userId = [];
         _profileImage = [];
         _name = [];
@@ -804,13 +668,7 @@ class _SearchScreenState extends State<SearchScreen> {
             _schoolName.add(mapData![i]['school_name']);
             _date.add(mapData![i]['date']);
             _distance.add(mapData![i]['distance']);
-            //_distance.add(mapData[i].distance);
           }
-          // k++;
-          // //print(k);
-          //print(_profileImage);
-          //print(_lastDegree);
-          //print(_schoolName);
 
           isLoading = false;
           setState(() {});
@@ -823,16 +681,10 @@ class _SearchScreenState extends State<SearchScreen> {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -846,10 +698,7 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
-//For request Action
   Future<void> requestActionApi(int? reqId, String action) async {
-    //var delResult = PostDelete();
-
     try {
       Dio dio = Dio();
 
@@ -860,27 +709,9 @@ class _SearchScreenState extends State<SearchScreen> {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
-        //delResult = postDeleteFromJson(response.data);
         actionMap = response.data;
-        //saveMapData = map['data']['status'];
 
-        //print(actionMap);
-        // setState(() {
-        //   isLoading = false;
-        // });
         if (actionMap!['status'] == true) {
-          //print('true');
-          // setState(() {
-          //   isLoading = true;
-          //   page = 1;
-          //   _userId = [];
-          //   _profileImage = [];
-          //   _name = [];
-          //   _lastDegree = [];
-          //   _schoolName = [];
-          //   _status = [];
-          // });
-          //getRequestApi(page);
           Fluttertoast.showToast(
               msg: actionMap!['message'],
               backgroundColor: Constants.bgColor,
@@ -889,7 +720,6 @@ class _SearchScreenState extends State<SearchScreen> {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          //print('false');
           if (actionMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: actionMap!['error_msg'],
@@ -908,17 +738,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 textColor: Colors.white);
           }
         }
-        //getEducatorPostApi(page);
-        ////print(saveMap);
-      } else {
-        //print(response.statusCode);
-      }
+      } else {}
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -933,21 +755,16 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Future<void> getUserProfile(id) async {
-    // displayProgressDialog(context);
-
     Map<String, dynamic>? map = {};
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        //print(map!['data']);
-        ////print(mapData);
         if (map!['data'] != null) {
           setState(() {});
           map['data']['role'] == 'E'
@@ -967,21 +784,15 @@ class _SearchScreenState extends State<SearchScreen> {
           isLoading = false;
           setState(() {});
         }
-        ////print(result.data);
-        //return result;
+
         setState(() {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -992,7 +803,6 @@ class _SearchScreenState extends State<SearchScreen> {
           fontSize: 10.0.sp,
         );
       }
-      //print(stack);
     }
   }
 

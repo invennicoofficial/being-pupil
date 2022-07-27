@@ -42,7 +42,6 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getToken();
   }
@@ -58,14 +57,12 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
           if (courseLength > 0) {
             page++;
             getMyCourseAPI(page);
-            //print(page);
           } else {
             _refreshController.loadComplete();
           }
         } else {
           page++;
           getMyCourseAPI(page);
-          //print(page);
         }
       }
     });
@@ -94,9 +91,7 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
   }
 
   void _onLoading() async {
-    //if (mounted) setState(() {});
     if (courseLength == 0) {
-      //_refreshController.loadComplete();
       _refreshController.loadNoData();
     } else {
       _refreshController.requestLoading();
@@ -139,13 +134,12 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
                                   PageTransitionAnimation.cupertino);
                         }
                       : () async {
-                          //print('ADD!!!');
                           var isCreated = await pushNewScreen(context,
                               screen: CreateCourseScreen(),
                               withNavBar: false,
                               pageTransitionAnimation:
                                   PageTransitionAnimation.cupertino);
-                          //print(isCreated);
+
                           isCreated == 'created' ? _onRefresh() : null;
                         })),
         ],
@@ -158,133 +152,129 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
               ),
             )
           : courseLength == 0
-          ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset('assets/images/noBooking.png',
-                        height: 250, width: 250, fit: BoxFit.contain),
-                    SizedBox(height: 5.0,),
-                    Text(
-                      'No Course Created',
-                      style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 16.0.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Constants.bgColor),
-                    ),
-                  ],
-                ),
-              )
-          : SmartRefresher(
-              controller: _refreshController,
-              enablePullDown: true,
-              enablePullUp: true,
-              header: WaterDropMaterialHeader(),
-              footer: ClassicFooter(
-                loadStyle: LoadStyle.ShowWhenLoading,
-              ),
-              onLoading: _onLoading,
-              onRefresh: _onRefresh,
-              child: ListView.builder(
-                  controller: _scrollController,
-                  itemCount: nameList.length,
-                  //physics: AlwaysScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 1.5.h, horizontal: 1.0.w),
-                      child: ListTile(
-                        onTap: () {
-                          pushNewScreen(context,
-                              screen: MyCourseDetailScreen(
-                                courseId: idList[index],
-                                courseName: nameList[index],
-                                courseStartDate: startDateList[index],
-                                courseEndDate: endDateList[index],
-                                courseDescription: descriptionList[index],
-                                courseLinks: linksList[index] as List<String>?,
-                              ),
-                              withNavBar: false,
-                              pageTransitionAnimation:
-                                  PageTransitionAnimation.cupertino);
-                        },
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              height: 70.0,
-                              width: 70.0,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/postImage.png'),
-                                      fit: BoxFit.cover)),
-                            ),
-                            SizedBox(
-                              width: 5.0.w,
-                            ),
-                            Column(
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('assets/images/noBooking.png',
+                          height: 250, width: 250, fit: BoxFit.contain),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Text(
+                        'No Course Created',
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 16.0.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Constants.bgColor),
+                      ),
+                    ],
+                  ),
+                )
+              : SmartRefresher(
+                  controller: _refreshController,
+                  enablePullDown: true,
+                  enablePullUp: true,
+                  header: WaterDropMaterialHeader(),
+                  footer: ClassicFooter(
+                    loadStyle: LoadStyle.ShowWhenLoading,
+                  ),
+                  onLoading: _onLoading,
+                  onRefresh: _onRefresh,
+                  child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: nameList.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 1.5.h, horizontal: 1.0.w),
+                          child: ListTile(
+                            onTap: () {
+                              pushNewScreen(context,
+                                  screen: MyCourseDetailScreen(
+                                    courseId: idList[index],
+                                    courseName: nameList[index],
+                                    courseStartDate: startDateList[index],
+                                    courseEndDate: endDateList[index],
+                                    courseDescription: descriptionList[index],
+                                    courseLinks:
+                                        linksList[index] as List<String>?,
+                                  ),
+                                  withNavBar: false,
+                                  pageTransitionAnimation:
+                                      PageTransitionAnimation.cupertino);
+                            },
+                            title: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
-                                  child: Container(
-                                    width: 63.0.w,
-                                    child: Text(
-                                      nameList[index]!,
-                                      //result.data[index].courseName,
-                                      style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 11.0.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: Constants.bgColor),
-                                      overflow: TextOverflow.clip,
-                                    ),
-                                  ),
+                                Container(
+                                  height: 70.0,
+                                  width: 70.0,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              'assets/images/postImage.png'),
+                                          fit: BoxFit.cover)),
                                 ),
                                 SizedBox(
-                                  height: 0.5.h,
+                                  width: 5.0.w,
                                 ),
-                                Text(
-                                    '${startDateList[index]} to ${endDateList[index]}',
-                                    //'${result.data[index].startDate} to ${result.data[index].endDate}',
-                                    style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 8.0.sp,
-                                        fontWeight: FontWeight.w400,
-                                        color: Constants.bgColor)),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10.0),
+                                      child: Container(
+                                        width: 63.0.w,
+                                        child: Text(
+                                          nameList[index]!,
+                                          style: TextStyle(
+                                              fontFamily: 'Montserrat',
+                                              fontSize: 11.0.sp,
+                                              fontWeight: FontWeight.w600,
+                                              color: Constants.bgColor),
+                                          overflow: TextOverflow.clip,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 0.5.h,
+                                    ),
+                                    Text(
+                                        '${startDateList[index]} to ${endDateList[index]}',
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            fontSize: 8.0.sp,
+                                            fontWeight: FontWeight.w400,
+                                            color: Constants.bgColor)),
+                                  ],
+                                ),
                               ],
                             ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
-            ),
+                          ),
+                        );
+                      }),
+                ),
     );
   }
 
-  //Get My  Course API
-
   Future<GetMyCourse> getMyCourseAPI(int page) async {
-    //displayProgressDialog(context);
-
     try {
       var dio = Dio();
       var response = await dio.get('${Config.getMyCourseUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         result = GetMyCourse.fromJson(response.data);
-       // print(response.data);
+
         courseLength = 0;
         courseLength = result.data == [] ? 0 : result.data!.length;
         setState(() {});
-        //closeProgressDialog(context);
+
         if (courseLength > 0) {
           for (int i = 0; i < courseLength; i++) {
             idList.add(result.data![i].courseId);
@@ -314,13 +304,7 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
         );
       }
     } on DioError catch (e, stack) {
-     // print(e.response);
-     // print(stack);
-      // closeProgressDialog(context);
-      //closeProgressDialog(context);
       if (e.response != null) {
-        // print("This is the error message::::" +
-        //     e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -330,11 +314,7 @@ class _EducatorMyCourseScreenState extends State<EducatorMyCourseScreen> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-       // print(e.message);
-      }
+      } else {}
     }
     return result;
   }

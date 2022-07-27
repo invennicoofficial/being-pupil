@@ -36,7 +36,6 @@ class _bottomNavBarState extends State<bottomNavBar> {
     super.initState();
   }
 
-//for navigate to bottom navBar index 3
   setIndex() {
     if (widget.index == null) {
       setState(() {
@@ -47,16 +46,7 @@ class _bottomNavBarState extends State<bottomNavBar> {
       setState(() {
         currentIndex = widget.index;
         _controller.jumpToTab(widget.index);
-        //callPage(widget.index);
       });
-      // BottomNavigationDotBarItem(
-      //           icon: 'assets/icon/food_club_icon.webp',
-      //           // icon: Icons.local_grocery_store,
-      //           onTap: () {
-      //             setState(() {
-      //               currentIndex = widget.index;
-      //             });
-      //           });
     }
   }
 
@@ -66,28 +56,25 @@ class _bottomNavBarState extends State<bottomNavBar> {
       registerAs = preferences.getString('RegisterAs');
       isSubscribed = preferences.getInt('isSubscribed');
     });
-    //print(registerAs);
-    //getSelectedSubjectListForLearner();
   }
 
   Widget callPage(int current) {
     switch (current) {
       case 0:
         return new EducatorHomeScreen();
-      //break;
+
       case 1:
         return new StayAndStudyScreen();
-      //return new MapsScreenT1();
-      //break;
+
       case 2:
         return registerAs == 'E' ? new EducatorScreen() : new LearnerScreen();
-      //break;
+
       case 3:
         return new EducatorStudyBuddyScreen();
-      //break;
+
       case 4:
         return new AccountScreen();
-      //break;
+
       default:
         return new EducatorHomeScreen();
     }
@@ -95,13 +82,10 @@ class _bottomNavBarState extends State<bottomNavBar> {
 
   List<Widget> _buildScreens() {
     return [
-      //registerAs == 'E' ? EducatorHomeScreen() : LearnerHomeScreen(),
       EducatorHomeScreen(),
       StayAndStudyScreen(),
-      //registerAs == 'E' ? LearnerScreen() : EducatorScreen(),
       LearnerStudyBuddyScreen(),
       EducatorStudyBuddyScreen(),
-      //isSubscribed == 1 ? EducatorStudyBuddyScreen() : SubscriptionPlanScreen(),
       AccountScreen(),
     ];
   }
@@ -110,62 +94,37 @@ class _bottomNavBarState extends State<bottomNavBar> {
     return [
       PersistentBottomNavBarItem(
           icon: SvgPicture.asset('assets/icons/selectedHome.svg'),
-          //Image.asset('assets/icons/home.png', height: 25, width: 25, color: Constants.selectedIcon,),
-          //title: ("Home"),
           activeColorPrimary: Constants.selectedIcon,
           inactiveColorPrimary: Constants.bgColor,
-          inactiveIcon: SvgPicture.asset('assets/icons/homeSvg.svg')
-          //Image.asset('assets/icons/home.png', height: 25, width: 25, color: Constants.bgColor,)
-          ),
+          inactiveIcon: SvgPicture.asset('assets/icons/homeSvg.svg')),
       PersistentBottomNavBarItem(
         icon: SvgPicture.asset('assets/icons/selectedSS.svg'),
-        //Image.asset('assets/icons/stayStudy.png', height: MediaQuery.of(context).size.height * 0.02, width: MediaQuery.of(context).size.width * 0.04, color: Constants.selectedIcon,),
-        //title: ("Stay Study"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
         inactiveIcon: SvgPicture.asset('assets/icons/ssSvg.svg'),
-        //Image.asset('assets/icons/stayStudy.png', height: MediaQuery.of(context).size.height * 0.02, width: MediaQuery.of(context).size.width * 0.04, color: Constants.bgColor,),
       ),
       PersistentBottomNavBarItem(
           icon: registerAs == 'E'
               ? SvgPicture.asset('assets/icons/selectedLearner.svg')
-              //Image.asset('assets/icons/educator.png', height: 25, width: 25, color: Constants.selectedIcon,)
               : SvgPicture.asset('assets/icons/newSelEduSvg.svg'),
-          //Image.asset('assets/icons/educatorGreen.png', height: 25, width: 25, color: Constants.selectedIcon,),
-          //title: (registerAs == 'E' ? "Learner" : "Educator"),
           activeColorPrimary: Constants.selectedIcon,
           inactiveColorPrimary: Constants.bgColor,
           inactiveIcon: registerAs == 'E'
               ? SvgPicture.asset('assets/icons/learnerSvg.svg')
-              //Image.asset('assets/icons/educator.png', height: 25, width: 25, color: Constants.bgColor,)
-              : SvgPicture.asset('assets/icons/newEduSvg.svg')
-          //Image.asset('assets/icons/educatorBlack.png', height: 25, width: 25, color: Constants.bgColor,),
-          ),
+              : SvgPicture.asset('assets/icons/newEduSvg.svg')),
       PersistentBottomNavBarItem(
-          //icon: ImageIcon(AssetImage('assets/icons/support2.png'),size: 25),
           icon: registerAs == 'E'
               ? SvgPicture.asset('assets/icons/newSelSbSvg.svg')
               : SvgPicture.asset('assets/icons/selectedSBsvg.svg'),
-          //Image.asset('assets/icons/supportGreen.png', height: 25, width: 25,),
-          //title: (registerAs == 'E' ? "Fellow Educator" : "Study Buddy"),
           activeColorPrimary: Constants.selectedIcon,
-          // inactiveColorPrimary: Constants.bgColor,
           inactiveIcon: registerAs == 'E'
               ? SvgPicture.asset('assets/icons/newSbSvg.svg')
-              : SvgPicture.asset('assets/icons/studybuddySvg.svg')
-          //Image.asset('assets/icons/support.png', height: 25, width: 25, ),
-          ),
+              : SvgPicture.asset('assets/icons/studybuddySvg.svg')),
       PersistentBottomNavBarItem(
-        //icon: SvgPicture.asset('assets/icons/ff.svg'),
         icon: SvgPicture.asset('assets/icons/selectedAccount.svg'),
-        //Image.asset('assets/icons/accountGreen.png', height: 25, width: 25,),
-        // icon: Icon(Icons.account_circle_rounded),
-        //iconSize: 25.0,
-        //title: ("Account"),
         activeColorPrimary: Constants.selectedIcon,
         inactiveColorPrimary: Constants.bgColor,
         inactiveIcon: SvgPicture.asset('assets/icons/account.svg'),
-        //Image.asset('assets/icons/account2.png', height: 25, width: 25,),
       ),
     ];
   }
@@ -183,10 +142,6 @@ class _bottomNavBarState extends State<bottomNavBar> {
       resizeToAvoidBottomInset: true,
       stateManagement: true,
       hideNavigationBarWhenKeyboardShows: true,
-      // decoration: NavBarDecoration(
-      //   borderRadius: BorderRadius.circular(10.0),
-      //   colorBehindNavBar: Colors.white,
-      // ),
       padding: NavBarPadding.all(0.0),
       popAllScreensOnTapOfSelectedTab: true,
       popActionScreens: PopActionScreensType.all,
@@ -199,15 +154,7 @@ class _bottomNavBarState extends State<bottomNavBar> {
         curve: Curves.ease,
         duration: Duration(milliseconds: 200),
       ),
-      //navBarHeight: 8.0.h,
       navBarStyle: NavBarStyle.style3,
-      // padding: NavBarPadding.symmetric(vertical: 0.0, horizontal: 1.0.w),
-      //margin: EdgeInsets.symmetric(vertical: 0.0),
     );
   }
 }
-
-//go to home page
-// Navigator.of(context).pushAndRemoveUntil(
-//     MaterialPageRoute(builder: (context) => bottomNavBar(0)),
-//     (Route<dynamic> route) => false);

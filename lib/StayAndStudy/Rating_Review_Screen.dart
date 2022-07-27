@@ -31,10 +31,8 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getPropertyReviewAPI();
-    //print('ID:::' + widget.propertyId.toString());
   }
 
   @override
@@ -125,8 +123,6 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                           child: Column(
                             children: [
                               ListTile(
-                                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                // children: <Widget>[
                                 dense: true,
                                 visualDensity: VisualDensity(
                                     horizontal: 0.0, vertical: -4.0),
@@ -169,7 +165,8 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   child: Container(
                                     height: 1.0.h,
                                     child: FAProgressBar(
-                                      currentValue: result.data?.rating!.the5! ?? 0,
+                                      currentValue:
+                                          result.data?.rating!.the5! ?? 0,
                                       maxValue: 100,
                                       direction: Axis.horizontal,
                                       backgroundColor: Color(0xFFD3D9E0),
@@ -177,11 +174,8 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                     ),
                                   ),
                                 ),
-                                //],
                               ),
                               ListTile(
-                                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                // children: <Widget>[
                                 dense: true,
                                 visualDensity: VisualDensity(
                                     horizontal: 0.0, vertical: -4.0),
@@ -224,7 +218,8 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   child: Container(
                                     height: 1.0.h,
                                     child: FAProgressBar(
-                                      currentValue: result.data?.rating!.the4! ?? 0,
+                                      currentValue:
+                                          result.data?.rating!.the4! ?? 0,
                                       maxValue: 100,
                                       direction: Axis.horizontal,
                                       backgroundColor: Color(0xFFD3D9E0),
@@ -232,11 +227,8 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                     ),
                                   ),
                                 ),
-                                //],
                               ),
                               ListTile(
-                                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                // children: <Widget>[
                                 dense: true,
                                 visualDensity: VisualDensity(
                                     horizontal: 0.0, vertical: -4.0),
@@ -279,7 +271,8 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   child: Container(
                                     height: 1.0.h,
                                     child: FAProgressBar(
-                                      currentValue: result.data?.rating!.the3! ?? 0,
+                                      currentValue:
+                                          result.data?.rating!.the3! ?? 0,
                                       maxValue: 100,
                                       direction: Axis.horizontal,
                                       backgroundColor: Color(0xFFD3D9E0),
@@ -287,11 +280,8 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                     ),
                                   ),
                                 ),
-                                //],
                               ),
                               ListTile(
-                                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                // children: <Widget>[
                                 dense: true,
                                 visualDensity: VisualDensity(
                                     horizontal: 0.0, vertical: -4.0),
@@ -334,7 +324,8 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   child: Container(
                                     height: 1.0.h,
                                     child: FAProgressBar(
-                                      currentValue: result.data?.rating!.the2! ?? 0,
+                                      currentValue:
+                                          result.data?.rating!.the2! ?? 0,
                                       maxValue: 100,
                                       direction: Axis.horizontal,
                                       backgroundColor: Color(0xFFD3D9E0),
@@ -342,11 +333,8 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                     ),
                                   ),
                                 ),
-                                //],
                               ),
                               ListTile(
-                                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                // children: <Widget>[
                                 dense: true,
                                 visualDensity: VisualDensity(
                                     horizontal: 0.0, vertical: -4.0),
@@ -389,7 +377,8 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                   child: Container(
                                     height: 1.0.h,
                                     child: FAProgressBar(
-                                      currentValue: result.data?.rating!.the1! ?? 0,
+                                      currentValue:
+                                          result.data?.rating!.the1! ?? 0,
                                       maxValue: 100,
                                       direction: Axis.horizontal,
                                       backgroundColor: Color(0xFFD3D9E0),
@@ -397,84 +386,18 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                     ),
                                   ),
                                 ),
-                                //],
                               ),
                             ],
                           ),
                         ),
-                        // Expanded(
-                        //   child: ListView.builder(
-                        //       itemCount: 5,
-                        //       shrinkWrap: true,
-                        //       physics: NeverScrollableScrollPhysics(),
-                        //       itemBuilder: (context, index) {
-                        //         return ListTile(
-                        //           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        //           // children: <Widget>[
-                        //           dense: true,
-                        //           visualDensity:
-                        //               VisualDensity(horizontal: 0.0, vertical: -4.0),
-                        //           contentPadding:
-                        //               EdgeInsets.only(left: 2.0.w, right: 0.0.w),
-                        //           leading: Row(
-                        //             mainAxisSize: MainAxisSize.min,
-                        //             children: <Widget>[
-                        //               Text(
-                        //                 rating[index],
-                        //                 style: TextStyle(
-                        //                     fontFamily: 'Montserrat',
-                        //                     fontSize: 10.0.sp,
-                        //                     fontWeight: FontWeight.w600,
-                        //                     color: Constants.bgColor),
-                        //               ),
-                        //               Image.asset(
-                        //                 'assets/icons/starfull.png',
-                        //                 height: 2.0.h,
-                        //                 width: 4.0.w,
-                        //                 fit: BoxFit.contain,
-                        //               ),
-                        //             ],
-                        //           ),
-                        //           trailing: Transform(
-                        //             transform:
-                        //                 Matrix4.translationValues(-5.0.w, 0.0, 0.0),
-                        //             child: Text(
-                        //               faRating[index].toString(),
-                        //               style: TextStyle(
-                        //                   fontFamily: 'Montserrat',
-                        //                   fontSize: 10.0.sp,
-                        //                   fontWeight: FontWeight.w600,
-                        //                   color: Constants.bgColor),
-                        //             ),
-                        //           ),
-                        //           title: Transform(
-                        //             transform:
-                        //                 Matrix4.translationValues(-5.0.w, 0.0, 0.0),
-                        //             child: Container(
-                        //               height: 1.0.h,
-                        //               child: FAProgressBar(
-                        //                 currentValue: faRating[index],
-                        //                 maxValue: 100,
-                        //                 direction: Axis.horizontal,
-                        //                 backgroundColor: Color(0xFFD3D9E0),
-                        //                 progressColor: ratingColor[index],
-                        //               ),
-                        //             ),
-                        //           ),
-                        //           //],
-                        //         );
-                        //       }),
-                        // ),
                       ],
                     ),
                   ),
-                  // Divider
                   Divider(
                     height: 1.0.h,
                     thickness: 1.5,
                     color: Constants.formBorder,
                   ),
-                  //Reviews
                   Expanded(
                     flex: 1,
                     child: Padding(
@@ -483,7 +406,6 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                       child: Container(
                         width: double.infinity,
                         child: SingleChildScrollView(
-                          //physics: BouncingScrollPhysics(),
                           child: Container(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -500,11 +422,12 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                               fontFamily: 'Montserrat',
                                               fontWeight: FontWeight.w500)),
                                       TextSpan(
-                                          text: '(${result.data?.review!.length ?? 0})',
+                                          text:
+                                              '(${result.data?.review!.length ?? 0})',
                                           style: TextStyle(
                                               fontSize: 11.0.sp,
-                                              color:
-                                                  Constants.bpOnBoardSubtitleStyle,
+                                              color: Constants
+                                                  .bpOnBoardSubtitleStyle,
                                               fontFamily: 'Montserrat',
                                               fontWeight: FontWeight.w500)),
                                     ]),
@@ -519,21 +442,26 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                     physics: BouncingScrollPhysics(),
                                     itemBuilder: (context, index) {
                                       return Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           ListTile(
-                                              contentPadding: EdgeInsets.all(0.0),
-                                              //leading:
+                                              contentPadding:
+                                                  EdgeInsets.all(0.0),
                                               title: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
                                                 children: [
                                                   ClipRRect(
                                                     borderRadius:
-                                                        BorderRadius.circular(50),
-                                                    child:CachedNetworkImage(
-                                                imageUrl: result.data?.review![index]
-                                                          .profileImage! ?? '',
+                                                        BorderRadius.circular(
+                                                            50),
+                                                    child: CachedNetworkImage(
+                                                      imageUrl: result
+                                                              .data
+                                                              ?.review![index]
+                                                              .profileImage! ??
+                                                          '',
                                                       width: 9.0.w,
                                                       height: 4.5.h,
                                                       fit: BoxFit.cover,
@@ -544,22 +472,31 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                                   ),
                                                   Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Text(
-                                                        result.data?.review![index].name! ?? '',
+                                                        result
+                                                                .data
+                                                                ?.review![index]
+                                                                .name! ??
+                                                            '',
                                                         style: TextStyle(
                                                             fontSize: 9.0.sp,
-                                                            color:
-                                                                Constants.bgColor,
+                                                            color: Constants
+                                                                .bgColor,
                                                             fontFamily:
                                                                 'Montserrat',
                                                             fontWeight:
-                                                                FontWeight.w700),
+                                                                FontWeight
+                                                                    .w700),
                                                       ),
                                                       Text(
-                                                        result.data?.review![index]
-                                                            .date! ?? '',
+                                                        result
+                                                                .data
+                                                                ?.review![index]
+                                                                .date! ??
+                                                            '',
                                                         style: TextStyle(
                                                             fontSize: 6.5.sp,
                                                             color: Constants
@@ -567,7 +504,8 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                                             fontFamily:
                                                                 'Montserrat',
                                                             fontWeight:
-                                                                FontWeight.w400),
+                                                                FontWeight
+                                                                    .w400),
                                                       ),
                                                     ],
                                                   ),
@@ -579,8 +517,10 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                                     text: 'Rated ',
                                                     style: TextStyle(
                                                         fontSize: 7.0.sp,
-                                                        color: Constants.bgColor,
-                                                        fontFamily: 'Montserrat',
+                                                        color:
+                                                            Constants.bgColor,
+                                                        fontFamily:
+                                                            'Montserrat',
                                                         fontWeight:
                                                             FontWeight.w500)),
                                                 TextSpan(
@@ -588,17 +528,21 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                                         '${result.data?.review![index].rating ?? ''}/5',
                                                     style: TextStyle(
                                                         fontSize: 7.0.sp,
-                                                        color:
-                                                            Constants.selectedIcon,
-                                                        fontFamily: 'Montserrat',
+                                                        color: Constants
+                                                            .selectedIcon,
+                                                        fontFamily:
+                                                            'Montserrat',
                                                         fontWeight:
                                                             FontWeight.w600)),
                                               ]))),
                                           Container(
                                             child: ReadMoreText(
-                                              result.data?.review![index].descreption! ?? '',
+                                              result.data?.review![index]
+                                                      .descreption! ??
+                                                  '',
                                               trimLines: 3,
-                                              colorClickableText: Constants.blueTitle,
+                                              colorClickableText:
+                                                  Constants.blueTitle,
                                               trimMode: TrimMode.Line,
                                               trimCollapsedText: 'Read More',
                                               trimExpandedText: 'See Less',
@@ -606,8 +550,8 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 9.0.sp,
                                                   fontWeight: FontWeight.w400,
-                                                  color: Constants.bpOnBoardSubtitleStyle),
-                                              //textAlign: TextAlign.justify,
+                                                  color: Constants
+                                                      .bpOnBoardSubtitleStyle),
                                             ),
                                           ),
                                         ],
@@ -636,16 +580,13 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
               ));
   }
 
-  //Get Property Review API
   Future<PropertyReview> getPropertyReviewAPI() async {
-    //var result;
     try {
       var dio = Dio();
       var response = await dio
           .get('${Config.getReviewUrl}?property_id=${widget.propertyId}');
 
       if (response.statusCode == 200) {
-        //print('THIS IS THE REVIEW DATA::' + response.data.toString());
         result = PropertyReview.fromJson(response.data);
 
         if (result.status == true) {
@@ -656,10 +597,7 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
           setState(() {});
         }
       }
-    } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
-    }
+    } on DioError catch (e, stack) {}
     return result;
   }
 }

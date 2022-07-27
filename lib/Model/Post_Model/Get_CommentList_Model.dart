@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final getCommentList = getCommentListFromJson(jsonString);
-
 import 'dart:convert';
 
 GetCommentList getCommentListFromJson(String str) => GetCommentList.fromJson(json.decode(str));

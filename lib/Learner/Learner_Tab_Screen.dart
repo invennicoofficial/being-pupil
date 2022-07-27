@@ -18,12 +18,9 @@ class LearnerStudyBuddyScreen extends StatefulWidget {
       _LearnerStudyBuddyScreenState();
 }
 
-class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen>
-//with SingleTickerProviderStateMixin
-{
+class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen> {
   String? registerAs;
-  //TabController _tabController;
-  //int selectedIndex = 0;
+
   String? searchIn;
 
   @override
@@ -38,14 +35,6 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen>
       registerAs = preferences.getString('RegisterAs');
       searchIn = registerAs == 'E' ? 'L' : 'E';
     });
-    //print(registerAs);
-    // _tabController = TabController(length: 3, vsync: this);
-    // _tabController.addListener(() {
-    //   setState(() {
-    //     selectedIndex = _tabController.index;
-    //   });
-    //   //print('Selected Index::: ' +selectedIndex.toString());
-    // });
   }
 
   @override
@@ -55,17 +44,6 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen>
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Constants.bgColor,
-          // leading: IconButton(
-          //   icon: Icon(
-          //     Icons.west_rounded,
-          //     color: Colors.white,
-          //     size: 35.0,
-          //   ),
-          //   onPressed: () {
-          //     Navigator.of(context).pop();
-          //   },
-          //   padding: EdgeInsets.zero,
-          // ),
           title: Text(registerAs == 'E' ? 'Learners' : 'Educators',
               style: TextStyle(
                   fontFamily: 'Montserrat',
@@ -76,7 +54,8 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen>
             Padding(
                 padding: EdgeInsets.only(right: 2.0.w),
                 child: IconButton(
-                    icon: Image.asset('assets/icons/searchNew.png', height: 20.0, width: 20.0, color: Colors.white),
+                    icon: Image.asset('assets/icons/searchNew.png',
+                        height: 20.0, width: 20.0, color: Colors.white),
                     onPressed: () {
                       pushNewScreen(context,
                           screen: SearchForLearnerScreen(
@@ -92,9 +71,6 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen>
             child: ColoredBox(
               color: Colors.white,
               child: TabBar(
-                  //controller: _tabController,
-                  //indicatorPadding: EdgeInsets.symmetric(horizontal: 3.0.w),
-                  //indicatorSize: TabBarIndicatorSize.label,
                   labelPadding: EdgeInsets.symmetric(horizontal: 5.0.w),
                   labelColor: Constants.bgColor,
                   labelStyle: TextStyle(
@@ -131,7 +107,6 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen>
                         searchIn = 'C';
                       });
                     }
-                    //print('Selected Index::: ' + searchIn!);
                   },
                   tabs: [
                     Tab(
@@ -153,7 +128,7 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen>
               height: 100.0.h,
               width: 100.0.w,
               decoration: BoxDecoration(
-                color: Colors.white10,
+                  color: Colors.white10,
                   image: DecorationImage(
                       image: AssetImage('assets/images/studyBudyBg.png'),
                       fit: BoxFit.cover)),
@@ -161,7 +136,9 @@ class _LearnerStudyBuddyScreenState extends State<LearnerStudyBuddyScreen>
             TabBarView(
               physics: NeverScrollableScrollPhysics(),
               children: <Widget>[
-                registerAs == 'E' ? LearnerListForLearner() : EducatorListForLearner(),             
+                registerAs == 'E'
+                    ? LearnerListForLearner()
+                    : EducatorListForLearner(),
                 RequestListLearner(),
                 ConnectionListLearner(),
               ],

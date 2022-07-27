@@ -1,9 +1,3 @@
-import 'dart:convert';
-
-// CreatePost welcomeFromJson(String str) => CreatePost.fromJson(json.decode(str));
-
-// String welcomeToJson(CreatePost data) => json.encode(data.toJson());
-
 class CreatePost {
     CreatePost({
         this.status,

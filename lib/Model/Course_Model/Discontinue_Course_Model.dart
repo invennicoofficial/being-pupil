@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final DiscontinueCourse = enrollCourseFromJson(jsonString);
-
 import 'dart:convert';
 
 DiscontinueCourse enrollCourseFromJson(String str) => DiscontinueCourse.fromJson(json.decode(str));

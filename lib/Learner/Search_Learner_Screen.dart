@@ -46,540 +46,465 @@ class _SearchForLearnerScreenState extends State<SearchForLearnerScreen> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   Map<String, dynamic>? actionMap;
-  
-   @override
+
+  @override
   void initState() {
     super.initState();
     getToken();
-    //print('WIDGET:::${widget.searchIn}');
   }
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     getData();
-    //print(authToken);
-    // getLearnerListApi(page);
-    // _scrollController.addListener(() {
-    //   if (_scrollController.position.pixels ==
-    //       _scrollController.position.maxScrollExtent) {
-    //     if (page > 1) {
-    //       if (learner.data.length > 0) {
-    //         page++;
-    //         getLearnerListApi(page);
-    //         ////print(_name);
-    //         //print(page);
-    //       }
-    //     } else {
-    //       page++;
-    //       getLearnerListApi(page);
-    //       //print(_name);
-    //       //print(page);
-    //     }
-    //   }
-    // });
   }
 
-  getData() async{
+  getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       registerAs = preferences.getString('RegisterAs');
     });
   }
 
- void _onLoading() async {
-    //if (mounted) setState(() {});
-    // if (request.data.length > 0) {
-    //   //_refreshController.loadComplete();
-    //   _refreshController.requestLoading();
-    // } else {
+  void _onLoading() async {
     _refreshController.loadComplete();
     _refreshController.loadNoData();
-    //}
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Container(
-        width: double.infinity,
-        height: 40,
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(20.0)),
-        child: Center(
-          child: TextField(
-            controller: searchController,
-            decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search),
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: () {
-                    searchController.text = '';
-                    FocusScope.of(context).unfocus();
-                  },
-                ),
-                hintText: 'Search by name and city...',
-                border: InputBorder.none),
-                onChanged: (value){
-                  Future.delayed(Duration(seconds: 2));
-                  // if(widget.searchIn == 'C' || widget.searchIn == 'R'){
-                    searchApi(value);
-                  // } else if(widget.searchIn == 'E' || widget.searchIn == 'L'){
-                  //   searchApiTwo(value);
-                  // }
-                  setState((){});
-                },
-          ),
-        ),
-      ),
-      backgroundColor: Colors.black,
-      leading:IconButton(
-          icon: Icon(
-            Icons.west_rounded,
-            color: Colors.white,
-            size: 35.0,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          padding: EdgeInsets.zero,
-        ),
-      ),
-      body: isLoading
-        ? Center(
-            child: CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
-            ),
-          )
-        :
-        // SingleChildScrollView(
-        //     controller: _scrollController,
-        //     physics: BouncingScrollPhysics(),
-        //     child:
-        SmartRefresher(
-            controller: _refreshController,
-            enablePullDown: false,
-            enablePullUp: true,
-            footer: ClassicFooter(
-              loadStyle: LoadStyle.ShowWhenLoading,
-              noDataText: 'No More Connection',
-              //noMoreIcon: Icon(Icons.refresh_outlined),
-            ),
-            onLoading: _onLoading,
-            child: widget.searchIn == 'R'
-            ? ListView.builder(
-                controller: _scrollController,
-                padding:
-                    EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
-                //physics: BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: _userId.length == 0 ? 0 : _userId.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 3.0,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 2.0.w),
-                      child: Container(
-                        //height: 10.0.h,
-                        child: GestureDetector(
-                          onTap: (){
-                            getUserProfile(_userId[index]);
-                          },
-                          child: ListTile(
-                            contentPadding: EdgeInsets.all(0.0),
-                            //leading:
-                            title: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    // registerAs == 'E'
-                                    //     ? pushNewScreen(context,
-                                    //         screen: EducatorProfileViewScreen(),
-                                    //         withNavBar: false,
-                                    //         pageTransitionAnimation:
-                                    //             PageTransitionAnimation.cupertino)
-                                    //     : pushNewScreen(context,
-                                    //         screen: LearnerProfileViewScreen(),
-                                    //         withNavBar: false,
-                                    //         pageTransitionAnimation:
-                                    //             PageTransitionAnimation
-                                    //                 .cupertino);
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child:CachedNetworkImage(
-                                                imageUrl:_profileImage[index]!,
-                                      width: 40.0,
-                                      height: 40.0,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                // SizedBox(
-                                //   width: 2.0.w,
-                                // ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: 35.0.w,
-                                      //color: Colors.grey,
-                                      child: Text(
-                                        _name[index]!,
-                                        style: TextStyle(
-                                            fontSize: 9.0.sp,
-                                            color: Constants.bgColor,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ),
-                                    Container(
-                                      //color: Colors.grey,
-                                       width: 35.0.w,
-                                      child: Text(
-                                        _lastDegree[index] != null &&
-                                                _schoolName[index] != null
-                                            ? '${_lastDegree[index]} | ${_schoolName[index]}'
-                                            : '',
-                                        style: TextStyle(
-                                            fontSize: 6.5.sp,
-                                            color: Constants.bgColor,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w400),
-                                            overflow: TextOverflow.clip,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                        
-                                //Buttons
-                                Padding(
-                                  padding: EdgeInsets.only(right: 2.0.w),
-                                  child: Row(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          //print('$index is Rejected');
-                                          requestActionApi(_userId[index], 'R');
-                                        },
-                                        child: Container(
-                                          height: 3.5.h,
-                                          width: 16.0.w,
-                                          decoration: BoxDecoration(
-                                              color: Constants.bgColor,
-                                              border: Border.all(
-                                                  color: Constants.bgColor,
-                                                  width: 0.5),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8.0))),
-                                          child: Center(
-                                            child: Text(
-                                              'Reject',
-                                              style: TextStyle(
-                                                  fontSize: 8.0.sp,
-                                                  color: Colors.white,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 2.0.w,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          //print('$index is Connected');
-                                          requestActionApi(_userId[index], 'A');
-                                        },
-                                        child: Container(
-                                          height: 3.5.h,
-                                          width: 16.0.w,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Constants.bgColor,
-                                                  width: 0.5),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8.0))),
-                                          child: Center(
-                                            child: Text(
-                                              'Connect',
-                                              style: TextStyle(
-                                                  fontSize: 8.0.sp,
-                                                  color: Constants.bgColor,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+        appBar: AppBar(
+          title: Container(
+            width: double.infinity,
+            height: 40,
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(20.0)),
+            child: Center(
+              child: TextField(
+                controller: searchController,
+                decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        searchController.text = '';
+                        FocusScope.of(context).unfocus();
+                      },
                     ),
-                  );
-                })
-             : ListView.builder(
-              controller: _scrollController,
-                padding:
-                    EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
-                //physics: BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: _userId.length == 0 ? 0 : _userId.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 2.0,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 2.0.w),
-                      child: Container(
-                        //height: 10.0.h,
-                        child: GestureDetector(
-                          onTap: (){
-                            getUserProfile(_userId[index]);
-                          },
-                          child: ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              title:  Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      // registerAs == 'E'
-                                      //     ? pushNewScreen(context,
-                                      //         screen: EducatorProfileViewScreen(),
-                                      //         withNavBar: false,
-                                      //         pageTransitionAnimation:
-                                      //             PageTransitionAnimation.cupertino)
-                                      //     : pushNewScreen(context,
-                                      //         screen: LearnerProfileViewScreen(),
-                                      //         withNavBar: false,
-                                      //         pageTransitionAnimation:
-                                      //             PageTransitionAnimation
-                                      //                 .cupertino);
-                                    },
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child:CachedNetworkImage(
-                                                imageUrl: _profileImage[index]!,
-                                        //connection.data[index].profileImage,
-                                        width: 40.0,
-                                        height: 40.0,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 2.0.w,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        //color: Colors.grey,
-                                        width: 45.0.w,
-                                        child: Text(
-                                          _name[index]!,
-                                          //connection.data[index].name,
-                                          style: TextStyle(
-                                              fontSize: 9.0.sp,
-                                              color: Constants.bgColor,
-                                              fontFamily: 'Montserrat',
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                      ),
-                                      Container(
-                                        //color: Colors.grey,
-                                        width: 45.0.w,
-                                        child: Text(
-                                          _lastDegree[index] != null &&
-                                                  _schoolName[index] != null
-                                              ? '${_lastDegree[index]} | ${_schoolName[index]}'
-                                              : '',
-                                          // connection.data[index].lastDegree != null && connection.data[index].schoolName != null
-                                          // ? "${connection.data[index].lastDegree} | ${connection.data[index].schoolName}" : '',
-                                          style: TextStyle(
-                                              fontSize: 6.5.sp,
-                                              color: Constants.bgColor,
-                                              fontFamily: 'Montserrat',
-                                              fontWeight: FontWeight.w400),
-                                              overflow: TextOverflow.clip
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  //for request list
-                                  
-                                ],
-                              ),
-                              trailing: widget.searchIn == 'C'
-                              ? Padding(
-                                padding: EdgeInsets.only(right: 2.0.w,),
+                    hintText: 'Search by name and city...',
+                    border: InputBorder.none),
+                onChanged: (value) {
+                  Future.delayed(Duration(seconds: 2));
+
+                  searchApi(value);
+
+                  setState(() {});
+                },
+              ),
+            ),
+          ),
+          backgroundColor: Colors.black,
+          leading: IconButton(
+            icon: Icon(
+              Icons.west_rounded,
+              color: Colors.white,
+              size: 35.0,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            padding: EdgeInsets.zero,
+          ),
+        ),
+        body: isLoading
+            ? Center(
+                child: CircularProgressIndicator(
+                  valueColor:
+                      new AlwaysStoppedAnimation<Color>(Constants.bgColor),
+                ),
+              )
+            : SmartRefresher(
+                controller: _refreshController,
+                enablePullDown: false,
+                enablePullUp: true,
+                footer: ClassicFooter(
+                  loadStyle: LoadStyle.ShowWhenLoading,
+                  noDataText: 'No More Connection',
+                ),
+                onLoading: _onLoading,
+                child: widget.searchIn == 'R'
+                    ? ListView.builder(
+                        controller: _scrollController,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 4.0.w, vertical: 1.0.h),
+                        shrinkWrap: true,
+                        itemCount: _userId.length == 0 ? 0 : _userId.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            elevation: 3.0,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 2.0.w),
+                              child: Container(
                                 child: GestureDetector(
                                   onTap: () {
-                                    //print('$index is Connected');
+                                    getUserProfile(_userId[index]);
                                   },
-                                  child: _status[index] == '0'
-                                      //connection.data[index].status == '0'
-                                      ? Container(
-                                          height: 3.5.h,
-                                          width: 25.0.w,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Constants.bgColor,
-                                                  width: 0.5),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8.0))),
-                                          child: Center(
-                                            child: Text(
-                                              'Request Sent',
-                                              style: TextStyle(
-                                                  fontSize: 8.0.sp,
-                                                  color: Constants.bgColor,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w500),
+                                  child: ListTile(
+                                    contentPadding: EdgeInsets.all(0.0),
+                                    title: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {},
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            child: CachedNetworkImage(
+                                              imageUrl: _profileImage[index]!,
+                                              width: 40.0,
+                                              height: 40.0,
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
-                                        )
-                                      : GestureDetector(
-                                  //       onTap: () async {
-                                  //   displayProgressDialog(context);
-                                  //   SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
-                                  //   CubeUser? user = sharedPrefs.getUser();
-                                  //   //print(_email[index]);
-                                  //   getUserByEmail(_email[index]!)
-                                  //       .then((cubeUser) {
-                                  //         CubeDialog newDialog = CubeDialog(
-                                  //       CubeDialogType.PRIVATE,
-                                  //       occupantsIds: [cubeUser!.id!]);
-                                  //   createDialog(newDialog)
-                                  //       .then((createdDialog) {
-                                  //     closeProgressDialog(context);
-                                  //     pushNewScreen(context,
-                                  //         screen: ChatDialogScreen(user, createdDialog, _profileImage[index]),
-                                  //         withNavBar: false,
-                                  //         pageTransitionAnimation:
-                                  //         PageTransitionAnimation
-                                  //             .cupertino);
-                                  //   })
-                                  //       .catchError((error) {
-                                  //     displayProgressDialog(context);
-                                  //   });
-                                  //   })
-                                  //       .catchError((error) {
-                                  //     displayProgressDialog(context);
-                                  //   });
-
-                                  // },
-                                        child: Container(
-                                            height: 3.5.h,
-                                            width: 16.0.w,
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Constants.bgColor,
-                                                    width: 0.5),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(8.0))),
-                                            child: Center(
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: 35.0.w,
                                               child: Text(
-                                                'Chat',
+                                                _name[index]!,
                                                 style: TextStyle(
-                                                    fontSize: 8.0.sp,
+                                                    fontSize: 9.0.sp,
                                                     color: Constants.bgColor,
                                                     fontFamily: 'Montserrat',
-                                                    fontWeight: FontWeight.w500),
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: 35.0.w,
+                                              child: Text(
+                                                _lastDegree[index] != null &&
+                                                        _schoolName[index] !=
+                                                            null
+                                                    ? '${_lastDegree[index]} | ${_schoolName[index]}'
+                                                    : '',
+                                                style: TextStyle(
+                                                    fontSize: 6.5.sp,
+                                                    color: Constants.bgColor,
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                                overflow: TextOverflow.clip,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsets.only(right: 2.0.w),
+                                          child: Row(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  requestActionApi(
+                                                      _userId[index], 'R');
+                                                },
+                                                child: Container(
+                                                  height: 3.5.h,
+                                                  width: 16.0.w,
+                                                  decoration: BoxDecoration(
+                                                      color: Constants.bgColor,
+                                                      border: Border.all(
+                                                          color:
+                                                              Constants.bgColor,
+                                                          width: 0.5),
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  8.0))),
+                                                  child: Center(
+                                                    child: Text(
+                                                      'Reject',
+                                                      style: TextStyle(
+                                                          fontSize: 8.0.sp,
+                                                          color: Colors.white,
+                                                          fontFamily:
+                                                              'Montserrat',
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 2.0.w,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  requestActionApi(
+                                                      _userId[index], 'A');
+                                                },
+                                                child: Container(
+                                                  height: 3.5.h,
+                                                  width: 16.0.w,
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color:
+                                                              Constants.bgColor,
+                                                          width: 0.5),
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  8.0))),
+                                                  child: Center(
+                                                    child: Text(
+                                                      'Connect',
+                                                      style: TextStyle(
+                                                          fontSize: 8.0.sp,
+                                                          color:
+                                                              Constants.bgColor,
+                                                          fontFamily:
+                                                              'Montserrat',
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        })
+                    : ListView.builder(
+                        controller: _scrollController,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 4.0.w, vertical: 1.0.h),
+                        shrinkWrap: true,
+                        itemCount: _userId.length == 0 ? 0 : _userId.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            elevation: 2.0,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 2.0.w),
+                              child: Container(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    getUserProfile(_userId[index]);
+                                  },
+                                  child: ListTile(
+                                      contentPadding: EdgeInsets.zero,
+                                      title: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {},
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              child: CachedNetworkImage(
+                                                imageUrl: _profileImage[index]!,
+                                                width: 40.0,
+                                                height: 40.0,
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
                                           ),
+                                          SizedBox(
+                                            width: 2.0.w,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 45.0.w,
+                                                child: Text(
+                                                  _name[index]!,
+                                                  style: TextStyle(
+                                                      fontSize: 9.0.sp,
+                                                      color: Constants.bgColor,
+                                                      fontFamily: 'Montserrat',
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 45.0.w,
+                                                child: Text(
+                                                    _lastDegree[index] !=
+                                                                null &&
+                                                            _schoolName[
+                                                                    index] !=
+                                                                null
+                                                        ? '${_lastDegree[index]} | ${_schoolName[index]}'
+                                                        : '',
+                                                    style: TextStyle(
+                                                        fontSize: 6.5.sp,
+                                                        color:
+                                                            Constants.bgColor,
+                                                        fontFamily:
+                                                            'Montserrat',
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                    overflow:
+                                                        TextOverflow.clip),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
+                                      trailing: widget.searchIn == 'C'
+                                          ? Padding(
+                                              padding: EdgeInsets.only(
+                                                right: 2.0.w,
+                                              ),
+                                              child: GestureDetector(
+                                                onTap: () {},
+                                                child: _status[index] == '0'
+                                                    ? Container(
+                                                        height: 3.5.h,
+                                                        width: 25.0.w,
+                                                        decoration: BoxDecoration(
+                                                            border: Border.all(
+                                                                color: Constants
+                                                                    .bgColor,
+                                                                width: 0.5),
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        8.0))),
+                                                        child: Center(
+                                                          child: Text(
+                                                            'Request Sent',
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    8.0.sp,
+                                                                color: Constants
+                                                                    .bgColor,
+                                                                fontFamily:
+                                                                    'Montserrat',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : GestureDetector(
+                                                        child: Container(
+                                                          height: 3.5.h,
+                                                          width: 16.0.w,
+                                                          decoration: BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: Constants
+                                                                      .bgColor,
+                                                                  width: 0.5),
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          8.0))),
+                                                          child: Center(
+                                                            child: Text(
+                                                              'Chat',
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      8.0.sp,
+                                                                  color: Constants
+                                                                      .bgColor,
+                                                                  fontFamily:
+                                                                      'Montserrat',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                              ),
+                                            )
+                                          : widget.searchIn == 'E' ||
+                                                  widget.searchIn == 'L'
+                                              ? Padding(
+                                                  padding: EdgeInsets.only(
+                                                    right: 2.0.w,
+                                                  ),
+                                                  child: GestureDetector(
+                                                    onTap: () async {
+                                                      await connect
+                                                          .connectionApi(
+                                                              _userId[index],
+                                                              authToken!);
+                                                    },
+                                                    child: Container(
+                                                      height: 3.5.h,
+                                                      width: 16.0.w,
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              color: Constants
+                                                                  .bgColor,
+                                                              width: 0.5),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          8.0))),
+                                                      child: Center(
+                                                        child: Text(
+                                                          'Connect',
+                                                          style: TextStyle(
+                                                              fontSize: 8.0.sp,
+                                                              color: Constants
+                                                                  .bgColor,
+                                                              fontFamily:
+                                                                  'Montserrat',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container()),
                                 ),
-                              )
-                              : widget.searchIn == 'E' || widget.searchIn == 'L'
-                              ? Padding(
-                                padding:
-                                    EdgeInsets.only(right: 2.0.w,),
-                                child: GestureDetector(
-                                  onTap: () async{
-                                    //print('$index is Connected');
-                                    await connect.connectionApi(_userId[index], authToken!);
-                                    // setState(() {
-                                    //   isLoading = true;
-                                    //   page = 1;
-                                    //   _userId = [];
-                                    //   _profileImage = [];
-                                    //   _name = [];
-                                    //   _lastDegree = [];
-                                    //   _schoolName = [];
-                                    //   _date = [];
-                                    //   _distance = [];
-                                    // });         
-                                   // getEducatorListApi(page);
-                                  },
-                                  child: Container(
-                                    height: 3.5.h,
-                                    width: 16.0.w,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Constants.bgColor, width: 0.5),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8.0))),
-                                    child: Center(
-                                      child: Text(
-                                        'Connect',
-                                        style: TextStyle(
-                                            fontSize: 8.0.sp,
-                                            color: Constants.bgColor,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ) : Container()
                               ),
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-          )
-    );
+                            ),
+                          );
+                        }),
+              ));
   }
- 
- //Search API for connection and Request Tab
- Future<void> searchApi(String search) async {
-    //var delResult = PostDelete();
-  
-  setState(() {
-    isLoading =true;
-    registerAs = registerAs == 'E' ? 'L' : 'E';
-  });
+
+  Future<void> searchApi(String search) async {
+    setState(() {
+      isLoading = true;
+      registerAs = registerAs == 'E' ? 'L' : 'E';
+    });
     try {
       Dio dio = Dio();
 
-      //FormData formData = FormData.fromMap({'search_in': widget.searchIn, 'search': searchController.text});
-      var response = await dio.get('${Config.searchUserUrl}?search_in=${widget.searchIn}&search=$search&page=$page&user_type=$registerAs',
-          //data: formData,
+      var response = await dio.get(
+          '${Config.searchUserUrl}?search_in=${widget.searchIn}&search=$search&page=$page&user_type=$registerAs',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
         map = response.data;
         mapData = map!['data'];
-        //saveMapData = map['data']['status'];
 
-        //print(mapData);
-        // setState(() {
-        //   isLoading = false;
-        // });
-        //print('LENGTH: ' + mapData!.length.toString());
         _userId = [];
         _profileImage = [];
         _name = [];
@@ -589,7 +514,7 @@ class _SearchForLearnerScreenState extends State<SearchForLearnerScreen> {
         _date = [];
         _distance = [];
         _email = [];
-        setState((){});
+        setState(() {});
         if (mapData!.length > 0) {
           for (int i = 0; i < mapData!.length; i++) {
             _userId.add(mapData![i]['user_id']);
@@ -598,23 +523,13 @@ class _SearchForLearnerScreenState extends State<SearchForLearnerScreen> {
             _lastDegree.add(mapData![i]['last_degree']);
             _schoolName.add(mapData![i]['school_name']);
             _date.add(mapData![i]['date']);
-            //_email.add(mapData![i]['email']);
-            if(widget.searchIn == 'C' || widget.searchIn == 'R'){
-               _status.add(mapData![i]['status']);
-            } else //if(widget.searchIn == 'E' || widget.searchIn == 'L')
-            {
+
+            if (widget.searchIn == 'C' || widget.searchIn == 'R') {
+              _status.add(mapData![i]['status']);
+            } else {
               _distance.add(mapData![i]['distance']);
             }
-           
-            
           }
-          // k++;
-          // //print(k);
-          //print(_profileImage);
-          //print(_lastDegree);
-          //print(_schoolName);
-          //print(_distance);
-          //print('EMAIL:::'+_email.toString());
 
           isLoading = false;
           setState(() {});
@@ -627,16 +542,10 @@ class _SearchForLearnerScreenState extends State<SearchForLearnerScreen> {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -650,31 +559,21 @@ class _SearchForLearnerScreenState extends State<SearchForLearnerScreen> {
     }
   }
 
-  //Search API for Educator List and Learner Tab
- Future<void> searchApiTwo(String search) async {
-    //var delResult = PostDelete();
-  
-  setState(() {
-    isLoading =true;
-  });
+  Future<void> searchApiTwo(String search) async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       Dio dio = Dio();
 
-      //FormData formData = FormData.fromMap({'search_in': widget.searchIn, 'search': searchController.text});
-      var response = await dio.get('${Config.searchUserUrl}?search_in=${widget.searchIn}&search=$search',
-          //data: formData,
+      var response = await dio.get(
+          '${Config.searchUserUrl}?search_in=${widget.searchIn}&search=$search',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
         map = response.data;
         mapData = map!['data'];
-        //saveMapData = map['data']['status'];
 
-        //print(mapData);
-        // setState(() {
-        //   isLoading = false;
-        // });
-        //print('LENGTH: ' + mapData!.length.toString());
         _userId = [];
         _profileImage = [];
         _name = [];
@@ -682,7 +581,7 @@ class _SearchForLearnerScreenState extends State<SearchForLearnerScreen> {
         _schoolName = [];
         _date = [];
         _distance = [];
-        setState((){});
+        setState(() {});
         if (mapData!.length > 0) {
           for (int i = 0; i < mapData!.length; i++) {
             _userId.add(mapData![i]['user_id']);
@@ -692,13 +591,7 @@ class _SearchForLearnerScreenState extends State<SearchForLearnerScreen> {
             _schoolName.add(mapData![i]['school_name']);
             _date.add(mapData![i]['date']);
             _distance.add(mapData![i]['distance']);
-            //_distance.add(mapData[i].distance);
           }
-          // k++;
-          // //print(k);
-          //print(_profileImage);
-          //print(_lastDegree);
-          //print(_schoolName);
 
           isLoading = false;
           setState(() {});
@@ -711,16 +604,10 @@ class _SearchForLearnerScreenState extends State<SearchForLearnerScreen> {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -734,10 +621,7 @@ class _SearchForLearnerScreenState extends State<SearchForLearnerScreen> {
     }
   }
 
-//For request Action
-   Future<void> requestActionApi(int? reqId, String action) async {
-    //var delResult = PostDelete();
-
+  Future<void> requestActionApi(int? reqId, String action) async {
     try {
       Dio dio = Dio();
 
@@ -748,27 +632,9 @@ class _SearchForLearnerScreenState extends State<SearchForLearnerScreen> {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
-        //delResult = postDeleteFromJson(response.data);
         actionMap = response.data;
-        //saveMapData = map['data']['status'];
 
-        //print(actionMap);
-        // setState(() {
-        //   isLoading = false;
-        // });
         if (actionMap!['status'] == true) {
-          //print('true');
-          // setState(() {
-          //   isLoading = true;
-          //   page = 1;
-          //   _userId = [];
-          //   _profileImage = [];
-          //   _name = [];
-          //   _lastDegree = [];
-          //   _schoolName = [];
-          //   _status = [];
-          // });
-          //getRequestApi(page);
           Fluttertoast.showToast(
               msg: actionMap!['message'],
               backgroundColor: Constants.bgColor,
@@ -777,7 +643,6 @@ class _SearchForLearnerScreenState extends State<SearchForLearnerScreen> {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          //print('false');
           if (actionMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: actionMap!['error_msg'],
@@ -796,68 +661,49 @@ class _SearchForLearnerScreenState extends State<SearchForLearnerScreen> {
                 textColor: Colors.white);
           }
         }
-        //getEducatorPostApi(page);
-        ////print(saveMap);
-      } else {
-        //print(response.statusCode);
-      }
-    } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
-    }
+      } else {}
+    } on DioError catch (e, stack) {}
   }
 
-   Future<void> getUserProfile(id) async {
-    // displayProgressDialog(context);
-
+  Future<void> getUserProfile(id) async {
     Map<String, dynamic>? map = {};
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        //print(map!['data']);
-        ////print(mapData);
         if (map!['data'] != null) {
           setState(() {});
           map['data']['role'] == 'E'
               ? pushNewScreen(context,
-              screen: EducatorProfileViewScreen(id: id,),
-              withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation.cupertino)
-              :
-          pushNewScreen(context,
-              screen: LearnerProfileViewScreen(id: id,),
-              withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation
-                  .cupertino);
+                  screen: EducatorProfileViewScreen(
+                    id: id,
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino)
+              : pushNewScreen(context,
+                  screen: LearnerProfileViewScreen(
+                    id: id,
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino);
         } else {
           isLoading = false;
           setState(() {});
         }
-        ////print(result.data);
-        //return result;
+
         setState(() {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -871,7 +717,7 @@ class _SearchForLearnerScreenState extends State<SearchForLearnerScreen> {
     }
   }
 
-    displayProgressDialog(BuildContext context) {
+  displayProgressDialog(BuildContext context) {
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
@@ -882,5 +728,4 @@ class _SearchForLearnerScreenState extends State<SearchForLearnerScreen> {
   closeProgressDialog(BuildContext context) {
     Navigator.of(context).pop();
   }
-
 }

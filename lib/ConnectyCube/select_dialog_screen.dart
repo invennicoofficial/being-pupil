@@ -18,10 +18,6 @@ import 'chat_dialog_screen.dart';
 import 'consts.dart';
 import 'package:badges/badges.dart';
 
-// import 'new_dialog_screen.dart';
-// import '../src/utils/api_utils.dart';
-// import '../src/utils/consts.dart';
-
 class SelectDialogScreen extends StatelessWidget {
   static const String TAG = "SelectDialogScreen";
   final CubeUser currentUser;
@@ -42,8 +38,7 @@ class SelectDialogScreen extends StatelessWidget {
               color: Colors.white,
               size: 35.0,
             ),
-            onPressed: //null,
-                () {
+            onPressed: () {
               Navigator.of(context).pop();
             },
           ),
@@ -51,17 +46,7 @@ class SelectDialogScreen extends StatelessWidget {
             'Chats',
             style: TextStyle(
                 fontFamily: 'Montserrat', color: Colors.white, fontSize: 20.0),
-            //'Logged in as ${currentUser.fullName}',
           ),
-          // actions: <Widget>[
-          //   IconButton(
-          //     onPressed: () => _openSettings(context),
-          //     icon: Icon(
-          //       Icons.settings,
-          //       color: Colors.white,
-          //     ),
-          //   ),
-          // ],
         ),
         body: BodyLayout(currentUser),
       ),
@@ -128,26 +113,8 @@ class _BodyLayoutState extends State<BodyLayout> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   heroTag: "New dialog",
-      //   child: Icon(
-      //     Icons.chat,
-      //     color: Colors.white,
-      //   ),
-      //   backgroundColor: Colors.blue,
-      //   onPressed: () => _createNewDialog(context),
-      // ),
     );
   }
-
-  // void _createNewDialog(BuildContext context) async {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => CreateChatScreen(currentUser),
-  //     ),
-  //   ).then((value) => refresh());
-  // }
 
   void _processGetDialogError(exception) {
     log("GetDialog error $exception", TAG);
@@ -180,7 +147,9 @@ class _BodyLayoutState extends State<BodyLayout> {
           Center(
             child: Image.asset('assets/images/beginChat.png'),
           ),
-          SizedBox(height: 25.0,),
+          SizedBox(
+            height: 25.0,
+          ),
           Text(
             "No dialogs yet... Begin chat",
             style: TextStyle(
@@ -219,15 +188,11 @@ class _BodyLayoutState extends State<BodyLayout> {
     }
 
     getDialogAvatarWidget() {
-      // getCCToken();
       var dialog = dialogList[index].data;
       if (dialog.photo == null) {
         return CircleAvatar(
             radius: 25, backgroundColor: greyColor3, child: getDialogIcon());
       } else {
-        // String? avatarUrl = getPrivateUrlForUid(dialog.userId.toString());
-        // print('CCAV:::.'+avatarUrl!);
-        
         return CachedNetworkImage(
           placeholder: (context, url) => Container(
             child: CircularProgressIndicator(
@@ -243,8 +208,7 @@ class _BodyLayoutState extends State<BodyLayout> {
               ),
             ),
           ),
-          imageUrl: //'https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/fxj5vmias8fcvuhn627q',
-              //dialogList[index].data.photo!,
+          imageUrl:
               'https://api.connectycube.com/blobs/${dialogList[index].data.photo!}?token=$ccToken',
           width: 45.0,
           height: 45.0,
@@ -354,14 +318,10 @@ class _BodyLayoutState extends State<BodyLayout> {
   }
 
   void _openDialog(BuildContext context, CubeDialog dialog, int index) async {
-    // Navigator.pushNamed(context, 'chat_dialog',
-    //     arguments: {USER_ARG_NAME: currentUser, DIALOG_ARG_NAME: dialog});
     displayProgressDialog(context);
     SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
     CubeUser? user = sharedPrefs.getUser();
-    //print(_email[index]);
-    //getUserByEmail(_email[index]!)
-    //getUserById().then((cubeUser) {
+
     CubeDialog newDialog = CubeDialog(CubeDialogType.PRIVATE,
         occupantsIds: dialogList[index].data.occupantsIds);
     createDialog(newDialog).then((createdDialog) {
@@ -379,9 +339,6 @@ class _BodyLayoutState extends State<BodyLayout> {
     }).catchError((error) {
       displayProgressDialog(context);
     });
-    // }).catchError((error) {
-    //   //displayProgressDialog(context);
-    // });
   }
 
   displayProgressDialog(BuildContext context) {
@@ -402,11 +359,10 @@ class _BodyLayoutState extends State<BodyLayout> {
     });
   }
 
-   getCCToken() async{
-      SharedPreferences preff = await SharedPreferences.getInstance();
-      ccToken = preff.getString('ccToken');
-      print('CC::'+ ccToken!);
-    }
+  getCCToken() async {
+    SharedPreferences preff = await SharedPreferences.getInstance();
+    ccToken = preff.getString('ccToken');
+  }
 
   @override
   void initState() {

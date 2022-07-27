@@ -19,8 +19,8 @@ class _FAQScreenState extends State<FAQScreen> {
 
   @override
   void initState() {
-    //getFaqLink();
-    // TODO: implement initState
+    
+    
     super.initState();
   }
 
@@ -36,12 +36,12 @@ class _FAQScreenState extends State<FAQScreen> {
             color: Colors.white,
             size: 35.0,
           ),
-          onPressed: //null,
+          onPressed: 
               () {
             Navigator.of(context).pop();
-            // pushNewScreen(context,
-            //     screen: HomeScreen(),
-            //     pageTransitionAnimation: PageTransitionAnimation.fade);
+            
+            
+            
           },
           padding: EdgeInsets.zero,
         ),
@@ -55,33 +55,33 @@ class _FAQScreenState extends State<FAQScreen> {
         ),
       ),
        body: 
-      //  isLinkLoading
-      //     ? Center(
-      //         child: CircularProgressIndicator(
-      //         valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
-      //       ))
-      //     :  
+      
+      
+      
+      
+      
+      
           WebView(
             key: _key,
-       initialUrl: 'https://beingpupil.com/faqs',//link,
+       initialUrl: 'https://beingpupil.com/faqs',
        javascriptMode: JavascriptMode.unrestricted,
       )
-      // Container(
-      //   child: Padding(
-      //     padding: const EdgeInsets.all(8.0),
-      //     child: Text('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      //       style: TextStyle(
-      //           fontFamily: 'Montserrat',
-      //           fontSize: 12.0.sp,
-      //           fontWeight: FontWeight.w500,
-      //           color: Colors.black),
-      //     ),
-      //   ),
-      // ),
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
     );
   }
 
-  //get T&C linl
+  
   Future<void> getFaqLink() async{
     var dio = Dio();
 
@@ -106,10 +106,10 @@ class _FAQScreenState extends State<FAQScreen> {
       }
     }on DioError catch(e, sacktrace){
        isLinkLoading = false;
-        link = 'hhttps://beingpupil.com/faqss';
+        link = 'https://beingpupil.com/faqs';
         setState(() {});
-      //print(e.toString());
-      //print(sacktrace.toString());
+      
+      
     }
   }
 }

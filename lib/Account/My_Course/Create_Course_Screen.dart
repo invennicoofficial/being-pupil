@@ -17,9 +17,7 @@ class CreateCourseScreen extends StatefulWidget {
 }
 
 class _CreateCourseScreenState extends State<CreateCourseScreen> {
-  //List<Widget> childeren = [];
-  List<TextEditingController> linkControllers =
-      []; //List<TextEditingController>();
+  List<TextEditingController> linkControllers = [];
   int linkCount = 1;
   DateTime? startDate, endDate;
   bool isStartDateSelected = false, isEndDateSelected = false;
@@ -30,7 +28,6 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     linkControllers.add(TextEditingController());
     getToken();
@@ -43,7 +40,6 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
   wordCountForDescription(String str) {
     setState(() {
       wordCount = str.split(" ").length;
-      //print('Total Word Count:::' + wordCount.toString());
     });
   }
 
@@ -79,46 +75,12 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              TextInputWidget(textEditingController: courseNameController, lable: 'Course Name'),
-              MultilineTextInput(textEditingController: courseDescController, hint: 'Course Description'),
-              // Container(
-              //   height: 13.0.h,
-              //   width: 90.0.w,
-              //   child: TextFormField(
-              //     controller: courseDescController,
-              //     maxLines: 5,
-              //     keyboardType: TextInputType.multiline,
-              //     //maxLength: 100,
-              //     decoration: InputDecoration(
-              //       labelText: "Course Description",
-              //       labelStyle: TextStyle(
-              //           color: Constants.bpSkipStyle,
-              //           fontFamily: "Montserrat",
-              //           fontSize: 10.0.sp),
-              //       alignLabelWithHint: true,
-              //       //counterText: '',
-              //       fillColor: Colors.white,
-              //       focusedBorder: OutlineInputBorder(
-              //         borderRadius: BorderRadius.circular(5.0),
-              //         borderSide: BorderSide(
-              //           color: Constants.formBorder,
-              //         ),
-              //       ),
-              //       enabledBorder: OutlineInputBorder(
-              //         borderRadius: BorderRadius.circular(5.0),
-              //         borderSide: BorderSide(
-              //           color: Constants.formBorder,
-              //           //width: 2.0,
-              //         ),
-              //       ),
-              //       // hintText:
-              //       //     "Please mention your achivements..."
-              //     ),
-              //     //keyboardType: TextInputType.emailAddress,
-              //     style: new TextStyle(
-              //         fontFamily: "Montserrat", fontSize: 10.0.sp),
-              //   ),
-              // ),
+              TextInputWidget(
+                  textEditingController: courseNameController,
+                  lable: 'Course Name'),
+              MultilineTextInput(
+                  textEditingController: courseDescController,
+                  hint: 'Course Description'),
               Row(
                 children: [
                   Padding(
@@ -136,11 +98,9 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                 ],
               ),
               Padding(
-                padding:
-                    EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 3.0.h),
+                padding: EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 3.0.h),
                 child: GestureDetector(
                   onTap: () async {
-                   // print('Date Picker!!!');
                     final datePick = await showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
@@ -157,13 +117,11 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                             startDateInString =
                                 "0${startDate!.day.toString()}/0${startDate!.month}/${startDate!.year}";
                           });
-                          //print('11111');
                         } else if (startDate!.day.toString().length == 1) {
                           setState(() {
                             startDateInString =
                                 "0${startDate!.day}/${startDate!.month}/${startDate!.year}";
                           });
-                          //print('22222');
                         } else if (startDate!.month.toString().length == 1) {
                           startDateInString =
                               "${startDate!.day}/0${startDate!.month}/${startDate!.year}";
@@ -171,19 +129,16 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                           startDateInString =
                               "${startDate!.day}/${startDate!.month}/${startDate!.year}";
                         }
-                        // 08/14/2019
                       });
                     }
-                
                   },
                   child: Container(
-                    height: 48.0,//7.0.h,
+                    height: 48.0,
                     width: 90.0.w,
                     padding: EdgeInsets.symmetric(horizontal: 3.0.w),
                     decoration: BoxDecoration(
                       border: Border.all(color: Constants.formBorder),
                       borderRadius: BorderRadius.circular(5.0),
-                      //color: Colors.transparent,//Color(0xFFA8B4C1).withOpacity(0.5),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -206,64 +161,58 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                 ),
               ),
               Padding(
-                padding:
-                    EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 2.0.h),
+                padding: EdgeInsets.only(left: 3.0.w, right: 3.0.w, top: 2.0.h),
                 child: GestureDetector(
                   onTap: () async {
-                    //print('Date Picker!!!');
-                    if(startDate != null){
-                    final datePick = await showDatePicker(
-                        context: context,
-                        initialDate: startDate!,
-                        firstDate: startDate!,
-                        lastDate: new DateTime(2100),
-                        helpText: 'Select Course Date');
-                    if (datePick != null && datePick != endDate) {
-                      setState(() {
-                        endDate = datePick;
-                        isEndDateSelected = true;
-                        if (endDate!.day.toString().length == 1 &&
-                            endDate!.month.toString().length == 1) {
-                          setState(() {
+                    if (startDate != null) {
+                      final datePick = await showDatePicker(
+                          context: context,
+                          initialDate: startDate!,
+                          firstDate: startDate!,
+                          lastDate: new DateTime(2100),
+                          helpText: 'Select Course Date');
+                      if (datePick != null && datePick != endDate) {
+                        setState(() {
+                          endDate = datePick;
+                          isEndDateSelected = true;
+                          if (endDate!.day.toString().length == 1 &&
+                              endDate!.month.toString().length == 1) {
+                            setState(() {
+                              endDateInString =
+                                  "0${endDate!.day.toString()}/0${endDate!.month}/${endDate!.year}";
+                            });
+                          } else if (endDate!.day.toString().length == 1) {
+                            setState(() {
+                              endDateInString =
+                                  "0${endDate!.day}/${endDate!.month}/${endDate!.year}";
+                            });
+                          } else if (endDate!.month.toString().length == 1) {
                             endDateInString =
-                                "0${endDate!.day.toString()}/0${endDate!.month}/${endDate!.year}";
-                          });
-                         // print('11111');
-                        } else if (endDate!.day.toString().length == 1) {
-                          setState(() {
+                                "${endDate!.day}/0${endDate!.month}/${endDate!.year}";
+                          } else {
                             endDateInString =
-                                "0${endDate!.day}/${endDate!.month}/${endDate!.year}";
-                          });
-                          //print('22222');
-                        } else if (endDate!.month.toString().length == 1) {
-                          endDateInString =
-                              "${endDate!.day}/0${endDate!.month}/${endDate!.year}";
-                        } else {
-                          endDateInString =
-                              "${endDate!.day}/${endDate!.month}/${endDate!.year}";
-                        }
-                        // 08/14/2019
-                      });
-                    }
-                    }else {
+                                "${endDate!.day}/${endDate!.month}/${endDate!.year}";
+                          }
+                        });
+                      }
+                    } else {
                       Fluttertoast.showToast(
-                       msg: "Please Select Start Date First",
-                       toastLength: Toast.LENGTH_SHORT,
-                       gravity: ToastGravity.BOTTOM,
-                       timeInSecForIosWeb: 1,
-                       backgroundColor: Constants.bgColor,
-                       textColor: Colors.white,
-                       fontSize: 10.0.sp);
+                          msg: "Please Select Start Date First",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Constants.bgColor,
+                          textColor: Colors.white,
+                          fontSize: 10.0.sp);
                     }
                   },
                   child: Container(
-                    height: 48.0,//7.0.h,
+                    height: 48.0,
                     width: 90.0.w,
                     padding: EdgeInsets.symmetric(horizontal: 3.0.w),
                     decoration: BoxDecoration(
                       border: Border.all(color: Constants.formBorder),
                       borderRadius: BorderRadius.circular(5.0),
-                      //color: Colors.transparent,//Color(0xFFA8B4C1).withOpacity(0.5),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -307,16 +256,18 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        LinkInputWidget(textEditingController: linkControllers[index], lable: 'Link', moreLink: true,),
+                        LinkInputWidget(
+                          textEditingController: linkControllers[index],
+                          lable: 'Link',
+                          moreLink: true,
+                        ),
                         GestureDetector(
                             onTap: () {
-                             // print('Remove ${index + 1} Link');
                               if (linkControllers.length > 1) {
                                 setState(() {
                                   linkControllers.removeAt(index);
                                 });
                               }
-                              //print(educationDetailMap);
                             },
                             child: Padding(
                               padding: EdgeInsets.only(top: 2.5.h),
@@ -373,95 +324,77 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
               Padding(
                 padding: EdgeInsets.only(left: 2.0.w, right: 2.0.w, top: 3.0.h),
                 child: GestureDetector(
-                  onTap: () {
-                   // print('ADD!!!!');
-                    wordCountForDescription(courseDescController.text);
-                    if (courseNameController.text.isEmpty) {
-                      Fluttertoast.showToast(
-                        msg: 'Please Enter Course Name',
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Constants.bgColor,
-                        textColor: Colors.white,
-                        fontSize: 10.0.sp,
-                      );
-                    } else if (courseDescController.text.isEmpty) {
-                      Fluttertoast.showToast(
-                        msg: 'Please Enter Description',
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Constants.bgColor,
-                        textColor: Colors.white,
-                        fontSize: 10.0.sp,
-                      );
-                    } else if (startDate == null) {
-                      Fluttertoast.showToast(
-                        msg: 'Please Select Start Date',
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Constants.bgColor,
-                        textColor: Colors.white,
-                        fontSize: 10.0.sp,
-                      );
-                    } else if (endDate == null) {
-                      Fluttertoast.showToast(
-                        msg: 'Please Select End Date',
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Constants.bgColor,
-                        textColor: Colors.white,
-                        fontSize: 10.0.sp,
-                      );
-                    } else if (linkControllers[0].text.isEmpty) {
-                      Fluttertoast.showToast(
-                        msg: 'Please Enter Course Link',
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Constants.bgColor,
-                        textColor: Colors.white,
-                        fontSize: 10.0.sp,
-                      );
-                    } else if (wordCount > 100) {
-                      Fluttertoast.showToast(
-                        msg: 'Please Use 100 Words in Course Description',
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Constants.bgColor,
-                        textColor: Colors.white,
-                        fontSize: 10.0.sp,
-                      );
-                    } else {
-                      createCourseAPI();
-                    }
-                  },
-                  child: ButtonWidget(btnName: 'ADD COURSE', isActive: true, fontWeight: FontWeight.w500,)
-                  // Container(
-                  //   height: 7.0.h,
-                  //   width: 90.0.w,
-                  //   decoration: BoxDecoration(
-                  //       border: Border.all(
-                  //         color: Constants.bgColor,
-                  //       ),
-                  //       color: Constants.bgColor,
-                  //       borderRadius: BorderRadius.circular(5.0)),
-                  //   child: Center(
-                  //     child: Text(
-                  //       'Add course'.toUpperCase(),
-                  //       style: TextStyle(
-                  //           fontFamily: 'Montserrat',
-                  //           fontWeight: FontWeight.w500,
-                  //           fontSize: 11.0.sp,
-                  //           color: Colors.white),
-                  //     ),
-                  //   ),
-                  // ),
-                ),
+                    onTap: () {
+                      wordCountForDescription(courseDescController.text);
+                      if (courseNameController.text.isEmpty) {
+                        Fluttertoast.showToast(
+                          msg: 'Please Enter Course Name',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Constants.bgColor,
+                          textColor: Colors.white,
+                          fontSize: 10.0.sp,
+                        );
+                      } else if (courseDescController.text.isEmpty) {
+                        Fluttertoast.showToast(
+                          msg: 'Please Enter Description',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Constants.bgColor,
+                          textColor: Colors.white,
+                          fontSize: 10.0.sp,
+                        );
+                      } else if (startDate == null) {
+                        Fluttertoast.showToast(
+                          msg: 'Please Select Start Date',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Constants.bgColor,
+                          textColor: Colors.white,
+                          fontSize: 10.0.sp,
+                        );
+                      } else if (endDate == null) {
+                        Fluttertoast.showToast(
+                          msg: 'Please Select End Date',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Constants.bgColor,
+                          textColor: Colors.white,
+                          fontSize: 10.0.sp,
+                        );
+                      } else if (linkControllers[0].text.isEmpty) {
+                        Fluttertoast.showToast(
+                          msg: 'Please Enter Course Link',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Constants.bgColor,
+                          textColor: Colors.white,
+                          fontSize: 10.0.sp,
+                        );
+                      } else if (wordCount > 100) {
+                        Fluttertoast.showToast(
+                          msg: 'Please Use 100 Words in Course Description',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Constants.bgColor,
+                          textColor: Colors.white,
+                          fontSize: 10.0.sp,
+                        );
+                      } else {
+                        createCourseAPI();
+                      }
+                    },
+                    child: ButtonWidget(
+                      btnName: 'ADD COURSE',
+                      isActive: true,
+                      fontWeight: FontWeight.w500,
+                    )),
               ),
             ],
           ),
@@ -470,7 +403,6 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
     );
   }
 
-  //Create Course API
   Future<CreateCourse> createCourseAPI() async {
     displayProgressDialog(context);
     var result = CreateCourse();
@@ -493,7 +425,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
       if (response.statusCode == 200) {
         closeProgressDialog(context);
         result = CreateCourse.fromJson(response.data);
-        //print(response.data);
+
         if (result.status == true) {
           Fluttertoast.showToast(
             msg: result.message!,
@@ -528,12 +460,8 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
         );
       }
     } on DioError catch (e, stack) {
-     // print(e.response);
-     // print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        // print("This is the error message::::" +
-        //     e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -543,11 +471,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-       // print(e.message);
-      }
+      } else {}
     }
     return result;
   }

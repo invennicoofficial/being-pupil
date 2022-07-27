@@ -49,7 +49,7 @@ class _LearnerScreenState extends State<LearnerScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    //print(authToken);
+
     getData();
   }
 
@@ -66,28 +66,18 @@ class _LearnerScreenState extends State<LearnerScreen> {
           if (learner.data!.length > 0) {
             page++;
             getLearnerListApi(page);
-            //print(_name);
-            //print(page);
           }
         } else {
           page++;
           getLearnerListApi(page);
-          //print(_name);
-          //print(page);
         }
       }
     });
   }
 
   void _onLoading() async {
-    //if (mounted) setState(() {});
-    // if (request.data.length > 0) {
-    //   //_refreshController.loadComplete();
-    //   _refreshController.requestLoading();
-    // } else {
     _refreshController.loadComplete();
     _refreshController.loadNoData();
-    //}
   }
 
   @override
@@ -96,21 +86,10 @@ class _LearnerScreenState extends State<LearnerScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Constants.bgColor,
-        // leading: IconButton(
-        //   icon: Icon(
-        //     Icons.west_rounded,
-        //     color: Colors.white,
-        //     size: 35.0,
-        //   ),
-        //   onPressed: //null,
-        //       () {
-        //     Navigator.of(context).pop();
-        //   },
-        //   padding: EdgeInsets.zero,
-        // ),
         actions: <Widget>[
           IconButton(
-               icon: Image.asset('assets/icons/searchNew.png', height: 20.0, width: 20.0, color: Colors.white),
+              icon: Image.asset('assets/icons/searchNew.png',
+                  height: 20.0, width: 20.0, color: Colors.white),
               onPressed: () {
                 pushNewScreen(context,
                     screen: SearchScreen(
@@ -136,26 +115,19 @@ class _LearnerScreenState extends State<LearnerScreen> {
                     new AlwaysStoppedAnimation<Color>(Constants.bgColor),
               ),
             )
-          :
-          // SingleChildScrollView(
-          //     controller: _scrollController,
-          //     physics: BouncingScrollPhysics(),
-          //     child:
-          SmartRefresher(
+          : SmartRefresher(
               controller: _refreshController,
               enablePullDown: false,
               enablePullUp: true,
               footer: ClassicFooter(
                 loadStyle: LoadStyle.ShowWhenLoading,
                 noDataText: 'No More Learners',
-                //noMoreIcon: Icon(Icons.refresh_outlined),
               ),
               onLoading: _onLoading,
               child: ListView.builder(
                   controller: _scrollController,
                   padding:
                       EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
-                  //physics: BouncingScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: _userId.length == 0 ? 0 : _userId.length,
                   itemBuilder: (context, index) {
@@ -164,7 +136,6 @@ class _LearnerScreenState extends State<LearnerScreen> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 2.0.w),
                         child: Container(
-                          //height: 10.0.h,
                           child: ListTile(
                               contentPadding: EdgeInsets.zero,
                               title: Row(
@@ -172,8 +143,8 @@ class _LearnerScreenState extends State<LearnerScreen> {
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(50),
-                                    child:CachedNetworkImage(
-                                                imageUrl: _profileImage[index]!,
+                                    child: CachedNetworkImage(
+                                      imageUrl: _profileImage[index]!,
                                       width: 40.0,
                                       height: 40.0,
                                       fit: BoxFit.cover,
@@ -219,7 +190,6 @@ class _LearnerScreenState extends State<LearnerScreen> {
                                     EdgeInsets.only(right: 2.0.w, top: 0.0.h),
                                 child: GestureDetector(
                                   onTap: () async {
-                                    //print('$index is Connected');
                                     await connect.connectionApi(
                                         _userId[index], authToken!);
                                     setState(() {
@@ -265,24 +235,15 @@ class _LearnerScreenState extends State<LearnerScreen> {
     );
   }
 
-  //Get Learner List API
   Future<void> getLearnerListApi(int page) async {
-    // displayProgressDialog(context);
-
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.getLearnerListUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
-        // closeProgressDialog(context);
-        //return EducatorPost.fromJson(json)
-        //result = EducatorPost.fromJson(response.data);
         learner = LearnerListModel.fromJson(response.data);
-
-        ////print(learner.data[0].name);
 
         if (learner.data!.length > 0) {
           for (int i = 0; i < learner.data!.length; i++) {
@@ -295,8 +256,6 @@ class _LearnerScreenState extends State<LearnerScreen> {
             _distance.add(learner.data![i].distance);
           }
 
-          //print(_userId);
-
           isLoading = false;
           setState(() {});
         } else {
@@ -308,16 +267,10 @@ class _LearnerScreenState extends State<LearnerScreen> {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,

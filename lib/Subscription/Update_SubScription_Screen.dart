@@ -62,7 +62,6 @@ class _UpdateSubscriptionPlanScreen
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    //print(authToken);
     getData();
     getAllPlanList();
   }
@@ -397,7 +396,8 @@ class _UpdateSubscriptionPlanScreen
                     decoration: BoxDecoration(
                         color: Constants.bgColor,
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Constants.bgColor, width: 1.0)),
+                        border:
+                            Border.all(color: Constants.bgColor, width: 1.0)),
                     child: Center(
                       child: Text("Continue",
                           style: TextStyle(
@@ -422,7 +422,6 @@ class _UpdateSubscriptionPlanScreen
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         result = GetAllPlanList.fromJson(response.data);
-        //print(response);
         if (result.status == true) {
           for (int i = 0; i < result.data!.plan!.length; i++) {
             planList.add(result.data!.plan![i].planName!);
@@ -437,11 +436,8 @@ class _UpdateSubscriptionPlanScreen
         }
       }
     } on DioError catch (e, stack) {
-      //print(e.message);
-      //print(stack);
+      ;
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -469,10 +465,11 @@ class _UpdateSubscriptionPlanScreen
       if (response.statusCode == 200) {
         closeProgressDialog(context);
         result = UpdateSubscription.fromJson(response.data);
-        //print(response);
+
         if (result.status == true) {
           setState(() {
-            subscriptionId = result.data!.plan!.planId!.toString();//result.data!.updatedPlanSubscriptionId;
+            subscriptionId = result.data!.plan!.planId!
+                .toString(); //result.data!.updatedPlanSubscriptionId;
             userName = result.data!.userName;
             mobileNumber = result.data!.userMobile;
             email = result.data!.userEmail;
@@ -480,8 +477,9 @@ class _UpdateSubscriptionPlanScreen
           Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => PaymentSucessScreen(
-                       amountPaid: result.data!.plan!.planAmount!,//amountPaid!,
-                       planName: result.data!.plan!.planName!,
+                        amountPaid:
+                            result.data!.plan!.planAmount!, //amountPaid!,
+                        planName: result.data!.plan!.planName!,
                       )),
               (Route<dynamic> route) => false);
           // Fluttertoast.showToast(
@@ -522,11 +520,8 @@ class _UpdateSubscriptionPlanScreen
       }
     } on DioError catch (e, stack) {
       closeProgressDialog(context);
-      //print(e.message);
-      //print(stack);
+
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -560,7 +555,7 @@ class _UpdateSubscriptionPlanScreen
       if (response.statusCode == 200) {
         closeProgressDialog(context);
         result = VerifySubscription.fromJson(response.data);
-        //print(response);
+
         if (result.status == true) {
           setState(() {
             preferences.setString('razorpayLink', result.data!.razorpayLink!);
@@ -579,7 +574,8 @@ class _UpdateSubscriptionPlanScreen
             Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                 MaterialPageRoute(
                     builder: (context) => PaymentSucessScreen(
-                          amountPaid: result.data!.plan!.planAmount!,//amountPaid!,
+                          amountPaid:
+                              result.data!.plan!.planAmount!, //amountPaid!,
                           planName: result.data!.plan!.planName!,
                         )),
                 (Route<dynamic> route) => false);
@@ -612,7 +608,8 @@ class _UpdateSubscriptionPlanScreen
             Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                 MaterialPageRoute(
                     builder: (context) => PaymentSucessScreen(
-                          amountPaid: result.data!.plan!.planAmount!,//amountPaid!,
+                          amountPaid:
+                              result.data!.plan!.planAmount!, //amountPaid!,
                           planName: result.data!.plan!.planName!,
                         )),
                 (Route<dynamic> route) => false);
@@ -631,18 +628,13 @@ class _UpdateSubscriptionPlanScreen
       }
     } on DioError catch (e, stack) {
       closeProgressDialog(context);
-      //print(e.message);
-      //print(stack);
     }
     return result;
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // Do something when payment succeeds
-    //print('kama liyaa!');
-    //print(subscriptionId);
-    //print(response.paymentId);
-    //print(response.signature);
+
     setState(() {
       paymentID = response.paymentId!;
       paySignature = response.signature!;
@@ -683,8 +675,7 @@ class _UpdateSubscriptionPlanScreen
     if (response.statusCode == 200) {
       String jsonResponse = await response.stream.bytesToString();
       map = json.decode(jsonResponse);
-      //print(map!['id']);
-      //print('MAP:::::' + map.toString());
+
       //TODO: Change Razorpay Keys
       var options = {
         'key': 'rzp_test_MtDrPPLWbUdsY7',

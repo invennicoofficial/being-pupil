@@ -89,7 +89,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    //print(authToken);
+
     getData();
   }
 
@@ -101,8 +101,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
       qualification = preferences.getString('qualification');
       school = preferences.getString('schoolName');
     });
-    //print(registerAs);
-    //print('ID::::::' + userId.toString());
+
     getMyProfileApi();
     getMyPostApi(page);
     _scrollController.addListener(() {
@@ -112,19 +111,16 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
           if (map!['data'].length > 0) {
             page++;
             getMyPostApi(page);
-            //print(page);
           }
         } else {
           page++;
           getMyPostApi(page);
-          //print(page);
         }
       }
     });
   }
 
   void _launchSocialUrl(String url) async {
-    //final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$long';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -144,8 +140,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
             color: Colors.white,
             size: 35.0,
           ),
-          onPressed: //null,
-              () {
+          onPressed: () {
             Navigator.of(context).pop();
           },
           padding: EdgeInsets.zero,
@@ -166,7 +161,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                           PageTransitionAnimation.cupertino);
             },
             child: Container(
-              //color: Colors.grey,
               padding: EdgeInsets.symmetric(horizontal: 2.0.w),
               child: Center(
                 child: Text(
@@ -198,19 +192,14 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
               ),
             )
           : Column(
-              //shrinkWrap: true,
-              //physics: AlwaysScrollableScrollPhysics(),
               children: <Widget>[
                 Container(
-                  //height: 41.0.h,
                   width: 100.0.w,
-                  //color: Colors.grey,
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                         vertical: 2.0.h, horizontal: 4.0.w),
                     child: Column(
                       children: <Widget>[
-                        //Profile DP
                         ClipRRect(
                           borderRadius: BorderRadius.circular(50),
                           child: CachedNetworkImage(
@@ -220,7 +209,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        //Name of Educator
                         Padding(
                           padding: EdgeInsets.only(top: 1.0.h),
                           child: Text(
@@ -232,12 +220,10 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                 color: Constants.bgColor),
                           ),
                         ),
-                        //Degree
                         Padding(
                           padding: EdgeInsets.only(top: 1.0.h),
                           child: Text(
                             '$qualification | $school ',
-                            //'${myProfileMap!['data']['last_degree']} | ${myProfileMap!['data']['school_name']}',
                             style: TextStyle(
                                 fontSize: 8.0.sp,
                                 fontFamily: 'Montserrat',
@@ -245,7 +231,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                 color: Constants.bgColor),
                           ),
                         ),
-                        //Location
                         Padding(
                           padding: EdgeInsets.only(top: 1.0.h),
                           child: Row(
@@ -270,7 +255,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                             ],
                           ),
                         ),
-                        //Social Handle
                         Padding(
                           padding: EdgeInsets.only(top: 1.0.h),
                           child: Row(
@@ -284,7 +268,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                     : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    //print('Facebook!!!');
                                     _launchSocialUrl(
                                         myProfileMap!['data']['facebook_link']);
                                   },
@@ -292,12 +275,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                       height: 4.0.h,
                                       width: 8.0.w,
                                       child: SvgPicture.asset(
-                                          'assets/icons/fbSvg.svg')
-                                      // Image.asset(
-                                      //   'assets/icons/facebook.png',
-                                      //   fit: BoxFit.contain,
-                                      // )
-                                      ),
+                                          'assets/icons/fbSvg.svg')),
                                 ),
                               ),
                               SizedBox(
@@ -314,7 +292,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                     : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    //print('Instagram!!!');
                                     _launchSocialUrl(myProfileMap!['data']
                                         ['instagram_link']);
                                   },
@@ -322,12 +299,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                       height: 4.0.h,
                                       width: 8.0.w,
                                       child: SvgPicture.asset(
-                                          'assets/icons/instaSvg.svg')
-                                      // Image.asset(
-                                      //   'assets/icons/instagram.png',
-                                      //   fit: BoxFit.contain,
-                                      // )
-                                      ),
+                                          'assets/icons/instaSvg.svg')),
                                 ),
                               ),
                               SizedBox(
@@ -345,7 +317,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                     : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    //print('LinkedIn!!!');
                                     _launchSocialUrl(
                                         myProfileMap!['data']['linkedin_link']);
                                   },
@@ -353,12 +324,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                       height: 4.0.h,
                                       width: 8.0.w,
                                       child: SvgPicture.asset(
-                                          'assets/icons/linkedinSvg.svg')
-                                      // Image.asset(
-                                      //   'assets/icons/linkedin.png',
-                                      //   fit: BoxFit.contain,
-                                      // )
-                                      ),
+                                          'assets/icons/linkedinSvg.svg')),
                                 ),
                               ),
                               SizedBox(
@@ -374,7 +340,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                         : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    //print('Other!!!');
                                     _launchSocialUrl(
                                         myProfileMap!['data']['other_link']);
                                   },
@@ -382,18 +347,12 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                       height: 4.0.h,
                                       width: 8.0.w,
                                       child: SvgPicture.asset(
-                                          'assets/icons/otherSvg.svg')
-                                      // Image.asset(
-                                      //   'assets/icons/other_link.png',
-                                      //   fit: BoxFit.contain,
-                                      // )
-                                      ),
+                                          'assets/icons/otherSvg.svg')),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        //Other Details
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 2.0.h),
                           child: Row(
@@ -477,12 +436,10 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                     ),
                   ),
                 ),
-                //Profile Divider
                 Divider(
                   height: 1.0.h,
                   color: Constants.bgColor.withOpacity(0.5),
                 ),
-                //Educator Post
                 postIdList.length == 0
                     ? Center(
                         child: Column(
@@ -537,7 +494,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                 postTime: durationList[index]!,
                                 isMyProfile: true,
                                 reportTap: PopupMenuButton(
-                                  color: Color(0xFFF0F2F4),
+                                    color: Color(0xFFF0F2F4),
                                     icon: Icon(
                                       Icons.more_horiz_outlined,
                                       color: Color(0xFF828282),
@@ -546,7 +503,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                     padding: EdgeInsets.only(left: 8.0.w),
                                     onSelected: (dynamic value) {
                                       if (value == 2) {
-                                        // isProfileLoading = true;
                                         _showDialog(
                                             postIdList[index].toString(),
                                             index);
@@ -649,7 +605,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                                       imageBuilder: (context,
                                                               imageProvider) =>
                                                           Container(
-                                                            //height: 100,
                                                             width: 100.0.w,
                                                             decoration:
                                                                 BoxDecoration(
@@ -721,9 +676,7 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                             : SizedBox(),
                                       )
                                     : SizedBox(),
-                                mutualLike: likesList[index]! -
-                                    values
-                                        .length, //likesList[index].toString(),
+                                mutualLike: likesList[index]! - values.length,
                                 likeTap: () {
                                   setState(() {
                                     isLiked[index] = !isLiked[index]!;
@@ -781,7 +734,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                 saveTap: () {
                                   setState(() {
                                     isSaved[index] = !isSaved[index]!;
-                                    //savePostApi(postIdList[index]);
                                   });
                                   save.savePostApi(
                                       postIdList[index], authToken!);
@@ -804,509 +756,9 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                                     : '',
                                 commentImage: commentProfile[index],
                               );
-                              // Column(
-                              //   children: <Widget>[
-                              //     //main horizontal padding
-                              //     Padding(
-                              //       padding: EdgeInsets.symmetric(horizontal: 5.0.w),
-                              //       //Container for one post
-                              //       child: Column(
-                              //         children: <Widget>[
-                              //           SizedBox(
-                              //             height: 1.0.h,
-                              //           ),
-                              //           //ListTile for educator details
-                              //           ListTile(
-                              //             contentPadding: EdgeInsets.all(0.0),
-                              //             //leading:
-                              //             title: Row(
-                              //               mainAxisAlignment:
-                              //                   MainAxisAlignment.start,
-                              //               children: [
-                              //                 Padding(
-                              //                   padding: const EdgeInsets.only(top: 5.0),
-                              //                   child: ClipRRect(
-                              //                     borderRadius:
-                              //                         BorderRadius.circular(50),
-                              //                     child:CachedNetworkImage(
-                              //                         imageUrl: profileImageUrl!,
-                              //                       width: 35.0,
-                              //                       height: 35.0,
-                              //                       fit: BoxFit.cover,
-                              //                     ),
-                              //                   ),
-                              //                 ),
-                              //                 SizedBox(
-                              //                   width: 2.0.w,
-                              //                 ),
-                              //                 Padding(
-                              //                   padding: EdgeInsets.only(top: 1.0.h),
-                              //                   child: Column(
-                              //                     crossAxisAlignment:
-                              //                         CrossAxisAlignment.start,
-                              //                     children: [
-                              //                       Text(
-                              //                         name!,
-                              //                         style: TextStyle(
-                              //                             fontSize: 9.0.sp,
-                              //                             color: Constants.bgColor,
-                              //                             fontFamily: 'Montserrat',
-                              //                             fontWeight:
-                              //                                 FontWeight.w700),
-                              //                       ),
-                              //                       SizedBox(height: 1.0,),
-                              //                       Text(
-                              //                         '$degreeName | $schoolName',
-                              //                         style: TextStyle(
-                              //                             fontSize: 6.5.sp,
-                              //                             color: Constants.bgColor,
-                              //                             fontFamily: 'Montserrat',
-                              //                             fontWeight:
-                              //                                 FontWeight.w400),
-                              //                       ),
-                              //                       SizedBox(height: 1.0,),
-                              //                       Text(
-                              //                         dateList[index]!.substring(0, 11),
-                              //                         style: TextStyle(
-                              //                             fontSize: 6.5.sp,
-                              //                             color: Constants.bgColor,
-                              //                             fontFamily: 'Montserrat',
-                              //                             fontWeight:
-                              //                                 FontWeight.w400),
-                              //                       ),
-                              //                     ],
-                              //                   ),
-                              //                 ),
-                              //               ],
-                              //             ),
-                              //             //   trailing: GestureDetector(
-                              //             //     onTap: () {
-                              //             //       pushNewScreen(context,
-                              //             //           withNavBar: false,
-                              //             //           screen: ReportFeed(),
-                              //             //           pageTransitionAnimation:
-                              //             //               PageTransitionAnimation.cupertino);
-                              //             //     },
-                              //             //     child: Container(
-                              //             //   height: 2.5.h,
-                              //             //   width: 4.0.w,
-                              //             //   child: ImageIcon(
-                              //             //     AssetImage('assets/icons/menu.png'),
-                              //             //     size: 15,
-                              //             //   ),
-                              //             // ),
-                              //             //   ),
-                              //             trailing: PopupMenuButton(
-                              //                 color: Color(0xFFF0F2F4),
-                              //                 elevation: 2.0,
-                              //                 padding: EdgeInsets.only(left: 8.0.w),
-                              //                 onSelected: (dynamic value) {
-                              //                   if (value == 2) {
-                              //                     // isProfileLoading = true;
-                              //                     _showDialog(
-                              //                         postIdList[index].toString(),
-                              //                         index);
-                              //                   } else {
-                              //                     pushNewScreen(context,
-                              //                         screen: imageListMap.length ==
-                              //                                     0 ||
-                              //                                 imageListMap.length ==
-                              //                                     null
-                              //                             ? UpdatePostScreen(
-                              //                                 description:
-                              //                                     descriptionList[
-                              //                                             index]
-                              //                                         .toString(),
-                              //                                 postId:
-                              //                                     postIdList[index],
-                              //                                 // images: imageListMap.length == 0 ? 0 : imageListMap,
-                              //                                 // index: index,
-                              //                               )
-                              //                             : UpdatePostScreen(
-                              //                                 description:
-                              //                                     descriptionList[
-                              //                                             index]
-                              //                                         .toString(),
-                              //                                 images: imageListMap,
-                              //                                 index: index,
-                              //                                 postId:
-                              //                                     postIdList[index],
-                              //                               ),
-                              //                         withNavBar: false,
-                              //                         pageTransitionAnimation:
-                              //                             PageTransitionAnimation
-                              //                                 .cupertino);
-                              //                   }
-                              //                   //  Fluttertoast.showToast(
-                              //                   //    msg: value == 1
-                              //                   //    ? 'Edit Post'
-                              //                   //    : 'Delete Post',
-                              //                   //    backgroundColor: Constants.bgColor,
-                              //                   //    gravity: ToastGravity.BOTTOM,
-                              //                   //    fontSize: 10.0.sp,
-                              //                   //    toastLength: Toast.LENGTH_SHORT,
-                              //                   //    textColor: Colors.white
-                              //                   //  );
-                              //                 },
-                              //                 itemBuilder: (context) => [
-                              //                       PopupMenuItem(
-                              //                         child: Text(
-                              //                           "Edit",
-                              //                           style: TextStyle(
-                              //                               fontFamily: 'Montserrat',
-                              //                               fontSize: 10.0.sp,
-                              //                               fontWeight:
-                              //                                   FontWeight.w400,
-                              //                               color: Constants.bgColor),
-                              //                         ),
-                              //                         value: 1,
-                              //                       ),
-                              //                       PopupMenuItem(
-                              //                         child: Text(
-                              //                           "Delete",
-                              //                           style: TextStyle(
-                              //                               fontFamily: 'Montserrat',
-                              //                               fontSize: 10.0.sp,
-                              //                               fontWeight:
-                              //                                   FontWeight.w400,
-                              //                               color:
-                              //                                   Constants.bgColor),
-                              //                         ),
-                              //                         value: 2,
-                              //                       )
-                              //                     ]),
-                              //           ),
-                              //           //Post descriptionText
-                              //           Padding(
-                              //             padding: const EdgeInsets.symmetric(
-                              //                 vertical: 0.0, horizontal: 2.0),
-                              //             child: Container(
-                              //               width: 100.0.w,
-                              //               child: Text(
-                              //                 descriptionList[index]!,
-                              //                 style: TextStyle(
-                              //                   fontSize: 12.0.sp,
-                              //                   color:
-                              //                       Constants.bpOnBoardSubtitleStyle,
-                              //                   fontFamily: 'Montserrat',
-                              //                   height: 1.5,
-                              //                   fontWeight: FontWeight.w400,
-                              //                 ),
-                              //                 // textAlign: TextAlign.justify
-                              //               ),
-                              //             ),
-                              //           ),
-                              //           SizedBox(
-                              //             height: 1.0.h,
-                              //           ),
-                              //           // Container for image or video
-                              //       imageListMap[index].length == 0
-                              //           ? Container()
-                              //           : Container(
-                              //               height: 25.0.h,
-                              //               width: 100.0.w,
-                              //               child: ListView.builder(
-                              //                 shrinkWrap: true,
-                              //                 physics: BouncingScrollPhysics(),
-                              //                 scrollDirection: Axis.horizontal,
-                              //                 //itemExtent: MediaQuery.of(context).size.width / imageListMap[index].length,
-                              //                 itemCount: imageListMap[index].length,
-                              //                 itemBuilder: (context, imageIndex) {
-                              //                   return imageListMap[index].length == 1
-                              //                   ? Padding(
-                              //                     padding: EdgeInsets.symmetric(horizontal: 15.0.w),
-                              //                     child: GestureDetector(
-                              //                       onTap: () {
-                              //                         List<String> imgList = [];
-                              //                         for(int i = 0; i<imageListMap[index].length; i++) {
-                              //                           imgList.add(imageListMap[index][i]['file']);
-                              //                         }
-                              //                         pushNewScreen(context,
-                              //                             withNavBar: false,
-                              //                             screen: FullScreenSlider(
-                              //                               imageList: imgList,
-                              //                               index: imageIndex,
-                              //                               name: name!
-                              //                             ),
-                              //                             pageTransitionAnimation:
-                              //                             PageTransitionAnimation
-                              //                                 .cupertino);
-                              //                       },
-                              //                       child:CachedNetworkImage(
-                              //                         imageUrl: imageListMap[index][imageIndex]['file'],
-                              //                         height: 100,
-                              //                         width: 250,
-                              //                         fit: BoxFit.contain,
-                              //                       ),
-                              //                     ),
-                              //                   )
-                              //                   : Padding(
-                              //                     padding: const EdgeInsets.all(8.0),
-                              //                     child: GestureDetector(
-                              //                       onTap: () {
-                              //                         List<String> imgList = [];
-                              //                         for(int i = 0; i<imageListMap[index].length; i++) {
-                              //                           imgList.add(imageListMap[index][i]['file']);
-                              //                         }
-                              //                         pushNewScreen(context,
-                              //                             withNavBar: false,
-                              //                             screen: FullScreenSlider(
-                              //                               imageList: imgList,
-                              //                               index: imageIndex,
-                              //                               name: name!
-                              //                             ),
-                              //                             pageTransitionAnimation:
-                              //                             PageTransitionAnimation
-                              //                                 .cupertino);
-                              //                       },
-                              //                       child:CachedNetworkImage(
-                              //                         imageUrl: imageListMap[index][imageIndex]['file'],
-                              //                         height: 100,
-                              //                         width: 250,
-                              //                         fit: BoxFit.cover,
-                              //                       ),
-                              //                     ),
-                              //                   );
-                              //                 },
-                              //               ),
-                              //             ),
-
-                              //           // //Row for Liked, commented, shared
-                              //           // Padding(
-                              //           //   padding: EdgeInsets.only(top: 1.0.h),
-                              //           //   child: Row(
-                              //           //     mainAxisAlignment:
-                              //           //         MainAxisAlignment.spaceBetween,
-                              //           //     children: <Widget>[
-                              //           //       Row(
-                              //           //         children: [
-                              //           //           ImageIcon(
-                              //           //             AssetImage(
-                              //           //                 'assets/icons/likeNew.png'),
-                              //           //             size: 25.0,
-                              //           //             color: Constants.bgColor,
-                              //           //           ),
-                              //           //           SizedBox(
-                              //           //             width: 1.0.w,
-                              //           //           ),
-                              //           //           Container(
-                              //           //             padding:
-                              //           //                 EdgeInsets.only(top: 1.0.h),
-                              //           //             child: Text(
-                              //           //               "${likesList[index]} Likes",
-                              //           //               style: TextStyle(
-                              //           //                   fontSize: 6.5.sp,
-                              //           //                   color: Constants
-                              //           //                       .bpOnBoardSubtitleStyle,
-                              //           //                   fontFamily: 'Montserrat',
-                              //           //                   fontWeight:
-                              //           //                       FontWeight.w400),
-                              //           //             ),
-                              //           //           ),
-                              //           //         ],
-                              //           //       ),
-                              //           //       Container(
-                              //           //         padding: EdgeInsets.only(top: 1.0.h),
-                              //           //         child: Text(
-                              //           //           "${totalCommentsList[index]} Comments",
-                              //           //           style: TextStyle(
-                              //           //               fontSize: 6.5.sp,
-                              //           //               color: Constants
-                              //           //                   .bpOnBoardSubtitleStyle,
-                              //           //               fontFamily: 'Montserrat',
-                              //           //               fontWeight: FontWeight.w400),
-                              //           //         ),
-                              //           //       )
-                              //           //     ],
-                              //           //   ),
-                              //           // ),
-                              //           //
-                              //           //divider
-                              //           Divider(
-                              //             height: 1.0.h,
-                              //             color: Constants.bpOnBoardSubtitleStyle
-                              //                 .withOpacity(0.5),
-                              //             thickness: 1.0,
-                              //           ),
-                              //           //Row for Like comment and Share
-                              //           Padding(
-                              //             padding: EdgeInsets.only(
-                              //                 top: 0.5.h, bottom: 0.5.h),
-                              //             child: Row(
-                              //               mainAxisAlignment:
-                              //                   MainAxisAlignment.spaceBetween,
-                              //               children: <Widget>[
-                              //                 GestureDetector(
-                              //                   onTap: () {
-                              //                     setState(() {
-                              //                       isLiked[index] = !isLiked[index]!;
-                              //                     });
-                              //                     like.likePostApi(
-                              //                         postIdList[index], authToken!);
-                              //                     setState(() {
-                              //                       isLiked[index] == true
-                              //                           ? likesList[index] =
-                              //                               likesList[index]! + 1
-                              //                           : likesList[index] =
-                              //                               likesList[index]! - 1;
-                              //                     });
-                              //                   },
-                              //                   child: Row(
-                              //                     mainAxisAlignment:
-                              //                         MainAxisAlignment.start,
-                              //                     children: [
-                              //                       ImageIcon(
-                              //                         isLiked[index]!
-                              //                             ? AssetImage(
-                              //                                 'assets/icons/likeNew.png')
-                              //                             : AssetImage(
-                              //                                 'assets/icons/likeThumb.png'),
-                              //                         color: isLiked[index]!
-                              //                             ? Constants.selectedIcon
-                              //                             : Constants
-                              //                                 .bpOnBoardSubtitleStyle,
-                              //                         size: 25.0,
-                              //                       ),
-                              //                       SizedBox(
-                              //                         width: 2.0.w,
-                              //                       ),
-                              //                       Container(
-                              //                         padding:
-                              //                             EdgeInsets.only(top: 1.0.h),
-                              //                         child: Text(
-                              //                           "${likesList[index]} Likes",
-                              //                           style: TextStyle(
-                              //                               fontSize: 6.5.sp,
-                              //                               color: Constants
-                              //                                   .bpOnBoardSubtitleStyle,
-                              //                               fontFamily: 'Montserrat',
-                              //                               fontWeight:
-                              //                                   FontWeight.w400),
-                              //                         ),
-                              //                       ),
-                              //                     ],
-                              //                   ),
-                              //                 ),
-                              //                 GestureDetector(
-                              //                   onTap: () async{
-                              //                     resultComment = await pushNewScreen(context,
-                              //                         withNavBar: false,
-                              //                         screen: CommentScreen(
-                              //                           postId: postIdList[index],
-                              //                           name: name,
-                              //                           profileImage: profileImageUrl,
-                              //                           degree: degreeName,
-                              //                           schoolName: schoolName,
-                              //                           date: dateList[index],
-                              //                           description:
-                              //                               descriptionList[index],
-                              //                           like: likesList[index],
-                              //                           comment:
-                              //                               totalCommentsList[index],
-                              //                           isLiked: isLiked[index],
-                              //                           isSaved: isSaved[index],
-                              //                           imageListMap: imageListMap,
-                              //                           index: index,
-                              //                         ),
-                              //                         pageTransitionAnimation:
-                              //                             PageTransitionAnimation
-                              //                                 .cupertino);
-
-                              //                       setState(() {});
-
-                              //                   totalCommentsList[resultComment['index']] = resultComment['count'];
-                              //                   likesList[resultComment['index']] = resultComment['likeCount'];
-                              //                   isSaved[resultComment['index']] = resultComment['isSaved'];
-                              //                   isLiked[resultComment['index']] = resultComment['isLiked'];
-                              //                   },
-                              //                   child: Row(
-                              //                     mainAxisAlignment:
-                              //                         MainAxisAlignment.start,
-                              //                     children: [
-                              //                       ImageIcon(
-                              //                         AssetImage(
-                              //                             'assets/icons/commentNew.png'),
-                              //                         size: 21.0,
-                              //                         color: Constants
-                              //                             .bpOnBoardSubtitleStyle,
-                              //                       ),
-                              //                       SizedBox(
-                              //                         width: 2.0.w,
-                              //                       ),
-                              //                       Container(
-                              //                         padding:
-                              //                             EdgeInsets.only(top: 1.0.h),
-                              //                         child: Text(
-                              //                           "${totalCommentsList[index]} Comments",
-                              //                           style: TextStyle(
-                              //                               fontSize: 6.5.sp,
-                              //                               color: Constants
-                              //                                   .bpOnBoardSubtitleStyle,
-                              //                               fontFamily: 'Montserrat',
-                              //                               fontWeight:
-                              //                                   FontWeight.w400),
-                              //                         ),
-                              //                       )
-                              //                     ],
-                              //                   ),
-                              //                 ),
-                              //                 GestureDetector(
-                              //                   onTap: () {
-                              //                     setState(() {
-                              //                       isSaved[index] = !isSaved[index]!;
-                              //                       //savePostApi(postIdList[index]);
-                              //                     });
-                              //                     save.savePostApi(
-                              //                         postIdList[index], authToken!);
-                              //                   },
-                              //                   child: Row(
-                              //                     mainAxisAlignment:
-                              //                         MainAxisAlignment.start,
-                              //                     children: [
-                              //                       ImageIcon(
-                              //                         isSaved[index]!
-                              //                             ? AssetImage(
-                              //                                 'assets/icons/saveGreen.png')
-                              //                             : AssetImage(
-                              //                                 'assets/icons/saveNew.png'),
-                              //                         color: isSaved[index]!
-                              //                             ? Constants.selectedIcon
-                              //                             : Constants
-                              //                                 .bpOnBoardSubtitleStyle,
-                              //                         size: 21.0,
-                              //                       ),
-                              //                       SizedBox(
-                              //                         width: 1.0.w,
-                              //                       ),
-                              //                       Container(
-                              //                         padding:
-                              //                             EdgeInsets.only(top: 1.0.h),
-                              //                         child: Text(
-                              //                           "Save",
-                              //                           style: TextStyle(
-                              //                               fontSize: 6.5.sp,
-                              //                               color: Constants
-                              //                                   .bpOnBoardSubtitleStyle,
-                              //                               fontFamily: 'Montserrat',
-                              //                               fontWeight:
-                              //                                   FontWeight.w400),
-                              //                         ),
-                              //                       ),
-                              //                     ],
-                              //                   ),
-                              //                 ),
-                              //               ],
-                              //             ),
-                              //           ),
-                              //         ],
-                              //       ),
-                              //     )
-                              //   ],
-                              // );
                             },
                             separatorBuilder: (context, index) {
                               return Divider(
-                                //height: 2.0.h,
                                 thickness: 5.0,
                                 color: Color(0xFFD3D9E0),
                               );
@@ -1319,7 +771,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
     );
   }
 
-  //Alert Dialog for Delete Post
   void _showDialog(id, index) {
     showDialog(
       context: context,
@@ -1336,14 +787,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                     fontWeight: FontWeight.w600,
                     color: Constants.bgColor),
               ),
-              // IconButton(
-              //   icon: Icon(Icons.close),
-              //   iconSize: 20.0,
-              //   color: Constants.bpOnBoardSubtitleStyle,
-              //   onPressed: () {
-              //     Navigator.of(context).pop();
-              //   },
-              // )
             ],
           ),
           actionsPadding:
@@ -1356,8 +799,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                   color: Constants.bgColor),
               textAlign: TextAlign.center),
           actions: [
-            // usually buttons at the bottom of the dialog
-
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pop();
@@ -1394,7 +835,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
     );
   }
 
-  //Get Profile Details
   Future<void> getMyProfileApi() async {
     try {
       Dio dio = Dio();
@@ -1405,7 +845,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
       if (response.statusCode == 200) {
         myProfileMap = response.data;
 
-        //print('PROFILE:::' + myProfileMap.toString());
         setState(() {
           isProfileLoading = false;
         });
@@ -1414,38 +853,21 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
           isProfileLoading = true;
         });
       }
-    } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
-    }
+    } on DioError catch (e, stack) {}
   }
 
-  //Get Educator's all Post
   Future<void> getMyPostApi(int page) async {
-    // displayProgressDialog(context);
-
     try {
       Dio dio = Dio();
 
-      // var response =
-      //     await dio.get('${Config.getEducatorPostUrl}$userId?page=$page');
-      //var response = await dio.get(Config.myProfileUrl,options: Options(headers: {"Authorization": 'Bearer $authToken'}));
       var response = await dio.get(
           '${Config.getEducatorPostUrl}/$userId?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
-        // closeProgressDialog(context);
-        //return EducatorPost.fromJson(json)
-        //profileResult = MyProfile.fromJson(response.data);
-
-        //print(profileResult.data.name);
         map = response.data;
         mapData = map!['data'];
 
-        //print(map);
-        //print('DATA:::' + mapData.toString());
         if (map!['data'].length > 0) {
           if (name == '') {
             name = map!['data'][0]['name'];
@@ -1453,7 +875,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
             degreeName = map!['data'][0]['last_degree'];
             schoolName = map!['data'][0]['school_name'];
           }
-          //print("HELLO");
 
           for (int i = 0; i < map!['data'].length; i++) {
             _current.add(0);
@@ -1473,9 +894,8 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
               imageListMap.putIfAbsent(k, () => map!['data'][i]['post_media']);
             }
             k++;
-            //print(k);
           }
-          //print(imageListMap);
+
           isLoading = false;
           isPostLoading = false;
           setState(() {});
@@ -1484,29 +904,18 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
           isPostLoading = false;
           setState(() {});
         }
-        //print(result.data);
-        //return result;
+
         setState(() {
           isLoading = false;
           isPostLoading = false;
         });
 
-        if (map!['status'] == true) {
-          // map = Map<String, dynamic>();
-          // mapData = [];
-          //print('B MAPPPPPPP:::' + map.toString());
-        }
+        if (map!['status'] == true) {}
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-        //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -1521,8 +930,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
   }
 
   Future<void> deletePostApi(String postID, int index) async {
-    //var delResult = PostDelete();
-
     setState(() {
       isLoading = true;
     });
@@ -1536,14 +943,11 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
-        //delResult = postDeleteFromJson(response.data);
         delMap = response.data;
-
-        // getMyPostApi(page);
 
         if (delMap!['status'] == true) {
           isProfileLoading = false;
-          //print('true');
+
           map = {};
           mapData = [];
           postIdList = [];
@@ -1558,10 +962,9 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
           commentTextList = [];
           mutualList = [];
           commentProfile = [];
-          //print('A MAPPPPPPP:::' + map.toString());
+
           getMyPostApi(1);
-          //print('B MAPPPPPPP:::' + map.toString());
-          //getData();
+
           Fluttertoast.showToast(
               msg: delMap!['message'],
               backgroundColor: Constants.bgColor,
@@ -1571,7 +974,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
               textColor: Colors.white);
           setState(() {});
         } else {
-          //print('false');
           if (delMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: delMap!['error_msg'],
@@ -1590,17 +992,9 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                 textColor: Colors.white);
           }
         }
-        //getEducatorPostApi(page);
-        //print(delMap);
-      } else {
-        //print(response.statusCode);
-      }
+      } else {}
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-        //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -1615,8 +1009,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
   }
 
   Future<void> savePostApi(int postID) async {
-    //var delResult = PostDelete();
-
     try {
       Dio dio = Dio();
 
@@ -1626,17 +1018,9 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
-        //delResult = postDeleteFromJson(response.data);
         saveMap = response.data;
-        //saveMapData = map['data']['status'];
 
-        //print(saveMapData);
-        // setState(() {
-        //   isLoading = false;
-        // });
         if (saveMap!['status'] == true) {
-          //print('true');
-          //getEducatorPostApi(page);
           Fluttertoast.showToast(
               msg: saveMap!['message'],
               backgroundColor: Constants.bgColor,
@@ -1645,7 +1029,6 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          //print('false');
           if (saveMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: saveMap!['error_msg'],
@@ -1664,17 +1047,9 @@ class _EducatorMyProfileScreenState extends State<EducatorMyProfileScreen> {
                 textColor: Colors.white);
           }
         }
-        //getEducatorPostApi(page);
-        //print(saveMap);
-      } else {
-        //print(response.statusCode);
-      }
+      } else {}
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-        //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,

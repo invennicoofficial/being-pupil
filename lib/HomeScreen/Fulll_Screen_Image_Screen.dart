@@ -9,7 +9,8 @@ class FullScreenSlider extends StatefulWidget {
   int index;
   String name;
 
-  FullScreenSlider({required this.imageList, required this.index, required this.name});
+  FullScreenSlider(
+      {required this.imageList, required this.index, required this.name});
 
   @override
   _FullScreenSliderState createState() => _FullScreenSliderState();
@@ -21,7 +22,7 @@ class _FullScreenSliderState extends State<FullScreenSlider> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
       statusBarColor: Color(0xFF1E2026),
     ));
-    // TODO: implement initState
+
     super.initState();
   }
 
@@ -37,8 +38,7 @@ class _FullScreenSliderState extends State<FullScreenSlider> {
               color: Colors.white,
               size: 35.0,
             ),
-            onPressed: //null,
-                () {
+            onPressed: () {
               Navigator.of(context).pop();
             },
             padding: EdgeInsets.zero,
@@ -65,37 +65,31 @@ class _FullScreenSliderState extends State<FullScreenSlider> {
                   viewportFraction: 1.0,
                   enlargeCenterPage: false,
                   initialPage: widget.index,
-                  enableInfiniteScroll: false
-                // autoPlay: false,
-              ),
+                  enableInfiniteScroll: false),
               items: widget.imageList
                   .map((item) => Container(
-                child: Center(
-                  child: PinchZoom(
-                    child: Container(
-                      height: height,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: CachedNetworkImageProvider(
-                              item,
-                              errorListener: () =>
-                              new Icon(Icons.error),
+                        child: Center(
+                          child: PinchZoom(
+                            child: Container(
+                              height: height,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: CachedNetworkImageProvider(
+                                      item,
+                                      errorListener: () =>
+                                          new Icon(Icons.error),
+                                    ),
+                                    fit: BoxFit.fitWidth),
+                              ),
                             ),
-                            fit: BoxFit.fitWidth),
-                      ),
-                    ),
-                    zoomEnabled: true,
-                    resetDuration: const Duration(milliseconds: 150),
-                    maxScale: 2.5,
-                    onZoomStart: () {
-                      //print('Start zooming');
-                    },
-                    onZoomEnd: () {
-                      //print('Stop zooming');
-                    },
-                  ),
-                ),
-              ))
+                            zoomEnabled: true,
+                            resetDuration: const Duration(milliseconds: 150),
+                            maxScale: 2.5,
+                            onZoomStart: () {},
+                            onZoomEnd: () {},
+                          ),
+                        ),
+                      ))
                   .toList(),
             );
           },

@@ -32,7 +32,7 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    //print(authToken);
+
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       registerAs = preferences.getString('RegisterAs');
@@ -40,14 +40,13 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
     getUserProfile();
   }
 
-    void _launchSocialUrl(String url) async {
-  //final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$long';
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
+  void _launchSocialUrl(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -61,15 +60,13 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
             color: Colors.white,
             size: 35.0,
           ),
-          onPressed: //null,
-              () {
+          onPressed: () {
             Navigator.of(context).pop();
           },
           padding: EdgeInsets.zero,
         ),
         title: Text(
-          registerAs == 'L'
-          ? 'Study Buddy' : 'Learner',
+          registerAs == 'L' ? 'Study Buddy' : 'Learner',
           style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 12.0.sp,
@@ -81,7 +78,6 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
         child: Container(
           height: 50.0.h,
           width: 100.0.w,
-          //color: Colors.grey,
           child: isLoading
               ? Center(
                   child: CircularProgressIndicator(
@@ -105,26 +101,29 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
                           vertical: 1.0.h, horizontal: 4.0.w),
                       child: Column(
                         children: <Widget>[
-                          //Profile DP
                           ClipRRect(
                             borderRadius: BorderRadius.circular(100),
-                            child:CachedNetworkImage(
-                              errorWidget: (context, url, error) =>
-                                            Material(
-                                              child: CircleAvatar(radius: 50, backgroundColor: greyColor2,
-                                                child: Icon(Icons.person, size: 110, color: Colors.black,)),
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(8.0),
-                                              ),
-                                              clipBehavior: Clip.hardEdge,
-                                            ),
-                                                imageUrl:map!['data']['profile_image'],
+                            child: CachedNetworkImage(
+                              errorWidget: (context, url, error) => Material(
+                                child: CircleAvatar(
+                                    radius: 50,
+                                    backgroundColor: greyColor2,
+                                    child: Icon(
+                                      Icons.person,
+                                      size: 110,
+                                      color: Colors.black,
+                                    )),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8.0),
+                                ),
+                                clipBehavior: Clip.hardEdge,
+                              ),
+                              imageUrl: map!['data']['profile_image'],
                               height: 120,
                               width: 120,
                               fit: BoxFit.cover,
                             ),
                           ),
-                          //Name of Learner
                           Padding(
                             padding: EdgeInsets.only(top: 2.0.h),
                             child: Text(
@@ -136,156 +135,130 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
                                   color: Constants.bgColor),
                             ),
                           ),
-                          //Degree
-                          map!['data']['last_degree'] == null ? Container() : Padding(
-                            padding: EdgeInsets.only(top: 2.0.h),
-                            child: Text(
-                              '${map!['data']['last_degree']} | ${map!['data']['school_name']}',
-                              style: TextStyle(
-                                  fontSize: 10.0.sp,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w400,
-                                  color: Constants.bgColor),
-                            ),
-                          ),
-                          //Location
-                          map!['data']['City'] == null ? Container() : Padding(
-                            padding: EdgeInsets.only(top: 2.0.h),
+                          map!['data']['last_degree'] == null
+                              ? Container()
+                              : Padding(
+                                  padding: EdgeInsets.only(top: 2.0.h),
+                                  child: Text(
+                                    '${map!['data']['last_degree']} | ${map!['data']['school_name']}',
+                                    style: TextStyle(
+                                        fontSize: 10.0.sp,
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w400,
+                                        color: Constants.bgColor),
+                                  ),
+                                ),
+                          map!['data']['City'] == null
+                              ? Container()
+                              : Padding(
+                                  padding: EdgeInsets.only(top: 2.0.h),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      ImageIcon(
+                                        AssetImage(
+                                            'assets/icons/locationPin.png'),
+                                        color: Constants.bgColor,
+                                        size: 15.0,
+                                      ),
+                                      SizedBox(
+                                        width: 0.5.w,
+                                      ),
+                                      Text(
+                                        map!['data']['City'] != null
+                                            ? map!['data']['City']
+                                            : '',
+                                        style: TextStyle(
+                                            fontSize: 10.0.sp,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w400,
+                                            color: Constants.bgColor),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 1.0.h),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                ImageIcon(
-                                  AssetImage('assets/icons/locationPin.png'),
-                                  color: Constants.bgColor,
-                                  size: 15.0,
+                                Visibility(
+                                  visible: map!['data']['facebook_link'] == null
+                                      ? false
+                                      : true,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      _launchSocialUrl(
+                                          map!['data']['facebook_link']);
+                                    },
+                                    child: Container(
+                                        height: 4.0.h,
+                                        width: 8.0.w,
+                                        child: SvgPicture.asset(
+                                            'assets/icons/fbSvg.svg')),
+                                  ),
                                 ),
                                 SizedBox(
-                                  width: 0.5.w,
+                                  width: 1.0.w,
                                 ),
-                                Text(
-                                  map!['data']['City'] != null ? map!['data']['City'] : '',
-                                  style: TextStyle(
-                                      fontSize: 10.0.sp,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w400,
-                                      color: Constants.bgColor),
+                                Visibility(
+                                  visible:
+                                      map!['data']['instagram_link'] == null
+                                          ? false
+                                          : true,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      _launchSocialUrl(
+                                          map!['data']['instagram_link']);
+                                    },
+                                    child: Container(
+                                        height: 4.0.h,
+                                        width: 8.0.w,
+                                        child: SvgPicture.asset(
+                                            'assets/icons/instaSvg.svg')),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 1.0.w,
+                                ),
+                                Visibility(
+                                  visible: map!['data']['linkedin_link'] == null
+                                      ? false
+                                      : true,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      _launchSocialUrl(
+                                          map!['data']['linkedin_link']);
+                                    },
+                                    child: Container(
+                                        height: 4.0.h,
+                                        width: 8.0.w,
+                                        child: SvgPicture.asset(
+                                            'assets/icons/linkedinSvg.svg')),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 1.0.w,
+                                ),
+                                Visibility(
+                                  visible: map!['data']['other_link'] == null
+                                      ? false
+                                      : true,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      _launchSocialUrl(
+                                          map!['data']['other_link']);
+                                    },
+                                    child: Container(
+                                        height: 4.0.h,
+                                        width: 8.0.w,
+                                        child: SvgPicture.asset(
+                                            'assets/icons/otherSvg.svg')),
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-
-
-
-                          //Social Handle
-                  Padding(
-                          padding: EdgeInsets.only(top: 1.0.h),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Visibility(
-                                visible: map!['data']
-                                            ['facebook_link'] ==
-                                        null
-                                    ? false
-                                    : true,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    //print('Facebook!!!');
-                                    _launchSocialUrl(
-                                        map!['data']['facebook_link']);
-                                  },
-                                  child: Container(
-                                      height: 4.0.h,
-                                      width: 8.0.w,
-                                      child: SvgPicture.asset('assets/icons/fbSvg.svg')
-                                      // Image.asset(
-                                      //   'assets/icons/facebook.png',
-                                      //   fit: BoxFit.contain,
-                                      // )
-                                      ),
-                                ),
-                              ),
-                               SizedBox(
-                                width: 1.0.w,
-                              ),
-                              Visibility(
-                                visible: map!['data']
-                                            ['instagram_link'] ==
-                                        null
-                                    ? false
-                                    : true,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    //print('Instagram!!!');
-                                    _launchSocialUrl(map!['data']
-                                        ['instagram_link']);
-                                  },
-                                  child: Container(
-                                      height: 4.0.h,
-                                      width: 8.0.w,
-                                      child: SvgPicture.asset('assets/icons/instaSvg.svg')
-                                      // Image.asset(
-                                      //   'assets/icons/instagram.png',
-                                      //   fit: BoxFit.contain,
-                                      // )
-                                      ),
-                                ),
-                              ),
-                               SizedBox(
-                                width: 1.0.w,
-                              ),
-
-                              Visibility(
-                                visible: map!['data']
-                                            ['linkedin_link'] ==
-                                        null
-                                    ? false
-                                    : true,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    //print('LinkedIn!!!');
-                                    _launchSocialUrl(
-                                        map!['data']['linkedin_link']);
-                                  },
-                                  child: Container(
-                                      height: 4.0.h,
-                                      width: 8.0.w,
-                                      child: SvgPicture.asset('assets/icons/linkedinSvg.svg')
-                                      // Image.asset(
-                                      //   'assets/icons/linkedin.png',
-                                      //   fit: BoxFit.contain,
-                                      // )
-                                      ),
-                                ),
-                              ),        
-                              SizedBox(
-                                width: 1.0.w,
-                              ),
-                              Visibility(
-                                visible:
-                                    map!['data']['other_link'] == null
-                                        ? false
-                                        : true,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    //print('Other!!!');
-                                    _launchSocialUrl(
-                                        map!['data']['other_link']);
-                                  },
-                                  child: Container(
-                                      height: 4.0.h,
-                                      width: 8.0.w,
-                                      child: SvgPicture.asset('assets/icons/otherSvg.svg')
-                                      // Image.asset(
-                                      //   'assets/icons/other_link.png',
-                                      //   fit: BoxFit.contain,
-                                      // )
-                                      ),
-                                ),
-                              ),                  
-                            ],
-                          ),
-                        ),
                         ],
                       ),
                     ),
@@ -295,20 +268,15 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
   }
 
   Future<void> getUserProfile() async {
-    // displayProgressDialog(context);
-
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.myProfileUrl}/${widget.id}',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        //print(map!['data']);
-        ////print(mapData);
         if (map!['data'] != null) {
           isLoading = false;
           setState(() {});
@@ -316,19 +284,13 @@ class _LearnerProfileViewScreenState extends State<LearnerProfileViewScreen> {
           isLoading = false;
           setState(() {});
         }
-        ////print(result.data);
-        //return result;
+
         setState(() {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
-    } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
-    }
+    } on DioError catch (e, stack) {}
   }
 }

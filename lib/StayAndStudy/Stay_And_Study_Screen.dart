@@ -43,31 +43,26 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getToken();
-     
   }
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
     getAllPropertyAPI(page);
-   _scrollController.addListener(() {
+    _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if (page > 1) {
           if (result.data!.length > 0) {
-            //print(propertyLength);
             page++;
             getAllPropertyAPI(page);
-            //print(page);
           } else {
-           _refreshController.loadComplete();
+            _refreshController.loadComplete();
           }
         } else {
           page++;
           getAllPropertyAPI(page);
-          //print(page);
         }
       }
     });
@@ -89,9 +84,7 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
   }
 
   void _onLoading() async {
-    //if (mounted) setState(() {});
     if (propertyLength == 0) {
-      //_refreshController.loadComplete();
       _refreshController.loadNoData();
     } else {
       _refreshController.requestLoading();
@@ -120,21 +113,9 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                 ),
               )
             : Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: 5.0.w),
-              // child: SmartRefresher(
-              // controller: _refreshController,
-              // enablePullDown: true,
-              // enablePullUp: true,
-              // header: WaterDropMaterialHeader(),
-              // footer: ClassicFooter(
-              //   loadStyle: LoadStyle.ShowWhenLoading,
-              // ),
-              // onRefresh: _onRefresh,
-              // onLoading: _onLoading,
-                              child: ListView.separated(
+                padding: EdgeInsets.symmetric(horizontal: 5.0.w),
+                child: ListView.separated(
                     controller: _scrollController,
-                    //physics: BouncingScrollPhysics(),
                     itemCount: propertyId.length,
                     shrinkWrap: true,
                     separatorBuilder: (context, index) {
@@ -150,13 +131,13 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          //print('Select $index Property!!!');
-                          //print(propDataList[index]);
                           pushNewScreen(context,
                               withNavBar: false,
-                              screen: PropertyDetailScreen(propertyDetails: result,
-                              index: index,
-                              propData: propDataList,),
+                              screen: PropertyDetailScreen(
+                                propertyDetails: result,
+                                index: index,
+                                propData: propDataList,
+                              ),
                               pageTransitionAnimation:
                                   PageTransitionAnimation.cupertino);
                         },
@@ -164,39 +145,28 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Padding(
-                              padding: EdgeInsets.only(top: 2.0.h, bottom: 0.5.h),
-                              //Image and Rating
+                              padding:
+                                  EdgeInsets.only(top: 2.0.h, bottom: 0.5.h),
                               child: Stack(
                                 children: <Widget>[
                                   CachedNetworkImage(
-                      imageUrl: propertyImage[index]!,
-                      errorWidget: (context, url, error) => Text("error"),
-                      imageBuilder: (context, imageProvider) => Container(
-                          height: 18.0.h,
-                          width: 100.0.w,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      ),
-                      placeholder: (context, url) => PropertyLoadingWidget()
-                      // CircularProgressIndicator(
-                      //   backgroundColor: Constants.bgColor,
-                      // ),
-                    ),
-                                  // Container(
-                                  //   height: 18.0.h,
-                                  //   width: 100.0.w,
-                                  //   decoration: BoxDecoration(
-                                  //     image: DecorationImage(
-                                  //       image: NetworkImage(
-                                  //           propertyImage[index]!),
-                                  //       fit: BoxFit.cover,
-                                  //     ),
-                                  //     borderRadius:
-                                  //         BorderRadius.circular(8.0),
-                                  //   ),
-                                  // ),
+                                      imageUrl: propertyImage[index]!,
+                                      errorWidget: (context, url, error) =>
+                                          Text("error"),
+                                      imageBuilder: (context, imageProvider) =>
+                                          Container(
+                                            height: 18.0.h,
+                                            width: 100.0.w,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.cover),
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                            ),
+                                          ),
+                                      placeholder: (context, url) =>
+                                          PropertyLoadingWidget()),
                                   Align(
                                     alignment: Alignment.topRight,
                                     child: Container(
@@ -205,10 +175,8 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                                       decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius: BorderRadius.only(
-                                              bottomLeft:
-                                                  Radius.circular(8.0),
-                                              topRight:
-                                                  Radius.circular(8.0))),
+                                              bottomLeft: Radius.circular(8.0),
+                                              topRight: Radius.circular(8.0))),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
@@ -234,7 +202,6 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                                 ],
                               ),
                             ),
-                            //Title of property
                             Row(
                               children: [
                                 Padding(
@@ -250,98 +217,69 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
                                           fontWeight: FontWeight.w600,
                                           color: Constants.bgColor),
                                     ),
-                                  ),  
+                                  ),
                                 ),
                               ],
                             ),
-                            // Row(
-                            //   mainAxisAlignment:
-                            //       MainAxisAlignment.spaceBetween,
-                            //   children: <Widget>[
-                                //Location of Property
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 2.0),
-                                      child: ImageIcon(
-                                        AssetImage(
-                                            'assets/icons/locationPin.png'),
-                                        color: Constants.bpOnBoardSubtitleStyle,
-                                        size: 13.0,
-                                      ),
-                                    ),
-                                    Container(
-                                      //height: 20,
-                                      width: 85.0.w,
-                                      child: Text(
-                                        propertyLocation[index]!,
-                                        style: TextStyle(
-                                            fontFamily: 'Montserrat',
-                                            fontSize: 9.0.sp,
-                                            height: 1.5,
-                                            fontWeight: FontWeight.w400,
-                                            color: Constants
-                                                .bpOnBoardSubtitleStyle),
-                                                overflow: TextOverflow.clip,
-                                      ),
-                                    ),
-                                  ],
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(top: 2.0),
+                                  child: ImageIcon(
+                                    AssetImage('assets/icons/locationPin.png'),
+                                    color: Constants.bpOnBoardSubtitleStyle,
+                                    size: 13.0,
+                                  ),
                                 ),
-                                //Rent of Property
-                            //     Text(
-                            //       '₹${propertyPrice[index]}/mth',
-                            //       style: TextStyle(
-                            //           fontFamily: 'Montserrat',
-                            //           fontSize: 11.0.sp,
-                            //           fontWeight: FontWeight.w600,
-                            //           color: Color(0xFF277344)),
-                            //     ),
-                            //   ],
-                            // ),
+                                Container(
+                                  width: 85.0.w,
+                                  child: Text(
+                                    propertyLocation[index]!,
+                                    style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 9.0.sp,
+                                        height: 1.5,
+                                        fontWeight: FontWeight.w400,
+                                        color:
+                                            Constants.bpOnBoardSubtitleStyle),
+                                    overflow: TextOverflow.clip,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       );
                     }),
-              //),
-            ));
+              ));
   }
 
-  //GetAll Property List API
   Future<GetAllProperty> getAllPropertyAPI(int page) async {
-    //displayProgressDialog(context);
-
     try {
       var dio = Dio();
       var response = await dio.get('${Config.getAllPropertyUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
-        //result = GetAllProperty.fromJson(response.data);
         map = response.data;
         mapData = map!['data'];
-        //print(mapData);
-        //closeProgressDialog(context);
 
         if (map!['status'] == true) {
-         // propertyLength = 0;
-          // propertyLength = result.data == [] ? 0 : result.data.length;
-          // setState(() {});
-          // print('PROP:::' + propertyLength.toString());
-          // print('PROP:::' + page.toString());
           if (page > 0) {
             for (int i = 0; i < mapData!.length; i++) {
               propertyId.add(mapData![i]['property_id']);
               propertyName.add(mapData![i]['name']);
-              propertyLocation.add(mapData![i]['location'] == null ? '' : mapData![i]['location']['address']);
+              propertyLocation.add(mapData![i]['location'] == null
+                  ? ''
+                  : mapData![i]['location']['address']);
               propertyImage.add(mapData![i]['featured_image'][0]);
-              //propertyPrice.add('${int.parse(result.data[i].room[0].roomAmount)}');
+
               propertyRating.add(mapData![i]['rating'].toDouble());
-              //allImage.add(result.data[i].featuredImage);
+
               propDataList.add(mapData![i]);
             }
-            //print('DATAPROP:::'+ propDataList.toString());
+
             isLoading = false;
             setState(() {});
           } else {
@@ -351,24 +289,11 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
         } else {
           isLoading = false;
           setState(() {});
-          // Fluttertoast.showToast(
-          //   msg: result.message,
-          //   toastLength: Toast.LENGTH_SHORT,
-          //   gravity: ToastGravity.BOTTOM,
-          //   timeInSecForIosWeb: 1,
-          //   backgroundColor: Constants.bgColor,
-          //   textColor: Colors.white,
-          //   fontSize: 10.0.sp,
-          // );
         }
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -378,11 +303,7 @@ class _StayAndStudyScreenState extends State<StayAndStudyScreen> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-        //print(e.message);
-      }
+      } else {}
     }
     return result;
   }

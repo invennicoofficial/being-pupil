@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final checkBooking = checkBookingFromJson(jsonString);
-
 import 'dart:convert';
 
 CheckBooking checkBookingFromJson(String str) => CheckBooking.fromJson(json.decode(str));

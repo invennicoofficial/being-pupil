@@ -32,7 +32,6 @@ class _ReviewScreenState extends State<ReviewScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getToken();
   }
@@ -82,7 +81,6 @@ class _ReviewScreenState extends State<ReviewScreen> {
                       color: Constants.bgColor),
                 ),
               ),
-              //Image
               Padding(
                 padding: EdgeInsets.only(top: 2.0.h),
                 child: Container(
@@ -97,7 +95,6 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   ),
                 ),
               ),
-              //Rating
               Padding(
                 padding: EdgeInsets.only(top: 2.0.h),
                 child: Center(
@@ -125,7 +122,6 @@ class _ReviewScreenState extends State<ReviewScreen> {
                     ),
                     itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                     onRatingUpdate: (rating) {
-                      //print(rating);
                       setState(() {
                         starRating = rating;
                       });
@@ -152,8 +148,9 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   color: Constants.formBorder,
                 ),
               ),
-              //headline
-              TextInputWidget(textEditingController: _headLineController, lable: 'Add a headline'),
+              TextInputWidget(
+                  textEditingController: _headLineController,
+                  lable: 'Add a headline'),
               Padding(
                 padding: EdgeInsets.only(top: 3.0.h),
                 child: Divider(
@@ -162,78 +159,21 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   color: Constants.formBorder,
                 ),
               ),
-              //other description
-              MultilineTextInput(textEditingController: _descriptioController, hint: 'Tell us about your overall experience at the hotel including the amities, services, and all food etc.'),
-              // Theme(
-              //   data: new ThemeData(
-              //     primaryColor: Constants.bpSkipStyle,
-              //     primaryColorDark: Constants.bpSkipStyle,
-              //   ),
-              //   child: Padding(
-              //     padding: EdgeInsets.only(top: 3.0.h),
-              //     child: Container(
-              //       height: 13.0.h,
-              //       width: 90.0.w,
-              //       child: TextFormField(
-              //         controller: _descriptioController,
-              //         maxLines: 5,
-              //         keyboardType: TextInputType.multiline,
-              //         //maxLength: 100,
-              //         decoration: InputDecoration(
-              //             //labelText: "Please mention your achivements...",
-              //             //counterText: '',
-              //             fillColor: Colors.white,
-              //             focusedBorder: OutlineInputBorder(
-              //               borderRadius: BorderRadius.circular(5.0),
-              //               borderSide: BorderSide(
-              //                 color: Constants.formBorder,
-              //               ),
-              //             ),
-              //             enabledBorder: OutlineInputBorder(
-              //               borderRadius: BorderRadius.circular(5.0),
-              //               borderSide: BorderSide(
-              //                 color: Constants.formBorder,
-              //                 //width: 2.0,
-              //               ),
-              //             ),
-              //             hintText:
-              //                 "Tell us about your overall experience at the hotel including the amities, services, and all food etc."),
-              //         //keyboardType: TextInputType.emailAddress,
-              //         style: new TextStyle(
-              //             fontFamily: "Montserrat", fontSize: 10.0.sp),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              //button
+              MultilineTextInput(
+                  textEditingController: _descriptioController,
+                  hint:
+                      'Tell us about your overall experience at the hotel including the amities, services, and all food etc.'),
               Padding(
                 padding: EdgeInsets.only(top: 4.0.h),
                 child: GestureDetector(
-                  onTap: () {
-                    submitBookingReview();
-                  },
-                  child: ButtonWidget(btnName: 'SUBMIT', isActive: true, fontWeight: FontWeight.w500,)
-                  // Container(
-                  //   height: 7.0.h,
-                  //   width: 90.0.w,
-                  //   decoration: BoxDecoration(
-                  //       border: Border.all(
-                  //         color: Constants.bgColor,
-                  //       ),
-                  //       color: Constants.bgColor,
-                  //       borderRadius: BorderRadius.circular(8.0)),
-                  //   child: Center(
-                  //     child: Text(
-                  //       'Submit',
-                  //       style: TextStyle(
-                  //           fontFamily: 'Montserrat',
-                  //           fontWeight: FontWeight.w500,
-                  //           fontSize: 11.0.sp,
-                  //           color: Colors.white),
-                  //     ),
-                  //   ),
-                  // ),
-                ),
+                    onTap: () {
+                      submitBookingReview();
+                    },
+                    child: ButtonWidget(
+                      btnName: 'SUBMIT',
+                      isActive: true,
+                      fontWeight: FontWeight.w500,
+                    )),
               ),
             ],
           ),
@@ -242,7 +182,6 @@ class _ReviewScreenState extends State<ReviewScreen> {
     );
   }
 
-// Submit Booking Review
   submitBookingReview() async {
     displayProgressDialog(context);
     try {
@@ -261,7 +200,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
 
       if (response.statusCode == 200) {
         map = response.data;
-        //print(map);
+
         closeProgressDialog(context);
 
         if (map!['status'] == true && map!['data']['isReviewed'] == true) {
@@ -280,17 +219,13 @@ class _ReviewScreenState extends State<ReviewScreen> {
             fontSize: 10.0.sp,
           );
         }
-      }else{
+      } else {
         closeProgressDialog(context);
-         //print('${response.statusCode} : ${response.data.toString()}');
+
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,

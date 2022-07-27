@@ -12,7 +12,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as storage;
-//import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class CreatePostScreen extends StatefulWidget {
   CreatePostScreen({Key? key}) : super(key: key);
@@ -28,10 +27,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   TextEditingController descriptionController = TextEditingController();
   List<String> filePathList = [];
   List<File> fileList = [];
-  //List<AssetEntity> assets = <AssetEntity>[];
+
   String? profilePic, name;
   final ImagePicker _picker = ImagePicker();
-  //List<AssetEntity>? result;
 
   @override
   void initState() {
@@ -41,7 +39,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    //print(authToken);
+
     getData();
   }
 
@@ -61,78 +59,23 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       _camImage = image;
       fileList.add(new File(_camImage!.path));
     });
-    //print('LENGTH::: ${fileList.length}');
   }
 
   _imageFromGallery() async {
-    // XFile? image = (await _picker.pickImage(
-    //     source: ImageSource.gallery, imageQuality: 50));
-
     List<XFile>? images = await _picker.pickMultiImage(imageQuality: 50);
 
     setState(() {
-      // _image = image;
       multiImages = images;
     });
     for (int i = 0; i < multiImages!.length; i++) {
       fileList.add(new File(multiImages![i].path));
     }
-    //print(multiImages![0].path);
   }
-
-  // getMultipleImage() async {
-  //   result = await AssetPicker.pickAssets(
-  //     context,
-  //     maxAssets: 10,
-  //     pageSize: 320,
-  //     pathThumbSize: 80,
-  //     gridCount: 4,
-  //     requestType: RequestType.image,
-  //     selectedAssets: assets,
-  //     // themeColor: Colors.cyan,
-  //     // pickerTheme: ThemeData
-  //     //     .dark(), // This cannot be set when the `themeColor` was provided.
-  //     textDelegate: EnglishTextDelegate(),
-  //     sortPathDelegate: CommonSortPathDelegate(),
-  //     routeCurve: Curves.easeIn,
-  //     routeDuration: const Duration(milliseconds: 500),
-  //   );
-
-  //   setState(() {
-  //     // _image = result.length.
-  //   });
-  //   print('ASSETS::: $assets');
-  //   for (int i = 0; i < result!.length; i++) {
-  //     print('$i : ' + result![i].title!);
-  //     filePathList.add(result![i].relativePath! + result![i].title!);
-  //     fileList.add(
-  //         new File('${result![i].relativePath}' + '/' + '${result![i].title}'));
-  //   }
-  //   print(filePathList);
-  //   print(fileList);
-  //   print(result![0].relativePath! + result![0].title!);
-
-  //   final File file =
-  //       File('${result![0].relativePath}' + '/' + '${result![0].title}');
-  //   print('FILE:::' + file.path);
-
-  //   AssetPicker.registerObserve();
-  // }
-
-  // _videoFile() async {
-  //   File image = (await ImagePicker.pickVideo(
-  //       source: ImageSource.gallery));
-
-  //   setState(() {
-  //     _image = image;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
     var imageView = Container(
       height: 22.0.h,
-      //width: 100.0.w,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
@@ -158,7 +101,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   image: FileImage(fileList[index]),
-                                  //AssetEntityImageProvider(assets[index], isOriginal: false),
                                   fit: BoxFit.fill)),
                         ),
                       ),
@@ -167,11 +109,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       padding: EdgeInsets.only(left: 14.0.w, top: 7.0.h),
                       child: GestureDetector(
                         onTap: () {
-                          //print('Icon Pressssss.....');
-                          //fileList[index].delete();
                           fileList.removeAt(index);
                           setState(() {});
-                          //print(fileList);
                         },
                         child: CircleAvatar(
                           radius: 10.0,
@@ -212,7 +151,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             child: Center(
                 child: TextButton(
               onPressed: descriptionController.text == ''
-                  //|| fileList.length == 0
                   ? null
                   : () {
                       if (fileList.length > 10) {
@@ -225,7 +163,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           textColor: Colors.white,
                           fontSize: 10.0.sp,
                         );
-                        //print(_image.path);
                       } else {
                         createPostApi(descriptionController.text);
                       }
@@ -236,7 +173,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       fontSize: 12.0.sp,
                       fontWeight: FontWeight.w500,
                       color: descriptionController.text == ''
-                          // || fileList.length == 0
                           ? Colors.white.withOpacity(0.6)
                           : Colors.white)),
             )),
@@ -262,7 +198,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 leading: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
                   child: CachedNetworkImage(
-                     imageUrl: profilePic!,
+                    imageUrl: profilePic!,
                     width: 40.0,
                     height: 40.0,
                     fit: BoxFit.cover,
@@ -283,36 +219,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 horizontal: 4.0.w,
               ),
               child: Container(
-                //height: 70.0.h,
                 width: 90.0.w,
                 child: TextFormField(
                   keyboardType: TextInputType.multiline,
-                  //maxLength: 500,
                   maxLines: 25,
                   controller: descriptionController,
                   onChanged: (value) {
-                    setState(() {
-                      //descriptionController.text = value;
-                    });
+                    setState(() {});
                   },
-                  // decoration: InputDecoration(
-                  //                   //labelText: "Please mention your achivements...",
-                  //                   //counterText: '',
-                  //                   fillColor: Colors.white,
-                  //                   focusedBorder: OutlineInputBorder(
-                  //                     borderRadius: BorderRadius.circular(5.0),
-                  //                     borderSide: BorderSide(
-                  //                       color: Constants.formBorder,
-                  //                     ),
-                  //                   ),
-                  //                   enabledBorder: OutlineInputBorder(
-                  //                     borderRadius: BorderRadius.circular(5.0),
-                  //                     borderSide: BorderSide(
-                  //                       color: Constants.formBorder,
-                  //                       //width: 2.0,
-                  //                     ),
-                  //                   ),
-                  //                   ),
                   decoration: InputDecoration(
                       counterText: '',
                       fillColor: Colors.white,
@@ -321,9 +235,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       focusedBorder: InputBorder.none,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
-                        borderSide: BorderSide(color: Colors.white12
-                            //width: 2.0,
-                            ),
+                        borderSide: BorderSide(color: Colors.white12),
                       ),
                       disabledBorder: InputBorder.none),
                   style: new TextStyle(
@@ -332,20 +244,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       color: Color(0xFF6B737C)),
                 ),
               ),
-              //  Text(
-              //   "What's on your mind ?",
-              //   style: TextStyle(
-              //       fontSize: 12.0.sp,
-              //       color: Color(0xFF6B737C),
-              //       fontFamily: 'Montserrat',
-              //       fontWeight: FontWeight.w400),
-              // ),
             ),
-            // SizedBox(
-            //   height: 20.0.h,
-            // ),
             imageView,
-            //SizedBox(height: 7.0.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 4.0.w),
               child: Row(
@@ -354,7 +254,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 children: <Widget>[
                   GestureDetector(
                     onTap: () {
-                      //print('Camera');
                       _imageFromCamera();
                     },
                     child: ImageIcon(
@@ -363,28 +262,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       color: Constants.formBorder,
                     ),
                   ),
-                  // SizedBox(
-                  //   width: 2.5.w,
-                  // ),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     print('Video');
-                  //     _videoFile();
-                  //   },
-                  //   child: ImageIcon(
-                  //     AssetImage('assets/icons/videoCam.png'),
-                  //     size: 25.0,
-                  //     color: Constants.formBorder,
-                  //   ),
-                  // ),
                   SizedBox(
                     width: 2.5.w,
                   ),
                   GestureDetector(
                     onTap: () {
-                      //print('Gallery');
                       _imageFromGallery();
-                      //getMultipleImage();
                     },
                     child: ImageIcon(
                       AssetImage('assets/icons/galleryIcon.png'),
@@ -401,36 +284,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     );
   }
 
-  //Create Post API
   Future<CreatePost> createPostApi(String description) async {
     displayProgressDialog(context);
     var result = CreatePost();
     try {
       Dio dio = Dio();
-      // for (int i = 0; i < fileList.length; i++) {
-      //   MultipartFile.fromFile(filePathList[i],
-      //       filename: filePathList[i].split('/').last);
-      // }
-
-      // List<MultipartFile> imageList = new List<MultipartFile>();
-
-      //   for(File file in images) {
-      //     Uint8List byteData = await file.readAsBytes();
-      //     //AssetEntity imageEntity = await PhotoManager.editor.saveImage(byteData);
-      //     List<int> imageData = byteData.buffer.asUint8List();
-      //     MultipartFile multipartFile = new MultipartFile.fromBytes(
-      //       imageData,
-      //       filename: 'load_image',
-      //       contentType: MediaType("image", "jpg"),
-      //     );
-      //     imageList.add(multipartFile);
-      //   }
-
-      //print(imageList[0].filename);
 
       FormData formData = FormData.fromMap({
         'description': description,
-        //'post_media[]': imageList
       });
 
       for (int i = 0; i < fileList.length; i++) {
@@ -447,11 +308,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           options: Options(headers: {"Authorization": 'Bearer $authToken'}));
 
       if (response.statusCode == 200) {
-        //print(response.data);
         result = CreatePost.fromJson(response.data);
         if (result.status == true) {
           closeProgressDialog(context);
-          //close after successful post creation
+
           Navigator.of(context).pop();
           Fluttertoast.showToast(
             msg: result.message!,
@@ -486,12 +346,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         );
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        //print("This is the error message::::" +
-          //  e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -501,11 +357,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-        //print(e.message);
-      }
+      } else {}
     }
     return result;
   }

@@ -64,7 +64,7 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    //print(authToken);
+
     getData();
     getSelectedSubjectListForLearner();
   }
@@ -82,28 +82,18 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
           if (educator.data!.length > 0) {
             page++;
             getEducatorListApi(page);
-            //print(_name);
-            //print(page);
           }
         } else {
           page++;
           getEducatorListApi(page);
-          //print(_name);
-          //print(page);
         }
       }
     });
   }
 
   void _onLoading() async {
-    //if (mounted) setState(() {});
-    // if (request.data.length > 0) {
-    //   //_refreshController.loadComplete();
-    //   _refreshController.requestLoading();
-    // } else {
     _refreshController.loadComplete();
     _refreshController.loadNoData();
-    //}
   }
 
   @override
@@ -114,13 +104,7 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
               valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
             ),
           )
-        :
-        // SingleChildScrollView(
-        //     controller: _scrollController,
-        //     physics: BouncingScrollPhysics(),
-        //     child:
-        Stack(
-            //mainAxisAlignment: MainAxisAlignment.center,
+        : Stack(
             children: [
               Padding(
                 padding:
@@ -138,25 +122,21 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        result = await Navigator.of(context,
-                                rootNavigator: true)
-                            .push(MaterialPageRoute(
-                                builder: (context) => SubjectSelectionScreen(
-                                    //isSubjectSelected: isSubjectSelected,
-                                    )));
+                        result =
+                            await Navigator.of(context, rootNavigator: true)
+                                .push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        SubjectSelectionScreen()));
 
                         setState(() {});
-                        //print("STATUS::: $result");
+
                         if (result == 'true') {
                           getEducatorListApi(0);
                         }
-                        //                     pushNewScreen(context, screen: SubjectSelectionScreen(), withNavBar: false,
-                        //  pageTransitionAnimation: PageTransitionAnimation.cupertino);
                       },
                       child: Container(
                         height: 2.5.h,
                         width: 15.0.w,
-                        //color: Colors.grey,
                         child: Center(
                           child: Text(
                             'Change',
@@ -181,14 +161,12 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
                   footer: ClassicFooter(
                     loadStyle: LoadStyle.ShowWhenLoading,
                     noDataText: 'No More Educators',
-                    //noMoreIcon: Icon(Icons.refresh_outlined),
                   ),
                   onLoading: _onLoading,
                   child: ListView.builder(
                       controller: _scrollController,
                       padding: EdgeInsets.symmetric(
                           horizontal: 4.0.w, vertical: 1.0.h),
-                      //physics: BouncingScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: _userId.length == 0 ? 0 : _userId.length,
                       itemBuilder: (context, index) {
@@ -197,7 +175,6 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
                           child: Padding(
                             padding: EdgeInsets.only(left: 2.0.w),
                             child: Container(
-                              //height: 10.0.h,
                               child: ListTile(
                                   contentPadding: EdgeInsets.zero,
                                   title: GestureDetector(
@@ -261,7 +238,6 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
                                           children: [
                                             Container(
                                               width: 52.0.w,
-                                              //color: Colors.grey,
                                               child: Text(
                                                 _name[index]!,
                                                 style: TextStyle(
@@ -274,7 +250,6 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
                                             ),
                                             Container(
                                               width: 52.0.w,
-                                              //color: Colors.grey,
                                               child: Text(
                                                   '${_lastDegree[index]} | ${_schoolName[index]}',
                                                   style: TextStyle(
@@ -295,7 +270,6 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
                                         right: 2.0.w, top: 0.0.h),
                                     child: GestureDetector(
                                       onTap: () async {
-                                        //print('$index is Connected');
                                         await connect.connectionApi(
                                             _userId[index], authToken!);
                                         setState(() {
@@ -343,21 +317,14 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
           );
   }
 
-  //Get Educator List API
   Future<void> getEducatorListApi(int page) async {
-    // displayProgressDialog(context);
-
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.getEducatorListUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
-        // closeProgressDialog(context);
-        //return EducatorPost.fromJson(json)
-        //result = EducatorPost.fromJson(response.data);
         educator = EducatorListModel.fromJson(response.data);
 
         if (educator.data!.length > 0) {
@@ -371,8 +338,6 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
             _distance.add(educator.data![i].distance);
           }
 
-          //print(_name);
-
           isLoading = false;
           setState(() {});
         } else {
@@ -384,32 +349,22 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
-    } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
-    }
+    } on DioError catch (e, stack) {}
   }
 
   Future<void> getUserProfile(id) async {
-    // displayProgressDialog(context);
-
     Map<String, dynamic>? map = {};
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        //print(map!['data']);
-        ////print(mapData);
         if (map!['data'] != null || map['data'] != []) {
           setState(() {});
           map['data']['role'] == 'E'
@@ -429,27 +384,17 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
           isLoading = false;
           setState(() {});
         }
-        ////print(result.data);
-        //return result;
+
         setState(() {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
-    } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
-    }
+    } on DioError catch (e, stack) {}
   }
 
-  //get Selected Subject API
   getSelectedSubjectListForLearner() async {
-    //displayProgressDialog(context);
-    //var result = CategoryList();
-
     try {
       Dio dio = Dio();
       var option = Options(headers: {"Authorization": 'Bearer ' + authToken!});
@@ -457,50 +402,25 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
           await dio.get(Config.getSelectedSubjectUrl, options: option);
 
       if (response.statusCode == 200) {
-        //closeProgressDialog(context);
         selectedSubjectMap = response.data;
-        //debugPrint('SELECTED:::' + selectedSubjectMap.toString());
+
         if (selectedSubjectMap!['status'] == true) {
-          // setState(() {
-          //   selectedSubjectMapData = selectedSubjectMap!['data'];
-          // });
           if (selectedSubjectMap!['data'].isEmpty ||
               selectedSubjectMap!['data'] == []) {
             setState(() {
               isSubjectSelected = false;
             });
             pushNewScreen(context,
-                screen: SubjectSelectionScreen(
-                    //isSubjectSelected: isSubjectSelected
-                    ),
+                screen: SubjectSelectionScreen(),
                 withNavBar: false,
                 pageTransitionAnimation: PageTransitionAnimation.cupertino);
-            // Navigator.of(context).pushAndRemoveUntil(
-            //     MaterialPageRoute(
-            //         builder: (context) => SubjectSelectionScreen(
-            //             isSubjectSelected: isSubjectSelected)),
-            //     (Route<dynamic> route) => false);
           } else {
             setState(() {
               isSubjectSelected = true;
             });
           }
-
-          //closeProgressDialog(context);
         }
-        // else {
-        //   Fluttertoast.showToast(
-        //     msg: selectedSubjectMap!['error_msg'],
-        //     toastLength: Toast.LENGTH_SHORT,
-        //     gravity: ToastGravity.BOTTOM,
-        //     timeInSecForIosWeb: 1,
-        //     backgroundColor: Constants.bgColor,
-        //     textColor: Colors.white,
-        //     fontSize: 10.0.sp,
-        //   );
-        // }
       } else {
-        //closeProgressDialog(context);
         if (selectedSubjectMap!['error_msg'] != null) {
           Fluttertoast.showToast(
             msg: selectedSubjectMap!['error_msg'],
@@ -514,11 +434,7 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
         }
       }
     } on DioError catch (e, stack) {
-      //closeProgressDialog(context);
-      if (e.response != null) {
-        //print(e.message);
-        //print(stack);
-      }
+      if (e.response != null) {}
     }
   }
 }

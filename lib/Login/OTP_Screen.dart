@@ -48,40 +48,34 @@ class _OtpScreenState extends State<OtpScreen> {
   String? name, mobileNumber, email;
 
   void initState() {
-    // TODO: implement initState
-    //SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     errorController = StreamController<ErrorAnimationType>();
     getData();
-    // otpPinController.text = '1234';
+
     newMobNumber = widget.mobileNumber;
     super.initState();
   }
 
-  String replaceCharAt(String oldString, int index, String newString){
-    return oldString.substring(0, index) + newString + oldString.substring(index + 1);
+  String replaceCharAt(String oldString, int index, String newString) {
+    return oldString.substring(0, index) +
+        newString +
+        oldString.substring(index + 1);
   }
-  
 
   @override
   void dispose() {
-    // TODO: implement dispose
     errorController!.close();
     super.dispose();
   }
 
   getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    // setState(() {
-    //   registerAs = preferences.getString('RegisterAs');
-    // });
+
     userId = preferences.getInt('userId');
-    //print(userId);
-    //print(registerAs);
   }
 
   @override
   Widget build(BuildContext context) {
-    for(int i = 0; i < widget.mobileNumber!.length - 3; i++){
+    for (int i = 0; i < widget.mobileNumber!.length - 3; i++) {
       newMobNumber = replaceCharAt(newMobNumber!, i, '*');
     }
     double _height = MediaQuery.of(context).size.height;
@@ -187,19 +181,13 @@ class _OtpScreenState extends State<OtpScreen> {
                                 enableActiveFill: false,
                                 errorAnimationController: errorController,
                                 controller: otpPinController,
-                                onCompleted: (v) {
-                                  //print("Completed");
-                                },
+                                onCompleted: (v) {},
                                 onChanged: (value) {
-                                  //print(value);
                                   setState(() {
                                     currentText = value;
                                   });
                                 },
                                 beforeTextPaste: (text) {
-                                  //print("Allowing to paste $text");
-                                  //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-                                  //but you can show anything you want here, like your pop up saying wrong paste format or etc
                                   return true;
                                 },
                               )),
@@ -209,7 +197,6 @@ class _OtpScreenState extends State<OtpScreen> {
                         padding: EdgeInsets.only(left: 5.0.w, right: 5.0.w),
                         child: ArgonTimerButton(
                           initialTimer: 15,
-                          // Optional
                           height: 50,
                           width: 80.0.w,
                           minWidth: 45.0.w,
@@ -268,15 +255,15 @@ class _OtpScreenState extends State<OtpScreen> {
                               setState(() {
                                 otpPinController.clear();
                               });
-                              //resendOTP();
+
                               Fluttertoast.showToast(
-                              msg: 'OTP sent successfully',
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Constants.bgColor,
-                              textColor: Colors.white,
-                              fontSize: 10.0.sp,
+                                msg: 'OTP sent successfully',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Constants.bgColor,
+                                textColor: Colors.white,
+                                fontSize: 10.0.sp,
                               );
                             }
                           },
@@ -286,67 +273,23 @@ class _OtpScreenState extends State<OtpScreen> {
                         padding: EdgeInsets.only(
                             left: 5.0.w, right: 5.0.w, top: 4.0.h),
                         child: GestureDetector(
-                          onTap: () {
-                            //print('Verify!!!');
-                            if (currentText.length != 6) {
-                              errorController!.add(ErrorAnimationType
-                                  .shake); // Triggering error shake animation
-                              setState(() {
-                                hasError = true;
-                              });
-                            } else {
-                              otpVerification(userId, otpPinController.text);
-                              // setState(() {
-                              //   //verifyOTP();
-                              //   // Navigator.of(context).pushAndRemoveUntil(
-                              //   //     MaterialPageRoute(
-                              //   //         builder: (context) => bottomNavBar(0)),
-                              //   //     (Route<dynamic> route) => false);
-                              // role == 'L'
-                              //     ? Navigator.of(context).push(
-                              //         MaterialPageRoute(
-                              //             builder: (context) =>
-                              //                 LearnerHomeScreen()))
-                              //     //(Route<dynamic> route) => false);
-                              //     //}
-                              //     : Navigator.of(context).push(
-                              //         MaterialPageRoute(
-                              //             builder: (context) =>
-                              //                 EducatorRegistration()));
-                              hasError = false;
-                              // scaffoldKey.currentState.showSnackBar(SnackBar(
-                              //   content: Text("Verify!!"),
-                              //   duration: Duration(seconds: 2),
-                              // ));
-                              //});
-                            }
-                          },
-                          child: ButtonWidget(btnName: 'VERIFY', isActive: true, fontWeight: FontWeight.w700,)
-                          // Container(
-                          //   height: 7.0.h,
-                          //   width: 90.0.w,
-                          //   padding: const EdgeInsets.all(1.0),
-                          //   decoration: BoxDecoration(
-                          //     color: Constants.bpOnBoardTitleStyle,
-                          //     borderRadius:
-                          //         BorderRadius.all(Radius.circular(10.0)),
-                          //     border: Border.all(
-                          //       color: Constants.formBorder,
-                          //       width: 0.15,
-                          //     ),
-                          //   ),
-                          //   child: Center(
-                          //     child: Text(
-                          //       'Verify'.toUpperCase(),
-                          //       style: TextStyle(
-                          //           color: Colors.white,
-                          //           fontFamily: 'Montserrat',
-                          //           fontWeight: FontWeight.w700,
-                          //           fontSize: 11.0.sp),
-                          //     ),
-                          //   ),
-                          // ),
-                        ),
+                            onTap: () {
+                              if (currentText.length != 6) {
+                                errorController!.add(ErrorAnimationType.shake);
+                                setState(() {
+                                  hasError = true;
+                                });
+                              } else {
+                                otpVerification(userId, otpPinController.text);
+
+                                hasError = false;
+                              }
+                            },
+                            child: ButtonWidget(
+                              btnName: 'VERIFY',
+                              isActive: true,
+                              fontWeight: FontWeight.w700,
+                            )),
                       ),
                     ],
                   ),
@@ -359,72 +302,103 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
-  //OTP verification API
   Future<OtpResponse> otpVerification(int? userId, String otp) async {
     displayProgressDialog(context);
-     SharedPreferences preferences = await SharedPreferences.getInstance();
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     var result = OtpResponse();
     try {
       Dio dio = Dio();
       FormData formData = FormData.fromMap({'user_id': userId, 'otp': otp});
       var response = await dio.post(Config.otpUrl, data: formData);
       if (response.statusCode == 200) {
-        //print(response.data);
-
         result = OtpResponse.fromJson(response.data);
         if (result.status == true) {
-          ////print('TOKEN ::' + result.data.token);
           saveToken(result.data!.token!);
           role = result.data!.userObject!.role;
           name = result.data!.userObject!.name;
           mobileNumber = result.data!.userObject!.mobileNumber;
           email = result.data!.userObject!.email;
           preferences.setString('RegisterAs', role!);
-          if(result.data!.userObject!.isNew == "true") {
+          if (result.data!.userObject!.isNew == "true") {
             closeProgressDialog(context);
             role == 'L'
                 ? Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+                    MaterialPageRoute(builder: (context) => bottomNavBar(0)),
                     (Route<dynamic> route) => false)
                 : Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => EducatorRegistration(
-                  name: name,
-                  mobileNumber: mobileNumber,
-                  email: email,
-                )));
-          } else if(result.data!.userObject!.isVerified == "P" || result.data!.userObject!.isVerified == "R") {
+                    builder: (context) => EducatorRegistration(
+                          name: name,
+                          mobileNumber: mobileNumber,
+                          email: email,
+                        )));
+          } else if (result.data!.userObject!.isVerified == "P" ||
+              result.data!.userObject!.isVerified == "R") {
             closeProgressDialog(context);
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => VerificationScreen(verificationStatus: result.data!.userObject!.isVerified)));
+                builder: (context) => VerificationScreen(
+                    verificationStatus: result.data!.userObject!.isVerified)));
           } else {
-              preferences.setString("name", result.data!.userObject!.name!);
-              preferences.setString("mobileNumber", result.data!.userObject!.mobileNumber!);
-              preferences.setString("gender", result.data!.userObject!.gender.toString());
-              preferences.setString("email", result.data!.userObject!.email!);
-              //result.data.userObject.role == 'E' ? 
-              preferences.setString("imageUrl", result.data!.userObject!.imageUrl!);
-              // : preferences.setString("imageUrl", '');
-              result.data!.userObject!.role == 'E' ? preferences.setString("qualification", result.data!.userObject!.educationalDetail!.qualification!) : preferences.setString("qualification", '');
-              result.data!.userObject!.role == 'E' ? preferences.setString("schoolName", result.data!.userObject!.educationalDetail!.schoolName!) : preferences.setString("schoolName",'');
-              result.data!.userObject!.role == 'E' ? preferences.setString("address1", result.data!.userObject!.location!.addressLine1!): preferences.setString("address1", '');
-              result.data!.userObject!.role == 'E' ? preferences.setString("address2", result.data!.userObject!.location!.city!): preferences.setString("address2", '');
-              result.data!.userObject!.role == 'E' ? preferences.setString("facebookUrl", result.data!.userObject!.fbUrl.toString()) : preferences.setString("facebookUrl",'');
-              result.data!.userObject!.role == 'E' ? preferences.setString("instaUrl", result.data!.userObject!.instaUrl.toString()) : preferences.setString("instaUrl",'');
-              result.data!.userObject!.role == 'E' ? preferences.setString("linkedInUrl", result.data!.userObject!.liUrl.toString()) : preferences.setString("linkedInUrl", '');
-              result.data!.userObject!.role == 'E' ? preferences.setString("otherUrl", result.data!.userObject!.otherUrl.toString()) : preferences.setString("otherUrl", '');
-              result.data!.userObject!.role == 'E' ? preferences.setString("isNew", result.data!.userObject!.isNew!) : preferences.setString("isNew", '');
-              preferences.setInt('isSubscribed', result.data!.userObject!.isSubscribed!);
-              preferences.setBool('isLoggedIn', true);
-              signIn(CubeUser(fullName: result.data!.userObject!.name, login: result.data!.userObject!.email, password: '12345678'))
-                  .then((cubeUser) async {
-                SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
-                sharedPrefs.saveNewUser(cubeUser);
-                closeProgressDialog(context);
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => bottomNavBar(0)),
-                        (Route<dynamic> route) => false);
-              })
-                  .catchError((error){});
+            preferences.setString("name", result.data!.userObject!.name!);
+            preferences.setString(
+                "mobileNumber", result.data!.userObject!.mobileNumber!);
+            preferences.setString(
+                "gender", result.data!.userObject!.gender.toString());
+            preferences.setString("email", result.data!.userObject!.email!);
+
+            preferences.setString(
+                "imageUrl", result.data!.userObject!.imageUrl!);
+
+            result.data!.userObject!.role == 'E'
+                ? preferences.setString("qualification",
+                    result.data!.userObject!.educationalDetail!.qualification!)
+                : preferences.setString("qualification", '');
+            result.data!.userObject!.role == 'E'
+                ? preferences.setString("schoolName",
+                    result.data!.userObject!.educationalDetail!.schoolName!)
+                : preferences.setString("schoolName", '');
+            result.data!.userObject!.role == 'E'
+                ? preferences.setString("address1",
+                    result.data!.userObject!.location!.addressLine1!)
+                : preferences.setString("address1", '');
+            result.data!.userObject!.role == 'E'
+                ? preferences.setString(
+                    "address2", result.data!.userObject!.location!.city!)
+                : preferences.setString("address2", '');
+            result.data!.userObject!.role == 'E'
+                ? preferences.setString(
+                    "facebookUrl", result.data!.userObject!.fbUrl.toString())
+                : preferences.setString("facebookUrl", '');
+            result.data!.userObject!.role == 'E'
+                ? preferences.setString(
+                    "instaUrl", result.data!.userObject!.instaUrl.toString())
+                : preferences.setString("instaUrl", '');
+            result.data!.userObject!.role == 'E'
+                ? preferences.setString(
+                    "linkedInUrl", result.data!.userObject!.liUrl.toString())
+                : preferences.setString("linkedInUrl", '');
+            result.data!.userObject!.role == 'E'
+                ? preferences.setString(
+                    "otherUrl", result.data!.userObject!.otherUrl.toString())
+                : preferences.setString("otherUrl", '');
+            result.data!.userObject!.role == 'E'
+                ? preferences.setString(
+                    "isNew", result.data!.userObject!.isNew!)
+                : preferences.setString("isNew", '');
+            preferences.setInt(
+                'isSubscribed', result.data!.userObject!.isSubscribed!);
+            preferences.setBool('isLoggedIn', true);
+            signIn(CubeUser(
+                    fullName: result.data!.userObject!.name,
+                    login: result.data!.userObject!.email,
+                    password: '12345678'))
+                .then((cubeUser) async {
+              SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+              sharedPrefs.saveNewUser(cubeUser);
+              closeProgressDialog(context);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+                  (Route<dynamic> route) => false);
+            }).catchError((error) {});
           }
 
           Fluttertoast.showToast(
@@ -448,15 +422,10 @@ class _OtpScreenState extends State<OtpScreen> {
             fontSize: 10.0.sp,
           );
         }
-        //print(result);
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -466,20 +435,13 @@ class _OtpScreenState extends State<OtpScreen> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        ////print(e.request);
-        //print(e.message);
-      }
+      } else {}
     }
     return result;
   }
 
-      void saveToken(String token) async {
-    // Write value
+  void saveToken(String token) async {
     await storage.write(key: 'access_token', value: token);
-    //print('TOKEN ::: ' + token);
-    //closeProgressDialog(context);
   }
 
   displayProgressDialog(BuildContext context) {

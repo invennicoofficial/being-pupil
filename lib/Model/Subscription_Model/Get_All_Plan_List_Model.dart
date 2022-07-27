@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final getAllPlanList = getAllPlanListFromJson(jsonString);
-
 import 'dart:convert';
 
 class GetAllPlanList {

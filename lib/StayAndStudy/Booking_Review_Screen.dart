@@ -474,29 +474,6 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                     createBookingAPI();
                   },
                   child: ButtonWidget(btnName: 'BOOK NOW', isActive: true, fontWeight: FontWeight.w500,)
-                  // Container(
-                  //   height: 7.0.h,
-                  //   width: 90.0.w,
-                  //   padding: const EdgeInsets.all(1.0),
-                  //   decoration: BoxDecoration(
-                  //     color: Constants.bpOnBoardTitleStyle,
-                  //     borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  //     border: Border.all(
-                  //       color: Constants.bgColor,
-                  //       width: 0.15,
-                  //     ),
-                  //   ),
-                  //   child: Center(
-                  //     child: Text(
-                  //       'Book now'.toUpperCase(),
-                  //       style: TextStyle(
-                  //           color: Colors.white,
-                  //           fontFamily: 'Montserrat',
-                  //           fontWeight: FontWeight.w600,
-                  //           fontSize: 11.0.sp),
-                  //     ),
-                  //   ),
-                  // ),
                 ),
               ),
             ],
@@ -507,11 +484,6 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    // Do something when payment succeeds
-    //print('kama liyaa!');
-    //print(response.orderId);
-    //print(response.paymentId);
-    //print(response.signature);
     
     //!createBookingAPI(response.orderId, response.paymentId, response.signature);
   }
@@ -545,7 +517,6 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
     if (response.statusCode == 200) {
       String jsonResponse = await response.stream.bytesToString();
       map = json.decode(jsonResponse);
-      //print(map!['id']);
       //TODO: Change Razorpay Keys
       var options = {
         'key': 'rzp_test_MtDrPPLWbUdsY7',
@@ -573,8 +544,6 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
   Future<CreateBooking> createBookingAPI(
     //!orderId, paymentId, signature
     ) async {
-    // //print(widget.mealId);
-    //print('creating the booking...');
     displayProgressDialog(context);
     var result = CreateBooking();
     try {
@@ -596,7 +565,6 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
       });
 
       for (int i = 0; i < widget.mealId!.length; i++) {
-        //print(widget.mealId![i]);
         formData.fields
             .addAll([MapEntry('meal_id[$i]', widget.mealId![i].toString())]);
       }
@@ -607,7 +575,6 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
 
       if (response.statusCode == 200) {
         closeProgressDialog(context);
-        print(response.data);
         result = CreateBooking.fromJson(response.data);
         if (result.status == true) {
           pushNewScreen(context,
@@ -623,12 +590,8 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
         }
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        //print("This is the error message::::" +
-        //  e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -640,8 +603,6 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
         );
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        ////print(e.request);
-        //print(e.message);
       }
     }
     return result;

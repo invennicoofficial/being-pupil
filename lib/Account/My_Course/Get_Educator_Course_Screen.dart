@@ -38,7 +38,6 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getToken();
   }
@@ -53,23 +52,19 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
           if (courseLength > 0) {
             page++;
             getEducatorCourseAPI(page);
-           // print(page);
           } else {
             _refreshController.loadComplete();
           }
         } else {
           page++;
           getEducatorCourseAPI(page);
-          //print(page);
         }
       }
     });
   }
 
   void _onLoading() async {
-    //if (mounted) setState(() {});
     if (courseLength == 0) {
-      //_refreshController.loadComplete();
       _refreshController.loadNoData();
     } else {
       _refreshController.requestLoading();
@@ -117,7 +112,6 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
               child: ListView.builder(
                   controller: _scrollController,
                   itemCount: nameList.length,
-                  //physics: AlwaysScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return Padding(
@@ -165,7 +159,6 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
                                     width: 63.0.w,
                                     child: Text(
                                       nameList[index]!,
-                                      //result.data[index].courseName,
                                       style: TextStyle(
                                           fontFamily: 'Montserrat',
                                           fontSize: 11.0.sp,
@@ -178,8 +171,8 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
                                 SizedBox(
                                   height: 0.5.h,
                                 ),
-                                Text('${startDateList[index]} to ${endDateList[index]}',
-                                    //'${result.data[index].startDate} to ${result.data[index].endDate}',
+                                Text(
+                                    '${startDateList[index]} to ${endDateList[index]}',
                                     style: TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 8.0.sp,
@@ -196,11 +189,7 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
     );
   }
 
-  //Get My  Course API
-
   Future<GetEducatorCourse> getEducatorCourseAPI(int page) async {
-    //displayProgressDialog(context);
-
     try {
       var dio = Dio();
       var response = await dio.get(
@@ -208,12 +197,12 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         result = GetEducatorCourse.fromJson(response.data);
-       // print(response.data);
+
         courseLength = 0;
         courseLength = result.data == [] ? 0 : result.data!.length;
 
         setState(() {});
-        //closeProgressDialog(context);
+
         if (courseLength > 0) {
           for (int i = 0; i < courseLength; i++) {
             idList.add(result.data![i].courseId);
@@ -243,13 +232,7 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
         );
       }
     } on DioError catch (e, stack) {
-     // print(e.response);
-    //  print(stack);
-      // closeProgressDialog(context);
-      //closeProgressDialog(context);
       if (e.response != null) {
-        // print("This is the error message::::" +
-        //     e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -259,11 +242,7 @@ class _GetEducatorCourseScreenState extends State<GetEducatorCourseScreen> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-        //print(e.message);
-      }
+      } else {}
     }
     return result;
   }

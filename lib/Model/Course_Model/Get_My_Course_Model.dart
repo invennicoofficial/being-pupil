@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final getMyCourse = getMyCourseFromJson(jsonString);
-
 import 'dart:convert';
 
 GetMyCourse getMyCourseFromJson(String str) => GetMyCourse.fromJson(json.decode(str));

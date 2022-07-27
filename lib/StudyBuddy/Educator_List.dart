@@ -54,7 +54,7 @@ class _EducatorListState extends State<EducatorList> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    //print(authToken);
+
     getData();
   }
 
@@ -73,28 +73,18 @@ class _EducatorListState extends State<EducatorList> {
           if (educator.data!.length > 0) {
             page++;
             getEducatorListApi(page);
-            //print(_name);
-            //print(page);
           }
         } else {
           page++;
           getEducatorListApi(page);
-          //print(_name);
-          //print(page);
         }
       }
     });
   }
 
   void _onLoading() async {
-    //if (mounted) setState(() {});
-    // if (request.data.length > 0) {
-    //   //_refreshController.loadComplete();
-    //   _refreshController.requestLoading();
-    // } else {
     _refreshController.loadComplete();
     _refreshController.loadNoData();
-    //}
   }
 
   @override
@@ -105,26 +95,19 @@ class _EducatorListState extends State<EducatorList> {
               valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
             ),
           )
-        :
-        // SingleChildScrollView(
-        //     controller: _scrollController,
-        //     physics: BouncingScrollPhysics(),
-        //     child:
-        SmartRefresher(
+        : SmartRefresher(
             controller: _refreshController,
             enablePullDown: false,
             enablePullUp: true,
             footer: ClassicFooter(
               loadStyle: LoadStyle.ShowWhenLoading,
               noDataText: 'No More Educators',
-              //noMoreIcon: Icon(Icons.refresh_outlined),
             ),
             onLoading: _onLoading,
             child: ListView.builder(
                 controller: _scrollController,
                 padding:
                     EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
-                //physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: _userId.length == 0 ? 0 : _userId.length,
                 itemBuilder: (context, index) {
@@ -133,7 +116,6 @@ class _EducatorListState extends State<EducatorList> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 2.0.w),
                       child: Container(
-                        //height: 10.0.h,
                         child: ListTile(
                             contentPadding: EdgeInsets.zero,
                             title: GestureDetector(
@@ -202,7 +184,6 @@ class _EducatorListState extends State<EducatorList> {
                                       ),
                                       Container(
                                         width: 52.0.w,
-                                        //color: Colors.grey,
                                         child: Text(
                                             '${_lastDegree[index]} | ${_schoolName[index]}',
                                             style: TextStyle(
@@ -224,7 +205,6 @@ class _EducatorListState extends State<EducatorList> {
                               child: GestureDetector(
                                 onTap: isSubscribed == 1
                                     ? () async {
-                                        //print('$index is Connected');
                                         await connect.connectionApi(
                                             _userId[index], authToken!);
                                         setState(() {
@@ -276,21 +256,14 @@ class _EducatorListState extends State<EducatorList> {
           );
   }
 
-  //Get Educator List API
   Future<void> getEducatorListApi(int page) async {
-    // displayProgressDialog(context);
-
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.getEducatorListUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
-        // closeProgressDialog(context);
-        //return EducatorPost.fromJson(json)
-        //result = EducatorPost.fromJson(response.data);
         educator = EducatorListModel.fromJson(response.data);
 
         if (educator.data!.length > 0) {
@@ -304,8 +277,6 @@ class _EducatorListState extends State<EducatorList> {
             _distance.add(educator.data![i].distance);
           }
 
-          //print(_name);
-
           isLoading = false;
           setState(() {});
         } else {
@@ -317,32 +288,22 @@ class _EducatorListState extends State<EducatorList> {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
-    } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
-    }
+    } on DioError catch (e, stack) {}
   }
 
   Future<void> getUserProfile(id) async {
-    // displayProgressDialog(context);
-
     Map<String, dynamic>? map = {};
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        //print(map!['data']);
-        ////print(mapData);
         if (map!['data'] != null || map['data'] != []) {
           setState(() {});
           map['data']['role'] == 'E'
@@ -362,19 +323,13 @@ class _EducatorListState extends State<EducatorList> {
           isLoading = false;
           setState(() {});
         }
-        ////print(result.data);
-        //return result;
+
         setState(() {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
-    } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
-    }
+    } on DioError catch (e, stack) {}
   }
 }

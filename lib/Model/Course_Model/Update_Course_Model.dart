@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final UpdateCourse = UpdateCourseFromJson(jsonString);
-
 import 'dart:convert';
 
 UpdateCourse updateCourseFromJson(String str) => UpdateCourse.fromJson(json.decode(str));

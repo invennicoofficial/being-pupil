@@ -1,4 +1,3 @@
-//Model Class for SocialLogin
 class SocialLogin {
   bool? status;
   String? errorCode;
@@ -6,7 +5,8 @@ class SocialLogin {
   String? message;
   Data? data;
 
-  SocialLogin({this.status, this.errorCode, this.errorMsg, this.message, this.data});
+  SocialLogin(
+      {this.status, this.errorCode, this.errorMsg, this.message, this.data});
 
   factory SocialLogin.fromJson(Map<String, dynamic> json) {
     return SocialLogin(
@@ -33,24 +33,15 @@ class SocialLogin {
 }
 
 class Data {
-  // int userId;
-  // String name;
-  // String mobileNumber;
-  // String isNew;
   String? token;
   UserObject? userObject;
-
 
   Data({this.token, this.userObject});
 
   factory Data.fromJson(Map<String, dynamic> json) {
     return Data(
       token: json['access_token'],
-      // userId: json['user_id'],
-      // name: json['name'],
-      // mobileNumber: json['mobile_number'],
-      // isNew: json['isNew'],
-      userObject: json['userObj'] != null 
+      userObject: json['userObj'] != null
           ? new UserObject.fromJson(json['userObj'])
           : null,
     );
@@ -58,10 +49,7 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    // data['user_id'] = this.userId;
-    // data['name'] = this.name;
-    // data['mobile_number'] = this.mobileNumber;
-    // data['isNew'] = this.isNew;
+
     data['access_token'] = this.token;
     data['userObj'] = this.userObject;
     return data;
@@ -89,19 +77,18 @@ class UserObject {
 
   UserObject(
       {this.userId,
-        this.role,
-        this.isNew,
-        this.name,
-        this.mobileNumber,
-        this.gender,
-        this.imageUrl,
-        this.location,
-        this.educationalDetail,
-        this.fbUrl,
-        this.instaUrl,
-        this.liUrl,
-        this.otherUrl
-      });
+      this.role,
+      this.isNew,
+      this.name,
+      this.mobileNumber,
+      this.gender,
+      this.imageUrl,
+      this.location,
+      this.educationalDetail,
+      this.fbUrl,
+      this.instaUrl,
+      this.liUrl,
+      this.otherUrl});
 
   factory UserObject.fromJson(Map<String, dynamic> json) {
     return UserObject(
@@ -183,10 +170,10 @@ class Location {
   String? city;
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
-    id: json["id"],
-    addressLine2: json["address_line1"],
-    city: json["city"],
-  );
+        id: json["id"],
+        addressLine2: json["address_line1"],
+        city: json["city"],
+      );
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

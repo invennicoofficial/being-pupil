@@ -23,7 +23,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   @override
   void initState() {
-    // //SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     super.initState();
   }
 
@@ -71,105 +70,45 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         backgroundColor: Colors.white,
         elevation: 0.0,
         leading: GestureDetector(
-                          onTap: () {
-                            //_currentPage = _numPages - 1;
+            onTap: () {},
+            child: _currentPage != 0
+                ? GestureDetector(
+                    onTap: _currentPage == 2
+                        ? () {
+                            _pageController.jumpToPage(1);
+                          }
+                        : () {
+                            _pageController.jumpToPage(0);
                           },
-                          child: _currentPage != 0
-                              ? GestureDetector(
-                                  onTap: _currentPage == 2 
-                                  ? () {
-                                    _pageController.jumpToPage(1);
-                                  }
-                                  : () {
-                                    _pageController.jumpToPage(0);
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.only(top: 10.0),
-                                    child: Icon(Icons.arrow_back_ios,
-                                        color: Constants.bgColor.withOpacity(0.8)),
-                                  ),
-                                )
-                              : Container()),
-                              actions: [
-                                 _currentPage != 2
-                          ? Container(
-                            padding: EdgeInsets.only(top: 10.0),
-                            //color: Colors.grey,
-                              alignment: Alignment.topRight,
-                              child: FlatButton(
-                                onPressed: () => _pageController.jumpToPage(2),
-                                child: Text(
-                                  'Skip',
-                                  style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w400,
-                                    color: Constants.bpSkipStyle,
-                                    fontSize: 11.0.sp,
-                                  ),
-                                ),
-                              ),
-                            )
-                          : Container(),
-                              ],
+                    child: Container(
+                      padding: EdgeInsets.only(top: 10.0),
+                      child: Icon(Icons.arrow_back_ios,
+                          color: Constants.bgColor.withOpacity(0.8)),
+                    ),
+                  )
+                : Container()),
+        actions: [
+          _currentPage != 2
+              ? Container(
+                  padding: EdgeInsets.only(top: 10.0),
+                  alignment: Alignment.topRight,
+                  child: FlatButton(
+                    onPressed: () => _pageController.jumpToPage(2),
+                    child: Text(
+                      'Skip',
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w400,
+                        color: Constants.bpSkipStyle,
+                        fontSize: 11.0.sp,
+                      ),
+                    ),
+                  ),
+                )
+              : Container(),
+        ],
       ),
-      
-      // PreferredSize(
-      //   preferredSize: Size.fromHeight(13.0.h),
-      //   child: Container(
-      //     color: Colors.grey,
-      //     child: SafeArea(
-      //       child: Column(
-      //         children: <Widget>[
-      //           Padding(
-      //             padding:
-      //                 EdgeInsets.symmetric(horizontal: 3.0.w, vertical: 3.0.h),
-      //             child: Row(
-      //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //               children: [
-      //                 GestureDetector(
-      //                     onTap: () {
-      //                       //_currentPage = _numPages - 1;
-      //                     },
-      //                     child: _currentPage != 0
-      //                         ? GestureDetector(
-      //                             onTap: _currentPage == 2 
-      //                             ? () {
-      //                               _pageController.jumpToPage(1);
-      //                             }
-      //                             : () {
-      //                               _pageController.jumpToPage(0);
-      //                             },
-      //                             child: Icon(Icons.arrow_back_ios,
-      //                                 color: Constants.bgColor),
-      //                           )
-      //                         : Container()),
-      //                 _currentPage != 2
-      //                     ? Container(
-      //                         alignment: Alignment.topRight,
-      //                         child: FlatButton(
-      //                           onPressed: () => _pageController.jumpToPage(2),
-      //                           child: Text(
-      //                             'Skip',
-      //                             style: TextStyle(
-      //                               fontFamily: 'Montserrat',
-      //                               fontWeight: FontWeight.w400,
-      //                               color: Constants.bpSkipStyle,
-      //                               fontSize: 11.0.sp,
-      //                             ),
-      //                           ),
-      //                         ),
-      //                       )
-      //                     : Container(),
-      //               ],
-      //             ),
-      //           )
-      //         ],
-      //       ),
-      //     ),
-      //   ),
-      // ),
       body: Container(
-        //padding: EdgeInsets.only(top: 5),
         decoration: BoxDecoration(
           color: Colors.white,
         ),
@@ -188,7 +127,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     });
                   },
                   children: <Widget>[
-                    // Screen 1
                     Column(
                       children: <Widget>[
                         Padding(
@@ -218,7 +156,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 1.5.w, vertical: 1.0.h),
                                   child: Container(
-                                    //color: Colors.grey,
                                     height: 42.0.h,
                                     width: 82.0.w,
                                     child: Text(
@@ -235,8 +172,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         ),
                       ],
                     ),
-
-                    // Screen 2
                     Column(
                       children: <Widget>[
                         Padding(
@@ -282,8 +217,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         ),
                       ],
                     ),
-
-                    // Screen 3
                     Column(
                       children: <Widget>[
                         Padding(
@@ -308,7 +241,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   'Find Your Study Buddies',
                                   style: _textH1,
                                 ),
-                               // SizedBox(height: 2.0),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 1.5.w, vertical: 1.0.h),
@@ -350,24 +282,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                     type: PageTransitionType.fade,
                                     child: LoginScreen()));
                           },
-                          child: ButtonWidget(btnName: 'GET STARTED', isActive: true, fontSize: 16.0,)
-                          // Container(
-                          //   height: 8.0.h,
-                          //   width: 80.0.w,
-                          //   decoration: BoxDecoration(
-                          //       color: Constants.bgColor,
-                          //       borderRadius: BorderRadius.circular(8.0)),
-                          //   child: Center(
-                          //     child: Text('GET STARTED',
-                          //         style: TextStyle(
-                          //           fontFamily: "Montserrat",
-                          //           fontWeight: FontWeight.w500,
-                          //           fontSize: 12.0.sp,
-                          //           color: Colors.white,
-                          //         )),
-                          //   ),
-                          // ),
-                        )),
+                          child: ButtonWidget(
+                            btnName: 'GET STARTED',
+                            isActive: true,
+                            fontSize: 16.0,
+                          ))),
             ),
           ],
         ),

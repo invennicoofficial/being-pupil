@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final connection = connectionFromJson(jsonString);
-
 import 'dart:convert';
 
 Connection connectionFromJson(String str) => Connection.fromJson(json.decode(str));

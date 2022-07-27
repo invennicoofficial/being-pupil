@@ -48,16 +48,15 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
     setState(() {
       registerAs = preferences.getString('RegisterAs');
     });
-   //print(registerAs);
   }
 
-   void _launchUrl(String url) async {
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
+  void _launchUrl(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -76,39 +75,6 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
           },
           padding: EdgeInsets.zero,
         ),
-        // actions: <Widget>[
-        //   registerAs == 'E'
-        //       ? Padding(
-        //           padding: EdgeInsets.only(right: 0.0.w),
-        //           child: Center(
-        //               child: FlatButton(
-        //             onPressed: () {
-        //               print('EDIT!!!');
-        //               pushNewScreen(context,
-        //                   screen: UpdateCourseScreen(
-        //                     courseId: widget.courseId!,
-        //                     courseName: widget.courseName!,
-        //                     courseDescription: widget.courseDescription!,
-        //                     startDate: widget.courseStartDate!,
-        //                     endDate: widget.courseEndDate!,
-        //                     linkList: widget.courseLinks
-        //                   ),
-        //                   withNavBar: false,
-        //                   pageTransitionAnimation:
-        //                       PageTransitionAnimation.cupertino);
-        //             },
-        //             child: Text(
-        //               'Edit',
-        //               style: TextStyle(
-        //                   fontFamily: 'Montserrat',
-        //                   fontSize: 12.0.sp,
-        //                   fontWeight: FontWeight.w500,
-        //                   color: Colors.white.withOpacity(0.6)),
-        //             ),
-        //           )),
-        //         )
-        //       : Container(),
-        // ],
         title: Text(
           'Course Details',
           style: TextStyle(
@@ -121,37 +87,16 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 2.0.h),
         child: GestureDetector(
-          onTap: enrollText == 'ENROLLED'
-          ? null
-          : () {
-            enrollCourseAPI();
-          },
-          child: ButtonWidget(btnName: enrollText!, isActive: true, fontWeight: FontWeight.w500,)
-          // Container(
-          //   height: 7.0.h,
-          //   width: 90.0.w,
-          //   padding: const EdgeInsets.all(1.0),
-          //   decoration: BoxDecoration(
-          //     color: Constants.bpOnBoardTitleStyle,
-          //     borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          //     border: Border.all(
-          //       color: Constants.formBorder,
-          //       width: 0.15,
-          //     ),
-          //   ),
-          //   child: Center(
-          //     child: Text(
-          //       enrollText!,
-          //       //'Enroll'.toUpperCase(),
-          //       style: TextStyle(
-          //           color: Colors.white,
-          //           fontFamily: 'Montserrat',
-          //           fontWeight: FontWeight.w700,
-          //           fontSize: 11.0.sp),
-          //     ),
-          //   ),
-          // ),
-        ),
+            onTap: enrollText == 'ENROLLED'
+                ? null
+                : () {
+                    enrollCourseAPI();
+                  },
+            child: ButtonWidget(
+              btnName: enrollText!,
+              isActive: true,
+              fontWeight: FontWeight.w500,
+            )),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SingleChildScrollView(
@@ -186,7 +131,8 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     SizedBox(
                       width: 2.0.w,
                     ),
-                    Text('${widget.courseStartDate!} to ${widget.courseStartDate!}',
+                    Text(
+                        '${widget.courseStartDate!} to ${widget.courseStartDate!}',
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 10.0.sp,
@@ -217,7 +163,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           _launchUrl(widget.courseLinks![index]);
                         },
                         child: Padding(
@@ -251,7 +197,6 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                                     scrollDirection: Axis.horizontal,
                                     child: Container(
                                       height: 5.0.h,
-                                      //width: 70.0.w,
                                       child: Center(
                                         child: Text(
                                           widget.courseLinks![index],
@@ -279,7 +224,6 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
     );
   }
 
-  //Course Enroll API
   Future<EnrollCourse> enrollCourseAPI() async {
     displayProgressDialog(context);
     var result = EnrollCourse();
@@ -290,14 +234,13 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
           data: formData,
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
-        //print(response.data);
         result = EnrollCourse.fromJson(response.data);
         closeProgressDialog(context);
-        if(result.status == true){
+        if (result.status == true) {
           setState(() {
             enrollText = 'ENROLLED';
           });
-        }else{}
+        } else {}
         if (result.message == null) {
           Fluttertoast.showToast(
             msg: result.errorMsg,
@@ -331,12 +274,8 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
         );
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        // print("This is the error message::::" +
-        //     e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -346,11 +285,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-        //print(e.message);
-      }
+      } else {}
     }
     return result;
   }

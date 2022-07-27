@@ -32,7 +32,6 @@ import 'package:connectycube_sdk/connectycube_sdk.dart';
 
 import 'Verification_Screen.dart';
 
-
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
 
@@ -53,15 +52,13 @@ class _LoginScreenState extends State<LoginScreen> {
   String? socialPhotoUrl;
   String? socialId;
   String? mobileNumberFromAPi;
-   String? registerAs;
+  String? registerAs;
   String? role;
   String? name, email;
   static const String TAG = "_LoginPageState";
   FocusNode? mobileFocus;
 
   void initState() {
-    // TODO: implement initState
-    // //SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     super.initState();
     mobileFocus = FocusNode();
   }
@@ -109,8 +106,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                     Padding(
-                      padding:
-                          EdgeInsets.only(top: 1.0.h, left: 5.0.w, right: 15.0.w),
+                      padding: EdgeInsets.only(
+                          top: 1.0.h, left: 5.0.w, right: 15.0.w),
                       child: Text(
                         'Login to your account using registered mobile number .',
                         style: TextStyle(
@@ -138,64 +135,43 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(5.0))),
                     child: Column(
                       children: <Widget>[
-                        NumberInputWidget(focusNode: mobileFocus!, autoFocus: true,
-                        textEditingController: mobileController, lable: 'Phone Number'),
+                        NumberInputWidget(
+                            focusNode: mobileFocus!,
+                            autoFocus: true,
+                            textEditingController: mobileController,
+                            lable: 'Phone Number'),
                         Padding(
                           padding: EdgeInsets.only(
                               left: 3.0.w, right: 3.0.w, top: 6.0.h),
                           child: GestureDetector(
-                            onTap: () {
-                              //print('Logged In!!!');
-                              bool mobileValid = RegExp(r"^[6-9]\d{9}$").hasMatch(mobileController.text);
-                              //print('VALID:::'+mobileValid.toString());
-                              if (mobileController.text.isEmpty || (mobileValid == false)) {
-                                Fluttertoast.showToast(
-                                  msg: 'Please Enter Valid Mobile Number',
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Constants.bgColor,
-                                  textColor: Colors.white,
-                                  fontSize: 10.0.sp,
-                                );
-                              } else {
-                                login(mobileController.text);
-                              }
-                              // Navigator.push(
-                              //     context,
-                              //     PageTransition(
-                              //         type: PageTransitionType.fade,
-                              //         child: OtpScreen()));
-                            },
-                            child: ButtonWidget(btnName: 'LOGIN', isActive: true, fontWeight: FontWeight.w700,)
-                            // Container(
-                            //   height: 7.0.h,
-                            //   width: 90.0.w,
-                            //   padding: const EdgeInsets.all(1.0),
-                            //   decoration: BoxDecoration(
-                            //     color: Constants.bpOnBoardTitleStyle,
-                            //     borderRadius:
-                            //         BorderRadius.all(Radius.circular(10.0)),
-                            //     border: Border.all(
-                            //       color: Constants.formBorder,
-                            //       width: 0.15,
-                            //     ),
-                            //   ),
-                            //   child: Center(
-                            //     child: Text(
-                            //       'LogIn'.toUpperCase(),
-                            //       style: TextStyle(
-                            //           color: Colors.white,
-                            //           fontFamily: 'Montserrat',
-                            //           fontWeight: FontWeight.w700,
-                            //           fontSize: 11.0.sp),
-                            //     ),
-                            //   ),
-                            // ),
-                          ),
+                              onTap: () {
+                                bool mobileValid = RegExp(r"^[6-9]\d{9}$")
+                                    .hasMatch(mobileController.text);
+
+                                if (mobileController.text.isEmpty ||
+                                    (mobileValid == false)) {
+                                  Fluttertoast.showToast(
+                                    msg: 'Please Enter Valid Mobile Number',
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Constants.bgColor,
+                                    textColor: Colors.white,
+                                    fontSize: 10.0.sp,
+                                  );
+                                } else {
+                                  login(mobileController.text);
+                                }
+                              },
+                              child: ButtonWidget(
+                                btnName: 'LOGIN',
+                                isActive: true,
+                                fontWeight: FontWeight.w700,
+                              )),
                         ),
                         Padding(
-                            padding: EdgeInsets.only(top: 6.0.h, left: 3.0.w, right: 3.0.w),
+                            padding: EdgeInsets.only(
+                                top: 6.0.h, left: 3.0.w, right: 3.0.w),
                             child: Row(children: <Widget>[
                               Expanded(
                                 child: new Container(
@@ -222,163 +198,107 @@ class _LoginScreenState extends State<LoginScreen> {
                                 )),
                               ),
                             ])),
-                        Platform.isIOS ? Padding(
-                          padding: EdgeInsets.only(
-                              left: 10.0.w, right: 10.0.w, top: 3.0.h),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              GestureDetector(
-                                onTap: () async {
-                                  //print('Apple Login!!!');
-                                  setState(() {
-                                    registrationType = 'A';
-                                  });
-                                  _handleAppleSignIn();
-                                  
-                                  // Navigator.push(
-                                  //     context,
-                                  //     PageTransition(
-                                  //         type: PageTransitionType.fade,
-                                  //         child: LoginMobileCheckScreen()));
-                                },
-                                child: Container(
-                                    height: 4.0.h,
-                                    width: 8.0.w,
-                                    child: SvgPicture.asset('assets/icons/appleSvg.svg')
-                                    // Image.asset(
-                                    //   'assets/icons/apple.png',
-                                    //   fit: BoxFit.contain,
-                                    // )
+                        Platform.isIOS
+                            ? Padding(
+                                padding: EdgeInsets.only(
+                                    left: 10.0.w, right: 10.0.w, top: 3.0.h),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    GestureDetector(
+                                      onTap: () async {
+                                        setState(() {
+                                          registrationType = 'A';
+                                        });
+                                        _handleAppleSignIn();
+                                      },
+                                      child: Container(
+                                          height: 4.0.h,
+                                          width: 8.0.w,
+                                          child: SvgPicture.asset(
+                                              'assets/icons/appleSvg.svg')),
                                     ),
-                              ),
-                              SizedBox(width: 24,),
-                              GestureDetector(
-                                onTap: () {
-                                  //print('Google Login!!!');
-                                  setState(() {
-                                    registrationType = 'G';
-                                  });
-                                  _handleGoogleSignIn();
-                                  // Navigator.push(
-                                  //     context,
-                                  //     PageTransition(
-                                  //         type: PageTransitionType.fade,
-                                  //         child: LoginMobileCheckScreen()));
-                                },
-                                child: Container(
-                                    height: 4.0.h,
-                                    width: 8.0.w,
-                                    child: Image.asset(
-                                      'assets/icons/google.png',
-                                      fit: BoxFit.contain,
-                                    )),
-                              ),
-                              SizedBox(width: 24,),
-                              GestureDetector(
-                                onTap: () {
-                                  //print('Facebook Login!!!');
-                                  setState(() {
-                                    registrationType = 'F';
-                                  });
-                                  _handleFacebookSignIn();
-                                  // Navigator.push(
-                                  //     context,
-                                  //     PageTransition(
-                                  //         type: PageTransitionType.fade,
-                                  //         child: LoginMobileCheckScreen()));
-                                },
-                                child: Container(
-                                    height: 4.0.h,
-                                    width: 8.0.w,
-                                    child: SvgPicture.asset('assets/icons/fbSvg.svg')
-                                    // Image.asset(
-                                    //   'assets/icons/facebook.png',
-                                    //   fit: BoxFit.contain,
-                                    // )
+                                    SizedBox(
+                                      width: 24,
                                     ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          registrationType = 'G';
+                                        });
+                                        _handleGoogleSignIn();
+                                      },
+                                      child: Container(
+                                          height: 4.0.h,
+                                          width: 8.0.w,
+                                          child: Image.asset(
+                                            'assets/icons/google.png',
+                                            fit: BoxFit.contain,
+                                          )),
+                                    ),
+                                    SizedBox(
+                                      width: 24,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          registrationType = 'F';
+                                        });
+                                        _handleFacebookSignIn();
+                                      },
+                                      child: Container(
+                                          height: 4.0.h,
+                                          width: 8.0.w,
+                                          child: SvgPicture.asset(
+                                              'assets/icons/fbSvg.svg')),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : Padding(
+                                padding: EdgeInsets.only(
+                                    left: 10.0.w, right: 10.0.w, top: 3.0.h),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          registrationType = 'G';
+                                        });
+                                        _handleGoogleSignIn();
+                                      },
+                                      child: Container(
+                                          height: 4.0.h,
+                                          width: 8.0.w,
+                                          child: Image.asset(
+                                            'assets/icons/google.png',
+                                            fit: BoxFit.contain,
+                                          )),
+                                    ),
+                                    SizedBox(
+                                      width: 24,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          registrationType = 'F';
+                                        });
+                                        _handleFacebookSignIn();
+                                      },
+                                      child: Container(
+                                          height: 4.0.h,
+                                          width: 8.0.w,
+                                          child: Image.asset(
+                                            'assets/icons/facebook.png',
+                                            fit: BoxFit.contain,
+                                          )),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              // GestureDetector(
-                              //   onTap: (){
-                              //     //print('LinkedIn Login!!!');
-                              //   },
-                              //   child: Container(
-                              //       height: 4.0.h,
-                              //       width: 8.0.w,
-                              //       child: Image.asset(
-                              //         'assets/icons/linkedin.png',
-                              //         fit: BoxFit.contain,
-                              //       )),
-                              // ),
-                            ],
-                          ),
-                        ) :
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 10.0.w, right: 10.0.w, top: 3.0.h),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              GestureDetector(
-                                onTap: () {
-                                  //print('Google Login!!!');
-                                  setState(() {
-                                    registrationType = 'G';
-                                  });
-                                  _handleGoogleSignIn();
-                                  // Navigator.push(
-                                  //     context,
-                                  //     PageTransition(
-                                  //         type: PageTransitionType.fade,
-                                  //         child: LoginMobileCheckScreen()));
-                                },
-                                child: Container(
-                                    height: 4.0.h,
-                                    width: 8.0.w,
-                                    child: Image.asset(
-                                      'assets/icons/google.png',
-                                      fit: BoxFit.contain,
-                                    )),
-                              ),
-                              SizedBox(width: 24,),
-                              GestureDetector(
-                                onTap: () {
-                                  //print('Facebook Login!!!');
-                                  setState(() {
-                                    registrationType = 'F';
-                                  });
-                                  _handleFacebookSignIn();
-                                  // Navigator.push(
-                                  //     context,
-                                  //     PageTransition(
-                                  //         type: PageTransitionType.fade,
-                                  //         child: LoginMobileCheckScreen()));
-                                },
-                                child: Container(
-                                    height: 4.0.h,
-                                    width: 8.0.w,
-                                    child: Image.asset(
-                                      'assets/icons/facebook.png',
-                                      fit: BoxFit.contain,
-                                    )),
-                              ),
-                              // GestureDetector(
-                              //   onTap: (){
-                              //     //print('LinkedIn Login!!!');
-                              //   },
-                              //   child: Container(
-                              //       height: 4.0.h,
-                              //       width: 8.0.w,
-                              //       child: Image.asset(
-                              //         'assets/icons/linkedin.png',
-                              //         fit: BoxFit.contain,
-                              //       )),
-                              // ),
-                            ],
-                          ),
-                        ),
                         SizedBox(
                           height: 30.0.h,
                         ),
@@ -401,11 +321,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     PageTransition(
                                         type: PageTransitionType.fade,
                                         child: SignUpScreen()));
-                                //print('Register!!!');
                               },
                               child: Container(
-                                // height: 2.2.h,
-                                // width: 15.0.w,
                                 child: Text(
                                   'Register',
                                   style: TextStyle(
@@ -431,19 +348,18 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-   Future<String?> _getId() async {
-  var deviceInfo = DeviceInfoPlugin();
-  if (Platform.isIOS) { // import 'dart:io'
-    var iosDeviceInfo = await deviceInfo.iosInfo;
-    return iosDeviceInfo.identifierForVendor; // unique ID on iOS
-  } else {
-    var androidDeviceInfo = await deviceInfo.androidInfo;
-    //print('DID:::'+androidDeviceInfo.androidId.toString());
-    return androidDeviceInfo.androidId; // unique ID on Android
-  }
-}
+  Future<String?> _getId() async {
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) {
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor;
+    } else {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
 
-//Login API
+      return androidDeviceInfo.androidId;
+    }
+  }
+
   Future<Login> login(String mobileNumber) async {
     displayProgressDialog(context);
     String? deviceId = await _getId();
@@ -467,7 +383,6 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       var response = await dio.post(Config.loginUrl, data: formData);
       if (response.statusCode == 200) {
-        //print(response.data);
         closeProgressDialog(context);
         result = Login.fromJson(response.data);
         if (result.status == true) {
@@ -511,15 +426,10 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           }
         }
-        //print(result);
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -529,16 +439,11 @@ class _LoginScreenState extends State<LoginScreen> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        ////print(e.request);
-        //print(e.message);
-      }
+      } else {}
     }
     return result;
   }
 
-//Check Social Login
   Future<SocialLoginCheck> checkLogin(String socialId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     displayProgressDialog(context);
@@ -550,22 +455,9 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       var response = await dio.post(Config.checkSocialLogin, data: formData);
       if (response.statusCode == 200) {
-        //print(response.data);
-
         result = SocialLoginCheck.fromJson(response.data);
 
-        ////print('ID ::: ' + result.data!.userObject!.userId.toString());
-
         if (result.data!.userObject == null) {
-          // Fluttertoast.showToast(
-          //   msg: result.message == null ? result.errorMsg! : result.message!,
-          //   toastLength: Toast.LENGTH_SHORT,
-          //   gravity: ToastGravity.BOTTOM,
-          //   timeInSecForIosWeb: 1,
-          //   backgroundColor: Constants.bgColor,
-          //   textColor: Colors.white,
-          //   fontSize: 10.0.sp,
-          // );
           closeProgressDialog(context);
           Navigator.push(
               context,
@@ -579,99 +471,104 @@ class _LoginScreenState extends State<LoginScreen> {
                     socialPhotoUrl: socialPhotoUrl,
                   )));
         } else {
-         if(result.data!.userObject!.isNew == "true") {
-           //print('API MO::::$mobileNumberFromAPi');
-           // saveUserData(result.data.userObject.userId);
-           // mobileNumberFromAPi = result.data.userObject.mobileNumber;
-           // setState(() {});
-           // login(mobileNumberFromAPi);
-           //print('ROLE ::' + result.data!.userObject.toString());
-           saveToken(result.data!.token!);
-           role = result.data!.userObject!.role;
-           name = result.data!.userObject!.name;
-           mobileNumberFromAPi = result.data!.userObject!.mobileNumber;
-           email = result.data!.userObject!.email;
-           preferences.setString('RegisterAs', role!);
-           
+          if (result.data!.userObject!.isNew == "true") {
+            saveToken(result.data!.token!);
+            role = result.data!.userObject!.role;
+            name = result.data!.userObject!.name;
+            mobileNumberFromAPi = result.data!.userObject!.mobileNumber;
+            email = result.data!.userObject!.email;
+            preferences.setString('RegisterAs', role!);
 
-           _signInCC(context, CubeUser(fullName: result.data!.userObject!.name, login: socialEmail, password: '12345678'), result);
+            _signInCC(
+                context,
+                CubeUser(
+                    fullName: result.data!.userObject!.name,
+                    login: socialEmail,
+                    password: '12345678'),
+                result);
+          } else if (result.data!.userObject!.isVerified == "P" ||
+              result.data!.userObject!.isVerified == "R") {
+            closeProgressDialog(context);
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => VerificationScreen(
+                      verificationStatus: result.data!.userObject!.isVerified,
+                    )));
+          } else {
+            saveToken(result.data!.token!);
+            role = result.data!.userObject!.role;
+            name = result.data!.userObject!.name;
+            mobileNumberFromAPi = result.data!.userObject!.mobileNumber;
+            email = result.data!.userObject!.email;
+            preferences.setString('RegisterAs', role!);
 
-          } else if(result.data!.userObject!.isVerified == "P" || result.data!.userObject!.isVerified == "R") {
-           closeProgressDialog(context);
-           Navigator.of(context).push(MaterialPageRoute(
-               builder: (context) => VerificationScreen(verificationStatus: result.data!.userObject!.isVerified,)));
-         } else {
-           //print('API MO::::$mobileNumberFromAPi');
-           // saveUserData(result.data.userObject.userId);
-           // mobileNumberFromAPi = result.data.userObject.mobileNumber;
-           // setState(() {});
-           // login(mobileNumberFromAPi);
-           //print('ROLE ::' + result.data!.userObject.toString());
-           saveToken(result.data!.token!);
-           role = result.data!.userObject!.role;
-           name = result.data!.userObject!.name;
-           mobileNumberFromAPi = result.data!.userObject!.mobileNumber;
-           email = result.data!.userObject!.email;
-           preferences.setString('RegisterAs', role!);
+            preferences.setString("name", result.data!.userObject!.name!);
+            preferences.setString(
+                "mobileNumber", result.data!.userObject!.mobileNumber!);
+            preferences.setString(
+                "gender", result.data!.userObject!.gender.toString());
+            preferences.setString("email", result.data!.userObject!.email!);
 
-           preferences.setString("name", result.data!.userObject!.name!);
-              preferences.setString("mobileNumber", result.data!.userObject!.mobileNumber!);
-              preferences.setString("gender", result.data!.userObject!.gender.toString());
-              preferences.setString("email", result.data!.userObject!.email!);
-              //result.data.userObject.role == 'E' ?
-              preferences.setString("imageUrl", result.data!.userObject!.imageUrl!);
-              // : preferences.setString("imageUrl", '');
-              result.data!.userObject!.role == 'E' ? preferences.setString("qualification", result.data!.userObject!.educationalDetail!.qualification!) : preferences.setString("qualification", '');
-              result.data!.userObject!.role == 'E' ? preferences.setString("schoolName", result.data!.userObject!.educationalDetail!.schoolName!) : preferences.setString("schoolName",'');
-              result.data!.userObject!.role == 'E' ? preferences.setString("address1", result.data!.userObject!.location!.addressLine2!): preferences.setString("address1", '');
-              result.data!.userObject!.role == 'E' ? preferences.setString("address2", result.data!.userObject!.location!.city!): preferences.setString("address2", '');
-              result.data!.userObject!.role == 'E' ? preferences.setString("facebookUrl", result.data!.userObject!.fbUrl.toString()) : preferences.setString("facebookUrl",'');
-              result.data!.userObject!.role == 'E' ? preferences.setString("instaUrl", result.data!.userObject!.instaUrl.toString()) : preferences.setString("instaUrl",'');
-              result.data!.userObject!.role == 'E' ? preferences.setString("linkedInUrl", result.data!.userObject!.liUrl.toString()) : preferences.setString("linkedInUrl", '');
-              result.data!.userObject!.role == 'E' ? preferences.setString("otherUrl", result.data!.userObject!.otherUrl.toString()) : preferences.setString("otherUrl", '');
-              result.data!.userObject!.role == 'E' ? preferences.setString("isNew", result.data!.userObject!.isNew!) : preferences.setString("isNew", '');
-              preferences.setBool('isLoggedIn', true);
-              preferences.setInt('isSubscribed', result.data!.userObject!.isSubscribed!);
+            preferences.setString(
+                "imageUrl", result.data!.userObject!.imageUrl!);
 
-          //print('Gender::: ${result.data!.userObject!.gender}');
-          //print('IMAGE:::' + result.data!.userObject!.imageUrl!);
-              saveUserData(result.data!.userObject!.userId!);
-              //closeProgressDialog(context);
-              signIn(CubeUser(fullName: result.data!.userObject!.name, login: socialEmail, password: '12345678'))
-                  .then((cubeUser) async {
-                closeProgressDialog(context);
-                SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
-                sharedPrefs.saveNewUser(cubeUser);
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => bottomNavBar(0)),
-                        (Route<dynamic> route) => false);
-              })
-                  .catchError((error){});
+            result.data!.userObject!.role == 'E'
+                ? preferences.setString("qualification",
+                    result.data!.userObject!.educationalDetail!.qualification!)
+                : preferences.setString("qualification", '');
+            result.data!.userObject!.role == 'E'
+                ? preferences.setString("schoolName",
+                    result.data!.userObject!.educationalDetail!.schoolName!)
+                : preferences.setString("schoolName", '');
+            result.data!.userObject!.role == 'E'
+                ? preferences.setString("address1",
+                    result.data!.userObject!.location!.addressLine2!)
+                : preferences.setString("address1", '');
+            result.data!.userObject!.role == 'E'
+                ? preferences.setString(
+                    "address2", result.data!.userObject!.location!.city!)
+                : preferences.setString("address2", '');
+            result.data!.userObject!.role == 'E'
+                ? preferences.setString(
+                    "facebookUrl", result.data!.userObject!.fbUrl.toString())
+                : preferences.setString("facebookUrl", '');
+            result.data!.userObject!.role == 'E'
+                ? preferences.setString(
+                    "instaUrl", result.data!.userObject!.instaUrl.toString())
+                : preferences.setString("instaUrl", '');
+            result.data!.userObject!.role == 'E'
+                ? preferences.setString(
+                    "linkedInUrl", result.data!.userObject!.liUrl.toString())
+                : preferences.setString("linkedInUrl", '');
+            result.data!.userObject!.role == 'E'
+                ? preferences.setString(
+                    "otherUrl", result.data!.userObject!.otherUrl.toString())
+                : preferences.setString("otherUrl", '');
+            result.data!.userObject!.role == 'E'
+                ? preferences.setString(
+                    "isNew", result.data!.userObject!.isNew!)
+                : preferences.setString("isNew", '');
+            preferences.setBool('isLoggedIn', true);
+            preferences.setInt(
+                'isSubscribed', result.data!.userObject!.isSubscribed!);
+
+            saveUserData(result.data!.userObject!.userId!);
+
+            signIn(CubeUser(
+                    fullName: result.data!.userObject!.name,
+                    login: socialEmail,
+                    password: '12345678'))
+                .then((cubeUser) async {
+              closeProgressDialog(context);
+              SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+              sharedPrefs.saveNewUser(cubeUser);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+                  (Route<dynamic> route) => false);
+            }).catchError((error) {});
           }
-
-          // Navigator.push(
-          //     context,
-          //     PageTransition(
-          //         type: PageTransitionType.fade,
-          //         child: OtpScreen(
-          //           mobileNumber: mobileController.text,
-          //         )));
-          // Fluttertoast.showToast(
-          //   msg: result.message!,
-          //   toastLength: Toast.LENGTH_SHORT,
-          //   gravity: ToastGravity.BOTTOM,
-          //   timeInSecForIosWeb: 1,
-          //   backgroundColor: Constants.bgColor,
-          //   textColor: Colors.white,
-          //   fontSize: 10.0.sp,
-          // );
-
         }
-        //print(result);
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
         Fluttertoast.showToast(
@@ -683,17 +580,10 @@ class _LoginScreenState extends State<LoginScreen> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        ////print(e.request);
-        //print(e.message);
-      }
+      } else {}
     }
     return result;
   }
-
-
-  //ConnectyCube
 
   _signInCC(BuildContext context, CubeUser user, result) async {
     if (!CubeSessionManager.instance.isActiveSessionValid()) {
@@ -704,21 +594,20 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
     signUp(user).then((newUser) async {
-      //print("signUp newUser $newUser");
       user.id = newUser.id;
       SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
       sharedPrefs.saveNewUser(user);
       closeProgressDialog(context);
       result.data.userObject.role == 'L'
           ? Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+              MaterialPageRoute(builder: (context) => bottomNavBar(0)),
               (Route<dynamic> route) => false)
           : Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => EducatorRegistration(
-            name: name,
-            mobileNumber: mobileNumberFromAPi,
-            email: email,
-          )));
+              builder: (context) => EducatorRegistration(
+                    name: name,
+                    mobileNumber: mobileNumberFromAPi,
+                    email: email,
+                  )));
     }).catchError((exception) {
       _processLoginError(exception);
     });
@@ -726,9 +615,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _processLoginError(exception) {
     log("Login error $exception", TAG);
-    setState(() {
-
-    });
+    setState(() {});
     showDialogError(exception, context);
   }
 
@@ -737,20 +624,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       gUserData = await _googleSignIn.signIn();
-      //print('ID:::' + gUserData!.id);
-      //print('USERNAME:::' + gUserData!.displayName!);
-      //print('EMAIL:::' + gUserData!.email);
-      //print('PHOTO:::' + gUserData!.photoUrl!);
+
       socialName = gUserData!.displayName;
       socialEmail = gUserData!.email;
       socialPhotoUrl = gUserData!.photoUrl;
       socialId = gUserData!.id;
       setState(() {});
       if (gUserData != null) {
-        checkLogin(gUserData!.id);//'khdbcfioducde99he9hhe'
+        checkLogin(gUserData!.id);
       }
     } catch (e) {
-      print('Google Error:::$e');
     }
   }
 
@@ -759,78 +642,58 @@ class _LoginScreenState extends State<LoginScreen> {
     final LoginResult result = await FacebookAuth.instance.login(
       permissions: ['public_profile', 'email'],
       loginBehavior: LoginBehavior.webOnly,
-    );// by default we request the email and the public profile
-// or FacebookAuth.i.login()
+    );
+
     if (result.status == LoginStatus.success) {
-      // you are logged
       final AccessToken accessToken = result.accessToken!;
-      // get the user data
+
       fbUserData = await FacebookAuth.i.getUserData(
         fields: "name,email,picture.width(200)",
       );
-      //print(fbUserData);
-      //print(fbUserData!['email']);
+
       socialName = fbUserData!['name'];
       socialEmail = fbUserData!['email'];
       socialPhotoUrl = fbUserData!['picture']['data']['url'];
       socialId = fbUserData!['id'].toString();
       setState(() {});
-      //print('FACEBOOK::::$socialEmail');
+
       if (fbUserData != null) {
         checkLogin(fbUserData!['id'].toString());
       }
-    } else {
-      //print(result.status);
-      //print(result.message);
-    }
+    } else {}
   }
 
-  Future<void> _handleAppleSignIn()async{
-
+  Future<void> _handleAppleSignIn() async {
     try {
-           if (!await TheAppleSignIn.isAvailable()) {
-                //print('APPLe not available');
-            return null; //Break from the program
-              }
-              //print('APPLe available');
-            // final AuthService authService = AuthService();
-            // final user = await authService.signInWithApple(
-            //        scopes: [Scope.email, Scope.fullName]);
-            // if(user.email != null) {
-            //    //print(user);
-            // }
-            final AuthorizationResult result = await TheAppleSignIn.performRequests([
-            AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
-    ]);
-
-    if(result.status == AuthorizationStatus.authorized){
-      socialName = result.credential!.fullName!.givenName;
-      socialEmail = result.credential!.email;
-      socialPhotoUrl = '';
-      socialId = result.credential!.user;
-      setState(() {});
-
-      if (result.credential != null) {
-        checkLogin(result.credential!.user.toString());
+      if (!await TheAppleSignIn.isAvailable()) {
+        return null;
       }
 
-    }
-            } catch (e) {
+      final AuthorizationResult result = await TheAppleSignIn.performRequests([
+        AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+      ]);
 
-           }
+      if (result.status == AuthorizationStatus.authorized) {
+        socialName = result.credential!.fullName!.givenName;
+        socialEmail = result.credential!.email;
+        socialPhotoUrl = '';
+        socialId = result.credential!.user;
+        setState(() {});
+
+        if (result.credential != null) {
+          checkLogin(result.credential!.user.toString());
+        }
+      }
+    } catch (e) {}
   }
 
-     void saveToken(String token) async {
-    // Write value
+  void saveToken(String token) async {
     await storage.write(key: 'access_token', value: token);
-    //print('TOKEN ::: ' + token);
-    //closeProgressDialog(context);
   }
 
   void saveUserData(int userId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setInt('userId', userId);
-    //print(userId);
   }
 
   displayProgressDialog(BuildContext context) {

@@ -16,7 +16,6 @@ class _ManagePaymentScreenState extends State<ManagePaymentScreen> {
       child: WebView(
         initialUrl: widget.razorpayLink,
         javascriptMode: JavascriptMode.unrestricted,
-        //gestureNavigationEnabled: true,
       ),
     );
   }

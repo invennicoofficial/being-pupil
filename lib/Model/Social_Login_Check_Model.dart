@@ -1,4 +1,3 @@
-//Model Class for SocialLoginCheck
 class SocialLoginCheck {
   bool? status;
   String? errorCode;
@@ -6,7 +5,8 @@ class SocialLoginCheck {
   String? message;
   Data? data;
 
-  SocialLoginCheck({this.status, this.errorCode, this.errorMsg, this.message, this.data});
+  SocialLoginCheck(
+      {this.status, this.errorCode, this.errorMsg, this.message, this.data});
 
   factory SocialLoginCheck.fromJson(Map<String, dynamic> json) {
     return SocialLoginCheck(
@@ -33,24 +33,15 @@ class SocialLoginCheck {
 }
 
 class Data {
-  // int userId;
-  // String name;
-  // String mobileNumber;
-  // String isNew;
   String? token;
   UserObject? userObject;
-
 
   Data({this.token, this.userObject});
 
   factory Data.fromJson(Map<String, dynamic> json) {
     return Data(
       token: json['access_token'],
-      // userId: json['user_id'],
-      // name: json['name'],
-      // mobileNumber: json['mobile_number'],
-      // isNew: json['isNew'],
-      userObject: json['userObj'] != null 
+      userObject: json['userObj'] != null
           ? new UserObject.fromJson(json['userObj'])
           : null,
     );
@@ -58,10 +49,7 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    // data['user_id'] = this.userId;
-    // data['name'] = this.name;
-    // data['mobile_number'] = this.mobileNumber;
-    // data['isNew'] = this.isNew;
+
     data['access_token'] = this.token;
     data['userObj'] = this.userObject;
     return data;
@@ -92,46 +80,44 @@ class UserObject {
 
   UserObject(
       {this.userId,
-        this.role,
-        this.isNew,
-        this.name,
-        this.mobileNumber,
-        this.email,
-        this.gender,
-        this.imageUrl,
-        this.location,
-        this.educationalDetail,
-        this.fbUrl,
-        this.instaUrl,
-        this.liUrl,
-        this.otherUrl,
-        this.isVerified,
-        this.isSubscribed
-      });
+      this.role,
+      this.isNew,
+      this.name,
+      this.mobileNumber,
+      this.email,
+      this.gender,
+      this.imageUrl,
+      this.location,
+      this.educationalDetail,
+      this.fbUrl,
+      this.instaUrl,
+      this.liUrl,
+      this.otherUrl,
+      this.isVerified,
+      this.isSubscribed});
 
   factory UserObject.fromJson(Map<String, dynamic> json) {
     return UserObject(
-      userId: json['user_id'],
-      role: json['register_as'],
-      isNew: json['isNew'],
-      name: json['name'],
-      mobileNumber: json['mobile_number'],
-      email: json['email'],
-      gender: json['gender'],
-      imageUrl: json['image_url'],
-      location: json['location'].length > 0
-          ? new Location.fromJson(json['location'][0])
-          : null,
-      educationalDetail: json['educational_details'].length > 0
-          ? new EducationalDetails.fromJson(json['educational_details'][0])
-          : null,
-      fbUrl: json['facebook_url'],
-      instaUrl: json['insta_url'],
-      liUrl: json['linkedin_url'],
-      otherUrl: json['other_url'],
-      isVerified: json['isVerified'],
-      isSubscribed: json['is_subscribed']
-    );
+        userId: json['user_id'],
+        role: json['register_as'],
+        isNew: json['isNew'],
+        name: json['name'],
+        mobileNumber: json['mobile_number'],
+        email: json['email'],
+        gender: json['gender'],
+        imageUrl: json['image_url'],
+        location: json['location'].length > 0
+            ? new Location.fromJson(json['location'][0])
+            : null,
+        educationalDetail: json['educational_details'].length > 0
+            ? new EducationalDetails.fromJson(json['educational_details'][0])
+            : null,
+        fbUrl: json['facebook_url'],
+        instaUrl: json['insta_url'],
+        liUrl: json['linkedin_url'],
+        otherUrl: json['other_url'],
+        isVerified: json['isVerified'],
+        isSubscribed: json['is_subscribed']);
   }
 
   Map<String, dynamic> toJson() {
@@ -195,10 +181,10 @@ class Location {
   String? city;
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
-    id: json["id"],
-    addressLine2: json["address_line1"],
-    city: json["city"],
-  );
+        id: json["id"],
+        addressLine2: json["address_line1"],
+        city: json["city"],
+      );
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

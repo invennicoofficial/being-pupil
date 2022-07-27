@@ -49,7 +49,7 @@ class _RequestListLearnerState extends State<RequestListLearner> {
     getToken();
   }
 
-   @override
+  @override
   void dispose() {
     super.dispose();
     _scrollController.dispose();
@@ -57,7 +57,7 @@ class _RequestListLearnerState extends State<RequestListLearner> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    //print(authToken);
+
     getData();
   }
 
@@ -67,7 +67,7 @@ class _RequestListLearnerState extends State<RequestListLearner> {
       registerAs = preferences.getString('RegisterAs');
       userId = preferences.getInt('userId');
     });
-    //print('ID::::::' + userId.toString());
+
     getRequestApi(page);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -76,28 +76,18 @@ class _RequestListLearnerState extends State<RequestListLearner> {
           if (request.data!.length > 0) {
             page++;
             getRequestApi(page);
-            //print(_name);
-            //print(page);
           }
         } else {
           page++;
           getRequestApi(page);
-          //print(_name);
-          //print(page);
         }
       }
     });
   }
 
   void _onLoading() async {
-    //if (mounted) setState(() {});
-    // if (request.data.length > 0) {
-    //   //_refreshController.loadComplete();
-    //   _refreshController.requestLoading();
-    // } else {
     _refreshController.loadComplete();
     _refreshController.loadNoData();
-    //}
   }
 
   @override
@@ -115,17 +105,12 @@ class _RequestListLearnerState extends State<RequestListLearner> {
             footer: ClassicFooter(
               loadStyle: LoadStyle.ShowWhenLoading,
               noDataText: 'No More Request',
-              //noMoreIcon: Icon(Icons.refresh_outlined),
             ),
             onLoading: _onLoading,
-            //   SingleChildScrollView(
-            // controller: _scrollController,
-            //physics: BouncingScrollPhysics(),
             child: ListView.builder(
                 controller: _scrollController,
                 padding:
                     EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
-                //physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: _userId.length == 0 ? 0 : _userId.length,
                 itemBuilder: (context, index) {
@@ -134,56 +119,52 @@ class _RequestListLearnerState extends State<RequestListLearner> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 2.0.w),
                       child: Container(
-                        //height: 10.0.h,
                         child: ListTile(
                           contentPadding: EdgeInsets.all(0.0),
-                          //leading:
                           title: GestureDetector(
-                             onTap: () {
-                                    getUserProfile(_userId[index]);
-                                  },
+                            onTap: () {
+                              getUserProfile(_userId[index]);
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: CachedNetworkImage(
-                                        placeholder: (context, url) =>
-                                            Container(
-                                          child: CircularProgressIndicator(
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                                    Colors.black),
-                                          ),
-                                          width: 40.0,
-                                          height: 40.0,
-                                          padding: EdgeInsets.all(70.0),
-                                          decoration: BoxDecoration(
-                                            color: greyColor2,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(8.0),
-                                            ),
-                                          ),
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: CachedNetworkImage(
+                                      placeholder: (context, url) => Container(
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                  Colors.black),
                                         ),
-                                        errorWidget: (context, url, error) =>
-                                            Material(
-                                          child: Image.asset(
-                                            'assets/images/studyBudyBg.png',
-                                            width: 40.0,
-                                            height: 40.0,
-                                            fit: BoxFit.cover,
-                                          ),
+                                        width: 40.0,
+                                        height: 40.0,
+                                        padding: EdgeInsets.all(70.0),
+                                        decoration: BoxDecoration(
+                                          color: greyColor2,
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(8.0),
                                           ),
-                                          clipBehavior: Clip.hardEdge,
                                         ),
-                                        imageUrl: _profileImage[index]!,
-                                        width: 40.0,
-                                        height: 40.0,
-                                        fit: BoxFit.cover,
-                                      )),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Material(
+                                        child: Image.asset(
+                                          'assets/images/studyBudyBg.png',
+                                          width: 40.0,
+                                          height: 40.0,
+                                          fit: BoxFit.cover,
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(8.0),
+                                        ),
+                                        clipBehavior: Clip.hardEdge,
+                                      ),
+                                      imageUrl: _profileImage[index]!,
+                                      width: 40.0,
+                                      height: 40.0,
+                                      fit: BoxFit.cover,
+                                    )),
                                 SizedBox(
                                   width: 2.0.w,
                                 ),
@@ -191,7 +172,8 @@ class _RequestListLearnerState extends State<RequestListLearner> {
                                   padding: EdgeInsets.only(right: 0.0.w),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         width: 38.0.w,
@@ -205,7 +187,6 @@ class _RequestListLearnerState extends State<RequestListLearner> {
                                         ),
                                       ),
                                       Container(
-                                        //color: Colors.grey,
                                         width: 38.0.w,
                                         child: Text(
                                           _lastDegree[index] != null &&
@@ -217,21 +198,18 @@ class _RequestListLearnerState extends State<RequestListLearner> {
                                               color: Constants.bgColor,
                                               fontFamily: 'Montserrat',
                                               fontWeight: FontWeight.w400),
-                                              overflow: TextOverflow.clip,
+                                          overflow: TextOverflow.clip,
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                          
-                                //Buttons
                                 Padding(
                                   padding: EdgeInsets.only(right: 2.0.w),
                                   child: Row(
                                     children: [
                                       GestureDetector(
                                         onTap: () {
-                                          //print('$index is Rejected');
                                           requestActionApi(_userId[index], 'R');
                                         },
                                         child: Container(
@@ -261,7 +239,6 @@ class _RequestListLearnerState extends State<RequestListLearner> {
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          //print('$index is Connected');
                                           requestActionApi(_userId[index], 'A');
                                         },
                                         child: Container(
@@ -299,24 +276,16 @@ class _RequestListLearnerState extends State<RequestListLearner> {
           );
   }
 
-  //Get request List API
   Future<void> getRequestApi(int page) async {
-    // displayProgressDialog(context);
-
     try {
       Dio dio = Dio();
 
-      var response = await dio.get('${Config.getRequestUrl}$userId?page=$page&user_type=${registerAs == 'E' ? 'L' : 'E'}');
-      //print(response.statusCode);
+      var response = await dio.get(
+          '${Config.getRequestUrl}$userId?page=$page&user_type=${registerAs == 'E' ? 'L' : 'E'}');
 
       if (response.statusCode == 200) {
-        //print(response.data);
-        // closeProgressDialog(context);
-        //return EducatorPost.fromJson(json)
-        //result = EducatorPost.fromJson(response.data);
         request = Request.fromJson(response.data);
 
-        //print('LENGTH: ' + request.data!.length.toString());
         if (request.data!.length > 0) {
           for (int i = 0; i < request.data!.length; i++) {
             _userId.add(request.data![i].userId);
@@ -325,17 +294,7 @@ class _RequestListLearnerState extends State<RequestListLearner> {
             _lastDegree.add(request.data![i].lastDegree);
             _schoolName.add(request.data![i].schoolName);
             _status.add(request.data![i].status);
-            // isSaved.add(true);
-            // for (int j = 0; j < map['data'].length; j++) {
-            //   imageListMap.putIfAbsent(k, () => map['data'][i]['post_media']);
-            //   k++;
-            // //print(k);
           }
-          // k++;
-          // //print(k);
-          //print(_profileImage);
-          //print(_lastDegree);
-          //print(_schoolName);
 
           isLoading = false;
           setState(() {});
@@ -348,16 +307,10 @@ class _RequestListLearnerState extends State<RequestListLearner> {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -372,8 +325,6 @@ class _RequestListLearnerState extends State<RequestListLearner> {
   }
 
   Future<void> requestActionApi(int? reqId, String action) async {
-    //var delResult = PostDelete();
-
     try {
       Dio dio = Dio();
 
@@ -384,16 +335,9 @@ class _RequestListLearnerState extends State<RequestListLearner> {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
 
       if (response.statusCode == 200) {
-        //delResult = postDeleteFromJson(response.data);
         actionMap = response.data;
-        //saveMapData = map['data']['status'];
 
-        //print(actionMap);
-        // setState(() {
-        //   isLoading = false;
-        // });
         if (actionMap!['status'] == true) {
-          //print('true');
           setState(() {
             isLoading = true;
             page = 1;
@@ -413,7 +357,6 @@ class _RequestListLearnerState extends State<RequestListLearner> {
               toastLength: Toast.LENGTH_SHORT,
               textColor: Colors.white);
         } else {
-          //print('false');
           if (actionMap!['message'] == null) {
             Fluttertoast.showToast(
                 msg: actionMap!['error_msg'],
@@ -432,17 +375,9 @@ class _RequestListLearnerState extends State<RequestListLearner> {
                 textColor: Colors.white);
           }
         }
-        //getEducatorPostApi(page);
-        ////print(saveMap);
-      } else {
-        //print(response.statusCode);
-      }
+      } else {}
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -457,56 +392,44 @@ class _RequestListLearnerState extends State<RequestListLearner> {
   }
 
   Future<void> getUserProfile(id) async {
-    // displayProgressDialog(context);
-
     Map<String, dynamic>? map = {};
     try {
       Dio dio = Dio();
 
       var response = await dio.get('${Config.myProfileUrl}/$id',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
-      //print(response.statusCode);
 
       if (response.statusCode == 200) {
         map = response.data;
 
-        //print(map!['data']);
-        ////print(mapData);
         if (map!['data'] != null) {
           setState(() {});
           map['data']['role'] == 'E'
               ? pushNewScreen(context,
-              screen: EducatorProfileViewScreen(id: id,),
-              withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation.cupertino)
-              :
-          pushNewScreen(context,
-              screen: LearnerProfileViewScreen(id: id,),
-              withNavBar: false,
-              pageTransitionAnimation:
-              PageTransitionAnimation
-                  .cupertino);
+                  screen: EducatorProfileViewScreen(
+                    id: id,
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino)
+              : pushNewScreen(context,
+                  screen: LearnerProfileViewScreen(
+                    id: id,
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino);
         } else {
           isLoading = false;
           setState(() {});
         }
-        ////print(result.data);
-        //return result;
+
         setState(() {
           isLoading = false;
         });
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      // closeProgressDialog(context);
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,

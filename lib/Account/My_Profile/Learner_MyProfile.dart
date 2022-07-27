@@ -55,7 +55,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    //print(authToken);
+
     getData();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -64,14 +64,12 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
           if (courseLength > 0) {
             page++;
             getEnrolledCourseAPI(page);
-            //print(page);
           } else {
             _refreshController.loadComplete();
           }
         } else {
           page++;
           getEnrolledCourseAPI(page);
-          //print(page);
         }
       }
     });
@@ -80,18 +78,16 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
   getData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-    registerAs = preferences.getString('RegisterAs');
-    mobileNumber = preferences.getString('mobileNumber');
-    email = preferences.getString('email');
+      registerAs = preferences.getString('RegisterAs');
+      mobileNumber = preferences.getString('mobileNumber');
+      email = preferences.getString('email');
     });
-    //print(registerAs);
+
     getMyProfileApi();
   }
 
   void _onLoading() async {
-    //if (mounted) setState(() {});
     if (courseLength == 0) {
-      //_refreshController.loadComplete();
       _refreshController.loadNoData();
     } else {
       _refreshController.requestLoading();
@@ -111,8 +107,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
     getMyProfileApi();
   }
 
-   void _launchSocialUrl(String url) async {
-    //final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$long';
+  void _launchSocialUrl(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -132,8 +127,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
             color: Colors.white,
             size: 35.0,
           ),
-          onPressed: //null,
-              () {
+          onPressed: () {
             Navigator.of(context).pop();
           },
           padding: EdgeInsets.zero,
@@ -148,23 +142,22 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                       pageTransitionAnimation:
                           PageTransitionAnimation.cupertino)
                   : myProfileMap!['data']['profile_status'] == 0
-                  ? pushNewScreen(context,
-                      screen: LearnerRegistration(
-                        name: name,
-                        mobileNumber: mobileNumber,
-                        email: email,
-                      ),
-                      withNavBar: false,
-                      pageTransitionAnimation:
-                          PageTransitionAnimation.cupertino)
-                  : pushNewScreen(context, 
-                  screen: EditLearnerProfile(),
-                  withNavBar: false,
-                      pageTransitionAnimation:
-                          PageTransitionAnimation.cupertino);
+                      ? pushNewScreen(context,
+                          screen: LearnerRegistration(
+                            name: name,
+                            mobileNumber: mobileNumber,
+                            email: email,
+                          ),
+                          withNavBar: false,
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.cupertino)
+                      : pushNewScreen(context,
+                          screen: EditLearnerProfile(),
+                          withNavBar: false,
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.cupertino);
             },
             child: Container(
-              //color: Colors.grey,
               padding: EdgeInsets.symmetric(horizontal: 2.0.w),
               child: Center(
                 child: Text(
@@ -196,25 +189,21 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
           : Column(
               children: [
                 Container(
-                  //height: 50.0.h,
                   width: 100.0.w,
-                  //color: Colors.grey,
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                         vertical: 1.0.h, horizontal: 4.0.w),
                     child: Column(
                       children: <Widget>[
-                        //Profile DP
                         ClipRRect(
                           borderRadius: BorderRadius.circular(100),
-                          child:CachedNetworkImage(
-                                                imageUrl: profileImageUrl!,
+                          child: CachedNetworkImage(
+                            imageUrl: profileImageUrl!,
                             width: 130,
                             height: 130,
                             fit: BoxFit.cover,
                           ),
                         ),
-                        //Name of Learner
                         Padding(
                           padding: EdgeInsets.only(top: 1.0.h),
                           child: Text(
@@ -226,21 +215,6 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                 color: Constants.bgColor),
                           ),
                         ),
-                        //Degree
-                        // Padding(
-                        //   padding: degreeName == ''
-                        //       ? EdgeInsets.zero
-                        //       : EdgeInsets.only(top: 2.0.h),
-                        //   child: Text(
-                        //     degreeName == '' ? '' : '$degreeName | $schoolName',
-                        //     style: TextStyle(
-                        //         fontSize: 10.0.sp,
-                        //         fontFamily: 'Montserrat',
-                        //         fontWeight: FontWeight.w400,
-                        //         color: Constants.bgColor),
-                        //   ),
-                        // ),
-                        //Location
                         Padding(
                           padding: location == ''
                               ? EdgeInsets.zero
@@ -270,7 +244,6 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                             ],
                           ),
                         ),
-                        //Social Handle
                         Padding(
                           padding: EdgeInsets.only(top: 1.0.h),
                           child: Row(
@@ -284,23 +257,21 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                     : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    //print('Facebook!!!');
                                     _launchSocialUrl(
                                         myProfileMap!['data']['facebook_link']);
                                   },
                                   child: Container(
                                       height: 4.0.h,
                                       width: 8.0.w,
-                                      child: SvgPicture.asset('assets/icons/fbSvg.svg')
-                                      // Image.asset(
-                                      //   'assets/icons/facebook.png',
-                                      //   fit: BoxFit.contain,
-                                      // )
-                                      ),
+                                      child: SvgPicture.asset(
+                                          'assets/icons/fbSvg.svg')),
                                 ),
                               ),
-                               SizedBox(
-                                width: myProfileMap!['data']['facebook_link'] == null ? 0.0 : 2.0.w,
+                              SizedBox(
+                                width: myProfileMap!['data']['facebook_link'] ==
+                                        null
+                                    ? 0.0
+                                    : 2.0.w,
                               ),
                               Visibility(
                                 visible: myProfileMap!['data']
@@ -310,25 +281,23 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                     : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    //print('Instagram!!!');
                                     _launchSocialUrl(myProfileMap!['data']
                                         ['instagram_link']);
                                   },
                                   child: Container(
                                       height: 4.0.h,
                                       width: 8.0.w,
-                                      child: SvgPicture.asset('assets/icons/instaSvg.svg')
-                                      // Image.asset(
-                                      //   'assets/icons/instagram.png',
-                                      //   fit: BoxFit.contain,
-                                      // )
-                                      ),
+                                      child: SvgPicture.asset(
+                                          'assets/icons/instaSvg.svg')),
                                 ),
                               ),
-                               SizedBox(
-                                width: myProfileMap!['data']['instagram_link'] == null ? 0.0 : 2.0.w,
+                              SizedBox(
+                                width: myProfileMap!['data']
+                                            ['instagram_link'] ==
+                                        null
+                                    ? 0.0
+                                    : 2.0.w,
                               ),
-
                               Visibility(
                                 visible: myProfileMap!['data']
                                             ['linkedin_link'] ==
@@ -337,23 +306,21 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                     : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    //print('LinkedIn!!!');
                                     _launchSocialUrl(
                                         myProfileMap!['data']['linkedin_link']);
                                   },
                                   child: Container(
                                       height: 4.0.h,
                                       width: 8.0.w,
-                                      child: SvgPicture.asset('assets/icons/linkedinSvg.svg')
-                                      // Image.asset(
-                                      //   'assets/icons/linkedin.png',
-                                      //   fit: BoxFit.contain,
-                                      // )
-                                      ),
+                                      child: SvgPicture.asset(
+                                          'assets/icons/linkedinSvg.svg')),
                                 ),
-                              ),        
+                              ),
                               SizedBox(
-                                width: myProfileMap!['data']['linkedin_link'] == null ? 0.0 : 2.0.w,
+                                width: myProfileMap!['data']['linkedin_link'] ==
+                                        null
+                                    ? 0.0
+                                    : 2.0.w,
                               ),
                               Visibility(
                                 visible:
@@ -362,27 +329,19 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                         : true,
                                 child: GestureDetector(
                                   onTap: () {
-                                    //print('Other!!!');
                                     _launchSocialUrl(
                                         myProfileMap!['data']['other_link']);
                                   },
                                   child: Container(
                                       height: 4.0.h,
                                       width: 8.0.w,
-                                      child: SvgPicture.asset('assets/icons/otherSvg.svg')
-                                      // Image.asset(
-                                      //   'assets/icons/other_link.png',
-                                      //   fit: BoxFit.contain,
-                                      // )
-                                      ),
+                                      child: SvgPicture.asset(
+                                          'assets/icons/otherSvg.svg')),
                                 ),
                               ),
-                             
-                             
                             ],
                           ),
                         ),
-                        //Other Details
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 2.0.h),
                           child: Row(
@@ -411,30 +370,6 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                   )
                                 ],
                               ),
-                              // Column(
-                              //   children: <Widget>[
-                              //     Text(
-                              //       myProfileMap['data']['total_post']
-                              //           .toString(),
-                              //       style: TextStyle(
-                              //           fontSize: 10.0.sp,
-                              //           color: Constants.bgColor,
-                              //           fontWeight: FontWeight.w700,
-                              //           fontFamily: 'Montserrat'),
-                              //     ),
-                              //     SizedBox(
-                              //       height: 1.0.h,
-                              //     ),
-                              //     Text(
-                              //       'Posts',
-                              //       style: TextStyle(
-                              //           fontSize: 8.0.sp,
-                              //           color: Constants.bgColor,
-                              //           fontWeight: FontWeight.w500,
-                              //           fontFamily: 'Montserrat'),
-                              //     )
-                              //   ],
-                              // ),
                               Column(
                                 children: <Widget>[
                                   Text(
@@ -466,12 +401,10 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                     ),
                   ),
                 ),
-                //Profile Divider
                 Divider(
                   height: 1.0.h,
                   color: Constants.bgColor.withOpacity(0.5),
                 ),
-
                 myProfileMap!['data']['profile_status'] == 0
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -509,27 +442,25 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                           )
                         ],
                       )
-                    //Enrolled Course
                     : Expanded(
                         child: Column(
-                         // mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                           nameList.isNotEmpty
-                           ? Padding(
-                              padding: EdgeInsets.only(top: 1.0.h, left: 5.0.w),
-                              child: Text('Course taken',
-                                                    //'${result.data[index].startDate} to ${result.data[index].endDate}',
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 12.0.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Constants.bgColor)),
-                            ) : Container(),
+                            nameList.isNotEmpty
+                                ? Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 1.0.h, left: 5.0.w),
+                                    child: Text('Course taken',
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            fontSize: 12.0.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: Constants.bgColor)),
+                                  )
+                                : Container(),
                             ListView.builder(
                                 controller: _scrollController,
                                 itemCount: nameList.length,
-                                //physics: AlwaysScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   return Padding(
@@ -545,19 +476,21 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                               coursDate: dateList[index],
                                               courseDescription:
                                                   descriptionList[index],
-                                              courseLinks:
-                                                  linksList[index] as List<String>?,
+                                              courseLinks: linksList[index]
+                                                  as List<String>?,
                                             ),
                                             withNavBar: false,
                                             pageTransitionAnimation:
-                                                PageTransitionAnimation.cupertino);
-                                        //print(isLeaveCourse);
+                                                PageTransitionAnimation
+                                                    .cupertino);
+
                                         isLeaveCourse == 'leave'
                                             ? _refresh()
                                             : null;
                                       },
                                       title: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
@@ -582,17 +515,20 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
                                               Padding(
-                                                padding: const EdgeInsets.only(top: 10.0),
+                                                padding: const EdgeInsets.only(
+                                                    top: 10.0),
                                                 child: Container(
                                                   width: 63.0.w,
                                                   child: Text(
                                                     nameList[index]!,
-                                                    //result.data[index].courseName,
                                                     style: TextStyle(
-                                                        fontFamily: 'Montserrat',
+                                                        fontFamily:
+                                                            'Montserrat',
                                                         fontSize: 11.0.sp,
-                                                        fontWeight: FontWeight.w600,
-                                                        color: Constants.bgColor),
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color:
+                                                            Constants.bgColor),
                                                     overflow: TextOverflow.clip,
                                                   ),
                                                 ),
@@ -601,12 +537,13 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
                                                 height: 0.5.h,
                                               ),
                                               Text(dateList[index],
-                                                  //'${result.data[index].startDate} to ${result.data[index].endDate}',
                                                   style: TextStyle(
                                                       fontFamily: 'Montserrat',
                                                       fontSize: 8.0.sp,
-                                                      fontWeight: FontWeight.w400,
-                                                      color: Constants.bgColor)),
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color:
+                                                          Constants.bgColor)),
                                             ],
                                           ),
                                         ],
@@ -622,7 +559,6 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
     );
   }
 
-  //Get Profile Details
   Future<void> getMyProfileApi() async {
     try {
       Dio dio = Dio();
@@ -633,23 +569,22 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
       if (response.statusCode == 200) {
         myProfileMap = response.data;
 
-        //print('PROFILE:::' + myProfileMap.toString());
         if (myProfileMap!['data'] != null) {
           name = myProfileMap!['data']['name'];
-          //print('NAME:::' + name!);
+
           profileImageUrl = myProfileMap!['data']['profile_image'];
           degreeName = myProfileMap!['data']['last_degree'] == null
               ? ''
               : myProfileMap!['data']['last_degree'];
-          //print('DEGREE:::' + degreeName!);
+
           schoolName = myProfileMap!['data']['school_name'] == null
               ? ''
               : myProfileMap!['data']['school_name'];
-          //print('SCHOOL:::' + schoolName!);
+
           location = myProfileMap!['data']['City'] == null
               ? ''
               : myProfileMap!['data']['City'];
-          //print('LOCATION:::' + location!);
+
           getEnrolledCourseAPI(page);
           isProfileLoading = false;
           setState(() {});
@@ -661,11 +596,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -680,20 +611,18 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
   }
 
   Future<GetEnrolledCourse> getEnrolledCourseAPI(int page) async {
-    //displayProgressDialog(context);
-
     try {
       var dio = Dio();
       var response = await dio.get('${Config.getEnrollCourseUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         result = GetEnrolledCourse.fromJson(response.data);
-        //print(response.data);
+
         courseLength = 0;
         courseLength = result.data == [] ? 0 : result.data!.length;
 
         setState(() {});
-        //closeProgressDialog(context);
+
         if (courseLength > 0) {
           for (int i = 0; i < courseLength; i++) {
             idList.add(result.data![i].courseId);
@@ -723,13 +652,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
         );
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
-      // closeProgressDialog(context);
-      //closeProgressDialog(context);
       if (e.response != null) {
-        // print("This is the error message::::" +
-        //     e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -739,11 +662,7 @@ class _LearnerMyProfileScreenState extends State<LearnerMyProfileScreen> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        //print(e.request);
-       // print(e.message);
-      }
+      } else {}
     }
     return result;
   }

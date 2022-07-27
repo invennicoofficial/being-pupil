@@ -27,19 +27,12 @@ class SubscriptionPlanScreen extends StatefulWidget {
 
 class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
   String? registerAs;
-  List<String> content = [
-    // 'Live Stream',
-    // 'Create your own Courses',
-    // 'Connect with Educators',
-    // 'Connect with Educators'
-  ];
+  List<String> content = [];
 
   List<String> planList = [];
-  //'One Month', 'Monthly Recuring', 'Yearly Recuring'];
 
   List<double> planPrice = [];
   List<String> planId = [];
-  //501, 301, 2001];
 
   var result = GetAllPlanList();
   bool isLoading = true;
@@ -60,7 +53,6 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
 
   void getToken() async {
     authToken = await storage.FlutterSecureStorage().read(key: 'access_token');
-    //print(authToken);
     getData();
     getAllPlanList();
   }
@@ -355,7 +347,6 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
         result = GetAllPlanList.fromJson(response.data);
-        //print(response);
         if (result.status == true) {
           for (int i = 0; i < result.data!.plan!.length; i++) {
             planList.add(result.data!.plan![i].planName!);
@@ -370,8 +361,6 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
         }
       }
     } on DioError catch (e, stack) {
-      //print(e.message);
-      //print(stack);
     }
   }
 
@@ -389,7 +378,6 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
       if (response.statusCode == 200) {
         closeProgressDialog(context);
         result = CreateSubscription.fromJson(response.data);
-        //print(response);
         if (result.status == true) {
           setState(() {
             subscriptionId = result.data!.subscriptionId;
@@ -397,7 +385,6 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
             mobileNumber = result.data!.userMobile;
             email = result.data!.userEmail;
           });
-          debugPrint(subscriptionId);
           Fluttertoast.showToast(
             msg: result.message!,
             toastLength: Toast.LENGTH_SHORT,
@@ -422,11 +409,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
       }
     } on DioError catch (e, stack) {
       closeProgressDialog(context);
-      //print(e.message);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -460,22 +443,14 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
       if (response.statusCode == 200) {
         closeProgressDialog(context);
         result = VerifySubscription.fromJson(response.data);
-        //print(response);
         if (result.status == true) {
           setState(() {
             preferences.setString('razorpayLink', result.data!.razorpayLink!);
             preferences.setInt('isSubscribed', 1);
             //payStatus = result.errorCode!;
           });
-          debugPrint(payStatus);
-          debugPrint('LINK:::${preferences.getString('razorpayLink')}');
           if (result.data!.status == "active" ||
               result.data!.status == "completed") {
-            //   Future.delayed(Duration(seconds: 3), () async {
-            //     await verifySubscriptionAPI(
-            //         paymentID!, subscriptionId, paySignature!);
-            //   });
-            // } else {
             Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                 MaterialPageRoute(
                     builder: (context) => PaymentSucessScreen(
@@ -531,11 +506,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
       }
     } on DioError catch (e, stack) {
       closeProgressDialog(context);
-      //print(e.message);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -552,27 +523,12 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // Do something when payment succeeds
-    //print('kama liyaa!');
-    //print(subscriptionId);
-    //print(response.paymentId);
-    //print(response.signature);
     setState(() {
       paymentID = response.paymentId!;
       paySignature = response.signature!;
     });
     verifySubscriptionAPI(
         response.paymentId!, subscriptionId!, response.signature!);
-    //createBookingAPI(response.orderId, response.paymentId, response.signature);
-    // if (payStatus == 'ERR728') {
-    //   Future.delayed(Duration(seconds: 3), () async {
-    //     await verifySubscriptionAPI(
-    //         response.paymentId!, subscriptionId!, response.signature!);
-    //   });
-    // } else {
-    //   Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-    //       MaterialPageRoute(builder: (context) => PaymentSucessScreen()),
-    //       (Route<dynamic> route) => false);
-    // }
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
@@ -606,8 +562,6 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
     if (response.statusCode == 200) {
       String jsonResponse = await response.stream.bytesToString();
       map = json.decode(jsonResponse);
-      //print(map!['id']);
-      //print('MAP:::::' + map.toString());
       //TODO: Change Razorpay Keys
       var options = {
         'key': 'rzp_test_MtDrPPLWbUdsY7',

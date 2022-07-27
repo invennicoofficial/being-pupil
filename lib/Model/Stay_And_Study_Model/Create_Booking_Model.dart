@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final createBooking = createBookingFromJson(jsonString);
-
 import 'dart:convert';
 
 CreateBooking createBookingFromJson(String str) => CreateBooking.fromJson(json.decode(str));

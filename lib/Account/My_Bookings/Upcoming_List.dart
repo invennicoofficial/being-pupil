@@ -61,14 +61,12 @@ class _UpComingListState extends State<UpComingList> {
           if (result.data!.length > 0) {
             page++;
             getUpComingBookingAPI(page);
-            //print(page);
           } else {
             _refreshController.loadComplete();
           }
         } else {
           page++;
           getUpComingBookingAPI(page);
-          //print(page);
         }
       }
     });
@@ -336,7 +334,6 @@ class _UpComingListState extends State<UpComingList> {
               //! bookingMealAmount.add(result.data![i].mealAmount);
               //! bookingTotalAmount.add(result.data![i].totalAmount);
             }
-            //print(bookingId);
             isLoading = false;
             setState(() {});
           } else {
@@ -355,15 +352,10 @@ class _UpComingListState extends State<UpComingList> {
           );
         }
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,

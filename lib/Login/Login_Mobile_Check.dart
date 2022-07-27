@@ -18,8 +18,19 @@ import 'Registration_After_Login.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginMobileCheckScreen extends StatefulWidget {
-  String? socialId, registrationType, socialDisplayName, socialEmail, socialPhotoUrl;
-  LoginMobileCheckScreen({Key? key, required this.socialId, required this.registrationType, required this.socialDisplayName, required this.socialEmail, required this.socialPhotoUrl }) : super(key: key);
+  String? socialId,
+      registrationType,
+      socialDisplayName,
+      socialEmail,
+      socialPhotoUrl;
+  LoginMobileCheckScreen(
+      {Key? key,
+      required this.socialId,
+      required this.registrationType,
+      required this.socialDisplayName,
+      required this.socialEmail,
+      required this.socialPhotoUrl})
+      : super(key: key);
 
   @override
   _LoginMobileCheckScreenState createState() => _LoginMobileCheckScreenState();
@@ -93,8 +104,8 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
                       ],
                     ),
                     Padding(
-                      padding:
-                          EdgeInsets.only(top: 1.0.h, left: 5.0.w, right: 5.0.w),
+                      padding: EdgeInsets.only(
+                          top: 1.0.h, left: 5.0.w, right: 5.0.w),
                       child: Text(
                         'Please provide your number to proceed further.',
                         style: TextStyle(
@@ -122,63 +133,22 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        NumberInputWidget(textEditingController: mobileController, lable: 'Phone Number', autoFocus: true, focusNode: mobileFocus,),
-                        // Theme(
-                        //   data: new ThemeData(
-                        //     primaryColor: Constants.bpSkipStyle,
-                        //     primaryColorDark: Constants.bpSkipStyle,
-                        //   ),
-                        //   child: Padding(
-                        //     padding: EdgeInsets.only(
-                        //         left: 3.0.w, right: 3.0.w, top: 4.0.h),
-                        //     child: Container(
-                        //       height: 7.0.h,
-                        //       width: 90.0.w,
-                        //       child: TextFormField(
-                        //         autofocus: true,
-                        //         focusNode: mobileFocus,
-                        //         controller: mobileController,
-                        //         keyboardType: TextInputType.phone,
-                        //         inputFormatters: [
-                        //           LengthLimitingTextInputFormatter(10),
-                        //         ],
-                        //         decoration: InputDecoration(
-                        //           labelText: "Phone Number",
-                        //           labelStyle: TextStyle(
-                        //             color: Constants.bpSkipStyle,
-                        //             fontFamily: "Montserrat", 
-                        //             fontSize: 10.0.sp
-                        //           ),
-                        //           fillColor: Colors.white,
-                        //           focusedBorder: OutlineInputBorder(
-                        //             borderRadius: BorderRadius.circular(5.0),
-                        //             borderSide: BorderSide(
-                        //               color: Constants.formBorder,
-                        //             ),
-                        //           ),
-                        //           enabledBorder: OutlineInputBorder(
-                        //             borderRadius: BorderRadius.circular(5.0),
-                        //             borderSide: BorderSide(
-                        //               color: Constants.formBorder,
-                        //               //width: 2.0,
-                        //             ),
-                        //           ),
-                        //         ),
-                        //         //keyboardType: TextInputType.emailAddress,
-                        //         style: new TextStyle(
-                        //             fontFamily: "Montserrat", fontSize: 10.0.sp),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
+                        NumberInputWidget(
+                          textEditingController: mobileController,
+                          lable: 'Phone Number',
+                          autoFocus: true,
+                          focusNode: mobileFocus,
+                        ),
                         Padding(
                           padding: EdgeInsets.only(
                               left: 3.0.w, right: 3.0.w, top: 6.0.h),
                           child: GestureDetector(
                             onTap: () {
-                              bool mobileValid = RegExp(r"^[6-9]\d{9}$").hasMatch(mobileController.text);
-                              //print('Logged In!!!');
-                              if (mobileController.text.isEmpty || (mobileValid == false)){
+                              bool mobileValid = RegExp(r"^[6-9]\d{9}$")
+                                  .hasMatch(mobileController.text);
+
+                              if (mobileController.text.isEmpty ||
+                                  (mobileValid == false)) {
                                 Fluttertoast.showToast(
                                   msg: 'Please Enter Valid Mobile Number',
                                   toastLength: Toast.LENGTH_SHORT,
@@ -190,48 +160,15 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
                                 );
                               } else {
                                 mobileCheckApi(mobileController.text);
-                                // Navigator.push(
-                                //     context,
-                                //     PageTransition(
-                                //         type: PageTransitionType.fade,
-                                //         child: SignUpAfterLoginScreen(
-                                //           mobileNumber: mobileController.text,
-                                //         )));
                               }
-                              // Navigator.push(
-                              //     context,
-                              //     PageTransition(
-                              //         type: PageTransitionType.fade,
-                              //         child: OtpScreen()));
                             },
                             child: Padding(
-                              padding: EdgeInsets.only(bottom: 4.0.h),
-                              child: ButtonWidget(btnName: 'CONTINUE', isActive: true, fontWeight: FontWeight.w700,)
-                              // Container(
-                              //   height: 7.0.h,
-                              //   width: 90.0.w,
-                              //   padding: const EdgeInsets.all(1.0),
-                              //   decoration: BoxDecoration(
-                              //     color: Constants.bpOnBoardTitleStyle,
-                              //     borderRadius:
-                              //         BorderRadius.all(Radius.circular(10.0)),
-                              //     border: Border.all(
-                              //       color: Constants.formBorder,
-                              //       width: 0.15,
-                              //     ),
-                              //   ),
-                              //   child: Center(
-                              //     child: Text(
-                              //       'Continue'.toUpperCase(),
-                              //       style: TextStyle(
-                              //           color: Colors.white,
-                              //           fontFamily: 'Montserrat',
-                              //           fontWeight: FontWeight.w700,
-                              //           fontSize: 11.0.sp),
-                              //     ),
-                              //   ),
-                              // ),
-                            ),
+                                padding: EdgeInsets.only(bottom: 4.0.h),
+                                child: ButtonWidget(
+                                  btnName: 'CONTINUE',
+                                  isActive: true,
+                                  fontWeight: FontWeight.w700,
+                                )),
                           ),
                         ),
                       ],
@@ -247,155 +184,151 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
   }
 
   Future<String?> _getId() async {
-  var deviceInfo = DeviceInfoPlugin();
-  if (Platform.isIOS) { // import 'dart:io'
-    var iosDeviceInfo = await deviceInfo.iosInfo;
-    return iosDeviceInfo.identifierForVendor; // unique ID on iOS
-  } else {
-    var androidDeviceInfo = await deviceInfo.androidInfo;
-    //print('DID:::'+androidDeviceInfo.androidId.toString());
-    return androidDeviceInfo.androidId; // unique ID on Android
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) {
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor;
+    } else {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
+
+      return androidDeviceInfo.androidId;
+    }
   }
-}
 
   Future<void> mobileCheckApi(String mobileNumber) async {
-    print('TYPE:::'+widget.registrationType.toString());
     displayProgressDialog(context);
-     String? deviceId = await _getId();
+    String? deviceId = await _getId();
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    //var result = MobileCheck();
+
     try {
       Dio dio = Dio();
       FormData formData = FormData.fromMap({
         'mobile_number': mobileNumber,
-        //'country_code': '+91',
         'deviceType': Platform.isAndroid ? 'A' : 'I',
         'deviceId': deviceId == null ? '123456' : deviceId,
         'registration_type': widget.registrationType,
         'social_login_details[display_name]': widget.socialDisplayName,
         'social_login_details[email]': widget.socialEmail,
         'social_login_details[photoURL]': widget.socialPhotoUrl,
-        //'social_login_details[phoneNumber]': '',
         'social_login_details[uid]': widget.socialId
       });
       var response = await dio.post(Config.mobileCheckUrl, data: formData);
       if (response.statusCode == 200) {
         map = response.data;
-        //mapData = map['data'];
-        //print(mapData);
+
         closeProgressDialog(context);
-        //result = MobileCheck.fromJson(response.data);
-  
-        //if (result.status == true)
-         if (map!['status'] == true){
-          
-     
-          //if(result.data.userObject == null)
-          if(map!['data']['userObj'] == null){
-           Navigator.push(
-              context,
-              PageTransition(
-                  type: PageTransitionType.fade, child: SignUpAfterLoginScreen(
-                    mobileNumber: mobileController.text,
-                    name: widget.socialDisplayName,
-                    registrationType: widget.registrationType,
-                    socialDisplayName: widget.socialDisplayName,
-                    socialEmail: widget.socialEmail,
-                    socialPhotoUrl: widget.socialPhotoUrl,
-                    socialId: widget.socialId,
-                  )));     
-          // Fluttertoast.showToast(
-          //   msg: map!['message'],//result.message,
-          //   toastLength: Toast.LENGTH_SHORT,
-          //   gravity: ToastGravity.BOTTOM,
-          //   timeInSecForIosWeb: 1,
-          //   backgroundColor: Constants.bgColor,
-          //   textColor: Colors.white,
-          //   fontSize: 10.0.sp,);     
-          }else{
-            Fluttertoast.showToast(
-            msg: map!['message'],//result.message,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Constants.bgColor,
-            textColor: Colors.white,
-            fontSize: 10.0.sp,
-          );
-          role = map!['data']['userObj']['register_as']; //result.data.userObject.role;
-          saveUserData(map!['data']['userObj']['user_id']);//saveUserData(result.data.userObject.userId);
-          saveToken(map!['data']['access_token']); //saveToken(result.data.token);
-          
-              preferences.setInt('userId', map!['data']['userObj']['user_id']);
-              preferences.setString('RegisterAs', role!);
-              preferences.setString("name", map!['data']['userObj']['name']);
-              preferences.setString("mobileNumber", map!['data']['userObj']['mobile_number']);
-              preferences.setString("gender", map!['data']['userObj']['gender'] != null ? map!['data']['userObj']['gender'] : '');
-             
-              preferences.setString("imageUrl", map!['data']['userObj']['image_url']);
 
-              if(map!['data']['userObj']['isNew'] == 'false'){
-        
-              role == 'E' ? preferences.setString("qualification", map!['data']['userObj']['educational_details'].last['qualification']) : preferences.setString("qualification", '');
-              role == 'E' ? preferences.setString("schoolName", map!['data']['userObj']['educational_details'].last['school_name']) : preferences.setString("schoolName",'');
-              role == 'E' ? preferences.setString("address1", map!['data']['userObj']['location'][0]['address_line1']): preferences.setString("address1", '');
-              role == 'E' ? preferences.setString("address2", map!['data']['userObj']['location'][0]['city']): preferences.setString("address2", '');
-              // role == 'E' ? preferences.setString("facebookUrl", map!['data']['userObj']['facebook_url']) : preferences.setString("facebookUrl",'');
-              // role == 'E' ? preferences.setString("instaUrl", map!['data']['userObj']['insta_url']) : preferences.setString("instaUrl",'');
-              // role == 'E' ? preferences.setString("linkedInUrl", map!['data']['userObj']['linkedin_url']) : preferences.setString("linkedInUrl", '');
-              // role == 'E' ? preferences.setString("otherUrl", map!['data']['userObj']['other_url']) : preferences.setString("otherUrl", '');
-              role == 'E' ? preferences.setString("isNew", map!['data']['userObj']['isNew']) : preferences.setString("isNew", '');
-              preferences.setBool('isLoggedIn', true);
-              }
-              //print('ROLE:::' + preferences.getString('RegisterAs')!);
-              //print('ISNEW:::' + map!['data']['userObj']['isNew']);
-
-            if(role == 'E' && map!['data']['userObj']['isNew'] == 'true'){
-             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => EducatorRegistration(
-                  name: map!['data']['userObj']['name'].toString(),
-                  mobileNumber: mobileNumber,
-                  email: map!['data']['userObj']['email'].toString()
-                )));
-              }
-            else{ Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => bottomNavBar(0)),
-                    (Route<dynamic> route) => false);
-            }
-            
-          }
-        } else {
-          //print(map);
-          if(map!['message'] == null){
-          Fluttertoast.showToast(
-            msg: map!['error_msg'],
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Constants.bgColor,
-            textColor: Colors.white,
-            fontSize: 10.0.sp,
-          );
+        if (map!['status'] == true) {
+          if (map!['data']['userObj'] == null) {
+            Navigator.push(
+                context,
+                PageTransition(
+                    type: PageTransitionType.fade,
+                    child: SignUpAfterLoginScreen(
+                      mobileNumber: mobileController.text,
+                      name: widget.socialDisplayName,
+                      registrationType: widget.registrationType,
+                      socialDisplayName: widget.socialDisplayName,
+                      socialEmail: widget.socialEmail,
+                      socialPhotoUrl: widget.socialPhotoUrl,
+                      socialId: widget.socialId,
+                    )));
           } else {
             Fluttertoast.showToast(
-            msg:map!['message'],
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Constants.bgColor,
-            textColor: Colors.white,
-            fontSize: 10.0.sp,
-          );
+              msg: map!['message'],
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Constants.bgColor,
+              textColor: Colors.white,
+              fontSize: 10.0.sp,
+            );
+            role = map!['data']['userObj']['register_as'];
+            saveUserData(map!['data']['userObj']['user_id']);
+            saveToken(map!['data']['access_token']);
+
+            preferences.setInt('userId', map!['data']['userObj']['user_id']);
+            preferences.setString('RegisterAs', role!);
+            preferences.setString("name", map!['data']['userObj']['name']);
+            preferences.setString(
+                "mobileNumber", map!['data']['userObj']['mobile_number']);
+            preferences.setString(
+                "gender",
+                map!['data']['userObj']['gender'] != null
+                    ? map!['data']['userObj']['gender']
+                    : '');
+
+            preferences.setString(
+                "imageUrl", map!['data']['userObj']['image_url']);
+
+            if (map!['data']['userObj']['isNew'] == 'false') {
+              role == 'E'
+                  ? preferences.setString(
+                      "qualification",
+                      map!['data']['userObj']['educational_details']
+                          .last['qualification'])
+                  : preferences.setString("qualification", '');
+              role == 'E'
+                  ? preferences.setString(
+                      "schoolName",
+                      map!['data']['userObj']['educational_details']
+                          .last['school_name'])
+                  : preferences.setString("schoolName", '');
+              role == 'E'
+                  ? preferences.setString("address1",
+                      map!['data']['userObj']['location'][0]['address_line1'])
+                  : preferences.setString("address1", '');
+              role == 'E'
+                  ? preferences.setString("address2",
+                      map!['data']['userObj']['location'][0]['city'])
+                  : preferences.setString("address2", '');
+
+              role == 'E'
+                  ? preferences.setString(
+                      "isNew", map!['data']['userObj']['isNew'])
+                  : preferences.setString("isNew", '');
+              preferences.setBool('isLoggedIn', true);
+            }
+
+            if (role == 'E' && map!['data']['userObj']['isNew'] == 'true') {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => EducatorRegistration(
+                      name: map!['data']['userObj']['name'].toString(),
+                      mobileNumber: mobileNumber,
+                      email: map!['data']['userObj']['email'].toString())));
+            } else {
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => bottomNavBar(0)),
+                  (Route<dynamic> route) => false);
+            }
+          }
+        } else {
+          if (map!['message'] == null) {
+            Fluttertoast.showToast(
+              msg: map!['error_msg'],
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Constants.bgColor,
+              textColor: Colors.white,
+              fontSize: 10.0.sp,
+            );
+          } else {
+            Fluttertoast.showToast(
+              msg: map!['message'],
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Constants.bgColor,
+              textColor: Colors.white,
+              fontSize: 10.0.sp,
+            );
           }
         }
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       closeProgressDialog(context);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,
@@ -405,25 +338,16 @@ class _LoginMobileCheckScreenState extends State<LoginMobileCheckScreen> {
           textColor: Colors.white,
           fontSize: 10.0.sp,
         );
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-       // //print(e.request);
-        //print(e.message);
-      }
+      } else {}
     }
-    //return result;
   }
 
   void saveToken(String token) async {
-    // Write value
     await storage.write(key: 'access_token', value: token);
-    //print('TOKEN ::: ' + token);
-    //closeProgressDialog(context);
   }
 
   void saveUserData(int? userId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    
   }
 
   displayProgressDialog(BuildContext context) {

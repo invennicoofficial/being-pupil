@@ -64,14 +64,12 @@ class _CompletedListState extends State<CompletedList> {
           if (result.data!.length > 0) {
             page++;
             getCompletedBookingAPI(page);
-            //print(page);
           } else {
             _refreshController.loadComplete();
           }
         } else {
           page++;
           getCompletedBookingAPI(page);
-          //print(page);
         }
       }
     });
@@ -305,7 +303,6 @@ class _CompletedListState extends State<CompletedList> {
       var response = await dio.get('${Config.completedBookingUrl}?page=$page',
           options: Options(headers: {"Authorization": 'Bearer ' + authToken!}));
       if (response.statusCode == 200) {
-        //print(response.data);
         result = CompletedBooking.fromJson(response.data);
 
         if (result.status == true) {
@@ -330,9 +327,6 @@ class _CompletedListState extends State<CompletedList> {
               bookingIsReviewed.add(result.data![i].isReviewed);
               bookingReview.add(result.data![i].review);
             }
-            // print(bookingReview[0].headline);
-            // print(bookingReview[0].descrieption);
-            // print(bookingReview[0].rating);
             isLoading = false;
             setState(() {});
           } else {
@@ -351,15 +345,10 @@ class _CompletedListState extends State<CompletedList> {
           );
         }
       } else {
-        //print('${response.statusCode} : ${response.data.toString()}');
         throw response.statusCode!;
       }
     } on DioError catch (e, stack) {
-      //print(e.response);
-      //print(stack);
       if (e.response != null) {
-        //print("This is the error message::::" +
-            //e.response!.data['meta']['message']);
         Fluttertoast.showToast(
           msg: e.response!.data['meta']['message'],
           toastLength: Toast.LENGTH_SHORT,

@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final learnerProfileUpdate = learnerProfileUpdateFromJson(jsonString);
-
 import 'dart:convert';
 
 LearnerProfileUpdate learnerProfileUpdateFromJson(String str) => LearnerProfileUpdate.fromJson(json.decode(str));
