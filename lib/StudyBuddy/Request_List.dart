@@ -95,193 +95,214 @@ class _RequestListState extends State<RequestList> {
               valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
             ),
           )
-        : SmartRefresher(
-            controller: _refreshController,
-            enablePullDown: false,
-            enablePullUp: true,
-            footer: ClassicFooter(
-              loadStyle: LoadStyle.ShowWhenLoading,
-              noDataText: 'No More Request',
-            ),
-            onLoading: _onLoading,
-            child: ListView.builder(
-                controller: _scrollController,
-                padding:
-                    EdgeInsets.symmetric(horizontal: 4.0.w, vertical: 1.0.h),
-                shrinkWrap: true,
-                itemCount: _userId.length == 0 ? 0 : _userId.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 3.0,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 2.0.w),
-                      child: Container(
-                        child: ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          title: GestureDetector(
-                            onTap: () {
-                              getUserProfile(_userId[index]);
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child: CachedNetworkImage(
-                                      placeholder: (context, url) => Container(
-                                        child: CircularProgressIndicator(
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                  Colors.black),
-                                        ),
-                                        width: 40.0,
-                                        height: 40.0,
-                                        padding: EdgeInsets.all(70.0),
-                                        decoration: BoxDecoration(
-                                          color: greyColor2,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(8.0),
+        : _userId.isEmpty
+            ? Center(
+                child: Text(
+                  'No Request Found',
+                  style: TextStyle(
+                      fontSize: 14.0,
+                      color: Constants.bgColor,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w500),
+                ),
+              )
+            : SmartRefresher(
+                controller: _refreshController,
+                enablePullDown: false,
+                enablePullUp: true,
+                footer: ClassicFooter(
+                  loadStyle: LoadStyle.ShowWhenLoading,
+                  noDataText: 'No More Request',
+                ),
+                onLoading: _onLoading,
+                child: ListView.builder(
+                    controller: _scrollController,
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 4.0.w, vertical: 1.0.h),
+                    shrinkWrap: true,
+                    itemCount: _userId.length == 0 ? 0 : _userId.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        elevation: 3.0,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 2.0.w),
+                          child: Container(
+                            child: ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              title: GestureDetector(
+                                onTap: () {
+                                  getUserProfile(_userId[index]);
+                                },
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: CachedNetworkImage(
+                                          placeholder: (context, url) =>
+                                              Container(
+                                            child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      Colors.black),
+                                            ),
+                                            width: 40.0,
+                                            height: 40.0,
+                                            padding: EdgeInsets.all(70.0),
+                                            decoration: BoxDecoration(
+                                              color: greyColor2,
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(8.0),
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                      errorWidget: (context, url, error) =>
-                                          Material(
-                                        child: Image.asset(
-                                          'assets/images/studyBudyBg.png',
+                                          errorWidget: (context, url, error) =>
+                                              Material(
+                                            child: Image.asset(
+                                              'assets/images/studyBudyBg.png',
+                                              width: 40.0,
+                                              height: 40.0,
+                                              fit: BoxFit.cover,
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0),
+                                            ),
+                                            clipBehavior: Clip.hardEdge,
+                                          ),
+                                          imageUrl: _profileImage[index]!,
                                           width: 40.0,
                                           height: 40.0,
                                           fit: BoxFit.cover,
-                                        ),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(8.0),
-                                        ),
-                                        clipBehavior: Clip.hardEdge,
-                                      ),
-                                      imageUrl: _profileImage[index]!,
-                                      width: 40.0,
-                                      height: 40.0,
-                                      fit: BoxFit.cover,
-                                    )),
-                                SizedBox(
-                                  width: 2.0.w,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(right: 0.0.w),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width: 38.0.w,
-                                        child: Text(
-                                          _name[index]!,
-                                          style: TextStyle(
-                                              fontSize: 9.0.sp,
-                                              color: Constants.bgColor,
-                                              fontFamily: 'Montserrat',
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 38.0.w,
-                                        child: Text(
-                                          _lastDegree[index] != null &&
-                                                  _schoolName[index] != null
-                                              ? '${_lastDegree[index]} | ${_schoolName[index]}'
-                                              : '',
-                                          style: TextStyle(
-                                              fontSize: 6.5.sp,
-                                              color: Constants.bgColor,
-                                              fontFamily: 'Montserrat',
-                                              fontWeight: FontWeight.w400),
-                                          overflow: TextOverflow.clip,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(right: 2.0.w),
-                                  child: Row(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          requestActionApi(_userId[index], 'R');
-                                        },
-                                        child: Container(
-                                          height: 3.5.h,
-                                          width: 16.0.w,
-                                          decoration: BoxDecoration(
-                                              color: Constants.bgColor,
-                                              border: Border.all(
-                                                  color: Constants.bgColor,
-                                                  width: 0.5),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8.0))),
-                                          child: Center(
+                                        )),
+                                    SizedBox(
+                                      width: 2.0.w,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 0.0.w),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: 38.0.w,
                                             child: Text(
-                                              'Reject',
+                                              _name[index]!,
                                               style: TextStyle(
-                                                  fontSize: 8.0.sp,
-                                                  color: Colors.white,
+                                                  fontSize: 9.0.sp,
+                                                  color: Constants.bgColor,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 38.0.w,
+                                            child: Text(
+                                              _lastDegree[index] != null &&
+                                                      _schoolName[index] != null
+                                                  ? '${_lastDegree[index]} | ${_schoolName[index]}'
+                                                  : '',
+                                              style: TextStyle(
+                                                  fontSize: 6.5.sp,
+                                                  color: Constants.bgColor,
                                                   fontFamily: 'Montserrat',
                                                   fontWeight: FontWeight.w400),
+                                              overflow: TextOverflow.clip,
                                             ),
                                           ),
-                                        ),
+                                        ],
                                       ),
-                                      SizedBox(
-                                        width: 2.0.w,
-                                      ),
-                                      GestureDetector(
-                                        onTap: isSubscribed == 1
-                                            ? () async {
-                                                requestActionApi(
-                                                    _userId[index], 'A');
-                                              }
-                                            : () {
-                                                pushNewScreen(context,
-                                                    screen:
-                                                        SubscriptionPlanScreen(),
-                                                    withNavBar: false,
-                                                    pageTransitionAnimation:
-                                                        PageTransitionAnimation
-                                                            .cupertino);
-                                              },
-                                        child: Container(
-                                          height: 3.5.h,
-                                          width: 16.0.w,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 2.0.w),
+                                      child: Row(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              requestActionApi(
+                                                  _userId[index], 'R');
+                                            },
+                                            child: Container(
+                                              height: 3.5.h,
+                                              width: 16.0.w,
+                                              decoration: BoxDecoration(
                                                   color: Constants.bgColor,
-                                                  width: 0.5),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8.0))),
-                                          child: Center(
-                                            child: Text(
-                                              'Connect',
-                                              style: TextStyle(
-                                                  fontSize: 8.0.sp,
-                                                  color: Constants.bgColor,
-                                                  fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.w500),
+                                                  border: Border.all(
+                                                      color: Constants.bgColor,
+                                                      width: 0.5),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              8.0))),
+                                              child: Center(
+                                                child: Text(
+                                                  'Reject',
+                                                  style: TextStyle(
+                                                      fontSize: 8.0.sp,
+                                                      color: Colors.white,
+                                                      fontFamily: 'Montserrat',
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                          SizedBox(
+                                            width: 2.0.w,
+                                          ),
+                                          GestureDetector(
+                                            onTap: isSubscribed == 1
+                                                ? () async {
+                                                    requestActionApi(
+                                                        _userId[index], 'A');
+                                                  }
+                                                : () {
+                                                    pushNewScreen(context,
+                                                        screen:
+                                                            SubscriptionPlanScreen(),
+                                                        withNavBar: false,
+                                                        pageTransitionAnimation:
+                                                            PageTransitionAnimation
+                                                                .cupertino);
+                                                  },
+                                            child: Container(
+                                              height: 3.5.h,
+                                              width: 16.0.w,
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Constants.bgColor,
+                                                      width: 0.5),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              8.0))),
+                                              child: Center(
+                                                child: Text(
+                                                  'Connect',
+                                                  style: TextStyle(
+                                                      fontSize: 8.0.sp,
+                                                      color: Constants.bgColor,
+                                                      fontFamily: 'Montserrat',
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                )
-                              ],
+                                    )
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  );
-                }),
-          );
+                      );
+                    }),
+              );
   }
 
   Future<void> getRequestApi(int page) async {

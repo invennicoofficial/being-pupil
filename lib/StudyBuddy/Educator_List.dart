@@ -95,6 +95,28 @@ class _EducatorListState extends State<EducatorList> {
               valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
             ),
           )
+          : _userId.isEmpty
+            ? Center(
+                child: Text(
+                  'No Educator Found',
+                  style: TextStyle(
+                      fontSize: 14.0,
+                      color: Constants.bgColor,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w500),
+                ),
+              )
+              : _userId.isEmpty
+            ? Center(
+                child: Text(
+                  'No Educator Found',
+                  style: TextStyle(
+                      fontSize: 14.0,
+                      color: Constants.bgColor,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w500),
+                ),
+              )
         : SmartRefresher(
             controller: _refreshController,
             enablePullDown: false,

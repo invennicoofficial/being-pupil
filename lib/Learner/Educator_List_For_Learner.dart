@@ -108,7 +108,7 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
             children: [
               Padding(
                 padding:
-                    EdgeInsets.symmetric(vertical: 2.0.h, horizontal: 4.0.w),
+                    EdgeInsets.only(top: 1.0.h, left: 4.0.w, right: 4.0.w, bottom: 2.0.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -152,7 +152,18 @@ class _EducatorListForLearnerState extends State<EducatorListForLearner> {
                   ],
                 ),
               ),
-              Padding(
+             _userId.isEmpty
+            ? Center(
+                child: Text(
+                  'No Educator Found',
+                  style: TextStyle(
+                      fontSize: 14.0,
+                      color: Constants.bgColor,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w500),
+                ),
+              )
+             : Padding(
                 padding: EdgeInsets.only(top: 4.0.h),
                 child: SmartRefresher(
                   controller: _refreshController,

@@ -98,6 +98,17 @@ class _RequestListLearnerState extends State<RequestListLearner> {
               valueColor: new AlwaysStoppedAnimation<Color>(Constants.bgColor),
             ),
           )
+          : _userId.isEmpty
+            ? Center(
+                child: Text(
+                  'No Request Found',
+                  style: TextStyle(
+                      fontSize: 14.0,
+                      color: Constants.bgColor,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w500),
+                ),
+              )
         : SmartRefresher(
             controller: _refreshController,
             enablePullDown: false,
